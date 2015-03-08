@@ -1,8 +1,9 @@
 #ifndef VXRENDERPROCESS_H
 #define VXRENDERPROCESS_H
 
-#import <vxprocess.h>
- 
+#include <vxprocess.h>
+#include <vxstatus.h>
+
 class vxRenderProcess : public vxProcess
 {
 	public:

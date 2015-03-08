@@ -10,5 +10,6 @@ vxRenderMain::vxRenderMain(QWidget *parent) :
 
 vxRenderMain::~vxRenderMain()
 {
+	
 	delete ui;
 }
