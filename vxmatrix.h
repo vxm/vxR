@@ -5,10 +5,10 @@
 
 class vxMatrix
 {
-	mutable double	m_matrix[16] = {1.0, 0.0, 0.0, 0.0, 
-									0.0, 1.0, 0.0, 0.0, 
-									0.0, 0.0, 1.0, 0.0, 
-									0.0, 0.0, 0.0, 1.0};
+	mutable double	m_matrix[16]{1.0, 0.0, 0.0, 0.0, 
+								 0.0, 1.0, 0.0, 0.0, 
+								 0.0, 0.0, 1.0, 0.0, 
+								 0.0, 0.0, 0.0, 1.0};
 
 public:
 	
@@ -22,7 +22,7 @@ public:
 	const double *	operator[] (unsigned int row) const;
 	vxStatus::code	get(double dest[]) const;
 	vxStatus::code	get(float dest[]) const;
-	vxMatrix		transpose() const;
+	vxMatrix	transpose() const;
 	vxMatrix&		setToIdentity();
 	vxMatrix&		setToProduct(const vxMatrix&left, const vxMatrix&right);
 	vxMatrix&		operator+= (const vxMatrix&right);
