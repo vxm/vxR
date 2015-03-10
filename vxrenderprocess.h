@@ -10,17 +10,14 @@ class vxRenderProcess : public vxProcess
 		vxRenderProcess();
 		
 		
-	vxStatus::code execute() override
-	{
-		
-		return vxStatus::code::success;
-	}
+	vxStatus::code execute() override;
 	
 	vxStatus::code preConditions() override
 	{
 		
 		return vxStatus::code::success;
 	}
+	
 };
 
 #endif // VXRENDERPROCESS_H
