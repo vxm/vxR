@@ -2,12 +2,13 @@
 #define VXMATRIX_H
 
 #include <vxstatus.h>
+#include <initializer_list>
 
 using mdata = double[16];
 
 class vxMatrix
 {
-	mutable mdata m_matrix{1.0, 0.0, 0.0, 0.0, 
+	mutable mdata m_matrix{ 1.0, 0.0, 0.0, 0.0, 
 							0.0, 1.0, 0.0, 0.0, 
 							0.0, 0.0, 1.0, 0.0, 
 							0.0, 0.0, 0.0, 1.0};
@@ -17,6 +18,7 @@ public:
 	vxMatrix();
 	vxMatrix (const vxMatrix&src);
 	vxMatrix (const double m[16]);
+	vxMatrix (std::initializer_list<double> list);
 	~vxMatrix ();
 
 	vxMatrix&		operator= (const vxMatrix &m);
@@ -46,7 +48,6 @@ public:
 	bool			isSingular() const;
 	double &		operator() (unsigned int row, unsigned int col);
 	double *		operator[] (unsigned int row);
-			
 	static const vxMatrix identity;
 	
 	//vxMatrix		operator* (double, const vxMatrix&right);
