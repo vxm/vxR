@@ -3,3 +3,4 @@
 vxImage::vxImage()
 {
 }
+
