@@ -1,6 +1,7 @@
 #include "vximage.h"
 
-vxImage::vxImage()
+vxPxBuffer::vxPxBuffer()
 {
+	m_mapa=NULL;
 }
 

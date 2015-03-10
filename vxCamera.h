@@ -195,7 +195,7 @@ public:
 		return posY>=yres;
 	}
 
-	vxVector3d givemeNextRay(vxImage &imagen, double ang)
+	vxVector3d givemeNextRay(vxPxBuffer &imagen, double ang)
 	{
 		vxVector3d ret;
 		ret.set(tan(apertureV/2.0) * ((imagen.getScanYd()*2)-1) , tan(apertureH/2.0)*(( imagen.getScanXd() *2)-1), focusD);

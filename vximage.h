@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-class vxImage:public vxObject
+class vxPxBuffer:public vxObject
 {
 private:
 	int m_xRes;
@@ -22,12 +22,9 @@ private:
 
 public:
 
-	vxImage() 
-	{
-		m_mapa=NULL;
-	}
+	vxPxBuffer();
 
-	vxImage(int xr, int yr, int dp)
+	vxPxBuffer(int xr, int yr, int dp)
 	{
 		m_xRes=xr;
 		m_yRes=yr;
@@ -35,12 +32,12 @@ public:
 
 	}
 
-	vxImage(unsigned char *map)
+	vxPxBuffer(unsigned char *map)
 	{
 		m_mapa=map;
 	}
 		
-	~vxImage() 
+	~vxPxBuffer() 
 	{
 		free(m_mapa);
 	}
