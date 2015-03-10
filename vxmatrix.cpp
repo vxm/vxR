@@ -70,20 +70,38 @@ vxMatrix vxMatrix::transpose() const
 	return *this;
 }
 
-vxMatrix &vxMatrix::setToIdentity()
+vxMatrix& vxMatrix::setToIdentity()
 {
-	this->operator=(vxMatrix::identity);
+	m_matrix[0] = 1.0;
+	m_matrix[1] = 0.0;
+	m_matrix[2] = 0.0;
+	m_matrix[3] = 0.0;
+	
+	m_matrix[4] = 0.0;
+	m_matrix[5] = 1.0;
+	m_matrix[6] = 0.0;
+	m_matrix[7] = 0.0;
+	
+	m_matrix[8] = 0.0;
+	m_matrix[9] = 0.0;
+	m_matrix[10] = 1.0;
+	m_matrix[11] = 0.0;
+	
+	m_matrix[12] = 0.0;
+	m_matrix[13] = 0.0;
+	m_matrix[14] = 0.0;
+	m_matrix[15] = 1.0;
 	
 	return *this;
 }
 
-vxMatrix &vxMatrix::setToProduct(const vxMatrix &left, const vxMatrix &right)
+vxMatrix& vxMatrix::setToProduct(const vxMatrix &left, const vxMatrix &right)
 {
 	
 	return *this;
 }
 
-vxMatrix &vxMatrix::operator+=(const vxMatrix &right)
+vxMatrix& vxMatrix::operator+=(const vxMatrix &right)
 {
 	
 	return *this;
@@ -95,7 +113,7 @@ vxMatrix vxMatrix::operator+(const vxMatrix &right) const
 	return *this;
 }
 
-vxMatrix &vxMatrix::operator-=(const vxMatrix &right)
+vxMatrix& vxMatrix::operator-=(const vxMatrix &right)
 {
 	
 	return *this;
@@ -107,7 +125,7 @@ vxMatrix vxMatrix::operator-(const vxMatrix &right) const
 	return *this;
 }
 
-vxMatrix &vxMatrix::operator*=(const vxMatrix &right)
+vxMatrix& vxMatrix::operator*=(const vxMatrix &right)
 {
 	
 	return *this;
@@ -118,26 +136,26 @@ vxMatrix vxMatrix::operator*(const vxMatrix &right) const
 	const vxMatrix &a=right.m_matrix;
 	const vxMatrix &b=m_matrix;
 	
-	mdata m{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-	m[0] = a(0,0) * b(0,0) + a(0,1) * b(0,0) + a(0,2) * b(0,0) + a(0,3) * b(0,0);
-	m[1] = a(1,0) * b(0,0) + a(1,1) * b(0,0) + a(1,2) * b(0,0) + a(1,3) * b(0,0);
-	m[2] = a(2,0) * b(0,0) + a(2,1) * b(0,0) + a(2,2) * b(0,0) + a(2,3) * b(0,0);
-	m[3] = a(3,0) * b(0,0) + a(3,1) * b(0,0) + a(3,2) * b(0,0) + a(3,3) * b(0,0);
+	vxMatrix m;//{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	m(0,0) = a(0,0)*b(0,0) + a(0,1)*b(1,0) + a(0,2)*b(2,0) + a(0,3)*b(3,0);
+	m(1,0) = a(1,0)*b(0,0) + a(1,1)*b(1,0) + a(1,2)*b(2,0) + a(1,3)*b(3,0);
+	m(2,0) = a(2,0)*b(0,0) + a(2,1)*b(1,0) + a(2,2)*b(2,0) + a(2,3)*b(3,0);
+	m(3,0) = a(3,0)*b(0,0) + a(3,1)*b(1,0) + a(3,2)*b(2,0) + a(3,3)*b(3,0);
 
-	m[4] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[5] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[6] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[7] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-
-	m[8] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[9] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[10] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[11] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-
-	m[12] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[13] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[14] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
-	m[15] = a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0) + a(0,0) * b(0,0);
+	m(0,1) = a(0,0)*b(0,1) + a(0,1)*b(1,1) + a(0,2)*b(2,1) + a(0,3)*b(3,1);
+	m(1,1) = a(1,0)*b(0,1) + a(1,1)*b(1,1) + a(1,2)*b(2,1) + a(1,3)*b(3,1);
+	m(2,1) = a(2,0)*b(0,1) + a(2,1)*b(1,1) + a(2,2)*b(2,1) + a(2,3)*b(3,1);
+	m(3,1) = a(3,0)*b(0,1) + a(3,1)*b(1,1) + a(3,2)*b(2,1) + a(3,3)*b(3,1);
+	
+	m(0,2) = a(0,0)*b(0,2) + a(0,1)*b(1,2) + a(0,2)*b(2,2) + a(0,3)*b(3,2);
+	m(1,2) = a(1,0)*b(0,2) + a(1,1)*b(1,2) + a(1,2)*b(2,2) + a(1,3)*b(3,2);
+	m(2,2) = a(2,0)*b(0,2) + a(2,1)*b(1,2) + a(2,2)*b(2,2) + a(2,3)*b(3,2);
+	m(3,2) = a(3,0)*b(0,2) + a(3,1)*b(1,2) + a(3,2)*b(2,2) + a(3,3)*b(3,2);
+	
+	m(0,3) = a(0,3)*b(0,3) + a(0,1)*b(1,3) + a(0,2)*b(2,3) + a(0,3)*b(3,3);
+	m(1,3) = a(1,3)*b(0,3) + a(1,1)*b(1,3) + a(1,2)*b(2,3) + a(1,3)*b(3,3);
+	m(2,3) = a(2,3)*b(0,3) + a(2,1)*b(1,3) + a(2,2)*b(2,3) + a(2,3)*b(3,3);
+	m(3,3) = a(3,3)*b(0,3) + a(3,1)*b(1,3) + a(3,2)*b(2,3) + a(3,3)*b(3,3);
 	
 	return *this;
 }

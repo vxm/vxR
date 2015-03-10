@@ -46,7 +46,7 @@ public:
 	double			det3x3() const;
 	bool			isEquivalent (const vxMatrix&other, double tolerance=1.0e-10) const;
 	bool			isSingular() const;
-	double &		operator() (unsigned int row, unsigned int col);
+	inline double &		operator() (unsigned int row, unsigned int col);
 	double *		operator[] (unsigned int row);
 	static const vxMatrix identity;
 	
