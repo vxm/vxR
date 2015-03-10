@@ -7,12 +7,12 @@ vxMatrix::vxMatrix()
 
 vxMatrix::vxMatrix(const vxMatrix&src)
 {
-	memcpy(m_matrix, src.m_matrix, 16);
+	memcpy(m_matrix, src.m_matrix, 16 * sizeof(double));
 }
 
 vxMatrix::vxMatrix(const double m[16])
 {
-	memcpy(m_matrix, m, 16);
+	memcpy(m_matrix, m, 16 * sizeof(double));
 }
 
 vxMatrix::~vxMatrix()
@@ -30,14 +30,14 @@ const double *vxMatrix::operator[](unsigned int row) const
 
 vxStatus::code vxMatrix::get(double dest[]) const
 {
-	memcpy(dest, m_matrix, 16);
+	memcpy(dest, m_matrix, 16 * sizeof(double));
 	return vxStatus::code::success;
 }
 
 vxStatus::code vxMatrix::get(float dest[]) const
 {
 	//!memcpy of doubles to floats?
-	memcpy(dest, m_matrix, 16);
+	memcpy(dest, m_matrix, 16 * sizeof(double));
 	return vxStatus::code::success;
 }
 
@@ -116,7 +116,9 @@ vxMatrix &vxMatrix::operator*=(const vxMatrix &right)
 
 vxMatrix vxMatrix::operator*(const vxMatrix &right) const
 {
-	
+	mdata &a=right.m_matrix;
+	mdata m = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	m[0] = a[0];
 	return *this;
 }
 
@@ -134,14 +136,14 @@ vxMatrix vxMatrix::operator*(double) const
 
 bool vxMatrix::operator==(const vxMatrix &other) const
 {
-	
-	return false;
+	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(double));
+	return r==0;
 }
 
 bool vxMatrix::operator!=(const vxMatrix &other) const
 {
-	
-	return true;
+	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(double));
+	return r!=0;
 }
 
 vxMatrix vxMatrix::inverse() const

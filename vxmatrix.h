@@ -3,12 +3,14 @@
 
 #include <vxstatus.h>
 
+using mdata = double[16];
+
 class vxMatrix
 {
-	mutable double	m_matrix[16]{1.0, 0.0, 0.0, 0.0, 
-								 0.0, 1.0, 0.0, 0.0, 
-								 0.0, 0.0, 1.0, 0.0, 
-								 0.0, 0.0, 0.0, 1.0};
+	mutable mdata m_matrix{1.0, 0.0, 0.0, 0.0, 
+							0.0, 1.0, 0.0, 0.0, 
+							0.0, 0.0, 1.0, 0.0, 
+							0.0, 0.0, 0.0, 1.0};
 
 public:
 	
