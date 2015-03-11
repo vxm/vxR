@@ -4,6 +4,9 @@
 #include <vxstatus.h>
 #include <initializer_list>
 
+namespace vxStorage {
+
+
 using mdata = double[16];
 
 class vxMatrix
@@ -54,4 +57,5 @@ public:
 	//std::ostream &		operator<< (std::ostream &os, const vxMatrix&m);
 };
 
+}
 #endif // VXMATRIX_H

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <vector>
 
+namespace vxStorage {
 
 class vxBoxMatrix:public vxObject
 {
@@ -313,5 +314,5 @@ public:
 
 	}
 };
-
+}
 #endif

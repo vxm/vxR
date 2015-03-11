@@ -2,6 +2,8 @@
 #define VXPROCESS_H
 
 #include <vxstatus.h>
+namespace vxStorage 
+{
 
 class vxProcess
 {
@@ -16,4 +18,5 @@ class vxProcess
 	virtual vxStatus::code preConditions() = 0;
 };
 
+}
 #endif // VXPROCESS_H

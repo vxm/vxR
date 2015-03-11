@@ -1,16 +1,18 @@
 #ifndef _VXBOXMC_
 #define _VXBOXMC_
 
+#include "vxObject.h"
+#include "vxVector.h"
+#include "vxLight.h"
+#include "vxShader.h"
+
+namespace vxStorage {
+
 #define APOT 1.5
 #define SIDE 1
 #define DIAG sqrt(pow(SIDE,2)*3)
 #define MDIAG DIAG/2.0
 
-
-#include "vxObject.h"
-#include "vxVector.h"
-#include "vxLight.h"
-#include "vxShader.h"
 
 #define PI 3.1415926535897932384626433832795
 
@@ -955,5 +957,6 @@ public:
 
 };
 
+}
 
 #endif

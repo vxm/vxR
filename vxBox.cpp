@@ -1,6 +1,8 @@
 #include "vxBox.h"
 #include "vxGlobal.h"
 #include <map>
+namespace vxStorage {
+
 
 void vxBox::m_actualize()
 {
@@ -264,4 +266,4 @@ vxVxl::vxVxl()
 		m_shader = vxGlobal::getLambert(); 
 	}
 
-
+}

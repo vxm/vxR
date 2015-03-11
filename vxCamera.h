@@ -1,6 +1,7 @@
 #ifndef _VXIMAGEMC_
 #define _VXIMAGEMC_
 
+
 #include "vxObject.h"
 #include "vxVector.h"
 #include <iostream>
@@ -10,6 +11,7 @@
 #include <stdlib.h>
 #include <vximage.h>
 
+namespace vxStorage {
 
 class vxSamples:public vxObject
 {
@@ -215,3 +217,4 @@ public:
 };
 
 #endif
+}

@@ -1,6 +1,8 @@
 #ifndef _VXOBJMC_
 #define _VXOBJMC_
 
+namespace vxStorage {
+
 class vxObject
 {
 private:
@@ -9,10 +11,10 @@ private:
 protected:
 
 
-
 public:
 
 
 };
 
+}
 #endif

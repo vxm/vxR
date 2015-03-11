@@ -1,6 +1,9 @@
 #include "vxrenderprocess.h"
+namespace vxCompute {
+
 
 vxRenderProcess::vxRenderProcess()
+: vxProcess()
 {
 }
 
@@ -65,5 +68,13 @@ vxStatus::code vxRenderProcess::execute()
 
 	qtImage.save(QString("c:/image.bmp"),"BMP");
 */
+
+	return vxStatus::code::kSuccess;
+}
+
+vxStatus::code vxRenderProcess::preConditions()
+{
+	return vxStatus::code::kSuccess;
 }
 	
+}

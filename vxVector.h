@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include "vxObject.h"
 
+namespace vxStorage {
+
+
 class vxVector:public vxObject
 {
 private:
@@ -392,4 +395,5 @@ public:
 	}*/
 };
 
+}
 #endif

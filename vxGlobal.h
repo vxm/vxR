@@ -1,9 +1,10 @@
-
 #ifndef _VXGLOBALMC_
 #define _VXGLOBALMC_
 
 #include "vxObject.h"
 #include "vxBox.h"
+
+namespace vxStorage {
 
 class vxGlobal
 {
@@ -135,4 +136,6 @@ public:
 		//new vxBoxN(4,4,4,1);
 	}
 };
+
+}
 #endif

@@ -4,6 +4,8 @@
 #include "vxObject.h"
 #include "vxLight.h"
 
+namespace vxStorage {
+
 class vxScene:public vxObject
 {
 protected:
@@ -33,8 +35,6 @@ public:
 		return m_light->luminance(collide);
 	}
 
-
-
 };
-
+}
 #endif

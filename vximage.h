@@ -12,6 +12,8 @@
 
 using std::vector;
 
+namespace vxStorage {
+
 class vxPxBuffer:public vxObject
 {
 private:
@@ -95,5 +97,5 @@ public:
 
 	}
 };
-
+}
 #endif // VXIMAGE_H

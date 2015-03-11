@@ -7,6 +7,8 @@
 #include "stdlib.h"
 #include "time.h"
 
+namespace vxStorage {
+
 class vxShader:public vxObject
 {
 protected:
@@ -63,4 +65,5 @@ public:
 
 }lambert;
 
+}
 #endif

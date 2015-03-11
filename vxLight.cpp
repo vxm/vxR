@@ -1,4 +1,6 @@
 #include "vxLight.h"
+namespace vxStorage {
+
 
 double vxPointLight::luminance(vxCollision &collide)	
 {
@@ -7,4 +9,6 @@ double vxPointLight::luminance(vxCollision &collide)
 	double angl = collide.getNormal().angle(getLightRay(collide.getPosition()));
 
 	return m_intensity * (cos(angl));
+}
+
 }

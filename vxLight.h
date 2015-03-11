@@ -1,16 +1,10 @@
-
 #ifndef _VXLIGHTSMC_
 #define _VXLIGHTSMC_
 
 #include "vxObject.h"
 #include "vxVector.h"
 
-/*
-#include <iostream>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-*/
+namespace vxStorage {
 
 class vxLight:public vxObject
 {
@@ -139,4 +133,5 @@ protected:
 	}
  };
 
+ }
 #endif 

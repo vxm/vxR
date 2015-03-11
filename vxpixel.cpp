@@ -1,4 +1,6 @@
 #include "vxpixel.h"
+namespace vxStorage {
+
 
 vxPixel::vxPixel()
 :vxColor()
@@ -6,3 +8,4 @@ vxPixel::vxPixel()
 	m_comp=0;
 }
 
+}

@@ -1,6 +1,8 @@
 #include "vxmatrix.h"
 #include <utility>
 #include <cstring>
+namespace vxStorage {
+
 
 const vxMatrix vxMatrix::identity{  1.0, 0.0, 0.0, 0.0, 
 									0.0, 1.0, 0.0, 0.0, 
@@ -48,14 +50,14 @@ const double *vxMatrix::operator[](unsigned int row) const
 vxStatus::code vxMatrix::get(double dest[]) const
 {
 	memcpy(dest, m_matrix, 16 * sizeof(double));
-	return vxStatus::code::success;
+	return vxStatus::code::kSuccess;
 }
 
 vxStatus::code vxMatrix::get(float dest[]) const
 {
 	//!memcpy of doubles to floats?
 	memcpy(dest, m_matrix, 16 * sizeof(double));
-	return vxStatus::code::success;
+	return vxStatus::code::kSuccess;
 }
 
 vxMatrix vxMatrix::transpose() const
@@ -235,4 +237,6 @@ double &vxMatrix::operator()(unsigned int row, unsigned int col)
 double *vxMatrix::operator[](unsigned int row)
 {
 	return &m_matrix[4*row];
+}
+
 }

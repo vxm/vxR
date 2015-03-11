@@ -6,6 +6,9 @@
 #include <vximage.h>
 #include <memory>
 
+using namespace vxStorage;
+namespace vxCompute {
+
 
 /* This class performs the render.
  * it takes a scene, with at least one light, one camera
@@ -16,22 +19,19 @@
 class vxRenderProcess : public vxProcess
 {
 private:
-		
+
 	std::unique_ptr <vxPxBuffer> m_pb;
 
 public:
 	vxRenderProcess();
 	
 	// vxProcess interface
-	public:
 	vxStatus::code preProcess(vxProcess* p=nullptr) override;
 	vxStatus::code postProcess(vxProcess* p=nullptr) override;
 	vxStatus::code execute() override;
-	vxStatus::code preConditions() override
-	{
-		
-		return vxStatus::code::success;
-	}
+	vxStatus::code preConditions() override;
 };
 
 #endif // VXRENDERPROCESS_H
+
+}

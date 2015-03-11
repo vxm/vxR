@@ -2,6 +2,7 @@
 #define VXPIXEL_H
 
 #include <vxVector.h>
+namespace vxStorage {
 
 class vxPixel:public vxColor
 {
@@ -72,4 +73,7 @@ public:
 		return salida;
 	}
 };
+
+}
 #endif // VXPIXEL_H
+
