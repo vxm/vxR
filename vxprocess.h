@@ -8,6 +8,10 @@ class vxProcess
 	public:
 		vxProcess();
 
+	// performs any preprocess of this task
+	virtual vxStatus::code preProcess(vxProcess* p=nullptr) = 0;
+	// performs any postprocess of this task
+	virtual vxStatus::code postProcess(vxProcess* p=nullptr) = 0;
 	virtual vxStatus::code execute() = 0;
 	virtual vxStatus::code preConditions() = 0;
 };

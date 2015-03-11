@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     vxBoxMatrix.cpp \
     vxBoxCreator.cpp \
     vxBox.cpp \
-    vximage.cpp
+    vximage.cpp \
+    vxpixel.cpp
 
 HEADERS  += vxrendermain.h \
     vxVector.h \
@@ -47,7 +48,8 @@ HEADERS  += vxrendermain.h \
     vxBoxMatrix.h \
     vxBoxCreator.h \
     vxBox.h \
-    vximage.h
+    vximage.h \
+    vxpixel.h
 
 FORMS    += vxrendermain.ui
 

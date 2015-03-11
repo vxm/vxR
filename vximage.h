@@ -8,15 +8,21 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
+
+using std::vector;
 
 class vxPxBuffer:public vxObject
 {
 private:
-	int m_xRes;
-	int m_yRes;
+
+	int m_xres;
+	int m_yres;
 
 	int m_depth;
-	unsigned char *m_mapa;
+
+	std::vector<double> m_pxs;
+	
 	int m_scanX;
 	int m_scanY;
 
@@ -26,68 +32,42 @@ public:
 
 	vxPxBuffer(int xr, int yr, int dp)
 	{
-		m_xRes=xr;
-		m_yRes=yr;
-		m_depth=dp;
+		m_xres = xr;
+		m_yres = yr;
+		m_depth = dp;
 
 	}
 
-	vxPxBuffer(unsigned char *map)
+	~vxPxBuffer()
 	{
-		m_mapa=map;
-	}
-		
-	~vxPxBuffer() 
-	{
-		free(m_mapa);
 	}
 
-
-	unsigned char* getPixel(int x, int y)
-	{
-		return &m_mapa[x*y*4];
-	}
 
 	void reset()
 	{
-		itMapa=m_mapa;
 		m_scanX=0;
 		m_scanY=0;
 	}
 
 	void next()
 	{
-		itMapa+=4;
-		m_scanX++;
-		if ((m_scanX%(m_xRes+1))==m_xRes) 
-		{
-			m_scanY++;
-			m_scanX=0;
-		}
+
 	}
 
 	bool isDone()
 	{
-		return itMapa==&m_mapa[m_xRes*m_yRes*m_depth];
-	}
-
-	unsigned char *itMapa;
-
-	void setPixels(unsigned char* map)
-	{
-		m_mapa=map;
+		return true;
 	}
 
 	void set(int xr, int yr, int dp)
 	{
-		m_xRes=xr;
-		m_yRes=yr;
+		m_xres=xr;
+		m_yres=yr;
 		m_depth=dp;
 	}
 
 	void reserve()
 	{
-		if(m_mapa!=NULL) m_mapa=(unsigned char*)malloc(sizeof(unsigned char)*m_xRes*m_yRes);
 	}
 
 	int getScanX()
@@ -102,20 +82,17 @@ public:
 
 	double getScanXd()
 	{
-		return m_scanX/(double)m_xRes;
+		return m_scanX/(double)m_xres;
 	}
 
 	double getScanYd()
 	{
-		return m_scanY/(double)m_yRes;
+		return m_scanY/(double)m_yres;
 	}
 
 	void setColorAtPixel( vxColor color)
 	{
-		*(itMapa) =  color.getR();
-		*(itMapa+1) =  color.getG();
-		*(itMapa+2) =  color.getB();
-		*(itMapa+3) =  color.getA();
+
 	}
 };
 

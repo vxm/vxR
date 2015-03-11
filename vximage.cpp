@@ -2,6 +2,5 @@
 
 vxPxBuffer::vxPxBuffer()
 {
-	m_mapa=NULL;
-}
 
+}
