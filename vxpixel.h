@@ -8,12 +8,14 @@ class vxPixel:public vxColor
 {
 private:
 	int m_comp;
+	double m_d;
 
 public:
 
 	vxPixel();
 
-	vxPixel(int ri, int gi, int bi, int ai):vxColor (ri, gi, bi, ai) 
+	vxPixel(double r, double g, double b, double a)
+	: vxColor (r, g, b, a)
 	{
 		m_comp=0;
 	}

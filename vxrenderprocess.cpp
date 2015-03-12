@@ -1,5 +1,10 @@
 #include "vxrenderprocess.h"
-namespace vxCompute {
+#include "vxCamera.h"
+#include "vxBoxMatrix.h"
+#include <vxpixel.h>
+
+namespace vxCompute 
+{
 
 
 vxRenderProcess::vxRenderProcess()
@@ -7,30 +12,32 @@ vxRenderProcess::vxRenderProcess()
 {
 }
 
+vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
+{
+	
+	return vxStatus::code::kSuccess;
+}
+
+vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
+{
+
+	return vxStatus::code::kSuccess;
+}
+
 vxStatus::code vxRenderProcess::execute()
 {
-/*	QImage qtImage;
-
-	qtImage.create(QSize(1200,900), 32, 0, QImage::IgnoreEndian);
-
+	m_pb.reset(new vxPxBuffer);
 	vxCamera cam;
 
 	cam.set(vxVector3d (0,0,0), vxVector3d (0,0,1), 1, 1.1, 1.333 );
- 
 	cam.setResolution(1200,900);
-
 	cam.setSamples(2);
-
-	int visto=0;
-
-	int posPixX=0;
-	int posPixY=0;
-
+	auto visto	=	0;
+	auto posPixX=	0;
+	auto posPixY=	0;
 	cam.resetRay();
-
-	vxBoxMatrix mat(entrX->value() ,entrY->value() ,entrZ->value(), 6);
-	mat.createSphere(entrX->value() ,entrY->value() ,entrZ->value(), 2);
-//	mat.createRandom();
+	vxBoxMatrix mat(0, 0, 0, 6); // Position, size
+	mat.createSphere(0, 0, 0, 2); // Position, radius
 
 	vxPixel color;
 
@@ -57,17 +64,14 @@ vxStatus::code vxRenderProcess::execute()
 		}
 
 		posPixX=cam.getXCoord();
-		posPixY=cam.getYCoord();				
+		posPixY=cam.getYCoord();
 	
 		color.setResult();
-		qtImage.setPixel( posPixX , posPixY , qRgba( color.getR(), color.getG() , color.getB(), 255));
+		//qtImage.setPixel( posPixX , posPixY , qRgba( color.getR(), color.getG() , color.getB(), 255));
+		m_pb->append(color, posHitX, posHitY);
 	}
 
-
 	actualizeImage(qtImage);
-
-	qtImage.save(QString("c:/image.bmp"),"BMP");
-*/
 
 	return vxStatus::code::kSuccess;
 }

@@ -8,42 +8,50 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory>
 #include <vector>
+#include <vxpixel.h>
+#include <vxShader.h>
 
 using std::vector;
 
 namespace vxStorage {
 
+struct Hit
+{
+	vxPixel m_px;
+	double m_xcoef;
+	double m_ycoef;
+	std::shared_ptr<vxShader> m_sh;
+};
+
 class vxPxBuffer:public vxObject
 {
 private:
 
-	int m_xres;
-	int m_yres;
-
-	int m_depth;
-
-	std::vector<double> m_pxs;
+	//pxs stores the hits,
+	std::vector<Hit> m_pxs;
 	
-	int m_scanX;
-	int m_scanY;
+	int m_scanX = {0};
+	int m_scanY = {0};
 
 public:
-
 	vxPxBuffer();
-
-	vxPxBuffer(int xr, int yr, int dp)
-	{
-		m_xres = xr;
-		m_yres = yr;
-		m_depth = dp;
-
-	}
 
 	~vxPxBuffer()
 	{
 	}
-
+	
+	void append(const vxPixel &px, double x, double y)
+	{
+		Hit h;
+		
+		h.m_px = px;
+		h.m_xcoef = x;
+		h.m_ycoef =y;
+		
+		m_pxs.push_back(h);
+	}
 
 	void reset()
 	{
@@ -61,11 +69,8 @@ public:
 		return true;
 	}
 
-	void set(int xr, int yr, int dp)
+	void set(const double xr, const double yr)
 	{
-		m_xres=xr;
-		m_yres=yr;
-		m_depth=dp;
 	}
 
 	void reserve()
@@ -82,20 +87,21 @@ public:
 		return m_scanY;
 	}
 
-	double getScanXd()
+	double getScanXd() const
 	{
-		return m_scanX/(double)m_xres;
+		return 0;
 	}
 
-	double getScanYd()
+	double getScanYd() const
 	{
-		return m_scanY/(double)m_yres;
+		return 0;
 	}
 
-	void setColorAtPixel( vxColor color)
+	void setColorAtPixel(const vxColor &color)
 	{
 
 	}
 };
+
 }
 #endif // VXIMAGE_H

@@ -15,8 +15,8 @@ namespace vxStorage {
 
 class vxSamples:public vxObject
 {
-	double *x;	
-	double *y;
+	double *x = nullptr;
+	double *y = nullptr;
 	int k;
 	int samples;
 public:
@@ -166,7 +166,7 @@ public:
 		chPix=false;
 	}
 	
-	vxVector3d nextRay()
+	vxVector3d& nextRay()
 	{
 		double x = posX / float(xres) ;
 		double y = posY / float(yres) ;

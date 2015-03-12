@@ -198,11 +198,11 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 class vxColor:public vxObject
 {
 protected:
-	int m_r;
-	int m_g;
-	int m_b;
-	int m_a;
-
+	double m_r;
+	double m_g;
+	double m_b;
+	double m_a;
+	
 public:
 
 	vxColor (){m_r=0;m_g=0;m_b=0;m_a=255;};
