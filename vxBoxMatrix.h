@@ -124,10 +124,10 @@ public:
 
 	void initialize()
 	{
-		int x, y, z;
-		for(x=0;x<m_resolution;x++)
-			for(y=0;y<m_resolution;y++)
-				for(z=0;z<m_resolution;z++)
+		int x{0}, y{0}, z{0};
+		for(;x<m_resolution;x++)
+			for(;y<m_resolution;y++)
+				for(;z<m_resolution;z++)
 				{
 					setElement(x,y,z,false);
 				}
@@ -289,7 +289,8 @@ public:
 	// 1 si da y 2 y el resultado es optimo
 	int throwRay(vxVector3d &ray, vxCollision &collide)
 	{ 
-		if (m_caj==NULL) return 0;
+		if (m_caj==NULL) 
+			return 0;
 	
 		m_caj->throwRay( ray, collide );
 
