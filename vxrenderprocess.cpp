@@ -85,5 +85,15 @@ vxStatus::code vxRenderProcess::preConditions()
 {
 	return vxStatus::code::kSuccess;
 }
+
+const char *vxRenderProcess::getPixelBuffer(int width,
+											int heigth,
+											const ImgFormat f,
+											const ImgChannels c)
+{
+	
+	
+	return nullptr;
+}
 	
 }

@@ -16,24 +16,32 @@ using namespace vxStorage;
  * in a vxPxBuffer
  */
 
+
 class vxRenderProcess : public vxProcess
 {
 private:
 
-	std::unique_ptr <vxPxBuffer> m_pb;
-
+	std::unique_ptr <vxPxBuffer> m_pb = nullptr;
+	std::unique_ptr <const double*> m_pd = nullptr;
+	std::unique_ptr <const double*> m_pf = nullptr;
+	
 public:
+
+	// defines the size in bits for each channel.
+	enum class ImgFormat {k8, k16, k32, k64};
+	enum class ImgChannels {kRGB, kRGBA, kRGBZ, kRGBAZ};
+	
 	vxRenderProcess();
 	
-	// performs any preprocess of this task
 	virtual vxStatus::code preProcess(vxProcess* p=nullptr) override;
-	// performs any postprocess of this task
 	virtual vxStatus::code postProcess(vxProcess* p=nullptr) override;
 	virtual vxStatus::code execute() override;
 	virtual vxStatus::code preConditions() override;
 	
-	
-
+	const char *getPixelBuffer( int width,
+								int heigth, 
+								const ImgFormat f = ImgFormat::k8,
+								const ImgChannels c = ImgChannels::kRGBA);
 };
 
 #endif // VXRENDERPROCESS_H
