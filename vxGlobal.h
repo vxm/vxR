@@ -111,7 +111,7 @@ public:
 
 	static vxBoxN* getBox(const double x ,const double y, const double z, const double size)
 	{
-		double apot=size/2.0;
+		auto apot=size/2.0;
 		if (z-apot>=0)
 		{
 			if (y-apot>=0)
@@ -133,7 +133,8 @@ public:
 				if (x-apot>=0) return new vxBoxN17(x,y,z,size);
 			}
 		}
-		//new vxBoxN(4,4,4,1);
+		
+		return nullptr;
 	}
 };
 
