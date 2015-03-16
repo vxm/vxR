@@ -25,6 +25,7 @@ struct Hit
 	std::shared_ptr<vxShader> m_sh;
 };
 
+
 class vxPxBuffer:public vxObject
 {
 private:
@@ -36,7 +37,10 @@ private:
 	int m_scanY = {0};
 
 public:
-	vxPxBuffer();
+	vxPxBuffer(unsigned int np)
+	{
+		m_pxs.resize(np);
+	}
 
 	~vxPxBuffer()
 	{

@@ -3,7 +3,7 @@
 
 #include <vxprocess.h>
 #include <vxstatus.h>
-#include <vximage.h>
+#include <vxpxbuffer.h>
 #include <memory>
 
 namespace vxCompute {
@@ -21,14 +21,17 @@ class vxRenderProcess : public vxProcess
 {
 private:
 
-	std::unique_ptr <vxPxBuffer> m_pb = nullptr;
-	std::unique_ptr <const double*> m_pd = nullptr;
-	std::unique_ptr <const double*> m_pf = nullptr;
+	std::unique_ptr <unsigned char[]> m_pc = nullptr;
+	std::unique_ptr <double[]> m_pd = nullptr;
+	std::unique_ptr <float[]> m_pf = nullptr;
+	
+
 	
 public:
 
 	// defines the size in bits for each channel.
 	enum class ImgFormat {k8, k16, k32, k64};
+	// enumerates the channels to store.
 	enum class ImgChannels {kRGB, kRGBA, kRGBZ, kRGBAZ};
 	
 	vxRenderProcess();
@@ -38,10 +41,10 @@ public:
 	virtual vxStatus::code execute() override;
 	virtual vxStatus::code preConditions() override;
 	
-	const char *getPixelBuffer( int width,
-								int heigth, 
-								const ImgFormat f = ImgFormat::k8,
-								const ImgChannels c = ImgChannels::kRGBA);
+	const unsigned char *createPixelBuffer( int width,
+										int heigth, 
+										const ImgFormat f = ImgFormat::k8,
+										const ImgChannels c = ImgChannels::kRGBA);
 };
 
 #endif // VXRENDERPROCESS_H

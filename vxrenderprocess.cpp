@@ -44,6 +44,7 @@ vxStatus::code vxRenderProcess::execute()
 
 	vxPixel color;
 
+	// camera throwing rays.
 	while(!cam.rayIsDone())
 	{
 		color.set(0.0,0.0,0.0);
@@ -52,6 +53,7 @@ vxStatus::code vxRenderProcess::execute()
 
 		cam.resetPixel();
 
+		// on eachpixel.
 		while( !cam.pixIsDone() )
 		{
 			mat.throwRay(cam.nextRay(), collide );
@@ -74,10 +76,10 @@ vxStatus::code vxRenderProcess::execute()
 		double posHitY = (double) posPixY;
 		
 		color.setResult();
-		//qtImage.setPixel( posPixX , posPixY , qRgba( color.getR(), color.getG() , color.getB(), 255));
 		m_pb->append(color, posHitX, posHitY);
-	}
-
+	}// end camera
+	
+	
 	return vxStatus::code::kSuccess;
 }
 
@@ -86,14 +88,39 @@ vxStatus::code vxRenderProcess::preConditions()
 	return vxStatus::code::kSuccess;
 }
 
-const char *vxRenderProcess::getPixelBuffer(int width,
+const unsigned char *vxRenderProcess::createPixelBuffer(int width,
 											int heigth,
 											const ImgFormat f,
 											const ImgChannels c)
 {
+	static_assert(sizeof(float)==4, "float is no 32bits");
+	static_assert(sizeof(double)==8, "double is no 64bits");
+	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
+
+	unsigned char *buff{nullptr};
+	size_t numElements = width * heigth * 4;
+	switch(f)
+	{
+		case ImgFormat::k8:
+			m_pc.reset(new unsigned char[numElements]);
+		break;
+		case ImgFormat::k32:
+			m_pf.reset(new float[numElements]);
+		break;
+		case ImgFormat::k64:
+			m_pd.reset(new double[numElements]);
+		break;
+		default:
+			m_pc.reset(new unsigned char[numElements]);
+		break;
+	}
 	
+	buff = m_pc.get();
 	
-	return nullptr;
+	if(m_pc==nullptr)
+		std::cout << "unique ptr is empty now" << std::endl;
+		
+	return buff;
 }
 	
 }

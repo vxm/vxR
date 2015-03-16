@@ -2,10 +2,5 @@
 namespace vxStorage {
 
 
-vxPxBuffer::vxPxBuffer()
-{
-
-}
-
 
 }
