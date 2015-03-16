@@ -11,17 +11,23 @@ int main(int argc, char *argv[])
 	vxRenderMain w;
 	w.show();
 
+	// create the render process
 	render rp;
+	
+	// if buffer is created it will then be used to store 
+	// the render while rendering.
+	auto b = rp.createPixelBuffer(120, 90,
+								render::ImgFormat::k8,
+								render::ImgChannels::kRGBA);
+
 	rp.execute();
 
-	const char* b = rp.getPixelBuffer(1200, 900, 
-									  render::ImgFormat::k32,
-									  render::ImgChannels::kRGBA);
+	if (b!=nullptr)
+	{
+		QImage img( b, 120, 90, QImage::Format_RGBA8888);
 
-	QImage img( 1200, 900, QImage::Format_RGB32);
-
+		img.save(QString("image.bmp"),"BMP");
+	}
 	
-	img.save(QString("image.bmp"),"BMP");
-
 	return a.exec();
 }
