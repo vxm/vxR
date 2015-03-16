@@ -1,5 +1,5 @@
-#ifndef _VXIMAGEMC_
-#define _VXIMAGEMC_
+#ifndef _VXPXBUFFERMC_
+#define _VXPXBUFFERMC_
 
 
 #include "vxObject.h"
@@ -9,7 +9,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <vximage.h>
+#include <vxpxbuffer.h>
 
 namespace vxStorage {
 
@@ -216,5 +216,5 @@ public:
 	}
 };
 
-#endif
+#endif // VXPXBUFFER
 }
