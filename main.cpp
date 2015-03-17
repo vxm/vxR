@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <vxrenderprocess.h>
 #include <QImage>
+#include <imageproperties.h>
 
 int main(int argc, char *argv[])
 {
@@ -16,15 +17,17 @@ int main(int argc, char *argv[])
 	
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
-	auto b = rp.createPixelBuffer(120, 90,
-								render::ImgFormat::k8,
-								render::ImgChannels::kRGBA);
+	vxStorage::ImageProperties imgDesc(120, 90);
+	
+	auto bff = rp.createBucketList(imgDesc);
 
+	// executes the render.
 	rp.execute();
 
-	if (b!=nullptr)
+	// storing an image from the buffer obtained.
+	if (bff!=nullptr)
 	{
-		QImage img( b, 120, 90, QImage::Format_RGBA8888);
+		QImage img( bff, imgDesc.rx(), imgDesc.ry(), QImage::Format_RGBA8888);
 
 		img.save(QString("image.bmp"),"BMP");
 	}
