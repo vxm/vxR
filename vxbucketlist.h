@@ -1,6 +1,7 @@
 #ifndef VXBUCKETLIST_H
 #define VXBUCKETLIST_H
 
+#include <imageproperties.h>
 #include <vxpxbuffer.h>
 
 
@@ -21,10 +22,12 @@ class vxBucket
 
 public:
 
-	vxBucket(sidePixels)
-		: m_sidePixels(sidePixels)
+	// creates this bucket initializing the buffer with a size
+	// of sidePixels (num side pxs) ^ 2
+	vxBucket(unsigned int sidePixels)
+		: m_sidePixels(sidePixels) 
 	{
-		m_pb.reset(new vxPxBuffer(sidePixele*sidePixele));
+		m_pb.reset(new vxPxBuffer(sidePixels*sidePixels));
 	}
 };
 
@@ -39,14 +42,22 @@ private:
 	
 public:
 	vxBucketList();
-	vxBucketList(int resX, int rexY, pixelsSide)
+	vxBucketList(const ImageProperties &prop, unsigned int sidePixels)
 	{
-		
+		m_numBuckets = getNumBuckets(prop, sidePixels);
+		createBuckets();
 	}
 
 	void createBuckets()
 	{
 		m_buckets.resize(m_numBuckets);
+	}
+	
+	// simple utility to get correct number of buckets in an image
+	static const unsigned int getNumBuckets(const ImageProperties &prop,
+											unsigned int sidePixels)
+	{
+		return (prop.rx() * prop.ry()) / sidePixels;
 	}
 	
 };
