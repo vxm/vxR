@@ -1,10 +1,12 @@
 #ifndef VXRENDERPROCESS_H
 #define VXRENDERPROCESS_H
 
+#include <memory>
+
 #include <vxprocess.h>
 #include <vxstatus.h>
-#include <vxpxbuffer.h>
-#include <memory>
+#include <vxbucketlist.h>
+#include <imageproperties.h>
 
 namespace vxCompute {
 
@@ -24,15 +26,10 @@ private:
 	std::unique_ptr <unsigned char[]> m_pc = nullptr;
 	std::unique_ptr <double[]> m_pd = nullptr;
 	std::unique_ptr <float[]> m_pf = nullptr;
-	
 
+	std::unique_ptr <vxBucketList> m_bList = nullptr;
 	
 public:
-
-	// defines the size in bits for each channel.
-	enum class ImgFormat {k8, k16, k32, k64};
-	// enumerates the channels to store.
-	enum class ImgChannels {kRGB, kRGBA, kRGBZ, kRGBAZ};
 	
 	vxRenderProcess();
 	
@@ -41,10 +38,7 @@ public:
 	virtual vxStatus::code execute() override;
 	virtual vxStatus::code preConditions() override;
 	
-	const unsigned char *createPixelBuffer( int width,
-										int heigth, 
-										const ImgFormat f = ImgFormat::k8,
-										const ImgChannels c = ImgChannels::kRGBA);
+	const unsigned char *createBucketList( const ImageProperties &prop );
 };
 
 #endif // VXRENDERPROCESS_H

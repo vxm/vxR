@@ -2,6 +2,7 @@
 #include "vxCamera.h"
 #include "vxBoxMatrix.h"
 #include <vxpixel.h>
+#include <imageproperties.h>
 
 namespace vxCompute 
 {
@@ -88,18 +89,16 @@ vxStatus::code vxRenderProcess::preConditions()
 	return vxStatus::code::kSuccess;
 }
 
-const unsigned char *vxRenderProcess::createPixelBuffer(int width,
-											int heigth,
-											const ImgFormat f,
-											const ImgChannels c)
+const unsigned char *
+vxRenderProcess::createBucketList(const ImageProperties &prop)
 {
 	static_assert(sizeof(float)==4, "float is no 32bits");
 	static_assert(sizeof(double)==8, "double is no 64bits");
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 
 	unsigned char *buff{nullptr};
-	size_t numElements = width * heigth * 4;
-	switch(f)
+	size_t numElements = prop.numValues();
+	switch(prop.format())
 	{
 		case ImgFormat::k8:
 			m_pc.reset(new unsigned char[numElements]);
