@@ -289,27 +289,22 @@ public:
 	// 1 si da y 2 y el resultado es optimo
 	int throwRay(vxVector3d &ray, vxCollision &collide)
 	{ 
-		if (m_caj==NULL) 
+		if (m_caj == nullptr) 
 			return 0;
 	
-		m_caj->throwRay( ray, collide );
-
+		m_caj->throwRay(ray, collide);
 		if (collide.isValid()) 
 		{
-				collide.setColor(22,22,22);
+			collide.setColor(22,22,22);
 			//if (getRandom() && getRandom())
-				getNearestCollision(ray, collide);
+			getNearestCollision(ray, collide);
 			//else
 			//	collide.setColor(212,21,255);
-			
 			return 1;
 		}
-
 		else
-
 		{
 			collide.initialize();
-		
 			return 0;
 		}
 
