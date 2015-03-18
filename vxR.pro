@@ -31,7 +31,9 @@ SOURCES += main.cpp\
     vxBox.cpp \
     vxpixel.cpp \
     vxpxbuffer.cpp \
-    vxbucketlist.cpp
+    vxbucketlist.cpp \
+    imageproperties.cpp \
+    vxrayemitter.cpp
 
 HEADERS  += vxrendermain.h \
     vxVector.h \
@@ -51,7 +53,9 @@ HEADERS  += vxrendermain.h \
     vxBox.h \
     vxpixel.h \
     vxpxbuffer.h \
-    vxbucketlist.h
+    vxbucketlist.h \
+    imageproperties.h \
+    vxrayemitter.h
 
 FORMS    += vxrendermain.ui
 

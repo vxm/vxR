@@ -5,13 +5,18 @@ namespace vxStorage {
 
 class ImageProperties
 {
-	enum class ImgFormat;
-	enum class ImgChannels;
-	
-	ImgFormat m_format = {ImgFormat::k8};
-	ImgChannels m_channels = {ImgChannels::kRGBA};
+public: // special case for public at start of a class.
+	// defines the size in bits for each channel.
+	enum class ImgFormat {k8, k16, k32, k64};
+	// enumerates the channels to store.
+	enum class ImgChannels {kRGB, kRGBA, kRGBZ, kRGBAZ};
+
+// proper begining of the class.
+private:
 	unsigned int m_rx = {120};
 	unsigned int m_ry = {70};
+	ImgFormat m_format = {ImgFormat::k8};
+	ImgChannels m_channels = {ImgChannels::kRGBA};
 	
 public:
 	ImageProperties()
@@ -23,17 +28,13 @@ public:
 	{
 	}
 	
-	// defines the size in bits for each channel.
-	enum class ImgFormat {k8, k16, k32, k64};
-	// enumerates the channels to store.
-	enum class ImgChannels {kRGB, kRGBA, kRGBZ, kRGBAZ};
-
-	ImgFormat format() const;
+	
+	ImageProperties::ImgFormat format() const;
 	void setFormat(const ImgFormat &format);
 
 	ImgChannels channels() const;
 	void setChannels(const ImgChannels &channels);
-	
+
 	unsigned int rx() const;
 	void setRx(unsigned int rx);
 	

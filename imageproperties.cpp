@@ -1,9 +1,18 @@
 #include "imageproperties.h"
 
+using namespace vxStorage;
 
+ImageProperties::ImgChannels ImageProperties::channels() const
+{
+	return m_channels;
+}
 
+void ImageProperties::setChannels(const ImgChannels &channels)
+{
+	m_channels = channels;
+}
 
-ImgFormat ImageProperties::format() const
+ImageProperties::ImgFormat ImageProperties::format() const
 {
 	return m_format;
 }
@@ -13,25 +22,6 @@ void ImageProperties::setFormat(const ImgFormat &format)
 	m_format = format;
 }
 
-ImgFormat ImageProperties::channels() const
-{
-	return m_channels;
-}
-
-void ImageProperties::setChannels(const ImgFormat &channels)
-{
-	m_channels = channels;
-}
-
-ImgChannels ImageProperties::channels() const
-{
-	return m_channels;
-}
-
-void ImageProperties::setChannels(const ImgChannels &channels)
-{
-	m_channels = channels;
-}
 
 unsigned int ImageProperties::rx() const
 {
@@ -63,16 +53,16 @@ unsigned int vxStorage::ImageProperties::numChannels() const
 {
 	switch(m_channels)
 	{
-		case kRGB:
+		case ImageProperties::ImgChannels::kRGB:
 			return 3;
 		break;
-		case kRGBA:
+		case ImageProperties::ImgChannels::kRGBA:
 			return 4;
 		break;
-		case kRGBZ:
+		case ImageProperties::ImgChannels::kRGBZ:
 			return 4;
 		break;
-		case kRGBAZ:
+		case ImageProperties::ImgChannels::kRGBAZ:
 			return 5;
 		break;
 		default:
@@ -84,3 +74,4 @@ unsigned int vxStorage::ImageProperties::numElements() const
 {
 	return numPixels() * numChannels();
 }
+

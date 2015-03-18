@@ -17,9 +17,10 @@ int main(int argc, char *argv[])
 	
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
-	vxStorage::ImageProperties imgDesc(120, 90);
+	vxStorage::ImageProperties imgDesc(320, 120);
 	
-	auto bff = rp.createBucketList(imgDesc);
+	rp.setImageProperties(imgDesc);
+	auto bff = rp.createBucketList();
 
 	// executes the render.
 	rp.execute();

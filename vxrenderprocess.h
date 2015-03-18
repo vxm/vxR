@@ -29,6 +29,7 @@ private:
 
 	std::unique_ptr <vxBucketList> m_bList = nullptr;
 	
+	ImageProperties m_imageProperties;
 public:
 	
 	vxRenderProcess();
@@ -38,7 +39,10 @@ public:
 	virtual vxStatus::code execute() override;
 	virtual vxStatus::code preConditions() override;
 	
-	const unsigned char *createBucketList( const ImageProperties &prop );
+	const unsigned char *createBucketList();
+
+	ImageProperties imageProperties() const;
+	void setImageProperties(const ImageProperties &imageProperties);
 };
 
 #endif // VXRENDERPROCESS_H

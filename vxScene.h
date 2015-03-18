@@ -3,6 +3,7 @@
 
 #include "vxObject.h"
 #include "vxLight.h"
+#include <memory>
 
 namespace vxStorage {
 
@@ -10,24 +11,20 @@ class vxScene:public vxObject
 {
 protected:
 
-	bool m_defaultLight;
-	int m_lights;
-	vxLight *m_light;
-
+	bool m_defaultLight = {true};
+	int m_numLights = {1};
+	std::shared_ptr<vxLight> m_light = {nullptr};
+	
 public:
 
 	vxScene()
 	{
-		m_light = new vxPointLight;
-		//light->setPosition( 3 , 15 , 5 );
+		m_light.reset(new vxPointLight);
 		m_light->setPosition( 0 , 15 , 0 );
-		m_lights=1;
-		m_defaultLight=true;
 	}
 	
 	~vxScene()
 	{
-		delete m_light;
 	}
 
 	double getLight(vxCollision &collide)
@@ -36,5 +33,6 @@ public:
 	}
 
 };
+
 }
 #endif

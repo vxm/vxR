@@ -50,14 +50,14 @@ public:
 
 	void createBuckets()
 	{
-		m_buckets.resize(m_numBuckets);
+	//	m_buckets.resize(m_numBuckets);
 	}
 	
 	// simple utility to get correct number of buckets in an image
 	static const unsigned int getNumBuckets(const ImageProperties &prop,
 											unsigned int sidePixels)
 	{
-		return (prop.rx() * prop.ry()) / sidePixels;
+		return (prop.rx() * prop.ry()) / (sidePixels * sidePixels);
 	}
 	
 };

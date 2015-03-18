@@ -8,8 +8,19 @@ namespace vxCompute
 {
 
 
+
+ImageProperties vxRenderProcess::imageProperties() const
+{
+	return m_imageProperties;
+}
+
+void vxRenderProcess::setImageProperties(const ImageProperties &imageProperties)
+{
+	m_imageProperties = imageProperties;
+}
+
 vxRenderProcess::vxRenderProcess()
-: vxProcess()
+	: vxProcess()
 {
 }
 
@@ -27,11 +38,9 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 
 vxStatus::code vxRenderProcess::execute()
 {
-	m_pb.reset(new vxPxBuffer);
-	vxCamera cam;
+	vxCamera cam(imageProperties());
 
 	cam.set(vxVector3d (0,0,0), vxVector3d (0,0,1), 1, 1.1, 1.333 );
-	cam.setResolution( 1200, 900);
 	cam.setSamples(2);
 	
 	auto visto	=	0;
@@ -77,8 +86,8 @@ vxStatus::code vxRenderProcess::execute()
 		double posHitY = (double) posPixY;
 		
 		color.setResult();
-		m_pb->append(color, posHitX, posHitY);
-	}// end camera
+		//m_pb->append(color, posHitX, posHitY);
+	}// end camera loop
 	
 	
 	return vxStatus::code::kSuccess;
@@ -90,23 +99,23 @@ vxStatus::code vxRenderProcess::preConditions()
 }
 
 const unsigned char *
-vxRenderProcess::createBucketList(const ImageProperties &prop)
+vxRenderProcess::createBucketList()
 {
 	static_assert(sizeof(float)==4, "float is no 32bits");
 	static_assert(sizeof(double)==8, "double is no 64bits");
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 
 	unsigned char *buff{nullptr};
-	size_t numElements = prop.numValues();
-	switch(prop.format())
+	size_t numElements = imageProperties().numElements();
+	switch(imageProperties().format())
 	{
-		case ImgFormat::k8:
+		case ImageProperties::ImgFormat::k8:
 			m_pc.reset(new unsigned char[numElements]);
 		break;
-		case ImgFormat::k32:
+		case ImageProperties::ImgFormat::k32:
 			m_pf.reset(new float[numElements]);
 		break;
-		case ImgFormat::k64:
+		case ImageProperties::ImgFormat::k64:
 			m_pd.reset(new double[numElements]);
 		break;
 		default:
