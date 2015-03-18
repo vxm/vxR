@@ -3,6 +3,13 @@
 #include <map>
 namespace vxStorage {
 
+vxVector3d vxBoxN::m_normals[6] =  {vxVector3d( 1,  0,  0),
+									vxVector3d( 0,  1,  0),
+									vxVector3d(-1,  0,  0),
+									vxVector3d( 0, -1,  0),
+									vxVector3d( 0,  0, -1),
+									vxVector3d( 0,  0,  1)};
+
 
 void vxBox::m_actualize()
 {
@@ -253,7 +260,7 @@ void vxBoxN::throwRay(vxVector3d &ray, vxCollision &collide)
 	}
 	else// background
 	{
-	  	collide.setColor(0,0,0);
+	  	collide.setColor(1.0,0,0);
 		collide.setValid(false);
 	}
 

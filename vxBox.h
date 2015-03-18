@@ -54,10 +54,12 @@ public:
 		m_actualize();
 	};
 
-	vxBox(vxVector3d pos, double sze):vxVxl()
+	vxBox(vxVector3d pos, double sze)
+		:vxVxl()
 		{m_position=pos;m_size=sze;m_actualize();};
 
-	vxBox(const double sx, const double sy, const double sz, const double sze):vxVxl()
+	vxBox(const double sx, const double sy, const double sz, const double sze)
+		:vxVxl()
 		{m_position.set(sx,sy,sz);m_size=sze;m_actualize();};
 
 	void set(vxVector3d pos, double sze) {m_position=pos;m_size=sze;m_actualize();};
@@ -96,47 +98,36 @@ protected:
 	double m_apot;
 	double m_ps[6];
 	bool m_bs[6];
-	vxVector3d m_normals[6];
+	static vxVector3d m_normals[6];
 
 	// normal index
-	
 	int m_inormal;
-	
-public:
 
-	vxBoxN():vxVxl()
+public:
+	vxBoxN()
+		:vxVxl()
 	{
-		setNormals();
 		initialize();
 		m_size=1;
 		m_apot=.5;
 	};
 
-	vxBoxN(const vxVector3d pos, const double size):vxVxl()
+	vxBoxN(const vxVector3d pos, const double size)
+		:vxVxl()
 	{
-		setNormals();
 		initialize();
 		m_position=pos;
 		setSize(size);
 	}
 
-	vxBoxN(const double x, const double y, const double z, const double size):vxVxl() 
+	vxBoxN(const double x, const double y, const double z, const double size)
+		:vxVxl() 
 	{
-		setNormals();
 		initialize();
 		m_position.set(x,y,z);
 		setSize(size);
 	};
 
-	void setNormals()
-	{
-		m_normals[0]=vxVector3d(  1 ,  0,  0);
-		m_normals[1]=vxVector3d(  0 ,  1,  0);
-		m_normals[2]=vxVector3d( -1 ,  0,  0);
-		m_normals[3]=vxVector3d(  0 , -1,  0);
-		m_normals[4]=vxVector3d(  0,   0, -1);
-		m_normals[5]=vxVector3d(  0,   0,  1);
-	}
 
 	void set(const vxVector3d pos, const double size) 
 	{
@@ -201,9 +192,11 @@ class vxBoxN1:public vxBoxN
 {
 public:
 
-	vxBoxN1():vxBoxN() {};
+	vxBoxN1()
+		:vxBoxN() {};
 
-	vxBoxN1(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN1(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
@@ -235,57 +228,62 @@ public:
 	
 	bool throwSpace(vxVector3d &ray, vxCollision &collide)
 	{
-		int a,b,c;
-
-		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
-		{
-			m_inormal = (a==1 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;
-
-			// por supuesto esto es solo para comprobar captura de normales.
-			switch(m_inormal)
-			{	
-				case 1:
-					{
-						double t=getPoint0()/ray.getX();
-
-						collide.setColor(0, 255, 0);
-						collide.setNormal(m_normals[2]);
-						collide.setPosition(getPoint0(),ray.getY()*t,ray.getZ()*t);
-
-						collide.setU( (ray.getY() * t - getPoint1())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
-						
-						return true;
-					}
-				case 2:
-					{
-						double t=getPoint1()/ray.getY();
-
-						collide.setColor(255, 0, 255);
-						collide.setNormal(m_normals[3]);
-						collide.setPosition(ray.getX()*t,getPoint1(),ray.getZ()*t);
-
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
-						return true;
-					}
-				
-				case 3:
-					{
-						double t=getPoint2()/ray.getZ();
-
-						collide.setColor(0, 0, 255);
-						collide.setNormal(m_normals[4]);
-						collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
-
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
-						return true;
-					}
-			}
+		unsigned int a = frontSigth(ray);
+		if(a==0)
+			return false;
 		
-			
+		unsigned int b = topSigth(ray);
+		if(b==0)
+			return false;
+		
+		unsigned int c = rightSigth(ray);
+		if(c==0)
+			return false;
+		
+		m_inormal = (a==1 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;
+
+		// por supuesto esto es solo para comprobar captura de normales.
+		switch(m_inormal)
+		{	
+			case 1:
+			{
+				double t=getPoint0()/ray.getX();
+
+				collide.setColor(0, 255, 0);
+				collide.setNormal(m_normals[2]);
+				collide.setPosition(getPoint0(),ray.getY()*t,ray.getZ()*t);
+
+				collide.setU( (ray.getY() * t - getPoint1())  / m_size );
+				collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+				
+				return true;
+			}
+			case 2:
+			{
+				double t=getPoint1()/ray.getY();
+
+				collide.setColor(255, 0, 255);
+				collide.setNormal(m_normals[3]);
+				collide.setPosition(ray.getX()*t,getPoint1(),ray.getZ()*t);
+
+				collide.setU( (ray.getX() * t - getPoint0())  / m_size );
+				collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+				return true;
+			}
+			case 3:
+			{
+				double t=getPoint2()/ray.getZ();
+
+				collide.setColor(0, 0, 255);
+				collide.setNormal(m_normals[4]);
+				collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+
+				collide.setU( (ray.getX() * t - getPoint0())  / m_size );
+				collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+				return true;
+			}
 		}
+
 		return false;
 	}
 
@@ -296,9 +294,11 @@ class vxBoxN5:public vxBoxN
 {
 public:
 
-	vxBoxN5():vxBoxN() {};
+	vxBoxN5()
+		:vxBoxN() {};
 
-	vxBoxN5(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN5(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
@@ -395,9 +395,11 @@ class vxBoxN4:public vxBoxN
 {
 public:
 
-	vxBoxN4():vxBoxN() {};
+	vxBoxN4()
+		:vxBoxN() {};
 
-	vxBoxN4(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN4(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
@@ -477,8 +479,6 @@ public:
 						return true;
 					}
 			}
-		
-			
 		}
 		return false;
 	}
@@ -490,9 +490,11 @@ class vxBoxN8:public vxBoxN
 {
 public:
 
-	vxBoxN8():vxBoxN() {};
+	vxBoxN8()
+		:vxBoxN() {};
 
-	vxBoxN8(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN8(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
@@ -572,8 +574,6 @@ public:
 						return true;
 					}
 			}
-		
-			
 		}
 		return false;
 	}
@@ -585,9 +585,11 @@ class vxBoxN12:public vxBoxN
 {
 public:
 
-	vxBoxN12():vxBoxN() {};
+	vxBoxN12()
+		:vxBoxN() {};
 
-	vxBoxN12(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN12(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
@@ -653,8 +655,6 @@ public:
 						return true;
 					}
 			}
-		
-			
 		}
 		return false;
 	}
@@ -666,9 +666,11 @@ class vxBoxN20:public vxBoxN
 {
 public:
 
-	vxBoxN20():vxBoxN() {};
+	vxBoxN20()
+		:vxBoxN() {};
 
-	vxBoxN20(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN20(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
@@ -748,9 +750,11 @@ class vxBoxN17:public vxBoxN
 {
 public:
 
-	vxBoxN17():vxBoxN() {};
+	vxBoxN17()
+		:vxBoxN() {};
 
-	vxBoxN17(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN17(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
@@ -814,12 +818,9 @@ public:
 						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
 						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
 						
-
 						return true;
 					}
 			}
-		
-			
 		}
 		return false;
 	}
@@ -830,9 +831,11 @@ class vxBoxN16:public vxBoxN
 {
 public:
 
-	vxBoxN16():vxBoxN() {};
+	vxBoxN16()
+		:vxBoxN() {};
 
-	vxBoxN16(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN16(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
@@ -899,8 +902,6 @@ public:
 						return true;
 					}
 			}
-		
-			
 		}
 		return false;
 	}
@@ -912,9 +913,11 @@ class vxBoxN24:public vxBoxN
 {
 public:
 
-	vxBoxN24():vxBoxN() {};
+	vxBoxN24()
+		:vxBoxN() {};
 
-	vxBoxN24(const double x, const double y, const double z, const double sze):vxBoxN(x, y, z, sze) {}
+	vxBoxN24(const double x, const double y, const double z, const double sze)
+		:vxBoxN(x, y, z, sze) {}
 
 	virtual int frontSigth(vxVector3d &ray) //x
 	{
