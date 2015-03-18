@@ -18,8 +18,9 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	vxStorage::ImageProperties imgDesc(320, 120);
-	
 	rp.setImageProperties(imgDesc);
+	
+	// creates the bucket list (vector) using the img description.
 	auto bff = rp.createBucketList();
 
 	// executes the render.
@@ -28,7 +29,10 @@ int main(int argc, char *argv[])
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)
 	{
-		QImage img( bff, imgDesc.rx(), imgDesc.ry(), QImage::Format_RGBA8888);
+		QImage img( bff, 
+					imgDesc.rx(), 
+					imgDesc.ry(), 
+					QImage::Format_RGBA8888);
 
 		img.save(QString("image.bmp"),"BMP");
 	}
