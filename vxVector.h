@@ -265,7 +265,8 @@ public:
 
 	bool m_valid;
 	
-	vxPoint():vxVector3d()
+	vxPoint()
+		:vxVector3d()
 	{
 		m_valid=false;
 	}

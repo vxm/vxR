@@ -57,7 +57,8 @@ private:
 
 
 public:
-	vxLambert():vxShader() 
+	vxLambert()
+	:vxShader() 
 	{
 	}
 

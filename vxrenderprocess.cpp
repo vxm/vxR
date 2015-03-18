@@ -41,7 +41,7 @@ vxStatus::code vxRenderProcess::execute()
 	vxCamera cam(imageProperties());
 
 	cam.set(vxVector3d (0,0,0), vxVector3d (0,0,1), 1, 1.1, 1.333 );
-	cam.setSamples(2);
+	cam.setPixelSamples(1);
 	
 	auto visto	=	0;
 	auto posPixX=	0;
@@ -49,6 +49,7 @@ vxStatus::code vxRenderProcess::execute()
 	
 	cam.resetRay();
 	
+	// this is the grid object
 	vxBoxMatrix mat(12, 4, 16, 6.0); // Position, size
 	mat.createSphere(12, 4, 16, 4.0); // Position, radius
 
@@ -79,8 +80,8 @@ vxStatus::code vxRenderProcess::execute()
 		}
 
 		// this should get double
-		posPixX=cam.getXCoord();
-		posPixY=cam.getYCoord();
+		posPixX = cam.getXCoord();
+		posPixY = cam.getYCoord();
 	
 		double posHitX = (double) posPixX;
 		double posHitY = (double) posPixY;

@@ -26,10 +26,10 @@ private:
 	std::unique_ptr <unsigned char[]> m_pc = nullptr;
 	std::unique_ptr <double[]> m_pd = nullptr;
 	std::unique_ptr <float[]> m_pf = nullptr;
-
 	std::unique_ptr <vxBucketList> m_bList = nullptr;
 	
 	ImageProperties m_imageProperties;
+
 public:
 	
 	vxRenderProcess();

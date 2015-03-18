@@ -61,12 +61,14 @@ protected:
 
 
  public:
-	 vxSpotLight():vxLight()
+	 vxSpotLight()
+		 :vxLight()
 	{
 		m_maxAngle=1.3;
 		m_minAngle=1;
 	};
-	vxSpotLight(vxVector3d position,vxVector3d orientation,double maxAngle,double minAngle):vxLight() 
+	vxSpotLight(vxVector3d position,vxVector3d orientation,double maxAngle,double minAngle)
+		:vxLight() 
 	{
 		this->m_position.set(position);
 		this->m_orientation.set(orientation);
@@ -97,7 +99,8 @@ protected:
  {
 
  public:
-	 vxPointLight():vxLight() {};
+	 vxPointLight()
+		 :vxLight() {};
 
  
 	 double luminance(vxCollision &collide);

@@ -60,14 +60,12 @@ private:
 	vxVector3d m_orientation{0.0, 0.0, 0.0};
 
 	double m_focusDistance = {1.0};
-	double m_horizontalAperture = {1.5};
-	double m_verticalAperture = {1.5};
-
-	int m_samples = {1};
-
-	int m_posX = {0};
-	int m_posY = {0};
-	bool m_chPix;
+	double m_horizontalAperture = {1.42};
+	double m_verticalAperture = {1.42};
+	unsigned int m_samples = {1u};
+	unsigned int m_posX = {0u};
+	unsigned int m_posY = {0u};
+	bool m_chPix = {false};
 
 	vxSamples m_sampler;
 	ImageProperties m_prop;
@@ -76,48 +74,47 @@ public:
 	
 	vxCamera(const ImageProperties &prop) 
 		: m_prop{prop}
+		, m_orientation(0.0,0.0,1.0)
+		, m_position(0.0,0.0,0.0)
 	{
-		m_orientation.set(0,0,1);
-		m_position.set(0,0,0);
-		m_focusDistance=1;
 		m_horizontalAperture=1.42;
 		m_verticalAperture=1.42;
 
-		m_posX=0;
-		m_posY=0;
-		m_samples=1;
-		m_samples=1;
 		srand(time(NULL));
-
-		m_chPix=false;
 	}
 
 
-	void camera(vxVector3d position, vxVector3d orientation, double focusD, double apertureH, double apertureV)
+	void camera(vxVector3d position, 
+				vxVector3d orientation, 
+				double focusD, 
+				double apertureH, 
+				double apertureV)
 	{
 		this->m_orientation=orientation;
 		this->m_position=position;
 		this->m_focusDistance=focusD;
 		this->m_horizontalAperture=apertureH;
 		this->m_verticalAperture=apertureV;
-		
-		m_posX=0;
-		m_posY=0;
-		m_samples=1;
-		m_samples=1;
+	
 		srand(time(NULL));
-
 		m_chPix=false;
 	}
 
-	void setSamples(int sampless)
+	void setPixelSamples(int samples)
 	{
-		this->m_samples=sampless;
+		this->m_samples=samples;
 		m_sampler.setSamples(m_samples);
 	}
 
-//	int getYCoord() {return m_posX < xres ? m_posX : xres-1;}
-//	int getXCoord() {return m_posY < yres ? m_posY : yres-1;}
+	int getYCoord() const 
+	{
+		return m_posX < m_prop.rx() ? m_posX : m_prop.rx()-1;
+	}
+	
+	int getXCoord() 
+	{
+		return m_posY < m_prop.ry() ? m_posY : m_prop.ry()-1;
+	}
 
 	void set(vxVector3d position, vxVector3d orientation, double focusD, double apertureH, double apertureV) 
 	{
@@ -169,8 +166,8 @@ public:
 	
 	vxVector3d& nextRay()
 	{
-		double x = m_prop.rx() / float(m_prop.rx()) ;
-		double y = m_prop.ry() / float(m_prop.ry()) ;
+		double x = m_posX / float(m_prop.rx()) ;
+		double y = m_posY / float(m_prop.ry()) ;
 	
 		if (m_samples>=m_samples)
 		{
@@ -180,15 +177,14 @@ public:
 				m_posY++;
 				m_posX = 0;
 			}
+			
 			m_samples=1;
 			m_chPix=true;
 		}
 		else
 			m_samples++;
 
-		vxVector3d ret;
-
-		ret = givemeRay( x, y );
+		vxVector3d ret = givemeRay( x, y );
 		ret.rotateX(.5);
 		return ret;
 	}
@@ -215,6 +211,8 @@ public:
 		return vxVector3d(tan(m_horizontalAperture/2.0) * (((y+yrv)*2)-1) ,tan(m_verticalAperture/2)*(((x+xrv)*2.0)-1), m_focusDistance);
 
 	}
+	ImageProperties prop() const;
+	void setProp(const ImageProperties &prop);
 };
 
 #endif // VXPXBUFFER
