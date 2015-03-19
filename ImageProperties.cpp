@@ -1,4 +1,4 @@
-#include "imageproperties.h"
+#include "ImageProperties.h"
 
 using namespace vxStorage;
 

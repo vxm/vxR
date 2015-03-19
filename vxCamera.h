@@ -9,7 +9,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <vxpxbuffer.h>
+#include <vxContactBuffer.h>
 #include <imageproperties.h>
 
 namespace vxStorage {
@@ -194,7 +194,7 @@ public:
 		return m_posY>=m_prop.ry();
 	}
 
-	vxVector3d givemeNextRay(vxPxBuffer &imagen, double ang)
+	vxVector3d givemeNextRay(vxContactBuffer &imagen, double ang)
 	{
 		vxVector3d ret;
 		ret.set(tan(m_verticalAperture/2.0) * ((imagen.getScanYd()*2)-1) , tan(m_horizontalAperture/2.0)*(( imagen.getScanXd() *2)-1), m_focusDistance);

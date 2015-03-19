@@ -50,8 +50,9 @@ vxStatus::code vxRenderProcess::execute()
 	cam.resetRay();
 	
 	// this is the grid object
-	vxBoxMatrix mat(12, 4, 16, 6.0); // Position, size
-	mat.createSphere(12, 4, 16, 4.0); // Position, radius
+	vxBoxMatrix mat(12, 4, 16,   6.0); // Position, size
+	mat.createSphere(12, 4, 16,   140.0); // Position, radius
+	auto na = mat.numActiveVoxels();
 
 	vxPixel color;
 
@@ -87,6 +88,8 @@ vxStatus::code vxRenderProcess::execute()
 		double posHitY = (double) posPixY;
 		
 		color.setResult();
+		
+		auto bk = m_bList->getBucket(posHitX, posHitY);
 		//m_pb->append(color, posHitX, posHitY);
 	}// end camera loop
 	

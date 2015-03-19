@@ -1,4 +1,4 @@
-#include "vxstatus.h"
+#include "vxStatus.h"
 namespace vxStorage {
 
 

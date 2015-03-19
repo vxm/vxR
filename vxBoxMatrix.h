@@ -1,10 +1,12 @@
 #ifndef _VXBOXMATRIXMC_
 #define _VXBOXMATRIXMC_
 
+#include <memory>
+#include <bitset>
+
 #include "vxObject.h"
 #include <vxGlobal.h>
 #include "vxBox.h"
-
 
 #include <time.h>
 #include <iostream>
@@ -23,7 +25,8 @@ protected:
 	int m_resXres;
 	int m_resXresXres;
 	double m_invRes;
-	bool *m_data;
+
+	std::unique_ptr<bool> m_data;
 
 	vxBoxN *m_caj;
 
@@ -68,14 +71,16 @@ public:
 		srand(time(NULL));
 	}
 	
-	~vxBoxMatrix() {delete m_caj;free(m_data);}
+	~vxBoxMatrix()
+	{}
 
-	void createMatrix(int resol)
+	void createMatrix(const unsigned int resolution)
 	{
-		m_resXres=resol*resol;
-		m_resXresXres=m_resXres*resol;
-		m_data=(bool*)malloc(sizeof(bool)*m_resXresXres);
-		m_resolution = resol;
+		m_resXres=resolution*resolution;
+		m_resXresXres=m_resXres*resolution;
+		//m_data=(bool*)malloc(sizeof(bool)*m_resXresXres);
+		m_data.reset(new bool[m_resXresXres]);
+		m_resolution = resolution;
 		//invRes=1/resolution;
 		m_resDivTres = m_midSize/(double)m_resolution;
 		setBoxSize();
@@ -89,13 +94,13 @@ public:
 	// es necesario int ? mejor short?.
 	bool getElement(int x,int y,int z)
 	{
-		bool *bol=m_data;
-		return * ( bol+= (x+(y*m_resolution)+(z*m_resXres)));
+		auto p = x+(y*m_resolution)+(z*m_resXres);
+		return m_data.get()[p];
 	}
 
 	void setElement(int x,int y,int z, bool value)
 	{
-		bool *bol=m_data;
+		bool *bol=m_data.get();
 		bol+=(x+(y*m_resolution)+(z*m_resXres));
 		*bol=value;
 	}
@@ -121,16 +126,40 @@ public:
 		m_caj = vxGlobal::getBox( m_position, m_size);
 		//caj->setShader( vxGlobal::getLambert() );
 	}
+	
+	bool* getLastBit() const
+	{
+		return m_data.get() + m_resXresXres;
+	}
 
+	//!! 
 	void initialize()
 	{
-		int x{0}, y{0}, z{0};
-		for(;x<m_resolution;x++)
-			for(;y<m_resolution;y++)
-				for(;z<m_resolution;z++)
-				{
-					setElement(x,y,z,false);
-				}
+		bool *pb = m_data.get();
+		bool *lb = getLastBit();
+		
+		while(pb!=lb)
+		{
+			*pb = false;
+			pb++;
+		}
+	}
+	
+	unsigned int numActiveVoxels()
+	{
+		unsigned int av{0};
+		
+		bool *pb = m_data.get();
+		bool *lb = getLastBit();
+		
+		while(pb!=lb)
+		{
+			if(*pb)
+				av++;
+			pb++;
+		}
+		
+		return av;
 	}
 
 	vxVector3d getBoxPosition(int x, int y, int z)
@@ -233,7 +262,8 @@ public:
 		setElement(x,y,z,false);
 	}
 
-
+	//!! this shouldn't be like this
+	//! what a shame.
 	void getNearestCollision(vxVector3d &ray, vxCollision &collide)
 	{
 		collide.initialize();
@@ -275,7 +305,6 @@ public:
 						{
 							collide.setColor(255,0,0);
 						}
-					
 					}
 				}
 			}
@@ -292,10 +321,12 @@ public:
 		if (m_caj == nullptr) 
 			return 0;
 	
+		// will test in 
 		m_caj->throwRay(ray, collide);
+
 		if (collide.isValid()) 
 		{
-			collide.setColor(22,22,22);
+			collide.setColor(22,122,22);
 			//if (getRandom() && getRandom())
 			getNearestCollision(ray, collide);
 			//else

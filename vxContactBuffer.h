@@ -26,7 +26,7 @@ struct Hit
 };
 
 
-class vxPxBuffer:public vxObject
+class vxContactBuffer:public vxObject
 {
 private:
 
@@ -37,12 +37,12 @@ private:
 	int m_scanY = {0};
 
 public:
-	vxPxBuffer(unsigned int np)
+	vxContactBuffer(unsigned int np)
 	{
 		m_pxs.resize(np);
 	}
 
-	~vxPxBuffer()
+	~vxContactBuffer()
 	{
 	}
 	

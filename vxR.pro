@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         vxrendermain.cpp \
     vxVector.cpp \
-    vxstatus.cpp \
     vxShader.cpp \
     vxScene.cpp \
     vxrmainui.cpp \
@@ -30,14 +29,14 @@ SOURCES += main.cpp\
     vxBoxCreator.cpp \
     vxBox.cpp \
     vxpixel.cpp \
-    vxpxbuffer.cpp \
-    vxbucketlist.cpp \
-    imageproperties.cpp \
-    vxrayemitter.cpp
+    vxrayemitter.cpp \
+    vxContactBuffer.cpp \
+    vxBucketList.cpp \
+    vxStatus.cpp \
+    ImageProperties.cpp
 
 HEADERS  += vxrendermain.h \
     vxVector.h \
-    vxstatus.h \
     vxShader.h \
     vxScene.h \
     vxrmainui.h \
@@ -52,10 +51,11 @@ HEADERS  += vxrendermain.h \
     vxBoxCreator.h \
     vxBox.h \
     vxpixel.h \
-    vxpxbuffer.h \
-    vxbucketlist.h \
-    imageproperties.h \
-    vxrayemitter.h
+    vxrayemitter.h \
+    vxContactBuffer.h \
+    vxBucketList.h \
+    vxStatus.h \
+    ImageProperties.h
 
 FORMS    += vxrendermain.ui
 

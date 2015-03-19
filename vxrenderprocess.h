@@ -15,7 +15,7 @@ using namespace vxStorage;
 /* This class performs the render.
  * it takes a scene, with at least one light, one camera
  * a geometry and performs the render, storing the results
- * in a vxPxBuffer
+ * in a vxContactBuffer
  */
 
 

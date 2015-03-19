@@ -260,7 +260,7 @@ void vxBoxN::throwRay(vxVector3d &ray, vxCollision &collide)
 	}
 	else// background
 	{
-	  	collide.setColor(1.0,0,0);
+		collide.setColor(1.0,0,0);
 		collide.setValid(false);
 	}
 
