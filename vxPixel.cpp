@@ -1,4 +1,4 @@
-#include "vxpixel.h"
+#include "vxPixel.h"
 namespace vxStorage {
 
 

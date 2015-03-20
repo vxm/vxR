@@ -1,6 +1,8 @@
-#include "vxmatrix.h"
-#include <utility>
 #include <cstring>
+#include <utility>
+
+#include "vxMatrix.h"
+
 namespace vxStorage {
 
 

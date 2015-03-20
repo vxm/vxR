@@ -14,7 +14,7 @@
 
 namespace vxStorage {
 
-class vxBoxMatrix:public vxObject
+class vxGrid:public vxObject
 {
 protected:
 
@@ -35,7 +35,7 @@ protected:
 
 public:	
 
-	vxBoxMatrix()
+	vxGrid()
 	{
 		m_size=1;
 
@@ -47,7 +47,7 @@ public:
 	}
 
 
-	vxBoxMatrix( vxVector3d position, double size)
+	vxGrid( vxVector3d position, double size)
 	{
 		this->m_position = position;
 		setSize(size);
@@ -59,7 +59,7 @@ public:
 		srand(time(NULL));
 	}
 	
-	vxBoxMatrix(double x, double y,  double z,  double size)
+	vxGrid(double x, double y,  double z,  double size)
 	{ 
 		this->m_position.set(x,y,z);
 		setSize(size);
@@ -71,7 +71,7 @@ public:
 		srand(time(NULL));
 	}
 	
-	~vxBoxMatrix()
+	~vxGrid()
 	{}
 
 	void createMatrix(const unsigned int resolution)

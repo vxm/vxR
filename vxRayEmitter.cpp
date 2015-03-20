@@ -1,4 +1,4 @@
-#include "vxrayemitter.h"
+#include "vxRayEmitter.h"
 
 vxRayEmitter::vxRayEmitter()
 {

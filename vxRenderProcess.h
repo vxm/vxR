@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include <vxprocess.h>
+#include <vxProcess.h>
 #include <vxStatus.h>
 #include <vxBucketList.h>
 #include <ImageProperties.h>

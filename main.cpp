@@ -1,8 +1,8 @@
 #include <QImage>
 
-#include "vxrendermain.h"
+#include "vxRenderMain.h"
 #include <QApplication>
-#include <vxrenderprocess.h>
+#include <vxRenderProcess.h>
 #include <ImageProperties.h>
 
 int main(int argc, char *argv[])

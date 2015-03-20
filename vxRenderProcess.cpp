@@ -1,7 +1,7 @@
-#include "vxrenderprocess.h"
+#include "vxRenderProcess.h"
 #include "vxCamera.h"
-#include "vxBoxMatrix.h"
-#include <vxpixel.h>
+#include "vxGrid.h"
+#include <vxPixel.h>
 #include <ImageProperties.h>
 
 namespace vxCompute 
@@ -49,7 +49,7 @@ vxStatus::code vxRenderProcess::execute()
 	cam.resetRay();
 	
 	// this is the grid object
-	vxBoxMatrix mat(12, 4, 16,   6.0); // Position, size
+	vxGrid mat(12, 4, 16,   6.0); // Position, size
 	mat.createSphere(12, 4, 16,   140.0); // Position, radius
 	auto na = mat.numActiveVoxels();
 

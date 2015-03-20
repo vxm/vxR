@@ -20,7 +20,6 @@ SOURCES += main.cpp\
     vxLight.cpp \
     vxGlobal.cpp \
     vxCamera.cpp \
-    vxBoxMatrix.cpp \
     vxBoxCreator.cpp \
     vxBox.cpp \
     vxContactBuffer.cpp \
@@ -33,7 +32,8 @@ SOURCES += main.cpp\
     vxRayEmitter.cpp \
     vxRenderMain.cpp \
     vxRenderProcess.cpp \
-    vxrMainUi.cpp
+    vxrMainUi.cpp \
+    vxGrid.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -43,7 +43,6 @@ HEADERS  += \
     vxLight.h \
     vxGlobal.h \
     vxCamera.h \
-    vxBoxMatrix.h \
     vxBoxCreator.h \
     vxBox.h \
     vxContactBuffer.h \
@@ -56,7 +55,8 @@ HEADERS  += \
     vxRayEmitter.h \
     vxRenderMain.h \
     vxRenderProcess.h \
-    vxrMainUi.h
+    vxrMainUi.h \
+    vxGrid.h
 
 FORMS    += vxrendermain.ui
 

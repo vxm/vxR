@@ -1,4 +1,4 @@
-#include "vxrmainui.h"
+#include "vxrMainUi.h"
 #include "ui_vxrmainui.h"
 
 vxRMainUI::vxRMainUI(QWidget *parent) :

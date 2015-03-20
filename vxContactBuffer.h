@@ -10,8 +10,9 @@
 #include <stdlib.h>
 #include <memory>
 #include <vector>
-#include <vxpixel.h>
+
 #include <vxShader.h>
+#include <vxPixel.h>
 
 using std::vector;
 

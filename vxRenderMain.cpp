@@ -1,4 +1,4 @@
-#include "vxrendermain.h"
+#include "vxRenderMain.h"
 #include "ui_vxrendermain.h"
 
 vxRenderMain::vxRenderMain(QWidget *parent) :
