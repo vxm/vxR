@@ -1,7 +1,8 @@
 #ifndef VXPROCESS_H
 #define VXPROCESS_H
 
-#include <vxstatus.h>
+#include <vxStatus.h>
+
 namespace vxStorage 
 {
 

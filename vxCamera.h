@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vxContactBuffer.h>
-#include <imageproperties.h>
+#include <ImageProperties.h>
 
 namespace vxStorage {
 

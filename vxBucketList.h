@@ -12,31 +12,34 @@ namespace vxStorage {
 class vxBucket
 {
 	// links to neighbour buckets
-	std::unique_ptr<vxBucket> m_up;
-	std::unique_ptr<vxBucket> m_down;
-	std::unique_ptr<vxBucket> m_left;
-	std::unique_ptr<vxBucket> m_right;
-	
-	std::unique_ptr <vxContactBuffer> m_pb = nullptr;
+	std::unique_ptr<vxBucket> m_up = nullptr;
+	std::unique_ptr<vxBucket> m_down = nullptr;
+	std::unique_ptr<vxBucket> m_left = nullptr;
+	std::unique_ptr<vxBucket> m_right = nullptr;
 
 public:
+
+	vxContactBuffer m_pb;
 
 	// creates this bucket initializing the buffer with a size
 	// of sidePixels (num side pxs) ^ 2
 	vxBucket()
+		: m_pb(10)
 	{
-		m_pb.reset(new vxContactBuffer(10));
+	}
+	
+	void append(const vxPixel &px, double hx, double hy)
+	{
+		m_pb.append(px, hx, hy);
 	}
 };
-
 
 
 class vxBucketList : public vxObject
 {
 private:
-	
 	unsigned int m_nBucketsInX = {10u};
-	std::vector<vxBucket> m_buckets;
+	std::vector <vxBucket> m_buckets;
 	std::shared_ptr<const ImageProperties> m_prop;
 	
 public:
@@ -50,7 +53,8 @@ public:
 
 	void createBuckets()
 	{
-	//	m_buckets.resize(m_numBuckets);
+		unsigned int totalBuckets = m_nBucketsInX*m_nBucketsInX;
+		m_buckets.resize(totalBuckets);
 	}
 	
 	// simple utility to get correct number of buckets in an image
@@ -59,7 +63,7 @@ public:
 		return (m_prop->rx() * m_prop->ry()) / (sidePixels * sidePixels);
 	}
 	
-	inline unsigned int getIndex(double x, double y)
+	unsigned int getIndex(double x, double y)
 	{
 		return 100u;
 	}

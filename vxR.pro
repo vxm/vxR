@@ -13,49 +13,50 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        vxrendermain.cpp \
     vxVector.cpp \
     vxShader.cpp \
     vxScene.cpp \
-    vxrmainui.cpp \
-    vxrenderprocess.cpp \
-    vxprocess.cpp \
     vxObject.cpp \
-    vxmatrix.cpp \
     vxLight.cpp \
     vxGlobal.cpp \
     vxCamera.cpp \
     vxBoxMatrix.cpp \
     vxBoxCreator.cpp \
     vxBox.cpp \
-    vxpixel.cpp \
-    vxrayemitter.cpp \
     vxContactBuffer.cpp \
     vxBucketList.cpp \
     vxStatus.cpp \
-    ImageProperties.cpp
+    ImageProperties.cpp \
+    vxMatrix.cpp \
+    vxPixel.cpp \
+    vxProcess.cpp \
+    vxRayEmitter.cpp \
+    vxRenderMain.cpp \
+    vxRenderProcess.cpp \
+    vxrMainUi.cpp
 
-HEADERS  += vxrendermain.h \
+HEADERS  += \
     vxVector.h \
     vxShader.h \
     vxScene.h \
-    vxrmainui.h \
-    vxrenderprocess.h \
-    vxprocess.h \
     vxObject.h \
-    vxmatrix.h \
     vxLight.h \
     vxGlobal.h \
     vxCamera.h \
     vxBoxMatrix.h \
     vxBoxCreator.h \
     vxBox.h \
-    vxpixel.h \
-    vxrayemitter.h \
     vxContactBuffer.h \
     vxBucketList.h \
     vxStatus.h \
-    ImageProperties.h
+    ImageProperties.h \
+    vxMatrix.h \
+    vxPixel.h \
+    vxProcess.h \
+    vxRayEmitter.h \
+    vxRenderMain.h \
+    vxRenderProcess.h \
+    vxrMainUi.h
 
 FORMS    += vxrendermain.ui
 

@@ -1,8 +1,9 @@
+#include <QImage>
+
 #include "vxrendermain.h"
 #include <QApplication>
 #include <vxrenderprocess.h>
-#include <QImage>
-#include <imageproperties.h>
+#include <ImageProperties.h>
 
 int main(int argc, char *argv[])
 {
@@ -12,19 +13,26 @@ int main(int argc, char *argv[])
 	vxRenderMain w;
 	w.show();
 
-	// create the render process
-	render rp;
 	
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	vxStorage::ImageProperties imgDesc(320, 120);
-	rp.setImageProperties(imgDesc);
-	
-	// creates the bucket list (vector) using the img description.
-	auto bff = rp.createBucketList();
 
+	// create the render process
+	render rp(imgDesc);
+	
+	// creates the bucket list (vector) using the img 
+	// description.
+	rp.createBucketList();
+	
 	// executes the render.
 	rp.execute();
+
+	// generates an image buffer and fills it 
+	// with the render results. Buffer properties
+	// are based on ImageProperties stored in the 
+	// render process object.
+	auto bff = rp.generateImage();
 
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)

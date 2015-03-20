@@ -4,9 +4,9 @@
 #include <memory>
 
 #include <vxprocess.h>
-#include <vxstatus.h>
-#include <vxbucketlist.h>
-#include <imageproperties.h>
+#include <vxStatus.h>
+#include <vxBucketList.h>
+#include <ImageProperties.h>
 
 namespace vxCompute {
 
@@ -31,16 +31,20 @@ private:
 	ImageProperties m_imageProperties;
 
 public:
-	
+
 	vxRenderProcess();
+	vxRenderProcess(const ImageProperties &prop)
+		:	m_imageProperties(prop)
+	{}
 	
 	virtual vxStatus::code preProcess(vxProcess* p=nullptr) override;
 	virtual vxStatus::code postProcess(vxProcess* p=nullptr) override;
 	virtual vxStatus::code execute() override;
 	virtual vxStatus::code preConditions() override;
 	
-	const unsigned char *createBucketList();
-
+	void createBucketList();
+	const unsigned char *generateImage();
+	
 	ImageProperties imageProperties() const;
 	void setImageProperties(const ImageProperties &imageProperties);
 };

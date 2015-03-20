@@ -2,7 +2,7 @@
 #include "vxCamera.h"
 #include "vxBoxMatrix.h"
 #include <vxpixel.h>
-#include <imageproperties.h>
+#include <ImageProperties.h>
 
 namespace vxCompute 
 {
@@ -22,6 +22,7 @@ void vxRenderProcess::setImageProperties(const ImageProperties &imageProperties)
 vxRenderProcess::vxRenderProcess()
 	: vxProcess()
 {
+	m_bList.reset(new vxBucketList(m_imageProperties, 10));
 }
 
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
@@ -44,8 +45,6 @@ vxStatus::code vxRenderProcess::execute()
 	cam.setPixelSamples(1);
 	
 	auto visto	=	0;
-	auto posPixX=	0;
-	auto posPixY=	0;
 	
 	cam.resetRay();
 	
@@ -59,6 +58,15 @@ vxStatus::code vxRenderProcess::execute()
 	// camera throwing rays.
 	while(!cam.rayIsDone())
 	{
+		// this should get double
+		auto posPixX = cam.getXCoord();
+		auto posPixY = cam.getYCoord();
+	
+		// 
+		double posHitX = (double) posPixX;
+		double posHitY = (double) posPixY;
+		auto bk = m_bList->getBucket(posHitX, posHitY);
+		
 		color.set(0.0,0.0,0.0);
 
 		vxCollision collide;
@@ -79,18 +87,9 @@ vxStatus::code vxRenderProcess::execute()
 				color.add(0,0,0);
 			}
 		}
-
-		// this should get double
-		posPixX = cam.getXCoord();
-		posPixY = cam.getYCoord();
-	
-		double posHitX = (double) posPixX;
-		double posHitY = (double) posPixY;
-		
 		color.setResult();
 		
-		auto bk = m_bList->getBucket(posHitX, posHitY);
-		//m_pb->append(color, posHitX, posHitY);
+		bk->append(color, posHitX, posHitY);
 	}// end camera loop
 	
 	
@@ -102,8 +101,13 @@ vxStatus::code vxRenderProcess::preConditions()
 	return vxStatus::code::kSuccess;
 }
 
+void vxRenderProcess::createBucketList()
+{
+	m_bList->createBuckets();
+}
+
 const unsigned char *
-vxRenderProcess::createBucketList()
+vxRenderProcess::generateImage()
 {
 	static_assert(sizeof(float)==4, "float is no 32bits");
 	static_assert(sizeof(double)==8, "double is no 64bits");
