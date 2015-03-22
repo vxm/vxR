@@ -68,11 +68,11 @@ private:
 	bool m_chPix = {false};
 
 	vxSamples m_sampler;
-	ImageProperties m_prop;
+	std::shared_ptr<const ImageProperties> m_prop;
 
 public:
 	
-	vxCamera(const ImageProperties &prop) 
+	vxCamera(std::shared_ptr<const ImageProperties> prop) 
 		: m_prop{prop}
 		, m_orientation(0.0,0.0,1.0)
 		, m_position(0.0,0.0,0.0)
@@ -108,12 +108,12 @@ public:
 
 	int getYCoord() const 
 	{
-		return m_posX < m_prop.rx() ? m_posX : m_prop.rx()-1;
+		return m_posX < m_prop->rx() ? m_posX : m_prop->rx()-1;
 	}
 	
-	int getXCoord() 
+	int getXCoord() const
 	{
-		return m_posY < m_prop.ry() ? m_posY : m_prop.ry()-1;
+		return m_posY < m_prop->ry() ? m_posY : m_prop->ry()-1;
 	}
 
 	void set(vxVector3d position, vxVector3d orientation, double focusD, double apertureH, double apertureV) 
@@ -137,16 +137,16 @@ public:
 	vxVector3d givemeRay(double x, double y)
 	{
 		m_sampler.next();
-		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(float)(2 * m_prop.rx()) + m_sampler.getX()/(float)(m_prop.rx());
-		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(float)(2 * m_prop.ry()) + m_sampler.getY()/(float)(m_prop.ry());
+		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(float)(2 * m_prop->rx()) + m_sampler.getX()/(float)(m_prop->rx());
+		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(float)(2 * m_prop->ry()) + m_sampler.getY()/(float)(m_prop->ry());
 		return vxVector3d( compY , compX , m_focusDistance );
 	}
 	
 	vxVector3d givemeRandRay(double x, double y)
 	{
 
-		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(float)(2 * m_prop.rx()) + ((rand()/(double)RAND_MAX))/(float)(m_prop.rx());
-		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(float)(2 * m_prop.ry()) + ((rand()/(double)RAND_MAX))/(float)(m_prop.ry());
+		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(float)(2 * m_prop->rx()) + ((rand()/(double)RAND_MAX))/(float)(m_prop->rx());
+		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(float)(2 * m_prop->ry()) + ((rand()/(double)RAND_MAX))/(float)(m_prop->ry());
 		return vxVector3d( compY , compX , m_focusDistance );
 	}
 
@@ -166,13 +166,13 @@ public:
 	
 	vxVector3d& nextRay()
 	{
-		double x = m_posX / float(m_prop.rx()) ;
-		double y = m_posY / float(m_prop.ry()) ;
+		double x = m_posX / float(m_prop->rx()) ;
+		double y = m_posY / float(m_prop->ry()) ;
 	
 		if (m_samples>=m_samples)
 		{
 			m_posX++;
-			if( m_posX >= m_prop.rx() ) 
+			if( m_posX >= m_prop->rx() ) 
 			{
 				m_posY++;
 				m_posX = 0;
@@ -191,7 +191,7 @@ public:
 
 	bool rayIsDone()
 	{
-		return m_posY>=m_prop.ry();
+		return m_posY>=m_prop->ry();
 	}
 
 	vxVector3d givemeNextRay(vxContactBuffer &imagen, double ang)
@@ -211,8 +211,8 @@ public:
 		return vxVector3d(tan(m_horizontalAperture/2.0) * (((y+yrv)*2)-1) ,tan(m_verticalAperture/2)*(((x+xrv)*2.0)-1), m_focusDistance);
 
 	}
-	ImageProperties prop() const;
-	void setProp(const ImageProperties &prop);
+	std::shared_ptr<const ImageProperties> prop() const;
+	void setProp(std::shared_ptr<const ImageProperties> prop);
 };
 
 #endif // VXPXBUFFER

@@ -9,12 +9,12 @@ namespace vxCompute
 
 
 
-ImageProperties vxRenderProcess::imageProperties() const
+std::shared_ptr<const ImageProperties> vxRenderProcess::imageProperties() const
 {
 	return m_imageProperties;
 }
 
-void vxRenderProcess::setImageProperties(const ImageProperties &imageProperties)
+void vxRenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> imageProperties)
 {
 	m_imageProperties = imageProperties;
 }
@@ -58,6 +58,8 @@ vxStatus::code vxRenderProcess::execute()
 	// camera throwing rays.
 	while(!cam.rayIsDone())
 	{
+		
+		
 		// this should get double
 		auto posPixX = cam.getXCoord();
 		auto posPixY = cam.getYCoord();
@@ -65,6 +67,12 @@ vxStatus::code vxRenderProcess::execute()
 		// 
 		double posHitX = (double) posPixX;
 		double posHitY = (double) posPixY;
+		
+		if(!m_bList)
+		{
+			return vxStatus::code::kError;
+		}
+		
 		auto bk = m_bList->getBucket(posHitX, posHitY);
 		
 		color.set(0.0,0.0,0.0);
@@ -89,7 +97,7 @@ vxStatus::code vxRenderProcess::execute()
 		}
 		color.setResult();
 		
-		bk->append(color, posHitX, posHitY);
+		//bk->append(color, posHitX, posHitY);
 	}// end camera loop
 	
 	
@@ -103,7 +111,7 @@ vxStatus::code vxRenderProcess::preConditions()
 
 void vxRenderProcess::createBucketList()
 {
-	m_bList->createBuckets();
+	m_bList.reset(new vxBucketList(m_imageProperties,10));
 }
 
 const unsigned char *
@@ -114,8 +122,8 @@ vxRenderProcess::generateImage()
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 
 	unsigned char *buff{nullptr};
-	size_t numElements = imageProperties().numElements();
-	switch(imageProperties().format())
+	size_t numElements = imageProperties()->numElements();
+	switch(imageProperties()->format())
 	{
 		case ImageProperties::ImgFormat::k8:
 			m_pc.reset(new unsigned char[numElements]);

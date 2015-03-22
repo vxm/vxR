@@ -28,12 +28,12 @@ private:
 	std::unique_ptr <float[]> m_pf = nullptr;
 	std::unique_ptr <vxBucketList> m_bList = nullptr;
 	
-	ImageProperties m_imageProperties;
+	std::shared_ptr<const ImageProperties> m_imageProperties;
 
 public:
 
 	vxRenderProcess();
-	vxRenderProcess(const ImageProperties &prop)
+	vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 		:	m_imageProperties(prop)
 	{}
 	
@@ -45,8 +45,8 @@ public:
 	void createBucketList();
 	const unsigned char *generateImage();
 	
-	ImageProperties imageProperties() const;
-	void setImageProperties(const ImageProperties &imageProperties);
+	std::shared_ptr<const ImageProperties> imageProperties() const;
+	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties);
 };
 
 #endif // VXRENDERPROCESS_H

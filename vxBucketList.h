@@ -28,6 +28,21 @@ public:
 	{
 	}
 	
+	vxBucket(vxBucket&& other)
+		: m_pb(std::move(m_pb))
+	{
+	}
+
+	vxBucket(const vxBucket& other)
+		: m_pb(other.m_pb)
+	{
+	}
+
+	~vxBucket()
+	{
+	}
+	
+	
 	void append(const vxPixel &px, double hx, double hy)
 	{
 		m_pb.append(px, hx, hy);
@@ -43,18 +58,21 @@ private:
 	std::shared_ptr<const ImageProperties> m_prop;
 	
 public:
-	vxBucketList(const ImageProperties &prop,
+	vxBucketList(std::shared_ptr<const ImageProperties> prop,
 					unsigned int bucketsInX)
 		: m_nBucketsInX(bucketsInX)
+		, m_prop(prop)
 	{
-		m_prop.reset(&prop);
 		createBuckets();
 	}
 
 	void createBuckets()
 	{
-		unsigned int totalBuckets = m_nBucketsInX*m_nBucketsInX;
-		m_buckets.resize(totalBuckets);
+		if(!m_buckets.size())
+		{
+			unsigned int totalBuckets = m_nBucketsInX*m_nBucketsInX;
+			m_buckets.resize(totalBuckets);
+		}
 	}
 	
 	// simple utility to get correct number of buckets in an image
@@ -63,17 +81,20 @@ public:
 		return (m_prop->rx() * m_prop->ry()) / (sidePixels * sidePixels);
 	}
 	
-	unsigned int getIndex(double x, double y)
+	unsigned int getIndex(double x, double y) const
 	{
-		return 100u;
+		return x + (m_nBucketsInX * y);
 	}
 	
-	std::shared_ptr<vxBucket> getBucket(double x, double y)
+	vxBucket& getBucket(double x, double y)
 	{
 		auto id = getIndex(x,y);
+		
+		return std::ref(m_buckets[id]);
 	}
 	
 	std::shared_ptr<const ImageProperties> prop() const;
+	
 	void setProp(const std::shared_ptr<ImageProperties> &prop);
 };
 

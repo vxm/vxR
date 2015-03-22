@@ -23,7 +23,7 @@ struct Hit
 	vxPixel m_px;
 	double m_xcoef;
 	double m_ycoef;
-	std::shared_ptr<vxShader> m_sh;
+//	std::shared_ptr<vxShader> m_sh;
 };
 
 
@@ -40,7 +40,7 @@ private:
 public:
 	vxContactBuffer(unsigned int np)
 	{
-		m_pxs.resize(np);
+		//m_pxs.resize(np);
 	}
 
 	~vxContactBuffer()
