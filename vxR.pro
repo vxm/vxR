@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     vxRenderMain.cpp \
     vxRenderProcess.cpp \
     vxrMainUi.cpp \
-    vxGrid.cpp
+    vxGrid.cpp \
+    vxSampler.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -56,7 +57,8 @@ HEADERS  += \
     vxRenderMain.h \
     vxRenderProcess.h \
     vxrMainUi.h \
-    vxGrid.h
+    vxGrid.h \
+    vxSampler.h
 
 FORMS    += vxrendermain.ui
 

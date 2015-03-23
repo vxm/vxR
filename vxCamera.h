@@ -11,45 +11,11 @@
 #include <stdlib.h>
 #include <vxContactBuffer.h>
 #include <ImageProperties.h>
+#include <vxSampler.h>
+
 
 namespace vxStorage {
 
-class vxSamples:public vxObject
-{
-	double *m_x = nullptr;
-	double *m_y = nullptr;
-	int m_f;
-	int m_samples;
-public:
-	vxSamples() 
-	{
-		setSamples(1);
-	};
-	
-	~vxSamples() 
-	{
-	}
-
-	void next() {m_f>=m_samples-1 ? m_f=0 : m_f++;};
-
-	double getX() {return m_x[m_f];}
-	double getY() {return m_y[m_f];}
-
-	void setSamples(int sampless)
-	{
-		m_samples=sampless;
-		
-		m_x=(double*)malloc(sizeof(double)*m_samples);
-		m_y=(double*)malloc(sizeof(double)*m_samples);
-
-		for(int i=0;i<m_samples;i++)
-		{
-			m_x[i]=(rand()/(double)RAND_MAX);
-			m_y[i]=(rand()/(double)RAND_MAX);
-		}
-		m_f=0;
-	}
-};
 
 class vxCamera:public vxObject
 {
@@ -67,7 +33,7 @@ private:
 	unsigned int m_posY = {0u};
 	bool m_chPix = {false};
 
-	vxSamples m_sampler;
+	vxSampler m_sampler;
 	std::shared_ptr<const ImageProperties> m_prop;
 
 public:
@@ -106,12 +72,12 @@ public:
 		m_sampler.setSamples(m_samples);
 	}
 
-	int getYCoord() const 
+	int getXCoord() const 
 	{
 		return m_posX < m_prop->rx() ? m_posX : m_prop->rx()-1;
 	}
 	
-	int getXCoord() const
+	int getYCoord() const
 	{
 		return m_posY < m_prop->ry() ? m_posY : m_prop->ry()-1;
 	}
@@ -166,12 +132,13 @@ public:
 	
 	vxVector3d& nextRay()
 	{
-		double x = m_posX / float(m_prop->rx()) ;
-		double y = m_posY / float(m_prop->ry()) ;
-	
-		if (m_samples>=m_samples)
+		double x = m_posX / double(m_prop->rx()) ;
+		double y = m_posY / double(m_prop->ry()) ;
+
+		//if (m_samples>=m_samples)
 		{
 			m_posX++;
+			
 			if( m_posX >= m_prop->rx() ) 
 			{
 				m_posY++;
@@ -181,8 +148,8 @@ public:
 			m_samples=1;
 			m_chPix=true;
 		}
-		else
-			m_samples++;
+		//else
+		//	m_samples++;
 
 		vxVector3d ret = givemeRay( x, y );
 		ret.rotateX(.5);

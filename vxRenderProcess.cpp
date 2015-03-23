@@ -84,7 +84,8 @@ vxStatus::code vxRenderProcess::execute()
 		// on eachpixel.
 		while( !cam.pixIsDone() )
 		{
-			mat.throwRay(cam.nextRay(), collide );
+			auto ray = cam.nextRay();
+			mat.throwRay(ray, collide );
 			
 			if (collide.isValid())
 			{
