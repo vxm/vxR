@@ -49,8 +49,8 @@ vxStatus::code vxRenderProcess::execute()
 	cam.resetRay();
 	
 	// this is the grid object
-	vxGrid mat(12, 4, 16,   6.0); // Position, size
-	mat.createSphere(12, 4, 16,   140.0); // Position, radius
+	vxGrid mat(12, 4, -16,   6.0); // Position, size
+	mat.createSphere(12, 4, -16,   140.0); // Position, radius
 	auto na = mat.numActiveVoxels();
 
 	vxPixel color;
@@ -58,12 +58,9 @@ vxStatus::code vxRenderProcess::execute()
 	// camera throwing rays.
 	while(!cam.rayIsDone())
 	{
-		
-		
 		// this should get double
 		auto posPixX = cam.getXCoord();
 		auto posPixY = cam.getYCoord();
-	
 		// 
 		double posHitX = (double) posPixX;
 		double posHitY = (double) posPixY;
@@ -75,7 +72,7 @@ vxStatus::code vxRenderProcess::execute()
 		
 		auto bk = m_bList->getBucket(posHitX, posHitY);
 		
-		color.set(0.0,0.0,0.0);
+		color.reset();
 
 		vxCollision collide;
 
@@ -93,7 +90,7 @@ vxStatus::code vxRenderProcess::execute()
 			}
 			else
 			{
-				color.add(0,0,0);
+				//color.add(0,0,0);
 			}
 		}
 		color.setResult();

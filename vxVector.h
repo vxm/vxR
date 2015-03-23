@@ -198,20 +198,21 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 class vxColor:public vxObject
 {
 protected:
-	double m_r;
-	double m_g;
-	double m_b;
-	double m_a;
+	double m_r = {0.0};
+	double m_g = {0.0};
+	double m_b = {0.0};
+	double m_a = {1.0};
 	
 public:
 
-	vxColor (){m_r=0;m_g=0;m_b=0;m_a=255;};
+	vxColor (){};
 	vxColor (int ri, int gi, int bi, int ai) {m_r=ri;m_g=gi;m_b=bi;m_a=ai;}
-	vxColor (int ri, int gi, int bi) {m_r=ri;m_g=gi;m_b=bi;m_a=255;}
+	vxColor (int ri, int gi, int bi) {m_r=ri;m_g=gi;m_b=bi;m_a=1.0;}
 
 	void set(int ri, int gi, int bi, int ai) {m_r=ri;m_g=gi;m_b=bi;m_a=ai;}
-	void set(int ri, int gi, int bi) {m_r=ri;m_g=gi;m_b=bi;m_a=255;}
+	void set(int ri, int gi, int bi) {m_r=ri;m_g=gi;m_b=bi;m_a=1.0;}
 	void set(vxColor enter) {*this=enter;}
+	void reset() {m_r=0;m_g=0;m_b=0;m_a=1.0;}
 
 	void putR(int ri) {m_r=ri;}
 	void putG(int gi) {m_g=gi;}
@@ -219,20 +220,21 @@ public:
 	void putA(int ai) {m_a=ai;}
 
 	vxColor get() {return *this;}
-	void get(int &ri, int &gi, int &bi, int &ai) {ri=m_r;gi=m_g;bi=m_b;ai=m_a;}
+	void get(int &ri, int &gi, int &bi, int &ai) const
+		{ri=m_r;gi=m_g;bi=m_b;ai=m_a;}
 
-	int getR() {return m_r;}
-	int getG() {return m_g;}
-	int getB() {return m_b;}
-	int getA() {return m_a;}
+	int getR() const {return m_r;}
+	int getG() const {return m_g;}
+	int getB() const {return m_b;}
+	int getA() const {return m_a;}
 
-	double lumma() {return sqrt((double)m_r*m_r+m_g*m_g+m_b*m_b);}
+	double lumma() const {return sqrt((double)m_r*m_r+m_g*m_g+m_b*m_b);}
 
 	void operator=(vxVector3d otro)
 	{
-		m_r=(int)otro.getX()*255;
-		m_g=(int)otro.getY()*255;
-		m_b=(int)otro.getZ()*255;
+		m_r=(int)otro.getX()*1.0;
+		m_g=(int)otro.getY()*1.0;
+		m_b=(int)otro.getZ()*1.0;
 	}
 
 
