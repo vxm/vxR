@@ -44,13 +44,12 @@ vxStatus::code vxRenderProcess::execute()
 	cam.set(vxVector3d (0,0,0), vxVector3d (0,0,1), 1, 1.1, 1.333 );
 	cam.setPixelSamples(1);
 	
-	auto visto	=	0;
-	
 	cam.resetRay();
 	
 	// this is the grid object
-	vxGrid mat(12, 4, -16,   6.0); // Position, size
-	mat.createSphere(12, 4, -16,   140.0); // Position, radius
+	vxGrid mat(6, 4, 6,   5.0); // Position, size
+	mat.setResolution(5);
+	mat.createSphere(6, 4, 6,  40.0); // Position, radius
 	auto na = mat.numActiveVoxels();
 
 	vxPixel color;
@@ -77,7 +76,6 @@ vxStatus::code vxRenderProcess::execute()
 		vxCollision collide;
 
 		cam.resetPixel();
-
 		// on eachpixel.
 		while( !cam.pixIsDone() )
 		{

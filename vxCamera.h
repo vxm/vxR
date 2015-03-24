@@ -130,7 +130,7 @@ public:
 		m_chPix=false;
 	}
 	
-	vxVector3d& nextRay()
+	vxVector3d nextRay()
 	{
 		double x = m_posX / double(m_prop->rx()) ;
 		double y = m_posY / double(m_prop->ry()) ;
@@ -152,7 +152,7 @@ public:
 		//	m_samples++;
 
 		vxVector3d ret = givemeRay( x, y );
-		ret.rotateX(.5);
+//		ret.rotateX(.5);
 		return ret;
 	}
 

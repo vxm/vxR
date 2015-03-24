@@ -109,7 +109,10 @@ public:
 		return getBox( position.getX(), position.getY(), position.getZ(), size);
 	}
 
-	static vxBoxN* getBox(const double x ,const double y, const double z, const double size)
+	static vxBoxN* getBox(const double x,
+						  const double y, 
+						  const double z, 
+						  const double size)
 	{
 		auto apot=size/2.0;
 		if (z-apot>=0)

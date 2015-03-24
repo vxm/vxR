@@ -19,43 +19,44 @@ class vxGrid:public vxObject
 protected:
 
 	vxVector3d m_position;
-	double m_size;
-	double m_boxSize;
-	int m_resolution;
-	int m_resXres;
-	int m_resXresXres;
-	double m_invRes;
+	double m_size				= {5.0};
+	double m_boxSize			= {1.0};
+	unsigned int m_resolution	= {5};
+	double m_invRes				= {1/5.0};
 
 	std::unique_ptr<bool> m_data;
+	std::unique_ptr<vxBoxN> m_boundingBox;
 
-	vxBoxN *m_caj;
+	double m_resDivTres	= {5/3.0};
+	double m_midSize	= {0.5};
 
-	double m_resDivTres;
-	double m_midSize;
-
+	// cache objects
+	unsigned int m_resXres		= {25};
+	unsigned int m_resXresXres	= {125};
 public:	
 
 	vxGrid()
 	{
+		m_boundingBox.reset(new vxBoxN);
 		m_size=1;
 
-		createMatrix(5);
-		
+		createGridData(5);
 		initialize();
-		m_caj=NULL;
+		updateBB();
 		srand(time(NULL));
 	}
 
 
 	vxGrid( vxVector3d position, double size)
 	{
+		m_boundingBox.reset(new vxBoxN);
 		this->m_position = position;
 		setSize(size);
 
-		createMatrix(5);
+		createGridData(5);
 
 		initialize();
-		setBounding();
+		updateBB();
 		srand(time(NULL));
 	}
 	
@@ -64,23 +65,23 @@ public:
 		this->m_position.set(x,y,z);
 		setSize(size);
 
-		createMatrix(5);
+		createGridData(5);
 
 		initialize();
-		setBounding();
+		updateBB();
 		srand(time(NULL));
 	}
 	
 	~vxGrid()
 	{}
 
-	void createMatrix(const unsigned int resolution)
+	void createGridData(const unsigned int resolution)
 	{
+		m_resolution = resolution;
 		m_resXres=resolution*resolution;
 		m_resXresXres=m_resXres*resolution;
 		//m_data=(bool*)malloc(sizeof(bool)*m_resXresXres);
 		m_data.reset(new bool[m_resXresXres]);
-		m_resolution = resolution;
 		//invRes=1/resolution;
 		m_resDivTres = m_midSize/(double)m_resolution;
 		setBoxSize();
@@ -88,7 +89,7 @@ public:
 
 	void setResolution(int resolution)
 	{
-		createMatrix(resolution);
+		createGridData(resolution);
 	}
 
 	// es necesario int ? mejor short?.
@@ -121,10 +122,9 @@ public:
 		m_boxSize = m_size/double(m_resolution);
 	}
 
-	void setBounding()
+	void updateBB()
 	{
-		m_caj = vxGlobal::getBox( m_position, m_size);
-		//caj->setShader( vxGlobal::getLambert() );
+		m_boundingBox.reset(vxGlobal::getBox(m_position, m_size));
 	}
 	
 	bool* getLastBit() const
@@ -318,17 +318,17 @@ public:
 	// 1 si da y 2 y el resultado es optimo
 	int throwRay(vxVector3d &ray, vxCollision &collide)
 	{ 
-		if (m_caj == nullptr) 
+		if (!m_boundingBox) 
 			return 0;
 	
 		// will test in 
-		m_caj->throwRay(ray, collide);
+		m_boundingBox->throwRay(ray, collide);
 
 		if (collide.isValid()) 
 		{
 			collide.setColor(22,122,22);
 			//if (getRandom() && getRandom())
-			getNearestCollision(ray, collide);
+			//getNearestCollision(ray, collide);
 			//else
 			//	collide.setColor(212,21,255);
 			return 1;
