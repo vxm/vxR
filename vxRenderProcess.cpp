@@ -132,7 +132,14 @@ vxRenderProcess::generateImage()
 
 	for(int i=0;i<m_bucketList.size();i++)
 	{
-		
+		auto&& bk = m_bucketList[i].m_pb.getHits();
+		for(auto it = begin(bk);it!=end(bk);++it)
+		{
+			const Hit &h = *it;
+			
+			auto x = h.m_xcoef;
+			auto y = h.m_ycoef;
+		}
 	}
 	
 	return buff;
