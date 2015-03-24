@@ -19,12 +19,6 @@ void vxRenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> 
 	m_imageProperties = imageProperties;
 }
 
-vxRenderProcess::vxRenderProcess()
-	: vxProcess()
-{
-	m_bList.reset(new vxBucketList(m_imageProperties, 10));
-}
-
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
 {
 	
@@ -47,9 +41,9 @@ vxStatus::code vxRenderProcess::execute()
 	cam.resetRay();
 	
 	// this is the grid object
-	vxGrid mat(6, 4, 6,   5.0); // Position, size
+	vxGrid mat(6, 4, 16,   5.0); // Position, size
 	mat.setResolution(5);
-	mat.createSphere(6, 4, 6,  40.0); // Position, radius
+	mat.createSphere(6, 4, 16,  40.0); // Position, radius
 	auto na = mat.numActiveVoxels();
 
 	vxPixel color;
@@ -64,12 +58,7 @@ vxStatus::code vxRenderProcess::execute()
 		double posHitX = (double) posPixX;
 		double posHitY = (double) posPixY;
 		
-		if(!m_bList)
-		{
-			return vxStatus::code::kError;
-		}
-		
-		auto bk = m_bList->getBucket(posHitX, posHitY);
+		auto bk = m_bucketList.getBucket(posHitX, posHitY);
 		
 		color.reset();
 
@@ -93,9 +82,8 @@ vxStatus::code vxRenderProcess::execute()
 		}
 		color.setResult();
 		
-		//bk->append(color, posHitX, posHitY);
+		bk.append(color, posHitX, posHitY);
 	}// end camera loop
-	
 	
 	return vxStatus::code::kSuccess;
 }
@@ -107,7 +95,7 @@ vxStatus::code vxRenderProcess::preConditions()
 
 void vxRenderProcess::createBucketList()
 {
-	m_bList.reset(new vxBucketList(m_imageProperties,10));
+	m_bucketList.reset(m_imageProperties,10);
 }
 
 const unsigned char *
@@ -138,8 +126,15 @@ vxRenderProcess::generateImage()
 	buff = m_pc.get();
 	
 	if(m_pc==nullptr)
+	{
 		std::cout << "unique ptr is empty now" << std::endl;
+	}
+
+	for(int i=0;i<m_bucketList.size();i++)
+	{
 		
+	}
+	
 	return buff;
 }
 	

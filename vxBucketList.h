@@ -65,6 +65,14 @@ public:
 	{
 		createBuckets();
 	}
+	
+	void reset(std::shared_ptr<const ImageProperties> prop,
+			   unsigned int bucketsInX)
+	{
+		m_nBucketsInX = bucketsInX;
+		m_prop = prop;
+		createBuckets();
+	}
 
 	void createBuckets()
 	{
@@ -96,6 +104,11 @@ public:
 	std::shared_ptr<const ImageProperties> prop() const;
 	
 	void setProp(const std::shared_ptr<ImageProperties> &prop);
+
+	size_t size() const
+	{
+		return m_buckets.size();
+	}
 };
 
 }

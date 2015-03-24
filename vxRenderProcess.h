@@ -23,18 +23,19 @@ class vxRenderProcess : public vxProcess
 {
 private:
 
-	std::unique_ptr <unsigned char[]> m_pc = nullptr;
-	std::unique_ptr <double[]> m_pd = nullptr;
-	std::unique_ptr <float[]> m_pf = nullptr;
-	std::unique_ptr <vxBucketList> m_bList = nullptr;
-	
+	std::unique_ptr <unsigned char[]>	m_pc = nullptr;
+	std::unique_ptr <double[]>			m_pd = nullptr;
+	std::unique_ptr <float[]>			m_pf = nullptr;
+	vxBucketList						m_bucketList;
+
 	std::shared_ptr<const ImageProperties> m_imageProperties;
 
 public:
 
-	vxRenderProcess();
+	// constructor with imageproperties propagation
 	vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
-		:	m_imageProperties(prop)
+		:	m_bucketList(prop, 10)
+		,  m_imageProperties(prop)
 	{}
 	
 	virtual vxStatus::code preProcess(vxProcess* p=nullptr) override;
