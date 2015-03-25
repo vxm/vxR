@@ -101,6 +101,11 @@ public:
 		return std::ref(m_buckets[id]);
 	}
 	
+	vxBucket& operator[](unsigned int i)
+	{
+		return m_buckets[i];
+	}
+	
 	std::shared_ptr<const ImageProperties> prop() const;
 	
 	void setProp(const std::shared_ptr<ImageProperties> &prop);

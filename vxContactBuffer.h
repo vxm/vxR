@@ -1,8 +1,6 @@
 #ifndef VXIMAGE_H
 #define VXIMAGE_H
 
-#include "vxObject.h"
-#include "vxVector.h"
 #include <iostream>
 #include <math.h>
 #include <time.h>
@@ -11,6 +9,8 @@
 #include <memory>
 #include <vector>
 
+#include <vxObject.h>
+#include <vxVector.h>
 #include <vxShader.h>
 #include <vxPixel.h>
 
@@ -45,6 +45,11 @@ public:
 
 	~vxContactBuffer()
 	{
+	}
+	
+	std::vector<Hit>&& getHits() const
+	{
+		return std::ref(m_pxs);
 	}
 	
 	void append(const vxPixel &px, double x, double y)
