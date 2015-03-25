@@ -43,7 +43,7 @@ public:
 	}
 	
 	
-	void append(const vxPixel &px, double hx, double hy)
+	void append(const vxColor &px, double hx, double hy)
 	{
 		m_pb.append(px, hx, hy);
 	}

@@ -35,7 +35,12 @@ vxStatus::code vxRenderProcess::execute()
 {
 	vxCamera cam(imageProperties());
 
-	cam.set(vxVector3d (0,0,0), vxVector3d (0,0,1), 1, 1.1, 1.333 );
+	cam.set(vxVector3d	(0,0,0), 
+			vxVector3d	(0,0,1), 
+						1, 
+						1.1, 
+						1.333 );
+
 	cam.setPixelSamples(1);
 	
 	cam.resetRay();
@@ -46,19 +51,16 @@ vxStatus::code vxRenderProcess::execute()
 	mat.createSphere(6, 4, 16,  40.0); // Position, radius
 	auto na = mat.numActiveVoxels();
 
-	vxPixel color;
+	vxColor color;
 
 	// camera throwing rays.
 	while(!cam.rayIsDone())
 	{
 		// this should get double
-		auto posPixX = cam.getXCoord();
-		auto posPixY = cam.getYCoord();
-		// 
-		double posHitX = (double) posPixX;
-		double posHitY = (double) posPixY;
+		auto xCoord = cam.getXCoord();
+		auto yCoord = cam.getYCoord();
 		
-		auto bk = m_bucketList.getBucket(posHitX, posHitY);
+		auto bk = m_bucketList.getBucket(xCoord, yCoord);
 		
 		color.reset();
 
@@ -69,20 +71,16 @@ vxStatus::code vxRenderProcess::execute()
 		while( !cam.pixIsDone() )
 		{
 			auto ray = cam.nextRay();
-			mat.throwRay(ray, collide );
+			mat.throwRay(ray, collide);
 			
 			if (collide.isValid())
 			{
-				color.add( collide.getColor() );
-			}
-			else
-			{
-				//color.add(0,0,0);
+				bk.append(collide.getColor(),
+									xCoord,
+									yCoord);
 			}
 		}
-		color.setResult();
 		
-		bk.append(color, posHitX, posHitY);
 	}// end camera loop
 	
 	return vxStatus::code::kSuccess;
@@ -105,9 +103,10 @@ vxRenderProcess::generateImage()
 	static_assert(sizeof(double)==8, "double is no 64bits");
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 
+	const auto& prop = imageProperties();
 	unsigned char *buff{nullptr};
-	size_t numElements = imageProperties()->numElements();
-	switch(imageProperties()->format())
+	size_t numElements = prop->numElements();
+	switch(prop->format())
 	{
 		case ImageProperties::ImgFormat::k8:
 			m_pc.reset(new unsigned char[numElements]);
@@ -130,19 +129,33 @@ vxRenderProcess::generateImage()
 		std::cout << "unique ptr is empty now" << std::endl;
 	}
 
+	// on each bucket
 	for(int i=0;i<m_bucketList.size();i++)
 	{
 		auto&& bk = m_bucketList[i].m_pb.getHits();
+		
+		// for every of their render Hit.
 		for(auto it = begin(bk);it!=end(bk);++it)
 		{
+			auto tbuff = buff;
 			const Hit &h = *it;
+			int dist = (h.m_xcoef) + (h.m_ycoef*prop->rx());
 			
-			auto x = h.m_xcoef;
-			auto y = h.m_ycoef;
+			if(dist<=numElements)
+			{
+				tbuff+=dist;
+				*tbuff=222;
+				tbuff++;
+				*tbuff=22;
+				tbuff++;
+				*tbuff=2;
+			}
 		}
 	}
 	
 	return buff;
 }
 	
+
+
 }

@@ -35,18 +35,19 @@ public:
 	// constructor with imageproperties propagation
 	vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 		:	m_bucketList(prop, 10)
-		,  m_imageProperties(prop)
+		,	m_imageProperties(prop)
 	{}
 	
 	virtual vxStatus::code preProcess(vxProcess* p=nullptr) override;
 	virtual vxStatus::code postProcess(vxProcess* p=nullptr) override;
 	virtual vxStatus::code execute() override;
 	virtual vxStatus::code preConditions() override;
-	
+
 	void createBucketList();
 	const unsigned char *generateImage();
-	
+
 	std::shared_ptr<const ImageProperties> imageProperties() const;
+
 	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties);
 };
 

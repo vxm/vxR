@@ -29,8 +29,8 @@ private:
 	double m_horizontalAperture = {1.42};
 	double m_verticalAperture = {1.42};
 	unsigned int m_samples = {1u};
-	unsigned int m_posX = {0u};
-	unsigned int m_posY = {0u};
+	unsigned int m_iteratorPosX = {0u};
+	unsigned int m_iteratorPosY = {0u};
 	bool m_chPix = {false};
 
 	vxSampler m_sampler;
@@ -72,14 +72,14 @@ public:
 		m_sampler.setSamples(m_samples);
 	}
 
-	int getXCoord() const 
+	double getXCoord() const
 	{
-		return m_posX < m_prop->rx() ? m_posX : m_prop->rx()-1;
+		return m_iteratorPosX / (double)m_prop->rx();
 	}
 	
-	int getYCoord() const
+	double getYCoord() const
 	{
-		return m_posY < m_prop->ry() ? m_posY : m_prop->ry()-1;
+		return m_iteratorPosY / (double)m_prop->ry();
 	}
 
 	void set(vxVector3d position, vxVector3d orientation, double focusD, double apertureH, double apertureV) 
@@ -90,8 +90,8 @@ public:
 		this->m_horizontalAperture=apertureH;
 		this->m_verticalAperture=apertureV;
 		
-		m_posX=0;
-		m_posY=0;
+		m_iteratorPosX=0;
+		m_iteratorPosY=0;
 	}
 	
 	/* 
@@ -116,7 +116,7 @@ public:
 		return vxVector3d( compY , compX , m_focusDistance );
 	}
 
-	void resetRay() { m_posX=0; m_posY=0;m_samples=1;}
+	void resetRay() { m_iteratorPosX=0; m_iteratorPosY=0;m_samples=1;}
 
 	bool pixIsDone()
 	{// esto se puede abreviar.
@@ -132,17 +132,17 @@ public:
 	
 	vxVector3d nextRay()
 	{
-		double x = m_posX / double(m_prop->rx()) ;
-		double y = m_posY / double(m_prop->ry()) ;
+		double x = m_iteratorPosX / double(m_prop->rx()) ;
+		double y = m_iteratorPosY / double(m_prop->ry()) ;
 
 		//if (m_samples>=m_samples)
 		{
-			m_posX++;
+			m_iteratorPosX++;
 			
-			if( m_posX >= m_prop->rx() ) 
+			if( m_iteratorPosX >= m_prop->rx() ) 
 			{
-				m_posY++;
-				m_posX = 0;
+				m_iteratorPosY++;
+				m_iteratorPosX = 0;
 			}
 			
 			m_samples=1;
@@ -152,13 +152,13 @@ public:
 		//	m_samples++;
 
 		vxVector3d ret = givemeRay( x, y );
-//		ret.rotateX(.5);
+		ret.rotateX(.5);
 		return ret;
 	}
 
 	bool rayIsDone()
 	{
-		return m_posY>=m_prop->ry();
+		return m_iteratorPosY>=m_prop->ry();
 	}
 
 	vxVector3d givemeNextRay(vxContactBuffer &imagen, double ang)
