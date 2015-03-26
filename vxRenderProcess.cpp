@@ -62,8 +62,6 @@ vxStatus::code vxRenderProcess::execute()
 		
 		auto bk = m_bucketList.getBucket(xCoord, yCoord);
 		
-		color.reset();
-
 		vxCollision collide;
 
 		cam.resetPixel();
@@ -71,16 +69,13 @@ vxStatus::code vxRenderProcess::execute()
 		while( !cam.pixIsDone() )
 		{
 			auto ray = cam.nextRay();
-			mat.throwRay(ray, collide);
+			mat.throwRay(ray, collide );
 			
 			if (collide.isValid())
 			{
-				bk.append(collide.getColor(),
-									xCoord,
-									yCoord);
+				bk.append(collide.getColor(), xCoord, yCoord);
 			}
 		}
-		
 	}// end camera loop
 	
 	return vxStatus::code::kSuccess;
@@ -132,23 +127,26 @@ vxRenderProcess::generateImage()
 	// on each bucket
 	for(int i=0;i<m_bucketList.size();i++)
 	{
-		auto&& bk = m_bucketList[i].m_pb.getHits();
+		auto bk = m_bucketList[i].m_pb.getHits();
+		
+		auto sz = bk.size();
 		
 		// for every of their render Hit.
-		for(auto it = begin(bk);it!=end(bk);++it)
+		//for(auto it = begin(bk);it!=end(bk);++it)
+		for(uint i=0;i<sz;i++)
 		{
+			const Hit &h = bk[i];
 			auto tbuff = buff;
-			const Hit &h = *it;
-			int dist = (h.m_xcoef) + (h.m_ycoef*prop->rx());
+			unsigned int dist = h.m_xcoef + (h.m_ycoef * prop->rx());
 			
-			if(dist<=numElements)
+			if(dist && dist<=numElements)
 			{
 				tbuff+=dist;
-				*tbuff=222;
+				*tbuff=255;
 				tbuff++;
-				*tbuff=22;
+				*tbuff=0;
 				tbuff++;
-				*tbuff=2;
+				*tbuff=0;
 			}
 		}
 	}

@@ -47,9 +47,9 @@ public:
 	{
 	}
 	
-	std::vector<Hit>&& getHits() const
+	std::vector<Hit> getHits() const
 	{
-		return std::ref(m_pxs);
+		return m_pxs;
 	}
 	
 	void append(const vxColor &px, double x, double y)
@@ -60,7 +60,7 @@ public:
 		h.m_xcoef = x;
 		h.m_ycoef = y;
 		
-		m_pxs.push_back(h);
+		m_pxs.push_back(std::move(h));
 	}
 
 	void reset()
