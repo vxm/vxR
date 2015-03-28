@@ -37,16 +37,15 @@ vxStatus::code vxRenderProcess::execute()
 
 	cam.set(vxVector3d	(0,0,0), 
 			vxVector3d	(0,0,1), 
-						1, 
-						1.1, 
-						1.333 );
+							  1, 
+							1.1, 
+						  1.333);
 
 	cam.setPixelSamples(1);
-	
 	cam.resetRay();
 	
 	// this is the grid object
-	vxGrid mat(6, 4, 16,   5.0); // Position, size
+	vxGrid mat(6, 4, 16,   15.0); // Position, size
 	mat.setResolution(5);
 	mat.createSphere(6, 4, 16,  40.0); // Position, radius
 	auto na = mat.numActiveVoxels();
@@ -60,8 +59,7 @@ vxStatus::code vxRenderProcess::execute()
 		auto xCoord = cam.getXCoord();
 		auto yCoord = cam.getYCoord();
 		
-		auto bk = m_bucketList.getBucket(xCoord, yCoord);
-		
+		vxBucket *bk = m_bucketList.getBucket(xCoord, yCoord);
 		vxCollision collide;
 
 		cam.resetPixel();
@@ -73,7 +71,7 @@ vxStatus::code vxRenderProcess::execute()
 			
 			if (collide.isValid())
 			{
-				bk.append(collide.getColor(), xCoord, yCoord);
+				bk->append(collide.getColor(), xCoord, yCoord);
 			}
 		}
 	}// end camera loop
@@ -125,33 +123,30 @@ vxRenderProcess::generateImage()
 	}
 
 	// on each bucket
-	for(int i=0;i<m_bucketList.size();i++)
+	for(uint i=0;i<m_bucketList.size();i++)
 	{
-		auto bk = m_bucketList[i].m_pb.getHits();
-		
-		auto sz = bk.size();
+		std::vector<Hit> *bk = m_bucketList[i].m_pb.getHits();
+		auto sz = bk->size();
 		
 		// for every of their render Hit.
 		//for(auto it = begin(bk);it!=end(bk);++it)
-		for(uint i=0;i<sz;i++)
+		for(uint j=0;j<sz;j++)
 		{
-			const Hit &h = bk[i];
-			auto tbuff = buff;
-			unsigned int dist = h.m_xcoef + (h.m_ycoef * prop->rx());
-			
-			if(dist && dist<=numElements)
-			{
-				tbuff+=dist;
-				*tbuff=255;
-				tbuff++;
-				*tbuff=0;
-				tbuff++;
-				*tbuff=0;
-			}
-		}
-	}
+			Hit &h = (*bk)[j];
+			unsigned int compX = (h.m_xcoef * prop->rx());
+			unsigned int compY = (h.m_ycoef * prop->ry());
+			unsigned int dist = (compX + (compY * prop->rx()))*4;
+			//assert(dist && dist<=numElements);
 	
-	return buff;
+			unsigned char *tbuff = (buff) + dist;
+			*tbuff=char(h.m_px.getR()*255);
+			tbuff++;
+			*tbuff=char(h.m_px.getG()*255);
+			tbuff++;
+			*tbuff=char(h.m_px.getB()*255);
+		}
+	}	
+	return m_pc.get();
 }
 	
 

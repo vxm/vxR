@@ -47,9 +47,9 @@ public:
 	{
 	}
 	
-	std::vector<Hit> getHits() const
+	std::vector<Hit>* getHits()
 	{
-		return m_pxs;
+		return &m_pxs;
 	}
 	
 	void append(const vxColor &px, double x, double y)

@@ -91,14 +91,16 @@ public:
 	
 	unsigned int getIndex(double x, double y) const
 	{
-		return x + (m_nBucketsInX * y);
+		int r1 = (x*m_nBucketsInX);
+		int r2 = (m_nBucketsInX * y);
+		return  r1 + r2*m_nBucketsInX;
 	}
 	
-	vxBucket& getBucket(double x, double y)
+	vxBucket* getBucket(double x, double y)
 	{
 		auto id = getIndex(x,y);
 		
-		return std::ref(m_buckets[id]);
+		return &m_buckets[id];
 	}
 	
 	vxBucket& operator[](unsigned int i)

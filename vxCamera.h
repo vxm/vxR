@@ -49,7 +49,6 @@ public:
 		srand(time(NULL));
 	}
 
-
 	void camera(vxVector3d position, 
 				vxVector3d orientation, 
 				double focusD, 
@@ -135,7 +134,6 @@ public:
 		double x = m_iteratorPosX / double(m_prop->rx()) ;
 		double y = m_iteratorPosY / double(m_prop->ry()) ;
 
-		//if (m_samples>=m_samples)
 		{
 			m_iteratorPosX++;
 			
@@ -158,7 +156,7 @@ public:
 
 	bool rayIsDone()
 	{
-		return m_iteratorPosY>=m_prop->ry();
+		return m_iteratorPosY>=(m_prop->ry());
 	}
 
 	vxVector3d givemeNextRay(vxContactBuffer &imagen, double ang)
@@ -170,7 +168,7 @@ public:
 		return ret;
 	}
 
-	vxVector3d givemerRay(double x, double y)
+	vxVector3d givemeRandomRay(double x, double y)
 	{
 		double yrv,xrv;
 		yrv=((rand()/double(RAND_MAX)))/700.0;
