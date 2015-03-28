@@ -1,22 +1,22 @@
+#include <QApplication>
 #include <QImage>
 
-#include "vxRenderMain.h"
-#include <QApplication>
-#include <vxRenderProcess.h>
 #include <ImageProperties.h>
+#include <vxRenderProcess.h>
+#include "vxRenderMain.h"
 
 int main(int argc, char *argv[])
 {
 	using render = vxCompute::vxRenderProcess;
 
-	QApplication a(argc, argv);
+ 	QApplication a(argc, argv);
 	vxRenderMain w;
-	w.show();
+	//w.show();
 	
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(10, 10));
+			imgDesc(new vxStorage::ImageProperties(400, 400));
 
 	// create the render process
 	render rp(imgDesc);
@@ -45,5 +45,7 @@ int main(int argc, char *argv[])
 		img.save(QString("image.bmp"),"BMP");
 	}
 	
-	return a.exec();
+	//return a.exec();
+	std::cout << "done!" << std::endl;
+	return 0;
 }
