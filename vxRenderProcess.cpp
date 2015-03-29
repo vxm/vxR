@@ -133,9 +133,9 @@ vxRenderProcess::generateImage()
 		for(uint j=0;j<sz;j++)
 		{
 			Hit &h = (*bk)[j];
-			unsigned int compX = (h.m_xcoef * (prop->rx()-1));
-			unsigned int compY = (h.m_ycoef * (prop->ry()-1));
-			unsigned int dist = (compX + (compY * (prop->rx())))*4;
+			unsigned int compX = (h.m_ycoef * (prop->rx()-1));
+			unsigned int compY = (h.m_xcoef * (prop->ry()-1));
+			unsigned int dist = (compX + (compY * prop->rx()))*4;
 			//assert(dist && dist<=numElements);
 	
 			unsigned char *tbuff = (buff) + dist;
