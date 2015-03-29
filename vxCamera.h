@@ -93,12 +93,6 @@ public:
 		m_iteratorPosY=0;
 	}
 	
-	/* 
-	vxVector3d givemeRay(double x, double y)
-	{
-		return vxVector3d( tan(apertureV/2.0) * ((y*2)-1) , tan(apertureH/2.0)*((x*2)-1), focusD);
-	}*/
-
 	vxVector3d givemeRay(double x, double y)
 	{
 		m_sampler.next();
@@ -115,7 +109,12 @@ public:
 		return vxVector3d( compY , compX , m_focusDistance );
 	}
 
-	void resetRay() { m_iteratorPosX=0; m_iteratorPosY=0;m_samples=1;}
+	void resetRay()
+	{ 
+		m_iteratorPosX=0; 
+		m_iteratorPosY=0;
+		m_samples=1;
+	}
 
 	bool pixIsDone()
 	{// esto se puede abreviar.
@@ -131,13 +130,14 @@ public:
 	
 	vxVector3d nextRay()
 	{
+		// this should use h and v, aperture.
 		double x = m_iteratorPosX / double(m_prop->rx()) ;
 		double y = m_iteratorPosY / double(m_prop->ry()) ;
 
 		{
 			m_iteratorPosX++;
 			
-			if( m_iteratorPosX >= m_prop->rx() ) 
+			if( m_iteratorPosX > (m_prop->rx()-1) ) 
 			{
 				m_iteratorPosY++;
 				m_iteratorPosX = 0;

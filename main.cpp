@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(400, 400));
+			imgDesc(new vxStorage::ImageProperties(440, 380));
 
 	// create the render process
 	render rp(imgDesc);
