@@ -35,19 +35,18 @@ vxStatus::code vxRenderProcess::execute()
 {
 	vxCamera cam(imageProperties());
 
-	cam.set(vxVector3d	(0,0,0), 
-			vxVector3d	(0,0,1), 
-							  1, 
-							1.1, 
+	cam.set(vxVector3d	(0,0,0),
+			vxVector3d	(0,0,1),
+							  1,
+							1.1,
 						  1.333);
 
 	cam.setPixelSamples(1);
-	cam.resetRay();
 	
 	// this is the grid object
-	vxGrid mat(6, 4, 16,   15.0); // Position, size
-	mat.setResolution(5);
-	mat.createSphere(6, 4, 16,  40.0); // Position, radius
+	vxGrid mat(-6, -5, 28,   5.0); // Position, size
+	mat.setResolution(10);
+	mat.createSphere(-6, -5, 28,  3.0); // Position, radius
 	auto na = mat.numActiveVoxels();
 
 	vxColor color;
@@ -97,7 +96,6 @@ vxRenderProcess::generateImage()
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 
 	const auto& prop = imageProperties();
-	unsigned char *buff{nullptr};
 	size_t numElements = prop->numElements();
 	switch(prop->format())
 	{
@@ -115,7 +113,9 @@ vxRenderProcess::generateImage()
 		break;
 	}
 	
-	buff = m_pc.get();
+	// hardcode buffer type!!
+	unsigned char *buff =m_pc.get();
+	
 	
 	if(m_pc==nullptr)
 	{
@@ -133,17 +133,17 @@ vxRenderProcess::generateImage()
 		for(uint j=0;j<sz;j++)
 		{
 			Hit &h = (*bk)[j];
-			unsigned int compX = (h.m_xcoef * prop->rx());
-			unsigned int compY = (h.m_ycoef * prop->ry());
-			unsigned int dist = (compX + (compY * prop->rx()))*4;
+			unsigned int compX = (h.m_xcoef * (prop->rx()-1));
+			unsigned int compY = (h.m_ycoef * (prop->ry()-1));
+			unsigned int dist = (compX + (compY * (prop->rx())))*4;
 			//assert(dist && dist<=numElements);
 	
 			unsigned char *tbuff = (buff) + dist;
-			*tbuff=char(h.m_px.getR()*255);
+			*tbuff= char(h.m_px.getR()*255);
 			tbuff++;
-			*tbuff=char(h.m_px.getG()*255);
+			*tbuff= char(h.m_px.getG()*255);
 			tbuff++;
-			*tbuff=char(h.m_px.getB()*255);
+			*tbuff= char(h.m_px.getB()*255);
 		}
 	}	
 	return m_pc.get();

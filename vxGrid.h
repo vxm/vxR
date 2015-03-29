@@ -326,7 +326,7 @@ public:
 
 		if (collide.isValid()) 
 		{
-			collide.setColor(22,122,22);
+			//collide.setColor(22,22,22);
 			//if (getRandom() && getRandom())
 			//getNearestCollision(ray, collide);
 			//else
