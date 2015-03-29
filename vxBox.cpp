@@ -268,9 +268,10 @@ void vxBoxN::throwRay(vxVector3d &ray, vxCollision &collide)
 
 vxVxl::vxVxl()
 	: m_size(1)
-	{
-		//shader = &lambert; 
-		m_shader = vxGlobal::getLambert(); 
-	}
+{ 
+	m_shader = vxGlobal::getLambert(); 
+}
+
+
 
 }
