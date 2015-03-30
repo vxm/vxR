@@ -2,6 +2,7 @@
 #include <QImage>
 
 #include <ImageProperties.h>
+#include <vxfilemanager.h>
 #include <vxRenderProcess.h>
 #include "vxRenderMain.h"
 
@@ -16,7 +17,7 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(440, 380));
+			imgDesc(new vxStorage::ImageProperties(640, 480));
 
 	// create the render process
 	render rp(imgDesc);
@@ -41,8 +42,13 @@ int main(int argc, char *argv[])
 					imgDesc->rx(), 
 					imgDesc->ry(), 
 					QImage::Format_RGBA8888);
+		
+		std::string baseName("image.1.bmp");
+		
+		std::string fileName = 
+				vxFileManager::makeUnique(baseName);
 
-		img.save(QString("image.bmp"),"BMP");
+		img.save(QString(fileName.c_str()),"BMP");
 	}
 	
 	//return a.exec();
