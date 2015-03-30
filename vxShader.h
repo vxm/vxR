@@ -3,7 +3,6 @@
 
 #include "vxVector.h"
 #include "vxObject.h"
-#include "vxScene.h"
 #include "stdlib.h"
 #include "time.h"
 
@@ -13,29 +12,17 @@ class vxShader:public vxObject
 {
 protected:
 
-	vxScene *m_scene;
 
 public:
 
 	vxShader()
 	{
-		m_scene=NULL;
 		srand(time(NULL));
 	}
 	
-	virtual vxColor getColor(vxCollision &collide)
+	virtual vxColor getColor(vxCollision &collide, double lumm)
 	{
-		return vxColor(0, 0, 11);
-	}
-
-	vxScene* getScene()
-	{
-		return m_scene;
-	}
-
-	void setScene(vxScene *scene)
-	{
-		m_scene=scene;
+		return vxColor(lumm, lumm, lumm);
 	}
 
 	double getRand()
@@ -47,11 +34,9 @@ public:
 	{
 		return getRand()<.5;
 	}
-
-
 };
 
-static class vxLambert:public vxShader
+class vxLambert:public vxShader
 {
 private:
 
@@ -62,9 +47,10 @@ public:
 	{
 	}
 
-	vxColor getColor(vxCollision &collide);
+	virtual vxColor getColor( vxCollision &collide,
+							  double lumm) override;
 
-}lambert;
+};
 
 }
 #endif

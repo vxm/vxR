@@ -271,15 +271,14 @@ public:
 		bool pri=true;
 
 		vxCollision minima;
-		double min_length;
 
-		vxBoxN *caja;	
+		vxBoxN *caja;
 	
-		for(int x=0;x<m_resolution;x++)
+		for(uint x=0;x<m_resolution;x++)
 		{
-			for(int y=0;y<m_resolution;y++)
+			for(uint y=0;y<m_resolution;y++)
 			{
-				for(int z=0;z<m_resolution;z++)
+				for(uint z=0;z<m_resolution;z++)
 				{
 					if (getElement(x,y,z))
 					{

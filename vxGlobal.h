@@ -1,6 +1,7 @@
 #ifndef _VXGLOBALMC_
 #define _VXGLOBALMC_
 
+#include <memory>
 #include "vxObject.h"
 #include "vxBox.h"
 
@@ -101,8 +102,16 @@ public:
 		//new vxBoxN(4,4,4,1);
 	}
 
-
-	static vxShader* getLambert() {return &lambert;}
+	static std::shared_ptr<vxShader> getLambert() 
+	{
+		static std::shared_ptr<vxShader> sLambert;
+		if(sLambert!=nullptr)
+		{
+			return sLambert;
+		}
+		sLambert.reset(new vxLambert());
+		return sLambert;
+	}
 
 	static vxBoxN* getBox(vxVector3d position, const double size)
 	{
