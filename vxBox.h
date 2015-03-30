@@ -1,6 +1,8 @@
 #ifndef _VXBOXMC_
 #define _VXBOXMC_
 
+#include <memory>
+
 #include "vxObject.h"
 #include "vxVector.h"
 #include "vxLight.h"
@@ -16,11 +18,12 @@ namespace vxStorage {
 
 #define PI 3.1415926535897932384626433832795
 
+//TODO:remove this step in heritance
 class vxVxl:public vxObject
 {
 
 protected:
-	vxShader *m_shader;
+	std::shared_ptr<vxShader> m_shader;
 	vxVector3d m_position;
 	double m_size;
 
@@ -32,9 +35,9 @@ public:
 	{	
 	}
 
-	void setShader(vxShader *shader)
+	void setShader(std::shared_ptr<vxShader> shader)
 	{
-		this->m_shader=shader;
+		m_shader = shader;
 	}
 
 };
