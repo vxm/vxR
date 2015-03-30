@@ -1,21 +1,24 @@
 #ifndef VXFILEMANAGER_H
 #define VXFILEMANAGER_H
 
-#include <vxmanager.h>
 #include <string>
 #include <fstream>
 #include <cstring>
 #include <sstream>
+#include <iomanip>
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
+
+#include <vxmanager.h>
 
 class vxFileManager : public vxManager
 {
 	public:
 		vxFileManager();
 
-	static bool fileExists(std::string &filePath)
+	static bool fileExists(const std::string &filePath)
 	{
+		std::cout << "Request existence " << filePath << std::endl;
 		return std::ifstream(filePath).good();
 	}
 	
@@ -38,13 +41,17 @@ class vxFileManager : public vxManager
 		
 		if(toks.size()==3)
 		{
-			std::stringstream uppedName;
 			auto number = boost::lexical_cast<int>(toks[1]);
-			number++;
-			uppedName << toks[0] << ".";
-			uppedName << number << ".";
-			uppedName << toks[2];
-			ret = uppedName.str();
+			do
+			{
+				number++;
+				std::stringstream uppedName;
+				uppedName << toks[0] << ".";
+				uppedName << std::setw( 7 ) << std::setfill( '0' ) << number << ".";
+				uppedName << toks[2];
+				ret = uppedName.str();
+			}
+			while(fileExists(ret));
 		}
 		
 		return ret;
