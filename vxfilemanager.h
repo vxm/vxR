@@ -40,14 +40,12 @@ class vxFileManager : public vxManager
 		{
 			std::stringstream uppedName;
 			auto number = boost::lexical_cast<int>(toks[1]);
-			std::cout << "number is " << number << std::endl;
 			number++;
 			uppedName << toks[0] << ".";
 			uppedName << number << ".";
 			uppedName << toks[2];
 			ret = uppedName.str();
 		}
-		std::cout << "returning " << ret << std::endl;
 		
 		return ret;
 	}
