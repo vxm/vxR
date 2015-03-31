@@ -48,29 +48,29 @@ class vxBox:public vxVxl
 private:
 	
 	vxVector3d m_point[8];
-	void m_actualize();
+	void actualize();
 
 public:
 	vxBox()
 	: vxVxl()
 	{
-		m_actualize();
+		actualize();
 	};
 
 	vxBox(vxVector3d pos, double sze)
 		:vxVxl()
-		{m_position=pos;m_size=sze;m_actualize();};
+		{m_position=pos;m_size=sze;actualize();};
 
 	vxBox(const double sx, const double sy, const double sz, const double sze)
 		:vxVxl()
-		{m_position.set(sx,sy,sz);m_size=sze;m_actualize();};
+		{m_position.set(sx,sy,sz);m_size=sze;actualize();};
 
-	void set(vxVector3d pos, double sze) {m_position=pos;m_size=sze;m_actualize();};
+	void set(vxVector3d pos, double sze) {m_position=pos;m_size=sze;actualize();};
 	void set(double sx, double sy, double sz, double sze) 
 	{
 		m_position.set(sx,sy,sz);
 		m_size=sze;
-		m_actualize();
+		actualize();
 	};
 
 	bool inSight(vxVector3d ray);

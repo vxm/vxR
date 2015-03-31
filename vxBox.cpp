@@ -11,7 +11,7 @@ vxVector3d vxBoxN::m_normals[6] =  {vxVector3d( 1,  0,  0),
 									vxVector3d( 0,  0,  1)};
 
 
-void vxBox::m_actualize()
+void vxBox::actualize()
 {
 	auto ms=m_size/2.0;
 	double x,y,z;

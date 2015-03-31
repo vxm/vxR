@@ -150,7 +150,7 @@ public:
 		//	m_samples++;
 
 		vxVector3d ret = givemeRay( x, y );
-		ret.rotateX(0.071);
+		//ret.rotateX(0.071);
 		return ret;
 	}
 

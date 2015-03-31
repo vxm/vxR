@@ -1,0 +1,26 @@
+TODO:
+
+- Get rid of black lines in render.
+  - swap image resolution to aperture for ray generation.
+ 
+- Rework getNearestCollision for optimization.
+  - investigate plane values for ray traveling.
+  - investigate pointer advance patern for traveling rays.
+
+  - get rid of warnings, to 0.
+- lumminance + shaders, rework.
+-
+
+- improve memory usage for vxGrid.
+-
+
+- general raytracing, and not only from camera.
+-
+
+
+- Profiling:
+  - get rid of; tangent operations. or cache them.
+
+
+
+

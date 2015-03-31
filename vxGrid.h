@@ -88,8 +88,11 @@ public:
 	}
 
 	void setResolution(int resolution)
-	{
-		createGridData(resolution);
+	{	
+		if(resolution!=m_resolution)
+		{
+			createGridData(resolution);
+		}
 	}
 
 	// es necesario int ? mejor short?.
@@ -210,14 +213,22 @@ public:
 		int x, y, z;
 		
 		for(x=0;x<m_resolution;x++)
+		{
 			for(y=0;y<m_resolution;y++)
+			{
 				for(z=0;z<m_resolution;z++)
 				{
 					if(center.distance(getBoxPosition(x, y, z))<radio)
+					{
 						setElement(x,y,z,true);
+					}
 					else
+					{
 						setElement(x,y,z,false);
+					}
 				}
+			}
+		}
 	}
 
 	void createSphere(int x, int y, int z, const float radio)

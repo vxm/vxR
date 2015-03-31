@@ -23,6 +23,7 @@ struct Hit
 	vxColor m_px;
 	double m_xcoef;
 	double m_ycoef;
+	
 //	std::shared_ptr<vxShader> m_sh;
 };
 

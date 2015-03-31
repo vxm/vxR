@@ -258,6 +258,17 @@ public:
 	vxColor operator/(float factor) {return vxColor(m_r/(double)factor,m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 	vxColor operator/(int factor) {return vxColor(m_r/double(factor),m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 
+	void toRGBA8888(unsigned char *b) const
+	{
+		unsigned char *tbuff = b;
+		*tbuff= char(m_r*255);
+		tbuff++;
+		
+		*tbuff= char(m_g*255);
+		
+		tbuff++;
+		*tbuff= char(m_b*255);
+	}
 };
 
 

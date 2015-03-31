@@ -39,16 +39,18 @@ vxStatus::code vxRenderProcess::execute()
 			vxVector3d	(0,0,1),
 							  1,
 							1.1,
-						  1.333);
+						    1.1);
 
 	cam.setPixelSamples(1);
 	
 	// this is the grid object
-	vxGrid mat(-6, -5, 28,   5.0); // Position, size
-	mat.setResolution(10);
-	mat.createSphere(-6, -5, 28,  3.0); // Position, radius
-	auto na = mat.numActiveVoxels();
+	vxGrid mat(0, 0, 8,  5.0); // Position, size
+	mat.setResolution(1);
+	mat.createSphere(0, 0, 8,  2.5); // Position, radius
 
+#ifdef __gnu_debug 
+	auto na = mat.numActiveVoxels();
+#endif
 	vxColor color;
 
 	// camera throwing rays.
@@ -135,15 +137,10 @@ vxRenderProcess::generateImage()
 			Hit &h = (*bk)[j];
 			unsigned int compX = (h.m_ycoef * (prop->rx()-1));
 			unsigned int compY = (h.m_xcoef * (prop->ry()-1));
-			unsigned int dist = (compX + (compY * prop->rx()))*4;
+			unsigned int dist = (compX + (compY * prop->rx())) * prop->numChannels();
 			//assert(dist && dist<=numElements);
 	
-			unsigned char *tbuff = (buff) + dist;
-			*tbuff= char(h.m_px.getR()*255);
-			tbuff++;
-			*tbuff= char(h.m_px.getG()*255);
-			tbuff++;
-			*tbuff= char(h.m_px.getB()*255);
+			h.m_px.toRGBA8888(buff + dist);
 		}
 	}	
 	return m_pc.get();

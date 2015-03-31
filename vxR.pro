@@ -67,3 +67,6 @@ HEADERS  += \
 FORMS    += vxrendermain.ui
 
 CONFIG += c++11
+
+OTHER_FILES += \
+    todo.txt
