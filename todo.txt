@@ -12,7 +12,7 @@ TODO:
 -
 
 - improve memory usage for vxGrid.
--
+- better statistics, c++11 chrono.
 
 - general raytracing, and not only from camera.
 -
