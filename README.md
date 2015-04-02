@@ -7,11 +7,13 @@ History:
  
 Present:
 
- short term
+ short term:
+ 
   Design for later threads.
   C++11 and C++14 practicing.
 
- long term
+ long term:
+ 
   Better renders, better program interface.
  
 Future:
