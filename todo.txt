@@ -6,20 +6,24 @@ TODO:
 - Rework getNearestCollision for optimization.
   - investigate plane values for ray traveling.
   - investigate pointer advance patern for traveling rays.
-
-  - get rid of warnings, to 0.
-- lumminance + shaders, rework.
--
-
-- improve memory usage for vxGrid.
-- better statistics, c++11 chrono.
-
-- general raytracing, and not only from camera.
--
+  - LAST execute with valgrind again.
+  
+- Get rid of warnings, to 0.
+- Lumminance + shaders, rework.
 
 
+- Improve memory usage for vxGrid.
+- Better statistics, c++11 chrono.
+
+- General raytracing, and not only from camera.
+- Shadows.
+  - Raytrace shadows.
+- Global illumination.
+- Subsurface scattering.
+
+- Volumes.
 - Profiling:
-  - get rid of; tangent operations. or cache them.
+  - Get rid of; tangent operations. or cache them.
 
 
 
