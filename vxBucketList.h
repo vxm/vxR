@@ -42,7 +42,6 @@ public:
 	{
 	}
 	
-	
 	void append(const vxColor &px, double hx, double hy)
 	{
 		m_pb.append(px, hx, hy);
@@ -96,6 +95,7 @@ public:
 		return  r1 + r2*m_nBucketsInX;
 	}
 	
+
 	vxBucket* getBucket(double x, double y)
 	{
 		auto id = getIndex(x,y);

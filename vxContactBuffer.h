@@ -39,11 +39,16 @@ private:
 	int m_scanY = {0};
 
 public:
-	vxContactBuffer(unsigned int np)
+
+	vxContactBuffer()
 	{
-		//m_pxs.resize(np);
 	}
 
+	vxContactBuffer(unsigned int sz)
+	{
+		m_pxs.reserve(sz);
+	}
+	
 	~vxContactBuffer()
 	{
 	}
@@ -61,7 +66,8 @@ public:
 		h.m_xcoef = x;
 		h.m_ycoef = y;
 		
-		m_pxs.push_back(std::move(h));
+		//m_pxs.push_back(std::move(h));
+		m_pxs.push_back(h);
 	}
 
 	void reset()
@@ -78,10 +84,6 @@ public:
 	bool isDone()
 	{
 		return true;
-	}
-
-	void set(const double xr, const double yr)
-	{
 	}
 
 	void reserve()
@@ -108,10 +110,6 @@ public:
 		return 0;
 	}
 
-	void setColorAtPixel(const vxColor &color)
-	{
-
-	}
 };
 
 }

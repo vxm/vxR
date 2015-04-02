@@ -20,7 +20,7 @@ public:
 		srand(time(NULL));
 	}
 	
-	virtual vxColor getColor(vxCollision &collide, double lumm)
+	virtual vxColor getColor(vxCollision &, double lumm)
 	{
 		return vxColor(lumm, lumm, lumm);
 	}

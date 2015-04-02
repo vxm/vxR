@@ -37,19 +37,19 @@ vxStatus::code vxRenderProcess::execute()
 
 	cam.set(vxVector3d	(0,0,0),
 			vxVector3d	(0,0,1),
-							  1,
+							.85,
 							1.1,
-						    1.1);
+							1.1);
 
 	cam.setPixelSamples(1);
 	
 	// this is the grid object
-	vxGrid mat(0, 0, 8,  5.0); // Position, size
-	mat.setResolution(1);
-	mat.createSphere(0, 0, 8,  2.5); // Position, radius
+	vxGrid mat(0, 0, 4,  5.0); // Position, size
+	mat.setResolution(22);
+	mat.createSphere(0, 0, 4,  2.4); // Position, radius
 
 #ifdef __gnu_debug 
-	auto na = mat.numActiveVoxels();
+	auto na = mat.numActiveVoxels;
 #endif
 	vxColor color;
 
@@ -116,8 +116,7 @@ vxRenderProcess::generateImage()
 	}
 	
 	// hardcode buffer type!!
-	unsigned char *buff =m_pc.get();
-	
+	unsigned char *buff = m_pc.get();
 	
 	if(m_pc==nullptr)
 	{
