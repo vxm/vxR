@@ -40,8 +40,6 @@ public:
 	
 	vxCamera(std::shared_ptr<const ImageProperties> prop) 
 		: m_prop{prop}
-		, m_orientation(0.0,0.0,1.0)
-		, m_position(0.0,0.0,0.0)
 	{
 		m_horizontalAperture=1.42;
 		m_verticalAperture=1.42;
