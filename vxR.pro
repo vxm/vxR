@@ -66,6 +66,7 @@ HEADERS  += \
 
 FORMS    += vxrendermain.ui
 
+CONFIG(debug, release|debug):DEFINES += _DEBUG
 CONFIG += c++11
 
 OTHER_FILES += \
