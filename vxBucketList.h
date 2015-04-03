@@ -31,6 +31,10 @@ public:
 	vxBucket(vxBucket&& other)
 		: m_pb(std::move(m_pb))
 	{
+		m_up.reset( other.m_up.release() );
+		m_down.reset( other.m_down.release() );
+		m_left.reset( other.m_left.release() );
+		m_right.reset( other.m_right.release() );
 	}
 
 	vxBucket(const vxBucket& other)
@@ -83,7 +87,7 @@ public:
 	}
 	
 	// simple utility to get correct number of buckets in an image
-	const unsigned int getNumBuckets(unsigned int sidePixels)
+	unsigned int getNumBuckets(unsigned int sidePixels) const
 	{
 		return (m_prop->rx() * m_prop->ry()) / (sidePixels * sidePixels);
 	}
