@@ -75,3 +75,8 @@ unsigned int vxStorage::ImageProperties::numElements() const
 	return numPixels() * numChannels();
 }
 
+double ImageProperties::aspectRatio() const
+{
+	return m_rx/(double)m_ry;
+}
+

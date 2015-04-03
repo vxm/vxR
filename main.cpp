@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(240, 240));
+			imgDesc(new vxStorage::ImageProperties(640, 480));
 
 	// create the render process
 	render rp(imgDesc);
@@ -38,13 +38,13 @@ int main(int argc, char *argv[])
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)
 	{
-		QImage img( bff, 
-					imgDesc->rx(), 
-					imgDesc->ry(), 
+		QImage img( bff,
+					imgDesc->rx(),
+					imgDesc->ry(),
 					QImage::Format_RGBA8888);
-		
+
 		std::string baseName("image.1.bmp");
-		
+
 		std::string fileName = 
 				vxFileManager::makeUnique(baseName);
 

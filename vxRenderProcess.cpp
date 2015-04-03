@@ -37,16 +37,14 @@ vxStatus::code vxRenderProcess::execute()
 
 	cam.set(vxVector3d	(0,0,0),
 			vxVector3d	(0,0,1),
-							.85,
-							1.1,
-							1.1);
+							1.0);
 
 	cam.setPixelSamples(1);
 	
 	// this is the grid object
-	vxGrid mat(0, 0, 4,  5.0); // Position, size
-	mat.setResolution(22);
-	mat.createSphere(0, 0, 4,  2.4); // Position, radius
+	vxGrid mat(0, 0, 12,  12.0); // Position, size
+	mat.setResolution(6);
+	mat.createSphere(0, 0, 12,  6.4); // Position, radius
 
 #ifdef __gnu_debug 
 	auto na = mat.numActiveVoxels;
@@ -60,6 +58,7 @@ vxStatus::code vxRenderProcess::execute()
 		auto xCoord = cam.getXCoord();
 		auto yCoord = cam.getYCoord();
 		
+		//TODO: return this to smart pointer.
 		vxBucket *bk = m_bucketList.getBucket(xCoord, yCoord);
 		vxCollision collide;
 

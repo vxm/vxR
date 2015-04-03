@@ -11,7 +11,7 @@ vxColor vxLambert::getColor(vxCollision &collide, double lumm)
 	if (intens>255) intens=255;
 	collide.setColor(255*intens, 255*intens, 255*intens);
 */
-	auto distanciaCentro = 
+	auto distanceToCenter = 
 			vxVector2d(collide.getU()-.5,collide.getV()-.5).length();
 
 	/*if(distanciaCentro<.4)
@@ -19,19 +19,19 @@ vxColor vxLambert::getColor(vxCollision &collide, double lumm)
 		collide.setNormal(collide.getNormal()+pow(distanciaCentro,2));
 	}*/
 
-	float intens = std::max(lumm, 0.0);
+	lumm = std::max(lumm, 0.0);
 
-	if(distanciaCentro<.3)
+	if(distanceToCenter<.3)
 	{
-		collide.setColor((1-distanciaCentro)*intens*collide.getColor().getR(), 
-						 (1-distanciaCentro)*intens*collide.getColor().getG(), 
-						 (1-distanciaCentro)*intens*collide.getColor().getB());
+		collide.setColor((1-distanceToCenter)*lumm*collide.getColor().getR(), 
+						 (1-distanceToCenter)*lumm*collide.getColor().getG(), 
+						 (1-distanceToCenter)*lumm*collide.getColor().getB());
 	}
 	else
 	{
-		if(distanciaCentro<.35)
+		if(distanceToCenter<.35)
 		{
-			collide.setColor(intens*64, intens*24, intens*24);
+			collide.setColor(lumm*64, lumm*24, lumm*24);
 		}
 		else
 		{
@@ -39,12 +39,12 @@ vxColor vxLambert::getColor(vxCollision &collide, double lumm)
 				 || (collide.getV()<.01 || collide.getV()>.99))
 			{
 				double incanden=1/1.7;
-				double sum=(intens*incanden)+(1-incanden);
+				double sum=(lumm*incanden)+(1-incanden);
 				collide.setColor(255*sum, 255*sum, 255*sum);
 			}
 			else
 			{
-				collide.setColor(intens*255, intens*255, intens*155);
+				collide.setColor(lumm*255, lumm*255, lumm*155);
 			}
 		}
 	}

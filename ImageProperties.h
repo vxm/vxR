@@ -50,6 +50,8 @@ public:
 	// returns the number of values in image
 	// channels multiplied by pixels
 	unsigned int numElements() const;
+
+	double aspectRatio() const;
 };
 
 

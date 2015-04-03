@@ -23,7 +23,7 @@ class vxCamera:public vxObject
 private:
 
 	vxVector3d m_position{0.0, 0.0, 0.0};
-	vxVector3d m_orientation{0.0, 0.0, 0.0};
+	vxVector3d m_orientation{0.0, 0.0, 1.0};
 
 	double m_focusDistance = {1.0};
 	double m_horizontalAperture = {1.42};
@@ -81,14 +81,27 @@ public:
 		return m_iteratorPosY / (double)m_prop->ry();
 	}
 
-	void set(vxVector3d position, vxVector3d orientation, double focusD, double apertureH, double apertureV) 
+	void set(vxVector3d position, 
+			 vxVector3d orientation, 
+			 double focusD = 1.0, 
+			 double apertureH = 0.0, 
+			 double apertureV = 0.0) 
 	{
 		this->m_orientation=orientation;
 		this->m_position=position;
 		this->m_focusDistance=focusD;
-		this->m_horizontalAperture=apertureH;
-		this->m_verticalAperture=apertureV;
 		
+		if(std::max(apertureH+apertureV,0.0)==0.0)
+		{
+			this->m_horizontalAperture = 1.0;
+			this->m_verticalAperture = m_prop->aspectRatio();
+		}
+		else
+		{	
+			this->m_horizontalAperture = apertureH;
+			this->m_verticalAperture = apertureV;
+		}
+			
 		m_iteratorPosX=0;
 		m_iteratorPosY=0;
 	}
