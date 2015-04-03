@@ -29,7 +29,6 @@ protected:
 	void setPosition(vxVector3d position) {this->m_position.set(position);};
 	void setPosition(double x, double y, double z ) {m_position.set(x,y,z);};
 
-	void set(vxLight enter) {*this=enter;};
 	void set(double intensity, vxVector3d color) {this->m_intensity=intensity;this->m_color=color;}
 	void setIntensity(double intensity) {this->m_intensity=intensity;}
 	void setColor(vxColor color) {this->m_color=color;}
@@ -37,15 +36,12 @@ protected:
 	double getIntensity() {return this->m_intensity;}
 	vxColor getColor() {return this->m_color;}
 
-	vxVector3d getLightRay(vxVector3d position)
+	virtual vxVector3d getLightRay(vxVector3d position)
 	{
 		return this->m_position-position;
 	}
-	virtual double luminance(vxCollision &collide) 
-	{
-		return 0;
-	};
 	
+	virtual double luminance(vxCollision &collide) = 0; 
  };
 
 
