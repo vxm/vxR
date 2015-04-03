@@ -37,7 +37,7 @@ public:
 
 	vxGrid()
 	{
-		m_boundingBox.reset(new vxBoxN);
+		//m_boundingBox.reset(new vxBoxN);
 		m_size=1;
 
 		createGridData(5);
@@ -49,7 +49,7 @@ public:
 
 	vxGrid( vxVector3d position, double size)
 	{
-		m_boundingBox.reset(new vxBoxN);
+		//m_boundingBox.reset(new vxBoxN);
 		this->m_position = position;
 		setSize(size);
 
