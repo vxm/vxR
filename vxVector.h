@@ -261,13 +261,13 @@ public:
 	void toRGBA8888(unsigned char *b) const
 	{
 		unsigned char *tbuff = b;
-		*tbuff= char(m_r*255);
+		*tbuff = (unsigned char)char(m_r);
 		tbuff++;
 		
-		*tbuff= char(m_g*255);
-		
+		*tbuff = (unsigned char)char(m_g);
 		tbuff++;
-		*tbuff= char(m_b*255);
+
+		*tbuff = (unsigned char)char(m_b);
 	}
 };
 
