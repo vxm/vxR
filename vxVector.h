@@ -102,15 +102,20 @@ public:
 	void putZ(double z) {this->m_z=z;}
 
 	vxVector3d get() {return *this;}
-	void get(double &x, double &y, double &z) {x=this->m_x;y=this->m_y;z=this->m_z;}
+	void get(double &x, double &y, double &z) const 
+	{x=this->m_x;y=this->m_y;z=this->m_z;}
 
-	double getX() {return m_x;}
-	double getY() {return m_y;}
-	double getZ() {return m_z;}
+	double getX() const {return m_x;}
+	double getY() const {return m_y;}
+	double getZ() const {return m_z;}
 
-	double length() {return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);}
-	double distance(vxVector3d ref) {return (*this-ref).length();}
-	vxVector3d unit() {double lng=length();return vxVector3d(m_x/lng,m_y/lng,m_z/lng);};
+	double length() const
+		{return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);}
+	double distance(vxVector3d ref) const
+		{return (*this-ref).length();}
+	vxVector3d unit() const
+		{double lng=length();return vxVector3d(m_x/lng,m_y/lng,m_z/lng);};
+	
 	void setUnit() {double lng=length();m_x=m_x/lng,m_y=m_y/lng,m_z=m_z/lng;}
 
 	vxVector3d operator+(vxVector3d entrada) {return vxVector3d(entrada.getX()+m_x,entrada.getY()+m_y,entrada.getZ()+m_z);}
@@ -118,10 +123,14 @@ public:
 	vxVector3d operator+(float factor) {return vxVector3d(factor+m_x,factor+m_y,factor+m_z);}
 	vxVector3d operator+(int factor) {return vxVector3d(factor+m_x,factor+m_y,factor+m_z);}
 
-	vxVector3d operator-(vxVector3d entrada) {return vxVector3d(m_x-entrada.getX(),m_y-entrada.getY(),m_z-entrada.getZ());}
-	vxVector3d operator-(double factor) {return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
-	vxVector3d operator-(float factor) {return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
-	vxVector3d operator-(int factor) {return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
+	vxVector3d operator-(vxVector3d entrada) const 
+		{return vxVector3d(m_x-entrada.getX(),m_y-entrada.getY(),m_z-entrada.getZ());}
+	vxVector3d operator-(double factor) const 
+		{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
+	vxVector3d operator-(float factor) const 
+		{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
+	vxVector3d operator-(int factor) const 
+		{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
 
 	vxVector3d operator*(vxVector3d entrada) {return vxVector3d(entrada.getX()*m_x,entrada.getY()*m_y,entrada.getZ()*m_z);}
 	vxVector3d operator*(double factor) {return vxVector3d(factor*m_x,factor*m_y,factor*m_z);}
@@ -141,13 +150,13 @@ public:
 		return acos(an);
 	}
 
-	double angleXY(vxVector3d other) {return angleXY()-other.angleXY();} 
-	double angleYZ(vxVector3d other) {return angleYZ()-other.angleYZ();} 
-	double angleZX(vxVector3d other) {return angleZX()-other.angleZX();} 
+	double angleXY(vxVector3d other) const {return angleXY()-other.angleXY();} 
+	double angleYZ(vxVector3d other) const {return angleYZ()-other.angleYZ();} 
+	double angleZX(vxVector3d other) const {return angleZX()-other.angleZX();} 
 
-	double angleXY() {return atan2(m_y,m_x);}
-	double angleYZ() {return atan2(m_z,m_y);}
-	double angleZX() {return atan2(m_x,m_z);}
+	double angleXY() const {return atan2(m_y,m_x);}
+	double angleYZ() const {return atan2(m_z,m_y);}
+	double angleZX() const {return atan2(m_x,m_z);}
 
 
 	void operator=(vxVector3d otro)

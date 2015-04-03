@@ -3,6 +3,10 @@
 #include "vxGrid.h"
 #include <vxPixel.h>
 #include <ImageProperties.h>
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
 
 namespace vxCompute 
 {
@@ -37,18 +41,22 @@ vxStatus::code vxRenderProcess::execute()
 
 	cam.set(vxVector3d	(0,0,0),
 			vxVector3d	(0,0,1),
-							1.0);
+						1.0);
 
 	cam.setPixelSamples(1);
 	
 	// this is the grid object
-	vxGrid mat(0, 0, 12,  12.0); // Position, size
-	mat.setResolution(6);
-	mat.createSphere(0, 0, 12,  6.4); // Position, radius
+	vxGrid mat(0.0, 0.0, 12.0,  6.0); // Position, size
+	mat.setResolution(16);
+	mat.createSphere(0.0, 0.0, 12.0,  3.2); // Position, radius
+	mat.drawMarcs(); // Position, radius
 
-#ifdef __gnu_debug 
-	auto na = mat.numActiveVoxels;
+#ifdef _DEBUG
+
+	auto na = mat.numActiveVoxels();
+	std::cout << "Number of active voxels " << na << std::endl;
 #endif
+
 	vxColor color;
 
 	// camera throwing rays.
@@ -140,10 +148,11 @@ vxRenderProcess::generateImage()
 	
 			h.m_px.toRGBA8888(buff + dist);
 		}
-	}	
+	}
+
 	return m_pc.get();
 }
-	
+
 
 
 }

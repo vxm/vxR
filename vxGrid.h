@@ -37,7 +37,6 @@ public:
 
 	vxGrid()
 	{
-		//m_boundingBox.reset(new vxBoxN);
 		m_size=1;
 
 		createGridData(5);
@@ -49,7 +48,6 @@ public:
 
 	vxGrid( vxVector3d position, double size)
 	{
-		//m_boundingBox.reset(new vxBoxN);
 		this->m_position = position;
 		setSize(size);
 
@@ -87,7 +85,7 @@ public:
 		setBoxSize();
 	}
 
-	void setResolution(int resolution)
+	void setResolution(unsigned int resolution)
 	{	
 		if(resolution!=m_resolution)
 		{
@@ -176,8 +174,8 @@ public:
 
 	void drawDiagonals()
 	{
-		int resminusone=m_resolution-1;
-		for (int i=0;i<m_resolution;i++)
+		unsigned int resminusone=m_resolution-1;
+		for (unsigned int i=0;i<m_resolution;i++)
 		{
 			active(i,i,i);
 			active(resminusone-i,resminusone-i,i);
@@ -188,8 +186,8 @@ public:
 
 	void drawMarcs()
 	{
-		int resminusone=m_resolution-1;
-		for (int i=0;i<m_resolution;i++)
+		unsigned int resminusone=m_resolution-1;
+		for (unsigned int i=0;i<m_resolution;i++)
 		{
 			active(i,0,0);
 			active(i,resminusone,resminusone);
@@ -208,9 +206,9 @@ public:
 		}
 	}
 	
-	void createSphere(vxVector3d center, const float radio)
+	void createSphere(const vxVector3d &center, const float radio)
 	{
-		int x, y, z;
+		unsigned int x, y, z;
 		
 		for(x=0;x<m_resolution;x++)
 		{
@@ -245,7 +243,7 @@ public:
 
 	void createRandom()
 	{
-		int x, y, z;
+		unsigned int x, y, z;
 		
 		for(x=0;x<m_resolution;x++)
 			for(y=0;y<m_resolution;y++)

@@ -79,9 +79,9 @@ public:
 	bool inSightZX(vxVector3d ray);
 
 	vxCollision throwRay(vxVector3d ray);
-	void throwXY(vxVector3d ray, vxCollision &collision);
-	void throwYZ(vxVector3d ray, vxCollision &collision);
-	void throwZX(vxVector3d ray, vxCollision &collision);
+	virtual void throwXY(vxVector3d ray, vxCollision &collision) = 0;
+	virtual void throwYZ(vxVector3d ray, vxCollision &collision) = 0;
+	virtual void throwZX(vxVector3d ray, vxCollision &collision) = 0;
 
 	bool inSighte(vxVector3d ray, vxVector3d &normal);
 	bool inSighteXY(double c);
@@ -173,7 +173,7 @@ public:
 		m_position.set(x,y,z);
 	}
 
-	virtual void throwRay(vxVector3d &ray, vxCollision &reted);
+	virtual void throwRay(const vxVector3d &ray, vxCollision &reted);
 
 	// funcion de acceso, mas adelante cuestionar si seria, o no, mejor 
 	// calcular la matriz siempre al principio, en un actualize.
@@ -184,11 +184,11 @@ public:
 	inline double getPoint4() {	return m_bs[4] ? m_ps[4] : m_bs[4]=true, m_ps[4]=m_position.getY()+(m_apot); }
 	inline double getPoint5() {	return m_bs[5] ? m_ps[5] : m_bs[5]=true, m_ps[5]=m_position.getZ()+(m_apot); }
 
-	virtual bool throwSpace(vxVector3d &ray, vxCollision &collide)=0;
-	
-	virtual int frontSigth(vxVector3d &ray) {return 0;};
-	virtual int topSigth(vxVector3d &ray) {return 0;};
-	virtual int rightSigth(vxVector3d &ray) {return 0;};
+	virtual bool throwSpace(const vxVector3d &ray, vxCollision &collide)=0;
+
+	virtual int frontSigth(const vxVector3d &ray) =0;
+	virtual int topSigth(const vxVector3d &ray) =0;
+	virtual int rightSigth(const vxVector3d &ray) =0;
 		
 };
 
@@ -202,7 +202,7 @@ public:
 	vxBoxN1(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override  //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -211,7 +211,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint5());
@@ -220,7 +220,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 	
-	virtual int rightSigth(vxVector3d &ray) //z
+	virtual int rightSigth(const vxVector3d &ray) //z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint3());
@@ -230,7 +230,7 @@ public:
 	}
 
 	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		unsigned int a = frontSigth(ray);
 		if(a==0)
@@ -304,7 +304,7 @@ public:
 	vxBoxN5(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override//x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint5(),getPoint4());
@@ -313,7 +313,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint5());
@@ -322,7 +322,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 	
-	virtual int rightSigth(vxVector3d &ray) //z
+	virtual int rightSigth(const vxVector3d &ray) //z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint0());
@@ -332,7 +332,7 @@ public:
 	}
 
 	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b,c;
 
@@ -405,7 +405,7 @@ public:
 	vxBoxN4(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -414,7 +414,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	}
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint2());
@@ -423,7 +423,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	}
 	
-	virtual int rightSigth(vxVector3d &ray) //z
+	virtual int rightSigth(const vxVector3d &ray) //z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint4(),getPoint3());
@@ -433,7 +433,7 @@ public:
 	}
 
 	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b,c;
 
@@ -500,7 +500,7 @@ public:
 	vxBoxN8(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint5(),getPoint4());
@@ -509,7 +509,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint2());
@@ -518,7 +518,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	}
 	
-	virtual int rightSigth(vxVector3d &ray) //z
+	virtual int rightSigth(const vxVector3d &ray) //z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint4(),getPoint0());
@@ -528,7 +528,7 @@ public:
 	}
 
 	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b,c;
 
@@ -595,7 +595,7 @@ public:
 	vxBoxN12(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -604,7 +604,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	}
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint3(),getPoint2());
@@ -612,7 +612,7 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 	
-	virtual int rightSigth(vxVector3d &ray) //z
+	virtual int rightSigth(const vxVector3d &ray) //z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint3());
@@ -621,7 +621,7 @@ public:
 	}
 
 	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b,c;
 
@@ -676,7 +676,7 @@ public:
 	vxBoxN20(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -684,7 +684,7 @@ public:
 		return (ang>min && ang<max) ? 1 : 0;
 	}
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint2());
@@ -693,7 +693,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	} 
 
-	virtual int rightSigth(vxVector3d &ray) //z
+	virtual int rightSigth(const vxVector3d &ray) //z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint3());
@@ -702,7 +702,7 @@ public:
 	}
 
 	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b,c;
 
@@ -760,7 +760,7 @@ public:
 	vxBoxN17(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -768,7 +768,7 @@ public:
 		return (ang>min && ang<max) ? 1 : 0;
 	}
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint5());
@@ -777,7 +777,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 	
-	virtual int rightSigth(vxVector3d &ray) //z
+	virtual int rightSigth(const vxVector3d &ray) //z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint0());
@@ -786,7 +786,7 @@ public:
 	}
 
 	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b,c;
 
@@ -841,7 +841,7 @@ public:
 	vxBoxN16(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint5(),getPoint4());
@@ -850,7 +850,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint3(),getPoint2());
@@ -858,7 +858,7 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 	
-	virtual int rightSigth(vxVector3d &ray) //z
+	virtual int rightSigth(const vxVector3d &ray) //z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint4(),getPoint3());
@@ -866,7 +866,7 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b,c;
 
@@ -923,7 +923,7 @@ public:
 	vxBoxN24(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(vxVector3d &ray) //x
+	virtual int frontSigth(const vxVector3d &ray) override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -932,7 +932,7 @@ public:
 	}
 
 
-	virtual int topSigth(vxVector3d &ray) //y
+	virtual int topSigth(const vxVector3d &ray) //y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint3(),getPoint2());
@@ -940,8 +940,14 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 
-	
-	bool throwSpace(vxVector3d &ray, vxCollision &collide)
+	virtual int rightSigth(const vxVector3d &ray) //z
+	{
+		double ang = ray.angleXY();
+		double min = atan2(getPoint4(),getPoint3());
+		double max = atan2(getPoint4(),getPoint0());
+		return (ang>max && ang<min) ?  1 : 0;
+	}
+	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b;
 
