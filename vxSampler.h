@@ -11,54 +11,67 @@ namespace vxStorage {
 
 class vxSampler:public vxObject
 {
-	std::vector<double> m_x;
-	std::vector<double> m_y;
+	std::vector<double> m_x = {0.5};
+	std::vector<double> m_y = {0.5};
 
-	int m_f {0};
-	int m_samples {1};
+	unsigned int m_iter {0};
+	unsigned int m_nSamples {1};
 
+	bool m_random {false};
+	
 public:
-	vxSampler() 
+	
+	vxSampler()
 	{
-		setSamples(1);
 	};
 	
-	~vxSampler() 
+	~vxSampler()
 	{
 	}
 
-	void next() 
+	void next()
 	{
-		if(m_f >= m_samples-1)
+		m_iter++;
+
+		if(m_iter == m_nSamples)
 		{
-			m_f=0;
-		}
-		else
-		{
-			m_f++;
+			m_iter=0;
 		}
 	};
 
-	double getX() {return m_x[m_f];}
-	double getY() {return m_y[m_f];}
+	double getX() const 
+		{return m_x[m_iter];}
+	double getY() const
+		{return m_y[m_iter];}
 
-	void setSamples(int sampless)
+	void setSamples(unsigned int samples)
 	{
-		m_samples=sampless;
+		m_nSamples = samples;
 		
-		m_x.clear();
-		m_x.resize(sampless);
+		m_x.resize(samples);
 		
-		m_y.clear();
-		m_y.resize(sampless);
-		//m_y=(double*)malloc(sizeof(double)*m_samples);
-
-		for(int i=0;i<m_samples;i++)
+		m_y.resize(samples);
+		
+		if(m_random)
 		{
-			m_x[i]=(rand()/(double)RAND_MAX);
-			m_y[i]=(rand()/(double)RAND_MAX);
+			for(uint i=0;i<m_nSamples;i++)
+			{
+				m_x[i]=(rand()/(double)RAND_MAX);
+				m_y[i]=(rand()/(double)RAND_MAX);
+			}
 		}
-		m_f=0;
+
+		m_iter=0;
+	}
+	
+	bool random() const
+	{
+		return m_random;
+	}
+	
+	void setRandom(bool random)
+	{
+		m_random = random;
 	}
 };
 

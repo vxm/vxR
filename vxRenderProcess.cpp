@@ -25,13 +25,21 @@ void vxRenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> 
 
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
 {
+	if(p!=nullptr)
+	{
+		p->execute();
+	}
 	
 	return vxStatus::code::kSuccess;
 }
 
 vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 {
-
+	if(p!=nullptr)
+	{
+		p->execute();
+	}
+	
 	return vxStatus::code::kSuccess;
 }
 
@@ -39,20 +47,19 @@ vxStatus::code vxRenderProcess::execute()
 {
 	vxCamera cam(imageProperties());
 
-	cam.set(vxVector3d	(0,0,0),
-			vxVector3d	(0,0,1),
+	cam.set(vxVector3d(0,0,0),
+			vxVector3d(0,0,1),
 						1.0);
 
 	cam.setPixelSamples(1);
 	
 	// this is the grid object
-	vxGrid mat(0.0, 0.0, 12.0,  6.0); // Position, size
-	mat.setResolution(16);
-	mat.createSphere(0.0, 0.0, 12.0,  3.2); // Position, radius
-	mat.drawMarcs(); // Position, radius
+	vxGrid mat(0.0, 0.0, 15.0,  15.0); // Position, size
+	mat.setResolution(8);
+	mat.createSphere(0.0, 0.0, 15.0,  6.2); // Position, radius
+	mat.createEdges(); // Position, radius
 
 #ifdef _DEBUG
-
 	auto na = mat.numActiveVoxels();
 	std::cout << "Number of active voxels " << na << std::endl;
 #endif
@@ -66,8 +73,20 @@ vxStatus::code vxRenderProcess::execute()
 		auto xCoord = cam.getXCoord();
 		auto yCoord = cam.getYCoord();
 		
+		if(xCoord<=0)
+		{
+			std::cout << "coordinate xCoord 0" << std::endl;
+		}
+		
+		
+		if(yCoord<=0)
+		{
+			std::cout << "coordinate yCoord 0" << std::endl;
+		}
+		
+		
 		//TODO: return this to smart pointer.
-		vxBucket *bk = m_bucketList.getBucket(xCoord, yCoord);
+		auto bk = m_bucketList.getBucket(xCoord, yCoord);
 		vxCollision collide;
 
 		cam.resetPixel();
@@ -145,7 +164,6 @@ vxRenderProcess::generateImage()
 			unsigned int compY = (h.m_xcoef * (prop->ry()-1));
 			unsigned int dist = (compX + (compY * prop->rx())) * prop->numChannels();
 			//assert(dist && dist<=numElements);
-	
 			h.m_px.toRGBA8888(buff + dist);
 		}
 	}

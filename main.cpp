@@ -12,13 +12,11 @@
 int main(int argc, char *argv[])
 {
 	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
+	using render = vxCompute::vxRenderProcess;
 	
 	timePoint start, now;
 	start = std::chrono::system_clock::now();
-
 	std::cout << "Start program " << std::endl;
-
-	using render = vxCompute::vxRenderProcess;
 
  	QApplication a(argc, argv);
 	vxRenderMain w;
@@ -27,7 +25,7 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(540, 540));
+			imgDesc(new vxStorage::ImageProperties(480, 480));
 
 	// create the render process
 	render rp(imgDesc);
@@ -45,7 +43,7 @@ int main(int argc, char *argv[])
 	
 	now = std::chrono::system_clock::now();
 	elapsed_seconds = now-start;
-	std::cout << "finished render : " << elapsed_seconds.count() << std::endl;
+	std::cout << "Finished render : " << elapsed_seconds.count() << std::endl;
 
 	// generates an image buffer and fills it 
 	// with the render results. Buffer properties
@@ -53,10 +51,9 @@ int main(int argc, char *argv[])
 	// render process object.
 	auto bff = rp.generateImage();
 	
-	
 	now = std::chrono::system_clock::now();
 	elapsed_seconds = now-start;
-	std::cout << "finished image generation : " << elapsed_seconds.count() << std::endl;
+	std::cout << "Ended creation of the image: " << elapsed_seconds.count() << std::endl;
 
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)

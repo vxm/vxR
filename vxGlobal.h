@@ -99,7 +99,9 @@ public:
 				}
 			}
 		}
-		//new vxBoxN(4,4,4,1);
+		//TODO: return invalidty, now it's taken a random 
+		// valid one.
+		return &m_num17;
 	}
 
 	static std::shared_ptr<vxShader> getLambert() 

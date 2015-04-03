@@ -172,7 +172,7 @@ public:
 		return vxVector3d( retx, rety, retz); 
 	}
 
-	void drawDiagonals()
+	void createDiagonals()
 	{
 		unsigned int resminusone=m_resolution-1;
 		for (unsigned int i=0;i<m_resolution;i++)
@@ -184,7 +184,7 @@ public:
 		}
 	}
 
-	void drawMarcs()
+	void createEdges()
 	{
 		unsigned int resminusone=m_resolution-1;
 		for (unsigned int i=0;i<m_resolution;i++)
