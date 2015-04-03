@@ -184,10 +184,7 @@ public:
 	inline double getPoint4() {	return m_bs[4] ? m_ps[4] : m_bs[4]=true, m_ps[4]=m_position.getY()+(m_apot); }
 	inline double getPoint5() {	return m_bs[5] ? m_ps[5] : m_bs[5]=true, m_ps[5]=m_position.getZ()+(m_apot); }
 
-	virtual bool throwSpace(vxVector3d &ray, vxCollision &collide) 
-	{
-		return false;
-	};
+	virtual bool throwSpace(vxVector3d &ray, vxCollision &collide)=0;
 	
 	virtual int frontSigth(vxVector3d &ray) {return 0;};
 	virtual int topSigth(vxVector3d &ray) {return 0;};
