@@ -7,42 +7,17 @@
 #include <vxfilemanager.h>
 #include <vxRenderProcess.h>
 #include "vxRenderMain.h"
+#include <vxtimeutilities.h>
 
-using timePoint = std::chrono::time_point<std::chrono::system_clock>;
-using timeDuration = std::chrono::duration<double>;
-
-std::string decorateTime(const timePoint &start)
-{
-	std::stringstream sst;
-	timePoint now = std::chrono::system_clock::now();
-	timeDuration elapsed_time = timeDuration(now-start);
-	double seconds = elapsed_time.count();
-	
-	if (seconds<60)
-	{
-		sst << "elapsed time is " << int(seconds)  << " seconds";
-	}
-	else if(seconds<3600)
-	{
-		sst << "elapsed time is " << int(seconds/60.0)  << " minutes";
-	}
-	else if(seconds<(3600*24))
-	{
-		sst << "elapsed time is " << int(seconds/3600.0)  << " hours";
-	}
-	
-	sst << std::endl;
-
-	return sst.str();
-}
-
+static const std::string baseName("image.1.bmp");
 
 int main(int argc, char *argv[])
 {
+	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 	using render = vxCompute::vxRenderProcess;
-
 	timePoint start = std::chrono::system_clock::now();
-	std::cout << "Start program " << std::endl;
+	
+	std::cout << "Start program" << std::endl;
 
  	QApplication a(argc, argv);
 	vxRenderMain w;
@@ -51,7 +26,7 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(480, 480));
+			imgDesc(new vxStorage::ImageProperties(78, 78));
 
 	// create the render process
 	render rp(imgDesc);
@@ -61,12 +36,12 @@ int main(int argc, char *argv[])
 	rp.createBucketList();
 	
 	
-	std::cout << "Starting render : " << decorateTime(start) << std::endl;
+	std::cout << "Starting render : " << vxTimeUtilities::decorateTime(start) << std::endl;
 	
 	// executes the render.
 	rp.execute();
 	
-	std::cout << "Finished render : " << decorateTime(start) << std::endl;
+	std::cout << "Finished render : " << vxTimeUtilities::decorateTime(start) << std::endl;
 
 	// generates an image buffer and fills it 
 	// with the render results. Buffer properties
@@ -74,7 +49,7 @@ int main(int argc, char *argv[])
 	// render process object.
 	auto bff = rp.generateImage();
 	
-	std::cout << "Ended creation of the image: " << decorateTime(start) << std::endl;
+	std::cout << "Ended creation of the image: " << vxTimeUtilities::decorateTime(start) << std::endl;
 
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)
@@ -84,14 +59,12 @@ int main(int argc, char *argv[])
 					imgDesc->ry(),
 					QImage::Format_RGBA8888);
 
-		std::string baseName("image.1.bmp");
-
 		std::string fileName = 
 				vxFileManager::makeUnique(baseName);
 
 		img.save(QString(fileName.c_str()),"BMP");
 		
-		std::cout << "Finished image generation : " << decorateTime(start) << std::endl;
+		std::cout << "Finished image generation : " << vxTimeUtilities::decorateTime(start) << std::endl;
 	}
 	
 	//return a.exec();
