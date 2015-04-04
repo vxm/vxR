@@ -1,21 +1,47 @@
+#include <chrono>
+#include <sstream>
 #include <QApplication>
 #include <QImage>
 
 #include <ImageProperties.h>
-#include <chrono>
 #include <vxfilemanager.h>
 #include <vxRenderProcess.h>
 #include "vxRenderMain.h"
 
+using timePoint = std::chrono::time_point<std::chrono::system_clock>;
+using timeDuration = std::chrono::duration<double>;
+
+std::string decorateTime(const timePoint &start)
+{
+	std::stringstream sst;
+	timePoint now = std::chrono::system_clock::now();
+	timeDuration elapsed_time = timeDuration(now-start);
+	double seconds = elapsed_time.count();
+	
+	if (seconds<60)
+	{
+		sst << "elapsed time is " << int(seconds)  << " seconds";
+	}
+	else if(seconds<3600)
+	{
+		sst << "elapsed time is " << int(seconds/60.0)  << " minutes";
+	}
+	else if(seconds<(3600*24))
+	{
+		sst << "elapsed time is " << int(seconds/3600.0)  << " hours";
+	}
+	
+	sst << std::endl;
+
+	return sst.str();
+}
 
 
 int main(int argc, char *argv[])
 {
-	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 	using render = vxCompute::vxRenderProcess;
-	
-	timePoint start, now;
-	start = std::chrono::system_clock::now();
+
+	timePoint start = std::chrono::system_clock::now();
 	std::cout << "Start program " << std::endl;
 
  	QApplication a(argc, argv);
@@ -34,16 +60,13 @@ int main(int argc, char *argv[])
 	// description.
 	rp.createBucketList();
 	
-	now = std::chrono::system_clock::now();
-	auto elapsed_seconds = std::chrono::duration<double>(now-start);
-	std::cout << "Starting render : " << elapsed_seconds.count() << std::endl;
+	
+	std::cout << "Starting render : " << decorateTime(start) << std::endl;
 	
 	// executes the render.
 	rp.execute();
 	
-	now = std::chrono::system_clock::now();
-	elapsed_seconds = now-start;
-	std::cout << "Finished render : " << elapsed_seconds.count() << std::endl;
+	std::cout << "Finished render : " << decorateTime(start) << std::endl;
 
 	// generates an image buffer and fills it 
 	// with the render results. Buffer properties
@@ -51,9 +74,7 @@ int main(int argc, char *argv[])
 	// render process object.
 	auto bff = rp.generateImage();
 	
-	now = std::chrono::system_clock::now();
-	elapsed_seconds = now-start;
-	std::cout << "Ended creation of the image: " << elapsed_seconds.count() << std::endl;
+	std::cout << "Ended creation of the image: " << decorateTime(start) << std::endl;
 
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)
@@ -70,9 +91,7 @@ int main(int argc, char *argv[])
 
 		img.save(QString(fileName.c_str()),"BMP");
 		
-		now = std::chrono::system_clock::now();
-		elapsed_seconds = now-start;
-		std::cout << "finished image generation : " << elapsed_seconds.count() << std::endl;
+		std::cout << "Finished image generation : " << decorateTime(start) << std::endl;
 	}
 	
 	//return a.exec();
