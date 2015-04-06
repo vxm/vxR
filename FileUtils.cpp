@@ -1,4 +1,4 @@
-#include "vxfilemanager.h"
+#include "vxFileUtils.h"
 
 vxFileManager::vxFileManager()
 {
