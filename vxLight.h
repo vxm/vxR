@@ -3,6 +3,7 @@
 
 #include "vxObject.h"
 #include "vxVector.h"
+#include<vxCollision.h>
 
 namespace vxStorage {
 

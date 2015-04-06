@@ -24,7 +24,7 @@ public:
 	// creates this bucket initializing the buffer with a size
 	// of sidePixels (num side pxs) ^ 2
 	vxBucket()
-		: m_pb(10)
+		: m_pb(100)
 	{
 	}
 	
@@ -56,7 +56,7 @@ public:
 class vxBucketList : public vxObject
 {
 private:
-	unsigned int m_nBucketsInX = {10u};
+	unsigned int m_nBucketsInX = {20u};
 	std::vector <vxBucket> m_buckets;
 	std::shared_ptr<const ImageProperties> m_prop;
 	

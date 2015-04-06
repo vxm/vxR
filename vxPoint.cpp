@@ -1,5 +1,8 @@
 #include "vxPoint.h"
+namespace vxStorage {
 
-vxPoint::vxPoint()
-{
-}
+
+
+
+
+}// end of vxStorage

@@ -36,7 +36,12 @@ SOURCES += main.cpp\
     vxGrid.cpp \
     vxSampler.cpp \
     vxfilemanager.cpp \
-    vxmanager.cpp
+    vxmanager.cpp \
+    vxtimeutilities.cpp \
+    mathUtils.cpp \
+    vxPlane.cpp \
+    vxPoint.cpp \
+    vxCollision.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -62,7 +67,12 @@ HEADERS  += \
     vxGrid.h \
     vxSampler.h \
     vxfilemanager.h \
-    vxmanager.h
+    vxmanager.h \
+    vxtimeutilities.h \
+    mathUtils.h \
+    vxPlane.h \
+    vxPoint.h \
+    vxCollision.h
 
 FORMS    += vxrendermain.ui
 

@@ -1,10 +1,12 @@
 #ifndef _VXSHADERMC_
 #define _VXSHADERMC_
 
-#include "vxVector.h"
-#include "vxObject.h"
 #include "stdlib.h"
 #include "time.h"
+
+#include <vxObject.h>
+#include <vxVector.h>
+#include <vxCollision.h>
 
 namespace vxStorage {
 

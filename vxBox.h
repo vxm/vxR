@@ -23,7 +23,7 @@ class vxVxl:public vxObject
 {
 
 protected:
-	std::shared_ptr<vxShader> m_shader;
+	std::shared_ptr<vxShader > m_shader;
 	vxVector3d m_position;
 	double m_size;
 
@@ -78,12 +78,12 @@ public:
 	bool inSightYZ(vxVector3d ray);
 	bool inSightZX(vxVector3d ray);
 
-	vxCollision throwRay(vxVector3d ray);
-	virtual void throwXY(vxVector3d ray, vxCollision &collision) = 0;
-	virtual void throwYZ(vxVector3d ray, vxCollision &collision) = 0;
-	virtual void throwZX(vxVector3d ray, vxCollision &collision) = 0;
+	vxCollision throwRay(const vxVector3d &ray);
+	virtual void throwXY(const vxVector3d &ray, vxCollision &collision) = 0;
+	virtual void throwYZ(const vxVector3d &ray, vxCollision &collision) = 0;
+	virtual void throwZX(const vxVector3d &ray, vxCollision &collision) = 0;
 
-	bool inSighte(vxVector3d ray, vxVector3d &normal);
+	bool inSighte(const vxVector3d &ray, vxVector3d &normal);
 	bool inSighteXY(double c);
 	bool inSighteYZ(double c);
 	bool inSighteZX(double c);
@@ -100,6 +100,7 @@ protected:
 
 	double m_apot;
 	double m_ps[6];
+	//TODO:question this variable, is really needed?
 	bool m_bs[6];
 	static vxVector3d m_normals[6];
 

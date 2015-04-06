@@ -14,6 +14,21 @@
 
 namespace vxStorage {
 
+class vxGrid;
+class vxOrthIter
+{
+	std::shared_ptr<vxGrid> m_grid;
+	public:
+		
+		vxOrthIter(std::shared_ptr<vxGrid> grid)
+			:m_grid(grid)
+		{
+			
+		}
+		
+		
+};
+
 class vxGrid:public vxObject
 {
 protected:
@@ -270,10 +285,31 @@ public:
 	{
 		setElement(x,y,z,false);
 	}
-
+	
+	
 	//!! this shouldn't be like this
 	//! what a shame.
-	void getNearestCollision(vxVector3d &ray, vxCollision &collide)
+	void getNearestCollision(const vxVector3d &ray, vxCollision &collide)
+	{
+		collide.initialize();
+
+		double x, y, z;
+
+		auto px = 0.0;
+
+		auto t = 0.0;
+
+		// parametric ecuation of the line solved.
+		t = (x - ray.getX()) / -ray.getX();
+		y = (t * -ray.getY()) + ray.getY();
+		z = (t * -ray.getZ()) + ray.getZ();
+
+		
+	}	
+
+	//!! Brute Force search.
+	//! what a shame.
+	void getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide)
 	{
 		collide.initialize();
 

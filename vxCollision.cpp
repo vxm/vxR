@@ -1,5 +1,4 @@
 #include "vxCollision.h"
+namespace vxStorage{
 
-vxCollision::vxCollision()
-{
 }

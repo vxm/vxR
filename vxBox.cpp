@@ -78,7 +78,7 @@ bool vxBox::inSighteZX(double c)
 	return ret;
 }
 
-bool vxBox::inSighte(vxVector3d ray, vxVector3d &normal)
+bool vxBox::inSighte(const vxVector3d &ray, vxVector3d &normal)
 {
 	normal.set(0,1,0);
 	return (inSighteXY(ray.angleXY()) && inSighteYZ(ray.angleYZ()) && inSighteZX(ray.angleZX()));

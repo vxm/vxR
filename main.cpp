@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(78, 78));
+			imgDesc(new vxStorage::ImageProperties(780, 780));
 
 	// create the render process
 	render rp(imgDesc);
@@ -41,7 +41,8 @@ int main(int argc, char *argv[])
 	// executes the render.
 	rp.execute();
 	
-	std::cout << "Finished render : " << vxTimeUtilities::decorateTime(start) << std::endl;
+	std::cout << "Finished render : " 
+			<< vxTimeUtilities::decorateTime(start) << std::endl;
 
 	// generates an image buffer and fills it 
 	// with the render results. Buffer properties
@@ -49,7 +50,8 @@ int main(int argc, char *argv[])
 	// render process object.
 	auto bff = rp.generateImage();
 	
-	std::cout << "Ended creation of the image: " << vxTimeUtilities::decorateTime(start) << std::endl;
+	std::cout << "Ended creation of the image: " 
+			<< vxTimeUtilities::decorateTime(start) << std::endl;
 
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)
@@ -64,7 +66,8 @@ int main(int argc, char *argv[])
 
 		img.save(QString(fileName.c_str()),"BMP");
 		
-		std::cout << "Finished image generation : " << vxTimeUtilities::decorateTime(start) << std::endl;
+		std::cout << "Finished image generation : " 
+				<< vxTimeUtilities::decorateTime(start) << std::endl;
 	}
 	
 	//return a.exec();

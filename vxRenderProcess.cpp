@@ -2,6 +2,7 @@
 #include "vxCamera.h"
 #include "vxGrid.h"
 #include <vxPixel.h>
+#include <cassert>
 #include <ImageProperties.h>
 #ifdef _DEBUG
 #include <iostream>
@@ -49,15 +50,15 @@ vxStatus::code vxRenderProcess::execute()
 
 	cam.set(vxVector3d(0,0,0),
 			vxVector3d(0,0,1),
-						1.0);
+						0.8);
 
 	cam.setPixelSamples(1);
 	
 	// this is the grid object
-	vxGrid mat(0.0, 0.0, 15.0,  15.0); // Position, size
-	mat.setResolution(8);
-	mat.createSphere(0.0, 0.0, 15.0,  6.2); // Position, radius
-	mat.createEdges(); // Position, radius
+	vxGrid mat(0.0, 0.0, 18.0,  14.0); // Position, size
+	mat.setResolution(5);
+	mat.createSphere(0.0, 0.0, 18.0,  6.2); // Position, radius
+	mat.createEdges(); // of the grid
 
 #ifdef _DEBUG
 	auto na = mat.numActiveVoxels();
@@ -73,18 +74,11 @@ vxStatus::code vxRenderProcess::execute()
 		auto xCoord = cam.getXCoord();
 		auto yCoord = cam.getYCoord();
 		
-		if(xCoord<=0)
-		{
-			std::cout << "coordinate xCoord 0" << std::endl;
-		}
-		
-		
-		if(yCoord<=0)
-		{
-			std::cout << "coordinate yCoord 0" << std::endl;
-		}
-		
-		
+/*_		assert(xCoord<0.0);
+		assert(yCoord<0.0);
+		assert(yCoord>=m_imageProperties->rx());
+		assert(yCoord>=m_imageProperties->ry());
+*/		
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(xCoord, yCoord);
 		vxCollision collide;
