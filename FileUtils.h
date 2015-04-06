@@ -1,5 +1,5 @@
-#ifndef VXFILEMANAGER_H
-#define VXFILEMANAGER_H
+#ifndef FILEUTILS_H
+#define FILEUTILS_H
 
 #include <string>
 #include <fstream>
@@ -11,10 +11,10 @@
 
 #include <vxmanager.h>
 
-class vxFileManager : public vxManager
+class FileUtils : public vxManager
 {
 	public:
-		vxFileManager();
+		FileUtils();
 
 	static bool fileExists(const std::string &filePath)
 	{
@@ -61,4 +61,4 @@ class vxFileManager : public vxManager
 	
 };
 
-#endif // VXFILEMANAGER_H
+#endif // FileUtils_H

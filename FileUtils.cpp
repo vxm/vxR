@@ -1,5 +1,5 @@
-#include "vxFileUtils.h"
+#include "FileUtils.h"
 
-vxFileManager::vxFileManager()
+FileUtils::FileUtils()
 {
 }

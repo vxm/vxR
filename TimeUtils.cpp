@@ -1,5 +1,5 @@
-#include "vxtimeutilities.h"
+#include <TimeUtils.h>
 
-vxTimeUtilities::vxTimeUtilities()
+TimeUtils::TimeUtils()
 {
 }

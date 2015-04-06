@@ -1,5 +1,5 @@
-#ifndef VXTIMEUTILITIES_H
-#define VXTIMEUTILITIES_H
+#ifndef TIMEUTILS_H
+#define TIMEUTILS_H
 
 #include <chrono>
 #include <sstream>
@@ -8,10 +8,10 @@ using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using timeDuration = std::chrono::duration<double>;
 
 
-class vxTimeUtilities
+class TimeUtils
 {
 	public:
-		vxTimeUtilities();
+		TimeUtils();
 
 	static std::string decorateTime(const timePoint &start)
 	{
@@ -40,4 +40,4 @@ class vxTimeUtilities
 
 };
 
-#endif // VXTIMEUTILITIES_H
+#endif // TimeUtils_H

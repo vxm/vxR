@@ -4,22 +4,33 @@
 #include <QImage>
 
 #include <ImageProperties.h>
-#include <vxfilemanager.h>
+#include <FileUtils.h>
 #include <vxRenderProcess.h>
-#include "vxRenderMain.h"
-#include <vxtimeutilities.h>
+#include <vxRenderMain.h>
+#include <TimeUtils.h>
+#include <MathUtils.h>
+#include <vxVector.h>
 
 static const std::string baseName("image.1.bmp");
 
 int main(int argc, char *argv[])
 {
-	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
+
+	vxVector3d x(1,5,1);
+	auto d = 4.45;
+	auto r = MathUtils::rectAndXPlane(x, d);
+	
+	std::cout << "Rect " << x << std::endl;
+	std::cout << "intersects with planeX when x = " << d << std::endl;
+	std::cout << "on x = " << r << std::endl;
+	
+/*	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 	using render = vxCompute::vxRenderProcess;
 	timePoint start = std::chrono::system_clock::now();
 	
 	std::cout << "Start program" << std::endl;
 
- 	QApplication a(argc, argv);
+	QApplication a(argc, argv);
 	vxRenderMain w;
 	//w.show();
 	
@@ -69,7 +80,7 @@ int main(int argc, char *argv[])
 		std::cout << "Finished image generation : " 
 				<< vxTimeUtilities::decorateTime(start) << std::endl;
 	}
-	
+*/	
 	//return a.exec();
 	std::cout << "done!" << std::endl;
 	return 0;

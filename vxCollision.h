@@ -3,6 +3,7 @@
 
 #include<vxObject.h>
 #include<vxPoint.h>
+#include<vxColor.h>
 
 namespace vxStorage {
 

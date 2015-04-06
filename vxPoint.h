@@ -14,6 +14,13 @@ public:
 		:vxVector3d()
 	{
 	}
+	
+	vxPoint(double x,
+			double y,
+			double z)
+		:vxVector3d(x,y,z)
+	{
+	}
 
 	void operator=(const vxVector3d &otro)
 	{

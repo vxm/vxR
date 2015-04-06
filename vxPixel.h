@@ -1,7 +1,9 @@
 #ifndef VXPIXEL_H
 #define VXPIXEL_H
 
-#include <vxVector.h>
+#include <vxColor.h>
+
+
 namespace vxStorage {
 
 class vxPixel:public vxColor
