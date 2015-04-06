@@ -18,17 +18,16 @@ class vxFileManager : public vxManager
 
 	static bool fileExists(const std::string &filePath)
 	{
-		std::cout << "Request existence " << filePath << std::endl;
 		return std::ifstream(filePath).good();
 	}
 	
 	static std::string makeUnique(const std::string &fileName)
 	{
-		std::string ret = fileName;
-		if(!fileExists(ret))
+		std::string unique = fileName;
+		if(!fileExists(unique))
 		{
 			//was unique
-			return ret;
+			return unique;
 		}
 		
 		std::vector<std::string> toks;
@@ -49,12 +48,14 @@ class vxFileManager : public vxManager
 				uppedName << toks[0] << ".";
 				uppedName << std::setw( 7 ) << std::setfill( '0' ) << number << ".";
 				uppedName << toks[2];
-				ret = uppedName.str();
+				unique = uppedName.str();
 			}
-			while(fileExists(ret));
+			while(fileExists(unique));
 		}
 		
-		return ret;
+		std::cout << "Made unique: " << unique << std::endl;
+		
+		return unique;
 	}
 	
 	
