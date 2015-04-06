@@ -1,5 +1,5 @@
-#include "mathUtils.h"
+#include "MathUtils.h"
 
-mathUtils::mathUtils()
+MathUtils::MathUtils()
 {
 }

@@ -1,5 +1,5 @@
-#ifndef MATHUTILS_H
-#define MATHUTILS_H
+#ifndef MathUtils_H
+#define MathUtils_H
 
 #include<vxPoint.h>
 #include<vxPlane.h>
@@ -7,33 +7,43 @@
 
 using namespace vxStorage;
 
-class mathUtils
+class MathUtils
 {
 	public:
-		mathUtils();
+		MathUtils();
 
 	//!! this shouldn't be like this
 	//! what a shame.
-	vxPoint rectAndPlane(const vxVector3d &ray, const vxPlane &plane, vxCollision &collide)
+	static vxPoint rectAndPlane(const vxVector3d &ray, const vxPlane &plane)
 	{
-		collide.initialize();
-
-		double x, y, z;
-
-		auto px = 0.0;
-
-		auto t = 0.0;
-
-		// parametric ecuation of the line solved.
-		t = (x - ray.getX()) / -ray.getX();
-		y = (t * -ray.getY()) + ray.getY();
-		z = (t * -ray.getZ()) + ray.getZ();
-
+		switch(plane.m_type)
+		{
+			case vxPlane::type::kX:
+				return rectAndXPlane(ray, plane.x());
+			break;
+			case vxPlane::type::kY:
+				return rectAndXPlane(ray, plane.y());
+			break;
+			case vxPlane::type::kZ:
+				return rectAndXPlane(ray, plane.z());
+			break;
+			default:
+			break;
+		}
 		
 	}	
 
+	static vxPoint rectAndXPlane(const vxVector3d &ray, double x)
+	{
+		// parametric ecuation of the line solved.
+		auto t = (x - ray.getX()) / -ray.getX();
+		auto y = t * -ray.getY() + ray.getY();
+		auto z = t * -ray.getZ() + ray.getZ();
+
+		return vxPoint(x,y,z);
+	}
 
 		
 };
 
-#endif // MATHUTILS_H
+#endif // MathUtils_H
