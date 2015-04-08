@@ -55,9 +55,9 @@ vxStatus::code vxRenderProcess::execute()
 	cam.setPixelSamples(1);
 	
 	// this is the grid object
-	vxGrid mat(0.0, 0.0, 18.0,  14.0); // Position, size
-	mat.setResolution(5);
-	mat.createSphere(0.0, 0.0, 18.0,  6.2); // Position, radius
+	vxGrid mat(0.0, 0.0, 48.0,  30.0); // Position, size
+	mat.setResolution(30);
+	mat.createSphere(0.0, 0.0, 48.0,  12.2); // Position, radius
 	mat.createEdges(); // of the grid
 
 #ifdef _DEBUG

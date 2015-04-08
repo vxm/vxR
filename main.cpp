@@ -10,6 +10,7 @@
 #include <TimeUtils.h>
 #include <MathUtils.h>
 #include <vxVector.h>
+#include <vxGrid.h>
 
 static const std::string baseName("image.1.bmp");
 
@@ -36,7 +37,6 @@ int main(int argc, char *argv[])
 	// creates the bucket list (vector) using the img 
 	// description.
 	rp.createBucketList();
-	
 	
 	std::cout << "Starting render : " << TimeUtils::decorateTime(start) << std::endl;
 	
