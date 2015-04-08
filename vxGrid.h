@@ -310,11 +310,11 @@ public:
 		
 	unsigned int indexAtPosition(vxVector3d pos) const
 	{
-		pos -= m_position;
-		
-		unsigned int idx = (pos.x() + m_midSize) * m_resolution;
-		idx += (pos.y() + m_midSize) * m_resolution * m_resolution;
-		idx += (pos.z() + m_midSize) * m_resolution * m_resolution * m_resolution;
+		pos -= m_position; 
+
+		unsigned int idx = floor(pos.x());
+		idx += floor(pos.y()) * m_resolution;
+		idx += floor(pos.z()) * m_resXres;
 		return idx;
 	}
 	
@@ -330,7 +330,8 @@ public:
 			z<m_position.z()+m_midSize;
 			z+=m_boxSize)
 		{
-			auto idx = indexAtPosition(MathUtils::rectAndZPlane(ray, z));
+			auto idx = indexAtPosition(MathUtils::rectAndZPlane(ray, z+.1));
+			
 			if(active(idx))
 			{
 				auto voxPos = getVoxelPosition(idx);
@@ -338,7 +339,7 @@ public:
 				boxInstance->setShader( vxGlobal::getLambert() );
 				boxInstance->throwRay( ray, collide );
 				
-				if (collide.isValid()) 
+				if (collide.isValid())
 				{
 					return;
 				}
@@ -414,7 +415,7 @@ public:
 
 		if (collide.isValid()) 
 		{
-			getNearestCollisionBF(ray, collide);
+			getNearestCollision(ray, collide);
 			return 1;
 		}
 		else
@@ -424,5 +425,25 @@ public:
 		}
 	}
 };
+
+/*
+ * 
+	vxGrid grid(2.5, 2.5, 2.5, 5);
+	grid.setResolution(5);
+	
+	for(int i=0; i<5; i++)
+	{
+		vxVector3d pos(i+.1,i+.1,i+.1);
+		
+		auto idx = grid.indexAtPosition(pos);
+		
+		std::cout << "index at position " << pos
+				  << std::endl;
+
+		std::cout << " is " << idx
+				  << std::endl;
+	}
+*/
+
 }
 #endif
