@@ -159,7 +159,7 @@ public:
 		m_chPix=true;
 
 		vxVector3d ret = givemeRay( getXCoord(), getYCoord() );
-		ret.rotateX(.291);
+		//ret.rotateX(.291);
 		return ret;
 	}
 
