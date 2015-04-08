@@ -12,6 +12,8 @@
 #include <iostream>
 #include <vector>
 
+#include<MathUtils.h>
+
 namespace vxStorage {
 
 class vxGrid;
@@ -39,16 +41,17 @@ protected:
 	unsigned int m_resolution	= {5};
 	double m_invRes				= {1/5.0};
 
-	std::unique_ptr<bool> m_data;
+	std::unique_ptr<bool[]> m_data;
 	std::unique_ptr<vxBoxN> m_boundingBox;
 
-	double m_resDivTres	= {5/3.0};
-	double m_midSize	= {0.5};
+	double m_resDivTres	= {m_size/3.0};
+	double m_midSize	= {m_size/2.0};
 
 	// cache objects
 	unsigned int m_resXres		= {25};
 	unsigned int m_resXresXres	= {125};
-public:	
+
+public:
 
 	vxGrid()
 	{
@@ -61,11 +64,10 @@ public:
 	}
 
 
-	vxGrid( vxVector3d position, double size)
+	vxGrid(const vxVector3d &position, double size)
+		: m_position(position)
 	{
-		this->m_position = position;
 		setSize(size);
-
 		createGridData(5);
 
 		initialize();
@@ -99,7 +101,7 @@ public:
 		m_resDivTres = m_midSize/(double)m_resolution;
 		setBoxSize();
 	}
-
+	
 	void setResolution(unsigned int resolution)
 	{	
 		if(resolution!=m_resolution)
@@ -108,29 +110,15 @@ public:
 		}
 	}
 
-	// es necesario int ? mejor short?.
-	bool getElement(int x,int y,int z)
+	void setSize(const double size)
 	{
-		auto p = x+(y*m_resolution)+(z*m_resXres);
-		return m_data.get()[p];
-	}
-
-	void setElement(int x,int y,int z, bool value)
-	{
-		bool *bol=m_data.get();
-		bol+=(x+(y*m_resolution)+(z*m_resXres));
-		*bol=value;
+		this->m_size=size;
+		m_midSize = size/2.0;
 	}
 
 	void setPosition(const vxVector3d position)
 	{
 		this->m_position=position;
-	}
-
-	void setSize(const double size)
-	{
-		this->m_size=size;
-		m_midSize = size/2.0;
 	}
 
 	void setBoxSize()
@@ -143,59 +131,15 @@ public:
 		m_boundingBox.reset(vxGlobal::getBox(m_position, m_size));
 	}
 	
-	bool* getLastBit() const
-	{
-		return m_data.get() + m_resXresXres;
-	}
-
-	//!! 
-	void initialize()
-	{
-		bool *pb = m_data.get();
-		bool *lb = getLastBit();
-		
-		while(pb!=lb)
-		{
-			*pb = false;
-			pb++;
-		}
-	}
-	
-	unsigned int numActiveVoxels()
-	{
-		unsigned int av{0};
-		
-		bool *pb = m_data.get();
-		bool *lb = getLastBit();
-		
-		while(pb!=lb)
-		{
-			if(*pb)
-				av++;
-			pb++;
-		}
-		
-		return av;
-	}
-
-	vxVector3d getBoxPosition(int x, int y, int z)
-	{
-		double retx = (m_position.getX() - m_midSize) + (x * m_boxSize) + m_resDivTres;
-		double rety = (m_position.getY() - m_midSize) + (y * m_boxSize) + m_resDivTres;
-		double retz = (m_position.getZ() - m_midSize) + (z * m_boxSize) + m_resDivTres;
-
-		return vxVector3d( retx, rety, retz); 
-	}
-
 	void createDiagonals()
 	{
 		unsigned int resminusone=m_resolution-1;
 		for (unsigned int i=0;i<m_resolution;i++)
 		{
-			active(i,i,i);
-			active(resminusone-i,resminusone-i,i);
-			active(i,resminusone-i,resminusone-i);
-			active(resminusone-i,i,resminusone-i);
+			activate(i,i,i);
+			activate(resminusone-i,resminusone-i,i);
+			activate(i,resminusone-i,resminusone-i);
+			activate(resminusone-i,i,resminusone-i);
 		}
 	}
 
@@ -204,20 +148,20 @@ public:
 		unsigned int resminusone=m_resolution-1;
 		for (unsigned int i=0;i<m_resolution;i++)
 		{
-			active(i,0,0);
-			active(i,resminusone,resminusone);
-			active(i,0,resminusone);
-			active(i,resminusone,0);
+			activate(i,0,0);
+			activate(i,resminusone,resminusone);
+			activate(i,0,resminusone);
+			activate(i,resminusone,0);
 
-			active(0,i,0);
-			active(resminusone,i,resminusone);
-			active(0,i,resminusone);
-			active(resminusone,i,0);
+			activate(0,i,0);
+			activate(resminusone,i,resminusone);
+			activate(0,i,resminusone);
+			activate(resminusone,i,0);
 
-			active(0,0,i);
-			active(resminusone,resminusone,i);
-			active(resminusone,0,i);
-			active(0,resminusone,i);
+			activate(0,0,i);
+			activate(resminusone,resminusone,i);
+			activate(resminusone,0,i);
+			activate(0,resminusone,i);
 		}
 	}
 	
@@ -231,7 +175,7 @@ public:
 			{
 				for(z=0;z<m_resolution;z++)
 				{
-					if(center.distance(getBoxPosition(x, y, z))<radio)
+					if(center.distance(getVoxelPosition(x, y, z))<radio)
 					{
 						setElement(x,y,z,true);
 					}
@@ -271,39 +215,139 @@ public:
 				}
 	}
 
-	bool isActive( int x,  int y,  int z)
+	//!! 
+	void initialize(bool value = false)
+	{
+		bool *pb = m_data.get();
+		bool *lb = getLastByte();
+		
+		while(pb!=lb)
+		{
+			*pb = value;
+			pb++;
+		}
+	}
+	
+	unsigned int numActiveVoxels()
+	{
+		unsigned int av{0};
+		
+		bool *pb = m_data.get();
+		bool *lb = getLastByte();
+		
+		while(pb!=lb)
+		{
+			if(*pb)
+			{
+				av++;
+			}
+			
+			pb++;
+		}
+		
+		return av;
+	}
+
+	inline bool active( int x,  int y,  int z) const
 	{
 		return getElement(x,y,z);
 	}
+	
+	inline bool active(unsigned int idx) const
+	{
+		if (idx<m_resXresXres)
+			return m_data.get()[idx];
+		else
+			return false;
+	}
 
-	void active(const int x, const int y, const int z)
+	void activate(const int x, const int y, const int z)
 	{
 		setElement(x,y,z,true);
 	}
 
-	void desactive(const int x, const int y, const int z)
+	void deactivate(const int x, const int y, const int z)
 	{
 		setElement(x,y,z,false);
 	}
-	
+
+	bool* getLastByte() const
+	{
+		return m_data.get() + m_resXresXres;
+	}
+
+	// es necesario int ? mejor short?.
+	inline bool getElement(int x,int y,int z) const
+	{
+		auto p = x+(y*m_resolution)+(z*m_resXres);
+		return m_data.get()[p];
+	}
+
+	void setElement(int x, int y, int z, bool value)
+	{
+		bool *bit=m_data.get();
+		bit+=(x+(y*m_resolution)+(z*m_resXres));
+		*bit=value;
+	}
+
+	vxVector3d getVoxelPosition(int x, int y, int z) const
+	{
+		double retx = (m_position.x() - m_midSize) + (x * m_boxSize) + m_resDivTres;
+		double rety = (m_position.y() - m_midSize) + (y * m_boxSize) + m_resDivTres;
+		double retz = (m_position.z() - m_midSize) + (z * m_boxSize) + m_resDivTres;
+
+		return vxVector3d(retx, rety, retz);
+	}
+
+	vxVector3d getVoxelPosition(unsigned int idx) const
+	{
+		int retz = idx / m_resXres;
+		int rety = (idx - (retz * m_resXres)) / m_resolution;
+		int retx = idx - (rety * m_resolution);
+
+		return getVoxelPosition(retx, rety, retz);
+	}
+		
+	unsigned int indexAtPosition(vxVector3d pos) const
+	{
+		pos -= m_position;
+		
+		unsigned int idx = (pos.x() + m_midSize) * m_resolution;
+		idx += (pos.y() + m_midSize) * m_resolution * m_resolution;
+		idx += (pos.z() + m_midSize) * m_resolution * m_resolution * m_resolution;
+		return idx;
+	}
 	
 	//!! this shouldn't be like this
-	//! what a shame.
 	void getNearestCollision(const vxVector3d &ray, vxCollision &collide)
 	{
 		collide.initialize();
 
-		double x, y, z;
-
-		auto px = 0.0;
-
-		auto t = 0.0;
-
-		// parametric ecuation of the line solved.
-		t = (x - ray.getX()) / -ray.getX();
-		y = (t * -ray.getY()) + ray.getY();
-		z = (t * -ray.getZ()) + ray.getZ();
-
+		double z;
+		
+		vxBoxN *boxInstance;
+		for(z=m_position.z()-m_midSize;
+			z<m_position.z()+m_midSize;
+			z+=m_boxSize)
+		{
+			auto idx = indexAtPosition(MathUtils::rectAndZPlane(ray, z));
+			if(active(idx))
+			{
+				auto voxPos = getVoxelPosition(idx);
+				boxInstance = vxGlobal::getInstance()->getExistingtBox( voxPos, m_boxSize);
+				boxInstance->setShader( vxGlobal::getLambert() );
+				boxInstance->throwRay( ray, collide );
+				
+				if (collide.isValid()) 
+				{
+					return;
+				}
+				else
+				{
+					collide.setColor(255,0,0);
+				}
+			}
+		}
 		
 	}	
 
@@ -327,7 +371,7 @@ public:
 				{
 					if (getElement(x,y,z))
 					{
-						caja = vxGlobal::getInstance()->getExistingtBox( getBoxPosition(x, y, z), m_boxSize);
+						caja = vxGlobal::getInstance()->getExistingtBox( getVoxelPosition(x, y, z), m_boxSize);
 						caja->setShader( vxGlobal::getLambert() );
 						caja->throwRay( ray, collide );
 						
@@ -370,11 +414,7 @@ public:
 
 		if (collide.isValid()) 
 		{
-			//collide.setColor(22,22,22);
-			//if (getRandom() && getRandom())
-			getNearestCollision(ray, collide);
-			//else
-			//	collide.setColor(212,21,255);
+			getNearestCollisionBF(ray, collide);
 			return 1;
 		}
 		else
@@ -382,7 +422,6 @@ public:
 			collide.initialize();
 			return 0;
 		}
-
 	}
 };
 }
