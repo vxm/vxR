@@ -178,12 +178,12 @@ public:
 
 	// funcion de acceso, mas adelante cuestionar si seria, o no, mejor 
 	// calcular la matriz siempre al principio, en un actualize.
-	inline double getPoint0() {	return m_bs[0] ? m_ps[0] : m_bs[0]=true, m_ps[0]=m_position.getX()-(m_apot); }
-	inline double getPoint1() {	return m_bs[1] ? m_ps[1] : m_bs[1]=true, m_ps[1]=m_position.getY()-(m_apot); }
-	inline double getPoint2() {	return m_bs[2] ? m_ps[2] : m_bs[2]=true, m_ps[2]=m_position.getZ()-(m_apot); }
-	inline double getPoint3() {	return m_bs[3] ? m_ps[3] : m_bs[3]=true, m_ps[3]=m_position.getX()+(m_apot); }
-	inline double getPoint4() {	return m_bs[4] ? m_ps[4] : m_bs[4]=true, m_ps[4]=m_position.getY()+(m_apot); }
-	inline double getPoint5() {	return m_bs[5] ? m_ps[5] : m_bs[5]=true, m_ps[5]=m_position.getZ()+(m_apot); }
+	inline double getPoint0() {	return m_bs[0] ? m_ps[0] : m_bs[0]=true, m_ps[0]=m_position.x()-(m_apot); }
+	inline double getPoint1() {	return m_bs[1] ? m_ps[1] : m_bs[1]=true, m_ps[1]=m_position.y()-(m_apot); }
+	inline double getPoint2() {	return m_bs[2] ? m_ps[2] : m_bs[2]=true, m_ps[2]=m_position.z()-(m_apot); }
+	inline double getPoint3() {	return m_bs[3] ? m_ps[3] : m_bs[3]=true, m_ps[3]=m_position.x()+(m_apot); }
+	inline double getPoint4() {	return m_bs[4] ? m_ps[4] : m_bs[4]=true, m_ps[4]=m_position.y()+(m_apot); }
+	inline double getPoint5() {	return m_bs[5] ? m_ps[5] : m_bs[5]=true, m_ps[5]=m_position.z()+(m_apot); }
 
 	virtual bool throwSpace(const vxVector3d &ray, vxCollision &collide)=0;
 
@@ -252,39 +252,39 @@ public:
 		{	
 			case 1:
 			{
-				double t=getPoint0()/ray.getX();
+				double t=getPoint0()/ray.x();
 
 				collide.setColor(0, 255, 0);
 				collide.setNormal(m_normals[2]);
-				collide.setPosition(getPoint0(),ray.getY()*t,ray.getZ()*t);
+				collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
-				collide.setU( (ray.getY() * t - getPoint1())  / m_size );
-				collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+				collide.setU( (ray.y() * t - getPoint1())  / m_size );
+				collide.setV( (ray.z() * t - getPoint2())  / m_size );
 				
 				return true;
 			}
 			case 2:
 			{
-				double t=getPoint1()/ray.getY();
+				double t=getPoint1()/ray.y();
 
 				collide.setColor(255, 0, 255);
 				collide.setNormal(m_normals[3]);
-				collide.setPosition(ray.getX()*t,getPoint1(),ray.getZ()*t);
+				collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
-				collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-				collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+				collide.setU( (ray.x() * t - getPoint0())  / m_size );
+				collide.setV( (ray.z() * t - getPoint2())  / m_size );
 				return true;
 			}
 			case 3:
 			{
-				double t=getPoint2()/ray.getZ();
+				double t=getPoint2()/ray.z();
 
 				collide.setColor(0, 0, 255);
 				collide.setNormal(m_normals[4]);
-				collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+				collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
-				collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-				collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+				collide.setU( (ray.x() * t - getPoint0())  / m_size );
+				collide.setV( (ray.y() * t - getPoint1())  / m_size );
 				return true;
 			}
 		}
@@ -346,27 +346,27 @@ public:
 			{	
 				case 1:
 					{
-						double t=getPoint0()/ray.getX();
+						double t=getPoint0()/ray.x();
 
 						collide.setColor(0, 255, 0);
 						collide.setNormal(m_normals[2]);
-						collide.setPosition(getPoint0(),ray.getY()*t,ray.getZ()*t);
+						collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
-						collide.setU( (ray.getY() * t - getPoint1())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.y() * t - getPoint1())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 						
 						return true;
 					}
 				case 2:
 					{
-						double t=getPoint4()/ray.getY();
+						double t=getPoint4()/ray.y();
 
 						collide.setColor(0, 255, 255);
 						collide.setNormal(m_normals[1]);
-						collide.setPosition(ray.getX()*t,getPoint4(),ray.getZ()*t);
+						collide.setPosition(ray.x()*t,getPoint4(),ray.z()*t);
 
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 
 						return true;
 
@@ -374,14 +374,14 @@ public:
 				
 				case 3:
 					{
-						double t=getPoint2()/ray.getZ();
+						double t=getPoint2()/ray.z();
 
 						collide.setColor(0, 0, 255);
 						collide.setNormal(m_normals[4]);
-						collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.y() * t - getPoint1())  / m_size );
 						return true;
 					}
 			}
@@ -447,40 +447,40 @@ public:
 			{	
 				case 1:
 					{
-						double t=getPoint3()/ray.getX();
+						double t=getPoint3()/ray.x();
 
 						collide.setColor(255, 255, 0);
 						collide.setNormal(m_normals[0]);
-						collide.setPosition(getPoint3(),ray.getY()*t,ray.getZ()*t);
+						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 						
-						collide.setU( (ray.getY() * t - getPoint1())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.y() * t - getPoint1())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 						
 						return true;
 					}
 				case 2:
 					{
-						double t=getPoint1()/ray.getY();
+						double t=getPoint1()/ray.y();
 
 						collide.setColor(255, 0, 255);
 						collide.setNormal(m_normals[3]);
-						collide.setPosition(ray.getX()*t,getPoint1(),ray.getZ()*t);
+						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 												
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 						return true;
 					}
 
 				case 3:
 					{
-						double t=getPoint2()/ray.getZ();
+						double t=getPoint2()/ray.z();
 
 						collide.setColor(0, 0, 255);
 						collide.setNormal(m_normals[4]);
-						collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.y() * t - getPoint1())  / m_size );
 						return true;
 					}
 			}
@@ -542,40 +542,40 @@ public:
 			{	
 				case 1:
 					{
-						double t=getPoint3()/ray.getX();
+						double t=getPoint3()/ray.x();
 
 						collide.setColor(255, 255, 0);
 						collide.setNormal(m_normals[0]);
-						collide.setPosition(getPoint3(),ray.getY()*t,ray.getZ()*t);
+						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 
-						collide.setU( (ray.getY() * t - getPoint1())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.y() * t - getPoint1())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 						
 						return true;
 					}
 				case 2:
 					{
-						double t=getPoint1()/ray.getY();
+						double t=getPoint1()/ray.y();
 
 						collide.setColor(0, 255, 255);
 						collide.setNormal(m_normals[1]);
-						collide.setPosition(ray.getX()*t,getPoint1(),ray.getZ()*t);
+						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 						
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 						return true;
 					}
 
 				case 3:
 					{
-						double t=getPoint2()/ray.getZ();
+						double t=getPoint2()/ray.z();
 
 						collide.setColor(0, 0, 255);
 						collide.setNormal(m_normals[4]);
-						collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());	
+						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());	
 						
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.y() * t - getPoint1())  / m_size );
 						return true;
 					}
 			}
@@ -636,27 +636,27 @@ public:
 			{	
 				case 3:
 					{
-						double t=getPoint1()/ray.getY();
+						double t=getPoint1()/ray.y();
 
 						collide.setColor(255, 0, 255);
 						collide.setNormal(m_normals[3]);
-						collide.setPosition(ray.getX()*t,getPoint1(),ray.getZ()*t);
+						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 						return true;
 					}
 
 				case 4:
 					{
-						double t=getPoint2()/ray.getZ();
+						double t=getPoint2()/ray.z();
 
 						collide.setColor(0, 0, 255);
 						collide.setNormal(m_normals[4]);
-						collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.y() * t - getPoint1())  / m_size );
 						return true;
 					}
 			}
@@ -717,28 +717,28 @@ public:
 			{	
 				case 1:
 					{
-						double t=getPoint3()/ray.getX();
+						double t=getPoint3()/ray.x();
 
 						collide.setColor(255, 255, 0);
 						collide.setNormal(m_normals[0]);
-						collide.setPosition(getPoint3(),ray.getY()*t,ray.getZ()*t);
+						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 
-						collide.setU( (ray.getY() * t - getPoint1())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.y() * t - getPoint1())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 						
 						return true;
 					}
 
 				case 2:
 					{
-						double t=getPoint2()/ray.getZ();
+						double t=getPoint2()/ray.z();
 
 						collide.setColor(0, 0, 255);
 						collide.setNormal(m_normals[4]);
-						collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.y() * t - getPoint1())  / m_size );
 						return true;
 					}
 			}
@@ -800,28 +800,28 @@ public:
 			{	
 				case 1:
 					{
-						double t=getPoint0()/ray.getX();
+						double t=getPoint0()/ray.x();
 
 						collide.setColor(0, 255, 0);
 						collide.setNormal(m_normals[2]);
-						collide.setPosition(getPoint0(),ray.getY()*t,ray.getZ()*t);
+						collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
-						collide.setU( (ray.getY() * t - getPoint1())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.y() * t - getPoint1())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 						
 						return true;
 					}
 
 				case 2:
 					{
-						double t=getPoint2()/ray.getZ();
+						double t=getPoint2()/ray.z();
 
 						collide.setColor(0, 0, 255);
 						collide.setNormal(m_normals[4]);
-						collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.y() * t - getPoint1())  / m_size );
 						
 						return true;
 					}
@@ -882,27 +882,27 @@ public:
 
 				case 2:
 					{
-						double t=getPoint2()/ray.getZ();
+						double t=getPoint2()/ray.z();
 
 						collide.setColor(0, 0, 255);
 						collide.setNormal(m_normals[4]);
-						collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.y() * t - getPoint1())  / m_size );
 
 						return true;
 					}
 				case 3:
 					{
-						double t=getPoint1()/ray.getY();
+						double t=getPoint1()/ray.y();
 
 						collide.setColor(0, 255, 255);
 						collide.setNormal(m_normals[1]);
-						collide.setPosition(ray.getX()*t,getPoint1(),ray.getZ()*t);
+						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
-						collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-						collide.setV( (ray.getZ() * t - getPoint2())  / m_size );
+						collide.setU( (ray.x() * t - getPoint0())  / m_size );
+						collide.setV( (ray.z() * t - getPoint2())  / m_size );
 
 						return true;
 					}
@@ -954,14 +954,14 @@ public:
 
 		if ((a=frontSigth(ray)) && (b=topSigth(ray))) // si lo ven pr
 		{
-			double t=getPoint2()/ray.getZ();
+			double t=getPoint2()/ray.z();
 
 			collide.setColor(0, 0, 255);
 			collide.setNormal(m_normals[4]);
-			collide.setPosition(ray.getX()*t,ray.getY()*t,getPoint2());
+			collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
-			collide.setU( (ray.getX() * t - getPoint0())  / m_size );
-			collide.setV( (ray.getY() * t - getPoint1())  / m_size );
+			collide.setU( (ray.x() * t - getPoint0())  / m_size );
+			collide.setV( (ray.y() * t - getPoint1())  / m_size );
 
 			return true;
 

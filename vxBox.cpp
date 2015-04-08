@@ -99,7 +99,7 @@ bool vxBox::inSightXY(vxVector3d ray)
 	
 	if (mina+PI<maxa) //qtb
 	{	
-		if (m_point[0].getX()>0) return true;
+		if (m_point[0].x()>0) return true;
 		else return (ray.angleXY()>m_point[0].angleXY() || ray.angleXY()<m_point[3].angleXY());
 	}
 	else
@@ -122,7 +122,7 @@ bool vxBox::inSightYZ(vxVector3d ray)
 	
 	if (mina+PI<maxa) //qtb
 	{	
-		if (m_point[0].getY()>0) return true;
+		if (m_point[0].y()>0) return true;
 		else return (ray.angleYZ()>m_point[0].angleYZ() || ray.angleYZ()<m_point[4].angleYZ());
 	}
 	else
@@ -145,7 +145,7 @@ bool vxBox::inSightZX(vxVector3d ray)
 	
 	if (mina+PI<maxa) //qtb
 	{	
-		if (m_point[0].getX()>0) return true;
+		if (m_point[0].x()>0) return true;
 		else return (ray.angleZX()>m_point[0].angleZX() || ray.angleZX()<m_point[3].angleZX());
 	}
 	else
