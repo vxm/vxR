@@ -5,27 +5,16 @@ namespace vxStorage {
 
 vxColor vxLambert::getColor(vxCollision &collide, double lumm)
 {
-/*
-	double intens = collide.getPosition().angle(vxVector3d(0,0,-1));
-	if (intens<0) intens=0;
-	if (intens>255) intens=255;
-	collide.setColor(255*intens, 255*intens, 255*intens);
-*/
 	auto distanceToCenter = 
 			vxVector2d(collide.getU()-.5,collide.getV()-.5).length();
-
-	/*if(distanciaCentro<.4)
-	{
-		collide.setNormal(collide.getNormal()+pow(distanciaCentro,2));
-	}*/
 
 	lumm = std::max(lumm, 0.0);
 
 	if(distanceToCenter<.3)
 	{
-		collide.setColor((1-distanceToCenter)*lumm*collide.getColor().getR(), 
-						 (1-distanceToCenter)*lumm*collide.getColor().getG(), 
-						 (1-distanceToCenter)*lumm*collide.getColor().getB());
+		collide.setColor(lumm*collide.getColor().getR(), 
+						 lumm*collide.getColor().getG(), 
+						 lumm*collide.getColor().getB());
 	}
 	else
 	{
