@@ -15,16 +15,7 @@ static const std::string baseName("image.1.bmp");
 
 int main(int argc, char *argv[])
 {
-
-	vxVector3d x(1,5,1);
-	auto d = 4.45;
-	auto r = MathUtils::rectAndXPlane(x, d);
-	
-	std::cout << "Rect " << x << std::endl;
-	std::cout << "intersects with planeX when x = " << d << std::endl;
-	std::cout << "on x = " << r << std::endl;
-	
-/*	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
+	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 	using render = vxCompute::vxRenderProcess;
 	timePoint start = std::chrono::system_clock::now();
 	
@@ -47,22 +38,22 @@ int main(int argc, char *argv[])
 	rp.createBucketList();
 	
 	
-	std::cout << "Starting render : " << vxTimeUtilities::decorateTime(start) << std::endl;
+	std::cout << "Starting render : " << TimeUtils::decorateTime(start) << std::endl;
 	
 	// executes the render.
 	rp.execute();
 	
 	std::cout << "Finished render : " 
-			<< vxTimeUtilities::decorateTime(start) << std::endl;
+			<< TimeUtils::decorateTime(start) << std::endl;
 
 	// generates an image buffer and fills it 
 	// with the render results. Buffer properties
 	// are based on ImageProperties stored in the 
 	// render process object.
 	auto bff = rp.generateImage();
-	
+
 	std::cout << "Ended creation of the image: " 
-			<< vxTimeUtilities::decorateTime(start) << std::endl;
+			<< TimeUtils::decorateTime(start) << std::endl;
 
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)
@@ -73,15 +64,16 @@ int main(int argc, char *argv[])
 					QImage::Format_RGBA8888);
 
 		std::string fileName = 
-				vxFileManager::makeUnique(baseName);
+				FileUtils::makeUnique(baseName);
 
 		img.save(QString(fileName.c_str()),"BMP");
 		
 		std::cout << "Finished image generation : " 
-				<< vxTimeUtilities::decorateTime(start) << std::endl;
+				<< TimeUtils::decorateTime(start) << std::endl;
 	}
-*/	
+
 	//return a.exec();
 	std::cout << "done!" << std::endl;
 	return 0;
 }
+
