@@ -310,7 +310,7 @@ public:
 		
 	unsigned int indexAtPosition(vxVector3d pos) const
 	{
-		pos -= m_position; 
+		pos -= (m_position-m_midSize); 
 
 		unsigned int idx = floor(pos.x());
 		idx += floor(pos.y()) * m_resolution;
