@@ -36,14 +36,45 @@ class MathUtils
 	static vxPoint rectAndXPlane(const vxVector3d &ray, double x)
 	{
 		// parametric ecuation of the line solved.
-		auto t = (x - ray.getX()) / -ray.getX();
-		auto y = t * -ray.getY() + ray.getY();
-		auto z = t * -ray.getZ() + ray.getZ();
+		auto t = (x - ray.x()) / -ray.x();
+		auto y = t * -ray.y() + ray.y();
+		auto z = t * -ray.z() + ray.z();
+
+		return vxPoint(x,y,z);
+	}
+	
+	static vxPoint rectAndYPlane(const vxVector3d &ray, double y)
+	{
+		// parametric ecuation of the line solved.
+		auto t = (y - ray.y()) / -ray.y();
+		auto x = t * -ray.x() + ray.x();
+		auto z = t * -ray.z() + ray.z();
+
+		return vxPoint(x,y,z);
+	}
+	
+	static vxPoint rectAndZPlane(const vxVector3d &ray, double z)
+	{
+		// parametric ecuation of the line solved.
+		auto t = (z - ray.z()) / -ray.z();
+		auto x = t * -ray.x() + ray.x();
+		auto y = t * -ray.y() + ray.y();
 
 		return vxPoint(x,y,z);
 	}
 
 		
 };
+
+
+/*
+ * 	vxVector3d x(1,5,1);
+	auto d = 4.45;
+	auto r = MathUtils::rectAndXPlane(x, d);
+
+	std::cout << "Rect " << x << std::endl;
+	std::cout << "intersects with planeX when x = " << d << std::endl;
+	std::cout << "on x = " << r << std::endl;
+*/
 
 #endif // MathUtils_H
