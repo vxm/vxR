@@ -36,7 +36,7 @@ public:
 
 	vxBoxN* getExistingtBox(vxVector3d position, const double size)
 	{
-		return getExistingtBox( position.getX(), position.getY(), position.getZ(), size);
+		return getExistingtBox( position.x(), position.y(), position.z(), size);
 	}
 
 	vxBoxN* getExistingtBox(const double x ,const double y, const double z, const double size)
@@ -117,7 +117,7 @@ public:
 
 	static vxBoxN* getBox(vxVector3d position, const double size)
 	{
-		return getBox( position.getX(), position.getY(), position.getZ(), size);
+		return getBox( position.x(), position.y(), position.z(), size);
 	}
 
 	static vxBoxN* getBox(const double x,

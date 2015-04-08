@@ -32,7 +32,7 @@ public:
 	
 	vxColor& operator=(const vxVector3d &otro)
 	{
-		set(otro.getX(), otro.getY(), otro.getZ());
+		set(otro.x(), otro.y(), otro.z());
 		return *this;
 	}
 	
