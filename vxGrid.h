@@ -295,15 +295,14 @@ public:
 		double retx = (m_position.x() - m_midSize) + (x * m_boxSize) + m_resDivTres;
 		double rety = (m_position.y() - m_midSize) + (y * m_boxSize) + m_resDivTres;
 		double retz = (m_position.z() - m_midSize) + (z * m_boxSize) + m_resDivTres;
-
 		return vxVector3d(retx, rety, retz);
 	}
 
 	vxVector3d getVoxelPosition(unsigned int idx) const
 	{
 		int retz = idx / m_resXres;
-		int rety = (idx - (retz * m_resXres)) / m_resolution;
-		int retx = idx - (rety * m_resolution);
+		int rety = (idx%m_resXres) / m_resolution;
+		int retx = idx % m_resolution;
 
 		return getVoxelPosition(retx, rety, retz);
 	}
@@ -326,12 +325,11 @@ public:
 		double z;
 		
 		vxBoxN *boxInstance;
-		for(z=m_position.z()-m_midSize;
-			z<m_position.z()+m_midSize;
-			z+=m_boxSize)
+		auto init = m_position.z()-m_midSize;
+		auto end = m_position.z()+m_midSize;
+		for(z=init; z<end; z+=m_boxSize)
 		{
 			auto idx = indexAtPosition(MathUtils::rectAndZPlane(ray, z+.1));
-			
 			if(active(idx))
 			{
 				auto voxPos = getVoxelPosition(idx);
