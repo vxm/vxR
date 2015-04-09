@@ -21,9 +21,7 @@ namespace vxStorage {
 struct Hit
 {
 	vxColor m_px;
-	double m_xcoef;
-	double m_ycoef;
-	
+	vxVector2d m_xyCoef;	
 //	std::shared_ptr<vxShader> m_sh;
 };
 
@@ -58,13 +56,12 @@ public:
 		return &m_pxs;
 	}
 	
-	void append(const vxColor &px, double x, double y)
+	void append(const vxColor &px, const vxVector2d &coord)
 	{
 		Hit h;
 		
 		h.m_px = px;
-		h.m_xcoef = x;
-		h.m_ycoef = y;
+		h.m_xyCoef = coord;
 		
 		//m_pxs.push_back(std::move(h));
 		m_pxs.push_back(h);
