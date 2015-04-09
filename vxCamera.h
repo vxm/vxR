@@ -66,14 +66,20 @@ public:
 		m_sampler.setSamples(m_nSamples);
 	}
 
+	vxVector2d getCoords() const
+	{
+		return vxVector2d( (m_sampler.x() + m_iteratorPosX) / (double)m_prop->rx()
+							,(m_sampler.y() + m_iteratorPosY) / (double)m_prop->ry());
+	}
+	
 	double getXCoord() const
 	{
-		return (m_sampler.getX() + m_iteratorPosX) / (double)m_prop->rx();
+		return (m_sampler.x() + m_iteratorPosX) / (double)m_prop->rx();
 	}
 	
 	double getYCoord() const
 	{
-		return (m_sampler.getY() + m_iteratorPosY) / (double)m_prop->ry();
+		return (m_sampler.y() + m_iteratorPosY) / (double)m_prop->ry();
 	}
 
 	void set(vxVector3d position, 
@@ -104,8 +110,8 @@ public:
 	vxVector3d givemeRay(double x, double y)
 	{
 		m_sampler.next();
-		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(float)(2 * m_prop->rx()) + m_sampler.getX()/(float)(m_prop->rx());
-		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(float)(2 * m_prop->ry()) + m_sampler.getY()/(float)(m_prop->ry());
+		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(float)(2 * m_prop->rx()) + m_sampler.x()/(float)(m_prop->rx());
+		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(float)(2 * m_prop->ry()) + m_sampler.y()/(float)(m_prop->ry());
 		return vxVector3d( compY , compX , m_focusDistance );
 	}
 	
@@ -159,7 +165,7 @@ public:
 		m_chPix=true;
 
 		vxVector3d ret = givemeRay( getXCoord(), getYCoord() );
-		//ret.rotateX(.291);
+		ret.rotateX(.291);
 		return ret;
 	}
 
