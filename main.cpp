@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(780, 780));
+			imgDesc(new vxStorage::ImageProperties(2380, 2380));
 
 	// create the render process
 	render rp(imgDesc);
