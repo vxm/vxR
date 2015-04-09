@@ -39,9 +39,10 @@ public:
 		}
 	};
 
-	double getX() const 
+	double x() const
 		{return m_x[m_iter];}
-	double getY() const
+	
+	double y() const
 		{return m_y[m_iter];}
 
 	void setSamples(unsigned int samples)
