@@ -72,12 +72,12 @@ public:
 		yi=m_y;
 	}
 
-	double getX() const
+	double x() const
 	{
 		return m_x;
 	}
 	
-	double getY() const
+	double y() const
 	{
 		return m_y;
 	}
@@ -106,17 +106,17 @@ public:
 	vxVector2d operator+(float factor) const {return vxVector2d(factor+m_x,factor+m_y);}
 	vxVector2d operator+(int factor) const {return vxVector2d(factor+m_x,factor+m_y);}
 
-	vxVector2d operator-(vxVector2d entrada) const {return vxVector2d(m_x-entrada.getX(),m_y-entrada.getY());}
+	vxVector2d operator-(vxVector2d entrada) const {return vxVector2d(m_x-entrada.x(),m_y-entrada.y());}
 	vxVector2d operator-(double factor) const {return vxVector2d(m_x-factor,m_y-factor);}
 	vxVector2d operator-(float factor) const {return vxVector2d(m_x-factor,m_y-factor);}
 	vxVector2d operator-(int factor) const {return vxVector2d(m_x-factor,m_y-factor);}
 
-	vxVector2d operator*(vxVector2d entrada) const {return vxVector2d(entrada.getX()*m_x,entrada.getY()*m_y);}
+	vxVector2d operator*(vxVector2d entrada) const {return vxVector2d(entrada.x()*m_x,entrada.y()*m_y);}
 	vxVector2d operator*(double factor) const {return vxVector2d(factor*m_x,factor*m_y);}
 	vxVector2d operator*(float factor) const {return vxVector2d(factor*m_x,factor*m_y);}
 	vxVector2d operator*(int factor) const {return vxVector2d(factor*m_x,factor*m_y);}
 
-	vxVector2d operator/(vxVector2d entrada) const {return vxVector2d(entrada.getX()/m_x,entrada.getY()/m_y);}
+	vxVector2d operator/(vxVector2d entrada) const {return vxVector2d(entrada.x()/m_x,entrada.y()/m_y);}
 	vxVector2d operator/(double factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
 	vxVector2d operator/(float factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
 	vxVector2d operator/(int factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
