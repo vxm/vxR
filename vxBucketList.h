@@ -46,9 +46,9 @@ public:
 	{
 	}
 	
-	void append(const vxColor &px, double hx, double hy)
+	void append(const vxColor &px, const vxVector2d &coords)
 	{
-		m_pb.append(px, hx, hy);
+		m_pb.append(px, coords);
 	}
 };
 
