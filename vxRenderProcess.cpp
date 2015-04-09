@@ -50,14 +50,14 @@ vxStatus::code vxRenderProcess::execute()
 
 	cam.set(vxVector3d(0,0,0),
 			vxVector3d(0,0,1),
-						0.8);
+						1.23);
 
 	cam.setPixelSamples(1);
 	
 	// this is the grid object
-	vxGrid mat(0.0, 0.0, 48.0,  30.0); // Position, size
-	mat.setResolution(30);
-	mat.createSphere(0.0, 0.0, 48.0,  12.2); // Position, radius
+	vxGrid mat(73.0, 0.0, 390.0,  340.0); // Position, size
+	mat.setResolution(340);
+	mat.createSphere(73.0, 0.0, 390.0,  150.2); // Position, radius
 	mat.createEdges(); // of the grid
 
 #ifdef _DEBUG
@@ -71,8 +71,7 @@ vxStatus::code vxRenderProcess::execute()
 	while(!cam.rayIsDone())
 	{
 		// this should get double
-		auto xCoord = cam.getXCoord();
-		auto yCoord = cam.getYCoord();
+		auto coord = cam.getCoords();
 		
 /*_		assert(xCoord<0.0);
 		assert(yCoord<0.0);
@@ -80,7 +79,7 @@ vxStatus::code vxRenderProcess::execute()
 		assert(yCoord>=m_imageProperties->ry());
 */		
 		//TODO: return this to smart pointer.
-		auto bk = m_bucketList.getBucket(xCoord, yCoord);
+		auto bk = m_bucketList.getBucket(coord.x(), coord.y());
 		vxCollision collide;
 
 		cam.resetPixel();
@@ -92,7 +91,7 @@ vxStatus::code vxRenderProcess::execute()
 			
 			if (collide.isValid())
 			{
-				bk->append(collide.getColor(), xCoord, yCoord);
+				bk->append(collide.getColor(), coord);
 			}
 		}
 	}// end camera loop
@@ -154,8 +153,8 @@ vxRenderProcess::generateImage()
 		for(uint j=0;j<sz;j++)
 		{
 			Hit &h = (*bk)[j];
-			unsigned int compX = (h.m_ycoef * (prop->rx()-1));
-			unsigned int compY = (h.m_xcoef * (prop->ry()-1));
+			unsigned int compX = (h.m_xyCoef.y() * (prop->rx()-1));
+			unsigned int compY = (h.m_xyCoef.x() * (prop->ry()-1));
 			unsigned int dist = (compX + (compY * prop->rx())) * prop->numChannels();
 			//assert(dist && dist<=numElements);
 			h.m_px.toRGBA8888(buff + dist);
