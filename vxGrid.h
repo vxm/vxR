@@ -403,7 +403,7 @@ public:
 
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	int throwRay(vxVector3d &ray, vxCollision &collide)
+	int throwRay(const vxVector3d &ray, vxCollision &collide)
 	{ 
 		if (!m_boundingBox) 
 			return 0;
