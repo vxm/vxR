@@ -13,11 +13,11 @@
 #include <vxGrid.h>
 
 static const std::string baseName("image.1.bmp");
+using timePoint = std::chrono::time_point<std::chrono::system_clock>;
+using render = vxCompute::vxRenderProcess;
 
 int main(int argc, char *argv[])
 {
-	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
-	using render = vxCompute::vxRenderProcess;
 	timePoint start = std::chrono::system_clock::now();
 	
 	std::cout << "Start program" << std::endl;
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	// if buffer is created it will then be used to store 
 	// the render while rendering.
 	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(2380, 2380));
+			imgDesc(new vxStorage::ImageProperties(380, 380));
 
 	// create the render process
 	render rp(imgDesc);
