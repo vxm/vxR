@@ -73,10 +73,10 @@ public:
 		actualize();
 	};
 
-	bool inSight(vxVector3d ray);
-	bool inSightXY(vxVector3d ray);
-	bool inSightYZ(vxVector3d ray);
-	bool inSightZX(vxVector3d ray);
+	bool inSight(const vxVector3d &ray);
+	bool inSightXY(const vxVector3d &ray);
+	bool inSightYZ(const vxVector3d &ray);
+	bool inSightZX(const vxVector3d &ray);
 
 	vxCollision throwRay(const vxVector3d &ray);
 	virtual void throwXY(const vxVector3d &ray, vxCollision &collision) = 0;
@@ -532,7 +532,7 @@ public:
 	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b,c;
-
+//previ
 		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 		{
 			m_inormal = (a==2 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;

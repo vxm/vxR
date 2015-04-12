@@ -85,7 +85,7 @@ bool vxBox::inSighte(const vxVector3d &ray, vxVector3d &normal)
 }
 
 
-bool vxBox::inSightXY(vxVector3d ray)
+bool vxBox::inSightXY(const vxVector3d &ray)
 {
 	double mina, maxa;
 	double ang;
@@ -108,7 +108,7 @@ bool vxBox::inSightXY(vxVector3d ray)
 	}
 }
 
-bool vxBox::inSightYZ(vxVector3d ray)
+bool vxBox::inSightYZ(const vxVector3d &ray)
 {
 	double mina, maxa;
 	double ang;
@@ -131,7 +131,7 @@ bool vxBox::inSightYZ(vxVector3d ray)
 	}
 }
 
-bool vxBox::inSightZX(vxVector3d ray)
+bool vxBox::inSightZX(const vxVector3d &ray)
 {
 	double mina, maxa;
 	double ang;
@@ -154,7 +154,7 @@ bool vxBox::inSightZX(vxVector3d ray)
 	}
 }
 
-bool vxBox::inSight(vxVector3d ray)
+bool vxBox::inSight(const vxVector3d &ray)
 {
 	return (inSightXY(ray) && inSightYZ(ray) && inSightZX(ray));
 }
