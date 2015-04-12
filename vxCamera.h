@@ -1,4 +1,4 @@
-#ifndef _VXPXBUFFERMC_
+﻿#ifndef _VXPXBUFFERMC_
 #define _VXPXBUFFERMC_
 
 
@@ -159,8 +159,6 @@ public:
 			m_iteratorPosY++;
 			m_iteratorPosX = 0;
 		}
-		
-		
 
 		m_chPix=true;
 
@@ -190,11 +188,19 @@ public:
 		yrv=((rand()/double(RAND_MAX)))/700.0;
 		xrv=((rand()/double(RAND_MAX)))/700.0;
 		return vxVector3d(tan(m_horizontalAperture/2.0) * (((y+yrv)*2)-1) ,tan(m_verticalAperture/2)*(((x+xrv)*2.0)-1), m_focusDistance);
-
 	}
-	std::shared_ptr<const ImageProperties> prop() const;
-	void setProp(std::shared_ptr<const ImageProperties> prop);
+	
+	std::shared_ptr<const ImageProperties> prop() const
+	{
+		return m_prop;
+	}
+	
+	void setProp(std::shared_ptr<const ImageProperties> prop)
+	{
+		m_prop = prop;
+	}
 };
 
-#endif // VXPXCAMERA
 }
+#endif // VXPXCAMERA
+
