@@ -24,6 +24,16 @@ void vxRenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> 
 	m_imageProperties = imageProperties;
 }
 
+
+std::shared_ptr<vxScene> vxRenderProcess::scene() const
+{
+	return m_scene;
+}
+
+void vxRenderProcess::setScene(const std::shared_ptr<vxScene> &scene)
+{
+	m_scene = scene;
+}
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
 {
 	if(p!=nullptr)
@@ -46,48 +56,26 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 
 vxStatus::code vxRenderProcess::execute()
 {
-	vxCamera cam(imageProperties());
-
-	cam.set(vxVector3d(0,0,0),
-			vxVector3d(0,0,1),
-						1.23);
-
-	cam.setPixelSamples(1);
 	
-	// this is the grid object
-	vxGrid mat(73.0, 0.0, 390.0,  340.0); // Position, size
-	mat.setResolution(340);
-	mat.createSphere(73.0, 0.0, 390.0,  150.2); // Position, radius
-	mat.createEdges(); // of the grid
-
-#ifdef _DEBUG
-	auto na = mat.numActiveVoxels();
-	std::cout << "Number of active voxels " << na << std::endl;
-#endif
-
 	vxColor color;
 
+	auto cam = scene()->defaultCamera();
 	// camera throwing rays.
-	while(!cam.rayIsDone())
+	while(!cam->rayIsDone())
 	{
 		// this should get double
-		auto coord = cam.getCoords();
-		
-/*_		assert(xCoord<0.0);
-		assert(yCoord<0.0);
-		assert(yCoord>=m_imageProperties->rx());
-		assert(yCoord>=m_imageProperties->ry());
-*/		
+		auto coord = cam->getCoords();
+
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(coord.x(), coord.y());
 		vxCollision collide;
 
-		cam.resetPixel();
+		cam->resetPixel();
 		// on eachpixel.
-		while( !cam.pixIsDone() )
+		while( !cam->pixIsDone() )
 		{
-			auto ray = cam.nextRay();
-			mat.throwRay(ray, collide );
+			auto ray = cam->nextRay();
+			scene()->throwRay(ray, collide );
 			
 			if (collide.isValid())
 			{
