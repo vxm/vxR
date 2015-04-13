@@ -11,29 +11,6 @@
 
 namespace vxCompute 
 {
-
-
-
-std::shared_ptr<const ImageProperties> vxRenderProcess::imageProperties() const
-{
-	return m_imageProperties;
-}
-
-void vxRenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> imageProperties)
-{
-	m_imageProperties = imageProperties;
-}
-
-
-std::shared_ptr<vxScene> vxRenderProcess::scene() const
-{
-	return m_scene;
-}
-
-void vxRenderProcess::setScene(const std::shared_ptr<vxScene> &scene)
-{
-	m_scene = scene;
-}
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
 {
 	if(p!=nullptr)
@@ -56,7 +33,6 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 
 vxStatus::code vxRenderProcess::execute()
 {
-	
 	vxColor color;
 
 	auto cam = scene()->defaultCamera();
@@ -74,8 +50,7 @@ vxStatus::code vxRenderProcess::execute()
 		// on eachpixel.
 		while( !cam->pixIsDone() )
 		{
-			auto ray = cam->nextRay();
-			scene()->throwRay(ray, collide );
+			scene()->throwRay(cam->nextRay(), collide);
 			
 			if (collide.isValid())
 			{

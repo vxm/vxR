@@ -50,11 +50,23 @@ public:
 	void createBucketList();
 	const unsigned char *generateImage();
 
-	std::shared_ptr<const ImageProperties> imageProperties() const;
+	std::shared_ptr<const ImageProperties> imageProperties() const
+	{
+		return m_imageProperties;
+	}
 
-	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties);
-	std::shared_ptr<vxScene> scene() const;
-	void setScene(const std::shared_ptr<vxScene> &scene);
+	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties)
+	{
+		m_imageProperties = imageProperties;
+	}
+	std::shared_ptr<vxScene> scene() const
+	{
+		return m_scene;
+	}
+	void setScene(const std::shared_ptr<vxScene> &scene)
+	{
+		m_scene = scene;
+	}
 };
 
 #endif // VXRENDERPROCESS_H

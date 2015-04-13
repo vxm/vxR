@@ -35,7 +35,7 @@ public:
 		: m_prop(prop)
 	{
 		m_light.reset(new vxPointLight);
-		m_light->setPosition( 0 , 15 , 0 );
+		m_light->setPosition( 5 , 15 , 0 );
 		
 		m_shader.reset(new vxLambert);
 		
@@ -54,10 +54,9 @@ public:
 
 	std::shared_ptr<vxCamera>
 	createCamera(const vxMatrix &transform,
-					  unsigned int samples = 1,
-					  double hAperture = 0.0,
-					  double vAperture = 0.0
-					  )
+					unsigned int samples = 1,
+					double hAperture = 0.0,
+					double vAperture = 0.0)
 	{
 		vxCamera cam(m_prop);
 	
@@ -75,11 +74,12 @@ public:
 	std::shared_ptr<vxGrid>
 	createGrid()
 	{
-		
 		// this is the grid object
-		m_grids.push_back(std::make_shared<vxGrid>(3.0, -1.0, 30.0,  10.0));
-		m_grids[0]->setResolution(10);
-		m_grids[0]->createSphere(3.0, -1.0, 30.0,  3.2); // Position, radius
+		m_grids.push_back(std::make_shared<vxGrid>(13.0, -5.0, 60.0, 25.0));
+		m_grids[0]->setResolution(25);
+		m_grids[0]->createSphere(13.0, -5.0, 60.0,  7.2); // Position, radius
+		m_grids[0]->createSphere(48.0, -5.0, 60.0,  4.2); // Position, radius
+		
 		m_grids[0]->createEdges(); // of the grid
 	
 	#ifdef _DEBUG
