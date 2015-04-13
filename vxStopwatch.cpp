@@ -1,5 +1,3 @@
-#include "vxStopwatcher.h"
+#include "vxStopwatch.h"
 
-vxStopwatcher::vxStopwatcher()
-{
-}
+
