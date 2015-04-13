@@ -179,10 +179,6 @@ public:
 					{
 						setElement(x,y,z,true);
 					}
-					else
-					{
-						setElement(x,y,z,false);
-					}
 				}
 			}
 		}
@@ -210,16 +206,14 @@ public:
 				{
 					if( getRandom() && getRandom())
 						setElement(x,y,z,true);
-					else
-						setElement(x,y,z,false);
 				}
 	}
 
-	//!! 
+	//sets every single vxl to 0.
 	void initialize(bool value = false)
 	{
 		bool *pb = m_data.get();
-		bool *lb = getLastByte();
+		bool *lb = getLastBit();
 		
 		while(pb!=lb)
 		{
@@ -228,12 +222,13 @@ public:
 		}
 	}
 	
+	//returns number of active voxels
 	unsigned int numActiveVoxels()
 	{
 		unsigned int av{0};
 		
 		bool *pb = m_data.get();
-		bool *lb = getLastByte();
+		bool *lb = getLastBit();
 		
 		while(pb!=lb)
 		{
@@ -248,11 +243,13 @@ public:
 		return av;
 	}
 
+	// returns true if voxel at x y z is active
 	inline bool active( int x,  int y,  int z) const
 	{
 		return getElement(x,y,z);
 	}
 	
+	// returns true if voxel at index is active
 	inline bool active(unsigned int idx) const
 	{
 		if (idx<m_resXresXres)
@@ -261,28 +258,34 @@ public:
 			return false;
 	}
 
+	// sets active voxel at coordinates x y z
 	void activate(const int x, const int y, const int z)
 	{
 		setElement(x,y,z,true);
 	}
 
+	// sets unactive vxl at coordinates x y z
 	void deactivate(const int x, const int y, const int z)
 	{
 		setElement(x,y,z,false);
 	}
 
-	bool* getLastByte() const
+	// returns a pointer to the last bit 
+	bool* getLastBit() const
 	{
 		return m_data.get() + m_resXresXres;
 	}
 
-	// es necesario int ? mejor short?.
+	// returns true if element at local coords 
+	// is true
 	inline bool getElement(int x,int y,int z) const
 	{
 		auto p = x+(y*m_resolution)+(z*m_resXres);
 		return m_data.get()[p];
 	}
 
+	// changes the value of the element at local
+	// coords x y z to be same as parameter value
 	void setElement(int x, int y, int z, bool value)
 	{
 		bool *bit=m_data.get();
@@ -317,19 +320,19 @@ public:
 		return idx;
 	}
 	
+	
 	//!! this shouldn't be like this
 	void getNearestCollision(const vxVector3d &ray, vxCollision &collide)
 	{
 		collide.initialize();
-
-		double z;
 		
-		vxBoxN *boxInstance;
-		auto init = m_position.z()-m_midSize;
-		auto end = m_position.z()+m_midSize;
-		for(z=init; z<end; z+=m_boxSize)
+		vxBoxN *boxInstance = nullptr;
+		auto init = m_position.z() - m_midSize;
+		auto end = m_position.z() + m_midSize;
+		for(double z=init; z<end; z+= m_boxSize)
 		{
-			auto idx = indexAtPosition(MathUtils::rectAndZPlane(ray, z+.1));
+			auto idx = indexAtPosition(MathUtils::rectAndZPlane(ray, z));
+
 			if(active(idx))
 			{
 				auto voxPos = getVoxelPosition(idx);
@@ -341,16 +344,11 @@ public:
 				{
 					return;
 				}
-				else
-				{
-					collide.setColor(255,0,0);
-				}
 			}
 		}
-		
 	}	
 
-	//!! Brute Force search.
+	//!!	Brute Force search.
 	//! what a shame.
 	void getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide)
 	{
