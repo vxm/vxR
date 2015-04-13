@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     TimeUtils.cpp \
     FileUtils.cpp \
     MathUtils.cpp \
-    vxColor.cpp
+    vxColor.cpp \
+    vxStopwatch.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -74,7 +75,8 @@ HEADERS  += \
     TimeUtils.h \
     MathUtils.h \
     FileUtils.h \
-    vxColor.h
+    vxColor.h \
+    vxStopwatch.h
 
 FORMS    += vxrendermain.ui
 
