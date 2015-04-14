@@ -50,6 +50,12 @@ protected:
 	// cache objects
 	unsigned int m_resXres		= {25};
 	unsigned int m_resXresXres	= {125};
+	double m_xmin		= {0.0};
+	double m_xmax		= {0.0};
+	double m_ymin		= {0.0};
+	double m_ymax		= {0.0};
+	double m_zmin		= {0.0};
+	double m_zmax		= {0.0};
 
 public:
 
@@ -100,6 +106,14 @@ public:
 		//invRes=1/resolution;
 		m_resDivTres = m_midSize/(double)m_resolution;
 		setBoxSize();
+		
+		m_xmin = m_position.x() - m_midSize;
+		m_xmax = m_position.x() + m_midSize;
+		m_ymin = m_position.y() - m_midSize;
+		m_ymax = m_position.y() + m_midSize;
+		m_zmin = m_position.z() - m_midSize;
+		m_zmax = m_position.z() + m_midSize;
+		
 	}
 	
 	void setResolution(unsigned int resolution)
@@ -319,7 +333,13 @@ public:
 		idx += floor(pos.z()) * m_resXres;
 		return idx;
 	}
-	
+
+	bool inGrid(const vxVector3d &pnt) const
+	{
+		return pnt.x()<=m_xmax && pnt.x()>=m_xmin
+				&& pnt.y()<=m_ymax && pnt.y()>=m_ymin
+				&& pnt.z()<=m_zmax && pnt.z()>=m_zmin;
+	}
 	
 	//!! this shouldn't be like this
 	void getNearestCollision(const vxVector3d &ray, vxCollision &collide)
@@ -327,26 +347,58 @@ public:
 		collide.initialize();
 		
 		vxBoxN *boxInstance = nullptr;
-		auto init = m_position.z() - m_midSize;
-		auto end = m_position.z() + m_midSize;
-		for(double z=init; z<end; z+= m_boxSize)
+		vxVector3d min(m_zmax, m_ymax, m_xmax);
+		
+		bool found = false;
+		double z=m_zmin;
+		while(z<m_zmax && !found)
 		{
-			auto idx = indexAtPosition(MathUtils::rectAndZPlane(ray, z));
+			auto pnt = MathUtils::rectAndZPlane(ray, z);
+			if(!inGrid(pnt))
+			{
+				z+= m_boxSize;
+				continue;
+			}
 
+			auto idx = indexAtPosition(pnt);
+
+			vxVector3d prev = min;
+			min = getVoxelPosition(idx);
 			if(active(idx))
 			{
-				auto voxPos = getVoxelPosition(idx);
-				boxInstance = vxGlobal::getInstance()->getExistingtBox( voxPos, m_boxSize);
-				boxInstance->setShader( vxGlobal::getLambert() );
-				boxInstance->throwRay( ray, collide );
-				
-				if (collide.isValid())
+				if(min.x()!=prev.x())
 				{
-					return;
+					auto prvVoxl = vxVector3d(min.x(), prev.y(), prev.z());
+					auto idx2 = indexAtPosition(prvVoxl);
+					if(active(idx2))
+					{
+						min = prvVoxl;
+					}
 				}
+				else if(min.y()!=prev.y())
+				{
+					auto prvVoxl = vxVector3d(prev.x(), min.y(), prev.z());
+					auto idx2 = indexAtPosition(prvVoxl);
+					if(active(idx2))
+					{
+						min = prvVoxl;
+					}
+				}
+				
+				found=true;
+				continue;
 			}
+			
+			z+= m_boxSize;
 		}
-	}	
+		
+		if(found)
+		{
+			boxInstance = vxGlobal::getInstance()->getExistingtBox( min, m_boxSize);
+			boxInstance->setShader( vxGlobal::getLambert() );
+			boxInstance->throwRay( ray, collide );
+		}
+	}
 
 	//!!	Brute Force search.
 	//! what a shame.
