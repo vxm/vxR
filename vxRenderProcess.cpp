@@ -39,7 +39,6 @@ vxStatus::code vxRenderProcess::execute()
 	// camera throwing rays.
 	while(!cam->rayIsDone())
 	{
-		// this should get double
 		auto coord = cam->getCoords();
 
 		//TODO: return this to smart pointer.

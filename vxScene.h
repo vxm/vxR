@@ -75,10 +75,19 @@ public:
 	createGrid()
 	{
 		// this is the grid object
-		m_grids.push_back(std::make_shared<vxGrid>(13.0, -5.0, 60.0, 25.0));
-		m_grids[0]->setResolution(25);
-		m_grids[0]->createSphere(13.0, -5.0, 60.0,  7.2); // Position, radius
-		m_grids[0]->createSphere(48.0, -5.0, 60.0,  4.2); // Position, radius
+		double resl = 222.0;
+		
+		// this is a hardcode program to test the rays. 
+		//TODO:get rid of this hard-coded values.
+		m_grids.push_back(std::make_shared<vxGrid>(resl/3.0, 2.0, (resl*2.20), resl));
+		m_grids[0]->setResolution(resl);
+		m_grids[0]->createSphere(resl-3, 2.0, (resl*2.20),  (resl/3.0)); // Position, radius
+		m_grids[0]->createSphere(16.0, 2.0, (resl*2.20),  (resl/2.0)); // Position, radius
+
+		m_grids[0]->createSphere(55, 44, 79,  7); // Position, radius
+		m_grids[0]->createSphere(-15, 44, 79,  7); // Position, radius
+		m_grids[0]->createSphere(25, -4, 9,  7); // Position, radius
+		m_grids[0]->createSphere(25, -4, 24,  7); // Position, radius
 		
 		m_grids[0]->createEdges(); // of the grid
 	

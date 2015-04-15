@@ -33,7 +33,7 @@ public:
 	vxBoxN12 m_num12;
 	vxBoxN16 m_num16;
 	vxBoxN24 m_num24;
-
+	
 	vxBoxN* getExistingtBox(vxVector3d position, const double size)
 	{
 		return getExistingtBox( position.x(), position.y(), position.z(), size);
