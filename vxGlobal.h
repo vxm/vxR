@@ -111,7 +111,7 @@ public:
 		{
 			return sLambert;
 		}
-		sLambert.reset(new vxLambert());
+		sLambert = std::make_shared<vxLambert>();
 		return sLambert;
 	}
 
