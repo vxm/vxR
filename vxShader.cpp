@@ -24,12 +24,11 @@ vxColor vxLambert::getColor(vxCollision &collide, double lumm)
 		}
 		else
 		{
-			if ( (collide.getU()<.01 || collide.getU()>.99) 
-				 || (collide.getV()<.01 || collide.getV()>.99))
+			constexpr const double margn = 0.03;
+			if ( (collide.getU()<margn || collide.getU()>(1-margn)) 
+				 || (collide.getV()<margn || collide.getV()>(1-margn)))
 			{
-				double incanden=1/1.7;
-				double sum=(lumm*incanden)+(1-incanden);
-				collide.setColor(255*sum, 255*sum, 255*sum);
+				collide.setColor(lumm*22, lumm*23, lumm*29);
 			}
 			else
 			{
