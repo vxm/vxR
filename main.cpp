@@ -26,11 +26,9 @@ int main(int argc, char *argv[])
 	vxRenderMain w;
 	//w.show();
 	
-	// if buffer is created it will then be used to store 
-	// the render while rendering.
-	std::shared_ptr<vxStorage::ImageProperties> 
-			imgDesc(new vxStorage::ImageProperties(8680, 8680));
-
+	// Img properties for render.
+	auto imgDesc = std::make_shared<vxStorage::ImageProperties>(1900, 1900);
+	
 	// create the render process
 	render rp(imgDesc);
 	
