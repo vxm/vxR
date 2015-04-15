@@ -41,7 +41,7 @@ protected:
 	unsigned int m_resolution	= {5};
 	double m_invRes				= {1/5.0};
 
-	std::unique_ptr<bool[]> m_data;
+	std::vector<bool>		 m_data;
 	std::unique_ptr<vxBoxN> m_boundingBox;
 
 	double m_resDivTres	= {m_size/3.0};
@@ -102,7 +102,7 @@ public:
 		m_resXres=resolution*resolution;
 		m_resXresXres=m_resXres*resolution;
 		//m_data=(bool*)malloc(sizeof(bool)*m_resXresXres);
-		m_data.reset(new bool[m_resXresXres]);
+		m_data.resize(m_resXresXres, false);
 		//invRes=1/resolution;
 		m_resDivTres = m_midSize/(double)m_resolution;
 		setBoxSize();
@@ -226,13 +226,9 @@ public:
 	//sets every single vxl to 0.
 	void initialize(bool value = false)
 	{
-		bool *pb = m_data.get();
-		bool *lb = getLastBit();
-		
-		while(pb!=lb)
+		for(int i=0;i<m_data.size();i++)
 		{
-			*pb = value;
-			pb++;
+			m_data[i]=false;
 		}
 	}
 	
@@ -241,17 +237,10 @@ public:
 	{
 		unsigned int av{0};
 		
-		bool *pb = m_data.get();
-		bool *lb = getLastBit();
-		
-		while(pb!=lb)
+		for(int i=0;i<m_data.size();i++)
 		{
-			if(*pb)
-			{
+			if(m_data[i])
 				av++;
-			}
-			
-			pb++;
 		}
 		
 		return av;
@@ -267,7 +256,7 @@ public:
 	inline bool active(unsigned int idx) const
 	{
 		if (idx<m_resXresXres)
-			return m_data.get()[idx];
+			return m_data[idx];
 		else
 			return false;
 	}
@@ -284,27 +273,19 @@ public:
 		setElement(x,y,z,false);
 	}
 
-	// returns a pointer to the last bit 
-	bool* getLastBit() const
-	{
-		return m_data.get() + m_resXresXres;
-	}
-
 	// returns true if element at local coords 
 	// is true
 	inline bool getElement(int x,int y,int z) const
 	{
 		auto p = x+(y*m_resolution)+(z*m_resXres);
-		return m_data.get()[p];
+		return m_data[p];
 	}
 
 	// changes the value of the element at local
 	// coords x y z to be same as parameter value
-	void setElement(int x, int y, int z, bool value)
+	inline void setElement(int x, int y, int z, bool value)
 	{
-		bool *bit=m_data.get();
-		bit+=(x+(y*m_resolution)+(z*m_resXres));
-		*bit=value;
+		m_data[x+(y*m_resolution)+(z*m_resXres)]=value;
 	}
 
 	vxVector3d getVoxelPosition(int x, int y, int z) const
@@ -369,19 +350,27 @@ public:
 				if(min.x()!=prev.x())
 				{
 					auto prvVoxl = vxVector3d(min.x(), prev.y(), prev.z());
-					auto idx2 = indexAtPosition(prvVoxl);
-					if(active(idx2))
+					if(inGrid(prvVoxl))
 					{
-						min = prvVoxl;
+						z+= m_boxSize;
+						
+						auto idx2 = indexAtPosition(prvVoxl);
+						if(active(idx2))
+						{
+							min = prvVoxl;
+						}
 					}
 				}
 				else if(min.y()!=prev.y())
 				{
 					auto prvVoxl = vxVector3d(prev.x(), min.y(), prev.z());
-					auto idx2 = indexAtPosition(prvVoxl);
-					if(active(idx2))
+					if(inGrid(prvVoxl))
 					{
-						min = prvVoxl;
+						auto idx2 = indexAtPosition(prvVoxl);
+						if(active(idx2))
+						{
+							min = prvVoxl;
+						}
 					}
 				}
 				
