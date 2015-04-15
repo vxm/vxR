@@ -75,20 +75,20 @@ public:
 	createGrid()
 	{
 		// this is the grid object
-		double resl = 222.0;
+		double resl = 80.0;
 		
 		// this is a hardcode program to test the rays. 
 		//TODO:get rid of this hard-coded values.
-		m_grids.push_back(std::make_shared<vxGrid>(resl/3.0, 2.0, (resl*2.20), resl));
+		m_grids.push_back(std::make_shared<vxGrid>(resl/2.0, -10.0, (resl*2.20), resl));
 		m_grids[0]->setResolution(resl);
-		m_grids[0]->createSphere(resl-3, 2.0, (resl*2.20),  (resl/3.0)); // Position, radius
-		m_grids[0]->createSphere(16.0, 2.0, (resl*2.20),  (resl/2.0)); // Position, radius
-
-		m_grids[0]->createSphere(55, 44, 79,  7); // Position, radius
-		m_grids[0]->createSphere(-15, 44, 79,  7); // Position, radius
-		m_grids[0]->createSphere(25, -4, 9,  7); // Position, radius
-		m_grids[0]->createSphere(25, -4, 24,  7); // Position, radius
-		
+		m_grids[0]->createSphere(resl-3, -20.0, (resl*2.20),  (resl/3.0)); // Position, radius
+		m_grids[0]->createSphere(16.0, -2.0, (resl*2.20),  (resl/5.0)); // Position, radius
+/*
+		m_grids[0]->createSphere(55, 4, 13,  17); // Position, radius
+		m_grids[0]->createSphere(-15, 4, 79,  17); // Position, radius
+		m_grids[0]->createSphere(25, -4, 9,  17); // Position, radius
+		m_grids[0]->createSphere(25, -4, 24,  17); // Position, radius
+	*/	
 		m_grids[0]->createEdges(); // of the grid
 	
 	#ifdef _DEBUG
