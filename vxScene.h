@@ -75,7 +75,7 @@ public:
 	createGrid()
 	{
 		// this is the grid object
-		double resl = 80.0;
+		double resl = 40.0;
 		
 		// this is a hardcode program to test the rays. 
 		//TODO:get rid of this hard-coded values.

@@ -23,7 +23,6 @@ class vxVxl:public vxObject
 {
 
 protected:
-	std::shared_ptr<vxShader > m_shader;
 	vxVector3d m_position;
 	double m_size;
 
@@ -34,12 +33,6 @@ public:
 	~vxVxl()
 	{	
 	}
-
-	void setShader(std::shared_ptr<vxShader> shader)
-	{
-		m_shader = shader;
-	}
-
 };
 
 
@@ -49,7 +42,7 @@ private:
 	
 	vxVector3d m_point[8];
 	void actualize();
-
+	
 public:
 	vxBox()
 	: vxVxl()
@@ -87,7 +80,6 @@ public:
 	bool inSighteXY(double c);
 	bool inSighteYZ(double c);
 	bool inSighteZX(double c);
-
 };
 
 

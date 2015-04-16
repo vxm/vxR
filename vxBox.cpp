@@ -167,7 +167,6 @@ void vxBoxN::throwRay(const vxVector3d &ray, vxCollision &collide)
 	//if (true)
 	if (throwSpace(ray, collide))
 	{
-		m_shader->getColor(collide, .6);
 		collide.setValid(true);
 	}
 	else// background
@@ -181,7 +180,6 @@ void vxBoxN::throwRay(const vxVector3d &ray, vxCollision &collide)
 vxVxl::vxVxl()
 	: m_size(1)
 { 
-	m_shader = vxGlobal::getLambert();
 }
 
 

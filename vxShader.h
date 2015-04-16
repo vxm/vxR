@@ -3,17 +3,23 @@
 
 #include "stdlib.h"
 #include "time.h"
+#include <memory.h>
+
 
 #include <vxObject.h>
 #include <vxVector.h>
 #include <vxCollision.h>
+//#include <vxScene.h>
 
 namespace vxStorage {
+
+class vxScene;
 
 class vxShader:public vxObject
 {
 protected:
 
+	//std::shared_ptr<vxScene> m_scene = {nullptr};
 
 public:
 
@@ -22,9 +28,9 @@ public:
 		srand(time(NULL));
 	}
 	
-	virtual vxColor getColor(vxCollision &, double lumm)
+	virtual vxColor getColor(vxCollision &collide) const
 	{
-		return vxColor(lumm, lumm, lumm);
+		return vxColor(0.0, 0.0, 0.0);
 	}
 
 	double getRand()
@@ -35,6 +41,11 @@ public:
 	double getBoolRand()
 	{
 		return getRand()<.5;
+	}
+	
+	double getLumm() const
+	{
+		return 0.9;
 	}
 };
 
@@ -49,8 +60,7 @@ public:
 	{
 	}
 
-	virtual vxColor getColor( vxCollision &collide,
-							  double lumm) override;
+	virtual vxColor getColor( vxCollision &collide) const override;
 
 };
 

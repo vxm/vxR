@@ -384,8 +384,8 @@ public:
 		if(found)
 		{
 			boxInstance = vxGlobal::getInstance()->getExistingtBox( min, m_boxSize);
-			boxInstance->setShader( vxGlobal::getLambert() );
 			boxInstance->throwRay( ray, collide );
+			vxGlobal::getLambert()->getColor(collide);
 		}
 	}
 
@@ -410,7 +410,6 @@ public:
 					if (getElement(x,y,z))
 					{
 						caja = vxGlobal::getInstance()->getExistingtBox( getVoxelPosition(x, y, z), m_boxSize);
-						caja->setShader( vxGlobal::getLambert() );
 						caja->throwRay( ray, collide );
 						
 						if (collide.isValid()) 

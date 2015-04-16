@@ -27,7 +27,9 @@ int main(int argc, char *argv[])
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = std::make_shared<vxStorage::ImageProperties>(1900, 1900);
+	auto imgDesc = 
+			std::make_shared<vxStorage::ImageProperties>
+			(800, 800);
 	
 	// create the render process
 	render rp(imgDesc);

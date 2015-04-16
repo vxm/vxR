@@ -3,11 +3,12 @@
 
 namespace vxStorage {
 
-vxColor vxLambert::getColor(vxCollision &collide, double lumm)
+vxColor vxLambert::getColor(vxCollision &collide) const
 {
 	auto distanceToCenter = 
 			vxVector2d(collide.getU()-.5,collide.getV()-.5).length();
 
+	double lumm = getLumm();
 	lumm = std::max(lumm, 0.0);
 
 	if(distanceToCenter<.3)
