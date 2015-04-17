@@ -35,7 +35,7 @@ public:
 		: m_prop(prop)
 	{
 		m_light.reset(new vxPointLight);
-		m_light->setPosition( 5 , 15 , 0 );
+		m_light->setPosition(25, 15 , 2 );
 		
 		m_shader.reset(new vxLambert);
 		
@@ -75,7 +75,7 @@ public:
 	createGrid()
 	{
 		// this is the grid object
-		double resl = 40.0;
+		double resl = 140.0;
 		
 		// this is a hardcode program to test the rays. 
 		//TODO:get rid of this hard-coded values.
@@ -118,7 +118,10 @@ public:
 		if(!m_grids.size())
 			return 0;
 		
-		return m_grids[0]->throwRay(ray,collide);
+		auto r = m_grids[0]->throwRay(ray,collide);
+		if (collide.isValid())
+			defaultShader()->getColor(collide);
+		return r;
 	}
 	
 	std::shared_ptr<vxLight> defaultLight() const;

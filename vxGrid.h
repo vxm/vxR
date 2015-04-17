@@ -385,7 +385,6 @@ public:
 		{
 			boxInstance = vxGlobal::getInstance()->getExistingtBox( min, m_boxSize);
 			boxInstance->throwRay( ray, collide );
-			vxGlobal::getLambert()->getColor(collide);
 		}
 	}
 

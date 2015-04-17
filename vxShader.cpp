@@ -8,10 +8,9 @@ vxColor vxLambert::getColor(vxCollision &collide) const
 	auto distanceToCenter = 
 			vxVector2d(collide.getU()-.5,collide.getV()-.5).length();
 
-	double lumm = getLumm();
-	lumm = std::max(lumm, 0.0);
+	double lumm = std::max(getLightLoop(collide), 0.0);
 
-	if(distanceToCenter<.3)
+	if(distanceToCenter<.2)
 	{
 		collide.setColor(lumm*collide.getColor().getR(), 
 						 lumm*collide.getColor().getG(), 
@@ -19,17 +18,17 @@ vxColor vxLambert::getColor(vxCollision &collide) const
 	}
 	else
 	{
-		if(distanceToCenter<.35)
+		if(distanceToCenter<.22)
 		{
-			collide.setColor(lumm*64, lumm*24, lumm*24);
+			collide.setColor(lumm*114, lumm*64, lumm*84);
 		}
 		else
 		{
 			constexpr const double margn = 0.03;
-			if ( (collide.getU()<margn || collide.getU()>(1-margn)) 
-				 || (collide.getV()<margn || collide.getV()>(1-margn)))
+			if ( (collide.getU()<margn || collide.getU()>(1.-margn)) 
+				 || (collide.getV()<margn || collide.getV()>(1.-margn)))
 			{
-				collide.setColor(lumm*22, lumm*23, lumm*29);
+				collide.setColor(lumm*22, lumm*23, lumm*229);
 			}
 			else
 			{
@@ -47,5 +46,15 @@ vxColor vxLambert::getColor(vxCollision &collide) const
 
 	return collide.getColor();
 }
+std::shared_ptr<vxLight> vxShader::light() const
+{
+	return m_light;
+}
+
+void vxShader::setLight(const std::shared_ptr<vxLight> &light)
+{
+	m_light = light;
+}
+
 
 }

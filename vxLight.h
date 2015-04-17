@@ -42,7 +42,7 @@ protected:
 		return this->m_position-position;
 	}
 	
-	virtual double luminance(vxCollision &collide) = 0; 
+	virtual double luminance(const vxCollision &collide) = 0; 
  };
 
 
@@ -85,7 +85,7 @@ protected:
 	void setMin(double maxAngle) {this->m_maxAngle=maxAngle;}
 	void setMax(double minAngle) {this->m_minAngle=minAngle;}
 
-	double luminance(vxCollision &collide) 
+	double luminance(const vxCollision &collide) override
 	{
 		return this->getIntensity()*collide.getNormal().angle(getLightRay(collide.getPosition()));
 	}
@@ -100,7 +100,17 @@ protected:
 		 :vxLight() {};
 
  
-	 double luminance(vxCollision &collide);
+	 double luminance(const vxCollision &collide) override
+	 {
+		//vxVector3d lightRay = getLightRay(collide.getPosition());
+		
+		double angl = collide.getNormal().angle(getLightRay(collide.getPosition()));
+		
+		if(angl>1.57)
+			return 0.0;
+		
+		return m_intensity * (cos(angl));
+	 }
  };
 
 
@@ -127,7 +137,7 @@ protected:
 	void setOrientation (vxVector3d orientation) {this->m_orientation.set(orientation);}
 	void setBidirectional (bool bidirectional) {this->m_biDirectional=bidirectional;}
 
-	double luminance(vxCollision &collide) 
+	double luminance(const vxCollision &collide) override
 	{
 		return this->getIntensity()*collide.getNormal().angle(getLightRay(collide.getPosition()));
 	}

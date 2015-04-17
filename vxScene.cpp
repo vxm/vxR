@@ -3,7 +3,14 @@
 
 std::shared_ptr<vxShader> vxScene::defaultShader() const
 {
-	return m_shader;
+	static std::shared_ptr<vxShader> sLambert;
+	if(sLambert!=nullptr)
+	{
+		return sLambert;
+	}
+	sLambert = std::make_shared<vxLambert>();
+	sLambert->setLight(defaultLight());
+	return sLambert;
 }
 
 void vxScene::setShader(const std::shared_ptr<vxShader> &shader)

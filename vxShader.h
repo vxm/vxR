@@ -3,23 +3,21 @@
 
 #include "stdlib.h"
 #include "time.h"
-#include <memory.h>
-
-
+#include <memory>
 #include <vxObject.h>
 #include <vxVector.h>
 #include <vxCollision.h>
-//#include <vxScene.h>
+#include <vxLight.h>
 
 namespace vxStorage {
 
-class vxScene;
+class vxLight;
 
 class vxShader:public vxObject
 {
 protected:
 
-	//std::shared_ptr<vxScene> m_scene = {nullptr};
+	std::shared_ptr<vxLight> m_light = {nullptr};
 
 public:
 
@@ -43,25 +41,29 @@ public:
 		return getRand()<.5;
 	}
 	
-	double getLumm() const
+	virtual double getLightLoop(const vxCollision &col) const
 	{
-		return 0.9;
+		return light()->luminance(col);
 	}
+	
+	std::shared_ptr<vxLight> light() const;
+	void setLight(const std::shared_ptr<vxLight> &light);
 };
 
 class vxLambert:public vxShader
 {
-private:
-
-
-public:
-	vxLambert()
-	:vxShader() 
-	{
-	}
-
-	virtual vxColor getColor( vxCollision &collide) const override;
-
+	private:
+		
+		
+	public:
+		vxLambert()
+			:vxShader() 
+		{
+		}
+		
+		// vxShader interface
+	virtual vxColor getColor(vxCollision &collide) const override;
+	
 };
 
 }
