@@ -37,7 +37,7 @@ vxColor vxLambert::getColor(vxCollision &collide) const
 		}
 	}
 
-/*	float intens = collide.getPosition().length();
+/*	double intens = collide.getPosition().length();
 	vxVector3d pp=collide.getPosition();
 	collide.setColor(12*pp.getX(), 12*pp.getY(), 12*pp.getZ());*/
 

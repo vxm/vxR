@@ -74,7 +74,7 @@ void vxRenderProcess::createBucketList()
 const unsigned char *
 vxRenderProcess::generateImage()
 {
-	static_assert(sizeof(float)==4, "float is no 32bits");
+	static_assert(sizeof(float)==4, "double is no 32bits");
 	static_assert(sizeof(double)==8, "double is no 64bits");
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 

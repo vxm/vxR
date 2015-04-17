@@ -179,7 +179,7 @@ public:
 		}
 	}
 	
-	void createSphere(const vxVector3d &center, const float radio)
+	void createSphere(const vxVector3d &center, const double radio)
 	{
 		unsigned int x, y, z;
 		
@@ -198,29 +198,30 @@ public:
 		}
 	}
 
-	void createSphere(int x, int y, int z, const float radio)
+	void createSphere(int x, int y, int z, const double radio)
 	{
 		createSphere(vxVector3d(x,y,z), radio);
 	}
 
-	bool getRandom()
+	bool getRandomBoolean(double ratio = 1.0)
 	{
-		float num=(rand()/(double)RAND_MAX)*1000;
-		num=num-int(num);
-		return num<.5;
+		double num = pow((rand()/(double)RAND_MAX), 1.0/ratio);
+		return num>.5;
 	}
 
-	void createRandom()
+	void createRandom(double ratio = 1.0)
 	{
-		unsigned int x, y, z;
-		
-		for(x=0;x<m_resolution;x++)
-			for(y=0;y<m_resolution;y++)
-				for(z=0;z<m_resolution;z++)
-				{
-					if( getRandom() && getRandom())
-						setElement(x,y,z,true);
-				}
+		unsigned int av{0};
+
+		for(auto it = begin(m_data);
+				it!= end(m_data);
+				++it)
+		{
+			if(getRandomBoolean(ratio))
+			{
+				*it = true;
+			}
+		}
 	}
 
 	//sets every single vxl to 0.

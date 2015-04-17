@@ -111,16 +111,16 @@ public:
 	vxVector3d givemeRay(double x, double y)
 	{
 		m_sampler.next();
-		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(float)(2 * m_prop->rx()) + m_sampler.x()/(float)(m_prop->rx());
-		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(float)(2 * m_prop->ry()) + m_sampler.y()/(float)(m_prop->ry());
+		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(double)(2 * m_prop->rx()) + m_sampler.x()/(double)(m_prop->rx());
+		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(double)(2 * m_prop->ry()) + m_sampler.y()/(double)(m_prop->ry());
 		return vxVector3d( compY , compX , m_focusDistance );
 	}
 	
 	vxVector3d givemeRandRay(double x, double y)
 	{
 
-		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(float)(2 * m_prop->rx()) + ((rand()/(double)RAND_MAX))/(float)(m_prop->rx());
-		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(float)(2 * m_prop->ry()) + ((rand()/(double)RAND_MAX))/(float)(m_prop->ry());
+		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2) -1 ) - 1 /(double)(2 * m_prop->rx()) + ((rand()/(double)RAND_MAX))/(double)(m_prop->rx());
+		double compY = tan(-m_verticalAperture/2.0) * (( y * 2) -1 ) - 1 /(double)(2 * m_prop->ry()) + ((rand()/(double)RAND_MAX))/(double)(m_prop->ry());
 		return vxVector3d( compY , compX , m_focusDistance );
 	}
 

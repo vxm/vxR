@@ -40,14 +40,14 @@ public:
 
 	vxColor getResult()
 	{
-		return vxColor(m_r/(float)m_comp,m_g/(float)m_comp,m_b/(float)m_comp);
+		return vxColor(m_r/(double)m_comp,m_g/(double)m_comp,m_b/(double)m_comp);
 	}
 
 	void setResult()
 	{
-		m_r/=(float)m_comp;
-		m_g/=(float)m_comp;
-		m_b/=(float)m_comp;
+		m_r/=(double)m_comp;
+		m_g/=(double)m_comp;
+		m_b/=(double)m_comp;
 		m_comp=0;
 	}
 
