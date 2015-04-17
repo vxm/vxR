@@ -1,5 +1,5 @@
-#ifndef VXIMAGE_H
-#define VXIMAGE_H
+#ifndef VXCONTACTBUFFER_H
+#define VXCONTACTBUFFER_H
 
 #include <iostream>
 #include <math.h>

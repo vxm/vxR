@@ -1,20 +1,21 @@
-﻿#ifndef _VXPXBUFFERMC_
-#define _VXPXBUFFERMC_
+﻿#ifndef _VXCAMERAMC_
+#define _VXCAMERAMC_
 
+#include <iostream>
+#include <math.h>
 
 #include "vxObject.h"
 #include "vxVector.h"
-#include <iostream>
-#include <math.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <vxContactBuffer.h>
 #include <ImageProperties.h>
 #include <vxSampler.h>
+#include <vxContactBuffer.h>
 
 
 namespace vxStorage {
+
 
 
 class vxCamera:public vxObject
