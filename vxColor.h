@@ -5,10 +5,16 @@
 #include <iostream>
 
 namespace vxStorage {
+/*
+ Munsell, hue, value, chroma
+ Ostwald, dominant wavelength, purity, luminance
+ CIE, Y to measure brightness, x, hue and y saturation.
+ */
 
 class vxColor:public vxObject
 {
 protected:
+/*tristimulus values*/
 	double m_r = {0.0};
 	double m_g = {0.0};
 	double m_b = {0.0};
