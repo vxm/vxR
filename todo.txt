@@ -1,17 +1,20 @@
 TODO:
 
 - Rework getNearestCollision for optimization.
-  * investigate plane values for ray traveling.
-  - do x, y and z, not only z
-  - complete block visualization, and create a tag version.
-  - LAST execute with valgrind again.
+	* investigate plane values for ray traveling.
+	* do x, y and z, not only z
+	- find dominant axis in ray
+	- complete block visualization, and create a tag version.
+	- LAST execute with valgrind again.
 
-- Lumminance + shaders, rework.
-- Shadows.
-  - Raytrace shadows.
+- Shaders:
+	- Lumminance + shaders, rework.
+		* angular shading
+	- Shadows.
+		- Raytrace shadows.
 
 * Better statistics, c++11 chrono.
-- Deploy time over processes.
+* Deploy time over processes.
 - Get rid of black lines in render.
   - swap image resolution to aperture for ray generation.
  
