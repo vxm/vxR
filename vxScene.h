@@ -34,8 +34,8 @@ public:
 	vxScene(std::shared_ptr<ImageProperties> prop)
 		: m_prop(prop)
 	{
-		m_light.reset(new vxPointLight);
-		m_light->setPosition(25, 15 , 12 );
+		m_light = std::make_shared<vxPointLight>();
+		m_light->setPosition(25, 15 , 0);
 		
 		m_shader.reset(new vxLambert);
 		
@@ -75,21 +75,19 @@ public:
 	createGrid()
 	{
 		// this is the grid object
-		double resl = 340.0;
+		double resl = 10.0;
+		
+		vxVector3d p{resl/2.0, -1.0, resl*2.20};
 		
 		// this is a hardcode program to test the rays. 
 		//TODO:get rid of this hard-coded values.
-		m_grids.push_back(std::make_shared<vxGrid>(resl/2.0, -10.0, (resl*2.20), resl));
+		
+		m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 		m_grids[0]->setResolution(resl);
-		m_grids[0]->createSphere(resl-3, -20.0, (resl*2.20),  (resl/3.0)); // Position, radius
-		m_grids[0]->createRandom(0.0007);
-		m_grids[0]->createSphere(16.0, -2.0, (resl*2.20),  (resl/5.0)); // Position, radius
-		m_grids[0]->createSphere(resl-10, -2.0, 22,  (resl/5.0)); // Position, radius
-		m_grids[0]->createSphere(resl+6, -2.0, 12,  (resl/12.0)); // Position, radius
-		m_grids[0]->createSphere(resl+13, -4, 9,  17); // Position, radius
-		m_grids[0]->createSphere(resl+3, -4, 24,  17); // Position, radius
-		/*
-	*/	
+		m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/3.0)); // Position, radius
+		
+		//m_grids[0]->createRandom(0.0007);
+
 		m_grids[0]->createEdges(); // of the grid
 	
 	#ifdef _DEBUG
