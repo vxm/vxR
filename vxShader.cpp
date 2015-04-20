@@ -18,17 +18,17 @@ vxColor vxLambert::getColor(vxCollision &collide) const
 	}
 	else
 	{
-		if(distanceToCenter<.22)
+		if(distanceToCenter<.32)
 		{
-			collide.setColor(lumm*114, lumm*64, lumm*84);
+			collide.setColor(lumm*256, lumm*256, lumm*256);
 		}
 		else
 		{
-			constexpr const double margn = 0.03;
+			constexpr const double margn = 0.01;
 			if ( (collide.getU()<margn || collide.getU()>(1.-margn)) 
 				 || (collide.getV()<margn || collide.getV()>(1.-margn)))
 			{
-				collide.setColor(lumm*22, lumm*23, lumm*229);
+				collide.setColor(lumm*2, lumm*3, lumm*29);
 			}
 			else
 			{
