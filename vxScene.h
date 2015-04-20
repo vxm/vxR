@@ -35,11 +35,11 @@ public:
 		: m_prop(prop)
 	{
 		m_light = std::make_shared<vxPointLight>();
-		m_light->setPosition(25, 15 , 0);
+		m_light->setPosition(58, 54, 0);
 		
 		m_shader.reset(new vxLambert);
 		
-		createCamera(vxMatrix());
+		createCamera(vxMatrix(),4);
 		createGrid();
 	}
 	
@@ -53,21 +53,16 @@ public:
 	}
 
 	std::shared_ptr<vxCamera>
-	createCamera(const vxMatrix &transform,
+		createCamera(const vxMatrix &transform,
 					unsigned int samples = 1,
 					double hAperture = 0.0,
 					double vAperture = 0.0)
 	{
-		vxCamera cam(m_prop);
-	
-		cam.set(vxVector3d(0,0,0),
-				vxVector3d(0,0,1),
-							1.23);
-
-		cam.setPixelSamples(1);
-		
-		m_camera = std::make_shared<vxCamera>(cam);
-	
+		m_camera = std::make_shared<vxCamera>(m_prop);
+		m_camera->set(	vxVector3d(0,0,0),
+						vxVector3d(0,0,1),
+									1.23);
+		m_camera->setPixelSamples(samples);
 		return m_camera;
 	}
 
@@ -75,27 +70,22 @@ public:
 	createGrid()
 	{
 		// this is the grid object
-		double resl = 10.0;
-		
+		const double resl = 170.0;
+
 		vxVector3d p{resl/2.0, -1.0, resl*2.20};
 		
 		// this is a hardcode program to test the rays. 
 		//TODO:get rid of this hard-coded values.
-		
 		m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 		m_grids[0]->setResolution(resl);
 		m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/3.0)); // Position, radius
-		
 		//m_grids[0]->createRandom(0.0007);
 
 		m_grids[0]->createEdges(); // of the grid
-	
 	#ifdef _DEBUG
 		auto na = m_grids[0]->numActiveVoxels();
 		std::cout << "Number of active voxels " << na << std::endl;
 	#endif
-		
-		
 		return m_grids[0];
 	}
 	
@@ -115,12 +105,19 @@ public:
 	int throwRay(const vxVector3d &ray, vxCollision &collide)
 	{ 
 		if(!m_grids.size())
+		{
 			return 0;
-		
-		auto r = m_grids[0]->throwRay(ray,collide);
+		}
+
+		m_grids[0]->throwRay(ray,collide);
+
 		if (collide.isValid())
+		{
 			defaultShader()->getColor(collide);
-		return r;
+			return 1;
+		}
+
+		return 0;
 	}
 	
 	std::shared_ptr<vxLight> defaultLight() const;

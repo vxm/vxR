@@ -17,7 +17,7 @@ class vxSampler:public vxObject
 	unsigned int m_iter {0};
 	unsigned int m_nSamples {1};
 
-	bool m_random {false};
+	bool m_random {true};
 	
 public:
 	
@@ -28,6 +28,7 @@ public:
 	~vxSampler()
 	{
 	}
+	
 
 	void next()
 	{
@@ -38,10 +39,15 @@ public:
 			m_iter=0;
 		}
 	};
+	
+	bool isDone() const
+	{
+		return m_iter+1==m_nSamples;
+	}
 
 	double x() const
 		{return m_x[m_iter];}
-	
+
 	double y() const
 		{return m_y[m_iter];}
 
@@ -50,7 +56,6 @@ public:
 		m_nSamples = samples;
 		
 		m_x.resize(samples);
-		
 		m_y.resize(samples);
 		
 		if(m_random)
@@ -62,6 +67,11 @@ public:
 			}
 		}
 
+		resetIterator();
+	}
+	
+	void resetIterator()
+	{
 		m_iter=0;
 	}
 	

@@ -45,11 +45,13 @@ public:
 	~vxBucket()
 	{
 	}
-	
-	void append(const vxColor &px, const vxVector2d &coords)
+
+	void append(const vxColor &px, 
+				const vxVector2d &coords)
 	{
 		m_pb.append(px, coords);
 	}
+
 };
 
 

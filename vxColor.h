@@ -35,6 +35,12 @@ public:
 		, m_g(g)
 		, m_b(b)
 	{}
+
+	vxColor (const vxColor& other) 
+		: m_r(other.m_r)
+		, m_g(other.m_g)
+		, m_b(other.m_b)
+	{}
 	
 	vxColor& operator=(const vxVector3d &otro)
 	{
@@ -76,26 +82,31 @@ public:
 
 	double lumma() const {return sqrt((double)m_r*m_r+m_g*m_g+m_b*m_b);}
 
-	vxColor operator+(const vxColor &entrada) const {return vxColor(entrada.getR()+m_r,entrada.getG()+m_g,entrada.getB()+m_b,entrada.getA()+m_a);}
+	vxColor operator+(const vxColor &other) const {return vxColor(other.getR()+m_r,other.getG()+m_g,other.getB()+m_b,other.getA()+m_a);}
 	vxColor operator+(double factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_a);}
 	vxColor operator+(float factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_a);}
 	vxColor operator+(int factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_b);}
+	vxColor operator+(unsigned int factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_b);}
 
 	vxColor operator-(const vxColor &entrada) const {return vxColor(m_r-entrada.getR(),m_g-entrada.getG(),m_b-entrada.getB(),m_a-entrada.getA());}
 	vxColor operator-(double factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
 	vxColor operator-(float factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
 	vxColor operator-(int factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
+	vxColor operator-(unsigned int factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
 
 	vxColor operator*(const vxColor &entrada) const {return vxColor(entrada.getR()*m_r,entrada.getG()*m_g,entrada.getB()*m_b,entrada.getA()*m_a);}
 	vxColor operator*(double factor) const {return vxColor(factor*m_r,factor*m_g,factor*m_b,factor*m_a);}
 	vxColor operator*(float factor) const {return vxColor(factor*m_r,factor*m_g,factor*m_b,factor*m_a);}
 	vxColor operator*(int factor) const {return vxColor(factor*m_r,factor*m_g,factor*m_b,factor*m_a);}
+	vxColor operator*(unsigned int factor) const {return vxColor(factor*m_r,factor*m_g,factor*m_b,factor*m_a);}
 
 	vxColor operator/(const vxColor &entrada) const {return vxColor(entrada.getR()/(double)m_r,entrada.getG()/(double)m_g,entrada.getB()/(double)m_b,entrada.getA()/(double)m_a);}
 	vxColor operator/(double factor) const {return vxColor(m_r/(double)factor,m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 	vxColor operator/(float factor) const {return vxColor(m_r/(double)factor,m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 	vxColor operator/(int factor) const {return vxColor(m_r/double(factor),m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
+	vxColor operator/(unsigned int factor) const {return vxColor(m_r/double(factor),m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 
+	
 	void toRGBA8888(unsigned char *tbuff) const
 	{
 		*tbuff = (unsigned char)char(m_r);

@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	// Img properties for render.
 	auto imgDesc = 
 			std::make_shared<vxStorage::ImageProperties>
-			(4800, 4800);
+			(1300, 1300);
 	
 	// create the render process
 	render rp(imgDesc);
