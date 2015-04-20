@@ -8,10 +8,15 @@ TODO:
 	- LAST execute with valgrind again.
 
 - Shaders:
+	- multiple lights
 	- Lumminance + shaders, rework.
 		* angular shading
 	- Shadows.
 		- Raytrace shadows.
+	- Ingelligent subsampling.
+
+- Camera:
+	- Rework subsamples.
 
 * Better statistics, c++11 chrono.
 * Deploy time over processes.
