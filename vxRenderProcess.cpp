@@ -1,3 +1,4 @@
+#include <climits>
 #include "vxRenderProcess.h"
 #include "vxCamera.h"
 #include "vxGrid.h"
@@ -36,6 +37,9 @@ vxStatus::code vxRenderProcess::execute()
 	vxColor color;
 
 	auto cam = scene()->defaultCamera();
+	unsigned int nSamples = cam->getPixelSamples();
+
+	vxColor c;
 	// camera throwing rays.
 	while(!cam->rayIsDone())
 	{
@@ -47,15 +51,16 @@ vxStatus::code vxRenderProcess::execute()
 
 		cam->resetPixel();
 		// on eachpixel.
-		while( !cam->pixIsDone() )
+		c.reset();
+		for(int i=0;i<nSamples;i++)
 		{
-			scene()->throwRay(cam->nextRay(), collide);
-			
-			if (collide.isValid())
+			if (scene()->throwRay(cam->nextRay(), collide))
 			{
-				bk->append(collide.getColor(), coord);
+				c = c + collide.getColor();
 			}
 		}
+		cam->next();
+		bk->append(c/(double)nSamples, coord);
 	}// end camera loop
 	
 	return vxStatus::code::kSuccess;
@@ -103,13 +108,14 @@ vxRenderProcess::generateImage()
 	{
 		std::cout << "unique ptr is empty now" << std::endl;
 	}
-
+	
 	// on each bucket
 	for(uint i=0;i<m_bucketList.size();i++)
 	{
 		std::vector<Hit> *bk = m_bucketList[i].m_pb.getHits();
 		auto sz = bk->size();
 		
+		unsigned int dist;
 		// for every of their render Hit.
 		//for(auto it = begin(bk);it!=end(bk);++it)
 		for(uint j=0;j<sz;j++)
@@ -117,7 +123,7 @@ vxRenderProcess::generateImage()
 			Hit &h = (*bk)[j];
 			unsigned int compX = (h.m_xyCoef.y() * (prop->rx()-1));
 			unsigned int compY = (h.m_xyCoef.x() * (prop->ry()-1));
-			unsigned int dist = (compX + (compY * prop->rx())) * prop->numChannels();
+			dist = (compX + (compY * prop->rx())) * prop->numChannels();
 			//assert(dist && dist<=numElements);
 			h.m_px.toRGBA8888(buff + dist);
 		}
