@@ -34,12 +34,11 @@ public:
 	vxScene(std::shared_ptr<ImageProperties> prop)
 		: m_prop(prop)
 	{
+		m_shader = std::make_shared<vxLambert>();
 		m_light = std::make_shared<vxPointLight>();
-		m_light->setPosition(58, 54, 0);
+		m_light->setPosition(4, 8, -3);
 		
-		m_shader.reset(new vxLambert);
-		
-		createCamera(vxMatrix(),4);
+		createCamera(vxMatrix(), 2);
 		createGrid();
 	}
 	
@@ -70,7 +69,7 @@ public:
 	createGrid()
 	{
 		// this is the grid object
-		const double resl = 170.0;
+		const double resl = 15.0;
 
 		vxVector3d p{resl/2.0, -1.0, resl*2.20};
 		
@@ -78,13 +77,20 @@ public:
 		//TODO:get rid of this hard-coded values.
 		m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 		m_grids[0]->setResolution(resl);
-		m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/3.0)); // Position, radius
+		m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/3.0)); // Position, radius		
+		m_grids[0]->createSphere(p.x()+(resl/3.0), p.y(), p.z(),  (resl/6.0)); // Position, radius
+		m_grids[0]->createSphere(p.x()-(resl/3.0), p.y(), p.z(),  (resl/6.0)); // Position, radius
+		m_grids[0]->createSphere(p.x(), p.y()+(resl/3.0), p.z(),  (resl/6.0)); // Position, radius
+		m_grids[0]->createSphere(p.x(), p.y()-(resl/3.0), p.z(),  (resl/6.0)); // Position, radius
+		m_grids[0]->createSphere(p.x(), p.y(), p.z()+(resl/3.0),  (resl/6.0)); // Position, radius
+		m_grids[0]->createSphere(p.x(), p.y(), p.z()-(resl/3.0),  (resl/6.0)); // Position, radius
 		//m_grids[0]->createRandom(0.0007);
 
 		m_grids[0]->createEdges(); // of the grid
 	#ifdef _DEBUG
 		auto na = m_grids[0]->numActiveVoxels();
-		std::cout << "Number of active voxels " << na << std::endl;
+		auto totals = m_grids[0]->getNumberOfVoxels();
+		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 	#endif
 		return m_grids[0];
 	}
@@ -102,23 +108,7 @@ public:
 	
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	int throwRay(const vxVector3d &ray, vxCollision &collide)
-	{ 
-		if(!m_grids.size())
-		{
-			return 0;
-		}
-
-		m_grids[0]->throwRay(ray,collide);
-
-		if (collide.isValid())
-		{
-			defaultShader()->getColor(collide);
-			return 1;
-		}
-
-		return 0;
-	}
+	int throwRay(const vxVector3d &ray, vxCollision &collide);
 	
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
