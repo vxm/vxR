@@ -246,6 +246,11 @@ public:
 		
 		return av;
 	}
+	
+	int getNumberOfVoxels() const
+	{
+		return m_resXresXres;
+	}
 
 	// returns true if voxel at x y z is active
 	inline bool active( int x,  int y,  int z) const
@@ -297,7 +302,7 @@ public:
 		return vxVector3d(retx, rety, retz);
 	}
 
-	vxVector3d getVoxelPosition(unsigned int idx) const
+	inline vxVector3d getVoxelPosition(unsigned int idx) const
 	{
 		int retz = idx / m_resXres;
 		int rety = (idx%m_resXres) / m_resolution;
@@ -306,160 +311,37 @@ public:
 		return getVoxelPosition(retx, rety, retz);
 	}
 		
-	unsigned int indexAtPosition(vxVector3d pos) const
+	inline unsigned int indexAtPosition(const vxVector3d &position) const
 	{
-		pos -= (m_position-m_midSize); 
-
+		vxVector3d pos = position - (m_position-m_midSize); 
 		unsigned int idx = floor(pos.x());
 		idx += floor(pos.y()) * m_resolution;
 		idx += floor(pos.z()) * m_resXres;
 		return idx;
 	}
 
-	bool inGrid(const vxVector3d &pnt) const
-	{
-		return pnt.x()<=m_xmax && pnt.x()>=m_xmin
-				&& pnt.y()<=m_ymax && pnt.y()>=m_ymin
-				&& pnt.z()<=m_zmax && pnt.z()>=m_zmin;
-	}
+	bool inGrid(const vxVector3d &pnt) const;
+	
+	void getNearestCollision(const vxVector3d &ray, vxCollision &collide);
 	
 	//!! this shouldn't be like this
-	void getNearestCollision(const vxVector3d &ray, vxCollision &collide)
-	{
-		collide.initialize();
-		
-		vxBoxN *boxInstance = nullptr;
-		vxVector3d min(m_zmax, m_ymax, m_xmax);
-		
-		bool found = false;
-		double z=m_zmin;
-		while(z<m_zmax && !found)
-		{
-			auto pnt = MathUtils::rectAndZPlane(ray, z);
-			if(!inGrid(pnt))
-			{
-				z+= m_boxSize;
-				continue;
-			}
+	void getNearestCollisionUsingX(const vxVector3d &ray, vxCollision &collide);
 
-			auto idx = indexAtPosition(pnt);
+	
+	//!! this shouldn't be like this
+	void getNearestCollisionUsingY(const vxVector3d &ray, vxCollision &collide);
 
-			vxVector3d prev = min;
-			min = getVoxelPosition(idx);
-			if(active(idx))
-			{
-				if(min.x()!=prev.x())
-				{
-					auto prvVoxl = vxVector3d(min.x(), prev.y(), prev.z());
-					if(inGrid(prvVoxl))
-					{
-						z+= m_boxSize;
-						
-						auto idx2 = indexAtPosition(prvVoxl);
-						if(active(idx2))
-						{
-							min = prvVoxl;
-						}
-					}
-				}
-				else if(min.y()!=prev.y())
-				{
-					auto prvVoxl = vxVector3d(prev.x(), min.y(), prev.z());
-					if(inGrid(prvVoxl))
-					{
-						auto idx2 = indexAtPosition(prvVoxl);
-						if(active(idx2))
-						{
-							min = prvVoxl;
-						}
-					}
-				}
-				
-				found=true;
-				continue;
-			}
-			
-			z+= m_boxSize;
-		}
-		
-		if(found)
-		{
-			boxInstance = vxGlobal::getInstance()->getExistingtBox( min, m_boxSize);
-			boxInstance->throwRay( ray, collide );
-		}
-	}
-
+	
+	//!! this shouldn't be like this
+	void getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &collide);
+	
 	//!!	Brute Force search.
 	//! what a shame.
-	void getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide)
-	{
-		collide.initialize();
-
-		bool pri=true;
-
-		vxCollision minima;
-
-		vxBoxN *caja;
-	
-		for(uint x=0;x<m_resolution;x++)
-		{
-			for(uint y=0;y<m_resolution;y++)
-			{
-				for(uint z=0;z<m_resolution;z++)
-				{
-					if (getElement(x,y,z))
-					{
-						caja = vxGlobal::getInstance()->getExistingtBox( getVoxelPosition(x, y, z), m_boxSize);
-						caja->throwRay( ray, collide );
-						
-						if (collide.isValid()) 
-						{
-							
-							if (pri)
-							{
-								minima=collide;
-
-								pri=false;
-							}
-							else
-							{
-								if(collide.getPosition().length()<minima.getPosition().length()) minima=collide;
-							}
-						}
-						else
-						{
-							collide.setColor(255,0,0);
-						}
-					}
-				}
-			}
-		}
-		
-		//
-		collide=minima;
-	}
+	void getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide);
 
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	int throwRay(const vxVector3d &ray, vxCollision &collide)
-	{ 
-		if (!m_boundingBox) 
-			return 0;
-	
-		// will test in 
-		m_boundingBox->throwRay(ray, collide);
-
-		if (collide.isValid()) 
-		{
-			getNearestCollision(ray, collide);
-			return 1;
-		}
-		else
-		{
-			collide.initialize();
-			return 0;
-		}
-	}
+	int throwRay(const vxVector3d &ray, vxCollision &collide);
 };
 
 /*
