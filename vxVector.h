@@ -138,6 +138,7 @@ private:
 
 public:
 
+	enum class axis{kX, kY, kZ};
 	vxVector3d ()
 	{};
 	
@@ -190,6 +191,20 @@ public:
 	double y() const {return m_y;}
 	double z() const {return m_z;}
 
+	axis mainAxis() const
+	{
+		if(m_x>m_y && m_x>m_z)
+		{
+			return axis::kX;
+		}
+		if(m_y>m_z && m_y>m_x)
+		{
+			return axis::kY;
+		}
+		else
+			return axis::kZ;
+	}
+	
 	double length() const
 		{return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);}
 	
