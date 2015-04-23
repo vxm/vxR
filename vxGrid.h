@@ -142,6 +142,7 @@ public:
 
 	void updateBB()
 	{
+		//TODO:c++14 make unique
 		m_boundingBox.reset(vxGlobal::getBox(m_position, m_size));
 	}
 	
@@ -156,6 +157,8 @@ public:
 			activate(resminusone-i,i,resminusone-i);
 		}
 	}
+	
+	void createGround(unsigned int offset = 0);
 
 	void createEdges()
 	{
@@ -302,7 +305,7 @@ public:
 		return vxVector3d(retx, rety, retz);
 	}
 
-	inline vxVector3d getVoxelPosition(unsigned int idx) const
+	vxVector3d getVoxelPosition(unsigned int idx) const
 	{
 		int retz = idx / m_resXres;
 		int rety = (idx%m_resXres) / m_resolution;

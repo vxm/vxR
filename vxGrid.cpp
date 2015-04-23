@@ -1,6 +1,18 @@
 
 #include "vxGrid.h"
 
+void vxGrid::createGround(unsigned int offset)
+{
+	if(offset>=m_resolution)
+		return;
+	
+	for (unsigned int i=0;i<m_resolution;i++)
+		for (unsigned int j=0;j<m_resolution;j++)
+		{
+			activate(i,offset,j);
+		}
+}
+
 bool vxGrid::inGrid(const vxVector3d &pnt) const
 {
 	return pnt.x()<=m_xmax && pnt.x()>=m_xmin
@@ -159,10 +171,8 @@ void vxGrid::getNearestCollisionUsingY(const vxVector3d &ray, vxCollision &colli
 void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &collide)
 {
 	collide.initialize();
-	
-	vxBoxN *boxInstance = nullptr;
-	vxVector3d min(m_zmax, m_ymax, m_xmax);
-	
+	vxVector3d curr(m_zmax, m_ymax, m_xmax);
+	vxVector3d tmp;
 	bool found = false;
 	double z=m_zmin;
 	while(z<m_zmax && !found)
@@ -173,44 +183,34 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 			z+= m_boxSize;
 			continue;
 		}
-		
 		auto idx = indexAtPosition(pnt);
 		
-		vxVector3d prev = min;
-		min = getVoxelPosition(idx);
+		vxVector3d prev = curr;
+		tmp = curr = getVoxelPosition(idx);
+		
+		if(curr.x()!=prev.x())
+		{
+			prev.setX(curr.x());
+		}
+		
+		if(curr.y()!=prev.y())
+		{
+			prev.setY(curr.y());
+		}
+		
+		if(inGrid(prev))
+		{
+			if(active(indexAtPosition(prev)))
+			{
+				tmp = prev;
+				found=true;
+				break;
+			}
+		}
+		
 		if(active(idx))
 		{
-			auto prvVoxl = prev;
-			if(min.x()!=prev.x())
-			{
-				prvVoxl.setX(min.x());
-				if(inGrid(prvVoxl))
-				{
-					z+= m_boxSize;
-					
-					auto idx2 = indexAtPosition(prvVoxl);
-					if(active(idx2))
-					{
-						min = prvVoxl;
-					}
-				}
-			}
-			
-			if(min.y()!=prev.y())
-			{
-				prvVoxl.setY(min.y());
-				if(inGrid(prvVoxl))
-				{
-					auto idx2 = indexAtPosition(prvVoxl);
-					if(active(idx2))
-					{
-						min = prvVoxl;
-					}
-				}
-			}
-			
 			found=true;
-			continue;
 		}
 		
 		z+= m_boxSize;
@@ -218,7 +218,7 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 	
 	if(found)
 	{
-		boxInstance = vxGlobal::getInstance()->getExistingtBox( min, m_boxSize);
+		vxBoxN *boxInstance = vxGlobal::getInstance()->getExistingtBox( tmp, m_boxSize);
 		boxInstance->throwRay( ray, collide );
 	}
 }
