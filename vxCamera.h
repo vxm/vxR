@@ -155,7 +155,7 @@ public:
 	vxVector3d nextRay()
 	{
 		vxVector3d ret = givemeRay( getXCoord(), getYCoord() );
-		ret.rotateX(.291);
+		ret.rotateX(.391);
 		m_sampler.next();
 		return ret;
 	}
