@@ -10,39 +10,37 @@ vxColor vxLambert::getColor(vxCollision &collide) const
 
 	double lumm = std::max(getLightLoop(collide), 0.0);
 
-	if(distanceToCenter<.2)
+	if(distanceToCenter<.075)
+	{
+		collide.setColor(0, 0, 0);
+	}
+	else if(distanceToCenter<.3)
 	{
 		collide.setColor(lumm*collide.getColor().getR(), 
 						 lumm*collide.getColor().getG(), 
 						 lumm*collide.getColor().getB());
 	}
+	else if(distanceToCenter<.32)
+	{
+		collide.setColor(lumm*2.0, lumm*4.0, lumm*6.0);
+	}
+	else if(distanceToCenter<.4)
+	{
+		collide.setColor(lumm*255.0, lumm*255.0, lumm*255.0);
+	}
 	else
 	{
-		if(distanceToCenter<.32)
+		constexpr const double margn = 0.01;
+		if ( (collide.getU()<margn || collide.getU()>(1.-margn)) 
+			 || (collide.getV()<margn || collide.getV()>(1.-margn)))
 		{
-			collide.setColor(lumm*256, lumm*256, lumm*256);
+			collide.setColor(lumm*2.0, lumm*3.0, lumm*29.0);
 		}
 		else
 		{
-			constexpr const double margn = 0.01;
-			if ( (collide.getU()<margn || collide.getU()>(1.-margn)) 
-				 || (collide.getV()<margn || collide.getV()>(1.-margn)))
-			{
-				collide.setColor(lumm*2, lumm*3, lumm*29);
-			}
-			else
-			{
-				collide.setColor(lumm*255, lumm*255, lumm*155);
-			}
+			collide.setColor(lumm*255.0, lumm*255.0, lumm*155.0);
 		}
 	}
-
-/*	double intens = collide.getPosition().length();
-	vxVector3d pp=collide.getPosition();
-	collide.setColor(12*pp.getX(), 12*pp.getY(), 12*pp.getZ());*/
-
-//collide.setColor(255,255,255);
-
 
 	return collide.getColor();
 }
