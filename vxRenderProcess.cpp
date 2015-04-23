@@ -34,11 +34,10 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 
 vxStatus::code vxRenderProcess::execute()
 {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	auto npx = 0u;
-#endif
+//#endif
 	vxColor color;
-
 	auto cam = scene()->defaultCamera();
 	unsigned int nSamples = cam->getPixelSamples();
 
@@ -46,13 +45,13 @@ vxStatus::code vxRenderProcess::execute()
 	// camera throwing rays.
 	while(!cam->rayIsDone())
 	{
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		npx++;
-		if(npx%87333==0 || npx==m_imageProperties->numPixels())
+		if(npx%187333==0 || npx==m_imageProperties->numPixels())
 		{
 			std::cout << "Number of rays " << (npx*nSamples) << " of " << (m_imageProperties->numPixels() * nSamples)<< std::endl;
 		}
-#endif
+//#endif
 		auto coord = cam->getCoords();
 
 		//TODO: return this to smart pointer.
