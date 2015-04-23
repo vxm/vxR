@@ -294,9 +294,10 @@ public:
 	double angleZX() const 
 		{return atan2(m_x,m_z);}
 
-	void operator=(const vxVector3d &otro)
+	vxVector3d operator=(const vxVector3d &otro)
 	{
 		set(otro.x(),otro.y(),otro.z());
+		return *this;
 	}
 
 /*
