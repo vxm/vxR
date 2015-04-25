@@ -259,7 +259,7 @@ public:
 			{
 				double t=getPoint1()/ray.y();
 
-				collide.setColor(255, 0, 255);
+				collide.setColor(255, 0, 0);
 				collide.setNormal(m_normals[3]);
 				collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
@@ -353,7 +353,7 @@ public:
 					{
 						double t=getPoint4()/ray.y();
 
-						collide.setColor(0, 255, 255);
+						collide.setColor(255, 0, 0);
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint4(),ray.z()*t);
 
@@ -536,7 +536,7 @@ public:
 					{
 						double t=getPoint3()/ray.x();
 
-						collide.setColor(255, 255, 0);
+						collide.setColor(255, 100, 23);
 						collide.setNormal(m_normals[0]);
 						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 
@@ -549,7 +549,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(0, 255, 255);
+						collide.setColor(255, 0, 0);
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 						
@@ -863,7 +863,7 @@ public:
 	{
 		int a,b,c;
 
-	if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
+		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 		//		if ((a=frontSigth(ray)) && (b=topSigth(ray))) // si lo ven pr
 		{
 			m_inormal = a==1 ? 2 : 3;
@@ -889,7 +889,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(0, 255, 255);
+						collide.setColor(255, 0, 0);
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
@@ -940,6 +940,7 @@ public:
 		double max = atan2(getPoint4(),getPoint0());
 		return (ang>max && ang<min) ?  1 : 0;
 	}
+	
 	bool throwSpace(const vxVector3d &ray, vxCollision &collide) override
 	{
 		int a,b;
