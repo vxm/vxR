@@ -14,18 +14,18 @@ class MathUtils
 
 	//!! this shouldn't be like this
 	//! what a shame.
-	static vxPoint rectAndPlane(const vxVector3d &ray, const vxPlane &plane)
+	inline static vxPoint rectAndPlane(const vxVector3d &ray, const vxPlane &plane)
 	{
 		switch(plane.m_type)
 		{
+			case vxPlane::type::kZ:
+				return rectAndXPlane(ray, plane.z());
+			break;
 			case vxPlane::type::kX:
 				return rectAndXPlane(ray, plane.x());
 			break;
 			case vxPlane::type::kY:
 				return rectAndXPlane(ray, plane.y());
-			break;
-			case vxPlane::type::kZ:
-				return rectAndXPlane(ray, plane.z());
 			break;
 			default:
 			break;
@@ -33,7 +33,7 @@ class MathUtils
 		
 	}	
 
-	static vxPoint rectAndXPlane(const vxVector3d &ray, double x)
+	inline static vxPoint rectAndXPlane(const vxVector3d &ray, double x)
 	{
 		// parametric ecuation of the line solved.
 		auto t = (x - ray.x()) / -ray.x();
@@ -43,7 +43,7 @@ class MathUtils
 		return vxPoint(x,y,z);
 	}
 	
-	static vxPoint rectAndYPlane(const vxVector3d &ray, double y)
+	inline static vxPoint rectAndYPlane(const vxVector3d &ray, double y)
 	{
 		// parametric ecuation of the line solved.
 		auto t = (y - ray.y()) / -ray.y();
@@ -53,7 +53,7 @@ class MathUtils
 		return vxPoint(x,y,z);
 	}
 	
-	static vxPoint rectAndZPlane(const vxVector3d &ray, double z)
+	inline static vxPoint rectAndZPlane(const vxVector3d &ray, double z)
 	{
 		// parametric ecuation of the line solved.
 		auto t = (z - ray.z()) / -ray.z();
