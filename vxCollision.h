@@ -62,12 +62,12 @@ public:
 		return m_position;
 	}
 
-	void setColor(vxVector3d val)
+	void setColor(const vxVector3d &val)
 	{
 		m_color = val;
 	}
 
-	void setColor(vxColor val)
+	void setColor(const vxColor &val)
 	{
 		m_color = val;
 	}
@@ -82,7 +82,7 @@ public:
 		return m_color;
 	}
 
-	void setNormal(vxVector3d val)
+	void setNormal(const vxVector3d &val)
 	{
 		m_normal = val;
 	}
