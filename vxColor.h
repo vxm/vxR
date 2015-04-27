@@ -22,15 +22,22 @@ protected:
 	
 public:
 
+	static vxColor red;
+	static vxColor green;
+	static vxColor blue;
+	static vxColor white;
+	static vxColor black;
+	
+	
 	vxColor (){};
-	vxColor (int r, int g, int b, int a) 
+	vxColor (double r, double g, double b, double a) 
 		: m_r(r)
 		, m_g(g)
 		, m_b(b)
 		, m_a(a)
 	{}
 	
-	vxColor (int r, int g, int b) 
+	vxColor (double r, double g, double b) 
 		: m_r(r)
 		, m_g(g)
 		, m_b(b)
@@ -48,10 +55,10 @@ public:
 		return *this;
 	}
 	
-	void set(int r, int g, int b, int a)
+	void set(double r, double g, double b, double a)
 	{m_r=r;m_g=g;m_b=b;m_a=a;}
 	
-	void set(int r, int g, int b)
+	void set(double r, double g, double b)
 	{m_r=r;m_g=g;m_b=b;m_a=1.0;}
 	
 	void set(const vxColor &other)
@@ -72,7 +79,7 @@ public:
 	vxColor get() const 
 		{return *this;}
 	
-	void get(int &ri, int &gi, int &bi, int &ai) const
+	void get(double &ri, double &gi, double &bi, double &ai) const
 		{ri=m_r;gi=m_g;bi=m_b;ai=m_a;}
 
 	int getR() const {return m_r;}
