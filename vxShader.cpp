@@ -12,7 +12,7 @@ vxColor vxLambert::getColor(vxCollision &collide) const
 
 	if(distanceToCenter<.075)
 	{
-		collide.setColor(0, 0, 0);
+		collide.setColor(lumm*2.0, lumm*2.0, lumm*2.0);
 	}
 	else if(distanceToCenter<.3)
 	{
@@ -20,14 +20,18 @@ vxColor vxLambert::getColor(vxCollision &collide) const
 						 lumm*collide.getColor().getG(), 
 						 lumm*collide.getColor().getB());
 	}
-	else if(distanceToCenter<.32)
+	else if(distanceToCenter<.31)
 	{
-		collide.setColor(lumm*2.0, lumm*4.0, lumm*6.0);
+		collide.setColor(lumm*2.0, lumm*2.0, lumm*2.0);
 	}
 	else if(distanceToCenter<.4)
 	{
 		collide.setColor(lumm*255.0, lumm*255.0, lumm*255.0);
 	}
+	else if(distanceToCenter<.41)
+	{
+		collide.setColor(lumm*2.0, lumm*2.0, lumm*2.0);
+	}	
 	else
 	{
 		constexpr const double margn = 0.01;
