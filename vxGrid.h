@@ -158,6 +158,19 @@ public:
 		}
 	}
 	
+	
+	void createCorners()
+	{
+		unsigned int resminusone=m_resolution-1;
+		activate(resminusone, resminusone, resminusone);
+		activate(resminusone, resminusone,			 0);
+		activate(resminusone,	0,			resminusone);
+		activate(resminusone,	0,					0);
+		activate(0, resminusone, resminusone);
+		activate(0, resminusone,			 0);
+		activate(0,	0,			resminusone);
+		activate(0,	0,					0);	}
+	
 	void createGround(unsigned int offset = 0);
 
 	void createEdges()
@@ -230,9 +243,9 @@ public:
 	//sets every single vxl to 0.
 	void initialize(bool value = false)
 	{
-		for(int i=0;i<m_data.size();i++)
+		for(uint i=0;i<m_data.size();i++)
 		{
-			m_data[i]=false;
+			m_data[i]=value;
 		}
 	}
 	

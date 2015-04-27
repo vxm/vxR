@@ -13,7 +13,7 @@ void vxGrid::createGround(unsigned int offset)
 		}
 }
 
-bool vxGrid::inGrid(const vxVector3d &pnt) const
+inline bool vxGrid::inGrid(const vxVector3d &pnt) const
 {
 	return pnt.x()<=m_xmax && pnt.x()>=m_xmin
 			&& pnt.y()<=m_ymax && pnt.y()>=m_ymin
@@ -24,14 +24,14 @@ void vxGrid::getNearestCollision(const vxVector3d &ray, vxCollision &collide)
 {
 	switch(ray.mainAxis())
 	{
+	case vxVector3d::axis::kZ:
+		getNearestCollisionUsingZ(ray, collide);
+		break;
 	case vxVector3d::axis::kX:
 		getNearestCollisionUsingX(ray, collide);
 		break;
 	case vxVector3d::axis::kY:
 		getNearestCollisionUsingY(ray, collide);
-		break;
-	case vxVector3d::axis::kZ:
-		getNearestCollisionUsingZ(ray, collide);
 		break;
 	}
 }
@@ -74,7 +74,7 @@ void vxGrid::getNearestCollisionUsingX(const vxVector3d &ray, vxCollision &colli
 					}
 				}
 			}
-			else if(min.y()!=prev.y())
+			if(min.y()!=prev.y())
 			{
 				auto prvVoxl = vxVector3d(prev.x(), min.y(), prev.z());
 				if(inGrid(prvVoxl))
@@ -171,54 +171,72 @@ void vxGrid::getNearestCollisionUsingY(const vxVector3d &ray, vxCollision &colli
 void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &collide)
 {
 	collide.initialize();
-	vxVector3d curr(m_zmax, m_ymax, m_xmax);
-	vxVector3d tmp;
+	vxVector3d curr(m_zmin, 0.0, 0.0);
+	vxVector3d prev;
 	bool found = false;
-	double z=m_zmin;
-	while(z<m_zmax && !found)
+	double z = m_zmin;
+
+	while(z <= m_zmax && !found)
 	{
 		auto pnt = MathUtils::rectAndZPlane(ray, z);
-		if(!inGrid(pnt))
-		{
-			z+= m_boxSize;
-			continue;
-		}
-		auto idx = indexAtPosition(pnt);
+		prev = curr;
+		curr = getVoxelPosition(indexAtPosition(pnt));
 		
-		vxVector3d prev = curr;
-		tmp = curr = getVoxelPosition(idx);
+		vxVector3d tmp = curr;
 		
 		if(curr.x()!=prev.x())
 		{
-			prev.setX(curr.x());
+			tmp = prev;
+			
+			tmp.setX(curr.x());
+		
+			if(inGrid(tmp) && active(indexAtPosition(tmp)))
+			{
+				curr = tmp;
+				found=true;
+				break;
+			}
+			
+			if(curr.y()!=prev.y())
+			{
+				tmp.setY(curr.y());
+			
+				if(inGrid(tmp) && active(indexAtPosition(tmp)))
+				{
+					curr = tmp;
+					found=true;
+					break;
+				}
+			}
 		}
 		
 		if(curr.y()!=prev.y())
 		{
-			prev.setY(curr.y());
-		}
+			tmp = prev;
+			tmp.setY(curr.y());
 		
-		if(inGrid(prev))
-		{
-			if(active(indexAtPosition(prev)))
+			if(inGrid(tmp) && active(indexAtPosition(tmp)))
 			{
-				tmp = prev;
+				curr = tmp;
 				found=true;
 				break;
 			}
 		}
 		
-		if(active(idx))
+		if(inGrid(curr) && active(indexAtPosition(curr)))
 		{
 			found=true;
+			break;
 		}
-		
+
 		z+= m_boxSize;
+
 	}
+	
 	
 	if(found)
 	{
-		vxBoxN *boxInstance = vxGlobal::getInstance()->getExistingtBox( tmp, m_boxSize);
+		vxBoxN *boxInstance = vxGlobal::getInstance()->getExistingtBox( curr, m_boxSize);
 		boxInstance->throwRay( ray, collide );
 	}
 }
