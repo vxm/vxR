@@ -48,6 +48,7 @@ protected:
 	double m_midSize	= {m_size/2.0};
 
 	// cache objects
+	unsigned int m_midBoxSize	= {.5};	
 	unsigned int m_resXres		= {25};
 	unsigned int m_resXresXres	= {125};
 	double m_xmin		= {0.0};
@@ -68,8 +69,7 @@ public:
 		updateBB();
 		srand(time(NULL));
 	}
-
-
+	
 	vxGrid(const vxVector3d &position, double size)
 		: m_position(position)
 	{
@@ -128,6 +128,7 @@ public:
 	{
 		this->m_size=size;
 		m_midSize = size/2.0;
+		setBoxSize();
 	}
 
 	void setPosition(const vxVector3d position)
@@ -138,6 +139,7 @@ public:
 	void setBoxSize()
 	{
 		m_boxSize = m_size/double(m_resolution);
+		m_midBoxSize = m_boxSize/2.0;
 	}
 
 	void updateBB()
