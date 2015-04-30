@@ -8,6 +8,7 @@
 #include <vxGlobal.h>
 #include "vxBox.h"
 
+#include <math.h>
 #include <time.h>
 #include <iostream>
 #include <vector>

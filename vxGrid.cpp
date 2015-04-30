@@ -176,17 +176,17 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 	bool found = false;
 	double z = m_zmin;
 	
+	auto xcota = copysign(m_boxSize / 2.0, ray.x());
+	auto ycota = copysign(m_boxSize / 2.0, ray.y());
+	
 	while(z <= m_zmax && !found)
 	{
 		auto pnt = MathUtils::rectAndZPlane(ray, z);
-		
-		
-		auto ycota = ray.y() < 0 ? prev.y() - .5 :  prev.y() + .5;
-		auto xcota = ray.x() < 0 ? prev.x() - .5 :  prev.x() + .5;
+	
 		prev = curr;
 		curr = getVoxelPosition(indexAtPosition(pnt));
 		vxVector3d tmp = curr;
-		if(MathUtils::rectAndYPlane(ray, ycota).x()>xcota)
+		if(MathUtils::rectAndYPlane(ray, prev.y() + ycota).x()>(prev.x() + xcota))
 		{
 			if(curr.x()!=prev.x())
 			{
@@ -199,23 +199,10 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 					found=true;
 					break;
 				}
-				
-				if(curr.y()!=prev.y())
-				{
-					tmp.setY(curr.y());
-					if(inGrid(tmp) && active(indexAtPosition(tmp)))
-					{
-						curr = tmp;
-						found=true;
-						break;
-					}
-				}
-				
 			}
 			
 			if(curr.y()!=prev.y())
 			{
-				tmp = prev;
 				tmp.setY(curr.y());
 			
 				if(inGrid(tmp) && active(indexAtPosition(tmp)))
@@ -228,6 +215,7 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 		}
 		else
 		{
+			
 			if(curr.y()!=prev.y())
 			{
 				tmp = prev;
@@ -239,25 +227,10 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 					found=true;
 					break;
 				}
-				
-				if(curr.x()!=prev.x())
-				{
-					
-					tmp.setX(curr.x());
-				
-					if(inGrid(tmp) && active(indexAtPosition(tmp)))
-					{
-						curr = tmp;
-						found=true;
-						break;
-					}
-				}
-				
-			}
+			}			
 			
 			if(curr.x()!=prev.x())
 			{
-				tmp = prev;
 				tmp.setX(curr.x());
 			
 				if(inGrid(tmp) && active(indexAtPosition(tmp)))
@@ -267,12 +240,10 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 					break;
 				}
 			}
-			
 		}
 		
 		if(inGrid(curr) && active(indexAtPosition(curr)))
 		{
-			tmp = prev;
 			found=true;
 			break;
 		}
