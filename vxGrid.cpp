@@ -215,7 +215,6 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 		}
 		else
 		{
-			
 			if(curr.y()!=prev.y())
 			{
 				tmp = prev;

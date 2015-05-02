@@ -47,9 +47,10 @@ vxStatus::code vxRenderProcess::execute()
 	{
 //#ifdef _DEBUG
 		npx++;
-		if(npx%187333==0 || npx==m_imageProperties->numPixels())
+		if(npx%37333==0 || npx==m_imageProperties->numPixels())
 		{
-			std::cout << "Number of rays " << (npx*nSamples) << " of " << (m_imageProperties->numPixels() * nSamples)<< std::endl;
+			auto pct = 100.0 * npx / m_imageProperties->numPixels();
+			std::cout << pct << "% done. -- ray " << (npx*nSamples) << " of " << (m_imageProperties->numPixels() * nSamples) << std::endl;
 		}
 //#endif
 		auto coord = cam->getCoords();
