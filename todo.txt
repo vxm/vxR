@@ -3,39 +3,45 @@ TODO:
 - Rework getNearestCollision for optimization.
 	* investigate plane values for ray traveling.
 	* do x, y and z, not only z
-	- find dominant axis in ray
-	- complete block visualization, and create a tag version.
-	- LAST execute with valgrind again.
+	* find dominant axis in ray
+	* complete block visualization, and create a tag version.
+	* LAST execute with valgrind again.
 
 - Shaders:
-	- multiple lights
-	- Lumminance + shaders, rework.
+	* Lumminance + shaders, rework.
+	- create standard shader
+	  - provide simple shading
 		* angular shading
-	- Shadows.
-		- Raytrace shadows.
+	  - decouple lambert shader with texture
+	  - shadows.
+		- Raytrace shadows.  
+	- multiple lights
 	- Ingelligent subsampling.
+	- Global illumination.
+	- Subsurface scattering.
 
 - Camera:
 	- Rework subsamples.
 
-* Better statistics, c++11 chrono.
-* Deploy time over processes.
-- Get rid of black lines in render.
-  - swap image resolution to aperture for ray generation.
- 
-* Get rid of OLD warnings, to 0.
-
-- Improve memory usage for vxGrid.
+- General
+	* Better statistics, c++11 chrono.
+	* Deploy time over processes.
+	
+- BUGS:
+  - Get rid of black lines in render.
+    - swap image resolution to aperture for ray generation.
+  * Get rid of OLD warnings, to 0.
+  
+- Improvements
+  - Improve memory usage for vxGrid.
+  - Volumes.
+  - Profiling:
+    - Get rid of; tangent operations. or cache them.
 
 - General raytracing, and not only from camera.
 	- investigate pointer advance patern for traveling rays.
 
-- Profiling:
-  - Get rid of; tangent operations. or cache them.
 
-- Global illumination.
-- Subsurface scattering.
-- Volumes.
 
 
 
