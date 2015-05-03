@@ -28,7 +28,7 @@ public:
 	
 	virtual vxColor getColor(vxCollision &collide) const
 	{
-		return vxColor(0.0, 0.0, 0.0);
+		return collide.getColor();
 	}
 
 	double getRand()

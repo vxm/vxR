@@ -1,5 +1,7 @@
-#include "vxTexture.h"
+#include "vxMap.h"
 
-vxTexture::vxTexture()
+using namespace vxStorage;
+
+vxMap::vxMap()
 {
 }

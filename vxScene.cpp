@@ -55,7 +55,7 @@ void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 std::shared_ptr<vxGrid> vxScene::createGrid()
 {
 	// this is the grid object
-	const double resl = 40.0;
+	const double resl = 50.0;
 	
 	vxVector3d p{resl/1.2, 0.0, resl*2.20};
 	

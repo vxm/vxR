@@ -1,5 +1,9 @@
 #ifndef VXCIRCLESMAP_H
 #define VXCIRCLESMAP_H
+#include<vxMap2d.h>
+
+namespace vxStorage
+{
 
 class vxCirclesMap : public vxMap2d
 {
@@ -7,4 +11,6 @@ class vxCirclesMap : public vxMap2d
 		vxCirclesMap();
 };
 
+
+}
 #endif // VXCIRCLESMAP_H

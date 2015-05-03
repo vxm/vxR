@@ -43,7 +43,11 @@ SOURCES += main.cpp\
     FileUtils.cpp \
     MathUtils.cpp \
     vxColor.cpp \
-    vxStopwatch.cpp
+    vxStopwatch.cpp \
+    vxStandardShader.cpp \
+    vxMap.cpp \
+    vxMap2d.cpp \
+    vxCirclesMap.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -76,7 +80,11 @@ HEADERS  += \
     MathUtils.h \
     FileUtils.h \
     vxColor.h \
-    vxStopwatch.h
+    vxStopwatch.h \
+    vxStandardShader.h \
+    vxMap.h \
+    vxMap2d.h \
+    vxCirclesMap.h
 
 FORMS    += vxrendermain.ui
 
