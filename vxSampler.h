@@ -60,7 +60,7 @@ public:
 		
 		if(m_random)
 		{
-			for(uint i=0;i<m_nSamples;i++)
+			for(unsigned int i=0;i<m_nSamples;i++)
 			{
 				m_x[i]=(rand()/(double)RAND_MAX);
 				m_y[i]=(rand()/(double)RAND_MAX);

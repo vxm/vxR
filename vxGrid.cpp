@@ -269,11 +269,11 @@ void vxGrid::getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide)
 	
 	vxBoxN *caja;
 	
-	for(uint x=0;x<m_resolution;x++)
+	for(unsigned int x=0;x<m_resolution;x++)
 	{
-		for(uint y=0;y<m_resolution;y++)
+		for(unsigned int y=0;y<m_resolution;y++)
 		{
-			for(uint z=0;z<m_resolution;z++)
+			for(unsigned int z=0;z<m_resolution;z++)
 			{
 				if (getElement(x,y,z))
 				{

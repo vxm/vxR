@@ -120,7 +120,7 @@ vxRenderProcess::generateImage()
 	}
 	
 	// on each bucket
-	for(uint i=0;i<m_bucketList.size();i++)
+	for(unsigned int i=0;i<m_bucketList.size();i++)
 	{
 		std::vector<Hit> *bk = m_bucketList[i].m_pb.getHits();
 		auto sz = bk->size();
@@ -128,7 +128,7 @@ vxRenderProcess::generateImage()
 		unsigned int dist;
 		// for every of their render Hit.
 		//for(auto it = begin(bk);it!=end(bk);++it)
-		for(uint j=0;j<sz;j++)
+		for(unsigned int j=0;j<sz;j++)
 		{
 			Hit &h = (*bk)[j];
 			unsigned int compX = (h.m_xyCoef.y() * (prop->rx()-1));

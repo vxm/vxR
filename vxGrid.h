@@ -246,7 +246,7 @@ public:
 	//sets every single vxl to 0.
 	void initialize(bool value = false)
 	{
-		for(uint i=0;i<m_data.size();i++)
+		for(unsigned int i=0;i<m_data.size();i++)
 		{
 			m_data[i]=value;
 		}
