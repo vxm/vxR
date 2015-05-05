@@ -7,6 +7,10 @@
 
 namespace vxStorage {
 
+enum class Interpolation
+	{kNone, kLinear, kSin};
+
+
 class vxGlobal
 {
 private:
@@ -154,3 +158,4 @@ public:
 
 }
 #endif
+
