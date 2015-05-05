@@ -8,6 +8,7 @@
 #include <vxVector.h>
 #include <vxCollision.h>
 #include <vxLight.h>
+#include <vxCirclesMap.h>
 
 namespace vxStorage {
 
@@ -18,7 +19,7 @@ class vxShader:public vxObject
 protected:
 
 	std::shared_ptr<vxLight> m_light = {nullptr};
-
+	vxCirclesMap m_map;
 public:
 
 	vxShader()
@@ -26,24 +27,11 @@ public:
 		srand(time(NULL));
 	}
 	
-	virtual vxColor getColor(vxCollision &collide) const
-	{
-		return collide.getColor();
-	}
+	virtual vxColor getColor(const vxCollision &collide) const = 0;
 
-	double getRand()
-	{
-		return (rand()/(double)RAND_MAX);
-	}
-
-	double getBoolRand()
-	{
-		return getRand()<.5;
-	}
-	
 	virtual double getLightLoop(const vxCollision &col) const
 	{
-		return light()->luminance(col);
+		return std::max(light()->luminance(col), 0.0);
 	}
 	
 	std::shared_ptr<vxLight> light() const;
@@ -62,7 +50,7 @@ class vxLambert:public vxShader
 		}
 		
 		// vxShader interface
-	virtual vxColor getColor(vxCollision &collide) const override;
+	virtual vxColor getColor(const vxCollision &collide) const override;
 	
 };
 

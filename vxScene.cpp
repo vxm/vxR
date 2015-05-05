@@ -6,8 +6,9 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	m_shader = std::make_shared<vxLambert>();
 	m_light = std::make_shared<vxPointLight>();
 	m_light->setPosition(-1, 10, -1);
+	m_light->setIntensity(1.0);
 	
-	createCamera(vxMatrix(), 2);
+	createCamera(vxMatrix(), 1);
 	createGrid();
 }
 
@@ -55,7 +56,7 @@ void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 std::shared_ptr<vxGrid> vxScene::createGrid()
 {
 	// this is the grid object
-	const double resl = 50.0;
+	const double resl = 5.0;
 	
 	vxVector3d p{resl/1.2, 0.0, resl*2.20};
 	
@@ -126,7 +127,8 @@ int vxScene::throwRay(const vxVector3d &ray, vxCollision &collide)
 	
 	if(collide.isValid())
 	{
-		defaultShader()->getColor(collide);
+		vxColor col(defaultShader()->getColor(collide));
+		collide.setColor( col );
 		return 1;
 	}
 	

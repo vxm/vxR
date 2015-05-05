@@ -63,7 +63,17 @@ class MathUtils
 		return vxPoint(x,y,z);
 	}
 
-		
+	//Random
+	double getRand()
+	{
+		return (rand()/(double)RAND_MAX);
+	}
+
+	double getBoolRand()
+	{
+		return getRand()<.5;
+	}
+
 };
 
 

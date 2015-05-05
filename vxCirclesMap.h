@@ -9,6 +9,10 @@ class vxCirclesMap : public vxMap2d
 {
 	public:
 		vxCirclesMap();
+		
+		// vxMap interface
+	public:
+		virtual vxColor getColor(const vxCollision &collision) const;
 };
 
 

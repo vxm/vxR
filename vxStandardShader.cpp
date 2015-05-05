@@ -4,7 +4,7 @@ vxStandardShader::vxStandardShader()
 {
 }
 
-vxColor vxStandardShader::getColor(vxCollision &collide) const
+vxColor vxStandardShader::getColor(const vxCollision &collide) const
 {
 	if(hasDiffuseMap())
 	{

@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     vxStandardShader.cpp \
     vxMap.cpp \
     vxMap2d.cpp \
-    vxCirclesMap.cpp
+    vxCirclesMap.cpp \
+    vxramp.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -84,7 +85,8 @@ HEADERS  += \
     vxStandardShader.h \
     vxMap.h \
     vxMap2d.h \
-    vxCirclesMap.h
+    vxCirclesMap.h \
+    vxramp.h
 
 FORMS    += vxrendermain.ui
 

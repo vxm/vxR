@@ -3,6 +3,7 @@
 
 #include <vxObject.h>
 #include<vxCollision.h>
+#include<vxColor.h>
 
 namespace vxStorage {
 
@@ -12,7 +13,7 @@ class vxMap : public vxObject
 	public:
 		vxMap();
 	
-	virtual void getColor(const vxCollision &collision) = 0;
+	virtual vxColor getColor(const vxCollision &collision) const = 0;
 };
 
 }
