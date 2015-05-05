@@ -176,8 +176,8 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 	bool found = false;
 	double z = m_zmin;
 	
-	auto xcota = copysign(m_boxSize / 2.0, ray.x());
-	auto ycota = copysign(m_boxSize / 2.0, ray.y());
+	auto xcota = copysign(m_midBoxSize, ray.x());
+	auto ycota = copysign(m_midBoxSize, ray.y());
 	
 	while(z <= m_zmax && !found)
 	{

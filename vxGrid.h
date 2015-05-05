@@ -49,7 +49,7 @@ protected:
 	double m_midSize	= {m_size/2.0};
 
 	// cache objects
-	unsigned int m_midBoxSize	= {.5};	
+	double m_midBoxSize	= {.5};	
 	unsigned int m_resXres		= {25};
 	unsigned int m_resXresXres	= {125};
 	double m_xmin		= {0.0};
@@ -230,8 +230,6 @@ public:
 
 	void createRandom(double ratio = 1.0)
 	{
-		unsigned int av{0};
-
 		for(auto it = begin(m_data);
 				it!= end(m_data);
 				++it)
