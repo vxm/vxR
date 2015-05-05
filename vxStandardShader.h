@@ -14,7 +14,7 @@ class vxStandardShader : public vxShader
 		// vxShader interface
 	public:
 
-		virtual vxColor getColor(vxCollision &collide) const override;
+		virtual vxColor getColor(const vxCollision &collide) const override;
 
 		virtual double getLightLoop(const vxCollision &col) const override;
 
