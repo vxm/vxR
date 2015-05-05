@@ -13,7 +13,7 @@ class vxMap2d : public vxMap
 		
 		// vxMap interface
 	public:
-		virtual void getColor(const vxCollision &collision) = 0;
+		virtual vxColor getColor(const vxCollision &collision) const  = 0;
 };
 
 }
