@@ -246,7 +246,7 @@ public:
 			{
 				double t=getPoint0()/ray.x();
 
-				collide.setColor(0, 255, 0);
+				collide.setColor(0, 1.0, 0);
 				collide.setNormal(m_normals[2]);
 				collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
@@ -259,7 +259,7 @@ public:
 			{
 				double t=getPoint1()/ray.y();
 
-				collide.setColor(255, 0, 0);
+				collide.setColor(1.0, 0, 0);
 				collide.setNormal(m_normals[3]);
 				collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
@@ -271,7 +271,7 @@ public:
 			{
 				double t=getPoint2()/ray.z();
 
-				collide.setColor(0, 0, 255);
+				collide.setColor(0, 0, 1.0);
 				collide.setNormal(m_normals[4]);
 				collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
@@ -340,7 +340,7 @@ public:
 					{
 						double t=getPoint0()/ray.x();
 
-						collide.setColor(0, 255, 0);
+						collide.setColor(0, 1.0, 0);
 						collide.setNormal(m_normals[2]);
 						collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
@@ -353,7 +353,7 @@ public:
 					{
 						double t=getPoint4()/ray.y();
 
-						collide.setColor(255, 0, 0);
+						collide.setColor(1.0, 0, 0);
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint4(),ray.z()*t);
 
@@ -368,7 +368,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 255);
+						collide.setColor(0, 0, 1.0);
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
@@ -441,7 +441,7 @@ public:
 					{
 						double t=getPoint3()/ray.x();
 
-						collide.setColor(255, 255, 0);
+						collide.setColor(1.0, 1.0, 0);
 						collide.setNormal(m_normals[0]);
 						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 						
@@ -454,7 +454,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(255, 0, 255);
+						collide.setColor(1.0, 0, 1.0);
 						collide.setNormal(m_normals[3]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 												
@@ -467,7 +467,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 255);
+						collide.setColor(0, 0, 1.0);
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
@@ -536,7 +536,7 @@ public:
 					{
 						double t=getPoint3()/ray.x();
 
-						collide.setColor(255, 100, 23);
+						collide.setColor(1.0, 100, 23);
 						collide.setNormal(m_normals[0]);
 						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 
@@ -549,7 +549,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(255, 0, 0);
+						collide.setColor(1.0, 0, 0);
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 						
@@ -562,7 +562,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 255);
+						collide.setColor(0, 0, 1.0);
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());	
 						
@@ -630,7 +630,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(255, 0, 255);
+						collide.setColor(1.0, 0, 1.0);
 						collide.setNormal(m_normals[3]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
@@ -643,7 +643,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 255);
+						collide.setColor(0, 0, 1.0);
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
@@ -711,7 +711,7 @@ public:
 					{
 						double t=getPoint3()/ray.x();
 
-						collide.setColor(255, 255, 0);
+						collide.setColor(1.0, 1.0, 0);
 						collide.setNormal(m_normals[0]);
 						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 
@@ -725,7 +725,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 255);
+						collide.setColor(0, 0, 1.0);
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
@@ -794,7 +794,7 @@ public:
 					{
 						double t=getPoint0()/ray.x();
 
-						collide.setColor(0, 255, 0);
+						collide.setColor(0, 1.0, 0);
 						collide.setNormal(m_normals[2]);
 						collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
@@ -808,7 +808,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 255);
+						collide.setColor(0, 0, 1.0);
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
@@ -876,7 +876,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 255);
+						collide.setColor(0, 0, 1.0);
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
@@ -889,7 +889,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(255, 0, 0);
+						collide.setColor(1.0, 0, 0);
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
@@ -949,7 +949,7 @@ public:
 		{
 			double t=getPoint2()/ray.z();
 
-			collide.setColor(0, 0, 255);
+			collide.setColor(0, 0, 1.0);
 			collide.setNormal(m_normals[4]);
 			collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
