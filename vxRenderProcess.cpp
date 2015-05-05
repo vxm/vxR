@@ -134,7 +134,7 @@ vxRenderProcess::generateImage()
 			unsigned int compX = (h.m_xyCoef.y() * (prop->rx()-1));
 			unsigned int compY = (h.m_xyCoef.x() * (prop->ry()-1));
 			dist = (compX + (compY * prop->rx())) * prop->numChannels();
-			//assert(dist && dist<=numElements);
+			assert(dist<m_imageProperties->numElements());
 			h.m_px.setToGamma();
 			h.m_px.toRGBA8888(buff + dist);
 		}
