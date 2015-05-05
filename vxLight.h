@@ -12,15 +12,13 @@ class vxLight:public vxObject
 protected:
 
 	 vxVector3d m_position;
-	 double m_intensity;
-	 vxColor m_color;
+	 double m_intensity{1.0};
+	 vxColor m_color{255,255,255};
 
  public:
 
 	vxLight() 
 	{
-		m_intensity=1;
-		m_color.set(255,255,255);
 	}
 
 	vxLight(double intensity, vxVector3d color) {this->m_intensity=intensity;this->m_color=color;}
@@ -34,8 +32,8 @@ protected:
 	void setIntensity(double intensity) {this->m_intensity=intensity;}
 	void setColor(vxColor color) {this->m_color=color;}
 
-	double getIntensity() {return this->m_intensity;}
-	vxColor getColor() {return this->m_color;}
+	double getIntensity() {return m_intensity;}
+	vxColor getColor() const {return m_color;}
 
 	virtual vxVector3d getLightRay(vxVector3d position)
 	{
