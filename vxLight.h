@@ -100,8 +100,6 @@ protected:
  
 	 double luminance(const vxCollision &collide) override
 	 {
-		//vxVector3d lightRay = getLightRay(collide.getPosition());
-		
 		double angl = collide.getNormal().angle(getLightRay(collide.getPosition()));
 		
 		if(angl>1.57)
