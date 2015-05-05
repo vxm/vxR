@@ -88,7 +88,14 @@ public:
 	int getA() const {return m_a;}
 
 	double lumma() const {return sqrt((double)m_r*m_r+m_g*m_g+m_b*m_b);}
-
+	void setToGamma(double gamma=2.2)
+	{
+		m_r=pow(m_r, gamma);
+		m_g=pow(m_g, gamma);
+		m_b=pow(m_b, gamma);
+	}
+	
+	
 	vxColor operator+(const vxColor &other) const {return vxColor(other.getR()+m_r,other.getG()+m_g,other.getB()+m_b,other.getA()+m_a);}
 	vxColor operator+(double factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_a);}
 	vxColor operator+(float factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_a);}
@@ -116,13 +123,16 @@ public:
 	
 	void toRGBA8888(unsigned char *tbuff) const
 	{
-		*tbuff = (unsigned char)char(m_r);
+		*tbuff = (unsigned char)char(m_r*255.0);
 		tbuff++;
 		
-		*tbuff = (unsigned char)char(m_g);
+		*tbuff = (unsigned char)char(m_g*255.0);
 		tbuff++;
 
-		*tbuff = (unsigned char)char(m_b);
+		*tbuff = (unsigned char)char(m_b*255.0);
+		tbuff++;
+
+		*tbuff = (unsigned char)char(m_a*255.0);
 	}
 	
 	friend std::ostream& operator<<(std::ostream &os, const vxColor& c)
