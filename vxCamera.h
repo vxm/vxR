@@ -133,7 +133,7 @@ public:
 
 	bool pixIsDone()
 	{
-		m_sampler.isDone();
+		return m_sampler.isDone();
 	}
 
 	void resetPixel()
