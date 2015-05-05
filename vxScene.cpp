@@ -6,6 +6,7 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	m_shader = std::make_shared<vxLambert>();
 	m_light = std::make_shared<vxPointLight>();
 	m_light->setPosition(-1, 10, -1);
+	m_light->setIntensity(1.0);
 	
 	createCamera(vxMatrix(), 1);
 	createGrid();
