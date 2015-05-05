@@ -21,7 +21,7 @@ namespace vxStorage {
 struct Hit
 {
 	vxColor m_px;
-	vxVector2d m_xyCoef;	
+	vxVector2d m_xyCoef;
 //	std::shared_ptr<vxShader> m_sh;
 };
 
