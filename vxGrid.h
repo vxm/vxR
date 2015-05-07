@@ -327,7 +327,7 @@ public:
 
 		return getVoxelPosition(retx, rety, retz);
 	}
-		
+
 	inline unsigned int indexAtPosition(const vxVector3d &position) const
 	{
 		vxVector3d pos = position - (m_position-m_midSize); 
