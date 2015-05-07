@@ -22,11 +22,11 @@ public:
 		m_comp=0;
 	}
 
-	void add(int r, int g, int b)
+	void add(double r, double g, double b)
 	{
-		this->m_r+=r;
-		this->m_g+=g;
-		this->m_b+=b;
+		m_r+=r;
+		m_g+=g;
+		m_b+=b;
 		m_comp++;
 	}
 
@@ -53,13 +53,13 @@ public:
 
 	void add(vxColor color)
 	{
-		this->add(color.getR(),color.getG(),color.getB());	
+		add(color.getR(),color.getG(),color.getB());	
 		m_comp++;
 	}
 
 	void add(vxPixel color)
 	{
-		this->add(color.getR(),color.getG(),color.getB());	
+		add(color.getR(),color.getG(),color.getB());	
 		m_comp++;
 	}
 

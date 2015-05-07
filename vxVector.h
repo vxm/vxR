@@ -270,11 +270,11 @@ public:
 		{return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);}
 
 	vxVector3d operator^(const vxVector3d &b) const
-		{return vxVector3d((this->m_y*b.m_z)-(this->m_z*b.m_y),(this->m_x*b.m_z)-(this->m_z*b.m_x),(this->m_x*b.m_y)-(this->m_y*b.m_x));}
+		{return vxVector3d((m_y*b.m_z)-(m_z*b.m_y),(m_x*b.m_z)-(m_z*b.m_x),(m_x*b.m_y)-(m_y*b.m_x));}
 
 	double angle(vxVector3d b) const
 	{
-		double an=(this->m_x*b.m_x+this->m_y*b.m_y+this->m_z*b.m_z)/((sqrt((this->m_x*this->m_x)+(this->m_y*this->m_y)+(this->m_z*this->m_z)))*(sqrt((b.m_x*b.m_x)+(b.m_y*b.m_y)+(b.m_z*b.m_z))));
+		double an=(m_x*b.m_x+m_y*b.m_y+m_z*b.m_z)/((sqrt((m_x*m_x)+(m_y*m_y)+(m_z*m_z)))*(sqrt((b.m_x*b.m_x)+(b.m_y*b.m_y)+(b.m_z*b.m_z))));
 		return acos(an);
 	}
 

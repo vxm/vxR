@@ -50,11 +50,11 @@ public:
 				double apertureH,
 				double apertureV)
 	{
-		this->m_orientation=orientation;
-		this->m_position=position;
-		this->m_focusDistance=focusD;
-		this->m_horizontalAperture=apertureH;
-		this->m_verticalAperture=apertureV;
+		m_orientation=orientation;
+		m_position=position;
+		m_focusDistance=focusD;
+		m_horizontalAperture=apertureH;
+		m_verticalAperture=apertureV;
 	
 		srand(time(NULL));
 	}
@@ -91,19 +91,19 @@ public:
 			 double apertureH = 0.0, 
 			 double apertureV = 0.0) 
 	{
-		this->m_orientation=orientation;
-		this->m_position=position;
-		this->m_focusDistance=focusD;
+		m_orientation=orientation;
+		m_position=position;
+		m_focusDistance=focusD;
 		
 		if(std::max(apertureH+apertureV,0.0)==0.0)
 		{
-			this->m_horizontalAperture = 1.0;
-			this->m_verticalAperture = m_prop->aspectRatio();
+			m_horizontalAperture = 1.0;
+			m_verticalAperture = m_prop->aspectRatio();
 		}
 		else
 		{	
-			this->m_horizontalAperture = apertureH;
-			this->m_verticalAperture = apertureV;
+			m_horizontalAperture = apertureH;
+			m_verticalAperture = apertureV;
 		}
 			
 		m_iteratorPosX=0;

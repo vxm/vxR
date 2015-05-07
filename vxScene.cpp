@@ -4,11 +4,18 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
 {
 	m_shader = std::make_shared<vxLambert>();
-	m_light = std::make_shared<vxPointLight>();
-	m_light->setPosition(-1, 10, -1);
-	m_light->setIntensity(1.0);
 	
-	createCamera(vxMatrix(), 1);
+	vxPointLight l1(1.0, vxColor::white);
+	l1.setPosition(-1, 80, -1);
+	l1.setIntensity(0.7);
+	m_lights.push_back(l1);
+
+	vxPointLight l2(1.0, vxColor::white);
+	l2.setPosition(-11, 70, 212);
+	l2.setIntensity(0.9);
+	m_lights.push_back(l2);
+	
+	createCamera(vxMatrix(), 3);
 	createGrid();
 }
 
@@ -26,15 +33,16 @@ vxScene::createCamera(const vxMatrix &transform,
 	return m_camera;
 }
 
-std::shared_ptr<vxShader> vxScene::defaultShader() const
+std::shared_ptr<vxShader> vxScene::defaultShader()
 {
 	static std::shared_ptr<vxShader> sLambert;
 	if(sLambert!=nullptr)
 	{
 		return sLambert;
 	}
+
 	sLambert = std::make_shared<vxLambert>();
-	sLambert->setLight(defaultLight());
+	sLambert->setLights(&m_lights);
 	return sLambert;
 }
 
@@ -56,7 +64,7 @@ void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 std::shared_ptr<vxGrid> vxScene::createGrid()
 {
 	// this is the grid object
-	const double resl = 5.0;
+	const double resl = 125.0;
 	
 	vxVector3d p{resl/1.2, 0.0, resl*2.20};
 	
@@ -118,11 +126,6 @@ void vxScene::setProp(const std::shared_ptr<ImageProperties> &prop)
 
 int vxScene::throwRay(const vxVector3d &ray, vxCollision &collide)
 { 
-	if(!m_grids.size())
-	{
-		return 0;
-	}
-	
 	m_grids[0]->throwRay(ray,collide);
 	
 	if(collide.isValid())
@@ -135,12 +138,3 @@ int vxScene::throwRay(const vxVector3d &ray, vxCollision &collide)
 	return 0;
 }
 
-std::shared_ptr<vxLight> vxScene::defaultLight() const
-{
-	return m_light;
-}
-
-void vxScene::setLight(const std::shared_ptr<vxLight> &light)
-{
-	m_light = light;
-}

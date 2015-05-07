@@ -296,7 +296,7 @@ void vxGrid::getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide)
 					}
 					else
 					{
-						collide.setColor(255,0,0);
+						collide.setColor(1.0,0,0);
 					}
 				}
 			}

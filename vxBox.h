@@ -141,8 +141,8 @@ public:
 
 	void setSize(double size)
 	{
-		this->m_size=size;
-		m_apot=size/(double)2;
+		m_size=size;
+		m_apot=size/2.0;
 	}
 
 	void initialize()

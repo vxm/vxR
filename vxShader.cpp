@@ -12,14 +12,10 @@ vxColor vxLambert::getColor(const vxCollision &collide) const
 	
 	return col * lumm;
 }
-std::shared_ptr<vxLight> vxShader::light() const
-{
-	return m_light;
-}
 
-void vxShader::setLight(const std::shared_ptr<vxLight> &light)
+void vxShader::setLights(std::vector<vxPointLight> * lights)
 {
-	m_light = light;
+	m_lights = lights;
 }
 
 

@@ -94,7 +94,7 @@ public:
 
 	void setU(double u)
 	{
-		this->m_u=u;
+		m_u=u;
 	}
 
 	double getU() const
@@ -104,7 +104,7 @@ public:
 
 	void setV(double v)
 	{
-		this->m_v=v;
+		m_v=v;
 	}
 
 	double getV() const

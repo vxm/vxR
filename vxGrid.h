@@ -84,7 +84,7 @@ public:
 	
 	vxGrid(double x, double y,  double z,  double size)
 	{ 
-		this->m_position.set(x,y,z);
+		m_position.set(x,y,z);
 		setSize(size);
 
 		createGridData(5);
@@ -127,14 +127,14 @@ public:
 
 	void setSize(const double size)
 	{
-		this->m_size=size;
+		m_size=size;
 		m_midSize = size/2.0;
 		setBoxSize();
 	}
 
 	void setPosition(const vxVector3d position)
 	{
-		this->m_position=position;
+		m_position=position;
 	}
 
 	void setBoxSize()
@@ -255,7 +255,7 @@ public:
 	{
 		unsigned int av{0};
 		
-		for(int i=0;i<m_data.size();i++)
+		for(unsigned int i=0;i<m_data.size();i++)
 		{
 			if(m_data[i])
 				av++;

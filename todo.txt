@@ -7,6 +7,10 @@ TODO:
 	* complete block visualization, and create a tag version.
 	* LAST execute with valgrind again.
 
+- Optimize ray travel.
+	- not in grid
+	- get only one axis when only one is needed (ray intersect)
+	
 - Shaders:
 	* Lumminance + shaders, rework.
 	- create standard shader

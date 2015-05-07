@@ -14,6 +14,7 @@
 
 namespace vxStorage {
 
+
 class vxScene:public vxObject
 {
 protected:
@@ -21,7 +22,8 @@ protected:
 	bool m_defaultLight = {true};
 	bool m_defaultShader = {true};
 
-	std::shared_ptr<vxLight> m_light = {nullptr};
+	std::vector<vxPointLight> m_lights;
+	
 	std::shared_ptr<vxShader> m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
 
@@ -35,11 +37,6 @@ public:
 	
 	~vxScene()
 	{
-	}
-
-	double getLight(vxCollision &collide)
-	{
-		return m_light->luminance(collide);
 	}
 
 	std::shared_ptr<vxCamera>
@@ -61,7 +58,7 @@ public:
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
 	
-	std::shared_ptr<vxShader> defaultShader() const;
+	std::shared_ptr<vxShader> defaultShader();
 	void setShader(const std::shared_ptr<vxShader> &defaultShader);
 	
 	std::shared_ptr<vxCamera> defaultCamera() const;
