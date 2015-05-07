@@ -44,7 +44,7 @@ vxColor vxCirclesMap::getColor(const vxCollision &collision) const
 		}
 		else
 		{
-			col.set(255.0/255.0, 255.0/255.0, 155.0/255.0);
+			col.set(1.0, 1.0, 0.6);
 		}
 	}
 
