@@ -64,16 +64,40 @@ class MathUtils
 	}
 
 	//Random
-	double getRand()
+	inline static double getRand()
 	{
 		return (rand()/(double)RAND_MAX);
 	}
 
-	double getBoolRand()
+	inline static double getBoolRand()
 	{
 		return getRand()<.5;
 	}
-
+	
+	
+	inline static double clamp(double val, double min, double max)
+	{
+		return std::max(std::min(max, val), min);
+	}
+	
+	inline static vxColor clamp(const vxColor &c1, const vxColor &min, const vxColor &max)
+	{
+		return vxColor(clamp(c1.getR(), min.getR(), max.getR()),
+					   clamp(c1.getG(), min.getG(), max.getG()),
+					   clamp(c1.getB(), min.getB(), max.getB()));
+	}
+	
+	inline static vxColor clamp(const vxColor &c1, double min, double max)
+	{
+		return vxColor(clamp(c1.getR(), min, max),
+					   clamp(c1.getG(), min, max),
+					   clamp(c1.getB(), min, max));
+	}
+	
+	inline static double remap(double v, double max)
+	{
+		return clamp(v*max,0.0,max);
+	}
 };
 
 
