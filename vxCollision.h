@@ -1,9 +1,9 @@
 #ifndef VXCOLLISION_H
 #define VXCOLLISION_H
 
-#include<vxObject.h>
-#include<vxPoint.h>
-#include<vxColor.h>
+#include "vxObject.h"
+#include "vxPoint.h"
+#include "vxColor.h"
 
 namespace vxStorage {
 
@@ -72,7 +72,7 @@ public:
 		m_color = val;
 	}
 
-	void setColor(int r, int g, int b)
+	void setColor(double r, double g, double b)
 	{
 		m_color.set(r,g,b);
 	}

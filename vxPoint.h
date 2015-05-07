@@ -1,7 +1,7 @@
 #ifndef VXPOINT_H
 #define VXPOINT_H
 
-#include<vxVector.h>
+#include "vxVector.h"
 
 namespace vxStorage {
 

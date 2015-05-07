@@ -4,13 +4,13 @@
 #include<memory>
 #include<vector>
 
-#include<vxObject.h>
-#include<vxMatrix.h>
-#include<vxShader.h>
-#include<vxLight.h>
-#include<vxGrid.h>
-#include<vxCamera.h>
-#include<ImageProperties.h>
+#include "vxObject.h"
+#include "vxMatrix.h"
+#include "vxShader.h"
+#include "vxLight.h"
+#include "vxGrid.h"
+#include "vxCamera.h"
+#include "ImageProperties.h"
 
 namespace vxStorage {
 

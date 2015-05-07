@@ -5,7 +5,7 @@
 #include <bitset>
 
 #include "vxObject.h"
-#include <vxGlobal.h>
+#include "vxGlobal.h"
 #include "vxBox.h"
 
 #include <math.h>
@@ -244,7 +244,7 @@ public:
 	//sets every single vxl to 0.
 	void initialize(bool value = false)
 	{
-		for(uint i=0;i<m_data.size();i++)
+		for(unsigned int i=0;i<m_data.size();i++)
 		{
 			m_data[i]=value;
 		}

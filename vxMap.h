@@ -1,9 +1,9 @@
 #ifndef VXMAP_H
 #define VXMAP_H
 
-#include <vxObject.h>
-#include<vxCollision.h>
-#include<vxColor.h>
+#include "vxObject.h"
+#include "vxCollision.h"
+#include "vxColor.h"
 
 namespace vxStorage {
 

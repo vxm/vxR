@@ -3,11 +3,11 @@
 
 #include <memory>
 
-#include <vxProcess.h>
-#include <vxStatus.h>
-#include <vxBucketList.h>
-#include <ImageProperties.h>
-#include <vxScene.h>
+#include "vxProcess.h"
+#include "vxStatus.h"
+#include "vxBucketList.h"
+#include "ImageProperties.h"
+#include "vxScene.h"
 
 namespace vxCompute {
 

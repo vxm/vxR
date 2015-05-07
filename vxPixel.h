@@ -1,7 +1,7 @@
 #ifndef VXPIXEL_H
 #define VXPIXEL_H
 
-#include <vxColor.h>
+#include "vxColor.h"
 
 
 namespace vxStorage {
