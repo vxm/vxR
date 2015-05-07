@@ -15,9 +15,9 @@ void vxGrid::createGround(unsigned int offset)
 
 inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
 {
-	return pnt.x()<=(m_xmax-tol) && pnt.x()>=(m_xmin+tol)
-			&& pnt.y()<=(m_ymax-tol) && pnt.y()>=(m_ymin+tol)
-			&& pnt.z()<=(m_zmax-tol) && pnt.z()>=(m_zmin+tol);
+	return pnt.x()<=(m_xmax+tol) && pnt.x()>=(m_xmin-tol)
+			&& pnt.y()<=(m_ymax+tol) && pnt.y()>=(m_ymin-tol)
+			&& pnt.z()<=(m_zmax+tol) && pnt.z()>=(m_zmin-tol);
 }
 
 void vxGrid::getNearestCollision(const vxVector3d &ray, vxCollision &collide)
