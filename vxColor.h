@@ -1,8 +1,9 @@
 #ifndef VXCOLOR_H
 #define VXCOLOR_H
+#include <iostream>
+
 #include "vxObject.h"
 #include "vxVector.h"
-#include <iostream>
 
 namespace vxStorage {
 /*
@@ -126,17 +127,7 @@ public:
 	vxColor operator/(int factor) const {return vxColor(m_r/double(factor),m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 	vxColor operator/(unsigned int factor) const {return vxColor(m_r/double(factor),m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 	
-	void toRGBA8888(unsigned char *tbuff) const
-	{
-		*tbuff = (unsigned char)char(m_r*255.0);
-		tbuff++;
-		
-		*tbuff = (unsigned char)char(m_g*255.0);
-		tbuff++;
-
-		*tbuff = (unsigned char)char(m_b*255.0);
-
-	}
+	void toRGBA8888(unsigned char *tbuff) const;
 	
 	friend std::ostream& operator<<(std::ostream &os, const vxColor& c)
 	{
