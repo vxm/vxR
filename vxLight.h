@@ -108,7 +108,7 @@ protected:
 		if(angl>1.57)
 			return 0.0;
 		
-		return m_intensity * (pow(cos(angl),2.0));
+		return m_intensity * cos(angl);
 	 }
 	 
 	 // vxLight interface
