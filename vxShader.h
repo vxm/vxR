@@ -48,7 +48,7 @@ public:
 			acumLumm += it->luminance(collision);
 		}
 		
-		return std::min(1.0, std::max(acumLumm, 0.0));
+		return acumLumm;
 	}
 	
 	std::shared_ptr<vxLight> light() const;
