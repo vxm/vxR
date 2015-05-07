@@ -1,7 +1,7 @@
 #ifndef VXMAP2D_H
 #define VXMAP2D_H
 
-#include<vxMap.h>
+#include "vxMap.h"
 
 namespace vxStorage
 {

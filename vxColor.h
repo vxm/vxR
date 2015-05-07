@@ -1,7 +1,7 @@
 #ifndef VXCOLOR_H
 #define VXCOLOR_H
-#include<vxObject.h>
-#include<vxVector.h>
+#include "vxObject.h"
+#include "vxVector.h"
 #include <iostream>
 
 namespace vxStorage {

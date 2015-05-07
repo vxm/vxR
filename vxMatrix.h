@@ -1,7 +1,7 @@
 #ifndef VXMATRIX_H
 #define VXMATRIX_H
 
-#include <vxStatus.h>
+#include "vxStatus.h"
 #include <initializer_list>
 
 namespace vxStorage {

@@ -2,9 +2,9 @@
 #define VXSAMPLER_H
 
 #include <vector>
-#include <vxObject.h>
 #include <math.h>
 #include <cstdlib>
+#include "vxObject.h"
 
 namespace vxStorage {
 

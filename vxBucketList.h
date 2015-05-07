@@ -1,8 +1,8 @@
 #ifndef VXBUCKETLIST_H
 #define VXBUCKETLIST_H
 
-#include <ImageProperties.h>
-#include <vxContactBuffer.h>
+#include "ImageProperties.h"
+#include "vxContactBuffer.h"
 
 
 namespace vxStorage {
@@ -96,8 +96,8 @@ public:
 	
 	unsigned int getIndex(double x, double y) const
 	{
-		int r1 = (x*m_nBucketsInX);
-		int r2 = (m_nBucketsInX * y);
+		int r1 = int(x*m_nBucketsInX);
+		int r2 = int(m_nBucketsInX * y);
 		return  r1 + r2*m_nBucketsInX;
 	}
 	

@@ -1,9 +1,9 @@
 #ifndef MathUtils_H
 #define MathUtils_H
 
-#include<vxPoint.h>
-#include<vxPlane.h>
-#include<vxCollision.h>
+#include "vxPoint.h"
+#include "vxPlane.h"
+#include "vxCollision.h"
 
 using namespace vxStorage;
 

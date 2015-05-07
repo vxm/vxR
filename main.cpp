@@ -3,14 +3,14 @@
 #include <QApplication>
 #include <QImage>
 
-#include <ImageProperties.h>
-#include <FileUtils.h>
-#include <vxRenderProcess.h>
-#include <vxRenderMain.h>
-#include <TimeUtils.h>
-#include <MathUtils.h>
-#include <vxVector.h>
-#include <vxGrid.h>
+#include "ImageProperties.h"
+#include "FileUtils.h"
+#include "vxRenderProcess.h"
+#include "vxRenderMain.h"
+#include "TimeUtils.h"
+#include "MathUtils.h"
+#include "vxVector.h"
+#include "vxGrid.h"
 
 static const std::string baseName("image.1.bmp");
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	// Img properties for render.
 	auto imgDesc = 
 			std::make_shared<vxStorage::ImageProperties>
-			(575, 575);
+			(8200, 8200);
 	
 	// create the render process
 	render rp(imgDesc);

@@ -4,11 +4,11 @@
 #include "stdlib.h"
 #include "time.h"
 #include <memory>
-#include <vxObject.h>
-#include <vxVector.h>
-#include <vxCollision.h>
-#include <vxLight.h>
-#include <vxCirclesMap.h>
+#include "vxObject.h"
+#include "vxVector.h"
+#include "vxCollision.h"
+#include "vxLight.h"
+#include "vxCirclesMap.h"
 
 namespace vxStorage {
 

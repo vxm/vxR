@@ -1,9 +1,9 @@
 #ifndef VXPROCESS_H
 #define VXPROCESS_H
 
-#include<string>
-#include<vxStatus.h>
-#include<vxStopwatch.h>
+#include <string>
+#include "vxStatus.h"
+#include "vxStopwatch.h"
 
 namespace vxStorage 
 {

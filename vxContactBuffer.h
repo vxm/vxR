@@ -9,10 +9,10 @@
 #include <memory>
 #include <vector>
 
-#include <vxObject.h>
-#include <vxVector.h>
-#include <vxShader.h>
-#include <vxPixel.h>
+#include "vxObject.h"
+#include "vxVector.h"
+#include "vxShader.h"
+#include "vxPixel.h"
 
 using std::vector;
 

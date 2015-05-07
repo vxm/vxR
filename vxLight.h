@@ -3,7 +3,7 @@
 
 #include "vxObject.h"
 #include "vxVector.h"
-#include<vxCollision.h>
+#include "vxCollision.h"
 
 namespace vxStorage {
 
@@ -105,7 +105,7 @@ protected:
 		if(angl>1.57)
 			return 0.0;
 		
-		return m_intensity * (cos(angl));
+		return m_intensity * (cos(angl)) * (cos(angl));
 	 }
  };
 

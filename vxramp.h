@@ -1,8 +1,8 @@
 #ifndef VXRAMP_H
 #define VXRAMP_H
 #include<vector>
-#include<vxMap.h>
-#include <vxGlobal.h>
+#include "vxMap.h"
+#include "vxGlobal.h"
 namespace vxStorage {
 
 class vxRamp : public vxMap

@@ -5,10 +5,10 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 {
 	m_shader = std::make_shared<vxLambert>();
 	m_light = std::make_shared<vxPointLight>();
-	m_light->setPosition(-1, 10, -1);
+	m_light->setPosition(15, 20, -3);
 	m_light->setIntensity(1.0);
 	
-	createCamera(vxMatrix(), 1);
+	createCamera(vxMatrix(), 4);
 	createGrid();
 }
 
@@ -21,7 +21,7 @@ vxScene::createCamera(const vxMatrix &transform,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set(	vxVector3d(0,0,0),
 					vxVector3d(0,0,1),
-					2.0);
+					1.9);
 	m_camera->setPixelSamples(samples);
 	return m_camera;
 }
@@ -56,7 +56,7 @@ void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 std::shared_ptr<vxGrid> vxScene::createGrid()
 {
 	// this is the grid object
-	const double resl = 5.0;
+	const double resl = 280.0;
 	
 	vxVector3d p{resl/1.2, 0.0, resl*2.20};
 	
@@ -65,7 +65,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 	m_grids[0]->setResolution(resl);
 	auto iRadius = 8.0;
-	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/3.0)); // Position, radius		
+	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/2.0)); // Position, radius
 	m_grids[0]->createSphere(p.x()+(resl/3.0), p.y(), p.z(),  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()-(resl/3.0), p.y(), p.z(),  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x(), p.y()+(resl/3.0), p.z(),  (resl/iRadius)); // Position, radius

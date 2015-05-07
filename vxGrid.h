@@ -5,7 +5,7 @@
 #include <bitset>
 
 #include "vxObject.h"
-#include <vxGlobal.h>
+#include "vxGlobal.h"
 #include "vxBox.h"
 
 #include <math.h>

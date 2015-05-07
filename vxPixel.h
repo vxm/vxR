@@ -1,7 +1,7 @@
 #ifndef VXPIXEL_H
 #define VXPIXEL_H
 
-#include <vxColor.h>
+#include "vxColor.h"
 
 
 namespace vxStorage {
@@ -22,7 +22,7 @@ public:
 		m_comp=0;
 	}
 
-	void add(int r, int g, int b)
+	void add(double r, double g, double b)
 	{
 		this->m_r+=r;
 		this->m_g+=g;
