@@ -6,16 +6,16 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	m_shader = std::make_shared<vxLambert>();
 	
 	vxPointLight l1(1.0, vxColor::white);
-	l1.setPosition(20, 28, -1);
-	l1.setIntensity(0.97);
+	l1.setPosition(20, 150, -1);
+	l1.setIntensity(1.1);
 	m_lights.push_back(l1);
 
 	vxPointLight l2(1.0, vxColor::white);
-	l2.setPosition(-1, 77, 22);
+	l2.setPosition(-10, 120, 22);
 	l2.setIntensity(0.9);
 	m_lights.push_back(l2);
 	
-	createCamera(vxMatrix(), 1);
+	createCamera(vxMatrix(), 3);
 	createGrid();
 }
 
@@ -64,7 +64,7 @@ void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 std::shared_ptr<vxGrid> vxScene::createGrid()
 {
 	// this is the grid object
-	const double resl = 25.0;
+	const double resl = 170.0;
 	
 	vxVector3d p{resl/1.2, 0.0, resl*2.20};
 	
@@ -72,14 +72,21 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	//TODO:get rid of this hard-coded values.
 	m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 	m_grids[0]->setResolution(resl);
-	auto iRadius = 8.0;
-	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/3.0)); // Position, radius		
-	m_grids[0]->createSphere(p.x()+(resl/3.0), p.y(), p.z(),  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-(resl/3.0), p.y(), p.z(),  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x(), p.y()+(resl/3.0), p.z(),  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x(), p.y()-(resl/3.0), p.z(),  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x(), p.y(), p.z()+(resl/3.0),  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x(), p.y(), p.z()-(resl/3.0),  (resl/iRadius)); // Position, radius
+	auto iRadius = 7.0;
+	auto distSph = (resl/3.0);
+	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+
+	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/iRadius)); // Position, radius
+	
+	
 	//m_grids[0]->createRandom(0.0007);
 	m_grids[0]->createEdges(); // of the grid
 	//#ifdef _DEBUG
