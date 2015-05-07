@@ -38,7 +38,6 @@ protected:
 
 	vxVector3d m_position;
 	double m_size				= {5.0};
-	double m_boxSize			= {1.0};
 	unsigned int m_resolution	= {5};
 	double m_invRes				= {1/5.0};
 
@@ -49,6 +48,7 @@ protected:
 	double m_midSize	= {m_size/2.0};
 
 	// cache objects
+	double m_boxSize			= {1.0};
 	double m_midBoxSize	= {.5};	
 	unsigned int m_resXres		= {25};
 	unsigned int m_resXresXres	= {125};
@@ -337,7 +337,7 @@ public:
 		return idx;
 	}
 
-	bool inGrid(const vxVector3d &pnt) const;
+	bool inGrid(const vxVector3d &pnt, double tolerance = 0.0) const;
 	
 	void getNearestCollision(const vxVector3d &ray, vxCollision &collide);
 	

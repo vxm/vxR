@@ -13,11 +13,11 @@ void vxGrid::createGround(unsigned int offset)
 		}
 }
 
-inline bool vxGrid::inGrid(const vxVector3d &pnt) const
+inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
 {
-	return pnt.x()<=m_xmax && pnt.x()>=m_xmin
-			&& pnt.y()<=m_ymax && pnt.y()>=m_ymin
-			&& pnt.z()<=m_zmax && pnt.z()>=m_zmin;
+	return pnt.x()<=(m_xmax-tol) && pnt.x()>=(m_xmin+tol)
+			&& pnt.y()<=(m_ymax-tol) && pnt.y()>=(m_ymin+tol)
+			&& pnt.z()<=(m_zmax-tol) && pnt.z()>=(m_zmin+tol);
 }
 
 void vxGrid::getNearestCollision(const vxVector3d &ray, vxCollision &collide)
@@ -185,6 +185,13 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 	
 		prev = curr;
 		curr = getVoxelPosition(indexAtPosition(pnt));
+		if(!inGrid(curr, m_boxSize))
+		{
+			// can we jump to the real next z?
+			z+= m_boxSize;
+			continue;
+		}
+		
 		vxVector3d tmp = curr;
 		if(MathUtils::rectAndYPlane(ray, prev.y() + ycota).x()>(prev.x() + xcota))
 		{
