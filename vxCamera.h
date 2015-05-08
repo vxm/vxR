@@ -110,11 +110,11 @@ public:
 		m_iteratorPosY=0;
 	}
 	
-	vxVector3d givemeRay(double x, double y)
+	vxRayXYZ givemeRay(double x, double y) const
 	{
 		double compX = tan(-m_horizontalAperture/2.0) * (( x * 2.0) -1.0) - 1.0/(double)(2.0 * m_prop->rx()) + m_sampler.x()/(double)(m_prop->rx());
 		double compY = tan(-m_verticalAperture/2.0) * (( y * 2.0) -1.0) - 1.0/(double)(2.0 * m_prop->ry()) + m_sampler.y()/(double)(m_prop->ry());
-		return vxVector3d( compY , compX , m_focusDistance );
+		return vxRayXYZ( compY , compX , m_focusDistance );
 	}
 	
 	vxVector3d givemeRandRay(double x, double y)
@@ -152,9 +152,9 @@ public:
 		}
 	}
 	
-	vxVector3d nextRay()
+	vxRayXYZ nextRay()
 	{
-		vxVector3d ret = givemeRay( getXCoord(), getYCoord() );
+		vxRayXYZ ret = givemeRay( getXCoord(), getYCoord() );
 		ret.rotateX(.391);
 		m_sampler.next();
 		return ret;

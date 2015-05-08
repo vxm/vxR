@@ -78,14 +78,14 @@ bool vxBox::inSighteZX(double c)
 	return ret;
 }
 
-bool vxBox::inSighte(const vxVector3d &ray, vxVector3d &normal)
+bool vxBox::inSighte(const vxRayXYZ &ray, vxVector3d &normal)
 {
 	normal.set(0,1,0);
 	return (inSighteXY(ray.angleXY()) && inSighteYZ(ray.angleYZ()) && inSighteZX(ray.angleZX()));
 }
 
 
-bool vxBox::inSightXY(const vxVector3d &ray)
+bool vxBox::inSightXY(const vxRayXYZ &ray)
 {
 	double mina, maxa;
 	double ang;
@@ -108,7 +108,7 @@ bool vxBox::inSightXY(const vxVector3d &ray)
 	}
 }
 
-bool vxBox::inSightYZ(const vxVector3d &ray)
+bool vxBox::inSightYZ(const vxRayXYZ &ray)
 {
 	double mina, maxa;
 	double ang;
@@ -131,7 +131,7 @@ bool vxBox::inSightYZ(const vxVector3d &ray)
 	}
 }
 
-bool vxBox::inSightZX(const vxVector3d &ray)
+bool vxBox::inSightZX(const vxRayXYZ &ray)
 {
 	double mina, maxa;
 	double ang;
@@ -154,13 +154,13 @@ bool vxBox::inSightZX(const vxVector3d &ray)
 	}
 }
 
-bool vxBox::inSight(const vxVector3d &ray)
+bool vxBox::inSight(const vxRayXYZ &ray)
 {
 	return (inSightXY(ray) && inSightYZ(ray) && inSightZX(ray));
 }
 
 
-void vxBoxN::throwRay(const vxVector3d &ray, vxCollision &collide)
+void vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 {
 	collide.initialize();
 

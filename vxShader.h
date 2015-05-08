@@ -10,20 +10,23 @@
 #include "vxVector.h"
 #include "vxCollision.h"
 #include "vxLight.h"
+//#include "vxScene.h"
 #include "vxCirclesMap.h"
 
 namespace vxStorage {
 
 class vxLight;
+class vxScene;
 
 class vxShader:public vxObject
 {
 protected:
-public:
 
+	vxScene	*m_scene = {nullptr};
+		
+public:
 	using lightsRef = std::shared_ptr<std::vector<vxLight>>;
 	std::vector<vxPointLight> *m_lights = nullptr;
-
 
 	vxShader()
 	{
@@ -49,6 +52,11 @@ public:
 		}
 		
 		return acumLumm;
+	}
+	
+	void setScene(vxScene *scene)
+	{
+		m_scene = scene;
 	}
 	
 	std::shared_ptr<vxLight> light() const;

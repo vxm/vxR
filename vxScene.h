@@ -6,14 +6,15 @@
 
 #include "vxObject.h"
 #include "vxMatrix.h"
-#include "vxShader.h"
 #include "vxLight.h"
 #include "vxGrid.h"
 #include "vxCamera.h"
 #include "ImageProperties.h"
+#include "vxShader.h"
 
 namespace vxStorage {
 
+class vxShader;
 
 class vxScene:public vxObject
 {
@@ -53,12 +54,24 @@ public:
 
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	int throwRay(const vxVector3d &ray, vxCollision &collide);
+	int throwRay(const vxRayXYZ &ray, vxCollision &collide);
 	
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
 	
-	std::shared_ptr<vxShader> defaultShader();
+	std::shared_ptr<vxShader> defaultShader()
+	{
+		static std::shared_ptr<vxShader> sLambert;
+		if(sLambert!=nullptr)
+		{
+			return sLambert;
+		}
+		
+		sLambert = std::make_shared<vxLambert>();
+		sLambert->setLights(&m_lights);
+		sLambert->setScene(this);
+		return sLambert;
+	}
 	void setShader(const std::shared_ptr<vxShader> &defaultShader);
 	
 	std::shared_ptr<vxCamera> defaultCamera() const;

@@ -12,7 +12,7 @@ vxColor vxCirclesMap::getColor(const vxCollision &collision) const
 	auto distanceToCenter = 
 			vxVector2d(collision.getU()-.5,collision.getV()-.5).length();
 
-	if(distanceToCenter<.075)
+	if(distanceToCenter<.015)
 	{
 		col.set(0.008, 0.008, 0.008);
 	}
@@ -28,7 +28,7 @@ vxColor vxCirclesMap::getColor(const vxCollision &collision) const
 	}
 	else if(distanceToCenter<.4)
 	{
-		col.set(1.0, 1.0, 1.0);
+		col.set(1.0, 1.0, 0.8);
 	}
 	else if(distanceToCenter<.41)
 	{
@@ -40,11 +40,11 @@ vxColor vxCirclesMap::getColor(const vxCollision &collision) const
 		if ( (collision.getU()<margn || collision.getU()>(1.-margn)) 
 			 || (collision.getV()<margn || collision.getV()>(1.-margn)))
 		{
-			col.set(0.008, 0.018, 0.12);
+			col.set(0.008, 0.018, 0.13);
 		}
 		else
 		{
-			col.set(1.0, 1.0, 0.6);
+			col.set(0.6, 0.62, 0.35);
 		}
 	}
 

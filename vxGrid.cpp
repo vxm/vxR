@@ -20,7 +20,7 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
 			&& pnt.z()<=(m_zmax+tol) && pnt.z()>=(m_zmin-tol);
 }
 
-void vxGrid::getNearestCollision(const vxVector3d &ray, vxCollision &collide)
+void vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide)
 {
 	switch(ray.mainAxis())
 	{
@@ -36,7 +36,7 @@ void vxGrid::getNearestCollision(const vxVector3d &ray, vxCollision &collide)
 	}
 }
 
-void vxGrid::getNearestCollisionUsingX(const vxVector3d &ray, vxCollision &collide)
+void vxGrid::getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide)
 {
 	collide.initialize();
 	
@@ -101,7 +101,7 @@ void vxGrid::getNearestCollisionUsingX(const vxVector3d &ray, vxCollision &colli
 	}
 }
 
-void vxGrid::getNearestCollisionUsingY(const vxVector3d &ray, vxCollision &collide)
+void vxGrid::getNearestCollisionUsingY(const vxRayXYZ &ray, vxCollision &collide)
 {
 	collide.initialize();
 	
@@ -168,7 +168,7 @@ void vxGrid::getNearestCollisionUsingY(const vxVector3d &ray, vxCollision &colli
 	}
 }
 
-void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &collide)
+void vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 {
 	collide.initialize();
 	vxVector3d curr(m_zmin, 0.0, 0.0);
@@ -269,7 +269,11 @@ void vxGrid::getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &colli
 	}
 }
 
-void vxGrid::getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide)
+
+
+
+
+void vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide)
 {
 	collide.initialize();
 	
@@ -317,7 +321,7 @@ void vxGrid::getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide)
 	collide=minima;
 }
 
-int vxGrid::throwRay(const vxVector3d &ray, vxCollision &collide)
+int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 { 
 	if (!m_boundingBox) 
 		return 0;
@@ -338,3 +342,35 @@ int vxGrid::throwRay(const vxVector3d &ray, vxCollision &collide)
 		return 0;
 	}
 }
+
+
+
+bool vxGrid::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
+{
+	auto itDoes = false;
+
+	auto incX = copysign(m_boxSize, ray.x());
+	auto incY = copysign(m_boxSize, ray.y());
+	auto incZ = copysign(m_boxSize, ray.z());
+
+	vxVector3d next(origin.x() + incX,
+					origin.y() + incY,
+					origin.z() + incZ);
+
+	while(inGrid(next, m_boxSize))
+	{
+		auto idx = indexAtPosition(next);
+		if(active(idx))
+		{
+			itDoes = true;
+			break;
+		}
+		
+		next.setX(next.x() + incX);
+		next.setY(next.y() + incY);
+		next.setZ(next.z() + incZ);
+	}
+	
+	return itDoes;
+}
+

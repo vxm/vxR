@@ -5,6 +5,8 @@
 #include "vxObject.h"
 #include "vxBox.h"
 
+class vxShader;
+
 namespace vxStorage {
 
 enum class Interpolation
@@ -108,16 +110,7 @@ public:
 		return &m_num17;
 	}
 
-	static std::shared_ptr<vxShader> getLambert() 
-	{
-		static std::shared_ptr<vxShader> sLambert;
-		if(sLambert!=nullptr)
-		{
-			return sLambert;
-		}
-		sLambert = std::make_shared<vxLambert>();
-		return sLambert;
-	}
+	//static std::shared_ptr<vxShader> getLambert();
 
 	static vxBoxN* getBox(vxVector3d position, const double size)
 	{

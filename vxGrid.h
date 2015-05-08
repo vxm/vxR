@@ -339,26 +339,27 @@ public:
 
 	bool inGrid(const vxVector3d &pnt, double tolerance = 0.0) const;
 	
-	void getNearestCollision(const vxVector3d &ray, vxCollision &collide);
+	void getNearestCollision(const vxRayXYZ &ray, vxCollision &collide);
 	
 	//!! this shouldn't be like this
-	void getNearestCollisionUsingX(const vxVector3d &ray, vxCollision &collide);
+	void getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide);
 
 	
 	//!! this shouldn't be like this
-	void getNearestCollisionUsingY(const vxVector3d &ray, vxCollision &collide);
+	void getNearestCollisionUsingY(const vxRayXYZ &ray, vxCollision &collide);
 
 	
 	//!! this shouldn't be like this
-	void getNearestCollisionUsingZ(const vxVector3d &ray, vxCollision &collide);
+	void getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide);
 	
 	//!!	Brute Force search.
 	//! what a shame.
-	void getNearestCollisionBF(const vxVector3d &ray, vxCollision &collide);
+	void getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide);
 
 	// devuelve 0 si no le da a la caja
-	// 1 si da y 2 y el resultado es optimo
-	int throwRay(const vxVector3d &ray, vxCollision &collide);
+	int throwRay(const vxRayXYZ &ray, vxCollision &collide);
+	
+	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);
 };
 
 /*

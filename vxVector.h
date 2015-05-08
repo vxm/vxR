@@ -131,7 +131,7 @@ public:
 
 class vxVector3d:public vxVector
 {
-private:
+protected:
 	double m_x {0.0};
 	double m_y {0.0};
 	double m_z {0.0};
@@ -139,6 +139,7 @@ private:
 public:
 
 	enum class axis{kX, kY, kZ};
+
 	vxVector3d ()
 	{};
 	
@@ -348,6 +349,19 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 	}
 };
 
+class vxRayXYZ :public vxVector3d
+{
+	// vxVector interface
+	public:
+		vxRayXYZ ()
+			: vxVector3d()
+		{};
+		
+		vxRayXYZ (double x, double y, double z)
+			: vxVector3d(x,y,z)
+		{
+		}
+};
 
 }
 #endif
