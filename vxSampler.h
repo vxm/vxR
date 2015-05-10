@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include "vxObject.h"
 
-namespace vxStorage {
+namespace vxCore {
 
 
 class vxSampler:public vxObject

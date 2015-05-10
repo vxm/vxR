@@ -1,5 +1,5 @@
 #include "vxContactBuffer.h"
-namespace vxStorage {
+namespace vxCore {
 
 
 

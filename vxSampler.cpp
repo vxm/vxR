@@ -1,6 +1,6 @@
 #include "vxSampler.h"
 
-using namespace vxStorage;
+using namespace vxCore;
 
 
 

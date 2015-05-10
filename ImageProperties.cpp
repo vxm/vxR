@@ -1,6 +1,6 @@
 #include "ImageProperties.h"
 
-using namespace vxStorage;
+using namespace vxCore;
 
 ImageProperties::ImgChannels ImageProperties::channels() const
 {
@@ -44,12 +44,12 @@ void ImageProperties::setRy(unsigned int ry)
 }
 
 
-unsigned int vxStorage::ImageProperties::numPixels() const
+unsigned int vxCore::ImageProperties::numPixels() const
 {
 	return m_rx * m_ry;
 }
 
-unsigned int vxStorage::ImageProperties::numChannels() const
+unsigned int vxCore::ImageProperties::numChannels() const
 {
 	switch(m_channels)
 	{
@@ -70,7 +70,7 @@ unsigned int vxStorage::ImageProperties::numChannels() const
 	};
 }
 
-unsigned int vxStorage::ImageProperties::numElements() const
+unsigned int vxCore::ImageProperties::numElements() const
 {
 	return numPixels() * numChannels();
 }

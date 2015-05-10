@@ -4,7 +4,7 @@
 #include "vxStatus.h"
 #include <initializer_list>
 
-namespace vxStorage {
+namespace vxCore {
 
 
 using mdata = double[16];

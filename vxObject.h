@@ -1,7 +1,7 @@
 #ifndef _VXOBJMC_
 #define _VXOBJMC_
 
-namespace vxStorage {
+namespace vxCore {
 
 class vxObject
 {

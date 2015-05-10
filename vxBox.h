@@ -8,57 +8,37 @@
 #include "vxLight.h"
 #include "vxShader.h"
 
-namespace vxStorage {
+namespace vxCore {
 
 #define APOT 1.5
 #define SIDE 1
 #define DIAG sqrt(pow(SIDE,2)*3)
 #define MDIAG DIAG/2.0
-
-
 #define PI 3.1415926535897932384626433832795
 
-//TODO:remove this step in heritance
-class vxVxl:public vxObject
-{
 
-protected:
-	vxVector3d m_position;
-	double m_size;
-
-public:
-	
-	vxVxl();
-
-	~vxVxl()
-	{	
-	}
-};
-
-
-class vxBox:public vxVxl
+class vxBox
 {
 private:
 	
+	double m_size {1.0};
+	vxVector3d m_position;
 	vxVector3d m_point[8];
 	void actualize();
 	
 public:
 	vxBox()
-	: vxVxl()
 	{
 		actualize();
 	};
 
-	vxBox(vxVector3d pos, double sze)
-		:vxVxl()
+	vxBox(const vxVector3d &pos, double sze)
 		{m_position=pos;m_size=sze;actualize();};
 
 	vxBox(const double sx, const double sy, const double sz, const double sze)
-		:vxVxl()
 		{m_position.set(sx,sy,sz);m_size=sze;actualize();};
 
-	void set(vxVector3d pos, double sze) {m_position=pos;m_size=sze;actualize();};
+	void set(const vxVector3d &pos, double sze) {m_position=pos;m_size=sze;actualize();};
 	void set(double sx, double sy, double sz, double sze) 
 	{
 		m_position.set(sx,sy,sz);
@@ -86,10 +66,12 @@ public:
 
 // necesito avanzar, pero:
 // repasar esta clase. derivadas... acceso a puntos...
-class vxBoxN:public vxVxl
+class vxBoxN
 {
 protected:
 
+	double m_size {1.0};
+	vxVector3d m_position;
 	double m_apot;
 	double m_ps[6];
 	//TODO:question this variable, is really needed?
@@ -101,7 +83,6 @@ protected:
 
 public:
 	vxBoxN()
-		:vxVxl()
 	{
 		initialize();
 		m_size=1;
@@ -109,15 +90,13 @@ public:
 	};
 
 	vxBoxN(const vxVector3d pos, const double size)
-		:vxVxl()
 	{
 		initialize();
 		m_position=pos;
 		setSize(size);
 	}
 
-	vxBoxN(const double x, const double y, const double z, const double size)
-		:vxVxl() 
+	vxBoxN(const double x, const double y, const double z, const double size) 
 	{
 		initialize();
 		m_position.set(x,y,z);

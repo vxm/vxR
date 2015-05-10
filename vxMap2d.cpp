@@ -1,6 +1,6 @@
 #include "vxMap2d.h"
 
-using namespace vxStorage;
+using namespace vxCore;
 
 vxMap2d::vxMap2d()
 {

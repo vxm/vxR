@@ -5,7 +5,7 @@
 #include "vxStatus.h"
 #include "vxStopwatch.h"
 
-namespace vxStorage 
+namespace vxCore 
 {
 
 class vxProcess

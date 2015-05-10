@@ -1,21 +1,24 @@
 #include "vxScene.h"
 
+namespace vxCore{
+class vxScene;
+
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
 {
-	m_shader = std::make_shared<vxLambert>();
+	m_shader = new vxLambert;
 	
 	vxPointLight l1(1.0, vxColor::white);
-	l1.setPosition(4, 13, -1);
+	l1.setPosition(4, 33, -1);
 	l1.setIntensity(1.1);
 	m_lights.push_back(l1);
 
 	vxPointLight l2(1.0, vxColor::white);
-	l2.setPosition(-4, 12, 7);
+	l2.setPosition(-3, 33, 7);
 	l2.setIntensity(0.9);
 	m_lights.push_back(l2);
 	
-	createCamera(vxMatrix(), 4);
+	createCamera(vxMatrix(), 2);
 	createGrid();
 }
 
@@ -35,7 +38,7 @@ vxScene::createCamera(const vxMatrix &transform,
 
 
 
-void vxScene::setShader(const std::shared_ptr<vxShader> &shader)
+void vxScene::setShader(vxShader *shader)
 {
 	m_shader = shader;
 }
@@ -53,7 +56,7 @@ void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 std::shared_ptr<vxGrid> vxScene::createGrid()
 {
 	// this is the grid object
-	const double resl = 5.0;
+	const double resl = 45.0;
 	
 	vxVector3d p{resl/1.2, 0.0, resl*2.20};
 	
@@ -61,7 +64,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	//TODO:get rid of this hard-coded values.
 	m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 	m_grids[0]->setResolution(resl);
-	/*
+	
 	auto iRadius = 7.0;
 	auto distSph = (resl/3.0);
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
@@ -75,24 +78,23 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 
 	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/iRadius)); // Position, radius
-	*/
 	
+	m_grids[0]->createEdges(); // of the grid
 	//m_grids[0]->createRandom(0.0007);
-	//m_grids[0]->createEdges(); // of the grid
 	//#ifdef _DEBUG
 	
 	//m_grids[0]->activate(3,3,1);
 	//m_grids[0]->createCorners();
-	m_grids[0]->createGround();
+	//m_grids[0]->createGround();
 	int n = 0;
-	m_grids[0]->activate(1,0,1);
+	/*m_grids[0]->activate(1,0,1);
 	//m_grids[0]->activate(n+2,0,1);
 	//m_grids[0]->activate(1,0,2);
 	m_grids[0]->activate(n+2,0,2);
 
 	m_grids[0]->activate(n+2,2,1);
 	m_grids[0]->activate(1,2,1);
-	/*m_grids[0]->activate(1,1,1);
+	m_grids[0]->activate(1,1,1);
 	m_grids[0]->activate(n+2,1,1);
 	m_grids[0]->activate(1,2,1);
 	m_grids[0]->activate(n+2,3,1);
@@ -136,3 +138,23 @@ int vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 	return 0;
 }
 
+bool vxScene::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
+{
+	return m_grids[0]->hasCollision(origin, ray);
+}
+
+vxShader* vxScene::defaultShader()
+{
+	static vxShader* sLambert;
+	if(sLambert!=nullptr)
+	{
+		return sLambert;
+	}
+	
+	sLambert = new vxLambert();
+	sLambert->setLights(&m_lights);
+	sLambert->setScene(this);
+	return sLambert;
+}
+
+}

@@ -10,10 +10,10 @@
 #include "vxVector.h"
 #include "vxCollision.h"
 #include "vxLight.h"
-//#include "vxScene.h"
 #include "vxCirclesMap.h"
+#include "vxScene.h"
 
-namespace vxStorage {
+namespace vxCore {
 
 class vxLight;
 class vxScene;
@@ -22,42 +22,22 @@ class vxShader:public vxObject
 {
 protected:
 
-	vxScene	*m_scene = {nullptr};
-		
-public:
-	using lightsRef = std::shared_ptr<std::vector<vxLight>>;
 	std::vector<vxPointLight> *m_lights = nullptr;
+	vxScene	*m_scene = {nullptr};
 
-	vxShader()
-	{
-		srand(time(NULL));
-	}
+public:
+	vxShader();
+
+	using lightsRef = std::shared_ptr<std::vector<vxLight>>;
+
 	
-	void setLightsRef(std::vector<vxPointLight> * lights)
-	{
-		m_lights = lights;
-	}
+	void setLightsRef(std::vector<vxPointLight> * lights);
 	
 	virtual vxColor getColor(const vxCollision &collide) const = 0;
 
-	virtual double getLightLoop(const vxCollision &collision) const
-	{
-		//assert(m_lights);
-		
-		double acumLumm{0.0};
-
-		for(auto it = std::begin(*m_lights); it!=std::end(*m_lights);++it)
-		{
-			acumLumm += it->luminance(collision);
-		}
-		
-		return acumLumm;
-	}
+	virtual double getLightLoop(const vxCollision &collision) const;
 	
-	void setScene(vxScene *scene)
-	{
-		m_scene = scene;
-	}
+	void setScene(vxScene *scene);
 	
 	std::shared_ptr<vxLight> light() const;
 	void setLights(std::vector<vxPointLight> *lights);

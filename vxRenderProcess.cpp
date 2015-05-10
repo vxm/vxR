@@ -67,7 +67,7 @@ vxStatus::code vxRenderProcess::execute()
 		{
 			if (scene()->throwRay(cam->nextRay(), collide))
 			{
-				c = c + collide.getColor();
+				c = c + collide.color();
 			}
 		}
 		cam->next();

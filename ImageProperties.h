@@ -1,7 +1,7 @@
 #ifndef IMAGEPROPERTIES_H
 #define IMAGEPROPERTIES_H
 
-namespace vxStorage {
+namespace vxCore {
 
 class ImageProperties
 {

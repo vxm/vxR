@@ -11,12 +11,11 @@
 
 #include "vxObject.h"
 #include "vxVector.h"
-#include "vxShader.h"
 #include "vxPixel.h"
 
 using std::vector;
 
-namespace vxStorage {
+namespace vxCore {
 
 struct Hit
 {

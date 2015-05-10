@@ -12,9 +12,10 @@
 #include "ImageProperties.h"
 #include "vxShader.h"
 
-namespace vxStorage {
+namespace vxCore {
 
 class vxShader;
+class vxGrid;
 
 class vxScene:public vxObject
 {
@@ -25,7 +26,7 @@ protected:
 
 	std::vector<vxPointLight> m_lights;
 	
-	std::shared_ptr<vxShader> m_shader = {nullptr};
+	vxShader *m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
 
 	std::vector<std::shared_ptr<vxGrid>> m_grids;
@@ -48,31 +49,20 @@ public:
 
 	std::shared_ptr<vxGrid> createGrid();
 	
-	std::shared_ptr<vxStorage::ImageProperties> prop() const;
+	std::shared_ptr<vxCore::ImageProperties> prop() const;
 	
-	void setProp(const std::shared_ptr<vxStorage::ImageProperties> &prop);
+	void setProp(const std::shared_ptr<vxCore::ImageProperties> &prop);
 
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
 	int throwRay(const vxRayXYZ &ray, vxCollision &collide);
+	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);
 	
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
 	
-	std::shared_ptr<vxShader> defaultShader()
-	{
-		static std::shared_ptr<vxShader> sLambert;
-		if(sLambert!=nullptr)
-		{
-			return sLambert;
-		}
-		
-		sLambert = std::make_shared<vxLambert>();
-		sLambert->setLights(&m_lights);
-		sLambert->setScene(this);
-		return sLambert;
-	}
-	void setShader(const std::shared_ptr<vxShader> &defaultShader);
+	vxShader* defaultShader();
+	void setShader(vxShader* defaultShader);
 	
 	std::shared_ptr<vxCamera> defaultCamera() const;
 	void setCamera(const std::shared_ptr<vxCamera> &defaultCamera);

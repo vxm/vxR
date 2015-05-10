@@ -7,7 +7,7 @@
 #include "vxObject.h"
 #include <iostream>
 
-namespace vxStorage {
+namespace vxCore {
 
 //TODO: do I need this base class?
 class vxVector:public vxObject
@@ -209,7 +209,7 @@ public:
 	double length() const
 		{return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);}
 	
-	double distance(vxVector3d ref) const
+	double distance(const vxVector3d &ref) const
 		{return (*this-ref).length();}
 	
 	vxVector3d unit() const
@@ -223,7 +223,7 @@ public:
 		m_z=m_z/lng;
 	}
 
-	vxVector3d operator+(vxVector3d entrada) const
+	vxVector3d operator+(const vxVector3d &entrada) const
 		{return vxVector3d(entrada.x()+m_x,entrada.y()+m_y,entrada.z()+m_z);}
 	
 	vxVector3d operator+(double factor) const
@@ -273,19 +273,19 @@ public:
 	vxVector3d operator^(const vxVector3d &b) const
 		{return vxVector3d((m_y*b.m_z)-(m_z*b.m_y),(m_x*b.m_z)-(m_z*b.m_x),(m_x*b.m_y)-(m_y*b.m_x));}
 
-	double angle(vxVector3d b) const
+	double angle(const vxVector3d &b) const
 	{
 		double an=(m_x*b.m_x+m_y*b.m_y+m_z*b.m_z)/((sqrt((m_x*m_x)+(m_y*m_y)+(m_z*m_z)))*(sqrt((b.m_x*b.m_x)+(b.m_y*b.m_y)+(b.m_z*b.m_z))));
 		return acos(an);
 	}
 
-	double angleXY(vxVector3d other) const
+	double angleXY(const vxVector3d &other) const
 	{return angleXY()-other.angleXY();}
 	
-	double angleYZ(vxVector3d other) const
+	double angleYZ(const vxVector3d &other) const
 	{return angleYZ()-other.angleYZ();}
 	
-	double angleZX(vxVector3d other) const
+	double angleZX(const vxVector3d &other) const
 	{return angleZX()-other.angleZX();}
 
 	double angleXY() const 
@@ -356,6 +356,11 @@ class vxRayXYZ :public vxVector3d
 		vxRayXYZ ()
 			: vxVector3d()
 		{};
+		
+		vxRayXYZ (const vxVector3d& other)
+			: vxVector3d(other)
+		{
+		};
 		
 		vxRayXYZ (double x, double y, double z)
 			: vxVector3d(x,y,z)

@@ -1,7 +1,7 @@
 #include "vxBox.h"
 #include "vxGlobal.h"
 #include <map>
-namespace vxStorage {
+namespace vxCore {
 
 vxVector3d vxBoxN::m_normals[6] =  {vxVector3d( 1,  0,  0),
 									vxVector3d( 0,  1,  0),
@@ -175,11 +175,6 @@ void vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 		collide.setValid(false);
 	}
 
-}
-
-vxVxl::vxVxl()
-	: m_size(1)
-{ 
 }
 
 

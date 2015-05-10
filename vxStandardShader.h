@@ -3,7 +3,7 @@
 #include "vxShader.h"
 #include "vxMap.h"
 
-using namespace vxStorage;
+using namespace vxCore;
 
 class vxStandardShader : public vxShader
 {

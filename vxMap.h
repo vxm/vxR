@@ -5,7 +5,7 @@
 #include "vxCollision.h"
 #include "vxColor.h"
 
-namespace vxStorage {
+namespace vxCore {
 
 
 class vxMap : public vxObject

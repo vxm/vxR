@@ -1,7 +1,7 @@
 #include "vxColor.h"
 #include "MathUtils.h"
 
-using namespace vxStorage;
+using namespace vxCore;
 
 vxColor vxColor::red = {1.0, 0.0, 0.0};
 vxColor vxColor::green = {0.0, 1.0, 0.0};

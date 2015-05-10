@@ -2,7 +2,7 @@
 #define VXCIRCLESMAP_H
 #include "vxMap2d.h"
 
-namespace vxStorage
+namespace vxCore
 {
 
 class vxCirclesMap : public vxMap2d

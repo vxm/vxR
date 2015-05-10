@@ -3,7 +3,7 @@
 
 #include "vxVector.h"
 
-namespace vxStorage {
+namespace vxCore {
 
 
 class vxPoint:public vxVector3d
@@ -29,5 +29,5 @@ public:
 };
 
 
-} // namespace vxStorage
+} // namespace vxCore
 #endif // VXPOINT_H

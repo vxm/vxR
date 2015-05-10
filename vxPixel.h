@@ -4,7 +4,7 @@
 #include "vxColor.h"
 
 
-namespace vxStorage {
+namespace vxCore {
 
 class vxPixel:public vxColor
 {

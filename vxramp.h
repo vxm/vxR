@@ -3,7 +3,7 @@
 #include<vector>
 #include "vxMap.h"
 #include "vxGlobal.h"
-namespace vxStorage {
+namespace vxCore {
 
 class vxRamp : public vxMap
 {

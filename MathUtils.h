@@ -5,7 +5,7 @@
 #include "vxPlane.h"
 #include "vxCollision.h"
 
-using namespace vxStorage;
+using namespace vxCore;
 
 class MathUtils
 {

@@ -3,7 +3,7 @@
 
 #include "vxMap.h"
 
-namespace vxStorage
+namespace vxCore
 {
 
 class vxMap2d : public vxMap

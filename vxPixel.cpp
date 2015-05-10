@@ -1,5 +1,5 @@
 #include "vxPixel.h"
-namespace vxStorage {
+namespace vxCore {
 
 
 vxPixel::vxPixel()

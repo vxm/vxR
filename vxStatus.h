@@ -1,7 +1,7 @@
 #ifndef VXSTATUS_H
 #define VXSTATUS_H
 
-namespace vxStorage {
+namespace vxCore {
 
 
 class vxStatus

@@ -11,7 +11,7 @@
 
 namespace vxCompute {
 
-using namespace vxStorage;
+using namespace vxCore;
 
 /* This class performs the render.
  * it takes a scene, with at least one light, one camera

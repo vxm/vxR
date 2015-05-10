@@ -1,6 +1,6 @@
 #include "vxBucketList.h"
 
-using namespace vxStorage;
+using namespace vxCore;
 
 std::shared_ptr<const ImageProperties> vxBucketList::prop() const
 {

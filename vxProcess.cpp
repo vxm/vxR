@@ -1,5 +1,5 @@
 #include "vxProcess.h"
-namespace vxStorage {
+namespace vxCore {
 std::string vxProcess::name() const
 {
 	return m_name;

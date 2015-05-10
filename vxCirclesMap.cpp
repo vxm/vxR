@@ -1,6 +1,6 @@
 #include "vxCirclesMap.h"
 
-using namespace vxStorage;
+using namespace vxCore;
 
 vxCirclesMap::vxCirclesMap()
 {
@@ -10,7 +10,7 @@ vxColor vxCirclesMap::getColor(const vxCollision &collision) const
 {
 	vxColor col;
 	auto distanceToCenter = 
-			vxVector2d(collision.getU()-.5,collision.getV()-.5).length();
+			vxVector2d(collision.u()-.5,collision.v()-.5).length();
 
 	if(distanceToCenter<.015)
 	{
@@ -18,9 +18,9 @@ vxColor vxCirclesMap::getColor(const vxCollision &collision) const
 	}
 	else if(distanceToCenter<.3)
 	{
-		col.set(collision.getColor().getR(), 
-						 collision.getColor().getG(), 
-						 collision.getColor().getB());
+		col.set(collision.color().getR(), 
+						 collision.color().getG(), 
+						 collision.color().getB());
 	}
 	else if(distanceToCenter<.31)
 	{
@@ -37,8 +37,8 @@ vxColor vxCirclesMap::getColor(const vxCollision &collision) const
 	else
 	{
 		constexpr const double margn = 0.01;
-		if ( (collision.getU()<margn || collision.getU()>(1.-margn)) 
-			 || (collision.getV()<margn || collision.getV()>(1.-margn)))
+		if ( (collision.u()<margn || collision.u()>(1.-margn)) 
+			 || (collision.v()<margn || collision.v()>(1.-margn)))
 		{
 			col.set(0.008, 0.018, 0.13);
 		}

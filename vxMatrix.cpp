@@ -3,7 +3,7 @@
 
 #include "vxMatrix.h"
 
-namespace vxStorage {
+namespace vxCore {
 
 
 const vxMatrix vxMatrix::identity{  1.0, 0.0, 0.0, 0.0, 

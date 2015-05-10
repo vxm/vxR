@@ -1,5 +1,5 @@
 #include "vxStatus.h"
-namespace vxStorage {
+namespace vxCore {
 
 
 vxStatus::vxStatus()

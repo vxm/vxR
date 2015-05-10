@@ -1,8 +1,8 @@
 #include "vxPoint.h"
-namespace vxStorage {
+namespace vxCore {
 
 
 
 
 
-}// end of vxStorage
+}// end of vxCore

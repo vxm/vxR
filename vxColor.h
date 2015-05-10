@@ -5,7 +5,7 @@
 #include "vxObject.h"
 #include "vxVector.h"
 
-namespace vxStorage {
+namespace vxCore {
 /*
  Munsell, hue, value, chroma
  Ostwald, dominant wavelength, purity, luminance

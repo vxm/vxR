@@ -5,7 +5,7 @@
 #include "vxPoint.h"
 #include "vxColor.h"
 
-namespace vxStorage {
+namespace vxCore {
 
 
 class vxCollision:public vxObject
@@ -26,103 +26,25 @@ public:
 	{
 	};
 
-	void initialize()
-	{
-		setValid(false);
-		m_position.set(0,0,0);
-		m_color.set(0,0,0);
-		m_normal.set(0,0,0);
-		m_u=0.0;
-		m_v=0.0;
-	}
+	void initialize();
+	void setValid(bool v = true);
+	bool isValid() const;
+	void setPosition(const vxVector3d &val);
+	void setPosition(double x, double y, double z);
+	vxVector3d position() const;
+	void setColor(const vxVector3d &val);
+	void setColor(const vxColor &val);
+	void setColor(double r, double g, double b);
+	vxColor color() const;
+	void setNormal(const vxVector3d &val);
+	vxVector3d normal() const;
+	void setU(double u);
+	double u() const;
+	void setV(double v);
+	double v() const;
 
-
-	void setValid(bool v = true)
-	{
-		m_valid = v;
-	}
-
-	bool isValid() const
-	{
-		return m_valid;
-	}
-
-	void setPosition(vxVector3d val)
-	{
-		m_position = val;
-	}
-
-	void setPosition(double x, double y, double z)
-	{
-		m_position.set(x,y,z);;
-	}
-
-	vxVector3d getPosition() const
-	{
-		return m_position;
-	}
-
-	void setColor(const vxVector3d &val)
-	{
-		m_color = val;
-	}
-
-	void setColor(const vxColor &val)
-	{
-		m_color = val;
-	}
-
-	void setColor(double r, double g, double b)
-	{
-		m_color.set(r,g,b);
-	}
-
-	vxColor getColor() const
-	{
-		return m_color;
-	}
-
-	void setNormal(const vxVector3d &val)
-	{
-		m_normal = val;
-	}
-
-	vxVector3d getNormal() const
-	{
-		return m_normal;
-	}
-
-	void setU(double u)
-	{
-		m_u=u;
-	}
-
-	double getU() const
-	{
-		return m_u;
-	}
-
-	void setV(double v)
-	{
-		m_v=v;
-	}
-
-	double getV() const
-	{
-		return m_v;
-	}
-
-/*	vxCollision operator=(vxCollision otro)
-	{
-		vxCollision salida;
-		otro.setPosition(getPosition());
-		otro.setColor(getColor());
-		otro.setNormal(getNormal());
-		otro.setValid(isValid());
-		return salida;
-	}*/
 };
 
 
-}// vxStorage namespace.
+}// vxCore namespace.
 #endif // VXCOLLISION_H

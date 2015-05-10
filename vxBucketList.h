@@ -5,7 +5,7 @@
 #include "vxContactBuffer.h"
 
 
-namespace vxStorage {
+namespace vxCore {
 
 // vxBucket will be built from vxBucketList
 // which is a factory of this class.

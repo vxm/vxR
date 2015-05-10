@@ -1,5 +1,5 @@
 #include "vxramp.h"
-using namespace vxStorage;
+using namespace vxCore;
 
 vxRamp::vxRamp()
 {
