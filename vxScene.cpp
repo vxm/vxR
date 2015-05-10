@@ -3,20 +3,30 @@
 namespace vxCore{
 class vxScene;
 
+#define RESL 10
+#define PX resl/1.2
+#define PY 0.0
+#define PZ resl*2.20
+
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
 {
 	m_shader = new vxLambert;
+
+	//TODO: remove this debug code
+	const double resl = RESL;
+	vxVector3d p{PX, PY, PZ};
+	//
 	
 	vxPointLight l1(1.0, vxColor::white);
-	l1.setPosition(4, 33, -1);
+	l1.setPosition(p.x(), p.y(), p.z());
 	l1.setIntensity(1.1);
 	m_lights.push_back(l1);
 
-	vxPointLight l2(1.0, vxColor::white);
-	l2.setPosition(-3, 33, 7);
-	l2.setIntensity(0.9);
-	m_lights.push_back(l2);
+	/*vxPointLight l2(1.0, vxColor::white);
+	l2.setPosition(5, 33, 5);
+	l2.setIntensity(0.7);
+	m_lights.push_back(l2);*/
 	
 	createCamera(vxMatrix(), 2);
 	createGrid();
@@ -56,9 +66,9 @@ void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 std::shared_ptr<vxGrid> vxScene::createGrid()
 {
 	// this is the grid object
-	const double resl = 45.0;
+	const double resl = RESL;
 	
-	vxVector3d p{resl/1.2, 0.0, resl*2.20};
+	vxVector3d p{PX, PY, PZ};
 	
 	// this is a hardcode program to test the rays. 
 	//TODO:get rid of this hard-coded values.
@@ -67,7 +77,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	
 	auto iRadius = 7.0;
 	auto distSph = (resl/3.0);
-	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
+	/*m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
@@ -78,21 +88,21 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 
 	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/iRadius)); // Position, radius
-	
 	m_grids[0]->createEdges(); // of the grid
+	*/
 	//m_grids[0]->createRandom(0.0007);
 	//#ifdef _DEBUG
 	
 	//m_grids[0]->activate(3,3,1);
 	//m_grids[0]->createCorners();
-	//m_grids[0]->createGround();
-	int n = 0;
-	/*m_grids[0]->activate(1,0,1);
+	m_grids[0]->createGround();
+	int n = 2;
+	m_grids[0]->activate(6,2,6);
 	//m_grids[0]->activate(n+2,0,1);
 	//m_grids[0]->activate(1,0,2);
-	m_grids[0]->activate(n+2,0,2);
+	m_grids[0]->activate(n+2,2,6);
 
-	m_grids[0]->activate(n+2,2,1);
+	/*m_grids[0]->activate(n+2,2,1);
 	m_grids[0]->activate(1,2,1);
 	m_grids[0]->activate(1,1,1);
 	m_grids[0]->activate(n+2,1,1);
