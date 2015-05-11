@@ -24,7 +24,9 @@ protected:
 	bool m_defaultLight = {true};
 	bool m_defaultShader = {true};
 
-	std::vector<vxPointLight> m_lights;
+	std::vector<vxPointLight> m_pointLights;
+	std::vector<vxDirectLight> m_directLights;
+
 	
 	vxShader *m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};

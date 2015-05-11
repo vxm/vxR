@@ -192,13 +192,18 @@ public:
 	double y() const {return m_y;}
 	double z() const {return m_z;}
 
+	vxVector3d inverted() const
+	{
+		return vxVector3d(-m_x,-m_y,-m_z);
+	}
+	
 	axis mainAxis() const
 	{
 		if(m_x>m_y && m_x>m_z)
 		{
 			return axis::kX;
 		}
-		if(m_y>m_z && m_y>m_x)
+		if(m_y>m_z)
 		{
 			return axis::kY;
 		}
@@ -207,13 +212,18 @@ public:
 	}
 	
 	double length() const
-		{return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);}
+	{
+		return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);
+	}
 	
 	double distance(const vxVector3d &ref) const
 		{return (*this-ref).length();}
 	
 	vxVector3d unit() const
-		{double lng=length();return vxVector3d(m_x/lng,m_y/lng,m_z/lng);};
+	{
+		double lng=length();
+		return vxVector3d(m_x/lng, m_y/lng, m_z/lng);
+	};
 	
 	void setUnit() 
 	{

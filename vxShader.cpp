@@ -19,11 +19,6 @@ vxColor vxLambert::getColor(const vxCollision &collide) const
 }
 
 
-void vxCore::vxShader::setLightsRef(std::vector<vxPointLight> *lights)
-{
-	m_lights = lights;
-}
-
 double vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 {
 	//assert(m_lights);
@@ -33,9 +28,9 @@ double vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 	for(auto light = std::begin(*m_lights); light!=std::end(*m_lights);++light)
 	{
 		const vxRayXYZ f = light->position() - o;
-		if (!m_scene->hasCollision(o, f))
+	//	if (!m_scene->hasCollision(o, f))
 		{
-			acumLumm += light->luminance(collision);
+			acumLumm += abs(light->luminance(collision));
 		}
 	}
 	
@@ -47,7 +42,7 @@ void vxCore::vxShader::setScene(vxScene *scene)
 	m_scene = scene;
 }
 
-void vxCore::vxShader::setLights(std::vector<vxPointLight> * lights)
+void vxCore::vxShader::setLights(std::vector<vxDirectLight> * lights)
 {
 	m_lights = lights;
 }

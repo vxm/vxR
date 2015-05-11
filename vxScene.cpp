@@ -3,7 +3,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 10
+#define RESL 55
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -18,17 +18,23 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	vxVector3d p{PX, PY, PZ};
 	//
 	
-	vxPointLight l1(1.0, vxColor::white);
-	l1.setPosition(p.x(), p.y(), p.z());
-	l1.setIntensity(1.1);
-	m_lights.push_back(l1);
+	vxPointLight pl1(1.0, vxColor::white);
+	pl1.setPosition(p.x(), p.y(), p.z());
+	pl1.setIntensity(1.0);
+	m_pointLights.push_back(pl1);
 
-	/*vxPointLight l2(1.0, vxColor::white);
-	l2.setPosition(5, 33, 5);
-	l2.setIntensity(0.7);
-	m_lights.push_back(l2);*/
+	vxPointLight pl2(1.0, vxColor::white);
+	pl2.setPosition(5, 33, 5);
+	pl2.setIntensity(0.7);
+	m_pointLights.push_back(pl2);
 	
-	createCamera(vxMatrix(), 2);
+	vxDirectLight dl1(1.0, vxColor::white);
+	dl1.set(vxVector3d(0,-1,0), true);
+	dl1.setPosition(p.x(), p.y(), p.z());
+	dl1.setIntensity(1.0);
+	m_directLights.push_back(dl1);
+	
+	createCamera(vxMatrix(), 1);
 	createGrid();
 }
 
@@ -77,7 +83,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	
 	auto iRadius = 7.0;
 	auto distSph = (resl/3.0);
-	/*m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
+	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
@@ -89,6 +95,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 
 	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/iRadius)); // Position, radius
 	m_grids[0]->createEdges(); // of the grid
+	/*
 	*/
 	//m_grids[0]->createRandom(0.0007);
 	//#ifdef _DEBUG
@@ -162,7 +169,7 @@ vxShader* vxScene::defaultShader()
 	}
 	
 	sLambert = new vxLambert();
-	sLambert->setLights(&m_lights);
+	sLambert->setLights(&m_directLights);
 	sLambert->setScene(this);
 	return sLambert;
 }

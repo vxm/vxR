@@ -611,19 +611,17 @@ int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 bool vxGrid::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
 {
 	auto itDoes = false;
+	auto incX = copysign(1.0, ray.x());
+	auto incY = copysign(1.0, ray.y());
+	auto incZ = copysign(1.0, ray.z());
 
-	auto incX = copysign(m_boxSize, ray.x());
-	auto incY = copysign(m_boxSize, ray.y());
-	auto incZ = copysign(m_boxSize, ray.z());
+	vxVector3d next(origin.x(),
+					origin.y(),
+					origin.z());
 
-	vxVector3d next(origin.x() + incX,
-					origin.y() + incY,
-					origin.z() + incZ);
-
-	while(inGrid(next, m_boxSize))
+	while(inGrid(next))
 	{
-		auto idx = indexAtPosition(next);
-		if(active(idx))
+		if(active(indexAtPosition(next)))
 		{
 			itDoes = true;
 			break;
