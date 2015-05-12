@@ -23,15 +23,15 @@ double vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 {
 	//assert(m_lights);
 	double acumLumm{0.0};
-	const vxVector3d &o = collision.position();
+	const vxVector3d &cPnt = collision.position();
 	
 	for(auto light = std::begin(*m_lights); light!=std::end(*m_lights);++light)
 	{
 		auto l = light->get();
-		const vxRayXYZ f = l->position() - o;
-//		if (!m_scene->hasCollision(o, f))
+		const vxRayXYZ f = l->position() - cPnt;
+		if (!m_scene->hasCollision(cPnt, f))
 		{
-			acumLumm += abs(l->luminance(collision));
+			acumLumm += fabs(l->luminance(collision));
 		}
 	}
 	

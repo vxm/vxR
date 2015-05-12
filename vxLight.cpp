@@ -16,7 +16,10 @@ vxLight::vxLight(double intensity, const vxColor &color)
 
 vxLight::vxLight(double x, double y, double z) {m_position.set(x,y,z);}
 
-void vxLight::setPosition(double x, double y, double z) {m_position.set(x,y,z);}
+void vxLight::setPosition(double x, double y, double z) 
+{
+	m_position.set(x,y,z);
+}
 
 void vxLight::set(double intensity, vxVector3d color) {m_intensity=intensity;m_color=color;}
 

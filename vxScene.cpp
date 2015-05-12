@@ -3,7 +3,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 55
+#define RESL 175
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -19,18 +19,22 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	//
 
 	auto l1 = createPointLight();
-	l1->setPosition(p.x(), p.y(), p.z());
-	l1->setIntensity(1.0);
+	l1->setPosition(4*resl, 12*resl, .22*resl);
+	l1->setIntensity(0.95);
 
 	auto l2 = createPointLight();
-	l2->setPosition(5, 33, 5);
-	l2->setIntensity(0.7);
-
-	auto l3 = createDirectLight();
-	l3->set(vxVector3d(0,-1,0), true);
-	l3->setIntensity(1.0);
+	l2->setPosition(.5*resl, 5.3*resl, -3.0*resl);
+	l2->setIntensity(0.92);
 	
-	createCamera(vxMatrix(), 3);
+	auto l3 = createPointLight();
+	l3->setPosition(5.5*resl, 5.3*resl, 5.0*resl);
+	l3->setIntensity(0.2);
+	
+//	auto l3 = createDirectLight();
+//	l3->set(vxVector3d(0,-1,0), true);
+//	l3->setIntensity(1.0);
+	
+	createCamera(vxMatrix(), 4);
 	createGrid();
 }
 
@@ -114,26 +118,24 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	
 	//m_grids[0]->activate(3,3,1);
 	//m_grids[0]->createCorners();
-	m_grids[0]->createGround();
+	//m_grids[0]->createGround();
 	int n = 2;
-	m_grids[0]->activate(6,2,6);
+	//m_grids[0]->activate(6,2,6);
 	//m_grids[0]->activate(n+2,0,1);
 	//m_grids[0]->activate(1,0,2);
-	m_grids[0]->activate(n+2,2,6);
+	//m_grids[0]->activate(n+2,2,6);
 
-	/*m_grids[0]->activate(n+2,2,1);
-	m_grids[0]->activate(1,2,1);
-	m_grids[0]->activate(1,1,1);
-	m_grids[0]->activate(n+2,1,1);
-	m_grids[0]->activate(1,2,1);
-	m_grids[0]->activate(n+2,3,1);
-	m_grids[0]->activate(1,4,1);
-	m_grids[0]->activate(n+2,4,1);
-	m_grids[0]->activate(1,4,2);
-	m_grids[0]->activate(n+2,4,2);
-	*/
-	
-	
+	//m_grids[0]->activate(n+2,2,1);
+	//m_grids[0]->activate(1,2,1);
+	//m_grids[0]->activate(1,1,1);
+	//m_grids[0]->activate(n+2,1,1);
+	//m_grids[0]->activate(1,2,1);
+	//m_grids[0]->activate(n+2,3,1);
+	//m_grids[0]->activate(1,4,1);
+	//m_grids[0]->activate(n+2,4,1);
+	//m_grids[0]->activate(1,4,2);
+	//m_grids[0]->activate(n+2,4,2);
+
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
 	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
