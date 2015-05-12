@@ -22,7 +22,7 @@ class vxShader:public vxObject
 {
 protected:
 
-	std::vector<vxDirectLight> *m_lights = nullptr;
+	std::vector<std::shared_ptr<vxLight>> *m_lights = nullptr;
 	vxScene	*m_scene = {nullptr};
 
 public:
@@ -40,7 +40,7 @@ public:
 	void setScene(vxScene *scene);
 	
 	std::shared_ptr<vxLight> light() const;
-	void setLights(std::vector<vxDirectLight> *lights);
+	void setLights(std::vector<std::shared_ptr<vxLight>> *lights);
 };
 
 class vxLambert:public vxShader

@@ -24,8 +24,9 @@ protected:
 	bool m_defaultLight = {true};
 	bool m_defaultShader = {true};
 
-	std::vector<vxPointLight> m_pointLights;
-	std::vector<vxDirectLight> m_directLights;
+	std::vector<std::shared_ptr<vxPointLight>> m_pointLights;
+	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
+	std::vector<std::shared_ptr<vxLight>> m_lights;
 
 	
 	vxShader *m_shader = {nullptr};
@@ -68,6 +69,10 @@ public:
 	
 	std::shared_ptr<vxCamera> defaultCamera() const;
 	void setCamera(const std::shared_ptr<vxCamera> &defaultCamera);
+
+	std::shared_ptr<vxPointLight> createPointLight();
+	std::shared_ptr<vxDirectLight> createDirectLight();
+
 };
 
 }

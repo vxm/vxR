@@ -27,10 +27,11 @@ double vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 	
 	for(auto light = std::begin(*m_lights); light!=std::end(*m_lights);++light)
 	{
-		const vxRayXYZ f = light->position() - o;
-	//	if (!m_scene->hasCollision(o, f))
+		auto l = light->get();
+		const vxRayXYZ f = l->position() - o;
+//		if (!m_scene->hasCollision(o, f))
 		{
-			acumLumm += abs(light->luminance(collision));
+			acumLumm += abs(l->luminance(collision));
 		}
 	}
 	
@@ -42,10 +43,9 @@ void vxCore::vxShader::setScene(vxScene *scene)
 	m_scene = scene;
 }
 
-void vxCore::vxShader::setLights(std::vector<vxDirectLight> * lights)
+void vxCore::vxShader::setLights(std::vector<std::shared_ptr<vxLight>> * lights)
 {
 	m_lights = lights;
 }
-
 
 

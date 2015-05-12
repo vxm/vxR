@@ -17,24 +17,20 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	const double resl = RESL;
 	vxVector3d p{PX, PY, PZ};
 	//
-	
-	vxPointLight pl1(1.0, vxColor::white);
-	pl1.setPosition(p.x(), p.y(), p.z());
-	pl1.setIntensity(1.0);
-	m_pointLights.push_back(pl1);
 
-	vxPointLight pl2(1.0, vxColor::white);
-	pl2.setPosition(5, 33, 5);
-	pl2.setIntensity(0.7);
-	m_pointLights.push_back(pl2);
+	auto l1 = createPointLight();
+	l1->setPosition(p.x(), p.y(), p.z());
+	l1->setIntensity(1.0);
+
+	auto l2 = createPointLight();
+	l2->setPosition(5, 33, 5);
+	l2->setIntensity(0.7);
+
+	auto l3 = createDirectLight();
+	l3->set(vxVector3d(0,-1,0), true);
+	l3->setIntensity(1.0);
 	
-	vxDirectLight dl1(1.0, vxColor::white);
-	dl1.set(vxVector3d(0,-1,0), true);
-	dl1.setPosition(p.x(), p.y(), p.z());
-	dl1.setIntensity(1.0);
-	m_directLights.push_back(dl1);
-	
-	createCamera(vxMatrix(), 1);
+	createCamera(vxMatrix(), 3);
 	createGrid();
 }
 
@@ -67,6 +63,22 @@ std::shared_ptr<vxCamera> vxScene::defaultCamera() const
 void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 {
 	m_camera = camera;
+}
+
+std::shared_ptr<vxPointLight> vxScene::createPointLight()
+{
+	auto pl1 = std::make_shared<vxPointLight>(1.0, vxColor::white);
+	m_pointLights.push_back(pl1);
+	m_lights.push_back(pl1);
+	return pl1;
+}
+
+std::shared_ptr<vxDirectLight> vxScene::createDirectLight()
+{
+	auto dl1 = std::make_shared<vxDirectLight>(1.0, vxColor::white);
+	m_directLights.push_back(dl1);
+	m_lights.push_back(dl1);
+	return dl1;
 }
 
 std::shared_ptr<vxGrid> vxScene::createGrid()
@@ -169,7 +181,7 @@ vxShader* vxScene::defaultShader()
 	}
 	
 	sLambert = new vxLambert();
-	sLambert->setLights(&m_directLights);
+	sLambert->setLights(&m_lights);
 	sLambert->setScene(this);
 	return sLambert;
 }
