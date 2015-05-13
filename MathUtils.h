@@ -64,14 +64,20 @@ class MathUtils
 	}
 
 	//Random
-	inline static double getRand()
+	inline static double getRand(double range = 1.0)
 	{
-		return (rand()/(double)RAND_MAX);
+		return range*(rand()/(double)RAND_MAX);
 	}
 
 	inline static double getBoolRand()
 	{
 		return getRand()<.5;
+	}
+	
+	inline static vxVector3d getSphereRand(double radius = 1.0)
+	{
+		//TODO:real random scatter point in sphere missing
+		return vxVector3d(getRand(radius),getRand(radius),getRand(radius));
 	}
 	
 	

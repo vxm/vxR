@@ -15,7 +15,7 @@ vxColor vxLambert::getColor(const vxCollision &collide) const
 {
 	double lumm = getLightLoop(collide);
 	
-	return MathUtils::clamp(m_map.getColor(collide), 0.001, 0.65) * lumm;
+	return MathUtils::clamp(m_map.getColor(collide), 0.01, 0.55) * lumm;
 }
 
 
@@ -25,13 +25,20 @@ double vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 	double acumLumm{0.0};
 	const vxVector3d &cPnt = collision.position();
 	
+	auto n = 15.0;
 	for(auto light = std::begin(*m_lights); light!=std::end(*m_lights);++light)
 	{
 		auto l = light->get();
-		const vxRayXYZ f = l->position() - cPnt;
-		if (!m_scene->hasCollision(cPnt, f))
+		
+		// compute shadows.
+		for(auto i=0; i<n; i++)
 		{
-			acumLumm += fabs(l->luminance(collision));
+			auto r = MathUtils::getSphereRand(10);
+			const vxRayXYZ f = (l->position() + r) - cPnt;
+			if (!m_scene->hasCollision(cPnt, f))
+			{
+				acumLumm += fabs(l->luminance(collision)/n);
+			}
 		}
 	}
 	
