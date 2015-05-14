@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	// Img properties for render.
 	auto imgDesc = 
 			std::make_shared<vxCore::ImageProperties>
-			(1575, 1575);
+			(575, 575);
 	
 	// create the render process
 	render rp(imgDesc);

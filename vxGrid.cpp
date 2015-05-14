@@ -610,13 +610,8 @@ bool vxGrid::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
 {
 	auto itDoes = false;
 	vxVector3d v = ray.unit();
-	auto incX = copysign(v.x(), ray.x());
-	auto incY = copysign(v.y(), ray.y());
-	auto incZ = copysign(v.z(), ray.z());
-
-	vxVector3d next(origin.x()+incX,
-					origin.y()+incY,
-					origin.z()+incZ);
+	
+	vxVector3d next(origin+v);
 
 	while(inGrid(next))
 	{
@@ -626,9 +621,7 @@ bool vxGrid::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
 			break;
 		}
 		
-		next.setX(next.x() + incX);
-		next.setY(next.y() + incY);
-		next.setZ(next.z() + incZ);
+		next.set(next+v);
 	}
 	
 	return itDoes;

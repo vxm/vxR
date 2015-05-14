@@ -1,9 +1,10 @@
+
 #include "vxScene.h"
 
 namespace vxCore{
 class vxScene;
 
-#define RESL 145
+#define RESL 24
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -18,23 +19,22 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	vxVector3d p{PX, PY, PZ};
 	//
 
-	auto l1 = createPointLight();
-	l1->setPosition(4*resl, 12*resl, 2.2*resl);
-	l1->setIntensity(1.5);
+//	auto l1 = createPointLight();
+//	l1->setPosition(PX+12, PY+22, -PZ);
+//	l1->setIntensity(1.2);
 
-	auto l2 = createPointLight();
-	l2->setPosition(.5*resl, 7.3*resl, -3.0*resl);
-	l2->setIntensity(1.22);
+//	auto l2 = createPointLight();
+//	l2->setPosition(PX, PY+resl, PZ+12);
+//	l2->setIntensity(1.1);
 	
-	auto l3 = createPointLight();
-	l3->setPosition(5.5*resl, 5.3*resl, 5.0*resl);
-	l3->setIntensity(0.2);
+	auto l3 = createIBLight();
+	l3->setIntensity(1.0);
 	
 //	auto l3 = createDirectLight();
 //	l3->set(vxVector3d(0,-1,0), true);
 //	l3->setIntensity(1.0);
 	
-	createCamera(vxMatrix(), 3);
+	createCamera(vxMatrix(), 2);
 	createGrid();
 }
 
@@ -51,8 +51,6 @@ vxScene::createCamera(const vxMatrix &transform,
 	m_camera->setPixelSamples(samples);
 	return m_camera;
 }
-
-
 
 void vxScene::setShader(vxShader *shader)
 {
@@ -75,6 +73,14 @@ std::shared_ptr<vxPointLight> vxScene::createPointLight()
 	m_pointLights.push_back(pl1);
 	m_lights.push_back(pl1);
 	return pl1;
+}
+
+std::shared_ptr<vxIBLight> vxScene::createIBLight()
+{
+	auto ibl1 = std::make_shared<vxIBLight>(1.0, vxColor::white);
+	m_IBLights.push_back(ibl1);
+	m_lights.push_back(ibl1);
+	return ibl1;
 }
 
 std::shared_ptr<vxDirectLight> vxScene::createDirectLight()

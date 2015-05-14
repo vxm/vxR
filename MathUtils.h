@@ -64,20 +64,33 @@ class MathUtils
 	}
 
 	//Random
-	inline static double getRand(double range = 1.0)
+	inline static double getRand(double range)
 	{
 		return range*(rand()/(double)RAND_MAX);
 	}
 
 	inline static double getBoolRand()
 	{
-		return getRand()<.5;
+		return getRand(1.0)<.5;
 	}
+	
+
+	inline static vxVector3d getHollowSphereRand(double radius)
+	{
+		double mrad = radius/2.0;
+		//TODO:real random scatter point in sphere missing
+		auto r = vxVector3d(getRand(1.0)-.5,getRand(1.0)-.5,getRand(1.0)-.5);
+		r.setUnit();
+		r=r*radius;
+		return r;
+	}
+	
 	
 	inline static vxVector3d getSphereRand(double radius = 1.0)
 	{
+		double mrad = radius/2.0;
 		//TODO:real random scatter point in sphere missing
-		return vxVector3d(getRand(radius),getRand(radius),getRand(radius));
+		return vxVector3d(getRand(radius)-mrad,getRand(radius)-mrad,getRand(radius)-mrad);
 	}
 	
 	

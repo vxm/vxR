@@ -24,6 +24,7 @@ protected:
 	bool m_defaultLight = {true};
 	bool m_defaultShader = {true};
 
+	std::vector<std::shared_ptr<vxIBLight>> m_IBLights;
 	std::vector<std::shared_ptr<vxPointLight>> m_pointLights;
 	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
 	std::vector<std::shared_ptr<vxLight>> m_lights;
@@ -72,6 +73,7 @@ public:
 
 	std::shared_ptr<vxPointLight> createPointLight();
 	std::shared_ptr<vxDirectLight> createDirectLight();
+	std::shared_ptr<vxIBLight> createIBLight();
 
 };
 

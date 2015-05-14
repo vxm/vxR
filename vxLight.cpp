@@ -2,6 +2,26 @@
 namespace vxCore {
 
 
+
+double vxLight::radius() const
+{
+	return m_radius;
+}
+
+void vxLight::setRadius(double radius)
+{
+	m_radius = radius;
+}
+
+int vxLight::samples() const
+{
+	return m_samples;
+}
+
+void vxLight::setSamples(int samples)
+{
+	m_samples = samples;
+}
 vxLight::vxLight()
 {
 }
@@ -32,6 +52,17 @@ vxVector3d vxLight::getLightRay(const vxVector3d &position) const
 	return m_position-position;
 }
 
+double vxLight::ratio(const vxCollision &collide) const
+{
+	double angl = collide.normal().angle(getLightRay(collide.position()));
+	
+	if(angl>1.57)
+		return 0.0;
+	
+	return angl;
+	
+}
+
 void vxLight::setPosition(const vxVector3d &position) {m_position.set(position);}
 
 vxPointLight::vxPointLight()
@@ -45,12 +76,7 @@ vxPointLight::vxPointLight(double instensity, const vxColor &col)
 
 double vxPointLight::luminance(const vxCollision &collide) const
 {
-	double angl = collide.normal().angle(getLightRay(collide.position()));
-	
-	if(angl>1.57)
-		return 0.0;
-	
-	return m_intensity * cos(angl);
+	return m_intensity * ratio(collide);
 }
 
 vxVector3d vxPointLight::getLightRay(const vxVector3d &position) const
@@ -117,6 +143,31 @@ double vxDirectLight::luminance(const vxCollision &collide) const
 		return 0.0;
 	}
 	return m_intensity * cos(angl);
+}
+
+vxIBLight::vxIBLight()
+{
+	
+}
+
+vxIBLight::vxIBLight(double instensity, const vxColor &col)
+{
+	
+}
+
+double vxIBLight::luminance(const vxCollision &collide) const
+{
+	double angl = collide.normal().angle(getLightRay(collide.position()));
+	
+	if(angl>1.57)
+		return 0.0;
+	
+	return m_intensity * cos(angl);
+}
+
+vxVector3d vxIBLight::getLightRay(const vxVector3d &position) const
+{
+	return (m_position-position);
 }
 
 
