@@ -32,9 +32,15 @@ vxLight::vxLight(double intensity, const vxColor &color)
 	:m_intensity(intensity)
 	,m_color(color)
 {
+
 }
 
 vxLight::vxLight(double x, double y, double z) {m_position.set(x,y,z);}
+
+void vxLight::setScene(std::weak_ptr<vxScene> scene)
+{
+	m_scene = scene;
+}
 
 void vxLight::setPosition(double x, double y, double z) 
 {
@@ -52,7 +58,7 @@ vxVector3d vxLight::getLightRay(const vxVector3d &position) const
 	return m_position-position;
 }
 
-double vxLight::ratio(const vxCollision &collide) const
+double vxLight::lightRatio(const vxCollision &collide) const
 {
 	double angl = collide.normal().angle(getLightRay(collide.position()));
 	
@@ -60,23 +66,48 @@ double vxLight::ratio(const vxCollision &collide) const
 		return 0.0;
 	
 	return angl;
-	
 }
 
-void vxLight::setPosition(const vxVector3d &position) {m_position.set(position);}
+double vxLight::acumLight(const vxCollision &collision) const
+{
+	double acumLumm{0.0};
+	const auto &cPnt = collision.position();
+	const auto& n = samples();
+	//m_scene.lock();
+	// compute shadows.
+	auto sm = m_scene.lock();
+	for(auto i=0; i<n; i++)
+	{
+		auto r = MathUtils::getHollowSphereRand(2);
+		const vxRayXYZ f = (position() + r) - cPnt;
+		auto lumm = luminance(collision);
+
+		if (lumm>0.001 && !sm->hasCollision(cPnt, f))
+		{
+			acumLumm += fabs(lumm/n);
+		}
+	}
+}
+
+void vxLight::setPosition(const vxVector3d &position)
+{
+	m_position.set(position);
+}
 
 vxPointLight::vxPointLight()
-	:vxLight() 
+	:vxLight()
 {
 }
 
 vxPointLight::vxPointLight(double instensity, const vxColor &col)
 	:vxLight(instensity, col)
-{}
+{
+
+}
 
 double vxPointLight::luminance(const vxCollision &collide) const
 {
-	return m_intensity * ratio(collide);
+	return m_intensity * lightRatio(collide);
 }
 
 vxVector3d vxPointLight::getLightRay(const vxVector3d &position) const

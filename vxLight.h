@@ -1,34 +1,37 @@
 #ifndef _VXLIGHTSMC_
 #define _VXLIGHTSMC_
+#include<memory>
 
 #include "vxObject.h"
 #include "vxVector.h"
 #include "vxCollision.h"
 #include "MathUtils.h"
+#include "vxScene.h"
 
 namespace vxCore {
 
+class vxScene;
 
 class vxLight:public vxObject
 {
 protected:
 
 		//not every light needs position
-	vxVector3d m_position;
-	double m_intensity	{1.0};
-	vxColor m_color	{1.0,1.0,1.0};
-	double m_radius		{0.0};
-	int m_samples		{1};
-	 
+	vxVector3d m_position	{0.0,0.0,0.0};;
+	double m_intensity		{1.0};
+	vxColor m_color			{1.0,1.0,1.0};
+	double m_radius			{0.0};
+	int m_samples			{1};
+	std::weak_ptr<vxScene>	m_scene;
+
 public:
 
 	vxLight();
-	
 	vxLight(double intensity, const vxColor &color);
-	
 	vxLight(const vxVector3d &position);
 	vxLight(double x, double y, double z );
 
+	void setScene(std::weak_ptr<vxScene> scene);
 	void setPosition(const vxVector3d &position);
 	void setPosition(double x, double y, double z);
 
@@ -42,23 +45,9 @@ public:
 
 	virtual vxVector3d getLightRay(const vxVector3d &position) const;
 	virtual double luminance(const vxCollision &collide) const = 0; 
-	virtual double ratio(const vxCollision &collide) const;
+	virtual double lightRatio(const vxCollision &collide) const;
 
-	virtual double acumLight(const vxCollision &collide) const
-	{	
-		const auto& n = samples();
-		// compute shadows.
-		for(auto i=0; i<n; i++)
-		{
-			auto r = MathUtils::getHollowSphereRand(2);
-			const vxRayXYZ f = (position() + r) - cPnt;
-			auto lumm = l->luminance(collision);
-			if (lumm>0.001 && !m_scene->hasCollision(cPnt, f))
-			{
-				acumLumm += fabs(lumm/n);
-			}
-		}
-	}
+	virtual double acumLight(const vxCollision &collision) const;
 	
 	double radius() const;
 	void setRadius(double radius);
@@ -139,8 +128,6 @@ public:
 	// vxLight interface
 	public:
 	vxVector3d getLightRay(const vxVector3d &position) const override;
-
-	
 };
 
  
