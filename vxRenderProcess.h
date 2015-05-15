@@ -39,7 +39,8 @@ public:
 		:	m_bucketList(prop, 10)
 		,	m_imageProperties(prop)
 	{
-		m_scene.reset(new vxScene(prop));
+		m_scene = std::make_shared<vxScene>(prop);
+		m_scene->build();
 	}
 	
 	virtual vxStatus::code preProcess(vxProcess* p=nullptr) override;

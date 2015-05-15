@@ -23,21 +23,18 @@ class vxShader:public vxObject
 protected:
 
 	std::vector<std::shared_ptr<vxLight>> *m_lights = nullptr;
-	vxScene	*m_scene = {nullptr};
+	std::weak_ptr<vxScene>					m_scene;
 
 public:
 	vxShader();
 
 	using lightsRef = std::shared_ptr<std::vector<vxLight>>;
-
-	
-	void setLightsRef(std::vector<vxPointLight> * lights);
 	
 	virtual vxColor getColor(const vxCollision &collide) const = 0;
 
 	virtual double getLightLoop(const vxCollision &collision) const;
 	
-	void setScene(vxScene *scene);
+	void setScene(std::weak_ptr<vxScene> scene);
 	
 	std::shared_ptr<vxLight> light() const;
 	void setLights(std::vector<std::shared_ptr<vxLight>> *lights);

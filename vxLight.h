@@ -1,6 +1,6 @@
 #ifndef _VXLIGHTSMC_
 #define _VXLIGHTSMC_
-#include<memory>
+#include <memory>
 
 #include "vxObject.h"
 #include "vxVector.h"

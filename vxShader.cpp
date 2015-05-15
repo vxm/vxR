@@ -36,7 +36,7 @@ double vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 	return acumLumm;
 }
 
-void vxCore::vxShader::setScene(vxScene *scene)
+void vxCore::vxShader::setScene(std::weak_ptr<vxScene> scene)
 {
 	m_scene = scene;
 }
