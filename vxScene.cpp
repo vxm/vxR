@@ -1,4 +1,4 @@
-
+#include<memory>
 #include "vxScene.h"
 
 namespace vxCore{
@@ -12,6 +12,15 @@ class vxScene;
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
 {
+
+}
+
+vxScene::~vxScene()
+{
+}
+
+void vxScene::build()
+{
 	m_shader = new vxLambert;
 
 	//TODO: remove this debug code
@@ -19,30 +28,32 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	vxVector3d p{PX, PY, PZ};
 	//
 
-//	auto l1 = createPointLight();
-//	l1->setPosition(PX+12, PY+22, -PZ);
-//	l1->setIntensity(1.2);
+	auto l1 = createPointLight();
+	l1->setPosition(PX+12, PY+22, -PZ);
+	l1->setIntensity(1.2);
 
-//	auto l2 = createPointLight();
-//	l2->setPosition(PX, PY+resl, PZ+12);
-//	l2->setIntensity(1.1);
-	
-	auto l3 = createIBLight();
-	l3->setIntensity(1.0);
-	
-//	auto l3 = createDirectLight();
-//	l3->set(vxVector3d(0,-1,0), true);
-//	l3->setIntensity(1.0);
-	
+	auto l2 = createPointLight();
+	l2->setPosition(PX, PY+resl, PZ+12);
+	l2->setIntensity(1.1);
+
+	//	auto l3 = createIBLight();
+	//	l3->setIntensity(1.0);
+
+	//	auto l3 = createDirectLight();
+	//	l3->set(vxVector3d(0,-1,0), true);
+	//	l3->setIntensity(1.0);
+
 	createCamera(vxMatrix(), 2);
 	createGrid();
 }
 
+
+
 std::shared_ptr<vxCamera> 
 vxScene::createCamera(const vxMatrix &transform, 
-						unsigned int samples, 
-						double hAperture, 
-						double vAperture)
+					  unsigned int samples,
+					  double hAperture,
+					  double vAperture)
 {
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set(	vxVector3d(0,0,0),
@@ -72,6 +83,7 @@ std::shared_ptr<vxPointLight> vxScene::createPointLight()
 	auto pl1 = std::make_shared<vxPointLight>(1.0, vxColor::white);
 	m_pointLights.push_back(pl1);
 	m_lights.push_back(pl1);
+	pl1->setScene(shared_from_this());
 	return pl1;
 }
 
@@ -80,6 +92,7 @@ std::shared_ptr<vxIBLight> vxScene::createIBLight()
 	auto ibl1 = std::make_shared<vxIBLight>(1.0, vxColor::white);
 	m_IBLights.push_back(ibl1);
 	m_lights.push_back(ibl1);
+	ibl1->setScene(shared_from_this());
 	return ibl1;
 }
 
@@ -88,6 +101,7 @@ std::shared_ptr<vxDirectLight> vxScene::createDirectLight()
 	auto dl1 = std::make_shared<vxDirectLight>(1.0, vxColor::white);
 	m_directLights.push_back(dl1);
 	m_lights.push_back(dl1);
+	dl1->setScene(shared_from_this());
 	return dl1;
 }
 
@@ -190,7 +204,8 @@ vxShader* vxScene::defaultShader()
 	
 	sLambert = new vxLambert();
 	sLambert->setLights(&m_lights);
-	sLambert->setScene(this);
+	sLambert->setScene(shared_from_this());
+
 	return sLambert;
 }
 

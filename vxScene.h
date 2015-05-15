@@ -16,8 +16,12 @@ namespace vxCore {
 
 class vxShader;
 class vxGrid;
+class vxIBLight;
+class vxPointLight;
+class vxDirectLight;
+class vxLight;
 
-class vxScene:public vxObject
+class vxScene: public std::enable_shared_from_this<vxScene>
 {
 protected:
 
@@ -29,7 +33,6 @@ protected:
 	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
 	std::vector<std::shared_ptr<vxLight>> m_lights;
 
-	
 	vxShader *m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
 
@@ -41,9 +44,9 @@ public:
 
 	vxScene(std::shared_ptr<ImageProperties> prop);
 	
-	~vxScene()
-	{
-	}
+	~vxScene();
+
+	void build();
 
 	std::shared_ptr<vxCamera>
 		createCamera(const vxMatrix &transform,
