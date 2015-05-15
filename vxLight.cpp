@@ -32,7 +32,6 @@ vxLight::vxLight(double intensity, const vxColor &color)
 	:m_intensity(intensity)
 	,m_color(color)
 {
-
 }
 
 vxLight::vxLight(double x, double y, double z) {m_position.set(x,y,z);}
