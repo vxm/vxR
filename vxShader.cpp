@@ -23,14 +23,9 @@ double vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 {
 	//assert(m_lights);
 	double acumLumm{0.0};
-	const vxVector3d &cPnt = collision.position();
-	
-	auto n = 10.0;
 	for(auto light = std::begin(*m_lights); light!=std::end(*m_lights);++light)
 	{
-		auto l = light->get();
-		
-		acumLumm+= l->acumLight(collision);
+		acumLumm+= light->get()->acumLight(collision);
 	}
 	
 	return acumLumm;

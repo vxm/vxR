@@ -57,9 +57,10 @@ vxVector3d vxLight::getLightRay(const vxVector3d &position) const
 	return m_position-position;
 }
 
-double vxLight::lightRatio(const vxCollision &collide) const
+double vxLight::lightRatio(const vxVector3d &position,
+						   const vxVector3d &normal) const
 {
-	double angl = collide.normal().angle(getLightRay(collide.position()));
+	double angl = normal.angle(getLightRay(position));
 	
 	if(angl>1.57)
 		return 0.0;
@@ -77,15 +78,17 @@ double vxLight::acumLight(const vxCollision &collision) const
 	auto sm = m_scene.lock();
 	for(auto i=0; i<n; i++)
 	{
-		auto r = MathUtils::getHollowSphereRand(2);
+		auto r = MathUtils::getHollowSphereRand(radius());
 		const vxRayXYZ f = (position() + r) - cPnt;
-		auto lumm = luminance(collision);
+		auto lumm = m_intensity * lightRatio(cPnt-r, collision.normal());
 
 		if (lumm>0.001 && !sm->hasCollision(cPnt, f))
 		{
 			acumLumm += fabs(lumm/n);
 		}
 	}
+
+	return acumLumm;
 }
 
 void vxLight::setPosition(const vxVector3d &position)
@@ -102,11 +105,6 @@ vxPointLight::vxPointLight(double instensity, const vxColor &col)
 	:vxLight(instensity, col)
 {
 
-}
-
-double vxPointLight::luminance(const vxCollision &collide) const
-{
-	return m_intensity * lightRatio(collide);
 }
 
 vxVector3d vxPointLight::getLightRay(const vxVector3d &position) const
@@ -138,10 +136,6 @@ void vxSpotLight::set(const vxVector3d &position, const vxVector3d &orientation,
 
 void vxSpotLight::setOrientation(const vxVector3d &orientation) {m_orientation.set(orientation);}
 
-double vxSpotLight::luminance(const vxCollision &collide) const
-{
-	return intensity()*collide.normal().angle(getLightRay(collide.position()));
-}
 
 vxDirectLight::vxDirectLight()
 	:vxLight()
@@ -165,15 +159,6 @@ void vxDirectLight::set(const vxVector3d &orientation, bool bidirectional)
 	m_biDirectional=bidirectional;
 }
 
-double vxDirectLight::luminance(const vxCollision &collide) const
-{
-	double angl = collide.normal().angle(m_orientation.inverted());
-	if(angl>1.57)
-	{
-		return 0.0;
-	}
-	return m_intensity * cos(angl);
-}
 
 vxIBLight::vxIBLight()
 {
@@ -181,19 +166,11 @@ vxIBLight::vxIBLight()
 }
 
 vxIBLight::vxIBLight(double instensity, const vxColor &col)
+	:vxLight(instensity, col)
 {
 	
 }
 
-double vxIBLight::luminance(const vxCollision &collide) const
-{
-	double angl = collide.normal().angle(getLightRay(collide.position()));
-	
-	if(angl>1.57)
-		return 0.0;
-	
-	return m_intensity * cos(angl);
-}
 
 vxVector3d vxIBLight::getLightRay(const vxVector3d &position) const
 {

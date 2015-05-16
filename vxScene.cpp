@@ -28,16 +28,18 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 	//
 
-	auto l1 = createPointLight();
-	l1->setPosition(PX+12, PY+22, -PZ);
-	l1->setIntensity(1.2);
+//	auto l1 = createPointLight();
+//	l1->setPosition(PX+12, PY+22, -PZ);
+//	l1->setIntensity(1.2);
 
-	auto l2 = createPointLight();
-	l2->setPosition(PX, PY+resl, PZ+12);
-	l2->setIntensity(1.1);
+//	auto l2 = createPointLight();
+//	l2->setPosition(PX, PY+resl, PZ+12);
+//	l2->setIntensity(1.1);
 
-	//	auto l3 = createIBLight();
-	//	l3->setIntensity(1.0);
+	auto l3 = createIBLight();
+	l3->setSamples(12);
+	l3->setRadius(1);
+	l3->setIntensity(1.0);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
