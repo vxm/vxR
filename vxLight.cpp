@@ -80,7 +80,7 @@ double vxLight::acumLight(const vxCollision &collision) const
 	{
 		auto r = MathUtils::getHollowSphereRand(radius());
 		const vxRayXYZ f = (position() + r) - cPnt;
-		auto lumm = m_intensity * lightRatio(cPnt, collision.normal());
+		auto lumm = m_intensity * lightRatio(cPnt-r, collision.normal());
 
 		if (lumm>0.001 && !sm->hasCollision(cPnt, f))
 		{

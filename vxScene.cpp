@@ -4,7 +4,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 24
+#define RESL 510
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -28,13 +28,17 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 	//
 
-//	auto l1 = createPointLight();
-//	l1->setPosition(PX+12, PY+22, -PZ);
-//	l1->setIntensity(1.2);
+	auto l1 = createPointLight();
+	l1->setSamples(15);
+	l1->setRadius(22.0);
+	l1->setPosition(0, PY+220, PZ);
+	l1->setIntensity(1.2);
 
-//	auto l2 = createPointLight();
-//	l2->setPosition(PX, PY+resl, PZ+12);
-//	l2->setIntensity(1.1);
+	auto l2 = createPointLight();
+	l2->setSamples(12);
+	l2->setRadius(21);
+	l2->setPosition(PX+resl, PY+resl, PZ-5);
+	l2->setIntensity(0.7);
 
 	auto l3 = createIBLight();
 	l3->setSamples(12);
@@ -45,7 +49,7 @@ void vxScene::build()
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 2);
+	createCamera(vxMatrix(), 4);
 	createGrid();
 }
 
