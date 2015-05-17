@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     vxMap.cpp \
     vxMap2d.cpp \
     vxCirclesMap.cpp \
-    vxramp.cpp
+    vxramp.cpp \
+    renderPresset.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -86,12 +87,13 @@ HEADERS  += \
     vxMap.h \
     vxMap2d.h \
     vxCirclesMap.h \
-    vxramp.h
+    vxramp.h \
+    renderPresset.h
 
 FORMS    += vxrendermain.ui
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
-CONFIG += c++11
+CONFIG += c++14
 
 OTHER_FILES += \
     todo.txt
