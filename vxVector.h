@@ -17,7 +17,7 @@ private:
 
 public:
 	
-	vxVector () {};
+	vxVector ();
 
 	virtual double length() const = 0;
 };
@@ -31,106 +31,60 @@ private:
 
 public:
 
-	vxVector2d () 
-	{};
+	vxVector2d ();;
 	
-	vxVector2d (double x, double y) 
-		: m_x(x)
-		, m_y(y)
-	{}
+	vxVector2d (double x, double y);
 
-	void set(double x, double y) 
-	{
-		m_x=x;
-		m_y=y;
-	}
+	void set(double x, double y);
 	
-	void set(vxVector2d enter) 
-	{
-		m_x = enter.m_x;
-		m_y = enter.m_y;
-	}
+	void set(vxVector2d enter);
 
-	void setX(const double x)
-	{
-		m_x=x;
-	}
+	void setX(const double x);
 	
-	void setY(const double y) 
-	{
-		m_y=y;
-	}
+	void setY(const double y);
 
-	vxVector2d get() const
-	{
-		return *this;
-	}
+	vxVector2d get() const;
 	
-	void get(double &xi, double &yi) const
-	{
-		xi=m_x;
-		yi=m_y;
-	}
+	void get(double &xi, double &yi) const;
 
-	double x() const
-	{
-		return m_x;
-	}
+	double x() const;
 	
-	double y() const
-	{
-		return m_y;
-	}
+	double y() const;
 
-	double length() const 
-	{//TODO:consider hypot c++11
-		return sqrt(m_x*m_x+m_y*m_y);
-	}
+	double length() const;
 
-	vxVector2d unit() const 
-	{
-		double lng=length();
-		return vxVector2d(m_x/lng,m_y/lng);
-	};
+	vxVector2d unit() const;;
 
-	vxVector2d operator+(vxVector2d other) const
-	{
-		return vxVector2d(other.m_x+m_x,other.m_y+m_y);
-	}
+	vxVector2d operator+(vxVector2d other) const;
 	
-	vxVector2d operator+(double factor) const
-	{
-		return vxVector2d(factor+m_x,factor+m_y);
-	}
+	vxVector2d operator+(double factor) const;
 	
-	vxVector2d operator+(float factor) const {return vxVector2d(factor+m_x,factor+m_y);}
-	vxVector2d operator+(int factor) const {return vxVector2d(factor+m_x,factor+m_y);}
+	vxVector2d operator+(float factor) const;
+	vxVector2d operator+(int factor) const;
 
-	vxVector2d operator-(vxVector2d entrada) const {return vxVector2d(m_x-entrada.x(),m_y-entrada.y());}
-	vxVector2d operator-(double factor) const {return vxVector2d(m_x-factor,m_y-factor);}
-	vxVector2d operator-(float factor) const {return vxVector2d(m_x-factor,m_y-factor);}
-	vxVector2d operator-(int factor) const {return vxVector2d(m_x-factor,m_y-factor);}
+	vxVector2d operator-(vxVector2d entrada) const;
+	vxVector2d operator-(double factor) const;
+	vxVector2d operator-(float factor) const;
+	vxVector2d operator-(int factor) const;
 
-	vxVector2d operator*(vxVector2d entrada) const {return vxVector2d(entrada.x()*m_x,entrada.y()*m_y);}
-	vxVector2d operator*(double factor) const {return vxVector2d(factor*m_x,factor*m_y);}
-	vxVector2d operator*(float factor) const {return vxVector2d(factor*m_x,factor*m_y);}
-	vxVector2d operator*(int factor) const {return vxVector2d(factor*m_x,factor*m_y);}
+	vxVector2d operator*(vxVector2d entrada) const;
+	vxVector2d operator*(double factor) const;
+	vxVector2d operator*(float factor) const;
+	vxVector2d operator*(int factor) const;
 
-	vxVector2d operator/(vxVector2d entrada) const {return vxVector2d(entrada.x()/m_x,entrada.y()/m_y);}
-	vxVector2d operator/(double factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
-	vxVector2d operator/(float factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
-	vxVector2d operator/(int factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
+	vxVector2d operator/(vxVector2d entrada) const;
+	vxVector2d operator/(double factor) const;
+	vxVector2d operator/(float factor) const;
+	vxVector2d operator/(int factor) const;
 
-	double angle(vxVector2d other) const {return angle()-other.angle();}
+	double angle(const vxVector2d &other) const;
 
-	double angle() const 
-	{
-		return atan2(m_y,m_x);
-	}
+	double angle() const;
 };
 
 class vxVector3d:public vxVector
 {
+
 protected:
 	double m_x {0.0};
 	double m_y {0.0};
@@ -138,178 +92,74 @@ protected:
 
 public:
 
+	static vxVector3d constX;
+	static vxVector3d constY;
+	static vxVector3d constZ;
+	static vxVector3d constXY;
+	static vxVector3d constXZ;
+	static vxVector3d constYZ;
+	static vxVector3d constXYZ;
+	
 	enum class axis{kX, kY, kZ};
 
-	vxVector3d ()
-	{};
+	vxVector3d ();;
 	
-	vxVector3d (double x, double y, double z)
-		: m_x(x)
-		, m_y(y)
-		, m_z(z)
-	{
-	}
+	vxVector3d (double x, double y, double z);
 
-	void set(double x, double y, double z) 
-	{
-		m_x=x;
-		m_y=y;
-		m_z=z;
-	}
-	void set(const vxVector3d &other) 
-	{
-		m_x=other.m_x;
-		m_y=other.m_y;
-		m_z=other.m_z;
-	}
+	void set(double x, double y, double z);
+	void set(const vxVector3d &other);
 
-	void setX(double x) 
-	{
-		m_x=x;
-	}
-	void setY(double y) 
-	{
-		m_y=y;
-	}
-	void setZ(double z) 
-	{
-		m_z=z;
-	}
+	void setX(double x);
+	void setY(double y);
+	void setZ(double z);
 
-	vxVector3d get() const
-	{
-		return *this;
-	}
+	vxVector3d get() const;
 	
-	void get(double &x, double &y, double &z) const 
-	{
-		x=m_x;
-		y=m_y;
-		z=m_z;
-	}
+	void get(double &x, double &y, double &z) const;
 
-	double x() const {return m_x;}
-	double y() const {return m_y;}
-	double z() const {return m_z;}
+	double x() const;
+	double y() const;
+	double z() const;
+	
+	vxVector3d inverted() const;
+	axis mainAxis() const;
+	double length() const;
+	double distance(const vxVector3d &ref) const;
+	
+	vxVector3d unit() const;;
+	void setUnit();
+	vxVector3d operator+(const vxVector3d &entrada) const;
+	vxVector3d operator+(double factor) const;
+	vxVector3d operator+(float factor) const;
+	vxVector3d operator+(int factor) const;
 
-	vxVector3d inverted() const
-	{
-		return vxVector3d(-m_x,-m_y,-m_z);
-	}
+	vxVector3d operator-(const vxVector3d &entrada) const;
+	vxVector3d operator-=(const vxVector3d &entrada);
+	vxVector3d operator-(double factor) const;
 	
-	axis mainAxis() const
-	{
-		if(m_x>m_y && m_x>m_z)
-		{
-			return axis::kX;
-		}
-		if(m_y>m_z)
-		{
-			return axis::kY;
-		}
-		else
-			return axis::kZ;
-	}
-	
-	double length() const
-	{
-		return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);
-	}
-	
-	double distance(const vxVector3d &ref) const
-		{return (*this-ref).length();}
-	
-	vxVector3d unit() const
-	{
-		double lng=length();
-		return vxVector3d(m_x/lng, m_y/lng, m_z/lng);
-	};
-	
-	void setUnit() 
-	{
-		double lng=length();
-		m_x=m_x/lng;
-		m_y=m_y/lng;
-		m_z=m_z/lng;
-	}
+	vxVector3d operator-(float factor) const;
+	vxVector3d operator-(int factor) const;
+	vxVector3d operator*(const vxVector3d other) const;
+	vxVector3d operator*(double factor) const;
+	vxVector3d operator*(float factor) const;
+	vxVector3d operator*(int factor) const;
 
-	vxVector3d operator+(const vxVector3d &entrada) const
-		{return vxVector3d(entrada.x()+m_x,entrada.y()+m_y,entrada.z()+m_z);}
-	
-	vxVector3d operator+(double factor) const
-		{return vxVector3d(factor+m_x,factor+m_y,factor+m_z);}
-	
-	vxVector3d operator+(float factor) const
-		{return vxVector3d(factor+m_x,factor+m_y,factor+m_z);}
-	
-	vxVector3d operator+(int factor) const
-		{return vxVector3d(factor+m_x,factor+m_y,factor+m_z);}
+	vxVector3d operator/(const vxVector3d &entrada);
+	vxVector3d operator/(double factor);
+	vxVector3d operator/(float factor) const;
+	vxVector3d operator/(int factor) const;
+	vxVector3d operator^(const vxVector3d &b) const;
 
-	vxVector3d operator-(const vxVector3d &entrada) const 
-		{return vxVector3d(m_x-entrada.x(),m_y-entrada.y(),m_z-entrada.z());}
-	vxVector3d operator-=(const vxVector3d &entrada)
-	{	m_x-=entrada.m_x;
-		m_y-=entrada.m_y;
-		m_z-=entrada.m_z;
-		return *this;
-	}
+	double angle(const vxVector3d &b) const;
+	double angleXY(const vxVector3d &other) const;
+	double angleYZ(const vxVector3d &other) const;
+	double angleZX(const vxVector3d &other) const;
 
-	vxVector3d operator-(double factor) const 
-		{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
-	
-	vxVector3d operator-(float factor) const 
-		{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
-	
-	vxVector3d operator-(int factor) const 
-		{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
+	double angleXY() const;
+	double angleYZ() const;
+	double angleZX() const;
 
-	vxVector3d operator*(const vxVector3d other) const {return vxVector3d(other.x()*m_x,other.y()*m_y,other.z()*m_z);}
-	vxVector3d operator*(double factor) const {return vxVector3d(factor*m_x,factor*m_y,factor*m_z);}
-	vxVector3d operator*(float factor) const {return vxVector3d(factor*m_x,factor*m_y,factor*m_z);}
-	vxVector3d operator*(int factor) const {return vxVector3d(factor*m_x,factor*m_y,factor*m_z);}
-
-	vxVector3d operator/(const vxVector3d &entrada) 
-		{return vxVector3d(entrada.x()/m_x,entrada.y()/m_y,entrada.z()/m_z);}
-	
-	vxVector3d operator/(double factor)
-		{return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);}
-	
-	vxVector3d operator/(float factor) const
-	{return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);}
-	
-	vxVector3d operator/(int factor) const 
-		{return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);}
-
-	vxVector3d operator^(const vxVector3d &b) const
-		{return vxVector3d((m_y*b.m_z)-(m_z*b.m_y),(m_x*b.m_z)-(m_z*b.m_x),(m_x*b.m_y)-(m_y*b.m_x));}
-
-	double angle(const vxVector3d &b) const
-	{
-		double an=(m_x*b.m_x+m_y*b.m_y+m_z*b.m_z)/((sqrt((m_x*m_x)+(m_y*m_y)+(m_z*m_z)))*(sqrt((b.m_x*b.m_x)+(b.m_y*b.m_y)+(b.m_z*b.m_z))));
-		return acos(an);
-	}
-
-	double angleXY(const vxVector3d &other) const
-	{return angleXY()-other.angleXY();}
-	
-	double angleYZ(const vxVector3d &other) const
-	{return angleYZ()-other.angleYZ();}
-	
-	double angleZX(const vxVector3d &other) const
-	{return angleZX()-other.angleZX();}
-
-	double angleXY() const 
-		{return atan2(m_y,m_x);}
-	double angleYZ() const 
-		{return atan2(m_z,m_y);}
-	double angleZX() const 
-		{return atan2(m_x,m_z);}
-
-	vxVector3d operator=(const vxVector3d &otro)
-	{
-		set(otro.x(),otro.y(),otro.z());
-		return *this;
-	}
+	vxVector3d operator=(const vxVector3d &otro);
 
 /*
 $rota=unit($rota);
@@ -320,38 +170,17 @@ $angk+=$ang;
 return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 */
 	//TODO: revisit these three rotations
-	vxVector3d rotateX(double ang)
-	{
-		setUnit();
-		double angk = angleZX();
-		angk+=ang;
-		m_x=(sin(angk));
-		m_z=(cos(angk));
-		return *this;
-	}
+	vxVector3d rotateX(double ang);
 
 	//TODO: revisit these three rotations
-	vxVector3d rotateY(double ang)
-	{
-		auto angk = ang + angleXY();
-		return vxVector3d(m_z, cos(angk), sin(angk));
-	}
+	vxVector3d rotateY(double ang);
 
 	//TODO: revisit these three rotations
-	vxVector3d rotateZ(double ang)
-	{
-		vxVector3d ret;
-		ang+=angleYZ();
-		ret.set( cos(ang) , sin(ang) , m_x );
-		return ret;
-	}
+	vxVector3d rotateZ(double ang);
 
-	void vectorXY(vxVector2d &local) const
-		{local.set(m_x,m_y);}
-	void vectorYZ(vxVector2d &local) const
-		{local.set(m_x,m_y);}
-	void vectorZX(vxVector2d &local) const
-		{local.set(m_x,m_y);}
+	void vectorXY(vxVector2d &local) const;
+	void vectorYZ(vxVector2d &local) const;
+	void vectorZX(vxVector2d &local) const;
 	
 	friend std::ostream& operator<<(std::ostream &os, const vxVector3d& v)
 	{
@@ -370,6 +199,12 @@ class vxRayXYZ :public vxVector3d
 		vxRayXYZ (const vxVector3d& other)
 			: vxVector3d(other)
 		{
+		};
+		
+		vxRayXYZ (const vxVector3d& origin, 
+				  const vxVector3d& destiny)
+		{
+			set(destiny - origin);
 		};
 		
 		vxRayXYZ (double x, double y, double z)
