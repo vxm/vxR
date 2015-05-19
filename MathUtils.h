@@ -77,7 +77,6 @@ class MathUtils
 
 	inline static vxVector3d getHollowSphereRand(double radius)
 	{
-		double mrad = radius/2.0;
 		//TODO:real random scatter point in sphere missing
 		auto r = vxVector3d(getRand(1.0)-.5,getRand(1.0)-.5,getRand(1.0)-.5);
 		r.setUnit();
@@ -101,21 +100,33 @@ class MathUtils
 	
 	inline static vxColor clamp(const vxColor &c1, const vxColor &min, const vxColor &max)
 	{
-		return vxColor(clamp(c1.getR(), min.getR(), max.getR()),
-					   clamp(c1.getG(), min.getG(), max.getG()),
-					   clamp(c1.getB(), min.getB(), max.getB()));
+		return vxColor(clamp(c1.r(), min.r(), max.r()),
+					   clamp(c1.g(), min.g(), max.g()),
+					   clamp(c1.b(), min.b(), max.b()));
 	}
 	
 	inline static vxColor clamp(const vxColor &c1, double min, double max)
 	{
-		return vxColor(clamp(c1.getR(), min, max),
-					   clamp(c1.getG(), min, max),
-					   clamp(c1.getB(), min, max));
+		return vxColor(clamp(c1.r(), min, max),
+					   clamp(c1.g(), min, max),
+					   clamp(c1.b(), min, max));
 	}
 	
 	inline static double remap(double v, double max)
 	{
 		return clamp(v*max,0.0,max);
+	}
+	
+	inline static auto remap(double v, double min, double max)
+	{
+		return v+min*max-min;
+	}
+	
+	inline static vxColor remap(const vxColor &col, double min, double max)
+	{
+		return vxColor((remap(col.r(),min,max)),
+						(remap(col.g(),min,max)),
+						(remap(col.b(),min,max)));
 	}
 };
 
