@@ -24,7 +24,7 @@ public:
 		k32k
 	};
 	
-	auto quality(imageQuality qlt)
+	static auto quality(imageQuality qlt)
 	{
 		switch(qlt)
 		{

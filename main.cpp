@@ -7,6 +7,7 @@
 #include <FileUtils.h>
 #include <vxRenderProcess.h>
 #include <vxRenderMain.h>
+#include "renderPresset.h"
 #include <TimeUtils.h>
 #include <MathUtils.h>
 #include <vxVector.h>
@@ -15,6 +16,7 @@
 static const std::string baseName("image.1.bmp");
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
+using namespace vxCore;
 
 int main(int argc, char *argv[])
 {
@@ -27,9 +29,9 @@ int main(int argc, char *argv[])
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = 
-			std::make_shared<vxCore::ImageProperties>
-			(775, 775);
+	auto imgDesc =
+			std::make_shared<ImageProperties>
+			(RenderPresset::quality(RenderPresset::imageQuality::k2k));
 	
 	// create the render process
 	render rp(imgDesc);
