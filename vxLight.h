@@ -45,8 +45,8 @@ public:
 
 	virtual vxVector3d getLightRay(const vxVector3d &position) const;
 	virtual double lightRatio(const vxVector3d &origin, 
-							  const vxVector3d &direction, 
-							  const vxVector3d &destiny) const;
+					const vxVector3d &direction, 
+					const vxVector3d &destiny) const;
 
 	virtual double acumLight(const vxCollision &collision) const;
 	
