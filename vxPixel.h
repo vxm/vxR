@@ -53,27 +53,27 @@ public:
 
 	void add(vxColor color)
 	{
-		add(color.getR(),color.getG(),color.getB());	
+		add(color.r(),color.g(),color.b());	
 		m_comp++;
 	}
 
 	void add(vxPixel color)
 	{
-		add(color.getR(),color.getG(),color.getB());	
+		add(color.r(),color.g(),color.b());	
 		m_comp++;
 	}
 
 	vxPixel operator=(vxPixel otro)
 	{
 		vxPixel salida;
-		salida.set(otro.getR(),otro.getG(),otro.getB());		
+		salida.set(otro.r(),otro.g(),otro.b());		
 		return salida;
 	}
 
 	vxPixel operator=(vxColor otro)
 	{
 		vxPixel salida;
-		salida.set(otro.getR(),otro.getG(),otro.getB());		
+		salida.set(otro.r(),otro.g(),otro.b());		
 		return salida;
 	}
 };
