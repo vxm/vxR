@@ -62,7 +62,7 @@ public:
 
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	int throwRay(const vxRayXYZ &ray, vxCollision &collide);
+	bool throwRay(const vxRayXYZ &ray, vxCollision &collide);
 	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);
 	
 	std::shared_ptr<vxLight> defaultLight() const;

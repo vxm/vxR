@@ -4,7 +4,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 510
+#define RESL 153
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -41,9 +41,9 @@ void vxScene::build()
 	l2->setIntensity(0.7);
 
 	auto l3 = createIBLight();
-	l3->setSamples(12);
-	l3->setRadius(1);
-	l3->setIntensity(1.0);
+	l3->setSamples(22);
+	l3->setRadius(1.6);
+	l3->setIntensity(2.4);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
@@ -123,7 +123,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 	m_grids[0]->setResolution(resl);
 	
-	auto iRadius = 7.0;
+	auto iRadius = 6.0;
 	auto distSph = (resl/3.0);
 	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
@@ -180,7 +180,7 @@ void vxScene::setProp(const std::shared_ptr<ImageProperties> &prop)
 	m_prop = prop;
 }
 
-int vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
+bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 { 
 	m_grids[0]->throwRay(ray,collide);
 	
@@ -192,6 +192,27 @@ int vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 		return 1;
 	}
 	
+	//TODO:take this to a dommo object or something like..
+	auto p = MathUtils::rectAndYPlane(ray, -23.0);
+	
+	if(!signbit(p.z()))
+	{
+		collide.setNormal(vxVector3d::constY);
+		collide.setPosition(p);
+		collide.setU(fmod(p.x(),1.0));
+		collide.setV(fmod(p.z(),1.0));
+		
+		vxColor col(defaultShader()->getColor(collide));
+		collide.setColor( col );
+		return 1;
+	}
+	else
+	{
+		collide.setColor( vxColor::white );
+		return 1;
+	}
+	
+	// 
 	return 0;
 }
 
