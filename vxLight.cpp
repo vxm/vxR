@@ -57,38 +57,16 @@ vxVector3d vxLight::getLightRay(const vxVector3d &position) const
 	return m_position-position;
 }
 
-double vxLight::lightRatio(const vxVector3d &position,
-						   const vxVector3d &normal) const
+double vxLight::lightRatio(const vxVector3d &origin,
+				const vxVector3d &direction,
+				const vxVector3d &destiny) const
 {
-	double angl = normal.angle(getLightRay(position));
+	double angl = (destiny-origin).angle(direction);
 	
 	if(angl>1.57)
 		return 0.0;
 	
 	return cos(angl);
-}
-
-double vxLight::acumLight(const vxCollision &collision) const
-{
-	double acumLumm{0.0};
-	const auto &cPnt = collision.position();
-	const auto& n = samples();
-	//m_scene.lock();
-	// compute shadows.
-	auto sm = m_scene.lock();
-	for(auto i=0; i<n; i++)
-	{
-		auto r = MathUtils::getHollowSphereRand(radius());
-		const vxRayXYZ f = (position() + r) - cPnt;
-		auto lumm = m_intensity * lightRatio(cPnt-r, collision.normal());
-
-		if (lumm>0.001 && !sm->hasCollision(cPnt, f))
-		{
-			acumLumm += fabs(lumm/n);
-		}
-	}
-
-	return acumLumm;
 }
 
 void vxLight::setPosition(const vxVector3d &position)
@@ -178,6 +156,51 @@ vxVector3d vxIBLight::getLightRay(const vxVector3d &position) const
 }
 
 
+double vxLight::acumLight(const vxCollision &collision) const
+{
+	double acumLumm{0.0};
+	const auto &cPnt = collision.position();
+	const auto& n = samples();
+	//m_scene.lock();
+	// compute shadows.
+	auto sm = m_scene.lock();
+	for(auto i=0; i<n; i++)
+	{
+		auto r = MathUtils::getHollowSphereRand(radius());
+		
+		const vxRayXYZ f(cPnt, position() + r);
+		
+		auto lumm = m_intensity * lightRatio(cPnt, collision.normal(), position() + r);
+
+		if (lumm>0.001 && !sm->hasCollision(cPnt, f))
+		{
+			acumLumm += fabs(lumm/n);
+		}
+	}
+
+	return acumLumm;
+}
+
+double vxIBLight::acumLight(const vxCollision &collision) const
+{
+	double acumLumm{0.0};
+	const auto& cPnt = collision.position();
+	const auto& n = samples();
+	// compute shadows.
+	auto sm = m_scene.lock();
+	for(auto i=0; i<n; i++)
+	{
+		auto&& r = MathUtils::getHollowSphereRand(radius());
+		auto&& f = collision.normal()+r;
+		auto lumm = m_intensity;
+		if (lumm>0.001 && !sm->hasCollision(cPnt, f))
+		{
+			acumLumm += fabs(lumm/n);
+		}
+	}
+
+	return acumLumm;
+}
 
 
 }
