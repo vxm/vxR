@@ -311,7 +311,7 @@ void vxGrid::getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide
 	while(x<m_xmax && !found)
 	{
 		auto pnt = MathUtils::rectAndXPlane(ray, x);
-		if(!inGrid(pnt))
+		if(!inGrid(pnt, m_midBoxSize))
 		{
 			x+= m_boxSize;
 			continue;

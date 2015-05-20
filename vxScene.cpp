@@ -4,7 +4,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 153
+#define RESL 14
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -28,28 +28,28 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 	//
 
-	auto l1 = createPointLight();
-	l1->setSamples(15);
-	l1->setRadius(22.0);
-	l1->setPosition(0, PY+220, PZ);
-	l1->setIntensity(1.2);
+//	auto l1 = createPointLight();
+//	l1->setSamples(12);
+//	l1->setRadius(22.0);
+//	l1->setPosition(0, PY+220, PZ);
+//	l1->setIntensity(0.5);
 
-	auto l2 = createPointLight();
-	l2->setSamples(12);
-	l2->setRadius(21);
-	l2->setPosition(PX+resl, PY+resl, PZ-5);
-	l2->setIntensity(0.7);
+//	auto l2 = createPointLight();
+//	l2->setSamples(12);
+//	l2->setRadius(21);
+//	l2->setPosition(PX+resl, PY+resl, PZ-5);
+//	l2->setIntensity(0.5);
 
 	auto l3 = createIBLight();
-	l3->setSamples(22);
-	l3->setRadius(1.6);
-	l3->setIntensity(2.4);
+	l3->setSamples(4);
+	l3->setRadius(2.6);
+	l3->setIntensity(2.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 4);
+	createCamera(vxMatrix(), 1);
 	createGrid();
 }
 
@@ -193,7 +193,7 @@ bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 	}
 	
 	//TODO:take this to a dommo object or something like..
-	auto p = MathUtils::rectAndYPlane(ray, -23.0);
+	auto p = MathUtils::rectAndYPlane(ray, -RESL/2.0);
 	
 	if(!signbit(p.z()))
 	{

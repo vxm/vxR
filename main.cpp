@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	// Img properties for render.
 	auto imgDesc =
 			std::make_shared<ImageProperties>
-			(RenderPresset::quality(RenderPresset::imageQuality::k2k));
+			(RenderPresset::quality(RenderPresset::imageQuality::kScreen));
 	
 	// create the render process
 	render rp(imgDesc);

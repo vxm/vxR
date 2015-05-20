@@ -1,7 +1,6 @@
 #include "vxLight.h"
-namespace vxCore {
-
-
+namespace vxCore 
+{
 
 double vxLight::radius() const
 {
@@ -64,9 +63,11 @@ double vxLight::lightRatio(const vxVector3d &origin,
 	double angl = (destiny-origin).angle(direction);
 	
 	if(angl>1.57)
+	{
 		return 0.0;
-	
-	return cos(angl);
+	}
+
+	return MathUtils::clamp(cos(angl),0.0,1.0);
 }
 
 void vxLight::setPosition(const vxVector3d &position)
@@ -167,11 +168,8 @@ double vxLight::acumLight(const vxCollision &collision) const
 	for(auto i=0; i<n; i++)
 	{
 		auto r = MathUtils::getHollowSphereRand(radius());
-		
 		const vxRayXYZ f(cPnt, position() + r);
-		
 		auto lumm = m_intensity * lightRatio(cPnt, collision.normal(), position() + r);
-
 		if (lumm>0.001 && !sm->hasCollision(cPnt, f))
 		{
 			acumLumm += fabs(lumm/n);
