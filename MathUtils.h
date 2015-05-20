@@ -119,7 +119,7 @@ class MathUtils
 	
 	inline static auto remap(double v, double min, double max)
 	{
-		return v+min*max-min;
+		return (v+min)*(max-min);
 	}
 	
 	inline static vxColor remap(const vxColor &col, double min, double max)
