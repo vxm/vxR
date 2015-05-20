@@ -41,15 +41,15 @@ void vxScene::build()
 //	l2->setIntensity(0.5);
 
 	auto l3 = createIBLight();
-	l3->setSamples(4);
+	l3->setSamples(40);
 	l3->setRadius(2.6);
-	l3->setIntensity(2.2);
+	l3->setIntensity(4.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 1);
+	createCamera(vxMatrix(), 2);
 	createGrid();
 }
 
@@ -221,19 +221,19 @@ bool vxScene::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
 	return m_grids[0]->hasCollision(origin, ray);
 }
 
-vxShader* vxScene::defaultShader()
+vxShader const * vxScene::defaultShader()
 {
-	static vxShader* sLambert;
+	static std::unique_ptr<vxShader> sLambert;
 	if(sLambert!=nullptr)
 	{
-		return sLambert;
+		return sLambert.get();
 	}
 	
-	sLambert = new vxLambert();
+	sLambert = std::make_unique<vxLambert>();
 	sLambert->setLights(&m_lights);
 	sLambert->setScene(shared_from_this());
 
-	return sLambert;
+	return sLambert.get();
 }
 
 }

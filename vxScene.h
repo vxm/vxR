@@ -68,7 +68,7 @@ public:
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
 	
-	vxShader* defaultShader();
+	vxShader const * defaultShader();
 	void setShader(vxShader* defaultShader);
 	
 	std::shared_ptr<vxCamera> defaultCamera() const;
