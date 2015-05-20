@@ -190,7 +190,11 @@ double vxIBLight::acumLight(const vxCollision &collision) const
 	{
 		auto&& r = MathUtils::getHollowSphereRand(radius());
 		auto&& f = collision.normal()+r;
-		auto lumm = m_intensity;
+		
+		auto lumm = m_intensity * lightRatio(cPnt, 
+						 collision.normal(), 
+						(cPnt + collision.normal()) + r);
+		
 		if (lumm>0.001 && !sm->hasCollision(cPnt, f))
 		{
 			acumLumm += fabs(lumm/n);
