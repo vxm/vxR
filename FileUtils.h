@@ -5,7 +5,10 @@
 #include <fstream>
 #include <cstring>
 #include <sstream>
+#include <iostream>
+#include <stdlib.h>
 #include <iomanip>
+#include <regex>
 
 #include "vxmanager.h"
 
@@ -13,18 +16,19 @@ class FileUtils : public vxManager
 {
 	public:
 		FileUtils();
-
-	static bool fileExists(const std::string &filePath)
-	{
-		return std::ifstream(filePath).good();
-	}
 	
-	static std::string makeUnique(const std::string &fileName)
+	struct fileDesc
 	{
-		std::string unique = fileName;
-		
-		return unique;
-	}
+		std::string name;
+		std::string ext;
+		int number;
+	};
+
+	static fileDesc splitFileName(const std::string &filePath);
+	
+	static bool fileExists(const std::string &filePath);
+	
+	static std::string makeUnique(const std::string &fileName);
 	
 	
 };
