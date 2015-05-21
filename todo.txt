@@ -1,6 +1,10 @@
 TODO:
 
 - Rework getNearestCollision for optimization.
+	- fix errors
+		- boxes not seen in the right side.
+		- boundary (edges) boxes are not drawn complete
+		- raytrace will work in world and grid space.
 	* investigate plane values for ray traveling.
 	* do x, y and z, not only z
 	* find dominant axis in ray
@@ -17,11 +21,13 @@ TODO:
 	  - provide simple shading
 		* angular shading
 	  * decouple lambert shader with texture
-	  - shadows.
-		- Raytrace shadows.  
-	- multiple lights
+	  * shadows.
+		* Raytrace shadows.  
+	* multiple lights
 	- Ingelligent subsampling.
-	- Global illumination.
+	- Reflection, Refraction, and Diffraction
+		(http://www.physicsclassroom.com/class/waves/Lesson-3/Reflection,-Refraction,-and-Diffraction)
+	* Global illumination.
 	- Subsurface scattering.
 
 - Textures
@@ -53,6 +59,7 @@ TODO:
   - Implement m44 inversion.
   - Quaternions for camera rotation.
 
+* Remove Boost dependencies.
 - General raytracing, and not only from camera.
 	- investigate pointer advance patern for traveling rays.
 
