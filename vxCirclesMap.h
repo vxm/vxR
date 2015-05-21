@@ -12,7 +12,16 @@ class vxCirclesMap : public vxMap2d
 		
 		// vxMap interface
 	public:
-		virtual vxColor getColor(const vxCollision &collision) const;
+		virtual vxColor compute(const vxCollision &collision) const;
+
+	double m_radius[5] = {0.25, .3, .31, .4, .41 };
+		
+	bool m_circle1 {true};
+	bool m_circle2 {true};
+	bool m_circle3 {true};
+	bool m_margin {true};
+
+	double m_margn = 0.045;
 };
 
 

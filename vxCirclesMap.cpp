@@ -6,48 +6,51 @@ vxCirclesMap::vxCirclesMap()
 {
 }
 
-vxColor vxCirclesMap::getColor(const vxCollision &collision) const
+vxColor vxCirclesMap::compute(const vxCollision &collision) const
 {
 	vxColor col;
+
 	auto distanceToCenter = 
 			vxVector2d(collision.u()-.5,collision.v()-.5).length();
 
-	if(distanceToCenter<.015)
+	col.set(vxColor::white);
+
+	if(m_circle1)
 	{
-		col.set(vxColor::black);
-	}
-	else if(distanceToCenter<.3)
-	{
-		col.set(collision.color().r(), 
-			collision.color().g(), 
-			collision.color().b());
-	}
-	else if(distanceToCenter<.31)
-	{
-		col.set(vxColor::black);
-	}
-	else if(distanceToCenter<.4)
-	{
-		col.set(vxColor::white);
-	}
-	else if(distanceToCenter<.41)
-	{
-		col.set(vxColor::black);
-	}	
-	else
-	{
-		constexpr const double margn = 0.01;
-		if ( (collision.u()<margn || collision.u()>(1.-margn)) 
-			 || (collision.v()<margn || collision.v()>(1.-margn)))
+		if(distanceToCenter<m_radius[1] && distanceToCenter>m_radius[0])
 		{
-			col.set(vxColor::black);
-		}
-		else
-		{
-			col.set(vxColor::white);
+			col.set(collision.color().r(), 
+					collision.color().g(), 
+					collision.color().b());
 		}
 	}
 
+	if(m_circle2)
+	{
+		if(distanceToCenter<m_radius[2] && distanceToCenter>m_radius[1])
+		{
+			col.set(vxColor::black);
+		}
+	}
+	
+	if(m_circle3)
+	{
+		if(distanceToCenter<m_radius[4] && distanceToCenter>m_radius[3])
+		{
+			col.set(vxColor::black);
+		}
+	}
+	
+	if(m_margin)
+	{
+		if (distanceToCenter>m_radius[4]
+			&& ((collision.u()<m_margn || collision.u()>(1.-m_margn)) 
+				|| (collision.v()<m_margn || collision.v()>(1.-m_margn))))
+		{
+			col.set(vxColor::black);
+		}
+	}
+	
 	return col;
 }
 
