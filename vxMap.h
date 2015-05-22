@@ -13,7 +13,7 @@ class vxMap : public vxObject
 	public:
 		vxMap();
 	
-	virtual vxColor getColor(const vxCollision &collision) const = 0;
+	virtual vxColor compute(const vxCollision &collision) const = 0;
 };
 
 }
