@@ -70,6 +70,10 @@ int main(int argc, char *argv[])
 
 		img.save(QString(fileName.c_str()),"BMP");
 		
+		std::cout << "File saved : " 
+			  << fileName 
+			  << std::endl
+		
 		std::cout << "Finished image generation : " 
 				<< TimeUtils::decorateTime(start) << std::endl;
 	}
