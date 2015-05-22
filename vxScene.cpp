@@ -4,7 +4,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 14
+#define RESL 10
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -41,15 +41,15 @@ void vxScene::build()
 //	l2->setIntensity(0.5);
 
 	auto l3 = createIBLight();
-	l3->setSamples(40);
-	l3->setRadius(2.6);
+	l3->setSamples(15);
+	l3->setRadius(26);
 	l3->setIntensity(4.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 2);
+	createCamera(vxMatrix(), 1);
 	createGrid();
 }
 
@@ -57,14 +57,14 @@ void vxScene::build()
 
 std::shared_ptr<vxCamera> 
 vxScene::createCamera(const vxMatrix &transform, 
-					  unsigned int samples,
-					  double hAperture,
-					  double vAperture)
+						unsigned int samples,
+						double hAperture,
+						double vAperture)
 {
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set(	vxVector3d(0,0,0),
 					vxVector3d(0,0,1),
-					2.0);
+					1.8);
 	m_camera->setPixelSamples(samples);
 	return m_camera;
 }
@@ -186,6 +186,7 @@ bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 	
 	if(collide.isValid())
 	{
+		
 		vxColor col(defaultShader()->getColor(collide));
 		
 		collide.setColor( col );
