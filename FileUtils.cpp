@@ -43,14 +43,15 @@ bool FileUtils::fileExists(const std::string &filePath)
 
 std::string FileUtils::makeUnique(const std::string &fileName)
 {
-	std::stringstream ss;
 	std::string unique = fileName;
-	
-	fileDesc desc = FileUtils::splitFileName(fileName);
-	
+	fileDesc desc;
+	desc.name.clear();
+	desc.ext.clear();
+	desc = FileUtils::splitFileName(fileName);
 	while(fileExists(unique))
 	{
 		desc.number++;
+		std::stringstream ss;
 		ss << desc.name << ".";
 		ss << std::setfill('0') << std::setw(7) << desc.number;
 		ss << "." << desc.ext;
