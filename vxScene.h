@@ -1,6 +1,7 @@
 #ifndef _VXSCENEMC_
 #define _VXSCENEMC_
 
+#include<math.h>
 #include<memory>
 #include<vector>
 
@@ -11,6 +12,7 @@
 #include "vxCamera.h"
 #include "ImageProperties.h"
 #include "vxShader.h"
+#include "vxPLYImporter.h"
 
 namespace vxCore {
 
@@ -42,7 +44,7 @@ protected:
 
 public:
 
-	vxScene(std::shared_ptr<ImageProperties> prop);
+	vxScene(std::shared_ptr<ImageProperties> imageProperties);
 	
 	~vxScene();
 
@@ -54,12 +56,15 @@ public:
 					double hAperture = 0.0,
 					double vAperture = 0.0);
 
+	
 	std::shared_ptr<vxGrid> createGrid();
+	std::shared_ptr<vxCore::ImageProperties> imageProperties() const;
 	
-	std::shared_ptr<vxCore::ImageProperties> prop() const;
-	
-	void setProp(const std::shared_ptr<vxCore::ImageProperties> &prop);
+	void setImageProperties(const std::shared_ptr<vxCore::ImageProperties> &imageProperties);
 
+	// Loads from a file using an importer object.
+	bool loadFromFile(std::shared_ptr<vxImporter> importer);
+	
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
 	bool throwRay(const vxRayXYZ &ray, vxCollision &collide);

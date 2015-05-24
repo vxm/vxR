@@ -113,7 +113,8 @@ void vxCamera::next()
 vxRayXYZ vxCamera::nextRay()
 {
 	vxRayXYZ ret = givemeRay( getXCoord(), getYCoord() );
-	ret.rotateX(.391);
+	//todo:remove hardcoded value.
+	ret.rotateX(.321);
 	m_sampler.next();
 	return ret;
 }

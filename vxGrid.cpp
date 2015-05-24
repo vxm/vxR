@@ -171,6 +171,17 @@ void vxGrid::createRandom(double ratio)
 	}
 }
 
+void vxGrid::addVertices(const std::vector<vxVector3d> &verts,
+						 const vxVector3d &offset,
+						 const vxVector3d &scale)
+{
+	for(const auto& v : verts)
+	{
+		const auto& v1 = (v*scale)+offset;
+		setElement(indexAtPosition(v1), true);
+	}
+}
+
 void vxGrid::initialize(bool value)
 {
 	for(unsigned int i=0;i<m_data.size();i++)
@@ -226,6 +237,11 @@ void vxGrid::setElement(int x, int y, int z, bool value)
 	m_data[x+(y*m_resolution)+(z*m_resXres)]=value;
 }
 
+void vxGrid::setElement(int idx, bool value)
+{
+	m_data[idx] = value;
+}
+
 vxVector3d vxGrid::getVoxelPosition(unsigned int idx) const
 {
 	int retz = idx / m_resXres;
@@ -235,7 +251,7 @@ vxVector3d vxGrid::getVoxelPosition(unsigned int idx) const
 	return getVoxelPosition(retx, rety, retz);
 }
 
-unsigned int vxGrid::indexAtPosition(const vxVector3d &position) const
+inline unsigned int vxGrid::indexAtPosition(const vxVector3d &position) const
 {
 	vxVector3d pos = position - (m_position-m_midSize); 
 	unsigned int idx = floor(pos.x());
@@ -244,7 +260,7 @@ unsigned int vxGrid::indexAtPosition(const vxVector3d &position) const
 	return idx;
 }
 
-vxVector3d vxGrid::getVoxelPosition(int x, int y, int z) const
+inline vxVector3d vxGrid::getVoxelPosition(int x, int y, int z) const
 {
 	double retx = (m_position.x() - m_midSize) + (x * m_boxSize) + m_resDivTres;
 	double rety = (m_position.y() - m_midSize) + (y * m_boxSize) + m_resDivTres;

@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	// Img properties for render.
 	auto imgDesc =
 			std::make_shared<ImageProperties>
-			(RenderPresset::quality(RenderPresset::imageQuality::kScreen));
+			(RenderPresset::quality(RenderPresset::imageQuality::k4k));
 	
 	// create the render process
 	render rp(imgDesc);
@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
 		img.save(QString(fileName.c_str()),"BMP");
 		
 		std::cout << "File saved : " 
-			  << fileName 
-			  << std::endl
+					<< fileName 
+					<< std::endl;
 		
 		std::cout << "Finished image generation : " 
 				<< TimeUtils::decorateTime(start) << std::endl;

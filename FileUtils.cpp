@@ -50,8 +50,8 @@ std::string FileUtils::makeUnique(const std::string &fileName)
 	desc = FileUtils::splitFileName(fileName);
 	while(fileExists(unique))
 	{
-		desc.number++;
 		std::stringstream ss;
+		desc.number++;
 		ss << desc.name << ".";
 		ss << std::setfill('0') << std::setw(7) << desc.number;
 		ss << "." << desc.ext;

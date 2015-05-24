@@ -49,7 +49,9 @@ SOURCES += main.cpp\
     vxMap2d.cpp \
     vxCirclesMap.cpp \
     vxramp.cpp \
-    renderPresset.cpp
+    renderPresset.cpp \
+    vximporter.cpp \
+    vxPLYImporter.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -88,7 +90,9 @@ HEADERS  += \
     vxMap2d.h \
     vxCirclesMap.h \
     vxramp.h \
-    renderPresset.h
+    renderPresset.h \
+    vximporter.h \
+    vxPLYImporter.h
 
 FORMS    += vxrendermain.ui
 

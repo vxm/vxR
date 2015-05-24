@@ -97,6 +97,10 @@ public:
 
 	void createRandom(double ratio = 1.0);
 
+	void addVertices(const std::vector<vxVector3d> &verts, 
+					 const vxVector3d &offset, 
+					 const vxVector3d &scale);
+	
 	//sets every single vxl to 0.
 	void initialize(bool value = false);
 	
@@ -125,6 +129,8 @@ public:
 	// coords x y z to be same as parameter value
 	inline void setElement(int x, int y, int z, bool value);
 
+	inline void setElement(int idx, bool value);
+	
 	vxVector3d getVoxelPosition(int x, int y, int z) const;
 
 	vxVector3d getVoxelPosition(unsigned int idx) const;

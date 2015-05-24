@@ -4,7 +4,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 10
+#define RESL 100
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -41,22 +41,27 @@ void vxScene::build()
 //	l2->setIntensity(0.5);
 
 	auto l3 = createIBLight();
-	l3->setSamples(15);
-	l3->setRadius(26);
-	l3->setIntensity(4.2);
+	l3->setSamples(85);
+	l3->setRadius(16);
+	l3->setIntensity(4.9);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 1);
+	createCamera(vxMatrix(), 4);
 	createGrid();
+	
+	auto plyReader = std::make_shared<vxPLYImporter>();
+	plyReader->processFile("bun_zipper.ply");
+	
+	loadFromFile(plyReader);
 }
 
 
 
 std::shared_ptr<vxCamera> 
-vxScene::createCamera(const vxMatrix &transform, 
+vxScene::createCamera(const vxMatrix &transform,
 						unsigned int samples,
 						double hAperture,
 						double vAperture)
@@ -64,7 +69,7 @@ vxScene::createCamera(const vxMatrix &transform,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set(	vxVector3d(0,0,0),
 					vxVector3d(0,0,1),
-					1.8);
+					2.3);
 	m_camera->setPixelSamples(samples);
 	return m_camera;
 }
@@ -123,7 +128,8 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 	m_grids[0]->setResolution(resl);
 	
-	auto iRadius = 6.0;
+	/*
+	auto iRadius = 4.0;
 	auto distSph = (resl/3.0);
 	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
@@ -137,7 +143,6 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 
 	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/iRadius)); // Position, radius
 	m_grids[0]->createEdges(); // of the grid
-	/*
 	*/
 	//m_grids[0]->createRandom(0.0007);
 	//#ifdef _DEBUG
@@ -170,14 +175,23 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	return m_grids[0];
 }
 
-std::shared_ptr<ImageProperties> vxScene::prop() const
+std::shared_ptr<ImageProperties> vxScene::imageProperties() const
 {
 	return m_prop;
 }
 
-void vxScene::setProp(const std::shared_ptr<ImageProperties> &prop)
+void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 {
 	m_prop = prop;
+}
+
+bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
+{
+	const double resl = RESL;
+	const auto& vts = importer->getPointCloud();
+	m_grids[0]->addVertices(vts, 
+							vxVector3d(PX+10,PY-70,PZ), 
+							vxVector3d(resl*-6, resl*6, resl*-6));
 }
 
 bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
@@ -190,13 +204,13 @@ bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 		vxColor col(defaultShader()->getColor(collide));
 		
 		collide.setColor( col );
-		return 1;
+		return true;
 	}
 	
 	//TODO:take this to a dommo object or something like..
 	auto p = MathUtils::rectAndYPlane(ray, -RESL/2.0);
 	
-	if(!signbit(p.z()))
+	if(!std::signbit(p.z()))
 	{
 		collide.setNormal(vxVector3d::constY);
 		collide.setPosition(p);
@@ -205,12 +219,14 @@ bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 		
 		vxColor col(defaultShader()->getColor(collide));
 		collide.setColor( col );
-		return 1;
+		collide.setValid();
+		return true;
 	}
 	else
 	{
+		collide.setValid();	
 		collide.setColor( vxColor::white );
-		return 1;
+		return true;
 	}
 	
 	// 
