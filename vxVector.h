@@ -82,7 +82,7 @@ public:
 	double angle() const;
 };
 
-class vxVector3d:public vxVector
+class vxVector3d
 {
 
 protected:
