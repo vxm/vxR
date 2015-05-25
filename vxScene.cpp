@@ -4,7 +4,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 100
+#define RESL 75
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -41,19 +41,19 @@ void vxScene::build()
 //	l2->setIntensity(0.5);
 
 	auto l3 = createIBLight();
-	l3->setSamples(85);
-	l3->setRadius(16);
+	l3->setSamples(15);
+	l3->setRadius(186);
 	l3->setIntensity(4.9);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 4);
+	createCamera(vxMatrix(), 1);
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processFile("bun_zipper.ply");
+	plyReader->processFile("/home/john/Downloads/happy_recon/happy_vrip.ply");
 	
 	loadFromFile(plyReader);
 }
@@ -190,8 +190,8 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	const double resl = RESL;
 	const auto& vts = importer->getPointCloud();
 	m_grids[0]->addVertices(vts, 
-							vxVector3d(PX+10,PY-70,PZ), 
-							vxVector3d(resl*-6, resl*6, resl*-6));
+							vxVector3d(PX,PY+70,PZ), 
+							vxVector3d(resl*-5, resl*5, resl*-5));
 }
 
 bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
