@@ -55,15 +55,11 @@ public:
 								 (char **)NULL, 
 								 10);
 
-		//TODO: variable parameters
-		std::getline(iFile, line);
-		std::getline(iFile, line);
-		std::getline(iFile, line);
-		std::getline(iFile, line);
-		std::getline(iFile, line);
-		std::getline(iFile, line);
-		std::getline(iFile, line);
-		std::getline(iFile, line);
+		do
+		{
+			std::getline(iFile, line);
+		}
+		while(line!="end_header");
 		
 		double x, y, z;
 		while(std::getline(iFile, line) && k<numVertex)
