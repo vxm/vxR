@@ -9,7 +9,7 @@
 namespace vxCore {
 
 
-class vxSampler:public vxObject
+class vxSampler
 {
 	std::vector<double> m_x = {0.5};
 	std::vector<double> m_y = {0.5};

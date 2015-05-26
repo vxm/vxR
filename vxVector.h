@@ -10,7 +10,7 @@
 namespace vxCore {
 
 //TODO: do I need this base class?
-class vxVector:public vxObject
+class vxVector
 {
 private:
 
@@ -102,7 +102,7 @@ public:
 	
 	enum class axis{kX, kY, kZ};
 
-	vxVector3d ();;
+	vxVector3d ();
 	
 	vxVector3d (double x, double y, double z);
 

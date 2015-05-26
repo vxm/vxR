@@ -35,7 +35,7 @@ class vxOrthIter
 		
 };
 
-class vxGrid:public vxObject
+class vxGrid
 {
 protected:
 

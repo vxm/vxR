@@ -3,18 +3,6 @@
 
 namespace vxCore {
 
-class vxObject
-{
-private:
-
-
-protected:
-
-
-public:
-
-
-};
 
 }
 #endif

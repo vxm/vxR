@@ -55,7 +55,7 @@ public:
 };
 
 
-class vxBucketList : public vxObject
+class vxBucketList
 {
 private:
 	unsigned int m_nBucketsInX = {20u};

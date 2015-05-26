@@ -12,7 +12,7 @@ namespace vxCore {
  CIE, Y to measure brightness, x, hue and y saturation.
  */
 
-class vxColor:public vxObject
+class vxColor
 {
 protected:
 /*tristimulus values*/

@@ -4,6 +4,7 @@
 #include<math.h>
 #include<memory>
 #include<vector>
+#include<future>
 
 #include "vxObject.h"
 #include "vxMatrix.h"
@@ -35,7 +36,7 @@ protected:
 	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
 	std::vector<std::shared_ptr<vxLight>> m_lights;
 
-	vxShader *m_shader = {nullptr};
+	std::shared_ptr<vxShader> m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
 
 	std::vector<std::shared_ptr<vxGrid>> m_grids;
@@ -67,14 +68,18 @@ public:
 	
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	bool throwRay(const vxRayXYZ &ray, vxCollision &collide);
+	static bool throwRay(const vxScene * const sc,
+						 const vxRayXYZ &ray, 
+						 vxCollision &collide, 
+						 std::promise<bool> &&p);
+
 	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);
 	
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
 	
-	vxShader const * defaultShader();
-	void setShader(vxShader* defaultShader);
+	std::shared_ptr<vxShader> defaultShader() const;
+	void setShader(std::shared_ptr<vxShader> defaultShader);
 	
 	std::shared_ptr<vxCamera> defaultCamera() const;
 	void setCamera(const std::shared_ptr<vxCamera> &defaultCamera);
@@ -82,6 +87,8 @@ public:
 	std::shared_ptr<vxPointLight> createPointLight();
 	std::shared_ptr<vxDirectLight> createDirectLight();
 	std::shared_ptr<vxIBLight> createIBLight();
+	
+	
 
 };
 

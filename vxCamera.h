@@ -17,7 +17,7 @@
 namespace vxCore {
 
 
-class vxCamera:public vxObject
+class vxCamera
 {
 
 private:

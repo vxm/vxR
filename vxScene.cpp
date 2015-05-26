@@ -1,4 +1,7 @@
 #include<memory>
+#include<thread>
+#include<future>
+
 #include "vxScene.h"
 
 namespace vxCore{
@@ -21,7 +24,9 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	m_shader = new vxLambert;
+	m_shader = std::make_shared<vxLambert>();
+	m_shader->setLights(&m_lights);
+	m_shader->setScene(shared_from_this());
 
 	//TODO: remove this debug code
 	const double resl = RESL;
@@ -74,7 +79,7 @@ vxScene::createCamera(const vxMatrix &transform,
 	return m_camera;
 }
 
-void vxScene::setShader(vxShader *shader)
+void vxScene::setShader(std::shared_ptr<vxShader> shader)
 {
 	m_shader = shader;
 }
@@ -194,16 +199,19 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 							vxVector3d(resl*-5, resl*5, resl*-5));
 }
 
-bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
+bool vxScene::throwRay(const vxScene * const sc, 
+					   const vxRayXYZ &ray, 
+					   vxCollision &collide,
+					   std::promise<bool>&& pr)
 { 
-	m_grids[0]->throwRay(ray,collide);
+	sc->m_grids[0]->throwRay(ray,collide);
 	
 	if(collide.isValid())
 	{
-		
-		vxColor col(defaultShader()->getColor(collide));
+		vxColor col(sc->defaultShader()->getColor(collide));
 		
 		collide.setColor( col );
+		pr.set_value(true);
 		return true;
 	}
 	
@@ -217,20 +225,23 @@ bool vxScene::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 		collide.setU(fmod(p.x(),1.0));
 		collide.setV(fmod(p.z(),1.0));
 		
-		vxColor col(defaultShader()->getColor(collide));
+		vxColor col(sc->defaultShader()->getColor(collide));
 		collide.setColor( col );
 		collide.setValid();
+		pr.set_value(true);
 		return true;
 	}
 	else
 	{
 		collide.setValid();	
 		collide.setColor( vxColor::white );
+		pr.set_value(true);
 		return true;
 	}
 	
 	// 
-	return 0;
+	pr.set_value(false);
+	return false;
 }
 
 bool vxScene::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
@@ -238,19 +249,9 @@ bool vxScene::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
 	return m_grids[0]->hasCollision(origin, ray);
 }
 
-vxShader const * vxScene::defaultShader()
+std::shared_ptr<vxShader> vxScene::defaultShader() const
 {
-	static std::unique_ptr<vxShader> sLambert;
-	if(sLambert!=nullptr)
-	{
-		return sLambert.get();
-	}
-	
-	sLambert = std::make_unique<vxLambert>();
-	sLambert->setLights(&m_lights);
-	sLambert->setScene(shared_from_this());
-
-	return sLambert.get();
+	return m_shader;
 }
 
 }

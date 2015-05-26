@@ -32,6 +32,8 @@ private:
 	std::shared_ptr<const ImageProperties> m_imageProperties;
 	std::shared_ptr<vxScene> m_scene;
 
+	unsigned int m_nMaxThreads{1000};
+	
 public:
 
 	// constructor with imageproperties propagation
@@ -68,6 +70,8 @@ public:
 	{
 		m_scene = scene;
 	}
+	unsigned int nMaxThreads() const;
+	void setNMaxThreads(unsigned int nMaxThreads);
 };
 
 #endif // VXRENDERPROCESS_H

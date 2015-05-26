@@ -8,7 +8,7 @@
 namespace vxCore {
 
 
-class vxCollision:public vxObject
+class vxCollision
 {
 private:
 

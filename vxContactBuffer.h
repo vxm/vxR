@@ -25,7 +25,7 @@ struct Hit
 };
 
 
-class vxContactBuffer:public vxObject
+class vxContactBuffer
 {
 private:
 

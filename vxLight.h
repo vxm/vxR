@@ -12,7 +12,7 @@ namespace vxCore {
 
 class vxScene;
 
-class vxLight:public vxObject
+class vxLight
 {
 protected:
 

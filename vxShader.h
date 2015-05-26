@@ -18,7 +18,7 @@ namespace vxCore {
 class vxLight;
 class vxScene;
 
-class vxShader:public vxObject
+class vxShader
 {
 protected:
 

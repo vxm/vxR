@@ -8,7 +8,7 @@
 namespace vxCore {
 
 
-class vxMap : public vxObject
+class vxMap
 {
 	public:
 		vxMap();

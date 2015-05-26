@@ -1,5 +1,7 @@
 #include <climits>
 #include <cassert>
+#include <thread>
+#include <future>
 
 #include "vxRenderProcess.h"
 #include "vxCamera.h"
@@ -13,6 +15,16 @@
 
 namespace vxCompute 
 {
+
+unsigned int vxRenderProcess::nMaxThreads() const
+{
+	return m_nMaxThreads;
+}
+
+void vxRenderProcess::setNMaxThreads(unsigned int nMaxThreads)
+{
+	m_nMaxThreads = nMaxThreads;
+}
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
 {
 	if(p!=nullptr)
@@ -42,6 +54,14 @@ vxStatus::code vxRenderProcess::execute()
 	auto cam = scene()->defaultCamera();
 	unsigned int nSamples = cam->getPixelSamples();
 
+	const auto nTh = std::min(std::thread::hardware_concurrency(),
+							  m_nMaxThreads);
+	// Thread switcher
+	auto k=0;
+	// Hardcoding to two threads. 
+	// TODO: remove this hardcoded logic.
+
+	
 	vxColor c;
 	// camera throwing rays.
 	while(!cam->rayIsDone())
@@ -58,17 +78,38 @@ vxStatus::code vxRenderProcess::execute()
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(coord.x(), coord.y());
-		vxCollision collide;
-
+		vxCollision collide1;
+		vxCollision collide2;
 		cam->resetPixel();
 		// on eachpixel.
 		c.reset();
 		for(int i=0;i<nSamples;i++)
 		{
-			if (scene()->throwRay(cam->nextRay(), collide))
+			std::promise<bool> b1;
+			std::future<bool> f1 = b1.get_future();
+			auto th1 = std::thread(&vxScene::throwRay, 
+											scene().get(), 
+											cam->nextRay(), 
+											std::ref(collide1),
+											std::move(b1));
+			std::promise<bool> b2;
+			std::future<bool> f2 = b2.get_future();
+			auto th2 = std::thread(&vxScene::throwRay, 
+											scene().get(), 
+											cam->nextRay(), 
+											std::ref(collide2),
+											std::move(b2));
+
+			if (f1.get())
 			{
-				c = c + collide.color();
+				c = c + collide1.color();
 			}
+			if (f2.get())
+			{
+				c = c + collide2.color();
+			}
+			th1.join();
+			th2.join();
 		}
 		cam->next();
 		bk->append(c/(double)nSamples, coord);
