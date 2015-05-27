@@ -60,7 +60,10 @@ vxStatus::code vxRenderProcess::execute()
 	auto k=0;
 	// Hardcoding to two threads. 
 	// TODO: remove this hardcoded logic.
-
+	vxCollision collide1;
+	vxCollision collide2;
+	std::vector<std::future<bool>> futures(nTh);
+	std::vector<std::thread> threads(nTh);
 	
 	vxColor c;
 	// camera throwing rays.
@@ -78,38 +81,39 @@ vxStatus::code vxRenderProcess::execute()
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(coord.x(), coord.y());
-		vxCollision collide1;
-		vxCollision collide2;
 		cam->resetPixel();
 		// on eachpixel.
 		c.reset();
-		for(int i=0;i<nSamples;i++)
+		for(int i=0;i<nSamples/2;i++)
 		{
-			std::promise<bool> b1;
-			std::future<bool> f1 = b1.get_future();
-			auto th1 = std::thread(&vxScene::throwRay, 
-											scene().get(), 
-											cam->nextRay(), 
-											std::ref(collide1),
-											std::move(b1));
-			std::promise<bool> b2;
-			std::future<bool> f2 = b2.get_future();
-			auto th2 = std::thread(&vxScene::throwRay, 
-											scene().get(), 
-											cam->nextRay(), 
-											std::ref(collide2),
-											std::move(b2));
+			std::vector<std::promise<bool>> promises(nTh);
 
-			if (f1.get())
+			for(int h=0; h<nTh; h++)
 			{
-				c = c + collide1.color();
+				futures[h] = promises[h].get_future();
 			}
-			if (f2.get())
+
+			for(int h=0; h<nTh; h++)
 			{
-				c = c + collide2.color();
+				threads[h] = std::thread(&vxScene::throwRay,
+												scene().get(), //shared? 
+												cam->nextRay(), 
+												std::ref(collide1),
+												std::move(promises[h]));
 			}
-			th1.join();
-			th2.join();
+
+			for(int h=0; h<nTh; h++)
+			{
+				threads[h].join();
+			}
+
+			for(int h=0; h<nTh; h++)
+			{
+				if (futures[h].get())
+				{
+					c = c + collide1.color();
+				}
+			}
 		}
 		cam->next();
 		bk->append(c/(double)nSamples, coord);

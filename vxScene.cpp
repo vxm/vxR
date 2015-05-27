@@ -54,7 +54,7 @@ void vxScene::build()
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 1);
+	createCamera(vxMatrix(), 4);
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
