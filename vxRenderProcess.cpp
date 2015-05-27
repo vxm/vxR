@@ -84,17 +84,13 @@ vxStatus::code vxRenderProcess::execute()
 		cam->resetPixel();
 		// on eachpixel.
 		c.reset();
-		for(int i=0;i<nSamples/2;i++)
+		for(int i=0;i<nSamples/nTh;i++)
 		{
 			std::vector<std::promise<bool>> promises(nTh);
 
 			for(int h=0; h<nTh; h++)
 			{
 				futures[h] = promises[h].get_future();
-			}
-
-			for(int h=0; h<nTh; h++)
-			{
 				threads[h] = std::thread(&vxScene::throwRay,
 												scene().get(), //shared? 
 												cam->nextRay(), 
