@@ -30,7 +30,7 @@ public:
 
 	using lightsRef = std::shared_ptr<std::vector<vxLight>>;
 	virtual vxColor getColor(const vxCollision &collide) const = 0;
-	virtual double getLightLoop(const vxCollision &collision) const;
+	virtual vxColor getLightLoop(const vxCollision &collision) const;
 	void setScene(std::weak_ptr<vxScene> scene);
 	std::shared_ptr<vxLight> light() const;
 	void setLights(std::vector<std::shared_ptr<vxLight>> *lights);

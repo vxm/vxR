@@ -52,7 +52,7 @@ protected:
 
 	// cache objects
 	double m_boxSize			= {1.0};
-	double m_midBoxSize	= {.5};	
+	double m_midBoxSize			= {.5};	
 	unsigned int m_resXres		= {25};
 	unsigned int m_resXresXres	= {125};
 	double m_xmin		= {0.0};

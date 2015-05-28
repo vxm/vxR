@@ -19,7 +19,7 @@ protected:
 		//not every light needs position
 	vxVector3d m_position	{0.0,0.0,0.0};;
 	double m_intensity		{1.0};
-	vxColor m_color			{1.0,1.0,1.0};
+	vxColor m_color			{vxColor::white};
 	double m_radius			{0.0};
 	int m_samples			{1};
 	std::weak_ptr<vxScene>	m_scene;
@@ -35,9 +35,9 @@ public:
 	void setPosition(const vxVector3d &position);
 	void setPosition(double x, double y, double z);
 
-	void set(double intensity, vxVector3d color);
+	void set(double intensity, const vxVector3d &color);
 	void setIntensity(double intensity);
-	void setColor(vxColor color);
+	void setColor(const vxColor &color);
 
 	vxVector3d position() const {return m_position;}
 	double intensity() const {return m_intensity;}
@@ -48,7 +48,7 @@ public:
 					const vxVector3d &direction, 
 					const vxVector3d &destiny) const;
 
-	virtual double acumLight(const vxCollision &collision) const;
+	virtual vxColor acumLight(const vxCollision &collision) const;
 	
 	double radius() const;
 	void setRadius(double radius);
@@ -123,7 +123,7 @@ public:
 	// vxLight interface
 	public:
 	vxVector3d getLightRay(const vxVector3d &position) const override;
-	double acumLight(const vxCollision &collision) const;
+	vxColor acumLight(const vxCollision &collision) const override;
 };
 
  

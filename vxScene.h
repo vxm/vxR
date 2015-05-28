@@ -71,7 +71,7 @@ public:
 	static bool throwRay(const vxScene * const sc,
 						 const vxRayXYZ &ray, 
 						 vxCollision &collide, 
-						 std::promise<bool> &&p);
+						 std::promise<int>&& p);
 
 	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);
 	

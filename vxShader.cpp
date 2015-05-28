@@ -13,22 +13,25 @@ vxCore::vxShader::vxShader()
 
 vxColor vxLambert::getColor(const vxCollision &collide) const
 {
-	double lumm = getLightLoop(collide);
+	auto lumm = getLightLoop(collide);
 	
 	return MathUtils::remap(m_diffuse.compute(collide), 0.1, 0.65) * lumm;
 }
 
 
-double vxCore::vxShader::getLightLoop(const vxCollision &collision) const
+vxColor vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 {
 	//assert(m_lights);
-	double acumLumm{0.0};
-	for(auto light = std::begin(*m_lights); light!=std::end(*m_lights);++light)
+	vxColor acumColor;
+
+	for(auto light = std::begin(*m_lights);
+		light!=std::end(*m_lights);
+		++light)
 	{
-		acumLumm+= light->get()->acumLight(collision);
+		acumColor.add( light->get()->acumLight(collision) );
 	}
 	
-	return acumLumm;
+	return acumColor;
 }
 
 void vxCore::vxShader::setScene(std::weak_ptr<vxScene> scene)

@@ -56,13 +56,9 @@ vxStatus::code vxRenderProcess::execute()
 
 	const auto nTh = std::min(std::thread::hardware_concurrency(),
 							  m_nMaxThreads);
-	// Thread switcher
-	auto k=0;
-	// Hardcoding to two threads. 
-	// TODO: remove this hardcoded logic.
-	vxCollision collide1;
-	vxCollision collide2;
-	std::vector<std::future<bool>> futures(nTh);
+
+	std::vector<vxCollision> collisions(nTh);
+	std::vector<std::future<int>> futures(nTh);
 	std::vector<std::thread> threads(nTh);
 	
 	vxColor c;
@@ -86,7 +82,7 @@ vxStatus::code vxRenderProcess::execute()
 		c.reset();
 		for(int i=0;i<nSamples/nTh;i++)
 		{
-			std::vector<std::promise<bool>> promises(nTh);
+			std::vector<std::promise<int>> promises(nTh);
 
 			for(int h=0; h<nTh; h++)
 			{
@@ -94,7 +90,7 @@ vxStatus::code vxRenderProcess::execute()
 				threads[h] = std::thread(&vxScene::throwRay,
 												scene().get(), //shared? 
 												cam->nextRay(), 
-												std::ref(collide1),
+												std::ref(collisions[h]),
 												std::move(promises[h]));
 			}
 
@@ -107,7 +103,7 @@ vxStatus::code vxRenderProcess::execute()
 			{
 				if (futures[h].get())
 				{
-					c = c + collide1.color();
+					c = c + collisions[h].color();
 				}
 			}
 		}
@@ -177,7 +173,7 @@ vxRenderProcess::generateImage()
 			unsigned int compY = (h.m_xyCoef.x() * (prop->ry()-1));
 			dist = (compX + (compY * prop->rx())) * prop->numChannels();
 			assert(dist<m_imageProperties->numElements());
-			h.m_px.setToGamma();
+			h.m_px.setToGamma(1.8);
 			h.m_px.toRGBA8888(buff + dist);
 		}
 	}

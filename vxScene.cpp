@@ -7,7 +7,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 75
+#define RESL 55
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -34,27 +34,28 @@ void vxScene::build()
 	//
 
 //	auto l1 = createPointLight();
-//	l1->setSamples(12);
-//	l1->setRadius(22.0);
-//	l1->setPosition(0, PY+220, PZ);
-//	l1->setIntensity(0.5);
+//	l1->setSamples(22);
+//	l1->setRadius(3.0);
+//	l1->setPosition(-3, PY+20, PZ);
+//	l1->setIntensity(0.8);
 
 //	auto l2 = createPointLight();
-//	l2->setSamples(12);
-//	l2->setRadius(21);
-//	l2->setPosition(PX+resl, PY+resl, PZ-5);
-//	l2->setIntensity(0.5);
+//	l2->setSamples(42);
+//	l2->setRadius(12);
+//	l2->setPosition(PX+resl, PY+resl, -3);
+//	l2->setIntensity(0.9);
 
 	auto l3 = createIBLight();
+	l3->setColor(vxColor::white);
 	l3->setSamples(15);
-	l3->setRadius(186);
-	l3->setIntensity(4.9);
+	l3->setRadius(3186);
+	l3->setIntensity(5.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 4);
+	createCamera(vxMatrix(), 2);
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
@@ -62,8 +63,6 @@ void vxScene::build()
 	
 	loadFromFile(plyReader);
 }
-
-
 
 std::shared_ptr<vxCamera> 
 vxScene::createCamera(const vxMatrix &transform,
@@ -195,14 +194,14 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	const double resl = RESL;
 	const auto& vts = importer->getPointCloud();
 	m_grids[0]->addVertices(vts, 
-							vxVector3d(PX,PY+70,PZ), 
+							vxVector3d(PX,PY+33,PZ), 
 							vxVector3d(resl*-5, resl*5, resl*-5));
 }
 
 bool vxScene::throwRay(const vxScene * const sc, 
 					   const vxRayXYZ &ray, 
 					   vxCollision &collide,
-					   std::promise<bool>&& pr)
+					   std::promise<int>&& pr)
 { 
 	sc->m_grids[0]->throwRay(ray,collide);
 	

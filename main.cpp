@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	// Img properties for render.
 	auto imgDesc =
 			std::make_shared<ImageProperties>
-			(300,300);
+			(1700,1700);
 	
 	// create the render process
 	render rp(imgDesc);
