@@ -111,6 +111,12 @@ class MathUtils
 					   clamp(c1.g(), min, max),
 					   clamp(c1.b(), min, max));
 	}
+
+	inline static double lerp(double a, double b, double r)
+	{
+		return (b*r)-(a*(1.0-r));
+	}
+	
 	
 	inline static double remap(double v, double max)
 	{
