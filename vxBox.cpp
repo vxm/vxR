@@ -159,8 +159,7 @@ bool vxBox::inSight(const vxRayXYZ &ray)
 	return (inSightXY(ray) && inSightYZ(ray) && inSightZX(ray));
 }
 
-
-void vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide)
+int vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 {
 	collide.initialize();
 
@@ -168,13 +167,11 @@ void vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 	if (throwSpace(ray, collide))
 	{
 		collide.setValid(true);
-	}
-	else// background
-	{
-		collide.setColor(1.0,0,0);
-		collide.setValid(false);
+		return 1;
 	}
 
+	collide.setValid(false);
+	return 0;
 }
 
 

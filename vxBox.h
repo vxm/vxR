@@ -51,7 +51,7 @@ public:
 	bool inSightYZ(const vxRayXYZ &ray);
 	bool inSightZX(const vxRayXYZ &ray);
 
-	vxCollision throwRay(const vxRayXYZ &ray);
+	virtual int throwRay(const vxRayXYZ &ray, vxCollision &collision);
 	virtual void throwXY(const vxRayXYZ &ray, vxCollision &collision) = 0;
 	virtual void throwYZ(const vxRayXYZ &ray, vxCollision &collision) = 0;
 	virtual void throwZX(const vxRayXYZ &ray, vxCollision &collision) = 0;
@@ -145,8 +145,8 @@ public:
 		m_position.set(x,y,z);
 	}
 
-	virtual void throwRay(const vxRayXYZ &ray, vxCollision &reted);
-
+	virtual int throwRay(const vxRayXYZ &ray, vxCollision &collision);
+	
 	// funcion de acceso, mas adelante cuestionar si seria, o no, mejor 
 	// calcular la matriz siempre al principio, en un actualize.
 	inline double getPoint0() {	return m_bs[0] ? m_ps[0] : m_bs[0]=true, m_ps[0]=m_position.x()-(m_apot); }
@@ -225,7 +225,7 @@ public:
 			{
 				double t=getPoint0()/ray.x();
 
-				collide.setColor(0, 1.0, 0);
+				collide.setColor(vxColor::lookup(0, 1.0, 0));
 				collide.setNormal(m_normals[2]);
 				collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
@@ -238,7 +238,7 @@ public:
 			{
 				double t=getPoint1()/ray.y();
 
-				collide.setColor(1.0, 0, 0);
+				collide.setColor(vxColor::lookup(1.0, 0, 0));
 				collide.setNormal(m_normals[3]);
 				collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
@@ -250,7 +250,7 @@ public:
 			{
 				double t=getPoint2()/ray.z();
 
-				collide.setColor(0, 0, 1.0);
+				collide.setColor(vxColor::lookup(0, 0, 1.0));
 				collide.setNormal(m_normals[4]);
 				collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
@@ -319,7 +319,7 @@ public:
 					{
 						double t=getPoint0()/ray.x();
 
-						collide.setColor(0, 1.0, 0);
+						collide.setColor(vxColor::lookup(0, 1.0, 0));
 						collide.setNormal(m_normals[2]);
 						collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
@@ -332,7 +332,7 @@ public:
 					{
 						double t=getPoint4()/ray.y();
 
-						collide.setColor(1.0, 0, 0);
+						collide.setColor(vxColor::lookup(1.0, 0, 0));
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint4(),ray.z()*t);
 
@@ -347,7 +347,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 1.0);
+						collide.setColor(vxColor::lookup(0, 0, 1.0));
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
@@ -420,7 +420,7 @@ public:
 					{
 						double t=getPoint3()/ray.x();
 
-						collide.setColor(1.0, 1.0, 0);
+						collide.setColor(vxColor::lookup(1.0, 1.0, 0));
 						collide.setNormal(m_normals[0]);
 						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 						
@@ -433,7 +433,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(1.0, 0, 1.0);
+						collide.setColor(vxColor::lookup(1.0, 0, 1.0));
 						collide.setNormal(m_normals[3]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 												
@@ -446,7 +446,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 1.0);
+						collide.setColor(vxColor::lookup(0, 0, 1.0));
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
@@ -515,7 +515,7 @@ public:
 					{
 						double t=getPoint3()/ray.x();
 
-						collide.setColor(1.0, 100, 23);
+						collide.setColor(vxColor::lookup(1.0, 100, 23));
 						collide.setNormal(m_normals[0]);
 						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 
@@ -528,7 +528,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(1.0, 0, 0);
+						collide.setColor(vxColor::lookup(1.0, 0, 0));
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 						
@@ -541,7 +541,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 1.0);
+						collide.setColor(vxColor::lookup(0, 0, 1.0));
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());	
 						
@@ -609,7 +609,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(1.0, 0, 1.0);
+						collide.setColor(vxColor::lookup(1.0, 0, 1.0));
 						collide.setNormal(m_normals[3]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
@@ -622,7 +622,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 1.0);
+						collide.setColor(vxColor::lookup(0, 0, 1.0));
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
@@ -690,7 +690,7 @@ public:
 					{
 						double t=getPoint3()/ray.x();
 
-						collide.setColor(1.0, 1.0, 0);
+						collide.setColor(vxColor::lookup(1.0, 1.0, 0));
 						collide.setNormal(m_normals[0]);
 						collide.setPosition(getPoint3(),ray.y()*t,ray.z()*t);
 
@@ -704,7 +704,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 1.0);
+						collide.setColor(vxColor::lookup(0, 0, 1.0));
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 												
@@ -773,7 +773,7 @@ public:
 					{
 						double t=getPoint0()/ray.x();
 
-						collide.setColor(0, 1.0, 0);
+						collide.setColor(vxColor::lookup(0, 1.0, 0));
 						collide.setNormal(m_normals[2]);
 						collide.setPosition(getPoint0(),ray.y()*t,ray.z()*t);
 
@@ -787,7 +787,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 1.0);
+						collide.setColor(vxColor::lookup(0, 0, 1.0));
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
@@ -855,7 +855,7 @@ public:
 					{
 						double t=getPoint2()/ray.z();
 
-						collide.setColor(0, 0, 1.0);
+						collide.setColor(vxColor::lookup(0, 0, 1.0));
 						collide.setNormal(m_normals[4]);
 						collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
@@ -868,7 +868,7 @@ public:
 					{
 						double t=getPoint1()/ray.y();
 
-						collide.setColor(1.0, 0, 0);
+						collide.setColor(vxColor::lookup(1.0, 0, 0));
 						collide.setNormal(m_normals[1]);
 						collide.setPosition(ray.x()*t,getPoint1(),ray.z()*t);
 
@@ -928,7 +928,7 @@ public:
 		{
 			double t=getPoint2()/ray.z();
 
-			collide.setColor(0, 0, 1.0);
+			collide.setColor(vxColor::lookup(0, 0, 1.0));
 			collide.setNormal(m_normals[4]);
 			collide.setPosition(ray.x()*t,ray.y()*t,getPoint2());
 
