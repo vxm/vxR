@@ -12,6 +12,19 @@ vxColor vxColor::blue	=	{mnc, mnc, mxc};
 vxColor vxColor::white	=	{mxc, mxc, mxc};
 vxColor vxColor::black	=	{mnc, mnc, mnc};
 
+vxColor vxColor::lookup(const vxColor col)
+{
+	return MathUtils::remap(col, mnc, mxc);
+}
+
+vxColor vxColor::lookup(const double r, const double g, const double b)
+{
+	return vxColor( MathUtils::remap(r, mnc, mxc),
+					MathUtils::remap(g, mnc, mxc),
+					MathUtils::remap(b, mnc, mxc));
+}
+
+
 
 vxColor::vxColor(double r, double g, double b, double a) 
 	: m_r(r)
@@ -44,13 +57,82 @@ vxColor &vxColor::operator=(const vxVector3d &otro)
 void vxColor::set(double r, double g, double b, double a)
 {m_r=r;m_g=g;m_b=b;m_a=a;}
 
+void vxColor::set(double r, double g, double b)
+{
+	m_r=r;
+	m_g=g;
+	m_b=b;
+	m_a=1.0;
+}
+
+void vxColor::set(const vxColor &other)
+{
+	m_r = other.m_r;
+	m_g = other.m_g;
+	m_b = other.m_b;
+	m_a = other.m_a;
+}
+
+void vxColor::reset() {
+	m_r=0;
+	m_g=0;
+	m_b=0;
+	m_a=1.0;
+}
+
 vxColor vxColor::get() const 
-{return *this;}
+{
+	return *this;
+}
 
 void vxColor::get(double &ri, double &gi, double &bi, double &ai) const
-{ri=m_r;gi=m_g;bi=m_b;ai=m_a;}
+{
+	ri=m_r;
+	gi=m_g;
+	bi=m_b;
+	ai=m_a;
+}
 
-double vxColor::lumma() const {return sqrt((double)m_r*m_r+m_g*m_g+m_b*m_b);}
+
+vxColor vxColor::gained(double gain) const 
+{
+	return *this*gain;
+}
+
+
+double vxColor::lumma() const 
+{
+	return sqrt((double)m_r*m_r+m_g*m_g+m_b*m_b);
+}
+
+void vxColor::mix(const vxColor &other, double alpha)
+{
+	m_r += MathUtils::lerp(m_r, other.m_r, alpha);
+	m_g += MathUtils::lerp(m_g, other.m_g, alpha);
+	m_b += MathUtils::lerp(m_b, other.m_b, alpha);
+}
+
+void vxColor::mixSumm(const vxColor &other, double alpha)
+{
+	m_r += other.m_r * alpha;
+	m_g += other.m_g * alpha;
+	m_b += other.m_b * alpha;
+}
+
+void vxColor::add(const vxColor &other)
+{
+	m_r += other.m_r;
+	m_g += other.m_g;
+	m_b += other.m_b;
+}
+
+
+void vxColor::blend(const vxColor &other)
+{
+	m_r = (m_r + other.m_r) / 2.0;
+	m_g = (m_g + other.m_g) / 2.0;
+	m_b = (m_b + other.m_b) / 2.0;
+}
 
 void vxColor::setToGamma(double gamma)
 {

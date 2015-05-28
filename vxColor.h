@@ -28,7 +28,9 @@ public:
 	static vxColor blue;
 	static vxColor white;
 	static vxColor black;
-	
+	static vxColor lookup(const vxColor col);
+	static vxColor lookup(const double r, const double g, const double b);
+
 	
 	vxColor ();
 	vxColor (double r, double g, double b);
@@ -36,25 +38,11 @@ public:
 	vxColor (const vxColor& other);
 	vxColor &operator=(const vxVector3d &otro);
 	
-	void set(double r, double g, double b, double a);
+	void set(double r, double g, double b, double a);	
+	void set(double r, double g, double b);
+	void set(const vxColor &other);
 	
-	void set(double r, double g, double b)
-	{m_r=r;m_g=g;m_b=b;m_a=1.0;}
-	
-	void set(const vxColor &other)
-	{
-		m_r = other.m_r;
-		m_g = other.m_g;
-		m_b = other.m_b;
-		m_a = other.m_a;
-	}
-	
-	void reset() {
-		m_r=0;
-		m_g=0;
-		m_b=0;
-		m_a=1.0;
-	}
+	void reset();
 
 	void setR(double r) {m_r=r;}
 	void setG(double g) {m_g=g;}
@@ -71,7 +59,12 @@ public:
 	double a() const {return m_a;}
 
 	double lumma() const;
+	void add(const vxColor &other);
+	void blend(const vxColor &other);
+	void mix(const vxColor &other, double alpha = 0.5);
+	void mixSumm(const vxColor &other, double alpha = 0.5);
 	void setToGamma(double gamma=2.2);
+	vxColor gained(double gain) const;
 	
 	vxColor operator+(const vxColor &other) const;
 	vxColor operator+(double factor) const;
