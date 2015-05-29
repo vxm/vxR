@@ -1,8 +1,7 @@
 #ifndef _VXLIGHTSMC_
 #define _VXLIGHTSMC_
-#include <memory>
 
-#include "vxObject.h"
+#include <memory>
 #include "vxVector.h"
 #include "vxCollision.h"
 #include "MathUtils.h"

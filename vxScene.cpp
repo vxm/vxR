@@ -7,7 +7,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 55
+#define RESL 107
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -33,23 +33,25 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 	//
 
-//	auto l1 = createPointLight();
-//	l1->setSamples(22);
-//	l1->setRadius(3.0);
-//	l1->setPosition(-3, PY+20, PZ);
-//	l1->setIntensity(0.8);
+	auto l1 = createPointLight();
+	l1->setColor(vxColor(.8,.6,.5));
+	l1->setSamples(22);
+	l1->setRadius(3.0);
+	l1->setPosition(-3, PY+20, PZ+resl);
+	l1->setIntensity(0.12);
 
-//	auto l2 = createPointLight();
-//	l2->setSamples(42);
-//	l2->setRadius(12);
-//	l2->setPosition(PX+resl, PY+resl, -3);
-//	l2->setIntensity(0.9);
+	auto l2 = createPointLight();
+	l2->setColor(vxColor(.3,.4,.8));
+	l2->setSamples(42);
+	l2->setRadius(12);
+	l2->setPosition(PX+resl, PY+resl, -3);
+	l2->setIntensity(0.14);
 
 	auto l3 = createIBLight();
-	l3->setColor(vxColor::white);
-	l3->setSamples(15);
+	l3->setColor(vxColor(1,1,1));
+	l3->setSamples(65);
 	l3->setRadius(3186);
-	l3->setIntensity(5.2);
+	l3->setIntensity(4.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
@@ -60,7 +62,13 @@ void vxScene::build()
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
 	plyReader->processFile("/home/john/Downloads/happy_recon/happy_vrip.ply");
-	
+//	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonBk1_0.ply");
+
+//	other files
+//	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonClearSpace1_0.ply");
+//	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonClearSpace2_0.ply");
+//	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonClearSpace3_0.ply");
+
 	loadFromFile(plyReader);
 }
 
@@ -194,7 +202,7 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	const double resl = RESL;
 	const auto& vts = importer->getPointCloud();
 	m_grids[0]->addVertices(vts, 
-							vxVector3d(PX,PY+33,PZ), 
+							vxVector3d(PX,PY,PZ), 
 							vxVector3d(resl*-5, resl*5, resl*-5));
 }
 

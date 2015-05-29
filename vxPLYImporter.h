@@ -16,7 +16,7 @@ public:
 	
 	std::vector<vxVector3d> m_pointCloud;
 
-	void processFile(const std::string &fileName)
+	void processPLYFile(const std::string &fileName)
 	{
 		if (!FileUtils::fileExists(fileName))
 		{

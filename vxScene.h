@@ -19,10 +19,10 @@ namespace vxCore {
 
 class vxShader;
 class vxGrid;
+class vxLight;
 class vxIBLight;
 class vxPointLight;
 class vxDirectLight;
-class vxLight;
 
 class vxScene: public std::enable_shared_from_this<vxScene>
 {
@@ -87,9 +87,6 @@ public:
 	std::shared_ptr<vxPointLight> createPointLight();
 	std::shared_ptr<vxDirectLight> createDirectLight();
 	std::shared_ptr<vxIBLight> createIBLight();
-	
-	
-
 };
 
 }

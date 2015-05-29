@@ -6,7 +6,6 @@
 #include <memory>
 #include <vector>
 
-#include "vxObject.h"
 #include "vxVector.h"
 #include "vxCollision.h"
 #include "vxLight.h"

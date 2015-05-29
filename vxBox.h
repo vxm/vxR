@@ -5,7 +5,6 @@
 
 #include "vxObject.h"
 #include "vxVector.h"
-#include "vxLight.h"
 #include "vxShader.h"
 
 namespace vxCore {
