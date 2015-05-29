@@ -61,7 +61,7 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processFile("/home/john/Downloads/happy_recon/happy_vrip.ply");
+	plyReader->processPLYFile("/home/john/Downloads/happy_recon/happy_vrip.ply");
 //	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonBk1_0.ply");
 
 //	other files
