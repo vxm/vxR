@@ -47,70 +47,56 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 
 vxStatus::code vxRenderProcess::execute()
 {
+	unsigned int by = 1u;
+	unsigned int offset = 0u;
+	
 //#ifdef _DEBUG
 	auto npx = 0u;
 //#endif
 	vxColor color;
-	auto cam = scene()->defaultCamera();
-	unsigned int nSamples = cam->getPixelSamples();
-
-	const auto nTh = std::min(std::thread::hardware_concurrency(),
-							  m_nMaxThreads);
+	auto rCamera = scene()->defaultCamera();
+	unsigned int nSamples = rCamera->getPixelSamples();
+	const double invSamples = 1.0/(double)nSamples;
+	const auto nTh = 1;//std::min(std::thread::hardware_concurrency(),
+						//m_nMaxThreads);
 
 	std::vector<vxCollision> collisions(nTh);
-	std::vector<std::future<int>> futures(nTh);
-	std::vector<std::thread> threads(nTh);
 	
 	vxColor c;
 	// camera throwing rays.
-	while(!cam->rayIsDone())
+	rCamera->next(offset);
+	while(!rCamera->rayIsDone())
 	{
 //#ifdef _DEBUG
 		npx++;
-		if(npx%37333==0 || npx==m_imageProperties->numPixels())
+		if(npx%57333==0 || npx==m_imageProperties->numPixels())
 		{
 			auto pct = 100.0 * npx / m_imageProperties->numPixels();
 			std::cout << pct << "% done. -- ray " << (npx*nSamples) << " of " << (m_imageProperties->numPixels() * nSamples) << std::endl;
 		}
 //#endif
-		auto coord = cam->getCoords();
+
+		auto coords = rCamera->coords();
 
 		//TODO: return this to smart pointer.
-		auto bk = m_bucketList.getBucket(coord.x(), coord.y());
-		cam->resetPixel();
+		auto bk = m_bucketList.getBucket(coords.x(), coords.y());
+		rCamera->resetSampler();
 		// on eachpixel.
 		c.reset();
-		for(int i=0;i<nSamples/nTh;i++)
+		for(int s=0;s<nSamples;s++)
 		{
-			std::vector<std::promise<int>> promises(nTh);
-
-			for(int h=0; h<nTh; h++)
+			if(vxScene::throwRay(scene().get(), //shared? 
+									rCamera->nextSampleRay(), 
+									std::ref(collisions[0])))
 			{
-				futures[h] = promises[h].get_future();
-				threads[h] = std::thread(&vxScene::throwRay,
-												scene().get(), //shared? 
-												cam->nextRay(), 
-												std::ref(collisions[h]),
-												std::move(promises[h]));
-			}
-
-			for(int h=0; h<nTh; h++)
-			{
-				threads[h].join();
-			}
-
-			for(int h=0; h<nTh; h++)
-			{
-				if (futures[h].get())
-				{
-					c = c + collisions[h].color();
-				}
+				c=c+collisions[0].color();
+				bk->append(c*invSamples, coords);
 			}
 		}
-		cam->next();
-		bk->append(c/(double)nSamples, coord);
-	}// end camera loop
-	
+		
+		rCamera->next(by);
+	}
+
 	return vxStatus::code::kSuccess;
 }
 
