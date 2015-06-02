@@ -239,7 +239,10 @@ void vxGrid::setElement(int x, int y, int z, bool value)
 
 void vxGrid::setElement(int idx, bool value)
 {
-	m_data[idx] = value;
+	if(idx<m_data.size())
+	{
+		m_data[idx] = value;
+	}
 }
 
 vxVector3d vxGrid::getVoxelPosition(unsigned int idx) const
