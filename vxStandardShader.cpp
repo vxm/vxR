@@ -6,15 +6,16 @@ vxStandardShader::vxStandardShader()
 
 vxColor vxStandardShader::getColor(const vxCollision &collide) const
 {
-	if(hasDiffuseMap())
-	{
+//	if(hasDiffuseMap())
+//	{
 		
-	}
+//	}
+	return collide.color();
 }
 
 vxColor vxStandardShader::getLightLoop(const vxCollision &col) const
 {
-	return vxColor::black;
+	return col.color();
 }
 
 bool vxStandardShader::hasDiffuseMap() const
