@@ -198,7 +198,7 @@ vxColor vxLight::acumLight(const vxCollision &collision) const
 		if (lumm>0.001 && !scn->hasCollision(cPnt, f))
 		{
 			//acumColor += fabs(lumm/n);
-			acumColor.mixSumm(color(), colorRatio);
+			acumColor.mixSumm(color().gained(lumm), colorRatio);
 		}
 	}
 
