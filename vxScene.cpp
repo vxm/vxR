@@ -1,4 +1,5 @@
 #include<memory>
+
 #include<thread>
 #include<future>
 
@@ -7,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 107
+#define RESL 375
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -24,6 +25,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
+	int nSamples = 2;
+	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
 	m_shader->setScene(shared_from_this());
@@ -34,40 +37,34 @@ void vxScene::build()
 	//
 
 	auto l1 = createPointLight();
-	l1->setColor(vxColor(.8,.6,.5));
-	l1->setSamples(22);
-	l1->setRadius(3.0);
-	l1->setPosition(-3, PY+20, PZ+resl);
-	l1->setIntensity(0.12);
+	l1->setColor(vxColor::lookup(.8,.62,.6));
+	l1->setSamples(18/nSamples);
+	l1->setRadius(resl);
+	l1->setPosition(-4, PY+resl, PZ+resl);
+	l1->setIntensity(0.4);
 
 	auto l2 = createPointLight();
-	l2->setColor(vxColor(.3,.4,.8));
-	l2->setSamples(42);
-	l2->setRadius(12);
-	l2->setPosition(PX+resl, PY+resl, -3);
-	l2->setIntensity(0.14);
+	l2->setColor(vxColor::lookup(.6,.62,.8));
+	l2->setSamples(18/nSamples);
+	l2->setRadius(resl);
+	l2->setPosition(PX+resl, PY+resl, -4);
+	l2->setIntensity(0.3);
 
 	auto l3 = createIBLight();
-	l3->setColor(vxColor(1,1,1));
-	l3->setSamples(65);
+	l3->setColor(vxColor::white);
+	l3->setSamples(32/nSamples);
 	l3->setRadius(3186);
-	l3->setIntensity(4.2);
+	l3->setIntensity(7.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
 	//	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix(), 2);
+	createCamera(vxMatrix(), nSamples);
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/john/Downloads/happy_recon/happy_vrip.ply");
-//	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonBk1_0.ply");
-
-//	other files
-//	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonClearSpace1_0.ply");
-//	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonClearSpace2_0.ply");
-//	plyReader->processPLYFile("/home/john/Downloads/dragon_backdrop/dragonClearSpace3_0.ply");
+	plyReader->processPLYFile("/home/john/Downloads/juan_10.ply");
 
 	loadFromFile(plyReader);
 }
@@ -162,7 +159,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	//m_grids[0]->activate(3,3,1);
 	//m_grids[0]->createCorners();
 	m_grids[0]->createGround();
-	int n = 2;
+	//int n = 2;
 	//m_grids[0]->activate(6,2,6);
 	//m_grids[0]->activate(n+2,0,1);
 	//m_grids[0]->activate(1,0,2);
@@ -202,24 +199,21 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	const double resl = RESL;
 	const auto& vts = importer->getPointCloud();
 	m_grids[0]->addVertices(vts, 
-							vxVector3d(PX,PY,PZ), 
-							vxVector3d(resl*-5, resl*5, resl*-5));
+							vxVector3d(PX,PY-12,PZ), 
+							vxVector3d(resl*1.5, resl*1.5, resl*1.5));
+	return true;
 }
 
-bool vxScene::throwRay(const vxScene * const sc, 
-					   const vxRayXYZ &ray, 
-					   vxCollision &collide,
-					   std::promise<int>&& pr)
+int vxScene::throwRay(const vxScene * const sc, 
+						const vxRayXYZ &ray, 
+						vxCollision &collide)
 { 
-	sc->m_grids[0]->throwRay(ray,collide);
-	
-	if(collide.isValid())
+	if(sc->m_grids[0]->throwRay(ray,collide))
 	{
 		vxColor col(sc->defaultShader()->getColor(collide));
 		
 		collide.setColor( col );
-		pr.set_value(true);
-		return true;
+		return 1;
 	}
 	
 	//TODO:take this to a dommo object or something like..
@@ -235,20 +229,16 @@ bool vxScene::throwRay(const vxScene * const sc,
 		vxColor col(sc->defaultShader()->getColor(collide));
 		collide.setColor( col );
 		collide.setValid();
-		pr.set_value(true);
-		return true;
+		return 1;
 	}
 	else
 	{
 		collide.setValid();	
 		collide.setColor( vxColor::white );
-		pr.set_value(true);
-		return true;
+		return 1;
 	}
 	
-	// 
-	pr.set_value(false);
-	return false;
+	return 0;
 }
 
 bool vxScene::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)

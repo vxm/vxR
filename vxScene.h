@@ -68,10 +68,9 @@ public:
 	
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	static bool throwRay(const vxScene * const sc,
+	static int throwRay(const vxScene * const sc,
 						 const vxRayXYZ &ray, 
-						 vxCollision &collide, 
-						 std::promise<int>&& p);
+						 vxCollision &collide);
 
 	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);
 	
