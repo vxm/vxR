@@ -24,9 +24,7 @@ vxColor vxCore::vxShader::getLightLoop(const vxCollision &collision) const
 	//assert(m_lights);
 	vxColor acumColor;
 
-	for(auto light = std::begin(*m_lights);
-		light!=std::end(*m_lights);
-		++light)
+	for(auto light = std::begin(*m_lights);	light!=std::end(*m_lights);	++light)
 	{
 		acumColor.add( light->get()->acumLight(collision) );
 	}
