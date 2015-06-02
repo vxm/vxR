@@ -32,17 +32,17 @@ unsigned int vxCamera::getPixelSamples() const
 	return m_nSamples;
 }
 
-vxVector2d vxCamera::getCoords() const
+vxVector2d vxCamera::coords() const
 { 
-	return vxVector2d(getXCoord(), getYCoord());
+	return vxVector2d(xCoord(), yCoord());
 }
 
-double vxCamera::getXCoord() const
+double vxCamera::xCoord() const
 {
 	return (m_iteratorPosX) / (double)m_prop->rx();
 }
 
-double vxCamera::getYCoord() const
+double vxCamera::yCoord() const
 {
 	return (m_iteratorPosY) / (double)m_prop->ry();
 }
@@ -72,7 +72,7 @@ vxRayXYZ vxCamera::givemeRay(double x, double y) const
 {
 	double compX = tan(-m_horizontalAperture/2.0) * (( x * 2.0) -1.0) - 1.0/(double)(2.0 * m_prop->rx()) + m_sampler.x()/(double)(m_prop->rx());
 	double compY = tan(-m_verticalAperture/2.0) * (( y * 2.0) -1.0) - 1.0/(double)(2.0 * m_prop->ry()) + m_sampler.y()/(double)(m_prop->ry());
-	return vxRayXYZ( compY , compX , m_focusDistance );
+	return vxRayXYZ(compY, compX, m_focusDistance);
 }
 
 vxRayXYZ vxCamera::givemeRandRay(double x, double y)
@@ -94,29 +94,34 @@ bool vxCamera::pixIsDone()
 	return m_sampler.isDone();
 }
 
-void vxCamera::resetPixel()
+void vxCamera::resetSampler()
 {
 	m_sampler.resetIterator();
 }
 
-void vxCamera::next()
+void vxCamera::next(unsigned int skip)
 {
-	m_iteratorPosX++;
+	m_iteratorPosX+=skip;
 	
-	if( m_iteratorPosX > (m_prop->rx()-1))
+	if(m_iteratorPosX >= m_prop->rx())
 	{
 		m_iteratorPosY++;
-		m_iteratorPosX = 0;
+		m_iteratorPosX %= m_prop->rx();
 	}
 }
 
-vxRayXYZ vxCamera::nextRay()
+vxRayXYZ vxCamera::nextSampleRay()
 {
-	vxRayXYZ ret = givemeRay( getXCoord(), getYCoord() );
+	vxRayXYZ ret = givemeRay( xCoord(), yCoord() );
 	//todo:remove hardcoded value.
 	ret.rotateX(.321);
 	m_sampler.next();
 	return ret;
+}
+
+bool vxCamera::rayIsDone()
+{
+	return m_iteratorPosY>=(m_prop->ry());
 }
 
 vxRayXYZ vxCamera::givemeNextRay(const vxContactBuffer &imagen, double ang)

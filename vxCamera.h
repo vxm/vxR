@@ -49,11 +49,11 @@ public:
 
 	unsigned int getPixelSamples() const;
 	
-	vxVector2d getCoords() const;
+	vxVector2d coords() const;
 	
-	double getXCoord() const;
+	double xCoord() const;
 	
-	double getYCoord() const;
+	double yCoord() const;
 
 	void set(const vxVector3d &position, 
 			 vxVector3d orientation, 
@@ -69,16 +69,13 @@ public:
 
 	bool pixIsDone();
 
-	void resetPixel();
+	void resetSampler();
 	
-	void next();
+	void next(unsigned int skip = 1u);
 	
-	vxRayXYZ nextRay();
+	vxRayXYZ nextSampleRay();
 
-	bool rayIsDone()
-	{
-		return m_iteratorPosY>=(m_prop->ry());
-	}
+	bool rayIsDone();
 
 	vxRayXYZ givemeNextRay(const vxContactBuffer &imagen, double ang);
 

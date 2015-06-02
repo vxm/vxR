@@ -24,7 +24,6 @@ public:
 	// creates this bucket initializing the buffer with a size
 	// of sidePixels (num side pxs) ^ 2
 	vxBucket()
-		: m_pb(100)
 	{
 	}
 	
@@ -101,7 +100,6 @@ public:
 		return  r1 + r2*m_nBucketsInX;
 	}
 	
-
 	vxBucket* getBucket(double x, double y)
 	{
 		auto id = getIndex(x,y);
