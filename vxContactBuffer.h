@@ -17,13 +17,20 @@ using std::vector;
 
 namespace vxCore {
 
-struct Hit
+class Hit
 {
+public:
+	Hit(const vxColor &px, const vxVector2d &coord)
+		:m_px(px)
+		,m_xyCoef(coord)
+	{}
+	
+	Hit()
+	{}
+	
 	vxColor m_px;
 	vxVector2d m_xyCoef;
-//	std::shared_ptr<vxShader> m_sh;
 };
-
 
 class vxContactBuffer
 {
@@ -34,16 +41,14 @@ private:
 	
 	int m_scanX = {0};
 	int m_scanY = {0};
-
+	 
+	unsigned long m_k{0u};
+	
 public:
 
 	vxContactBuffer()
 	{
-	}
-
-	vxContactBuffer(unsigned int sz)
-	{
-		m_pxs.reserve(sz);
+		m_pxs.resize(900);
 	}
 	
 	~vxContactBuffer()
@@ -57,13 +62,16 @@ public:
 	
 	void append(const vxColor &px, const vxVector2d &coord)
 	{
-		Hit h;
+		if(m_k>=m_pxs.size())
+		{
+			m_pxs.resize(m_k + m_pxs.size());
+		}
 		
-		h.m_px = px;
-		h.m_xyCoef = coord;
+		Hit t(px,coord);
+		m_pxs[m_k]=t;
 		
 		//m_pxs.push_back(std::move(h));
-		m_pxs.push_back(h);
+		m_k++;
 	}
 
 	void reset()
