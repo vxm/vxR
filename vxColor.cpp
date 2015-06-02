@@ -96,7 +96,7 @@ void vxColor::get(double &ri, double &gi, double &bi, double &ai) const
 
 vxColor vxColor::gained(double gain) const 
 {
-	return *this*gain;
+	return vxColor(m_r*gain,m_g*gain,m_b*gain);
 }
 
 
