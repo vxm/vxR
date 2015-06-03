@@ -28,9 +28,13 @@ private:
 	double m_focusDistance = {1.0};
 	double m_horizontalAperture = {1.42};
 	double m_verticalAperture = {1.42};
+	
+	double m_hApTan = tan(-m_horizontalAperture/2.0);
+	double m_vApTan = tan(-m_verticalAperture/2.0);
+	
 	unsigned int m_nSamples = {1u};
-	unsigned int m_iteratorPosX = {0u};
-	unsigned int m_iteratorPosY = {0u};
+	unsigned int m_itX = {0u};
+	unsigned int m_itY = {0u};
 
 	vxSampler m_sampler;
 	std::shared_ptr<const ImageProperties> m_prop;
@@ -40,7 +44,7 @@ public:
 	vxCamera(std::shared_ptr<const ImageProperties> prop);
 
 	vxCamera(const vxVector3d &position,
-				vxVector3d orientation,
+				const vxVector3d &orientation,
 				double focusD,
 				double apertureH,
 				double apertureV);
@@ -56,12 +60,12 @@ public:
 	double yCoord() const;
 
 	void set(const vxVector3d &position, 
-			 vxVector3d orientation, 
+			 const vxVector3d &orientation, 
 			 double focusD = 1.0, 
 			 double apertureH = 0.0, 
 			 double apertureV = 0.0);
 	
-	vxRayXYZ givemeRay(double x, double y) const;
+	vxRayXYZ ray(double x, double y) const;
 	
 	vxRayXYZ givemeRandRay(double x, double y);
 
