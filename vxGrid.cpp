@@ -232,12 +232,15 @@ bool vxGrid::getElement(int x, int y, int z) const
 	return m_data[p];
 }
 
-void vxGrid::setElement(int x, int y, int z, bool value)
+void vxGrid::setElement(unsigned int x, 
+						unsigned int y, 
+						unsigned int z, 
+						bool value)
 {
 	m_data[x+(y*m_resolution)+(z*m_resXres)]=value;
 }
 
-void vxGrid::setElement(int idx, bool value)
+void vxGrid::setElement(unsigned int idx, bool value)
 {
 	if(idx<m_data.size())
 	{

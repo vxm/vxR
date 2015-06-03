@@ -127,9 +127,12 @@ public:
 
 	// changes the value of the element at local
 	// coords x y z to be same as parameter value
-	inline void setElement(int x, int y, int z, bool value);
+	inline void setElement(unsigned int x, 
+							unsigned int y, 
+							unsigned int z, 
+							bool value);
 
-	inline void setElement(int idx, bool value);
+	inline void setElement(unsigned int idx, bool value);
 	
 	vxVector3d getVoxelPosition(int x, int y, int z) const;
 
