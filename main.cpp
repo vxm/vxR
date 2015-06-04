@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	// Img properties for render.
 	auto imgDesc =
 			std::make_shared<ImageProperties>
-			(2300,2300);
+			(744,744);
 	
 	// create the render process
 	render rp(imgDesc);
@@ -43,7 +43,10 @@ int main(int argc, char *argv[])
 	std::cout << "Starting render : " << TimeUtils::decorateTime(start) << std::endl;
 	
 	// executes the render.
-	rp.execute();
+	if(rp.execute()==vxStatus::code::kError)
+	{
+		return 1;
+	}
 	
 	std::cout << "Finished render : " 
 			<< TimeUtils::decorateTime(start) << std::endl;
