@@ -23,11 +23,32 @@ protected:
 	
 public:
 
-	static vxColor red;
-	static vxColor green;
 	static vxColor blue;
+	static vxColor bluishGreen;
+	static vxColor bluegreen;
+	static vxColor bluishPurple;
+	static vxColor greenishYellow;
+	static vxColor green;
+	static vxColor greenishBlue;
+	static vxColor orangePink;
+	static vxColor orange;
+	static vxColor pink;
+	static vxColor reddishOrange;
+	static vxColor red;
+	static vxColor reddishPurple;
+	static vxColor redPurple;
+	static vxColor purple;
+	static vxColor purplishBlue;
+	static vxColor purplishPink;
+	static vxColor purplishRed;
 	static vxColor white;
+	static vxColor yellowGreen;
+	static vxColor yellowishOrange;
+	static vxColor yellow;
+	static vxColor yellowishGreen;
 	static vxColor black;
+	static vxColor grey;
+
 	static vxColor lookup(const vxColor col);
 	static vxColor lookup(const double r, const double g, const double b);
 

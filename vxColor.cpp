@@ -3,14 +3,10 @@
 
 using namespace vxCore;
 
+//http://hyperphysics.phy-astr.gsu.edu/hbase/vision/cie.html#c4
+
 double mxc = 220.0/256.0;
 double mnc = 38.0/256.0;
-
-vxColor vxColor::red	=	{mxc, mnc, mnc};
-vxColor vxColor::green	=	{mnc, mxc, mnc};
-vxColor vxColor::blue	=	{mnc, mnc, mxc};
-vxColor vxColor::white	=	{mxc, mxc, mxc};
-vxColor vxColor::black	=	{mnc, mnc, mnc};
 
 vxColor vxColor::lookup(const vxColor col)
 {
@@ -23,6 +19,32 @@ vxColor vxColor::lookup(const double r, const double g, const double b)
 					MathUtils::remap(g, mnc, mxc),
 					MathUtils::remap(b, mnc, mxc));
 }
+
+vxColor vxColor::blue(vxColor::lookup(92,138,202));
+vxColor vxColor::bluishGreen(vxColor::lookup(24,162,121));
+vxColor vxColor::bluegreen(vxColor::lookup(95,164,190));
+vxColor vxColor::bluishPurple(vxColor::lookup(92,102,177));
+vxColor vxColor::greenishYellow(vxColor::lookup(235,233,0));
+vxColor vxColor::green(vxColor::lookup(0,163,71));
+vxColor vxColor::greenishBlue(vxColor::lookup(110,175,199));
+vxColor vxColor::orangePink(vxColor::lookup(240,204,162));
+vxColor vxColor::orange(vxColor::lookup(228,184,29));
+vxColor vxColor::pink(vxColor::lookup(245,220,208));
+vxColor vxColor::reddishOrange(vxColor::lookup(216,119,51));
+vxColor vxColor::red(vxColor::lookup(191,27,75));
+vxColor vxColor::reddishPurple(vxColor::lookup(196,64,143));
+vxColor vxColor::redPurple(vxColor::lookup(175,35,132));
+vxColor vxColor::purple(vxColor::lookup(246,85,158));
+vxColor vxColor::purplishBlue(vxColor::lookup(88,121,191));
+vxColor vxColor::purplishPink(vxColor::lookup(243,208,219));
+vxColor vxColor::purplishRed(vxColor::lookup(209,65,136));
+vxColor vxColor::white(vxColor::lookup(255,255,255));
+vxColor vxColor::yellowGreen(vxColor::lookup(185,214,4));
+vxColor vxColor::yellowishOrange(vxColor::lookup(231,224,0));
+vxColor vxColor::yellow(vxColor::lookup(234,231,94));
+vxColor vxColor::yellowishGreen(vxColor::lookup(170,209,60));
+vxColor vxColor::black{mnc, mnc, mnc};
+vxColor vxColor::grey{(mnc+mxc)/2.0, (mnc+mxc)/2.0, (mnc+mxc)/2.0};
 
 
 
@@ -186,13 +208,13 @@ vxColor vxColor::operator+(const vxColor &other) const
 
 void vxColor::toRGBA8888(unsigned char *tbuff) const
 {
-	*tbuff = (unsigned char)char(MathUtils::remap(m_r,255.0));
+	*tbuff += (unsigned char)char(MathUtils::remap(m_r,255.0));
 	tbuff++;
 	
-	*tbuff = (unsigned char)char(MathUtils::remap(m_g,255.0));
+	*tbuff += (unsigned char)char(MathUtils::remap(m_g,255.0));
 	tbuff++;
 	
-	*tbuff = (unsigned char)char(MathUtils::remap(m_b,255.0));
+	*tbuff += (unsigned char)char(MathUtils::remap(m_b,255.0));
 }
 
 
