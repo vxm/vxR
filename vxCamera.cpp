@@ -82,15 +82,17 @@ void vxCamera::set(const vxVector3d& position,
 }
 
 vxRayXYZ vxCamera::ray(double x, double y) const
-
 {
+	double rx = (double)m_prop->rx();
+	double ry = (double)m_prop->ry();
+
 	double compX = m_hApTan * (( x * 2.0)-1.0) 
-				   - 1.0/(double)(2.0 * m_prop->rx()) 
-				   + m_sampler.x()/(double)(m_prop->rx());
+				   - 1.0/(double)(2.0 * rx)
+				   + m_sampler.x()/rx;
 	
 	double compY = m_vApTan * (( y * 2.0)-1.0)
-				   - 1.0/(double)(2.0 * m_prop->ry()) 
-				   + m_sampler.y()/(double)(m_prop->ry());
+				   - 1.0/(double)(2.0 * ry)
+				   + m_sampler.y()/ry;
 	
 	return vxRayXYZ(compY, compX, m_focusDistance);
 }
@@ -121,6 +123,9 @@ void vxCamera::resetSampler()
 
 void vxCamera::next(unsigned int skip)
 {
+	if(!skip)
+		return;
+
 	m_itX+=skip;
 	
 	if(m_itX >= m_prop->rx())

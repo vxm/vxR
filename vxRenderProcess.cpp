@@ -85,15 +85,15 @@ vxStatus::code vxRenderProcess::execute()
 		c.reset();
 		for(int s=0;s<nSamples;s++)
 		{
-			if(vxScene::throwRay(scene().get(), //shared? 
-									rCamera->nextSampleRay(), 
+			if(vxScene::throwRay(scene().get(), //shared?
+									rCamera->nextSampleRay(),
 									std::ref(collisions[0])))
 			{
 				c=c+collisions[0].color();
 				bk->append(c*invSamples, coords);
 			}
 		}
-		
+
 		rCamera->next(by);
 	}
 
@@ -137,7 +137,12 @@ vxRenderProcess::generateImage()
 	
 	// hardcode buffer type!!
 	unsigned char *buff = m_pc.get();
-	
+	unsigned char *tmpp = buff;
+	for(;tmpp<buff+numElements;tmpp++)
+	{
+	//	*tmpp = '\0';
+	}
+
 	if(m_pc==nullptr)
 	{
 		std::cout << "unique ptr is empty now" << std::endl;
@@ -147,7 +152,7 @@ vxRenderProcess::generateImage()
 	for(unsigned int i=0;i<m_bucketList.size();i++)
 	{
 		std::vector<Hit> *bk = m_bucketList[i].m_pb.getHits();
-		auto sz = bk->size();
+		auto sz = m_bucketList[i].m_pb.hitsCount();
 		
 		unsigned int dist;
 		// for every of their render Hit.
@@ -155,11 +160,11 @@ vxRenderProcess::generateImage()
 		for(unsigned int j=0;j<sz;j++)
 		{
 			Hit &h = (*bk)[j];
-			unsigned int compX = (h.m_xyCoef.y() * (prop->rx()-1));
-			unsigned int compY = (h.m_xyCoef.x() * (prop->ry()-1));
+			unsigned int compX = h.m_xyCoef.y() * (prop->rx()+1);
+			unsigned int compY = h.m_xyCoef.x() * (prop->ry()+1);
 			dist = (compX + (compY * prop->rx())) * prop->numChannels();
-			assert(dist<m_imageProperties->numElements());
-			h.m_px.setToGamma(1.8);
+			if(dist>numElements)
+				dist = numElements;
 			h.m_px.toRGBA8888(buff + dist);
 		}
 	}

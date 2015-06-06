@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 375
+#define RESL 15
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -25,7 +25,7 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nSamples = 2;
+	int nSamples = 1;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -36,23 +36,23 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 	//
 
-	auto l1 = createPointLight();
-	l1->setColor(vxColor::lookup(.8,.62,.6));
-	l1->setSamples(18/nSamples);
-	l1->setRadius(resl);
-	l1->setPosition(-4, PY+resl, PZ+resl);
-	l1->setIntensity(0.4);
+//	auto l1 = createPointLight();
+//	l1->setColor(vxColor::lookup(.8,.62,.6));
+//	l1->setSamples(18/nSamples);
+//	l1->setRadius(resl);
+//	l1->setPosition(-4, PY+resl, PZ+resl);
+//	l1->setIntensity(0.4);
 
-	auto l2 = createPointLight();
-	l2->setColor(vxColor::lookup(.6,.62,.8));
-	l2->setSamples(18/nSamples);
-	l2->setRadius(resl);
-	l2->setPosition(PX+resl, PY+resl, -4);
-	l2->setIntensity(0.3);
+//	auto l2 = createPointLight();
+//	l2->setColor(vxColor::lookup(.6,.62,.8));
+//	l2->setSamples(18/nSamples);
+//	l2->setRadius(resl);
+//	l2->setPosition(PX+resl, PY+resl, -4);
+//	l2->setIntensity(0.3);
 
 	auto l3 = createIBLight();
 	l3->setColor(vxColor::white);
-	l3->setSamples(32/nSamples);
+	l3->setSamples(132/nSamples);
 	l3->setRadius(3186);
 	l3->setIntensity(7.2);
 
@@ -78,7 +78,9 @@ vxScene::createCamera(const vxMatrix &transform,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set(	vxVector3d(0,0,0),
 					vxVector3d(0,0,1),
-					2.3);
+					2.3,
+					hAperture,
+					vAperture);
 	m_camera->setPixelSamples(samples);
 	return m_camera;
 }

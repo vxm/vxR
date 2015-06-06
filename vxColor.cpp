@@ -20,31 +20,38 @@ vxColor vxColor::lookup(const double r, const double g, const double b)
 					MathUtils::remap(b, mnc, mxc));
 }
 
-vxColor vxColor::blue(vxColor::lookup(92,138,202));
-vxColor vxColor::bluishGreen(vxColor::lookup(24,162,121));
-vxColor vxColor::bluegreen(vxColor::lookup(95,164,190));
-vxColor vxColor::bluishPurple(vxColor::lookup(92,102,177));
-vxColor vxColor::greenishYellow(vxColor::lookup(235,233,0));
-vxColor vxColor::green(vxColor::lookup(0,163,71));
-vxColor vxColor::greenishBlue(vxColor::lookup(110,175,199));
-vxColor vxColor::orangePink(vxColor::lookup(240,204,162));
-vxColor vxColor::orange(vxColor::lookup(228,184,29));
-vxColor vxColor::pink(vxColor::lookup(245,220,208));
-vxColor vxColor::reddishOrange(vxColor::lookup(216,119,51));
-vxColor vxColor::red(vxColor::lookup(191,27,75));
-vxColor vxColor::reddishPurple(vxColor::lookup(196,64,143));
-vxColor vxColor::redPurple(vxColor::lookup(175,35,132));
-vxColor vxColor::purple(vxColor::lookup(246,85,158));
-vxColor vxColor::purplishBlue(vxColor::lookup(88,121,191));
-vxColor vxColor::purplishPink(vxColor::lookup(243,208,219));
-vxColor vxColor::purplishRed(vxColor::lookup(209,65,136));
-vxColor vxColor::white(vxColor::lookup(255,255,255));
-vxColor vxColor::yellowGreen(vxColor::lookup(185,214,4));
-vxColor vxColor::yellowishOrange(vxColor::lookup(231,224,0));
-vxColor vxColor::yellow(vxColor::lookup(234,231,94));
-vxColor vxColor::yellowishGreen(vxColor::lookup(170,209,60));
-vxColor vxColor::black{mnc, mnc, mnc};
-vxColor vxColor::grey{(mnc+mxc)/2.0, (mnc+mxc)/2.0, (mnc+mxc)/2.0};
+vxColor vxColor::lookup256(const int r, const int g, const int b)
+{
+	return vxColor( MathUtils::remap(r/256.0, mnc, mxc),
+					MathUtils::remap(g/256.0, mnc, mxc),
+					MathUtils::remap(b/256.0, mnc, mxc));
+}
+
+vxColor vxColor::blue			(vxColor::lookup256(92,138,202));
+vxColor vxColor::bluishGreen	(vxColor::lookup256(24,162,121));
+vxColor vxColor::bluegreen		(vxColor::lookup256(95,164,190));
+vxColor vxColor::bluishPurple	(vxColor::lookup256(92,102,177));
+vxColor vxColor::greenishYellow	(vxColor::lookup256(235,233,0));
+vxColor vxColor::green			(vxColor::lookup256(0,163,71));
+vxColor vxColor::greenishBlue	(vxColor::lookup256(110,175,199));
+vxColor vxColor::orangePink		(vxColor::lookup256(240,204,162));
+vxColor vxColor::orange			(vxColor::lookup256(228,184,29));
+vxColor vxColor::pink			(vxColor::lookup256(245,220,208));
+vxColor vxColor::reddishOrange	(vxColor::lookup256(216,119,51));
+vxColor vxColor::red			(vxColor::lookup256(191,27,75));
+vxColor vxColor::reddishPurple	(vxColor::lookup256(196,64,143));
+vxColor vxColor::redPurple		(vxColor::lookup256(175,35,132));
+vxColor vxColor::purple			(vxColor::lookup256(246,85,158));
+vxColor vxColor::purplishBlue	(vxColor::lookup256(88,121,191));
+vxColor vxColor::purplishPink	(vxColor::lookup256(243,208,219));
+vxColor vxColor::purplishRed	(vxColor::lookup256(209,65,136));
+vxColor vxColor::white			(vxColor::lookup256(255,255,255));
+vxColor vxColor::yellowGreen	(vxColor::lookup256(185,214,4));
+vxColor vxColor::yellowishOrange(vxColor::lookup256(231,224,0));
+vxColor vxColor::yellow			(vxColor::lookup256(234,231,94));
+vxColor vxColor::yellowishGreen	(vxColor::lookup256(170,209,60));
+vxColor vxColor::black			{mnc, mnc, mnc};
+vxColor vxColor::grey			{(mnc+mxc)/2.0, (mnc+mxc)/2.0, (mnc+mxc)/2.0};
 
 
 

@@ -51,6 +51,7 @@ public:
 
 	static vxColor lookup(const vxColor col);
 	static vxColor lookup(const double r, const double g, const double b);
+	static vxColor lookup256(const int r, const int g, const int b);
 
 	
 	vxColor ();

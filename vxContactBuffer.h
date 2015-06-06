@@ -59,7 +59,12 @@ public:
 	{
 		return &m_pxs;
 	}
-	
+
+	unsigned int hitsCount()
+	{
+		return m_k;
+	}
+
 	void append(const vxColor &px, const vxVector2d &coord)
 	{
 		if(m_k>=m_pxs.size())
