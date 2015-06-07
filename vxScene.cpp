@@ -64,7 +64,7 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("../vxR/juan_1.ply");
+	plyReader->processPLYFile("../vxR/juan_0.ply");
 
 	loadFromFile(plyReader);
 
