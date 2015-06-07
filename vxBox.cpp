@@ -161,8 +161,6 @@ bool vxBox::inSight(const vxRayXYZ &ray)
 
 int vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 {
-	collide.initialize();
-
 	//if (true)
 	if (throwSpace(ray, collide))
 	{
