@@ -90,9 +90,9 @@ vxStatus::code vxRenderProcess::execute()
 									std::ref(collisions[0])))
 			{
 				c=c+collisions[0].color();
-				bk->append(c*invSamples, coords);
 			}
 		}
+		bk->append(c*invSamples, coords);
 
 		rCamera->next(by);
 	}
