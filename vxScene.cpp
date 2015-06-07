@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 15
+#define RESL 145
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -52,7 +52,7 @@ void vxScene::build()
 
 	auto l3 = createIBLight();
 	l3->setColor(vxColor::white);
-	l3->setSamples(132/nSamples);
+	l3->setSamples(32/nSamples);
 	l3->setRadius(3186);
 	l3->setIntensity(7.2);
 
@@ -64,9 +64,13 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/john/Downloads/juan_10.ply");
+	plyReader->processPLYFile("../vxR/juan_1.ply");
 
 	loadFromFile(plyReader);
+
+	auto na = m_grids[0]->numActiveVoxels();
+	auto totals = m_grids[0]->getNumberOfVoxels();
+	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 }
 
 std::shared_ptr<vxCamera> 
@@ -81,6 +85,7 @@ vxScene::createCamera(const vxMatrix &transform,
 					2.3,
 					hAperture,
 					vAperture);
+
 	m_camera->setPixelSamples(samples);
 	return m_camera;
 }
@@ -177,10 +182,6 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	//m_grids[0]->activate(n+2,4,1);
 	//m_grids[0]->activate(1,4,2);
 	//m_grids[0]->activate(n+2,4,2);
-
-	auto na = m_grids[0]->numActiveVoxels();
-	auto totals = m_grids[0]->getNumberOfVoxels();
-	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 //#endif
 
 	return m_grids[0];
@@ -200,8 +201,8 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 {
 	const double resl = RESL;
 	const auto& vts = importer->getPointCloud();
-	m_grids[0]->addVertices(vts, 
-							vxVector3d(PX,PY-12,PZ), 
+	m_grids[0]->addVertices(vts,
+							vxVector3d(PX,PY,PZ),
 							vxVector3d(resl*1.5, resl*1.5, resl*1.5));
 	return true;
 }
