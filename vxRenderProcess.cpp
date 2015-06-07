@@ -61,7 +61,6 @@ vxStatus::code vxRenderProcess::execute()
 						//m_nMaxThreads);
 
 	std::vector<vxCollision> collisions(nTh);
-	
 	vxColor c;
 	// camera throwing rays.
 	rCamera->next(offset);
@@ -77,13 +76,15 @@ vxStatus::code vxRenderProcess::execute()
 //#endif
 
 		auto coords = rCamera->coords();
+		//vxVector2d coords(530/(double)m_imageProperties->rx(),
+		//					45/(double)m_imageProperties->ry());
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(coords.x(), coords.y());
 		rCamera->resetSampler();
 		// on eachpixel.
 		c.reset();
-		for(int s=0;s<nSamples;s++)
+		for(unsigned int s=0;s<nSamples;s++)
 		{
 			if(vxScene::throwRay(scene().get(), //shared?
 									rCamera->nextSampleRay(),
@@ -140,7 +141,7 @@ vxRenderProcess::generateImage()
 	unsigned char *tmpp = buff;
 	for(;tmpp<buff+numElements;tmpp++)
 	{
-	//	*tmpp = '\0';
+		*tmpp = '\0';
 	}
 
 	if(m_pc==nullptr)
