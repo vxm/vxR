@@ -9,7 +9,7 @@ TODO:
 			- find the cause of the problem.
 		- raytrace will work in world and grid space.
 	* investigate plane values for ray traveling.
-	* do x, y and z, not only z
+        - do x, y and z, not only z
 	* find dominant axis in ray
 	* complete block visualization, and create a tag version.
 	* LAST execute with valgrind again.
@@ -26,15 +26,20 @@ TODO:
 	- create standard shader
 		- provide simple shading
 		* angular shading
-	  * decouple lambert shader with texture
+          * decouple lambert shader with texture(maps)
 	  * shadows.
-		* Raytrace shadows.  
+                * Raytrace shadows.
 	* multiple lights
 	- Ingelligent subsampling.
 	- Reflection, Refraction, and Diffraction
 		(http://www.physicsclassroom.com/class/waves/Lesson-3/Reflection,-Refraction,-and-Diffraction)
 	* Global illumination.
 	- Subsurface scattering.
+        - IBL
+
+- Raytracing
+        - General raytracing, and not only from camera.
+        - Provide Grid object with index iteration moves
 
 - Textures
 	- implement ramp and lookup tables
@@ -66,8 +71,6 @@ TODO:
   - Quaternions (for camera rotation).
 
 * Remove Boost dependencies.
-- General raytracing, and not only from camera.
-	- investigate pointer advance patern for traveling rays.
 
 - Geometry
 	* Download Standford models.
