@@ -53,6 +53,7 @@ vxStatus::code vxRenderProcess::execute()
 //#ifdef _DEBUG
 	auto npx = 0u;
 //#endif
+
 	vxColor color;
 	auto rCamera = scene()->defaultCamera();
 	unsigned int nSamples = rCamera->getPixelSamples();
@@ -71,13 +72,12 @@ vxStatus::code vxRenderProcess::execute()
 		if(npx%57333==0 || npx==m_imageProperties->numPixels())
 		{
 			auto pct = 100.0 * npx / m_imageProperties->numPixels();
-			std::cout << pct << "% done. -- ray " << (npx*nSamples) << " of " << (m_imageProperties->numPixels() * nSamples) << std::endl;
+			std::cout << pct << "% done. -- ray " << ((npx*nSamples)+scene()->dRays) << " on " << (m_imageProperties->numPixels()) << " pixels" << std::endl;
 		}
 //#endif
 
 		auto coords = rCamera->coords();
-		//vxVector2d coords(530/(double)m_imageProperties->rx(),
-		//					45/(double)m_imageProperties->ry());
+		//vxVector2d coords(.83,.5);
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(coords.x(), coords.y());
@@ -90,7 +90,7 @@ vxStatus::code vxRenderProcess::execute()
 									rCamera->nextSampleRay(),
 									std::ref(collisions[0])))
 			{
-				c=c+collisions[0].color();
+				c.add(collisions[0].color());
 			}
 		}
 		bk->append(c*invSamples, coords);

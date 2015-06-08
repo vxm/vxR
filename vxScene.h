@@ -44,6 +44,8 @@ protected:
 	std::shared_ptr<ImageProperties> m_prop = {nullptr};
 
 public:
+	//TODO: private and getter setter.
+	long long dRays{0};
 
 	vxScene(std::shared_ptr<ImageProperties> imageProperties);
 	

@@ -300,9 +300,12 @@ void vxGrid::createSphere(const vxVector3d &center, const double radio)
 
 inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
 {
-	return pnt.x()<=(m_xmax+tol) && pnt.x()>=(m_xmin-tol)
-			&& pnt.y()<=(m_ymax+tol) && pnt.y()>=(m_ymin-tol)
-			&& pnt.z()<=(m_zmax+tol) && pnt.z()>=(m_zmin-tol);
+	return pnt.x()<=(m_xmax+tol)
+			&& pnt.x()>=(m_xmin-tol)
+			&& pnt.y()<=(m_ymax+tol)
+			&& pnt.y()>=(m_ymin-tol)
+			&& pnt.z()<=(m_zmax+tol)
+			&& pnt.z()>=(m_zmin-tol);
 }
 
 int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide)
@@ -490,9 +493,6 @@ int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide)
 
 int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 { 
-	if (!m_boundingBox) 
-		return 0;
-
 	if (m_boundingBox->throwRay(ray, collide)
 			&& getNearestCollision(ray, collide))
 	{

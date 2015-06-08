@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 195
+#define RESL 124
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -25,7 +25,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nSamples = 4;
+	int nSamples = 1;
+	int nLightSamples = 18;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -38,23 +39,23 @@ void vxScene::build()
 
 //	auto l1 = createPointLight();
 //	l1->setColor(vxColor::lookup(.8,.62,.6));
-//	l1->setSamples(18/nSamples);
+//	l1->setSamples(nLightSamples/nSamples);
 //	l1->setRadius(resl);
 //	l1->setPosition(-4, PY+resl, PZ+resl);
 //	l1->setIntensity(0.4);
 
 //	auto l2 = createPointLight();
 //	l2->setColor(vxColor::lookup(.6,.62,.8));
-//	l2->setSamples(18/nSamples);
+//	l2->setSamples(nLightSamples/nSamples);
 //	l2->setRadius(resl);
 //	l2->setPosition(PX+resl, PY+resl, -4);
 //	l2->setIntensity(0.3);
 
 	auto l3 = createIBLight();
 	l3->setColor(vxColor::white);
-	l3->setSamples(182/nSamples);
+	l3->setSamples(nLightSamples/nSamples);
 	l3->setRadius(3186);
-	l3->setIntensity(6.2);
+	l3->setIntensity(5.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
@@ -65,7 +66,6 @@ void vxScene::build()
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
 	plyReader->processPLYFile("../vxR/juan_0.ply");
-
 	loadFromFile(plyReader);
 
 	auto na = m_grids[0]->numActiveVoxels();
@@ -164,6 +164,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	
 	//m_grids[0]->activate(3,3,1);
 	//m_grids[0]->createCorners();
+	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl); // Position, radius
 	m_grids[0]->createGround();
 	//int n = 2;
 	//m_grids[0]->activate(6,2,6);
@@ -213,8 +214,8 @@ int vxScene::throwRay(const vxScene * const sc,
 	if(sc->m_grids[0]->throwRay(ray,collide))
 	{
 		vxColor col(sc->defaultShader()->getColor(collide));
-		
 		collide.setColor( col );
+
 		return 1;
 	}
 	
@@ -245,6 +246,7 @@ int vxScene::throwRay(const vxScene * const sc,
 
 bool vxScene::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
 {
+	dRays++;
 	return m_grids[0]->hasCollision(origin, ray);
 }
 
