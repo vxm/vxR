@@ -12,6 +12,9 @@ class MathUtils
 	public:
 		MathUtils();
 
+	// Speed of light
+	static double C;
+
 	//!! this shouldn't be like this
 	//! what a shame.
 	inline static vxPoint rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane)
