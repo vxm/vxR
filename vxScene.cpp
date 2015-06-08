@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 145
+#define RESL 195
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -25,7 +25,7 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nSamples = 1;
+	int nSamples = 4;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -52,9 +52,9 @@ void vxScene::build()
 
 	auto l3 = createIBLight();
 	l3->setColor(vxColor::white);
-	l3->setSamples(32/nSamples);
+	l3->setSamples(182/nSamples);
 	l3->setRadius(3186);
-	l3->setIntensity(7.2);
+	l3->setIntensity(6.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
@@ -80,7 +80,7 @@ vxScene::createCamera(const vxMatrix &transform,
 						double vAperture)
 {
 	m_camera = std::make_shared<vxCamera>(m_prop);
-	m_camera->set(	vxVector3d(0,0,0),
+	m_camera->set(vxVector3d(0,0,0),
 					vxVector3d(0,0,1),
 					2.3,
 					hAperture,
@@ -136,7 +136,6 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 {
 	// this is the grid object
 	const double resl = RESL;
-	
 	vxVector3d p{PX, PY, PZ};
 	
 	// this is a hardcode program to test the rays. 
