@@ -72,7 +72,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		k++;
 	}
 	
-	std::cout << "PLY Ended:: '" << m_pointCloud.size() << "' points taken" << std::endl;
+	std::cout << "PLY file " << fileName << " Ended:: '" << m_pointCloud.size() << "' points taken" << std::endl;
 	
 }
 
