@@ -50,7 +50,7 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 }
 
 
-#define USE_THREADS 1
+#define USE_THREADS 0
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
@@ -65,7 +65,6 @@ vxStatus::code vxRenderProcess::execute()
 	std::thread a([&]{this->render(nTh,0);});
 	std::thread b([&]{this->render(nTh,1);});
 #endif
-
 
 	a.join();
 	b.join();
@@ -83,13 +82,18 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	vxCollision collision;
 	vxColor c;
 
+	assert(offset<this->imageProperties()->rx());
+
 	// moving to start point.
-	rCamera->resetRay();
-	rCamera->next(offset);
+	auto m_itX=offset;
+	auto m_itY=0u;
+	vxVector2d coords;
+
 	// on eachpixel.
-	while(!rCamera->rayIsDone())
+	while(!(m_itY>=(m_prop->ry())))
 	{
-		auto coords = rCamera->coords();
+		coords.setX(m_itX/(double)m_prop->rx());
+		coords.setY(m_itY/(double)m_prop->ry());
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(coords.x(), coords.y());
@@ -97,15 +101,22 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		for(unsigned int s=0;s<nSamples;s++)
 		{
 			if(vxScene::throwRay(scene(), //shared?
-									rCamera->nextSampleRay(),
-									std::ref(collision)))
+									rCamera->nextSampleRay(coords.x(), coords.y()),
+									collision))
 			{
 				c.add(collision.color());
 			}
 		}
+
 		bk->append(c*invSamples, coords);
 		c.reset();
-		rCamera->next(by);
+
+		m_itX+=by;
+		if(m_itX >= m_prop->rx())
+		{
+			m_itY+=1;
+			m_itX %= m_prop->rx();
+		}
 	}
 
 	return vxStatus::code::kSuccess;
@@ -118,7 +129,7 @@ vxStatus::code vxRenderProcess::preConditions()
 
 void vxRenderProcess::createBucketList()
 {
-	m_bucketList.reset(m_imageProperties,10);
+	m_bucketList.reset(m_prop,10);
 }
 
 const unsigned char *

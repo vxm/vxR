@@ -52,7 +52,33 @@ public:
 	static vxColor lookup(const vxColor col);
 	static vxColor lookup(const double r, const double g, const double b);
 	static vxColor lookup256(const int r, const int g, const int b);
+	static vxColor color(int idx)
+	{
+		switch(idx)
+		{
+		case 0:
+			return blue;
+		break;
+		case 1:
+			return red;
+		break;
+		case 2:
+			return yellow;
+		break;
+		case 3:
+			return green;
+		break;
+		case 4:
+			return orange;
+		break;
+		case 5:
+			return purple;
+		break;
 
+		}
+
+		return black;
+	}
 	
 	vxColor ();
 	vxColor (double r, double g, double b);

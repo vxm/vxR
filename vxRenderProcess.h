@@ -29,7 +29,7 @@ private:
 	std::unique_ptr <float[]>			m_pf = nullptr;
 	vxBucketList						m_bucketList;
 
-	std::shared_ptr<const ImageProperties> m_imageProperties;
+	std::shared_ptr<const ImageProperties> m_prop;
 	std::shared_ptr<vxScene> m_scene;
 
 	unsigned int m_nMaxThreads{1000};
@@ -39,7 +39,7 @@ public:
 	// constructor with imageproperties propagation
 	vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 		:	m_bucketList(prop, 10)
-		,	m_imageProperties(prop)
+		,	m_prop(prop)
 	{
 		m_scene = std::make_shared<vxScene>(prop);
 		m_scene->build();
@@ -57,12 +57,12 @@ public:
 
 	std::shared_ptr<const ImageProperties> imageProperties() const
 	{
-		return m_imageProperties;
+		return m_prop;
 	}
 
 	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties)
 	{
-		m_imageProperties = imageProperties;
+		m_prop = imageProperties;
 	}
 	std::shared_ptr<vxScene> scene() const
 	{

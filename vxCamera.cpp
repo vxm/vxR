@@ -7,6 +7,8 @@ vxCamera::vxCamera(std::shared_ptr<const ImageProperties> prop)
 	: m_prop{prop}
 {
 	srand(time(NULL));
+	m_rx = (double)m_prop->rx();
+	m_ry = (double)m_prop->ry();
 }
 
 
@@ -16,14 +18,15 @@ vxCamera::vxCamera(const vxVector3d &position,
 					double apertureH, 
 					double apertureV)
 {
-	m_orientation=orientation;
-	m_position=position;
-	m_focusDistance=focusD;
-	m_horizontalAperture=apertureH;
-	m_verticalAperture=apertureV;
+	m_orientation = orientation;
+	m_position = position;
+	m_focusDistance = focusD;
+	m_horizontalAperture = apertureH;
+	m_verticalAperture = apertureV;
 	
 	m_hApTan = tan(-m_horizontalAperture/2.0);
 	m_vApTan = tan(-m_verticalAperture/2.0);
+
 	srand(time(NULL));
 }
 
@@ -36,21 +39,6 @@ void vxCamera::setPixelSamples(const unsigned int numSamples)
 unsigned int vxCamera::getPixelSamples() const
 {
 	return m_nSamples;
-}
-
-vxVector2d vxCamera::coords() const
-{ 
-	return vxVector2d(xCoord(), yCoord());
-}
-
-double vxCamera::xCoord() const
-{
-	return (m_itX) / ((double)m_prop->rx());
-}
-
-double vxCamera::yCoord() const
-{
-	return (m_itY) / ((double)m_prop->ry());
 }
 
 void vxCamera::set(const vxVector3d& position, 
@@ -74,25 +62,19 @@ void vxCamera::set(const vxVector3d& position,
 		m_verticalAperture = apertureV;
 	}
 	
-	m_itX=0;
-	m_itY=0;
-	
 	m_hApTan = tan(-m_horizontalAperture/2.0);
 	m_vApTan = tan(-m_verticalAperture/2.0);
 }
 
 vxRayXYZ vxCamera::ray(double x, double y) const
 {
-	double rx = (double)m_prop->rx();
-	double ry = (double)m_prop->ry();
-
 	double compX = m_hApTan * (( x * 2.0)-1.0) 
-				   - 1.0/(double)(2.0 * rx)
-				   + m_sampler.x()/rx;
+				   - 1.0/(double)(2.0 * m_rx)
+				   + m_sampler.x()/m_rx;
 	
 	double compY = m_vApTan * (( y * 2.0)-1.0)
-				   - 1.0/(double)(2.0 * ry)
-				   + m_sampler.y()/ry;
+				   - 1.0/(double)(2.0 * m_ry)
+				   + m_sampler.y()/m_ry;
 	
 	return vxRayXYZ(compY, compX, m_focusDistance);
 }
@@ -102,12 +84,6 @@ vxRayXYZ vxCamera::givemeRandRay(double x, double y)
 	double compX = tan(-m_horizontalAperture/2.0) * (( x * 2.0) -1.0 ) - 1.0/(double)(2.0 * m_prop->rx()) + ((rand()/(double)RAND_MAX))/(double)(m_prop->rx());
 	double compY = tan(-m_verticalAperture/2.0) * (( y * 2.0) -1.0 ) - 1.0/(double)(2.0 * m_prop->ry()) + ((rand()/(double)RAND_MAX))/(double)(m_prop->ry());
 	return vxRayXYZ( compY , compX , m_focusDistance );
-}
-
-void vxCamera::resetRay()
-{ 
-	m_itX=0; 
-	m_itY=0;
 }
 
 bool vxCamera::pixIsDone()
@@ -120,32 +96,13 @@ void vxCamera::resetSampler()
 	m_sampler.resetIterator();
 }
 
-void vxCamera::next(unsigned int skip)
+vxRayXYZ vxCamera::nextSampleRay(double x, double y)
 {
-	if(!skip)
-		return;
-
-	m_itX+=skip;
-	
-	if(m_itX >= m_prop->rx())
-	{
-		m_itY+=(1+(skip/m_prop->rx()));
-		m_itX %= m_prop->rx();
-	}
-}
-
-vxRayXYZ vxCamera::nextSampleRay()
-{
-	vxRayXYZ ret = ray( xCoord(), yCoord() );
+	vxRayXYZ ret = ray(x, y);
 	//todo:remove hardcoded value.
 	ret.rotateX(.333);
 	m_sampler.next();
 	return ret;
-}
-
-bool vxCamera::rayIsDone()
-{
-	return m_itY>=(m_prop->ry());
 }
 
 vxRayXYZ vxCamera::givemeNextRay(const vxContactBuffer &imagen, double ang)

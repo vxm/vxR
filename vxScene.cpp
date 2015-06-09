@@ -22,8 +22,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nSamples = 1;
-	int nLightSamples = 22;
+	int nSamples = 2;
+	int nLightSamples = 152;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
