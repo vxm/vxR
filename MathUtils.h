@@ -37,6 +37,7 @@ class MathUtils
 	static double remap(double v, double max);
 	static double remap(double v, double min, double max);
 	static vxColor remap(const vxColor &col, double min, double max);
+	static vxVector3d getHollowHemisphereRand(double radius, const vxVector3d &normal);
 };
 
 

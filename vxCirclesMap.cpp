@@ -19,7 +19,7 @@ vxColor vxCirclesMap::compute(const vxCollision &collision) const
 	{
 		if(distanceToCenter>m_radius[0] && distanceToCenter<m_radius[1])
 		{
-			outColor.set(vxColor::bluegreen);
+			outColor.set(vxColor::red);
 		}
 	}
 
@@ -35,7 +35,7 @@ vxColor vxCirclesMap::compute(const vxCollision &collision) const
 	{
 		if(distanceToCenter>m_radius[2] && distanceToCenter<m_radius[3])
 		{
-			outColor.set(vxColor::greenishBlue);
+			outColor.set(vxColor::reddishOrange);
 		}
 	}
 	

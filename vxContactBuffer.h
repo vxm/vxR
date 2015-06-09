@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <memory>
 #include <vector>
+#include <thread>
+#include <mutex>
 
 #include "vxObject.h"
 #include "vxVector.h"
@@ -32,6 +34,7 @@ public:
 	vxVector2d m_xyCoef;
 };
 
+static std::mutex m_mutex;
 class vxContactBuffer
 {
 private:
@@ -67,6 +70,8 @@ public:
 
 	void append(const vxColor &px, const vxVector2d &coord)
 	{
+		std::lock_guard<std::mutex> lock_buff_op(m_mutex);
+
 		if(m_k>=m_pxs.size())
 		{
 			m_pxs.resize(m_k + m_pxs.size());

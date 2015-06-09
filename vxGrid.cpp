@@ -322,6 +322,8 @@ int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide)
 		return getNearestCollisionUsingY(ray, collide);
 		break;
 	}
+
+	return 0;
 }
 
 int vxGrid::getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide)

@@ -50,6 +50,8 @@ public:
 	virtual vxStatus::code execute() override;
 	virtual vxStatus::code preConditions() override;
 
+	vxStatus::code render(unsigned int by = 1u, unsigned int offset = 0u);
+
 	void createBucketList();
 	const unsigned char *generateImage();
 

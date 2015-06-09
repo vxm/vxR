@@ -108,7 +108,6 @@ void vxCamera::resetRay()
 { 
 	m_itX=0; 
 	m_itY=0;
-	m_nSamples=1;
 }
 
 bool vxCamera::pixIsDone()

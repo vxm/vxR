@@ -70,8 +70,8 @@ public:
 	
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	static int throwRay(const vxScene * const sc,
-						 const vxRayXYZ &ray, 
+	static int throwRay(std::shared_ptr<vxScene> sc,
+						 const vxRayXYZ &ray,
 						 vxCollision &collide);
 
 	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);

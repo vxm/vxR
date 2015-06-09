@@ -8,10 +8,14 @@
 #include "vxGrid.h"
 #include "vxPixel.h"
 #include "ImageProperties.h"
+#include "TimeUtils.h"
+
 #ifdef _DEBUG
 #include <iostream>
 #endif
 
+using timePoint = std::chrono::time_point<std::chrono::system_clock>;
+using render = vxCompute::vxRenderProcess;
 
 namespace vxCompute 
 {
@@ -45,56 +49,62 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 	return vxStatus::code::kSuccess;
 }
 
+
+#define USE_THREADS 1
 vxStatus::code vxRenderProcess::execute()
 {
-	unsigned int by = 1u;
-	unsigned int offset = 0u;
-	
-//#ifdef _DEBUG
-	auto npx = 0u;
-//#endif
+	timePoint start = std::chrono::system_clock::now();
+	std::cout << "Starting render AT: " << TimeUtils::decorateTime(start) << std::endl;
 
-	vxColor color;
-	auto rCamera = scene()->defaultCamera();
+	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
+
+#if USE_THREADS
+	std::thread a([&]{this->render(1,0);});
+	std::thread b([&]{});
+#else
+	std::thread a([&]{this->render(nTh,0);});
+	std::thread b([&]{this->render(nTh,1);});
+#endif
+
+
+	a.join();
+	b.join();
+	std::cout << "Finish Render Process: " << TimeUtils::decorateTime(start) << std::endl;
+
+	return vxStatus::code::kSuccess;
+}
+
+vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
+{
+	const auto& rCamera = scene()->defaultCamera();
 	unsigned int nSamples = rCamera->getPixelSamples();
 	const double invSamples = 1.0/(double)nSamples;
-	const auto nTh = 1;//std::min(std::thread::hardware_concurrency(),
-						//m_nMaxThreads);
 
-	std::vector<vxCollision> collisions(nTh);
+	vxCollision collision;
 	vxColor c;
-	// camera throwing rays.
+
+	// moving to start point.
+	rCamera->resetRay();
 	rCamera->next(offset);
+	// on eachpixel.
 	while(!rCamera->rayIsDone())
 	{
-//#ifdef _DEBUG
-		npx++;
-		if(npx%57333==0 || npx==m_imageProperties->numPixels())
-		{
-			auto pct = 100.0 * npx / m_imageProperties->numPixels();
-			std::cout << pct << "% done. -- ray " << ((npx*nSamples)+scene()->dRays) << " on " << (m_imageProperties->numPixels()) << " pixels" << std::endl;
-		}
-//#endif
-
 		auto coords = rCamera->coords();
-		//vxVector2d coords(.83,.5);
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(coords.x(), coords.y());
 		rCamera->resetSampler();
-		// on eachpixel.
-		c.reset();
 		for(unsigned int s=0;s<nSamples;s++)
 		{
-			if(vxScene::throwRay(scene().get(), //shared?
+			if(vxScene::throwRay(scene(), //shared?
 									rCamera->nextSampleRay(),
-									std::ref(collisions[0])))
+									std::ref(collision)))
 			{
-				c.add(collisions[0].color());
+				c.add(collision.color());
 			}
 		}
 		bk->append(c*invSamples, coords);
-
+		c.reset();
 		rCamera->next(by);
 	}
 

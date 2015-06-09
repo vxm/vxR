@@ -215,7 +215,8 @@ vxColor vxIBLight::acumLight(const vxCollision &collision) const
 	// compute all sort of shadows.
 	for(auto i=0; i<n; i++)
 	{
-		auto&& r = MathUtils::getHollowSphereRand(radius());
+		auto&& r = MathUtils::getHollowHemisphereRand(radius(),
+													  collision.normal());
 		auto&& f = collision.normal()+r;
 		
 		auto lumm = m_intensity * lightRatio(cPnt, 

@@ -8,25 +8,22 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 124
+#define RESL 74
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
 
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
-{
-
-}
+{}
 
 vxScene::~vxScene()
-{
-}
+{}
 
 void vxScene::build()
 {
 	int nSamples = 1;
-	int nLightSamples = 18;
+	int nLightSamples = 22;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -207,7 +204,7 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	return true;
 }
 
-int vxScene::throwRay(const vxScene * const sc, 
+int vxScene::throwRay(std::shared_ptr<vxScene> sc,
 						const vxRayXYZ &ray, 
 						vxCollision &collide)
 { 

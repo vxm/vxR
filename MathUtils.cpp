@@ -57,7 +57,7 @@ vxPoint MathUtils::rectAndZPlane(const vxRayXYZ &ray, double z)
 	return vxPoint(x,y,z);
 }
 
-double MathUtils::getRand(double range)
+double MathUtils::getRand(double range = 1.0)
 {
 	return range*(rand()/(double)RAND_MAX);
 }
@@ -69,18 +69,26 @@ double MathUtils::getBoolRand()
 
 vxVector3d MathUtils::getHollowSphereRand(double radius)
 {
-	//auto a = 2.0 * PI * (getRand(PI));
-	//auto b = 1.0 / (cos(2.0 * (getRand(PI))-1.0));
-
-	auto a = 2.0 * PI * (getRand(PI));
-	auto b = 2.0 * PI * (getRand(PI));
-
 	//TODO:real random scatter point in sphere missing
+	auto a = 2.0 * PI * (getRand());
+	//auto b = acos(2.0 * getRand() - 1.0);
+	auto b = 2.0 * PI * (getRand());
+
 	auto r = vxVector3d(sin(b),cos(b),sin(a));
 	r.setUnit();
 	r=r*radius;
 	return r;
 }
+
+vxVector3d MathUtils::getHollowHemisphereRand(double radius, const vxVector3d &normal)
+{
+	auto r = getHollowSphereRand(radius);
+	r.setUnit();
+	r=r*radius;
+//	r=r-normal;
+	return r;
+}
+
 
 vxVector3d MathUtils::getSphereRand(double radius)
 {
