@@ -50,12 +50,10 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 }
 
 
-#define USE_THREADS 0
+#define USE_THREADS 1
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
-	std::cout << "Starting render AT: " << TimeUtils::decorateTime(start);
-
 	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
 	m_finished = false;
 
@@ -74,7 +72,7 @@ vxStatus::code vxRenderProcess::execute()
 
 	a.join();
 	b.join();
-	std::cout << "Finish Render Process: " << TimeUtils::decorateTime(start);
+	std::cout << "Render Process done, took: " << TimeUtils::decorateTime(start);
 
 	return vxStatus::code::kSuccess;
 }
