@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(844,844);
+	auto imgDesc = std::make_shared<ImageProperties>(644,644);
 	
 	// create the render process
 	render rp(imgDesc);

@@ -2,6 +2,7 @@
 #define VXRENDERPROCESS_H
 
 #include <memory>
+#include <atomic>
 
 #include "vxProcess.h"
 #include "vxStatus.h"
@@ -31,7 +32,7 @@ private:
 
 	std::shared_ptr<const ImageProperties> m_prop;
 	std::shared_ptr<vxScene> m_scene;
-
+	std::atomic_bool m_finished;
 	unsigned int m_nMaxThreads{1000};
 	
 public:

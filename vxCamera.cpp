@@ -69,12 +69,12 @@ void vxCamera::set(const vxVector3d& position,
 vxRayXYZ vxCamera::ray(double x, double y) const
 {
 	double compX = m_hApTan * (( x * 2.0)-1.0) 
-				   - 1.0/(double)(2.0 * m_rx)
-				   + m_sampler.x()/m_rx;
+					- 1.0/(double)(2.0 * m_rx)
+					+ m_sampler.x()/m_rx;
 	
 	double compY = m_vApTan * (( y * 2.0)-1.0)
-				   - 1.0/(double)(2.0 * m_ry)
-				   + m_sampler.y()/m_ry;
+					- 1.0/(double)(2.0 * m_ry)
+					+ m_sampler.y()/m_ry;
 	
 	return vxRayXYZ(compY, compX, m_focusDistance);
 }
@@ -98,7 +98,7 @@ void vxCamera::resetSampler()
 
 vxRayXYZ vxCamera::nextSampleRay(double x, double y)
 {
-	vxRayXYZ ret = ray(x, y);
+	auto ret = ray(x, y);
 	//todo:remove hardcoded value.
 	ret.rotateX(.333);
 	m_sampler.next();

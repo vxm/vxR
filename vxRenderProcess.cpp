@@ -54,9 +54,10 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
-	std::cout << "Starting render AT: " << TimeUtils::decorateTime(start) << std::endl;
+	std::cout << "Starting render AT: " << TimeUtils::decorateTime(start);
 
 	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
+	m_finished = false;
 
 #if USE_THREADS
 	std::thread a([&]{this->render(1,0);});
@@ -65,10 +66,15 @@ vxStatus::code vxRenderProcess::execute()
 	std::thread a([&]{this->render(nTh,0);});
 	std::thread b([&]{this->render(nTh,1);});
 #endif
+	while(!m_finished)
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(4));
+		std::cout << "Yeeping" << std::endl;
+	}
 
 	a.join();
 	b.join();
-	std::cout << "Finish Render Process: " << TimeUtils::decorateTime(start) << std::endl;
+	std::cout << "Finish Render Process: " << TimeUtils::decorateTime(start);
 
 	return vxStatus::code::kSuccess;
 }
@@ -100,7 +106,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		rCamera->resetSampler();
 		for(unsigned int s=0;s<nSamples;s++)
 		{
-			if(vxScene::throwRay(scene(), //shared?
+			if(vxScene::throwRay(scene(),
 									rCamera->nextSampleRay(coords.x(), coords.y()),
 									collision))
 			{
@@ -119,6 +125,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		}
 	}
 
+	m_finished = true;
 	return vxStatus::code::kSuccess;
 }
 
