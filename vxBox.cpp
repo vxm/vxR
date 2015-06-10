@@ -159,7 +159,7 @@ bool vxBox::inSight(const vxRayXYZ &ray)
 	return (inSightXY(ray) && inSightYZ(ray) && inSightZX(ray));
 }
 
-int vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide)
+int vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 {
 	//if (true)
 	if (throwSpace(ray, collide))

@@ -50,10 +50,10 @@ public:
 	bool inSightYZ(const vxRayXYZ &ray);
 	bool inSightZX(const vxRayXYZ &ray);
 
-	virtual int throwRay(const vxRayXYZ &ray, vxCollision &collision);
-	virtual void throwXY(const vxRayXYZ &ray, vxCollision &collision) = 0;
-	virtual void throwYZ(const vxRayXYZ &ray, vxCollision &collision) = 0;
-	virtual void throwZX(const vxRayXYZ &ray, vxCollision &collision) = 0;
+	virtual int throwRay(const vxRayXYZ &ray, vxCollision &collision) const;
+	virtual void throwXY(const vxRayXYZ &ray, vxCollision &collision) const = 0;
+	virtual void throwYZ(const vxRayXYZ &ray, vxCollision &collision) const = 0;
+	virtual void throwZX(const vxRayXYZ &ray, vxCollision &collision) const = 0;
 
 	bool inSighte(const vxRayXYZ &ray, vxVector3d &normal);
 	bool inSighteXY(double c);
@@ -76,9 +76,6 @@ protected:
 	//TODO:question this variable, is really needed?
 	bool m_bs[6];
 	static vxVector3d m_normals[6];
-
-	// normal index
-	int m_inormal;
 
 public:
 	vxBoxN()
@@ -125,7 +122,6 @@ public:
 
 	void initialize()
 	{
-		m_inormal=6;
 		clearPoints();
 	}
 
@@ -144,22 +140,30 @@ public:
 		m_position.set(x,y,z);
 	}
 
-	virtual int throwRay(const vxRayXYZ &ray, vxCollision &collision);
+	virtual int throwRay(const vxRayXYZ &ray, vxCollision &collision) const;
 	
 	// funcion de acceso, mas adelante cuestionar si seria, o no, mejor 
 	// calcular la matriz siempre al principio, en un actualize.
-	inline double getPoint0() {	return m_bs[0] ? m_ps[0] : m_bs[0]=true, m_ps[0]=m_position.x()-(m_apot); }
-	inline double getPoint1() {	return m_bs[1] ? m_ps[1] : m_bs[1]=true, m_ps[1]=m_position.y()-(m_apot); }
-	inline double getPoint2() {	return m_bs[2] ? m_ps[2] : m_bs[2]=true, m_ps[2]=m_position.z()-(m_apot); }
-	inline double getPoint3() {	return m_bs[3] ? m_ps[3] : m_bs[3]=true, m_ps[3]=m_position.x()+(m_apot); }
-	inline double getPoint4() {	return m_bs[4] ? m_ps[4] : m_bs[4]=true, m_ps[4]=m_position.y()+(m_apot); }
-	inline double getPoint5() {	return m_bs[5] ? m_ps[5] : m_bs[5]=true, m_ps[5]=m_position.z()+(m_apot); }
+	inline double getPoint0() const
+	{
+		return m_position.x()-m_apot;
+	}
+	inline double getPoint1() const
+	{	return m_position.y()-(m_apot); }
+	inline double getPoint2() const
+	{	return m_position.z()-(m_apot); }
+	inline double getPoint3() const
+	{	return m_position.x()+(m_apot); }
+	inline double getPoint4() const
+	{	return m_position.y()+(m_apot); }
+	inline double getPoint5() const
+	{	return m_position.z()+(m_apot); }
 
-	virtual bool throwSpace(const vxRayXYZ &ray, vxCollision &collide)=0;
+	virtual bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const =0;
 
-	virtual int frontSigth(const vxRayXYZ &ray) =0;
-	virtual int topSigth(const vxRayXYZ &ray) =0;
-	virtual int rightSigth(const vxRayXYZ &ray) =0;
+	virtual int frontSigth(const vxRayXYZ &ray) const =0;
+	virtual int topSigth(const vxRayXYZ &ray) const =0;
+	virtual int rightSigth(const vxRayXYZ &ray) const =0;
 		
 };
 
@@ -173,7 +177,7 @@ public:
 	vxBoxN1(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override  //x
+	virtual int frontSigth(const vxRayXYZ &ray) const override  //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -182,7 +186,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint5());
@@ -191,7 +195,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 	
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint3());
@@ -201,7 +205,7 @@ public:
 	}
 
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		unsigned int a = frontSigth(ray);
 		if(a==0)
@@ -215,10 +219,10 @@ public:
 		if(c==0)
 			return false;
 		
-		m_inormal = (a==1 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;
+		auto inormal = (a==1 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;
 
 		// por supuesto esto es solo para comprobar captura de normales.
-		switch(m_inormal)
+		switch(inormal)
 		{	
 			case 1:
 			{
@@ -275,7 +279,7 @@ public:
 	vxBoxN5(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override//x
+	virtual int frontSigth(const vxRayXYZ &ray) const override//x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint5(),getPoint4());
@@ -284,7 +288,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint5());
@@ -293,7 +297,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 	
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint0());
@@ -303,16 +307,16 @@ public:
 	}
 
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		int a,b,c;
 
 		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 		{
-			m_inormal = (a==2 && c==1) ? 2 : (b==2 && c==2) ? 1 : 3;
+			auto inormal = (a==2 && c==1) ? 2 : (b==2 && c==2) ? 1 : 3;
 
 			// por supuesto esto es solo para comprobar captura de normales.
-			switch(m_inormal)
+			switch(inormal)
 			{	
 				case 1:
 					{
@@ -376,7 +380,7 @@ public:
 	vxBoxN4(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override //x
+	virtual int frontSigth(const vxRayXYZ &ray) const override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -385,7 +389,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	}
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint2());
@@ -394,7 +398,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	}
 	
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint4(),getPoint3());
@@ -404,16 +408,16 @@ public:
 	}
 
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		int a,b,c;
 
 		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 		{
-			m_inormal = (a==2 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;
+			auto inormal = (a==2 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;
 
 			// por supuesto esto es solo para comprobar captura de normales.
-			switch(m_inormal)
+			switch(inormal)
 			{	
 				case 1:
 					{
@@ -471,7 +475,7 @@ public:
 	vxBoxN8(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override //x
+	virtual int frontSigth(const vxRayXYZ &ray) const override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint5(),getPoint4());
@@ -480,7 +484,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint2());
@@ -489,7 +493,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	}
 	
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint4(),getPoint0());
@@ -499,16 +503,16 @@ public:
 	}
 
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		int a,b,c;
 //previ
 		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 		{
-			m_inormal = (a==2 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;
+			auto inormal = (a==2 && c==2) ? 2 : (b==2 && c==1) ? 1 : 3;
 
 			// por supuesto esto es solo para comprobar captura de normales.
-			switch(m_inormal)
+			switch(inormal)
 			{	
 				case 1:
 					{
@@ -566,7 +570,7 @@ public:
 	vxBoxN12(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override //x
+	virtual int frontSigth(const vxRayXYZ &ray) const override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -575,7 +579,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	}
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint3(),getPoint2());
@@ -583,7 +587,7 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 	
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint3());
@@ -592,17 +596,17 @@ public:
 	}
 
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		int a,b,c;
 
 		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 	//		if (b=topSigth(ray)) // si lo ven pr
 		{
-			m_inormal = a==1 ? 4 : 3;
+			auto inormal = a==1 ? 4 : 3;
 
 			// por supuesto esto es solo para comprobar captura de normales.
-			switch(m_inormal)
+			switch(inormal)
 			{	
 				case 3:
 					{
@@ -647,7 +651,7 @@ public:
 	vxBoxN20(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override //x
+	virtual int frontSigth(const vxRayXYZ &ray) const override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -655,7 +659,7 @@ public:
 		return (ang>min && ang<max) ? 1 : 0;
 	}
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint2());
@@ -664,7 +668,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 2 : 1 : 0;
 	} 
 
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint3());
@@ -673,17 +677,17 @@ public:
 	}
 
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		int a,b,c;
 
 		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 		//if ((a=frontSigth(ray)) && (c=rightSigth(ray)))
 		{
-			m_inormal = b==1 ? 2 : 1;
+			auto inormal = b==1 ? 2 : 1;
 
 			// por supuesto esto es solo para comprobar captura de normales.
-			switch(m_inormal)
+			switch(inormal)
 			{	
 				case 1:
 					{
@@ -731,7 +735,7 @@ public:
 	vxBoxN17(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override //x
+	virtual int frontSigth(const vxRayXYZ &ray) const override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -739,7 +743,7 @@ public:
 		return (ang>min && ang<max) ? 1 : 0;
 	}
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint0(),getPoint5());
@@ -748,7 +752,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 	
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint1(),getPoint0());
@@ -757,16 +761,16 @@ public:
 	}
 
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		int a,b,c;
 
 		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 		{
-			m_inormal = b==1 ? 2 : 1;
+			auto inormal = b==1 ? 2 : 1;
 
 			// por supuesto esto es solo para comprobar captura de normales.
-			switch(m_inormal)
+			switch(inormal)
 			{	
 				case 1:
 					{
@@ -812,7 +816,7 @@ public:
 	vxBoxN16(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override //x
+	virtual int frontSigth(const vxRayXYZ &ray) const override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint5(),getPoint4());
@@ -821,7 +825,7 @@ public:
 		return (ang>min && ang<max) ? ang>mid ? 1 : 2 : 0;
 	}
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint3(),getPoint2());
@@ -829,7 +833,7 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 	
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint4(),getPoint3());
@@ -837,17 +841,17 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		int a,b,c;
 
 		if ((a=frontSigth(ray)) && (b=topSigth(ray)) && (c=rightSigth(ray))) // si lo ven pr
 		//		if ((a=frontSigth(ray)) && (b=topSigth(ray))) // si lo ven pr
 		{
-			m_inormal = a==1 ? 2 : 3;
+			auto inormal = a==1 ? 2 : 3;
 
 			// por supuesto esto es solo para comprobar captura de normales.
-			switch(m_inormal)
+			switch(inormal)
 			{	
 
 				case 2:
@@ -894,7 +898,7 @@ public:
 	vxBoxN24(const double x, const double y, const double z, const double sze)
 		:vxBoxN(x, y, z, sze) {}
 
-	virtual int frontSigth(const vxRayXYZ &ray) override //x
+	virtual int frontSigth(const vxRayXYZ &ray) const override //x
 	{
 		double ang = ray.angleYZ();
 		double min = atan2(getPoint2(),getPoint4());
@@ -903,7 +907,7 @@ public:
 	}
 
 
-	virtual int topSigth(const vxRayXYZ &ray) //y
+	virtual int topSigth(const vxRayXYZ &ray) const override//y
 	{
 		double ang = ray.angleZX();
 		double min = atan2(getPoint3(),getPoint2());
@@ -911,7 +915,7 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 
-	virtual int rightSigth(const vxRayXYZ &ray) //z
+	virtual int rightSigth(const vxRayXYZ &ray) const override//z
 	{
 		double ang = ray.angleXY();
 		double min = atan2(getPoint4(),getPoint3());
@@ -919,7 +923,7 @@ public:
 		return (ang>max && ang<min) ?  1 : 0;
 	}
 	
-	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) override
+	bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const override
 	{
 		int a,b;
 

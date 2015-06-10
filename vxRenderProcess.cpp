@@ -55,7 +55,7 @@ vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
 	m_finished = false;
-
+	auto updateInterval = 2;
 #if USE_THREADS
 	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
 	std::thread a([&]{this->render(nTh,0);});
@@ -66,8 +66,8 @@ vxStatus::code vxRenderProcess::execute()
 #endif
 	while(!m_finished)
 	{
-		std::this_thread::sleep_for(std::chrono::seconds(2));
-		std::cout << "(2) progress update: " << (progress()) << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(updateInterval));
+		std::cout << "(" << updateInterval << ") progress update: " << (progress()) << std::endl;
 	}
 
 	a.join();
@@ -79,7 +79,7 @@ vxStatus::code vxRenderProcess::execute()
 
 double vxRenderProcess::progress() const
 {
-	return 100 * m_progress.load()  / m_prop->numElements();
+	return 100 * m_progress.load()  / m_prop->numPixels();
 }
 
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
@@ -94,23 +94,22 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	assert(offset<this->imageProperties()->rx());
 
 	// moving to start point.
-	auto itH=offset;
-	auto itV=0u;
-	vxVector2d cors;
+	unsigned int itH {offset};
+	unsigned int itV {0.0};
 
 	// on eachpixel.
 	while(!(itV>=(m_prop->ry())))
 	{
-		cors.setX((itH)/(double)m_prop->rx());
-		cors.setY((itV)/(double)m_prop->ry());
+		vxVector2d cors(itH/(double)m_prop->rx(),
+						itV/(double)m_prop->ry());
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(cors.x(), cors.y());
 		rCamera->resetSampler();
 		for(unsigned int s=0;s<nSamples;s++)
 		{
-			auto ray = rCamera->nextSampleRay(cors.x(), cors.y());
-			if(m_scene->throwRay(ray,collision))
+			const auto& ray = rCamera->nextSampleRay(cors.x(), cors.y());
+			if(m_scene->throwRay(ray, collision))
 			{
 				c.add(collision.color());
 			}

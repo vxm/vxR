@@ -498,7 +498,7 @@ int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 	if (m_boundingBox->throwRay(ray, collide)
 			&& getNearestCollision(ray, collide))
 	{
-		vxBoxN *boxInstance = vxGlobal::getInstance()->getExistingtBox( collide.position(), m_boxSize);
+		const vxBoxN *boxInstance = vxGlobal::getInstance()->getExistingtBox( collide.position(), m_boxSize);
 		return boxInstance->throwRay( ray, collide );
 	}
 	else

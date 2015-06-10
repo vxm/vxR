@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 14
+#define RESL 34
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -22,8 +22,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nSamples = 4;
-	int nLightSamples = 112;
+	int nSamples = 3;
+	int nLightSamples = 12;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
