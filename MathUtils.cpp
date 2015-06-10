@@ -74,7 +74,7 @@ vxVector3d MathUtils::getHollowSphereRand(double radius)
 	//auto b = acos(2.0 * getRand() - 1.0);
 	auto b = 2.0 * PI * (getRand());
 
-	auto r = vxVector3d(sin(b),cos(b),sin(a));
+	auto r = vxVector3d(getRand()-.5,getRand()-.5,getRand()-.5);
 	r.setUnit();
 	r=r*radius;
 	return r;
@@ -89,6 +89,19 @@ vxVector3d MathUtils::getHollowHemisphereRand(double radius, const vxVector3d &n
 	return r;
 }
 
+//vxVector3d MathUtils::spherePointToMap(const vxVector2d &polar)
+//{
+//	azimuth = atan2(y,x)
+//	elevation = atan2(z,sqrt(x.^2 + y.^2))
+//	r = sqrt(x.^2 + y.^2 + z.^2)
+//}
+
+vxVector2d MathUtils::spherePointToMap(const vxVector3d &position)
+{
+	auto x = acos(position.y());
+	auto y = atan(position.x() / position.z());
+	return vxVector2d(x, y);
+}
 
 vxVector3d MathUtils::getSphereRand(double radius)
 {

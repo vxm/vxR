@@ -73,8 +73,8 @@ vxRayXYZ vxCamera::ray(double x, double y) const
 					+ m_sampler.x()/m_rx;
 	
 	double compY = m_vApTan * (( y * 2.0)-1.0)
-					- 1.0/(double)(2.0 * m_ry)
-					+ m_sampler.y()/m_ry;
+				   - 1.0/(double)(2.0 * m_ry)
+				   + m_sampler.y()/m_ry;
 	
 	return vxRayXYZ(compY, compX, m_focusDistance);
 }

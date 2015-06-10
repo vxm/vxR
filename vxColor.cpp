@@ -102,7 +102,8 @@ void vxColor::set(const vxColor &other)
 	m_a = other.m_a;
 }
 
-void vxColor::reset() {
+void vxColor::reset()
+{
 	m_r=0;
 	m_g=0;
 	m_b=0;
@@ -165,9 +166,16 @@ void vxColor::blend(const vxColor &other)
 
 void vxColor::setToGamma(double gamma)
 {
-	m_r=pow(m_r, gamma);
-	m_g=pow(m_g, gamma);
-	m_b=pow(m_b, gamma);
+	m_r=pow(m_r+1.0, gamma)-1.0;
+	m_g=pow(m_g+1.0, gamma)-1.0;
+	m_b=pow(m_b+1.0, gamma)-1.0;
+}
+
+void vxColor::gain(double gain)
+{
+	m_r+=gain;
+	m_g+=gain;
+	m_b+=gain;
 }
 
 vxColor vxColor::operator+(unsigned int factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_b);}

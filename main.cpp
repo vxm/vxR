@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	// description.
 	rp.createBucketList();
 	
-	std::cout << "Starting render : " << TimeUtils::decorateTime(start) << std::endl;
+	std::cout << "Render process: " << TimeUtils::decorateTime(start) << std::endl;
 	
 	// executes the render.
 	if(rp.execute()==vxStatus::code::kError)

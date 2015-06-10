@@ -23,7 +23,7 @@ vxScene::~vxScene()
 void vxScene::build()
 {
 	int nSamples = 4;
-	int nLightSamples = 152;
+	int nLightSamples = 112;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -52,7 +52,7 @@ void vxScene::build()
 	l3->setColor(vxColor::white);
 	l3->setSamples(nLightSamples/nSamples);
 	l3->setRadius(3186);
-	l3->setIntensity(5.2);
+	l3->setIntensity(6.2);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
@@ -204,13 +204,12 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	return true;
 }
 
-int vxScene::throwRay(std::shared_ptr<vxScene> sc,
-						const vxRayXYZ &ray, 
-						vxCollision &collide)
+int vxScene::throwRay(const vxRayXYZ &ray,
+						vxCollision &collide) const
 { 
-	if(sc->m_grids[0]->throwRay(ray,collide))
+	if(m_grids[0]->throwRay(ray,collide))
 	{
-		vxColor col(sc->defaultShader()->getColor(collide));
+		vxColor col(defaultShader()->getColor(collide));
 		collide.setColor( col );
 
 		return 1;
@@ -226,7 +225,7 @@ int vxScene::throwRay(std::shared_ptr<vxScene> sc,
 		collide.setU(fmod(p.x(),1.0));
 		collide.setV(fmod(p.z(),1.0));
 		
-		vxColor col(sc->defaultShader()->getColor(collide));
+		vxColor col(defaultShader()->getColor(collide));
 		collide.setColor( col );
 		collide.setValid();
 		return 1;

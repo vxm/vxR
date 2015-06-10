@@ -54,13 +54,13 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
-	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
 	m_finished = false;
 
 #if USE_THREADS
 	std::thread a([&]{this->render(1,0);});
 	std::thread b([&]{});
 #else
+	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
 	std::thread a([&]{this->render(nTh,0);});
 	std::thread b([&]{this->render(nTh,1);});
 #endif
@@ -89,37 +89,36 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	assert(offset<this->imageProperties()->rx());
 
 	// moving to start point.
-	auto m_itX=offset;
-	auto m_itY=0u;
-	vxVector2d coords;
+	auto itH=offset;
+	auto itV=0u;
+	vxVector2d cors;
 
 	// on eachpixel.
-	while(!(m_itY>=(m_prop->ry())))
+	while(!(itV>=(m_prop->ry())))
 	{
-		coords.setX(m_itX/(double)m_prop->rx());
-		coords.setY(m_itY/(double)m_prop->ry());
+		cors.setX((itH)/(double)m_prop->rx());
+		cors.setY((itV)/(double)m_prop->ry());
 
 		//TODO: return this to smart pointer.
-		auto bk = m_bucketList.getBucket(coords.x(), coords.y());
+		auto bk = m_bucketList.getBucket(cors.x(), cors.y());
 		rCamera->resetSampler();
 		for(unsigned int s=0;s<nSamples;s++)
 		{
-			if(vxScene::throwRay(scene(),
-									rCamera->nextSampleRay(coords.x(), coords.y()),
-									collision))
+			auto ray = rCamera->nextSampleRay(cors.x(), cors.y());
+			if(m_scene->throwRay(ray,collision))
 			{
 				c.add(collision.color());
 			}
 		}
 
-		bk->append(c*invSamples, coords);
+		bk->append(c*invSamples, cors);
 		c.reset();
 
-		m_itX+=by;
-		if(m_itX >= m_prop->rx())
+		itH+=by;
+		if(itH >= m_prop->rx())
 		{
-			m_itY+=1;
-			m_itX %= m_prop->rx();
+			itV+=1;
+			itH %= m_prop->rx();
 		}
 	}
 
@@ -180,18 +179,23 @@ vxRenderProcess::generateImage()
 	{
 		std::vector<Hit> *bk = m_bucketList[i].m_pb.getHits();
 		auto sz = m_bucketList[i].m_pb.hitsCount();
-		
+
 		unsigned int dist;
-		// for every of their render Hit.
-		//for(auto it = begin(bk);it!=end(bk);++it)
 		for(unsigned int j=0;j<sz;j++)
 		{
 			Hit &h = (*bk)[j];
+
+			// Pixel postprocess
+			h.m_px.setToGamma(2.2);
+
+
 			unsigned int compX = h.m_xyCoef.y() * (prop->rx()+1);
 			unsigned int compY = h.m_xyCoef.x() * (prop->ry()+1);
 			dist = (compX + (compY * prop->rx())) * prop->numChannels();
 			if(dist>numElements)
+			{
 				dist = numElements;
+			}
 			h.m_px.toRGBA8888(buff + dist);
 		}
 	}

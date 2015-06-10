@@ -38,6 +38,8 @@ class MathUtils
 	static double remap(double v, double min, double max);
 	static vxColor remap(const vxColor &col, double min, double max);
 	static vxVector3d getHollowHemisphereRand(double radius, const vxVector3d &normal);
+	static vxVector2d spherePointToMap(const vxVector3d &position);
+
 };
 
 
