@@ -35,6 +35,8 @@ private:
 	std::atomic_bool m_finished;
 	unsigned int m_nMaxThreads{1000};
 	
+	std::atomic<double> m_progress;
+
 public:
 
 	// constructor with imageproperties propagation
@@ -75,6 +77,8 @@ public:
 	}
 	unsigned int nMaxThreads() const;
 	void setNMaxThreads(unsigned int nMaxThreads);
+
+	double progress() const;
 };
 
 #endif // VXRENDERPROCESS_H

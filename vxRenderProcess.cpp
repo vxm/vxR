@@ -57,24 +57,29 @@ vxStatus::code vxRenderProcess::execute()
 	m_finished = false;
 
 #if USE_THREADS
-	std::thread a([&]{this->render(1,0);});
-	std::thread b([&]{});
-#else
 	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
 	std::thread a([&]{this->render(nTh,0);});
 	std::thread b([&]{this->render(nTh,1);});
+#else
+	std::thread a([&]{this->render(1,0);});
+	std::thread b([&]{});
 #endif
 	while(!m_finished)
 	{
-		std::this_thread::sleep_for(std::chrono::seconds(4));
-		std::cout << "Yeeping" << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+		std::cout << "(2) progress update: " << (progress()) << std::endl;
 	}
 
 	a.join();
 	b.join();
-	std::cout << "Render Process done, took: " << TimeUtils::decorateTime(start);
+	std::cout << "Render Process done, took: " << TimeUtils::decorateTime(start, 2);
 
 	return vxStatus::code::kSuccess;
+}
+
+double vxRenderProcess::progress() const
+{
+	return 100 * m_progress.load()  / m_prop->numElements();
 }
 
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
@@ -119,6 +124,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		{
 			itV+=1;
 			itH %= m_prop->rx();
+
+			m_progress.store(m_progress.load() + (double)itV);
 		}
 	}
 

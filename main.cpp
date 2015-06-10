@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	// description.
 	rp.createBucketList();
 	
-	std::cout << "Render process: " << TimeUtils::decorateTime(start) << std::endl;
+	std::cout << "Render process: " << TimeUtils::decorateTime(start,2) << std::endl;
 	
 	// executes the render.
 	if(rp.execute()==vxStatus::code::kError)
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 	}
 	
 	std::cout << "Finished render : " 
-			<< TimeUtils::decorateTime(start) << std::endl;
+			<< TimeUtils::decorateTime(start,2) << std::endl;
 
 	// generates an image buffer and fills it 
 	// with the render results. Buffer properties
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 	auto bff = rp.generateImage();
 
 	std::cout << "Ended creation of the image: " 
-			<< TimeUtils::decorateTime(start) << std::endl;
+			<< TimeUtils::decorateTime(start,2) << std::endl;
 
 	// storing an image from the buffer obtained.
 	if (bff!=nullptr)
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 					<< std::endl;
 		
 		std::cout << "Finished image generation : " 
-				<< TimeUtils::decorateTime(start) << std::endl;
+				<< TimeUtils::decorateTime(start,2) << std::endl;
 	}
 
 	//return a.exec();
