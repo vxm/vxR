@@ -54,8 +54,7 @@ public:
 	void build();
 
 	std::shared_ptr<vxCamera>
-		createCamera(const vxMatrix &transform,
-					unsigned int samples = 1,
+		createCamera(const vxMatrix &,
 					double hAperture = 0.0,
 					double vAperture = 0.0);
 

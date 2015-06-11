@@ -71,7 +71,7 @@ public:
 	}
 	
 	void reset(std::shared_ptr<const ImageProperties> prop,
-			   unsigned int bucketsInX)
+				unsigned int bucketsInX)
 	{
 		m_nBucketsInX = bucketsInX;
 		m_prop = prop;
@@ -93,16 +93,16 @@ public:
 		return (m_prop->rx() * m_prop->ry()) / (sidePixels * sidePixels);
 	}
 	
-	unsigned int getIndex(double x, double y) const
+	unsigned int getIndex(const vxVector2d &coords) const
 	{
-		int r1 = int(x*m_nBucketsInX);
-		int r2 = int(m_nBucketsInX * y);
+		int r1 = int(coords.x()*m_nBucketsInX);
+		int r2 = int(m_nBucketsInX * coords.y());
 		return  r1 + r2*m_nBucketsInX;
 	}
 	
-	vxBucket* getBucket(double x, double y)
+	vxBucket* getBucket(const vxVector2d& coords)
 	{
-		auto id = getIndex(x,y);
+		auto id = getIndex(coords);
 		
 		return &m_buckets[id];
 	}

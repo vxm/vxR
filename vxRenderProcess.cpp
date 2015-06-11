@@ -1,3 +1,4 @@
+#include <iostream>
 #include <climits>
 #include <cassert>
 #include <thread>
@@ -9,10 +10,7 @@
 #include "vxPixel.h"
 #include "ImageProperties.h"
 #include "TimeUtils.h"
-
-#ifdef _DEBUG
-#include <iostream>
-#endif
+#include "vxSampler.h"
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
@@ -50,12 +48,13 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 }
 
 
-#define USE_THREADS 1
+#define USE_THREADS 0
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
 	m_finished = false;
-	auto updateInterval = 2;
+
+	const auto &updateInterval = 10; //seconds
 #if USE_THREADS
 	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
 	std::thread a([&]{this->render(nTh,0);});
@@ -67,7 +66,7 @@ vxStatus::code vxRenderProcess::execute()
 	while(!m_finished)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(updateInterval));
-		std::cout << "(" << updateInterval << ") progress update: " << (progress()) << std::endl;
+		std::cout << "(" << updateInterval << ") progress update: " << std::setprecision(2) << progress() << std::endl;
 	}
 
 	a.join();
@@ -84,39 +83,38 @@ double vxRenderProcess::progress() const
 
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
-	const auto& rCamera = scene()->defaultCamera();
-	unsigned int nSamples = rCamera->getPixelSamples();
-	const double invSamples = 1.0/(double)nSamples;
-
-	vxCollision collision;
-	vxColor c;
-
 	assert(offset<this->imageProperties()->rx());
+	const auto& rCamera = scene()->defaultCamera();
+	unsigned int nSamples = 4;
+	const double invSamples = 1.0/(double)nSamples;
+	vxSampler sampler(nSamples);
+	vxCollision collision;
 
 	// moving to start point.
 	unsigned int itH {offset};
-	unsigned int itV {0.0};
+	unsigned int itV {0u};
 
 	// on eachpixel.
 	while(!(itV>=(m_prop->ry())))
 	{
+		vxColor c;
 		vxVector2d cors(itH/(double)m_prop->rx(),
 						itV/(double)m_prop->ry());
 
 		//TODO: return this to smart pointer.
-		auto bk = m_bucketList.getBucket(cors.x(), cors.y());
-		rCamera->resetSampler();
+		auto bk = m_bucketList.getBucket(cors);
 		for(unsigned int s=0;s<nSamples;s++)
 		{
-			const auto& ray = rCamera->nextSampleRay(cors.x(), cors.y());
+			const auto& ray = rCamera->ray(cors, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
 				c.add(collision.color());
 			}
+			sampler.next();
 		}
-
-		bk->append(c*invSamples, cors);
-		c.reset();
+		sampler.resetIterator();
+		vxColor fCol = c*invSamples;
+		bk->append(fCol, cors);
 
 		itH+=by;
 		if(itH >= m_prop->rx())

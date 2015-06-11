@@ -13,7 +13,7 @@
 #include <vxVector.h>
 #include <vxGrid.h>
 
-static const std::string baseName("image.1.bmp");
+static const std::string baseName("image.0000001.bmp");
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
 using namespace vxCore;
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(744,744);
+	auto imgDesc = std::make_shared<ImageProperties>(4122,4122);
 	
 	// create the render process
 	render rp(imgDesc);

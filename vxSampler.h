@@ -21,8 +21,10 @@ class vxSampler
 	
 public:
 	
-	vxSampler()
+	vxSampler(unsigned int nSamples)
 	{
+		//TODO:should be constructed not initialised
+		setSamples(nSamples);
 	};
 	
 	~vxSampler()
@@ -46,10 +48,14 @@ public:
 	}
 
 	double x() const
-		{return m_x[m_iter];}
+	{
+		return m_x[m_iter];
+	}
 
 	double y() const
-		{return m_y[m_iter];}
+	{
+		return m_y[m_iter];
+	}
 
 	void setSamples(unsigned int samples)
 	{

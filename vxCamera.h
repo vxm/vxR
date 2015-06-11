@@ -4,14 +4,14 @@
 #include <iostream>
 #include <math.h>
 
-#include "vxObject.h"
-#include "vxVector.h"
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ImageProperties.h>
-#include <vxSampler.h>
-#include <vxContactBuffer.h>
+
+#include "vxVector.h"
+#include "ImageProperties.h"
+#include "vxContactBuffer.h"
+#include "vxSampler.h"
 
 
 namespace vxCore {
@@ -31,13 +31,10 @@ private:
 	
 	double m_hApTan = tan(-m_horizontalAperture/2.0);
 	double m_vApTan = tan(-m_verticalAperture/2.0);
-	
-	unsigned int m_nSamples = {1u};
 
 	double m_rx;
 	double m_ry;
 
-	vxSampler m_sampler;
 	std::shared_ptr<const ImageProperties> m_prop;
 
 public:
@@ -49,30 +46,21 @@ public:
 				double apertureH,
 				double apertureV);
 
-	void setPixelSamples(const unsigned int numSamples);
-	unsigned int getPixelSamples() const;
-
 	void set(const vxVector3d &position, 
 			 const vxVector3d &orientation, 
 			 double focusD = 1.0, 
 			 double apertureH = 0.0, 
 			 double apertureV = 0.0);
 	
-	vxRayXYZ ray(double x, double y) const;
+	vxRayXYZ ray(const vxVector2d &coord, const vxSampler &sampler) const;
 	
-	vxRayXYZ givemeRandRay(double x, double y);
+	vxRayXYZ givemeRandRay(const vxVector2d &coord);
 
-	bool pixIsDone();
-
-	void resetSampler();
-	
 	void next(unsigned int skip = 1u);
-	
-	vxRayXYZ nextSampleRay(double x, double y);
 
 	vxRayXYZ givemeNextRay(const vxContactBuffer &imagen, double ang);
 
-	vxRayXYZ givemeRandomRay(double x, double y);
+	vxRayXYZ givemeRandomRay(const vxVector2d &coord);
 	
 	std::shared_ptr<const ImageProperties> prop() const;
 	

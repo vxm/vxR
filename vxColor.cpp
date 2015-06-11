@@ -27,6 +27,93 @@ vxColor vxColor::lookup256(const int r, const int g, const int b)
 					MathUtils::remap(b/255.0, mnc, mxc));
 }
 
+vxColor vxColor::colorIndex(const int idx)
+{
+	switch(idx%25)
+	{
+	case 0:
+		return red;
+	break;
+	case 1:
+		return green;
+	break;
+	case 2:
+		return blue;
+	break;
+	case 3:
+		return purple;
+	break;
+	case 4:
+		return yellow;
+	break;
+	case 5:
+		return pink;
+	break;
+	case 6:
+		return white;
+	break;
+	case 7:
+		return black;
+	break;
+	case 8:
+		return grey;
+	break;
+	case 9:
+		return orange;
+	break;
+	case 10:
+		return redPurple;
+	break;
+	case 11:
+		return bluegreen;
+	break;
+	case 12:
+		return reddishOrange;
+	break;
+	case 13:
+		return bluishPurple;
+	break;
+	case 14:
+		return orangePink;
+	break;
+	case 15:
+		return greenishBlue;
+	break;
+	case 16:
+		return bluishGreen;
+	break;
+	case 17:
+		return greenishYellow;
+	break;
+	case 18:
+		return reddishPurple;
+	break;
+	case 19:
+		return purplishBlue;
+	break;
+	case 20:
+		return purplishPink;
+	break;
+	case 21:
+		return purplishRed;
+	break;
+	case 22:
+		return yellowGreen;
+	break;
+	case 23:
+		return yellowishOrange;
+	break;
+	case 24:
+		return yellowishGreen;
+	break;
+	default:
+		return red;
+	break;
+	}
+	
+	return red;
+}
+
 vxColor vxColor::blue			(vxColor::lookup256(92, 138, 202));
 vxColor vxColor::bluishGreen	(vxColor::lookup256(24, 162, 121));
 vxColor vxColor::bluegreen		(vxColor::lookup256(95, 164, 190));
@@ -84,7 +171,12 @@ vxColor &vxColor::operator=(const vxVector3d &otro)
 }
 
 void vxColor::set(double r, double g, double b, double a)
-{m_r=r;m_g=g;m_b=b;m_a=a;}
+{
+	m_r=r;
+	m_g=g;
+	m_b=b;
+	m_a=a;
+}
 
 void vxColor::set(double r, double g, double b)
 {
@@ -192,15 +284,45 @@ vxColor vxColor::operator/(double factor) const {return vxColor(m_r/(double)fact
 
 vxColor vxColor::operator/(float factor) const {return vxColor(m_r/(double)factor,m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 
-vxColor vxColor::operator/(const vxColor &entrada) const {return vxColor(entrada.m_r/(double)m_r,entrada.m_g/(double)m_g,entrada.m_b/(double)m_b,entrada.m_a/(double)m_a);}
+vxColor vxColor::operator/(const vxColor &entrada) const 
+{
+	return vxColor(entrada.m_r/m_r,
+				   entrada.m_g/m_g,
+				   entrada.m_b/m_b,
+				   entrada.m_a/m_a);
+}
 
-vxColor vxColor::operator*(int factor) const {return vxColor(factor*m_r,factor*m_g,factor*m_b,factor*m_a);}
+vxColor vxColor::operator*(const vxColor &entrada) const 
+{
+	return vxColor(entrada.m_r*m_r,
+					entrada.m_g*m_g,
+					entrada.m_b*m_b,
+					entrada.m_a*m_a);
+}
+vxColor vxColor::operator*(const int factor) const 
+{
+	return vxColor(factor*m_r,
+					factor*m_g,
+					factor*m_b,
+					factor*m_a);
+}
 
-vxColor vxColor::operator*(float factor) const {return vxColor(factor*m_r,factor*m_g,factor*m_b,factor*m_a);}
+vxColor vxColor::operator*(const float factor) const 
+{
+	return vxColor(factor*m_r,
+					factor*m_g,
+					factor*m_b,
+					factor*m_a);
+}
 
-vxColor vxColor::operator*(double factor) const {return vxColor(factor*m_r,factor*m_g,factor*m_b,factor*m_a);}
+vxColor vxColor::operator*(double factor) const 
+{
+	return vxColor(factor*m_r,
+					factor*m_g,
+					factor*m_b,
+					factor*m_a);
+}
 
-vxColor vxColor::operator*(const vxColor &entrada) const {return vxColor(entrada.m_r*m_r,entrada.m_g*m_g,entrada.m_b*m_b,entrada.m_a*m_a);}
 
 vxColor vxColor::operator-(int factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
 

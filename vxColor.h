@@ -20,7 +20,7 @@ protected:
 	double m_g = {0.0};
 	double m_b = {0.0};
 	double m_a = {1.0};
-	
+
 public:
 
 	static vxColor blue;
@@ -50,43 +50,26 @@ public:
 	static vxColor grey;
 
 	static vxColor lookup(const vxColor col);
-	static vxColor lookup(const double r, const double g, const double b);
-	static vxColor lookup256(const int r, const int g, const int b);
-	static vxColor color(int idx)
-	{
-		switch(idx)
-		{
-		case 0:
-			return blue;
-		break;
-		case 1:
-			return red;
-		break;
-		case 2:
-			return yellow;
-		break;
-		case 3:
-			return green;
-		break;
-		case 4:
-			return orange;
-		break;
-		case 5:
-			return purple;
-		break;
+	static vxColor lookup(const double r,
+							const double g,
+							const double b);
 
-		}
+	static vxColor lookup256(const int r,
+								const int g,
+								const int b);
 
-		return black;
-	}
+	static vxColor colorIndex(const int idx);
 	
 	vxColor ();
-	vxColor (double r, double g, double b);
+	vxColor (const double r,
+			 const double g,
+			 const double b);
+
 	vxColor (double r, double g, double b, double a);
 	vxColor (const vxColor& other);
-	vxColor &operator=(const vxVector3d &otro);
+	vxColor& operator=(const vxVector3d &otro);
 	
-	void set(double r, double g, double b, double a);	
+	void set(double r, double g, double b, double a);
 	void set(double r, double g, double b);
 	void set(const vxColor &other);
 	

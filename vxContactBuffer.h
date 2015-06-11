@@ -71,16 +71,14 @@ public:
 	void append(const vxColor &px, const vxVector2d &coord)
 	{
 		std::lock_guard<std::mutex> lock_buff_op(m_mutex);
-
+	
 		if(m_k>=m_pxs.size())
 		{
 			m_pxs.resize(m_k + m_pxs.size());
 		}
-		
+	
 		Hit t(px,coord);
 		m_pxs[m_k]=t;
-		
-		//m_pxs.push_back(std::move(h));
 		m_k++;
 	}
 
