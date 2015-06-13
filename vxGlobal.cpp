@@ -21,13 +21,12 @@ vxGlobal *vxGlobal::getInstance()
 	return &a;
 }
 
-vxBoxN *vxGlobal::getExistingtBox(const vxVector3d &position, const double size)
+vxBoxN *vxGlobal::getExistingBox(const vxVector3d &position, const double size)
 {
-	return getExistingtBox( position.x(), position.y(), position.z(), size);
+	return getExistingBox( position.x(), position.y(), position.z(), size);
 }
 
-
-vxBoxN *vxGlobal::getExistingtBox(const double x, const double y, const double z, const double size)
+vxBoxN *vxGlobal::getExistingBox(const double x, const double y, const double z, const double size)
 {
 	double apot=size/2.0;
 	if (z-apot>=0)

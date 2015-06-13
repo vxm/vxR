@@ -41,8 +41,8 @@ public:
 	vxBoxN16 *m_num16;
 	vxBoxN24 *m_num24;
 	
-	vxBoxN* getExistingtBox(const vxVector3d &position, const double size);
-	vxBoxN* getExistingtBox(const double x ,const double y, const double z, const double size);
+	vxBoxN* getExistingBox(const vxVector3d &position, const double size);
+	vxBoxN* getExistingBox(const double x ,const double y, const double z, const double size);
 
 	//static std::shared_ptr<vxShader> getLambert();
 
