@@ -80,6 +80,12 @@ public:
 	double angle(const vxVector2d &other) const;
 
 	double angle() const;
+
+	friend std::ostream& operator<<(std::ostream &os, const vxVector2d& v)
+	{
+		return os << v.m_x << " " << v.m_y;
+	}
+	
 };
 
 class vxVector3d
