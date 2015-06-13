@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 44
+#define RESL 152
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -22,7 +22,7 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples = 52;
+	int nLightSamples = 130;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -51,7 +51,7 @@ void vxScene::build()
 	l3->setColor(vxColor::white);
 	l3->setSamples(nLightSamples);
 	l3->setRadius(3186);
-	l3->setIntensity(3.2);
+	l3->setIntensity(5.5);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
@@ -75,9 +75,9 @@ vxScene::createCamera(const vxMatrix &,
 						double vAperture)
 {
 	m_camera = std::make_shared<vxCamera>(m_prop);
-	m_camera->set(vxVector3d(0,0,0),
+	m_camera->set( vxVector3d(0,0,0),
 					vxVector3d(0,0,1),
-					3.3,
+					3.23,
 					hAperture,
 					vAperture);
 
@@ -204,7 +204,7 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 int vxScene::throwRay(const vxRayXYZ &ray,
 						vxCollision &collide) const
 { 
-	if(m_grids[0]->throwRay(ray,collide))
+	if(m_grids[0]->throwRay(ray, collide))
 	{
 		vxColor col(defaultShader()->getColor(collide));
 		collide.setColor( col );
@@ -214,7 +214,6 @@ int vxScene::throwRay(const vxRayXYZ &ray,
 
 	//TODO:take this to a dommo object or something like..
 	auto p = MathUtils::rectAndYPlane(ray, -RESL/2.0);
-	
 	if(!std::signbit(p.z()))
 	{
 		collide.setNormal(vxVector3d::constY);

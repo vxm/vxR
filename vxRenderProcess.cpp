@@ -48,13 +48,13 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 }
 
 
-#define USE_THREADS 0
+#define USE_THREADS 1
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
 	m_finished = false;
 
-	const auto &updateInterval = 10; //seconds
+	const auto &updateInterval = 2; //seconds
 #if USE_THREADS
 	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
 	std::thread a([&]{this->render(nTh,0);});
@@ -78,14 +78,14 @@ vxStatus::code vxRenderProcess::execute()
 
 double vxRenderProcess::progress() const
 {
-	return 100 * m_progress.load()  / m_prop->numPixels();
+	return 100.0 * m_progress.load()  / m_prop->numPixels();
 }
 
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	const auto& rCamera = scene()->defaultCamera();
 	unsigned int nSamples = 4;
+	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
 	vxCollision collision;
@@ -113,8 +113,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			sampler.next();
 		}
 		sampler.resetIterator();
-		vxColor fCol = c*invSamples;
-		bk->append(fCol, cors);
+		//vxColor fCol = (c*invSamples);
+		bk->append(c, cors);
 
 		itH+=by;
 		if(itH >= m_prop->rx())
@@ -190,7 +190,7 @@ vxRenderProcess::generateImage()
 			Hit &h = (*bk)[j];
 
 			// Pixel postprocess
-			h.m_px.setToGamma(2.2);
+		//	h.m_px.setToGamma(2.2);
 
 
 			unsigned int compX = h.m_xyCoef.y() * (prop->rx()+1);
