@@ -1,4 +1,6 @@
 #include "MathUtils.h"
+#include "vxVector.h"
+
 
 const double MathUtils::C{299'792'458.0};
 const double MathUtils::PI {3.141'592'653'589'793'238'462'\
@@ -8,7 +10,7 @@ MathUtils::MathUtils()
 {
 }
 
-vxPoint MathUtils::rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane)
+vxVector3d MathUtils::rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane)
 {
 	switch(plane.m_type)
 	{
@@ -27,34 +29,34 @@ vxPoint MathUtils::rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane)
 
 }
 
-vxPoint MathUtils::rectAndXPlane(const vxRayXYZ &ray, double x)
+vxVector3d MathUtils::rectAndXPlane(const vxRayXYZ &ray, double x)
 {
 	// parametric ecuation of the line solved.
 	auto t = (x - ray.x()) / -ray.x();
 	auto y = t * -ray.y() + ray.y();
 	auto z = t * -ray.z() + ray.z();
 
-	return vxPoint(x,y,z);
+	return vxVector3d(x,y,z);
 }
 
-vxPoint MathUtils::rectAndYPlane(const vxRayXYZ &ray, double y)
+vxVector3d MathUtils::rectAndYPlane(const vxRayXYZ &ray, double y)
 {
 	// parametric ecuation of the line solved.
-	auto t = (y - ray.y()) / -ray.y();
-	auto x = t * -ray.x() + ray.x();
-	auto z = t * -ray.z() + ray.z();
+	auto t = (y - ray.y()) / (-ray.y());
+	auto x = t * (-ray.x()) + ray.x();
+	auto z = t * (-ray.z()) + ray.z();
 
-	return vxPoint(x,y,z);
+	return vxVector3d(x,y,z);
 }
 
-vxPoint MathUtils::rectAndZPlane(const vxRayXYZ &ray, double z)
+vxVector3d MathUtils::rectAndZPlane(const vxRayXYZ &ray, double z)
 {
 	// parametric ecuation of the line solved.
 	auto t = (z - ray.z()) / -ray.z();
 	auto x = t * -ray.x() + ray.x();
 	auto y = t * -ray.y() + ray.y();
 
-	return vxPoint(x,y,z);
+	return vxVector3d(x,y,z);
 }
 
 double MathUtils::getRand(double range = 1.0)

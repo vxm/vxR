@@ -1,7 +1,7 @@
 #ifndef MathUtils_H
 #define MathUtils_H
 
-#include "vxPoint.h"
+#include "vxVector.h"
 #include "vxPlane.h"
 #include "vxCollision.h"
 
@@ -18,10 +18,10 @@ class MathUtils
 
 	//!! this shouldn't be like this
 	//! what a shame.
-	static vxPoint rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane);
-	static vxPoint rectAndXPlane(const vxRayXYZ &ray, double x);
-	static vxPoint rectAndYPlane(const vxRayXYZ &ray, double y);
-	static vxPoint rectAndZPlane(const vxRayXYZ &ray, double z);
+	static vxVector3d rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane);
+	static vxVector3d rectAndXPlane(const vxRayXYZ &ray, double x);
+	static vxVector3d rectAndYPlane(const vxRayXYZ &ray, double y);
+	static vxVector3d rectAndZPlane(const vxRayXYZ &ray, double z);
 
 	//Random
 	static double getRand(double range);
