@@ -142,20 +142,19 @@ public:
 
 	bool inGrid(const vxVector3d &pnt, double tolerance = 0.0) const;
 	
-	int getNearestCollision(const vxRayXYZ &ray, vxCollision &collide);
+	int getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const;
 	
-	int getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide);
-	int getNearestCollisionUsingY(const vxRayXYZ &ray, vxCollision &collide);
-	int getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide);
+	int getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide) const;
+	int getNearestCollisionUsingY(const vxRayXYZ &ray, vxCollision &collide) const;
+	int getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide) const;
 	
 	//!!	Brute Force search.
 	//! what a shame.
-	int getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide);
+	int getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide) const;
 
 	// devuelve 0 si no le da a la caja
-	int throwRay(const vxRayXYZ &ray, vxCollision &collide);
-	
-	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);
+	int throwRay(const vxRayXYZ &ray, vxCollision &collide)  const;
+	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)  const;;
 };
 
 /*

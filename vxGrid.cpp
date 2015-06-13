@@ -308,7 +308,7 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
 			&& pnt.z()>=(m_zmin-tol);
 }
 
-int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide)
+int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const
 {
 	switch(ray.mainAxis())
 	{
@@ -326,19 +326,19 @@ int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide)
 	return 0;
 }
 
-int vxGrid::getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide)
+int vxGrid::getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide) const
 {
 	assert(true);
 	return 0;
 }
 
-int vxGrid::getNearestCollisionUsingY(const vxRayXYZ &ray, vxCollision &collide)
+int vxGrid::getNearestCollisionUsingY(const vxRayXYZ &ray, vxCollision &collide) const
 {
 	assert(true);
 	return 0;
 }
 
-int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
+int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide) const
 {
 	collide.initialize();
 	vxVector3d curr(m_zmin, 0.0, 0.0);
@@ -442,7 +442,7 @@ int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 
 
 
-int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide)
+int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide) const 
 {
 	collide.initialize();
 	
@@ -460,7 +460,7 @@ int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide)
 			{
 				if (getElement(x,y,z))
 				{
-					caja = vxGlobal::getInstance()->getExistingtBox( getVoxelPosition(x, y, z), m_boxSize);
+					caja = vxGlobal::getInstance()->getExistingBox( getVoxelPosition(x, y, z), m_boxSize);
 					caja->throwRay( ray, collide );
 					
 					if (collide.isValid()) 
@@ -492,14 +492,19 @@ int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide)
 	// not right.
 	return 1;
 }
-
-int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide)
+std::mutex mutex;
+int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 { 
-	if (m_boundingBox->throwRay(ray, collide)
-			&& getNearestCollision(ray, collide))
-	{
-		const vxBoxN *boxInstance = vxGlobal::getInstance()->getExistingtBox( collide.position(), m_boxSize);
-		return boxInstance->throwRay( ray, collide );
+	if (getNearestCollision(ray, collide))
+	{	
+		vxBoxN *boxInstance = nullptr;
+		{
+			std::lock_guard<std::mutex> lg(mutex);
+			boxInstance =
+					vxGlobal::getInstance()->getExistingBox( collide.position(), 
+															  m_boxSize);
+			return boxInstance->throwRay( ray, collide );
+		}
 	}
 	else
 	{
@@ -508,7 +513,7 @@ int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide)
 	}
 }
 
-bool vxGrid::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
+bool vxGrid::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray) const
 {
 	auto itDoes = false;
 	vxVector3d v = ray.unit();
