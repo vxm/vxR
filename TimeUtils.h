@@ -28,12 +28,12 @@ class TimeUtils
 		}
 		else if(seconds<3600)
 		{
-			double sCode = int(int(seconds/60.0)*pow10);
+			double sCode = int(seconds*pow10/60.0);
 			sst << "elapsed time is " << (double)(sCode/pow10) << " minutes";
 		}
 		else if(seconds<(3600*24))
 		{
-			double sCode = int(int(seconds/3600.0)*pow10);
+			double sCode = int(seconds*pow10/3600.0);
 			sst << "elapsed time is " << (double)(sCode/pow10) << " hours";
 		}
 		
