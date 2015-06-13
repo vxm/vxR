@@ -51,7 +51,7 @@ public:
 
 	vxContactBuffer()
 	{
-		m_pxs.resize(900);
+		m_pxs.resize(200);
 	}
 	
 	~vxContactBuffer()
