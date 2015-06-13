@@ -27,7 +27,7 @@ vxColor vxColor::lookup256(const int r, const int g, const int b)
 					MathUtils::remap(b/255.0, mnc, mxc));
 }
 
-vxColor vxColor::colorIndex(const int idx)
+vxColor vxColor::indexColor(const int idx)
 {
 	switch(idx%25)
 	{
@@ -41,7 +41,7 @@ vxColor vxColor::colorIndex(const int idx)
 		return blue;
 	break;
 	case 3:
-		return purple;
+		return white;
 	break;
 	case 4:
 		return yellow;
@@ -50,10 +50,10 @@ vxColor vxColor::colorIndex(const int idx)
 		return pink;
 	break;
 	case 6:
-		return white;
+		return purple;
 	break;
 	case 7:
-		return black;
+		return reddishPurple;
 	break;
 	case 8:
 		return grey;
@@ -86,7 +86,7 @@ vxColor vxColor::colorIndex(const int idx)
 		return greenishYellow;
 	break;
 	case 18:
-		return reddishPurple;
+		return black;
 	break;
 	case 19:
 		return purplishBlue;

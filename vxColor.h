@@ -58,7 +58,7 @@ public:
 								const int g,
 								const int b);
 
-	static vxColor colorIndex(const int idx);
+	static vxColor indexColor(const int idx);
 	
 	vxColor ();
 	vxColor (const double r,
