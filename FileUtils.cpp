@@ -17,7 +17,7 @@ FileUtils::fileDesc FileUtils::splitFileName(const std::string &filePath)
 	{
 		// The first sub_match is the whole string; the next
 		// sub_match is the first parenthesized expression.
-		if (base_match.size() == 4) 
+		if (base_match.size() == 4)
 		{
 			std::ssub_match base_sub_match = base_match[1];
 			std::string base = base_sub_match.str();
@@ -44,10 +44,7 @@ bool FileUtils::fileExists(const std::string &filePath)
 std::string FileUtils::makeUnique(const std::string &fileName)
 {
 	std::string unique = fileName;
-	fileDesc desc;
-	desc.name.clear();
-	desc.ext.clear();
-	desc = FileUtils::splitFileName(fileName);
+	auto desc = FileUtils::splitFileName(fileName);
 	while(fileExists(unique))
 	{
 		std::stringstream ss;
