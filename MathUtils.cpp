@@ -10,6 +10,13 @@ MathUtils::MathUtils()
 {
 }
 
+vxVector2d MathUtils::cartesianFromNormal(const vxVector3d normal)
+{
+	vxVector2d ret;
+	
+	return ret;
+}
+						
 vxVector3d MathUtils::rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane)
 {
 	switch(plane.m_type)
@@ -75,19 +82,17 @@ vxVector3d MathUtils::getHollowSphereRand(double radius)
 	auto a = 2.0 * PI * (getRand());
 	//auto b = acos(2.0 * getRand() - 1.0);
 	auto b = 2.0 * PI * (getRand());
+	
+	auto x = radius * cos(a) * cos(b);
+	auto y = radius * cos(a) * sin(b);
+	auto z = radius * sin(a);
 
-	auto r = vxVector3d(getRand()-.5,getRand()-.5,getRand()-.5);
-	r.setUnit();
-	r=r*radius;
-	return r;
+	return vxVector3d(x,y,z);
 }
 
 vxVector3d MathUtils::getHollowHemisphereRand(double radius, const vxVector3d &normal)
 {
 	auto r = getHollowSphereRand(radius);
-	r.setUnit();
-	r=r*radius;
-//	r=r-normal;
 	return r;
 }
 

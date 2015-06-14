@@ -16,6 +16,9 @@ class MathUtils
 	static const double C;
 	static const double PI;
 
+	static vxVector2d cartesianFromNormal(const vxVector3d normal);
+	
+	
 	//!! this shouldn't be like this
 	//! what a shame.
 	static vxVector3d rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane);
