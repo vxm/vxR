@@ -178,7 +178,7 @@ vxVector3d vxIBLight::getLightRay(const vxVector3d &position) const
 	return (m_position-position);
 }
 
-vxColor vxLight::acumLight(const vxCollision &collision) const
+vxColor vxLight::acummulationLight(const vxCollision &collision) const
 {
 	vxColor acumColor;
 	const auto& cPnt = collision.position();
@@ -205,7 +205,7 @@ vxColor vxLight::acumLight(const vxCollision &collision) const
 	return acumColor;
 }
 
-vxColor vxIBLight::acumLight(const vxCollision &collision) const
+vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 {
 	vxColor acumColor;
 	const auto& cPnt = collision.position();
@@ -215,17 +215,19 @@ vxColor vxIBLight::acumLight(const vxCollision &collision) const
 	// compute all sort of shadows.
 	for(auto i=0; i<n; i++)
 	{
-		auto&& r = MathUtils::getHollowHemisphereRand(radius(),
+		const auto&& r = MathUtils::getHollowHemisphereRand(radius(),
 													  collision.normal());
-		auto&& f = collision.normal()+r;
+
+		const auto&& cart = MathUtils::cartesianFromNormal(collision.normal());
 		
+		const auto&& f = collision.normal()+r;
+
 		auto lumm = m_intensity * lightRatio(cPnt, 
 											 collision.normal(), 
 											(cPnt + collision.normal()) + r);
-		
+
 		if (lumm>0.001 && !scn->hasCollision(cPnt, f))
 		{
-			//acumColor += fabs(lumm/n);
 			acumColor.mixSumm(color().gained(lumm), colorRatio);
 		}
 	}

@@ -6,7 +6,7 @@ using namespace vxCore;
 //http://hyperphysics.phy-astr.gsu.edu/hbase/vision/cie.html#c4
 
 double mxc = 220.0/256.0;
-double mnc = 18.0/256.0;
+double mnc = 10.0/256.0;
 
 vxColor vxColor::lookup(const vxColor col)
 {

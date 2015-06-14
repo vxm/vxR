@@ -6,6 +6,7 @@
 #include "vxCollision.h"
 #include "MathUtils.h"
 #include "vxScene.h"
+#include "vxBitMap2d.h"
 
 namespace vxCore {
 
@@ -15,8 +16,8 @@ class vxLight
 {
 protected:
 
-		//not every light needs position
-	vxVector3d m_position	{0.0,0.0,0.0};;
+	//not every light needs a position
+	vxVector3d m_position	{0.0,0.0,0.0};
 	double m_intensity		{1.0};
 	vxColor m_color			{vxColor::white};
 	double m_radius			{0.0};
@@ -47,7 +48,7 @@ public:
 					const vxVector3d &direction, 
 					const vxVector3d &destiny) const;
 
-	virtual vxColor acumLight(const vxCollision &collision) const;
+	virtual vxColor acummulationLight(const vxCollision &collision) const;
 	
 	double radius() const;
 	void setRadius(double radius);
@@ -114,6 +115,7 @@ public:
 
 class vxIBLight:public vxLight
 {
+	vxBitMap2d m_map;
 
 public:
 	vxIBLight();
@@ -122,7 +124,7 @@ public:
 	// vxLight interface
 	public:
 	vxVector3d getLightRay(const vxVector3d &position) const override;
-	vxColor acumLight(const vxCollision &collision) const override;
+	vxColor acummulationLight(const vxCollision &collision) const override;
 };
 
  

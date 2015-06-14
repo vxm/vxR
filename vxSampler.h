@@ -5,6 +5,8 @@
 #include <math.h>
 #include <cstdlib>
 #include "vxObject.h"
+#include "MathUtils.h"
+
 
 namespace vxCore {
 
@@ -49,12 +51,12 @@ public:
 
 	double x() const
 	{
-		return m_x[m_iter];
+		return MathUtils::getRand(1.0);
 	}
 
 	double y() const
 	{
-		return m_y[m_iter];
+		return MathUtils::getRand(1.0);
 	}
 
 	void setSamples(unsigned int samples)
@@ -68,8 +70,8 @@ public:
 		{
 			for(unsigned int i=0;i<m_nSamples;i++)
 			{
-				m_x[i]=(rand()/(double)RAND_MAX);
-				m_y[i]=(rand()/(double)RAND_MAX);
+				m_x[i]=MathUtils::getRand(1.0);
+				m_y[i]=MathUtils::getRand(1.0);
 			}
 		}
 

@@ -78,13 +78,13 @@ vxStatus::code vxRenderProcess::execute()
 
 double vxRenderProcess::progress() const
 {
-	return 100.0 * m_progress.load()  / m_prop->numPixels();
+	return 100.0 * m_progress.load() / m_prop->numPixels();
 }
 
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 4;
+	unsigned int nSamples = 5;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
