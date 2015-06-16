@@ -116,7 +116,6 @@ public:
 class vxIBLight:public vxLight
 {
 	vxBitMap2d m_map;
-
 public:
 	vxIBLight();
 	vxIBLight(double instensity, const vxColor &col);

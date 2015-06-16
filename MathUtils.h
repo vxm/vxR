@@ -16,11 +16,10 @@ class MathUtils
 	static const double C;
 	static const double PI;
 
-	static vxVector2d cartesianFromNormal(const vxVector3d normal);
-	
-	
-	//!! this shouldn't be like this
-	//! what a shame.
+	//Polar coordinates.
+	static vxVector2d normalToCartesian(const vxVector3d normal);
+
+	//Intersections
 	static vxVector3d rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane);
 	static vxVector3d rectAndXPlane(const vxRayXYZ &ray, double x);
 	static vxVector3d rectAndYPlane(const vxRayXYZ &ray, double y);
@@ -41,7 +40,6 @@ class MathUtils
 	static double remap(double v, double min, double max);
 	static vxColor remap(const vxColor &col, double min, double max);
 	static vxVector3d getHollowHemisphereRand(double radius, const vxVector3d &normal);
-	static vxVector2d spherePointToMap(const vxVector3d &position);
 
 };
 

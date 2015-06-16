@@ -13,13 +13,13 @@ vxColor vxCirclesMap::compute(const vxCollision &collision) const
 	auto distanceToCenter = 
 			vxVector2d(collision.u()-.5,collision.v()-.5).length();
 
-	outColor.set(vxColor::grey);
+	outColor.set(vxColor::white);
 
 	if(m_circle1)
 	{
 		if(distanceToCenter>m_radius[0] && distanceToCenter<m_radius[1])
 		{
-			outColor.set(vxColor::purple);
+			outColor.set(vxColor::white);
 		}
 	}
 
@@ -35,7 +35,7 @@ vxColor vxCirclesMap::compute(const vxCollision &collision) const
 	{
 		if(distanceToCenter>m_radius[2] && distanceToCenter<m_radius[3])
 		{
-			outColor.set(vxColor::blue);
+			outColor.set(vxColor::white);
 		}
 	}
 	

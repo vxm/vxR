@@ -26,6 +26,7 @@ vxBoxN *vxGlobal::getExistingBox(const vxVector3d &position, const double size)
 	return getExistingBox( position.x(), position.y(), position.z(), size);
 }
 
+//TODO: this needs to be questioned.
 vxBoxN *vxGlobal::getExistingBox(const double x, const double y, const double z, const double size)
 {
 	double apot=size/2.0;

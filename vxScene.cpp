@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 290
+#define RESL 270
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -22,7 +22,7 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples = 55;
+	int nLightSamples = 125;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -48,10 +48,10 @@ void vxScene::build()
 //	l2->setIntensity(0.3);
 
 	auto l3 = createIBLight();
-	l3->setColor(vxColor::white);
+	//l3->setColor(vxColor::white);
 	l3->setSamples(nLightSamples);
 	l3->setRadius(1.0);
-	l3->setIntensity(1.0);
+	l3->setIntensity(2.0);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
@@ -228,8 +228,8 @@ int vxScene::throwRay(const vxRayXYZ &ray,
 	}
 	else
 	{
-		collide.setValid();	
-		collide.setColor( vxColor::white );
+		collide.setValid();
+		collide.setColor( vxColor::black );
 		return 1;
 	}
 	

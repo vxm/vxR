@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(3310,3310);
+	auto imgDesc = std::make_shared<ImageProperties>(4510,4510);
 	
 	// create the render process
 	render rp(imgDesc);
@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
 		std::string fileName = 
 				FileUtils::makeUnique(baseName);
 
+		//TODO: investigate other formats and resolution limits
 		img.save(QString(fileName.c_str()),"BMP");
 		
 		std::cout << "File saved : " 
@@ -78,7 +79,6 @@ int main(int argc, char *argv[])
 		std::cout << "Finished image generation : " 
 				<< TimeUtils::decorateTime(start,2) << std::endl;
 	}
-
 	//return a.exec();
 	std::cout << "done!" << std::endl;
 	return 0;

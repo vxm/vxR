@@ -17,8 +17,7 @@ private:
 	vxVector3d m_normal;
 
 	bool m_valid {false};
-	double m_u {0.0};
-	double m_v {0.0};
+	vxVector2d m_uv;
 
 public:
 
@@ -38,11 +37,17 @@ public:
 	vxColor color() const;
 	void setNormal(const vxVector3d &val);
 	vxVector3d normal() const;
+	void setUV(const vxVector2d &uvVec);
 	void setU(double u);
 	double u() const;
 	void setV(double v);
 	double v() const;
 
+	//TODO:complete this.
+	friend std::ostream& operator<<(std::ostream &os, const vxCollision& v)
+	{
+		return os << v.m_position;
+	}
 };
 
 

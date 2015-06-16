@@ -213,13 +213,12 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 	const auto &scn = m_scene.lock();
 	double colorRatio = 1.0/(double)n;
 	// compute all sort of shadows.
+	vxCollision environment;
 	for(auto i=0; i<n; i++)
 	{
 		const auto&& r = MathUtils::getHollowHemisphereRand(radius(),
 													  collision.normal());
 
-		const auto&& cart = MathUtils::cartesianFromNormal(collision.normal());
-		
 		const auto&& f = collision.normal()+r;
 
 		auto lumm = m_intensity * lightRatio(cPnt, 
@@ -228,7 +227,11 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 
 		if (lumm>0.001 && !scn->hasCollision(cPnt, f))
 		{
-			acumColor.mixSumm(color().gained(lumm), colorRatio);
+			const auto&& cart = MathUtils::normalToCartesian(f);
+			environment.setUV(cart);
+			auto environmentColor = m_map.compute(environment);
+
+			acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
 		}
 	}
 

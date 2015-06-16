@@ -1,7 +1,6 @@
 #include "MathUtils.h"
 #include "vxVector.h"
 
-
 const double MathUtils::C{299'792'458.0};
 const double MathUtils::PI {3.141'592'653'589'793'238'462'\
 643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816};
@@ -10,13 +9,14 @@ MathUtils::MathUtils()
 {
 }
 
-vxVector2d MathUtils::cartesianFromNormal(const vxVector3d normal)
+vxVector2d MathUtils::normalToCartesian(const vxVector3d normal)
 {
-	vxVector2d ret;
-	
-	return ret;
+	auto normalized = normal.unit();
+	auto x = atan2(normalized.y(), normalized.x());
+	auto y = acos( normalized.z());
+	return vxVector2d(x, y);
 }
-						
+
 vxVector3d MathUtils::rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane)
 {
 	switch(plane.m_type)
@@ -94,20 +94,6 @@ vxVector3d MathUtils::getHollowHemisphereRand(double radius, const vxVector3d &n
 {
 	auto r = getHollowSphereRand(radius);
 	return r;
-}
-
-//vxVector3d MathUtils::spherePointToMap(const vxVector2d &polar)
-//{
-//	azimuth = atan2(y,x)
-//	elevation = atan2(z,sqrt(x.^2 + y.^2))
-//	r = sqrt(x.^2 + y.^2 + z.^2)
-//}
-
-vxVector2d MathUtils::spherePointToMap(const vxVector3d &position)
-{
-	auto x = acos(position.y());
-	auto y = atan(position.x() / position.z());
-	return vxVector2d(x, y);
 }
 
 vxVector3d MathUtils::getSphereRand(double radius)
