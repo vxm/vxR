@@ -122,11 +122,12 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			itV+=1;
 			itH %= m_prop->rx();
 
-			m_progress.store(m_progress.load() + (double)itV);
+			m_progress.store(m_progress.load() + 1);
 		}
 	}
 
 	m_finished = true;
+	
 	return vxStatus::code::kSuccess;
 }
 

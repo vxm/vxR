@@ -14,6 +14,7 @@
 #include "ImageProperties.h"
 #include "vxShader.h"
 #include "vxPLYImporter.h"
+#include "vxBitMap2d.h"
 
 namespace vxCore {
 
@@ -43,6 +44,9 @@ protected:
 	std::vector<vxGrid> m_cameras;
 	std::shared_ptr<ImageProperties> m_prop = {nullptr};
 
+	// Light domm
+	vxBitMap2d m_environment;
+	
 public:
 	//TODO: private and getter setter.
 	long long dRays{0};
