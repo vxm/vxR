@@ -144,8 +144,8 @@ public:
 	
 	int getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const;
 	
-	int getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide) const;
-	int getNearestCollisionUsingY(const vxRayXYZ &ray, vxCollision &collide) const;
+	int getNearestCollisionUsingX(const vxRayXYZ &, vxCollision &collide) const;
+	int getNearestCollisionUsingY(const vxRayXYZ &, vxCollision &collide) const;
 	int getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide) const;
 	
 	//!!	Brute Force search.

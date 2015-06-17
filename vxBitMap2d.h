@@ -1,22 +1,26 @@
 #ifndef VXBITMAP2D_H
 #define VXBITMAP2D_H
 #include "vxMap2d.h"
+#include "ImageProperties.h"
 #include "MathUtils.h"
+#include "imageData.h"
 
 namespace vxCore
 {
 
 class vxBitMap2d : public vxMap2d
 {
-	public:
-		vxBitMap2d();
-		
-		// vxMap interface
-	public:
-		virtual vxColor compute(const vxCollision &collision) const;
+public:
+	vxBitMap2d();
+	
+	virtual vxColor compute(const vxCollision &collision) const;
 
-	double m_radius[5] = {0.1, 0.6, 1.0, 3.0};
+	std::shared_ptr<ImageProperties> m_prop;
 		
+	double m_radius[5] = {1.1, 2.6, 3.0, 7.0};
+	
+	ImageData m_data;
+	
 	bool m_circle1 {true};
 	bool m_circle2 {true};
 	bool m_circle3 {true};

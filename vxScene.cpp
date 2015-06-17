@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 267
+#define RESL 10
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -22,7 +22,7 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples = 40;
+	int nLightSamples = 12;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -50,8 +50,8 @@ void vxScene::build()
 	auto l3 = createIBLight();
 	//l3->setColor(vxColor::white);
 	l3->setSamples(nLightSamples);
-	l3->setRadius(1.0);
-	l3->setIntensity(0.66);
+	l3->setRadius(.97);
+	l3->setIntensity(1.66);
 
 	//	auto l3 = createDirectLight();
 	//	l3->set(vxVector3d(0,-1,0), true);
@@ -137,7 +137,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
 	m_grids[0]->setResolution(resl);
 	
-	/*
+	
 	auto iRadius = 4.0;
 	auto distSph = (resl/3.0);
 	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
@@ -152,7 +152,7 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 
 	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/iRadius)); // Position, radius
 	m_grids[0]->createEdges(); // of the grid
-	*/
+	
 	//m_grids[0]->createRandom(0.0007);
 	//#ifdef _DEBUG
 	
@@ -228,12 +228,12 @@ int vxScene::throwRay(const vxRayXYZ &ray,
 	}
 	else
 	{
-//		const auto&& cart = MathUtils::normalToCartesian(ray);
-//		collide.setUV(cart);
-//		auto environmentColor = m_environment.compute(collide);
+		const auto&& cart = MathUtils::normalToCartesian(ray);
+		collide.setUV(cart);
+		auto environmentColor = m_environment.compute(collide);
 		
 		collide.setValid();
-		collide.setColor( vxColor::white );
+		collide.setColor( environmentColor );
 		return 1;
 	}
 	

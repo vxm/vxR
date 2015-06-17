@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     renderPresset.cpp \
     vximporter.cpp \
     vxPLYImporter.cpp \
-    vxBitMap2d.cpp
+    vxBitMap2d.cpp \
+    imageData.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -94,7 +95,8 @@ HEADERS  += \
     renderPresset.h \
     vximporter.h \
     vxPLYImporter.h \
-    vxBitMap2d.h
+    vxBitMap2d.h \
+    imageData.h
 
 FORMS    += vxrendermain.ui
 

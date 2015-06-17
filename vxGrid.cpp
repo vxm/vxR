@@ -326,13 +326,13 @@ int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const
 	return 0;
 }
 
-int vxGrid::getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide) const
+int vxGrid::getNearestCollisionUsingX(const vxRayXYZ &, vxCollision &collide) const
 {
 	assert(true);
 	return 0;
 }
 
-int vxGrid::getNearestCollisionUsingY(const vxRayXYZ &ray, vxCollision &collide) const
+int vxGrid::getNearestCollisionUsingY(const vxRayXYZ &, vxCollision &collide) const
 {
 	assert(true);
 	return 0;

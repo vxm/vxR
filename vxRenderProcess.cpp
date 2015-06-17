@@ -27,6 +27,15 @@ void vxRenderProcess::setNMaxThreads(unsigned int nMaxThreads)
 {
 	m_nMaxThreads = nMaxThreads;
 }
+vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
+	:	m_bucketList(prop, 10)
+	,	m_prop(prop)
+	,	m_imageData(prop)
+{
+	m_scene = std::make_shared<vxScene>(prop);
+	m_scene->build();
+}
+
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
 {
 	if(p!=nullptr)
@@ -84,7 +93,7 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 4;
+	unsigned int nSamples = 2;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
@@ -113,8 +122,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			sampler.next();
 		}
 		sampler.resetIterator();
-		//vxColor fCol = (c*invSamples);
-		bk->append(c, cors);
+		
+		bk->append(c*invSamples, cors);
 
 		itH+=by;
 		if(itH >= m_prop->rx())
@@ -148,36 +157,10 @@ vxRenderProcess::generateImage()
 	static_assert(sizeof(double)==8, "double is no 64bits");
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 
-	const auto& prop = imageProperties();
+	const auto&& prop = imageProperties();
 	size_t numElements = prop->numElements();
-	switch(prop->format())
-	{
-		case ImageProperties::ImgFormat::k8:
-			m_pc.reset(new unsigned char[numElements]);
-		break;
-		case ImageProperties::ImgFormat::k32:
-			m_pf.reset(new float[numElements]);
-		break;
-		case ImageProperties::ImgFormat::k64:
-			m_pd.reset(new double[numElements]);
-		break;
-		default:
-			m_pc.reset(new unsigned char[numElements]);
-		break;
-	}
-	
-	// hardcode buffer type!!
-	unsigned char *buff = m_pc.get();
-	unsigned char *tmpp = buff;
-	for(;tmpp<buff+numElements;tmpp++)
-	{
-		*tmpp = '\0';
-	}
 
-	if(m_pc==nullptr)
-	{
-		std::cout << "unique ptr is empty now" << std::endl;
-	}
+	auto buff = m_imageData.initialise();
 	
 	// on each bucket
 	for(unsigned int i=0;i<m_bucketList.size();i++)
@@ -191,8 +174,7 @@ vxRenderProcess::generateImage()
 			Hit &h = (*bk)[j];
 
 			// Pixel postprocess
-		//	h.m_px.setToGamma(2.2);
-
+			// h.m_px.setToGamma(2.2);
 
 			unsigned int compX = h.m_xyCoef.y() * (prop->rx()+1);
 			unsigned int compY = h.m_xyCoef.x() * (prop->ry()+1);
@@ -201,11 +183,32 @@ vxRenderProcess::generateImage()
 			{
 				dist = numElements;
 			}
+
 			h.m_px.toRGBA8888(buff + dist);
 		}
 	}
 
-	return m_pc.get();
+	return buff;
+}
+
+std::shared_ptr<const ImageProperties> vxRenderProcess::imageProperties() const
+{
+	return m_prop;
+}
+
+void vxRenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> imageProperties)
+{
+	m_prop = imageProperties;
+}
+
+std::shared_ptr<vxScene> vxRenderProcess::scene() const
+{
+	return m_scene;
+}
+
+void vxRenderProcess::setScene(const std::shared_ptr<vxScene> &scene)
+{
+	m_scene = scene;
 }
 
 

@@ -3,7 +3,9 @@
 using namespace vxCore;
 
 vxBitMap2d::vxBitMap2d()
+	:  m_data(m_prop)
 {
+	m_prop = std::make_shared<ImageProperties>(100,100);
 }
 
 vxColor vxBitMap2d::compute(const vxCollision &collision) const
@@ -12,11 +14,12 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 	const auto&& distanceToCenter = remap.length();
 
 	vxColor outColor(vxColor::white);
+
 	if(m_circle1)
 	{
 		if(distanceToCenter>m_radius[0] && distanceToCenter<m_radius[1])
 		{
-			outColor.set(vxColor::red);
+			outColor.set(vxColor(.9,.8,.4));
 		}
 	}
 
@@ -24,7 +27,7 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 	{
 		if(distanceToCenter>m_radius[1] && distanceToCenter<m_radius[2])
 		{
-			outColor.set(vxColor::blue);
+			outColor.set(vxColor(.9,.9,.9));
 		}
 	}
 	
@@ -32,7 +35,7 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 	{
 		if(distanceToCenter>m_radius[2] && distanceToCenter<m_radius[3])
 		{
-			outColor.set(vxColor::yellow);
+			outColor.set(vxColor(.6,.6,.95));
 		}
 	}
 	
