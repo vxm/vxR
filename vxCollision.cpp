@@ -75,6 +75,11 @@ double vxCollision::v() const
 	return m_uv.y();
 }
 
+vxVector2d vxCollision::uv() const
+{
+	return m_uv;
+}
+
 void vxCollision::setColor(const vxColor &val)
 {
 	m_color = val;

@@ -42,6 +42,7 @@ public:
 	double u() const;
 	void setV(double v);
 	double v() const;
+	vxVector2d uv() const;
 
 	//TODO:complete this.
 	friend std::ostream& operator<<(std::ostream &os, const vxCollision& v)
