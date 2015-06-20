@@ -12,11 +12,6 @@ vxVector3d vxVector3d::constYZ	{0.0, 1.0, 1.0};
 vxVector3d vxVector3d::constXYZ	{1.0, 1.0, 1.0};
 
 
-
-
-vxVector::vxVector() {}
-
-
 vxVector2d::vxVector2d() 
 {}
 
@@ -79,40 +74,94 @@ vxVector2d vxVector2d::unit() const
 	return vxVector2d(m_x/lng,m_y/lng);
 }
 
-vxVector2d vxVector2d::operator+(int factor) const {return vxVector2d(factor+m_x,factor+m_y);}
+vxVector2d vxVector2d::operator+(int factor) const 
+{
+	return vxVector2d(factor+m_x,factor+m_y);
+}
 
-vxVector2d vxVector2d::operator-(int factor) const {return vxVector2d(m_x-factor,m_y-factor);}
+vxVector2d vxVector2d::operator-(int factor) const 
+{
+	return vxVector2d(m_x-factor,
+					  m_y-factor);
+}
 
-vxVector2d vxVector2d::operator*(int factor) const {return vxVector2d(factor*m_x,factor*m_y);}
+vxVector2d vxVector2d::operator*(int factor) const 
+{
+	return vxVector2d(factor*m_x,
+					  factor*m_y);
+}
 
-vxVector2d vxVector2d::operator/(int factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
+vxVector2d vxVector2d::operator/(int factor) const 
+{
+	return vxVector2d(m_x/(double)factor,
+					  m_y/(double)factor);
+}
 
-double vxVector2d::angle(const vxVector2d &other) const {return angle()-other.angle();}
+double vxVector2d::angle(const vxVector2d &other) const 
+{
+	return angle()-other.angle();
+}
 
 double vxVector2d::angle() const 
 {
 	return atan2(m_y,m_x);
 }
 
-vxVector2d vxVector2d::operator/(float factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
+vxVector2d vxVector2d::operator/(float factor) const 
+{
+	return vxVector2d(m_x/(double)factor,
+					  m_y/(double)factor);
+}
 
-vxVector2d vxVector2d::operator/(double factor) const {return vxVector2d(m_x/(double)factor,m_y/(double)factor);}
+vxVector2d vxVector2d::operator/(double factor) const 
+{
+	return vxVector2d(m_x/(double)factor,
+					  m_y/(double)factor);
+}
 
-vxVector2d vxVector2d::operator/(vxVector2d entrada) const {return vxVector2d(entrada.x()/m_x,entrada.y()/m_y);}
+vxVector2d vxVector2d::operator/(vxVector2d entrada) const 
+{
+	return vxVector2d(m_x/entrada.x(),
+					  m_y/entrada.y());
+}
 
-vxVector2d vxVector2d::operator*(float factor) const {return vxVector2d(factor*m_x,factor*m_y);}
+vxVector2d vxVector2d::operator*(float factor) const 
+{
+	return vxVector2d(factor*m_x,factor*m_y);
+}
 
-vxVector2d vxVector2d::operator*(double factor) const {return vxVector2d(factor*m_x,factor*m_y);}
+vxVector2d vxVector2d::operator*(double factor) const 
+{
+	return vxVector2d(factor*m_x,factor*m_y);
+}
 
-vxVector2d vxVector2d::operator*(vxVector2d entrada) const {return vxVector2d(entrada.x()*m_x,entrada.y()*m_y);}
+vxVector2d vxVector2d::operator*(vxVector2d entrada) const 
+{
+	return vxVector2d(entrada.x()*m_x,
+					  entrada.y()*m_y);
+}
 
-vxVector2d vxVector2d::operator-(float factor) const {return vxVector2d(m_x-factor,m_y-factor);}
+vxVector2d vxVector2d::operator-(float factor) const 
+{
+	return vxVector2d(m_x-factor,m_y-factor);
+}
 
-vxVector2d vxVector2d::operator-(double factor) const {return vxVector2d(m_x-factor,m_y-factor);}
+vxVector2d vxVector2d::operator-(double factor) const 
+{
+	return vxVector2d(m_x-factor,m_y-factor);
+}
 
-vxVector2d vxVector2d::operator-(vxVector2d entrada) const {return vxVector2d(m_x-entrada.x(),m_y-entrada.y());}
+vxVector2d vxVector2d::operator-(vxVector2d entrada) const 
+{
+	return vxVector2d(m_x-entrada.x(),
+					  m_y-entrada.y());
+}
 
-vxVector2d vxVector2d::operator+(float factor) const {return vxVector2d(factor+m_x,factor+m_y);}
+vxVector2d vxVector2d::operator+(float factor) const 
+{
+	return vxVector2d(factor+m_x,
+					  factor+m_y);
+}
 
 vxVector2d vxVector2d::operator+(double factor) const
 {
