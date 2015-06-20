@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 10
+#define RESL 30
 #define PX resl/1.2
 #define PY 0.0
 #define PZ resl*2.20
@@ -22,7 +22,7 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples = 12;
+	int nLightSamples = 15;
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -31,31 +31,11 @@ void vxScene::build()
 	//TODO: remove this debug code
 	const double resl = RESL;
 	vxVector3d p{PX, PY, PZ};
-	//
-
-//	auto l1 = createPointLight();
-//	l1->setColor(vxColor::lookup(.8,.62,.6));
-//	l1->setSamples(nLightSamples);
-//	l1->setRadius(resl);
-//	l1->setPosition(-4, PY+resl, PZ+resl);
-//	l1->setIntensity(0.4);
-
-//	auto l2 = createPointLight();
-//	l2->setColor(vxColor::lookup(.6,.62,.8));
-//	l2->setSamples(nLightSamples);
-//	l2->setRadius(resl);
-//	l2->setPosition(PX+resl, PY+resl, -4);
-//	l2->setIntensity(0.3);
 
 	auto l3 = createIBLight();
-	//l3->setColor(vxColor::white);
 	l3->setSamples(nLightSamples);
-	l3->setRadius(.97);
-	l3->setIntensity(1.66);
-
-	//	auto l3 = createDirectLight();
-	//	l3->set(vxVector3d(0,-1,0), true);
-	//	l3->setIntensity(1.0);
+	l3->setRadius(0.97);
+	l3->setIntensity(3.0);
 
 	createCamera(vxMatrix());
 	createGrid();
@@ -63,6 +43,22 @@ void vxScene::build()
 	auto plyReader = std::make_shared<vxPLYImporter>();
 	plyReader->processPLYFile("../vxR/juan_0.ply");
 	loadFromFile(plyReader);
+	
+	auto iRadius = 7.0;
+	auto distSph = (resl/3.0);
+	m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  distSph); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createEdges(); // of the grid
+	
+	m_grids[0]->createGround();
+	
 
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
@@ -138,46 +134,6 @@ std::shared_ptr<vxGrid> vxScene::createGrid()
 	m_grids[0]->setResolution(resl);
 	
 	
-	auto iRadius = 4.0;
-	auto distSph = (resl/3.0);
-	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  distSph); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-
-	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  (resl/iRadius)); // Position, radius
-	m_grids[0]->createEdges(); // of the grid
-	
-	//m_grids[0]->createRandom(0.0007);
-	//#ifdef _DEBUG
-	
-	//m_grids[0]->activate(3,3,1);
-	//m_grids[0]->createCorners();
-	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl); // Position, radius
-	m_grids[0]->createGround();
-	//int n = 2;
-	//m_grids[0]->activate(6,2,6);
-	//m_grids[0]->activate(n+2,0,1);
-	//m_grids[0]->activate(1,0,2);
-	//m_grids[0]->activate(n+2,2,6);
-
-	//m_grids[0]->activate(n+2,2,1);
-	//m_grids[0]->activate(1,2,1);
-	//m_grids[0]->activate(1,1,1);
-	//m_grids[0]->activate(n+2,1,1);
-	//m_grids[0]->activate(1,2,1);
-	//m_grids[0]->activate(n+2,3,1);
-	//m_grids[0]->activate(1,4,1);
-	//m_grids[0]->activate(n+2,4,1);
-	//m_grids[0]->activate(1,4,2);
-	//m_grids[0]->activate(n+2,4,2);
-//#endif
-
 	return m_grids[0];
 }
 
