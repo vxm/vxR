@@ -256,11 +256,11 @@ void vxColor::blend(const vxColor &other)
 	m_b = (m_b + other.m_b) / 2.0;
 }
 
-void vxColor::setToGamma(double gamma)
+void vxColor::setToGamma(double gamma, double offset)
 {
-	m_r=pow(m_r+1.0, gamma)-1.0;
-	m_g=pow(m_g+1.0, gamma)-1.0;
-	m_b=pow(m_b+1.0, gamma)-1.0;
+	m_r=pow(m_r+offset, gamma)-offset;
+	m_g=pow(m_g+offset, gamma)-offset;
+	m_b=pow(m_b+offset, gamma)-offset;
 }
 
 void vxColor::gain(double gain)
