@@ -16,11 +16,9 @@ public:
 	virtual vxColor compute(const vxCollision &collision) const;
 
 	std::shared_ptr<ImageProperties> m_prop;
-		
-	double m_radius[5] = {1.1, 2.6, 3.0, 7.0};
-	
 	ImageData m_data;
-	
+
+	double m_radius[5] = {1.1, 2.6, 3.0, 7.0};
 	bool m_circle1 {true};
 	bool m_circle2 {true};
 	bool m_circle3 {true};
