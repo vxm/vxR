@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     vximporter.cpp \
     vxPLYImporter.cpp \
     vxBitMap2d.cpp \
-    imageData.cpp
+    imageData.cpp \
+    vxLegoBlock.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -96,7 +97,8 @@ HEADERS  += \
     vximporter.h \
     vxPLYImporter.h \
     vxBitMap2d.h \
-    imageData.h
+    imageData.h \
+    vxLegoBlock.h
 
 FORMS    += vxrendermain.ui
 

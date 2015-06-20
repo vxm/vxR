@@ -49,10 +49,10 @@ public:
 					const vxVector3d &destiny) const;
 
 	virtual vxColor acummulationLight(const vxCollision &collision) const;
-	
+
 	double radius() const;
 	void setRadius(double radius);
-	
+
 	int samples() const;
 	void setSamples(int samples);
 };
