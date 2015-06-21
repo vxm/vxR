@@ -78,86 +78,27 @@ protected:
 	static vxVector3d m_normals[6];
 
 public:
-	vxBoxN()
-	{
-		initialize();
-		m_size=1;
-		m_apot=.5;
-	};
+	vxBoxN();
+	vxBoxN(const vxVector3d pos, const double size);
+	vxBoxN(const double x, const double y, const double z, const double size);;
 
-	vxBoxN(const vxVector3d pos, const double size)
-	{
-		initialize();
-		m_position=pos;
-		setSize(size);
-	}
-
-	vxBoxN(const double x, const double y, const double z, const double size) 
-	{
-		initialize();
-		m_position.set(x,y,z);
-		setSize(size);
-	};
-
-
-	void set(const vxVector3d pos, const double size) 
-	{
-		initialize();
-		m_position=pos;
-		setSize(size);
-	}
-	
-	void set(const double x, const double y, const double z, const double size)
-	{
-		initialize();
-		m_position.set(x,y,z);
-		setSize(size);
-	}
-
-	void setSize(double size)
-	{
-		m_size=size;
-		m_apot=size/2.0;
-	}
-
-	void initialize()
-	{
-		clearPoints();
-	}
-
-	void clearPoints()
-	{
-		m_bs[0]=m_bs[1]=m_bs[2]=m_bs[3]=m_bs[4]=m_bs[5]=false;
-	}
-
-	void setPosition(const vxVector3d pos)
-	{
-		m_position=pos;
-	}
-
-	void setPosition(const double x, const double y, const double z)
-	{
-		m_position.set(x,y,z);
-	}
-
+	void set(const vxVector3d pos, const double size);
+	void set(const double x, const double y, const double z, const double size);
+	void setSize(double size);
+	void initialize();
+	void clearPoints();
+	void setPosition(const vxVector3d pos);
+	void setPosition(const double x, const double y, const double z);
 	virtual int throwRay(const vxRayXYZ &ray, vxCollision &collision) const;
 	
 	// funcion de acceso, mas adelante cuestionar si seria, o no, mejor 
 	// calcular la matriz siempre al principio, en un actualize.
-	inline double getPoint0() const
-	{
-		return m_position.x()-m_apot;
-	}
-	inline double getPoint1() const
-	{	return m_position.y()-(m_apot); }
-	inline double getPoint2() const
-	{	return m_position.z()-(m_apot); }
-	inline double getPoint3() const
-	{	return m_position.x()+(m_apot); }
-	inline double getPoint4() const
-	{	return m_position.y()+(m_apot); }
-	inline double getPoint5() const
-	{	return m_position.z()+(m_apot); }
+	double getPoint0() const;
+	double getPoint1() const;
+	double getPoint2() const;
+	double getPoint3() const;
+	double getPoint4() const;
+	double getPoint5() const;
 
 	virtual bool throwSpace(const vxRayXYZ &ray, vxCollision &collide) const =0;
 

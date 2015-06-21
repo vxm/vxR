@@ -159,6 +159,67 @@ bool vxBox::inSight(const vxRayXYZ &ray)
 	return (inSightXY(ray) && inSightYZ(ray) && inSightZX(ray));
 }
 
+vxBoxN::vxBoxN()
+{
+	initialize();
+	m_size=1;
+	m_apot=.5;
+}
+
+vxBoxN::vxBoxN(const vxVector3d pos, const double size)
+{
+	initialize();
+	m_position=pos;
+	setSize(size);
+}
+
+vxBoxN::vxBoxN(const double x, const double y, const double z, const double size) 
+{
+	initialize();
+	m_position.set(x,y,z);
+	setSize(size);
+}
+
+void vxBoxN::set(const vxVector3d pos, const double size) 
+{
+	initialize();
+	m_position=pos;
+	setSize(size);
+}
+
+void vxBoxN::set(const double x, const double y, const double z, const double size)
+{
+	initialize();
+	m_position.set(x,y,z);
+	setSize(size);
+}
+
+void vxBoxN::setSize(double size)
+{
+	m_size=size;
+	m_apot=size/2.0;
+}
+
+void vxBoxN::initialize()
+{
+	clearPoints();
+}
+
+void vxBoxN::clearPoints()
+{
+	m_bs[0]=m_bs[1]=m_bs[2]=m_bs[3]=m_bs[4]=m_bs[5]=false;
+}
+
+void vxBoxN::setPosition(const vxVector3d pos)
+{
+	m_position=pos;
+}
+
+void vxBoxN::setPosition(const double x, const double y, const double z)
+{
+	m_position.set(x,y,z);
+}
+
 int vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 {
 	//if (true)
@@ -170,6 +231,36 @@ int vxBoxN::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 
 	collide.setValid(false);
 	return 0;
+}
+
+double vxBoxN::getPoint0() const
+{
+	return m_position.x()-m_apot;
+}
+
+double vxBoxN::getPoint1() const
+{
+	return m_position.y()-(m_apot);
+}
+
+double vxBoxN::getPoint2() const
+{
+	return m_position.z()-(m_apot); 
+}
+
+double vxBoxN::getPoint3() const
+{
+	return m_position.x()+(m_apot); 
+}
+
+double vxBoxN::getPoint4() const
+{
+	return m_position.y()+(m_apot); 
+}
+
+double vxBoxN::getPoint5() const
+{
+	return m_position.z()+(m_apot); 
 }
 
 
