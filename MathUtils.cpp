@@ -12,8 +12,8 @@ MathUtils::MathUtils()
 vxVector2d MathUtils::normalToCartesian(const vxVector3d normal)
 {
 	auto normalized = normal.unit();
-	auto x = atan2(normalized.x(), normalized.z());
-	auto y = asin( normalized.y());
+	auto x = (PI + atan2(normalized.z(), normalized.x()))/(2*PI);
+	auto y = ((PI/2.0) + asin( normalized.y())) / PI;
 	return vxVector2d(x, y);
 }
 
