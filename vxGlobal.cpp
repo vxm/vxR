@@ -1,6 +1,6 @@
 #include "vxGlobal.h"
 
-
+std::shared_ptr<vxLegoBlock> vxGlobal::m_lego = std::make_shared<vxLegoBlock>();
 
 vxGlobal::vxGlobal()
 {
@@ -23,66 +23,60 @@ vxGlobal *vxGlobal::getInstance()
 
 vxBoxN *vxGlobal::getExistingBox(const vxVector3d &position, const double size)
 {
-	return getExistingBox( position.x(), position.y(), position.z(), size);
-}
-
-//TODO: this needs to be questioned.
-vxBoxN *vxGlobal::getExistingBox(const double x, const double y, const double z, const double size)
-{
 	double apot=size/2.0;
-	if (z-apot>=0)
+	if (position.z()-apot>=0)
 	{
-		if (y-apot>=0)
+		if (position.y()-apot>=0)
 		{
-			if (x-apot>=0) 
+			if (position.x()-apot>=0) 
 			{
-				m_num1->set(x,y,z,size);
+				m_num1->set(position.x(),position.y(),position.z(),size);
 				return m_num1;
 			}
-			if (x+apot<=0)
+			if (position.x()+apot<=0)
 			{
-				m_num4->set(x,y,z,size);
+				m_num4->set(position.x(),position.y(),position.z(),size);
 				return m_num4;
 			}
-			if (x-apot<=0 && x+apot>=0) 
+			if (position.x()-apot<=0 && position.x()+apot>=0) 
 			{
-				m_num12->set(x,y,z,size);
+				m_num12->set(position.x(),position.y(),position.z(),size);
 				return m_num12;
 			}
 		}
-		if (y+apot<=0)
+		if (position.y()+apot<=0)
 		{
-			if (x-apot>=0) 
+			if (position.x()-apot>=0) 
 			{
-				m_num5->set(x,y,z,size);
+				m_num5->set(position.x(),position.y(),position.z(),size);
 				return m_num5;
 			}
-			if (x+apot<=0) 
+			if (position.x()+apot<=0) 
 			{
-				m_num8->set(x,y,z,size);
+				m_num8->set(position.x(),position.y(),position.z(),size);
 				return m_num8;
 			}
-			if (x-apot<=0 && x+apot>=0) 
+			if (position.x()-apot<=0 && position.x()+apot>=0) 
 			{
-				m_num16->set(x,y,z,size);
+				m_num16->set(position.x(),position.y(),position.z(),size);
 				return m_num16;
 			}
 		}		
-		if (y-apot<=0 && y+apot>=0) 
+		if (position.y()-apot<=0 && position.y()+apot>=0) 
 		{
-			if (x-apot<=0 && x+apot>=0) 
+			if (position.x()-apot<=0 && position.x()+apot>=0) 
 			{
-				m_num24->set(x,y,z,size);
+				m_num24->set(position.x(),position.y(),position.z(),size);
 				return m_num24;
 			}
-			if (x+apot<=0) 
+			if (position.x()+apot<=0) 
 			{
-				m_num20->set(x,y,z,size);
+				m_num20->set(position.x(),position.y(),position.z(),size);
 				return m_num20;
 			}
-			if (x-apot>=0) 
+			if (position.x()-apot>=0) 
 			{
-				m_num17->set(x,y,z,size);
+				m_num17->set(position.x(),position.y(),position.z(),size);
 				return m_num17;
 			}
 		}
@@ -90,6 +84,14 @@ vxBoxN *vxGlobal::getExistingBox(const double x, const double y, const double z,
 	//TODO: return invalidty, now it's taken a random 
 	// valid one.
 	return m_num17;
+}
+
+
+//TODO: this needs to be questioned.
+std::shared_ptr<vxLegoBlock> 
+vxGlobal::getExistingLegoBlock(const vxVector3d &position, const double size)
+{
+	return vxGlobal::m_lego;
 }
 
 vxBoxN *vxGlobal::getBox(const double x, const double y, const double z, const double size)

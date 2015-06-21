@@ -4,6 +4,7 @@
 #include <memory>
 #include "vxObject.h"
 #include "vxBox.h"
+#include "vxLegoBlock.h"
 
 namespace vxCore {
 
@@ -20,6 +21,7 @@ class vxBoxN12;
 class vxBoxN16;
 class vxBoxN24;
 class vxBoxN;
+class vxLegoBlock;
 
 class vxGlobal
 {
@@ -42,8 +44,8 @@ public:
 	vxBoxN24 *m_num24;
 	
 	vxBoxN* getExistingBox(const vxVector3d &position, const double size);
-	vxBoxN* getExistingBox(const double x ,const double y, const double z, const double size);
 
+	static std::shared_ptr<vxLegoBlock> m_lego;
 	//static std::shared_ptr<vxShader> getLambert();
 
 	static vxBoxN *getBox(const vxVector3d &position, const double size);
@@ -52,6 +54,7 @@ public:
 						  const double y, 
 						  const double z, 
 						  const double size);
+	static std::shared_ptr<vxLegoBlock> getExistingLegoBlock(const vxVector3d &position, const double size);
 };
 
 }

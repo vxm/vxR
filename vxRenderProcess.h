@@ -31,7 +31,7 @@ private:
 	std::shared_ptr<const ImageProperties> m_prop;
 	std::shared_ptr<vxScene> m_scene;
 	std::atomic_bool m_finished;
-	unsigned int m_nMaxThreads{1000};
+	unsigned int m_nThreads;
 	
 	std::atomic<double> m_progress;
 	ImageData m_imageData;

@@ -1,6 +1,8 @@
 #include <cassert>
 #include "vxGrid.h"
 
+std::mutex gridMutex;
+
 vxGrid::vxGrid()
 {
 	m_size=1;
@@ -492,18 +494,17 @@ int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide) con
 	// not right.
 	return 1;
 }
-std::mutex mutex;
+
 int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 { 
 	if (getNearestCollision(ray, collide))
 	{	
-		vxBoxN *boxInstance = nullptr;
 		{
-			std::lock_guard<std::mutex> lg(mutex);
-			boxInstance =
-					vxGlobal::getInstance()->getExistingBox( collide.position(), 
+			std::lock_guard<std::mutex> lg(gridMutex);
+			const auto &geometry =
+					vxGlobal::getInstance()->getExistingLegoBlock(collide.position(), 
 															  m_boxSize);
-			return boxInstance->throwRay( ray, collide );
+			return geometry->throwRay( ray, collide );
 		}
 	}
 	else

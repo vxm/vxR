@@ -20,12 +20,12 @@ namespace vxCompute
 
 unsigned int vxRenderProcess::nMaxThreads() const
 {
-	return m_nMaxThreads;
+	return m_nThreads;
 }
 
 void vxRenderProcess::setNMaxThreads(unsigned int nMaxThreads)
 {
-	m_nMaxThreads = nMaxThreads;
+	m_nThreads = std::min(std::thread::hardware_concurrency(), nMaxThreads);
 }
 vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 	:	m_bucketList(prop, 10)
@@ -34,6 +34,7 @@ vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 {
 	m_scene = std::make_shared<vxScene>(prop);
 	m_scene->build();
+	setNMaxThreads(10);
 }
 
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
@@ -65,9 +66,8 @@ vxStatus::code vxRenderProcess::execute()
 
 	const auto &updateInterval = 2; //seconds
 #if USE_THREADS
-	const auto nTh = std::min(std::thread::hardware_concurrency(), m_nMaxThreads);
-	std::thread a([&]{this->render(nTh,0);});
-	std::thread b([&]{this->render(nTh,1);});
+	std::thread a([&]{this->render(m_nThreads,0);});
+	std::thread b([&]{this->render(m_nThreads,1);});
 #else
 	std::thread a([&]{this->render(1,0);});
 	std::thread b([&]{});
@@ -87,7 +87,7 @@ vxStatus::code vxRenderProcess::execute()
 
 double vxRenderProcess::progress() const
 {
-	return 100.0 * m_progress.load() / m_prop->numPixels();
+	return  100.0 * m_progress.load() / (m_prop->ry()*m_nThreads);
 }
 
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
@@ -158,7 +158,6 @@ vxRenderProcess::generateImage()
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 
 	const auto&& prop = imageProperties();
-	size_t numElements = prop->numElements();
 
 	auto buff = m_imageData.initialise();
 	
@@ -167,24 +166,14 @@ vxRenderProcess::generateImage()
 	{
 		std::vector<Hit> *bk = m_bucketList[i].m_pb.getHits();
 		auto sz = m_bucketList[i].m_pb.hitsCount();
-
-		unsigned int dist;
 		for(unsigned int j=0;j<sz;j++)
 		{
 			Hit &h = (*bk)[j];
+			auto pixel = m_imageData.get(h.m_xyCoef);
 
 			// Pixel postprocess
-			// h.m_px.setToGamma(2.2);
-
-			unsigned int compX = h.m_xyCoef.y() * (prop->rx()+1);
-			unsigned int compY = h.m_xyCoef.x() * (prop->ry()+1);
-			dist = (compX + (compY * prop->rx())) * prop->numChannels();
-			if(dist>numElements)
-			{
-				dist = numElements;
-			}
-
-			h.m_px.toRGBA8888(buff + dist);
+			h.m_px.setToGamma(2.2);
+			h.m_px.toRGBA8888(pixel);
 		}
 	}
 
