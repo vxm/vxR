@@ -502,7 +502,7 @@ int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 		{
 			std::lock_guard<std::mutex> lg(gridMutex);
 			const auto &geometry =
-					vxGlobal::getInstance()->getExistingLegoBlock(collide.position(), 
+					vxGlobal::getInstance()->getExistingBox(collide.position(), 
 															  m_boxSize);
 			return geometry->throwRay( ray, collide );
 		}
