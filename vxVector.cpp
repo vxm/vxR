@@ -11,6 +11,14 @@ vxVector3d vxVector3d::constXZ	{1.0, 0.0, 1.0};
 vxVector3d vxVector3d::constYZ	{0.0, 1.0, 1.0};
 vxVector3d vxVector3d::constXYZ	{1.0, 1.0, 1.0};
 
+vxVector3d vxVector3d::constMinusX	{-1.0,  0.0,  0.0};
+vxVector3d vxVector3d::constMinusY	{ 0.0, -1.0,  0.0};
+vxVector3d vxVector3d::constMinusZ	{ 0.0,  0.0, -1.0};
+vxVector3d vxVector3d::constMinusXY	{-1.0, -1.0,  0.0};
+vxVector3d vxVector3d::constMinusXZ	{-1.0,  0.0,  1.0};
+vxVector3d vxVector3d::constMinusYZ	{ 0.0, -1.0, -1.0};
+vxVector3d vxVector3d::constMinusXYZ{-1.0, -1.0, -1.0};
+
 
 vxVector2d::vxVector2d() 
 {}
@@ -353,41 +361,102 @@ vxVector3d vxVector3d::rotateZ(double ang)
 }
 
 vxVector3d vxVector3d::operator/(float factor) const
-{return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);}
+{
+	return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);
+}
 
 vxVector3d vxVector3d::operator/(double factor)
-{return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);}
+{
+	return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);
+}
 
 vxVector3d vxVector3d::operator/(const vxVector3d &entrada) 
-{return vxVector3d(entrada.x()/m_x,entrada.y()/m_y,entrada.z()/m_z);}
+{
+	return vxVector3d(entrada.x()/m_x,entrada.y()/m_y,entrada.z()/m_z);
+}
 
-vxVector3d vxVector3d::operator*(double factor) const {return vxVector3d(factor*m_x,factor*m_y,factor*m_z);}
+vxVector3d vxVector3d::operator*(double factor) const 
+{
+	return vxVector3d(factor*m_x,factor*m_y,factor*m_z);
+}
 
-vxVector3d vxVector3d::operator*(const vxVector3d other) const {return vxVector3d(other.x()*m_x,other.y()*m_y,other.z()*m_z);}
+vxVector3d vxVector3d::operator*(const vxVector3d other) const 
+{
+	return vxVector3d(other.x()*m_x,other.y()*m_y,other.z()*m_z);
+}
 
 vxVector3d vxVector3d::operator-(float factor) const 
-{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
+{
+	return vxVector3d(m_x-factor,m_y-factor,m_z-factor);
+}
 
 vxVector3d vxVector3d::operator-(double factor) const 
-{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
+{
+	return vxVector3d(m_x-factor,m_y-factor,m_z-factor);
+}
 
 vxVector3d vxVector3d::operator-(const vxVector3d &entrada) const 
-{return vxVector3d(m_x-entrada.x(),m_y-entrada.y(),m_z-entrada.z());}
+{
+	return vxVector3d(m_x-entrada.x(),m_y-entrada.y(),m_z-entrada.z());
+}
 
 vxVector3d vxVector3d::operator+(float factor) const
-{return vxVector3d(factor+m_x,factor+m_y,factor+m_z);}
+{
+	return vxVector3d(factor+m_x,factor+m_y,factor+m_z);
+}
 
 vxVector3d vxVector3d::operator+(double factor) const
-{return vxVector3d(factor+m_x,factor+m_y,factor+m_z);}
+{
+	return vxVector3d(factor+m_x,factor+m_y,factor+m_z);
+}
 
 vxVector3d vxVector3d::operator+(const vxVector3d &entrada) const
-{return vxVector3d(entrada.x()+m_x,entrada.y()+m_y,entrada.z()+m_z);}
+{
+	return vxVector3d(entrada.x()+m_x,entrada.y()+m_y,entrada.z()+m_z);
+}
 
 void vxVector3d::vectorXY(vxVector2d &local) const
-{local.set(m_x,m_y);}
+{
+	local.set(m_x,m_y);
+}
 
 void vxVector3d::vectorYZ(vxVector2d &local) const
-{local.set(m_x,m_y);}
+{
+	local.set(m_x,m_y);
+}
 
 void vxVector3d::vectorZX(vxVector2d &local) const
-{local.set(m_x,m_y);}
+{
+	local.set(m_x,m_y);
+}
+
+
+
+vxRayXYZ::vxRayXYZ()
+	: vxVector3d()
+{}
+
+vxRayXYZ::vxRayXYZ(const vxVector3d &other)
+	: vxVector3d(other)
+{
+}
+
+vxRayXYZ::vxRayXYZ(const vxVector3d &origin, const vxVector3d &destiny)
+{
+	set(destiny - origin);
+}
+
+vxRayXYZ::vxRayXYZ(double x, double y, double z)
+	: vxVector3d(x,y,z)
+{
+}
+
+vxVector3d vxRayXYZ::origin() const
+{
+	return m_origin;
+}
+
+void vxRayXYZ::setOrigin(const vxVector3d &origin)
+{
+	m_origin = origin;
+}
