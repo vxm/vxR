@@ -352,6 +352,10 @@ void vxColor::toRGBA8888(unsigned char *tbuff) const
 	tbuff++;
 	
 	*tbuff += (unsigned char)char(MathUtils::remap(m_b,255.0));
+	tbuff++;
+
+	*tbuff += (unsigned char)char(MathUtils::remap(1.0,255.0));
+	
 }
 
 
