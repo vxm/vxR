@@ -19,7 +19,7 @@
 namespace vxCore {
 
 class vxGrid;
-class vxBoxN;
+class vxBox;
 
 class vxOrthIter
 {
@@ -45,7 +45,7 @@ protected:
 	double m_invRes				= {1/5.0};
 
 	std::vector<bool>		 m_data;
-	std::unique_ptr<vxBoxN> m_boundingBox;
+	std::unique_ptr<vxBox> m_boundingBox;
 
 	double m_resDivTres	= {m_size/3.0};
 	double m_midSize	= {m_size/2.0};

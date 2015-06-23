@@ -452,7 +452,7 @@ int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide) con
 	
 	vxCollision minima;
 	
-	vxBoxN *caja;
+	vxBox *caja;
 	
 	for(unsigned int x=0;x<m_resolution;x++)
 	{
@@ -502,9 +502,11 @@ int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 		{
 			std::lock_guard<std::mutex> lg(gridMutex);
 			const auto &geometry =
-					vxGlobal::getInstance()->getExistingBox(collide.position(), 
-															  m_boxSize);
-			return geometry->throwRay( ray, collide );
+					vxGlobal::getInstance()->getExistingLegoBlock();
+			
+			auto instance = geometry->at(collide.position(),m_boxSize);
+
+			return instance->throwRay( ray, collide );
 		}
 	}
 	else
