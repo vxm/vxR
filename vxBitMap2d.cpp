@@ -5,6 +5,7 @@ using namespace vxCore;
 
 vxBitMap2d::vxBitMap2d()
 {
+	//TODO:Constructor very populated.
 	//TODO:stolen QImage object, replace with non QT functions. Please soon.
 	QImage img;
 	img.load("/home/john/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg", "jpg");
