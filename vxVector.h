@@ -73,6 +73,14 @@ public:
 	static vxVector3d constXZ;
 	static vxVector3d constYZ;
 	static vxVector3d constXYZ;
+
+	static vxVector3d constMinusX;
+	static vxVector3d constMinusY;
+	static vxVector3d constMinusZ;
+	static vxVector3d constMinusXY;
+	static vxVector3d constMinusXZ;
+	static vxVector3d constMinusYZ;
+	static vxVector3d constMinusXYZ;
 	
 	enum class axis{kX, kY, kZ};
 
@@ -167,25 +175,15 @@ class vxRayXYZ :public vxVector3d
 	vxVector3d m_origin;
 
 public:
-		vxRayXYZ ()
-			: vxVector3d()
-		{};
-		
-		vxRayXYZ (const vxVector3d& other)
-			: vxVector3d(other)
-		{
-		};
-		
+		vxRayXYZ ();
+		vxRayXYZ (const vxVector3d& other);
 		vxRayXYZ (const vxVector3d& origin, 
-				  const vxVector3d& destiny)
-		{
-			set(destiny - origin);
-		};
+				  const vxVector3d& destiny);
 		
-		vxRayXYZ (double x, double y, double z)
-			: vxVector3d(x,y,z)
-		{
-		}
+		vxRayXYZ (double x, double y, double z);
+		
+		vxVector3d origin() const;
+		void setOrigin(const vxVector3d &origin);
 };
 
 }
