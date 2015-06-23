@@ -13,7 +13,7 @@
 #include <vxVector.h>
 #include <vxGrid.h>
 
-static const std::string baseName("image.0000001.bmp");
+static const std::string baseName("image.0000001.tif");
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
 using namespace vxCore;
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 				FileUtils::makeUnique(baseName);
 
 		//TODO: investigate other formats and resolution limits
-		img.save(QString(fileName.c_str()),"BMP");
+		img.save(QString(fileName.c_str()),"TIFF",100);
 		
 		std::cout << "File saved : " 
 					<< fileName 
