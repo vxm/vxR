@@ -65,23 +65,33 @@ vxStatus::code vxRenderProcess::execute()
 	m_finished = false;
 
 	const auto &updateInterval = 2; //seconds
+
 #if USE_THREADS
-	std::thread a([&]{this->render(m_nThreads,0);});
-	std::thread b([&]{this->render(m_nThreads,1);});
-#else
-	std::thread a([&]{this->render(1,0);});
-	std::thread b([&]{});
-#endif
+	std::cout << "Using " << m_nThreads << " threads" << std::endl;
+	std::vector<std::thread> threads;
+	
+	for(unsigned int i=0;i<m_nThreads; i++)
+	{
+		auto th = std::thread([=]{this->render(m_nThreads,i);});
+		threads.push_back(std::move(th));
+	}
+	
 	while(!m_finished)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(updateInterval));
 		std::cout << "(" << updateInterval << ") progress update: " << std::setprecision(2) << progress() << std::endl;
 	}
 
-	a.join();
-	b.join();
-	std::cout << "Render Process done, took: " << TimeUtils::decorateTime(start, 2);
+	for(auto &th: threads)
+	{
+		th.join();
+	}
+	
+#else
+	render(1,0);
+#endif
 
+	std::cout << "Render Process done, took: " << TimeUtils::decorateTime(start, 2);
 	return vxStatus::code::kSuccess;
 }
 
