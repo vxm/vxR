@@ -1,7 +1,7 @@
 #include "vxGlobal.h"
 
 std::shared_ptr<vxLegoBlock> vxGlobal::m_lego = std::make_shared<vxLegoBlock>();
-std::shared_ptr<vxBox> vxGlobal::m_box = std::make_shared<vxBox>();
+std::shared_ptr<vxBox> vxGlobal::m_box = std::make_shared<vxBox>(false);
 
 vxGlobal::vxGlobal()
 {

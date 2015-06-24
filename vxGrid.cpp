@@ -7,7 +7,7 @@ std::mutex gridMutex;
 
 vxGrid::vxGrid()
 {
-	m_boundingBox = std::make_unique<vxBox>();
+	m_boundingBox = std::make_unique<vxBox>(true);
 	m_size=1;
 	
 	createGridData(5);
@@ -19,7 +19,7 @@ vxGrid::vxGrid()
 vxGrid::vxGrid(const vxVector3d &position, double size)
 	: m_position(position)
 {
-	m_boundingBox = std::make_unique<vxBox>();
+	m_boundingBox = std::make_unique<vxBox>(true);
 
 	setSize(size);
 	createGridData(5);
@@ -31,8 +31,7 @@ vxGrid::vxGrid(const vxVector3d &position, double size)
 
 vxGrid::vxGrid(double x, double y, double z, double size)
 { 
-	m_boundingBox = std::make_unique<vxBox>();
-
+	m_boundingBox = std::make_unique<vxBox>(true);
 	m_position.set(x,y,z);
 	setSize(size);
 	
@@ -44,7 +43,14 @@ vxGrid::vxGrid(double x, double y, double z, double size)
 }
 
 vxGrid::~vxGrid()
-{}
+{
+}
+
+void vxGrid::updateBB()
+{
+	m_boundingBox->set(m_position, m_size);
+	//TODO:missing
+}
 
 void vxGrid::createGridData(const unsigned int resolution)
 {
@@ -92,11 +98,6 @@ void vxGrid::setBoxSize()
 	m_midBoxSize = m_boxSize/2.0;
 }
 
-void vxGrid::updateBB()
-{
-	m_boundingBox->set(m_position, m_size);
-	//TODO:missing
-}
 
 void vxGrid::createDiagonals()
 {
@@ -546,7 +547,7 @@ int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 { 
 	if (getNearestCollision(ray, collide))
 	{	
-		auto&& geometry = vxGlobal::getInstance()->getExistingBox();
+		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
 		const auto&& instance = geometry->at(collide.position(), m_boxSize);
 		return instance->throwRay( ray, collide );
 	}
