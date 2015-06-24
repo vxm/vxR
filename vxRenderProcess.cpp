@@ -64,15 +64,15 @@ vxStatus::code vxRenderProcess::execute()
 	timePoint start = std::chrono::system_clock::now();
 	m_finished = false;
 
+#if USE_THREADS
 	const auto &updateInterval = 2; //seconds
 
-#if USE_THREADS
 	std::cout << "Using " << m_nThreads << " threads" << std::endl;
 	std::vector<std::thread> threads;
 	
 	for(unsigned int i=0;i<m_nThreads; i++)
 	{
-		auto th = std::thread([=]{this->render(m_nThreads,i);});
+		auto th = std::thread([this,i]{this->render(m_nThreads,i);});
 		threads.push_back(std::move(th));
 	}
 	
@@ -82,9 +82,12 @@ vxStatus::code vxRenderProcess::execute()
 		std::cout << "(" << updateInterval << ") progress update: " << std::setprecision(2) << progress() << std::endl;
 	}
 
-	for(auto &th: threads)
+	for(auto &&th: threads)
 	{
-		th.join();
+		if(th.joinable())
+		{
+			th.join();
+		}
 	}
 	
 #else
@@ -103,7 +106,7 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 2;
+	unsigned int nSamples = 1;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
