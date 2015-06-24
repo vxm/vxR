@@ -34,7 +34,7 @@ vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 {
 	m_scene = std::make_shared<vxScene>(prop);
 	m_scene->build();
-	setNMaxThreads(10);
+	setNMaxThreads(100);
 }
 
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
@@ -106,7 +106,7 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 1;
+	unsigned int nSamples = 2;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
