@@ -169,20 +169,20 @@ int vxScene::throwRay(const vxRayXYZ &ray,
 	}
 
 	//TODO:take this to a dommo object or something like..
-//	auto p = MathUtils::rectAndYPlane(ray, (-1) - RESL/2.0);
-//	if(!std::signbit(p.z()))
-//	{
-//		collide.setNormal(vxVector3d::constY);
-//		collide.setPosition(p);
-//		collide.setU(fmod(p.x(),1.0));
-//		collide.setV(fmod(p.z(),1.0));
-		
-//		vxColor col(defaultShader()->getColor(collide));
-//		collide.setColor( col );
-//		collide.setValid();
-//		return 1;
-//	}
-//	else
+	auto p = MathUtils::rectAndYPlane(ray, (-1) - RESL/2.0);
+	if(!std::signbit(p.z()))
+	{
+		collide.setNormal(vxVector3d::constY);
+		collide.setPosition(p);
+		collide.setU(fmod(p.x(),1.0));
+		collide.setV(fmod(p.z(),1.0));
+
+		vxColor col(defaultShader()->getColor(collide));
+		collide.setColor( col );
+		collide.setValid();
+		return 1;
+	}
+	else
 	{
 		const auto&& cart = MathUtils::normalToCartesian(ray);
 		collide.setUV(cart);
