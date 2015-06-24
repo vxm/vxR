@@ -1,10 +1,13 @@
 #include <cassert>
+#include <mutex>
+
 #include "vxGrid.h"
 
 std::mutex gridMutex;
 
 vxGrid::vxGrid()
 {
+	m_boundingBox = std::make_unique<vxBox>();
 	m_size=1;
 	
 	createGridData(5);
@@ -16,6 +19,8 @@ vxGrid::vxGrid()
 vxGrid::vxGrid(const vxVector3d &position, double size)
 	: m_position(position)
 {
+	m_boundingBox = std::make_unique<vxBox>();
+
 	setSize(size);
 	createGridData(5);
 	
@@ -26,6 +31,8 @@ vxGrid::vxGrid(const vxVector3d &position, double size)
 
 vxGrid::vxGrid(double x, double y, double z, double size)
 { 
+	m_boundingBox = std::make_unique<vxBox>();
+
 	m_position.set(x,y,z);
 	setSize(size);
 	
@@ -87,8 +94,8 @@ void vxGrid::setBoxSize()
 
 void vxGrid::updateBB()
 {
-	//TODO:c++14 make unique
-	m_boundingBox.reset(vxGlobal::getBox(m_position, m_size));
+	m_boundingBox->set(m_position, m_size);
+	//TODO:missing
 }
 
 void vxGrid::createDiagonals()
@@ -312,6 +319,9 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
 
 int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const
 {
+	if(!m_boundingBox->hasCollision(ray))
+		return 0;
+	
 	switch(ray.mainAxis())
 	{
 	case vxVector3d::axis::kZ:
@@ -340,10 +350,48 @@ int vxGrid::getNearestCollisionUsingY(const vxRayXYZ &, vxCollision &collide) co
 	return 0;
 }
 
+
+int vxGrid::getNearestCollisionUsingZ_old(const vxRayXYZ &ray, vxCollision &collide) const
+{
+	bool found = false;
+	
+	
+	double minX = m_xmin - ray.origin().x();
+	double minY = m_ymin - ray.origin().y();
+	double minZ = m_zmin - ray.origin().z();
+	
+	double maxX = m_xmax - ray.origin().x();
+	double maxY = m_ymax - ray.origin().y();
+	double maxZ = m_zmax - ray.origin().z();
+	
+	double currZ ;
+	
+	vxVector3d hitZ;
+	
+	do{
+		hitZ = MathUtils::rectAndZPlane(ray, currZ);
+
+		
+		
+		if( std::isless(hitZ.x(),maxX) && std::isgreater(hitZ.x(),minX)
+			&& std::isless(hitZ.y(),maxY) && std::isgreater(hitZ.y(),minY))
+		{
+			collide.setValid(true);
+			collide.setNormal(vxVector3d::constMinusZ);
+			collide.setPosition(hitZ);
+			collide.setUV(vxVector2d(maxX - hitZ.x(), maxY - hitZ.y()));
+			return 1;
+		}
+		currZ++;
+	}
+	while(inGrid(hitZ));
+	
+	return (int)found;
+}
+
 int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide) const
 {
-	collide.initialize();
-	vxVector3d curr(m_zmin, 0.0, 0.0);
+	vxVector3d curr(m_zmin, 0.5, 0.5);
 	vxVector3d prev;
 	bool found = false;
 	double z = m_zmin;
@@ -462,7 +510,6 @@ int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide) con
 			{
 				if (getElement(x,y,z))
 				{
-					caja = vxGlobal::getInstance()->getExistingBox( getVoxelPosition(x, y, z), m_boxSize);
 					caja->throwRay( ray, collide );
 					
 					if (collide.isValid()) 
@@ -499,15 +546,9 @@ int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 { 
 	if (getNearestCollision(ray, collide))
 	{	
-		{
-			std::lock_guard<std::mutex> lg(gridMutex);
-			const auto &geometry =
-					vxGlobal::getInstance()->getExistingLegoBlock();
-			
-			auto instance = geometry->at(collide.position(),m_boxSize);
-
-			return instance->throwRay( ray, collide );
-		}
+		auto&& geometry = vxGlobal::getInstance()->getExistingBox();
+		const auto&& instance = geometry->at(collide.position(), m_boxSize);
+		return instance->throwRay( ray, collide );
 	}
 	else
 	{
