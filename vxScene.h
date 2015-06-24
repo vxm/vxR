@@ -62,7 +62,6 @@ public:
 					double hAperture = 0.0,
 					double vAperture = 0.0);
 
-	
 	std::shared_ptr<vxGrid> createGrid();
 	std::shared_ptr<vxCore::ImageProperties> imageProperties() const;
 	

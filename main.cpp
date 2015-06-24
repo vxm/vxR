@@ -3,15 +3,15 @@
 #include <QApplication>
 #include <QImage>
 
-#include <ImageProperties.h>
-#include <FileUtils.h>
-#include <vxRenderProcess.h>
-#include <vxRenderMain.h>
+#include "FileUtils.h"
+#include "vxRenderProcess.h"
+#include "ImageProperties.h"
+#include "vxRenderMain.h"
 #include "renderPresset.h"
-#include <TimeUtils.h>
-#include <MathUtils.h>
-#include <vxVector.h>
-#include <vxGrid.h>
+#include "TimeUtils.h"
+#include "MathUtils.h"
+#include "vxVector.h"
+#include "vxGrid.h"
 
 static const std::string baseName("image.0000001.tif");
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(620,620);
+	auto imgDesc = std::make_shared<ImageProperties>(1620,1620);
 	
 	// create the render process
 	render rp(imgDesc);

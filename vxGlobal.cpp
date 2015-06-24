@@ -1,10 +1,11 @@
 #include "vxGlobal.h"
 
 std::shared_ptr<vxLegoBlock> vxGlobal::m_lego = std::make_shared<vxLegoBlock>();
+std::shared_ptr<vxBox> vxGlobal::m_box = std::make_shared<vxBox>();
 
 vxGlobal::vxGlobal()
 {
-
+}
 
 vxGlobal *vxGlobal::getInstance()
 {
@@ -12,10 +13,10 @@ vxGlobal *vxGlobal::getInstance()
 	return &a;
 }
 
-vxBox *vxGlobal::getExistingBox(const vxVector3d &position, const double size)
+std::shared_ptr<vxBox> vxGlobal::getExistingBox()
 {
 	return vxGlobal::m_box;
-}}
+}
 
 
 //TODO: this needs to be questioned.

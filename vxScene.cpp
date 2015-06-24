@@ -9,9 +9,9 @@ namespace vxCore{
 class vxScene;
 
 #define RESL 30
-#define PX resl/1.2
+#define PX resl/1.1
 #define PY 0.0
-#define PZ resl*2.20
+#define PZ resl*2.60
 
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
