@@ -2,27 +2,37 @@
 
 using namespace vxCore;
 
-vxBox::vxBox()
+vxBox::vxBox(bool usesDefault)
+	:m_useDefault(usesDefault)
 {
 }
 
 std::shared_ptr<vxBox> vxBox::at(const vxVector3d &pos, double size)
 {
-	m_instance.setPosition(pos);
-	m_instance.setSize(size);
+	set(pos,size);
 	return shared_from_this();
 }
 
 void vxBox::set(const vxVector3d &pos, double size)
 {
-	m_instance.setPosition(pos);
-	m_instance.setSize(size);
+	if(!m_useDefault)
+	{
+		const auto& thID = std::this_thread::get_id();
+		m_instance[thID].setPosition(pos);
+		m_instance[thID].setSize(size);
+	}
+	else
+	{
+		m_default.setPosition(pos);
+		m_default.setSize(size);
+	}
 }
 
 int vxBox::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 {
-	const vxVector3d p = m_instance.position() - ray.origin();
-	const double mSize = m_instance.size()/2.0;
+	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
+	const vxVector3d& p = instance.position() - ray.origin();
+	const double mSize = instance.size()/2.0;
 	
 	double minX = p.x() - mSize;
 	double minY = p.y() - mSize;
@@ -73,9 +83,10 @@ int vxBox::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 
 bool vxBox::hasCollision(const vxRayXYZ &ray) const
 {
+	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
 	bool itHas{false};
-	const vxVector3d &p = m_instance.position() - ray.origin();
-	const double mSize = m_instance.size()/2.0;
+	const vxVector3d& p = instance.position() - ray.origin();
+	const double mSize = instance.size()/2.0;
 	
 	double minX = p.x() - mSize;
 	double minY = p.y() - mSize;

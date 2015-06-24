@@ -3,12 +3,12 @@
 
 #include<memory>
 #include<cmath>
+#include<map>
+#include <thread>
 
 #include "vxVector.h"
 #include "vxCollision.h"
 #include "MathUtils.h"
-
-
 
 namespace vxCore{
 
@@ -29,10 +29,11 @@ public:
 class vxBox: public std::enable_shared_from_this<vxBox>
 {
 private:
-	vxBoxInGrid m_instance;
-	
+	mutable std::map<std::thread::id, vxBoxInGrid> m_instance;
+	bool m_useDefault = {false};
+	mutable vxBoxInGrid m_default;
 public:
-	vxBox();
+	vxBox(bool usesDefault);
 
 	std::shared_ptr<vxBox> at(const vxVector3d &pos, double size);
 	void set(const vxVector3d &pos, double size);
