@@ -31,6 +31,8 @@ class MathUtils
 	static vxVector3d getHollowSphereRand(double radius = 1.0);
 	static vxVector3d getSphereRand(double radius = 1.0);
 	
+	// Ranges
+	static bool inRange(double r, double min, double max);
 	static double clamp(double val, double min, double max);
 	static vxColor clamp(const vxColor &c1, const vxColor &min, const vxColor &max);
 	static vxColor clamp(const vxColor &c1, double min, double max);
