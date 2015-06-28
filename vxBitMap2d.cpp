@@ -26,7 +26,7 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 	int g = (unsigned char)(*(px+1));
 	int b = (unsigned char)(*(px+2));
 	
-	vxColor outColor(vxColor::lookup256(r,g,b));
+	vxColor outColor(r/255.0,g/255.0,b/255.0);
 
 	return outColor;
 }
