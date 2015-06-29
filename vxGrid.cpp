@@ -346,7 +346,9 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
 int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const
 {
 	if(!m_boundingBox->hasCollision(ray))
+	{
 		return 0;
+	}
 	
 	switch(ray.mainAxis())
 	{
