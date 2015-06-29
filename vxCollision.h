@@ -25,7 +25,7 @@ public:
 	{
 	};
 
-	void initialize();
+	void reset();
 	void setValid(bool v = true);
 	bool isValid() const;
 	void setPosition(const vxVector3d &val);

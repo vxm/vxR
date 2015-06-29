@@ -1,7 +1,7 @@
 #include "vxCollision.h"
 namespace vxCore{
 
-void vxCollision::initialize()
+void vxCollision::reset()
 {
 	setValid(false);
 	m_position.set(0,0,0);
