@@ -71,6 +71,18 @@ double vxVector2d::y() const
 	return m_y;
 }
 
+double& vxVector2d::operator[](const unsigned int idx)
+{
+	return idx == 0 ? m_x : m_y;
+}
+
+
+vxVector2d vxVector2d::asIntPosition() const
+{
+	return vxVector2d(floor(m_x),floor(m_y));
+}
+
+
 double vxVector2d::length() const 
 {//TODO:consider hypot c++11
 	return sqrt(m_x*m_x+m_y*m_y);
@@ -239,6 +251,21 @@ double vxVector3d::y() const {return m_y;}
 
 double vxVector3d::z() const {return m_z;}
 
+double& vxVector3d::operator[](const unsigned int idx)
+{
+	switch(idx)
+	{
+	case 0:
+		return m_x;
+	case 1:
+		return m_y;
+	case 2:
+		return m_z;
+	default:
+		return m_z;
+	}
+}
+
 vxVector3d vxVector3d::inverted() const
 {
 	return vxVector3d(-m_x,-m_y,-m_z);
@@ -268,6 +295,16 @@ double vxVector3d::distance(const vxVector3d &ref) const
 {
 	return (*this-ref).length();
 }
+
+vxVector3d vxVector3d::asIntPosition() const
+{
+	return vxVector3d(floor(m_x),floor(m_y),floor(m_z));
+}
+
+//vxVector3d vxVector3d::ceil() const
+//{
+//	return vxVector3d(ceil(m_x),ceil(m_y),ceil(m_z));
+//}
 
 vxVector3d vxVector3d::unit() const
 {
@@ -415,6 +452,14 @@ vxVector3d vxVector3d::operator+(const vxVector3d &entrada) const
 	return vxVector3d(entrada.x()+m_x,entrada.y()+m_y,entrada.z()+m_z);
 }
 
+vxVector3d vxVector3d::operator+=(const vxVector3d &entrada)
+{
+	m_x+=entrada.m_x;
+	m_y+=entrada.m_y;
+	m_z+=entrada.m_z;
+	return *this;
+}
+
 void vxVector3d::vectorXY(vxVector2d &local) const
 {
 	local.set(m_x,m_y);
@@ -441,9 +486,11 @@ vxRayXYZ::vxRayXYZ(const vxVector3d &other)
 {
 }
 
-vxRayXYZ::vxRayXYZ(const vxVector3d &origin, const vxVector3d &destiny)
+vxRayXYZ::vxRayXYZ(const vxVector3d &origin, 
+		   const vxVector3d &direction)
+	: vxVector3d(direction)
+	,  m_origin(origin)
 {
-	set(destiny - origin);
 }
 
 vxRayXYZ::vxRayXYZ(double x, double y, double z)

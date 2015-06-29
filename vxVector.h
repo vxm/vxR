@@ -27,8 +27,10 @@ public:
 	void get(double &xi, double &yi) const;
 	double x() const;
 	double y() const;
+	double& operator[](const unsigned int);
+	vxVector2d asIntPosition() const;
 	double length() const;
-	vxVector2d unit() const;;
+	vxVector2d unit() const;
 	vxVector2d operator+(vxVector2d other) const;
 	vxVector2d operator+(double factor) const;
 	vxVector2d operator+(float factor) const;
@@ -102,15 +104,21 @@ public:
 	double x() const;
 	double y() const;
 	double z() const;
-	
+
+	double& operator[](const unsigned int);
+
 	vxVector3d inverted() const;
 	axis mainAxis() const;
 	double length() const;
 	double distance(const vxVector3d &ref) const;
 	
-	vxVector3d unit() const;;
+	vxVector3d asIntPosition() const;
+	//TODO:fix clash with math ceil
+//	vxVector3d ceil() const;
+	vxVector3d unit() const;
 	void setUnit();
 	vxVector3d operator+(const vxVector3d &entrada) const;
+	vxVector3d operator+=(const vxVector3d &entrada);
 	vxVector3d operator+(double factor) const;
 	vxVector3d operator+(float factor) const;
 	vxVector3d operator+(int factor) const;
@@ -172,13 +180,13 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 
 class vxRayXYZ :public vxVector3d
 {
-	vxVector3d m_origin;
+		vxVector3d m_origin;
 
 public:
 		vxRayXYZ ();
 		vxRayXYZ (const vxVector3d& other);
 		vxRayXYZ (const vxVector3d& origin, 
-				  const vxVector3d& destiny);
+				  const vxVector3d& direction);
 		
 		vxRayXYZ (double x, double y, double z);
 		

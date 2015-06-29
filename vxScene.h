@@ -75,7 +75,7 @@ public:
 	int throwRay( const vxRayXYZ &ray,
 						 vxCollision &collide) const;
 
-	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray);
+	bool hasCollision(const vxRayXYZ &ray);
 	
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
