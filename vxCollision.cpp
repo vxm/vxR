@@ -22,7 +22,7 @@ bool vxCollision::isValid() const
 
 void vxCollision::setPosition(double x, double y, double z)
 {
-	m_position.set(x,y,z);;
+	m_position.set(x,y,z);
 }
 
 vxVector3d vxCollision::position() const
