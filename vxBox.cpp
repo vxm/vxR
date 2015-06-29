@@ -84,7 +84,6 @@ int vxBox::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 bool vxBox::hasCollision(const vxRayXYZ &ray) const
 {
 	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
-	bool itHas{false};
 	const vxVector3d& p = instance.position() - ray.origin();
 	const double mSize = instance.size()/2.0;
 	
@@ -99,9 +98,9 @@ bool vxBox::hasCollision(const vxRayXYZ &ray) const
 	bool bMax = std::signbit(maxX);
 	const auto hitX = MathUtils::rectAndXPlane(ray, bMax ? maxX : minX);
 	if( std::isless(hitX.z(),maxZ) 
-			&& std::isgreater(hitX.z(),minZ)
-			&& std::isless(hitX.y(),maxY)
-			&& std::isgreater(hitX.y(),minY))
+		&& std::isgreater(hitX.z(),minZ)
+		&& std::isless(hitX.y(),maxY)
+		&& std::isgreater(hitX.y(),minY))
 	{
 		return true;
 	}
@@ -125,7 +124,6 @@ bool vxBox::hasCollision(const vxRayXYZ &ray) const
 	}
 	
 	return false;
-
 }
 
 
