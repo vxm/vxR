@@ -230,7 +230,21 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 			const auto&& cart = MathUtils::normalToCartesian(f);
 			environment.setUV(cart);
 			auto environmentColor = m_map.compute(environment);
-
+			
+			/// This emulates the sun
+			//TODO: create an entity with this and read from ibl file.
+//			if(((vxVector2d(0.646000, 0.468000)-cart).length()<.27)
+//				&& (abs(environmentColor.r()-(255/255.0)))<.001
+//						&& (abs(environmentColor.g()-(244/255.0)))<.001
+//						&&  (abs(environmentColor.b()-(221/255.0)))<.001)
+//			{
+//				lumm *=2.0; 
+//			}	
+//			else
+//			{
+//				lumm /=5.0; 
+//			}
+			
 			acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
 		}
 	}

@@ -41,7 +41,7 @@ protected:
 
 	vxVector3d m_position;
 	double m_size				= {5.0};
-	unsigned int m_resolution	= {5};
+	unsigned int m_resolution	= {5u};
 	double m_invRes				= {1/5.0};
 
 	std::vector<bool>		 m_data;
@@ -110,31 +110,44 @@ public:
 	int getNumberOfVoxels() const;
 
 	// returns true if voxel at x y z is active
-	inline bool active( int x,  int y,  int z) const;
+	inline bool active(const vxVector3d& pos) const;
 	
 	// returns true if voxel at index is active
 	inline bool active(unsigned int idx) const;
 
+	// returns true if voxel at index is active
+	inline bool active(const unsigned int x, 
+					   const unsigned int y, 
+					   const unsigned int z) const;
+	
 	// sets active voxel at coordinates x y z
-	void activate(const int x, const int y, const int z);
+	void activate(const unsigned int x, 
+				  const unsigned int y, 
+				  const unsigned int z);
 
 	// sets unactive vxl at coordinates x y z
-	void deactivate(const int x, const int y, const int z);
+	void deactivate(const unsigned int x, 
+					const unsigned int y, 
+					const unsigned int z);
 
 	// returns true if element at local coords 
 	// is true
-	inline bool getElement(int x,int y,int z) const;
+	inline bool getElement(const unsigned int x, 
+						   const unsigned int y, 
+						   const unsigned int z) const;
 
 	// changes the value of the element at local
 	// coords x y z to be same as parameter value
-	inline void setElement(unsigned int x, 
-							unsigned int y, 
-							unsigned int z, 
+	inline void setElement(const unsigned int x, 
+						   const unsigned int y, 
+						   const unsigned int z, 
 							bool value);
 
 	inline void setElement(unsigned int idx, bool value);
 	
-	vxVector3d getVoxelPosition(int x, int y, int z) const;
+	vxVector3d getVoxelPosition(const unsigned int x, 
+								const unsigned int y, 
+								const unsigned int z) const;
 
 	vxVector3d getVoxelPosition(unsigned int idx) const;
 
@@ -149,13 +162,8 @@ public:
 	int getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide) const;
 	int getNearestCollisionUsingZ_old(const vxRayXYZ &ray, vxCollision &collide) const;
 	
-	//!!	Brute Force search.
-	//! what a shame.
-	int getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide) const;
-
-	// devuelve 0 si no le da a la caja
-	int throwRay(const vxRayXYZ &ray, vxCollision &collide)  const;
-	bool hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)  const;;
+	int throwRay(const vxRayXYZ &ray, vxCollision &collide) const;
+	bool hasCollision(const vxRayXYZ &ray) const;
 };
 
 /*

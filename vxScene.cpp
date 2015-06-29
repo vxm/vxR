@@ -46,7 +46,7 @@ void vxScene::build()
 	
 	auto iRadius = 7.0;
 	auto distSph = (resl/3.0);
-	m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  distSph); // Position, radius
+	m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
@@ -73,7 +73,7 @@ vxScene::createCamera(const vxMatrix &,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set( vxVector3d(0,0,0),
 					vxVector3d(0,0,1),
-					2.53,
+					2.3,
 					hAperture,
 					vAperture);
 
@@ -159,30 +159,29 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 
 int vxScene::throwRay(const vxRayXYZ &ray,
 						vxCollision &collide) const
-{ 
+{
 	if(m_grids[0]->throwRay(ray, collide))
 	{
 		vxColor col(defaultShader()->getColor(collide));
 		collide.setColor( col );
-
 		return 1;
 	}
 
 	//TODO:take this to a dommo object or something like..
-	auto p = MathUtils::rectAndYPlane(ray, (-1) - RESL/2.0);
-	if(!std::signbit(p.z()))
-	{
-		collide.setNormal(vxVector3d::constY);
-		collide.setPosition(p);
-		collide.setU(fmod(p.x(),1.0));
-		collide.setV(fmod(p.z(),1.0));
+//	auto p = MathUtils::rectAndYPlane(ray, (-1) - RESL/2.0);
+//	if(!std::signbit(p.z()))
+//	{
+//		collide.setNormal(vxVector3d::constY);
+//		collide.setPosition(p);
+//		collide.setU(fmod(p.x(),1.0));
+//		collide.setV(fmod(p.z(),1.0));
 
-		vxColor col(defaultShader()->getColor(collide));
-		collide.setColor( col );
-		collide.setValid();
-		return 1;
-	}
-	else
+//		vxColor col(defaultShader()->getColor(collide));
+//		collide.setColor( col );
+//		collide.setValid();
+//		return 1;
+//	}
+//	else
 	{
 		const auto&& cart = MathUtils::normalToCartesian(ray);
 		collide.setUV(cart);
@@ -196,10 +195,10 @@ int vxScene::throwRay(const vxRayXYZ &ray,
 	return 0;
 }
 
-bool vxScene::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray)
+bool vxScene::hasCollision(const vxRayXYZ &ray)
 {
 	dRays++;
-	return m_grids[0]->hasCollision(origin, ray);
+	return m_grids[0]->hasCollision(ray);
 }
 
 std::shared_ptr<vxShader> vxScene::defaultShader() const
