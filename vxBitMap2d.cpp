@@ -22,11 +22,17 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 	auto remap = vxVector2d( 1.0-collision.v(), collision.u()); 
 	unsigned char *px = m_data.get(remap);
 	
-	int r = (unsigned char)(*px);
-	int g = (unsigned char)(*(px+1));
-	int b = (unsigned char)(*(px+2));
+	int b = (unsigned char)(*px);
+	px++;
 	
-	vxColor outColor(r/255.0,g/255.0,b/255.0);
+	int g = (unsigned char)(*px);
+	px++;
+	
+	int r = (unsigned char)(*px);
+	
+	vxColor outColor(pow(r/255.0,1/0.5),
+					 pow(g/255.0,1/0.5),
+					 pow(b/255.0,1/0.5));
 
 	return outColor;
 }
