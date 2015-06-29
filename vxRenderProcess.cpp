@@ -79,7 +79,7 @@ vxStatus::code vxRenderProcess::execute()
 	while(!m_finished)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(updateInterval));
-		std::cout << "(" << updateInterval << ") progress update: " << std::setprecision(2) << progress() << std::endl;
+		std::cout << "(" << updateInterval << ") progress update: " << std::setprecision(2) << progress() << " %"<< std::endl;
 	}
 
 	for(auto &&th: threads)
