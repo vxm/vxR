@@ -1,6 +1,7 @@
 #include <cassert>
 #include <mutex>
 
+#include "MathUtils.h"
 #include "vxGrid.h"
 
 std::mutex gridMutex;
@@ -218,7 +219,30 @@ int vxGrid::getNumberOfVoxels() const
 	return m_resXresXres;
 }
 
-bool vxGrid::active(unsigned int idx) const
+bool vxGrid::active(const unsigned int x, 
+					const unsigned int y, 
+					const unsigned int z) const
+{
+	return getElement(x,y,z);
+}
+
+inline bool vxGrid::active(const vxVector3d &pos) const
+{
+	if(	MathUtils::inRange(pos.x(), m_xmin, m_xmax)
+		&& MathUtils::inRange(pos.y(), m_ymin, m_ymax)
+		&& MathUtils::inRange(pos.z(), m_zmin, m_zmax))
+	{
+		const auto& fPos = pos - (m_position - m_midSize);
+		return getElement((unsigned int)floor(fPos.x()),
+						  (unsigned int)floor(fPos.y()),
+						  (unsigned int)floor(fPos.z()));
+	}
+	
+	return false;
+}
+
+
+inline bool vxGrid::active(unsigned int idx) const
 {
 	if (idx<m_resXresXres)
 		return m_data[idx];
@@ -226,31 +250,35 @@ bool vxGrid::active(unsigned int idx) const
 		return false;
 }
 
-void vxGrid::activate(const int x, const int y, const int z)
+inline void vxGrid::activate(const unsigned int x, 
+					  const unsigned int y, 
+					  const unsigned int z)
 {
 	setElement(x,y,z,true);
 }
 
-void vxGrid::deactivate(const int x, const int y, const int z)
+inline void vxGrid::deactivate(const unsigned int x, const unsigned int y, const unsigned int z)
 {
 	setElement(x,y,z,false);
 }
 
-bool vxGrid::getElement(int x, int y, int z) const
+inline bool vxGrid::getElement(const unsigned int x, 
+								const unsigned int y, 
+								const unsigned int z) const
 {
 	auto p = x+(y*m_resolution)+(z*m_resXres);
 	return m_data[p];
 }
 
-void vxGrid::setElement(unsigned int x, 
-						unsigned int y, 
-						unsigned int z, 
+inline void vxGrid::setElement(const unsigned int x, 
+						const unsigned int y, 
+						const unsigned int z, 
 						bool value)
 {
 	m_data[x+(y*m_resolution)+(z*m_resXres)]=value;
 }
 
-void vxGrid::setElement(unsigned int idx, bool value)
+inline void vxGrid::setElement(unsigned int idx, bool value)
 {
 	if(idx<m_data.size())
 	{
@@ -258,7 +286,7 @@ void vxGrid::setElement(unsigned int idx, bool value)
 	}
 }
 
-vxVector3d vxGrid::getVoxelPosition(unsigned int idx) const
+inline vxVector3d vxGrid::getVoxelPosition(unsigned int idx) const
 {
 	int retz = idx / m_resXres;
 	int rety = (idx%m_resXres) / m_resolution;
@@ -276,17 +304,14 @@ inline unsigned int vxGrid::indexAtPosition(const vxVector3d &position) const
 	return idx;
 }
 
-inline vxVector3d vxGrid::getVoxelPosition(int x, int y, int z) const
+inline vxVector3d vxGrid::getVoxelPosition(const unsigned int x, 
+										   const unsigned int y, 
+										   const unsigned int z) const
 {
 	double retx = (m_position.x() - m_midSize) + (x * m_boxSize) + m_resDivTres;
 	double rety = (m_position.y() - m_midSize) + (y * m_boxSize) + m_resDivTres;
 	double retz = (m_position.z() - m_midSize) + (z * m_boxSize) + m_resDivTres;
 	return vxVector3d(retx, rety, retz);
-}
-
-bool vxGrid::active(int x, int y, int z) const
-{
-	return getElement(x,y,z);
 }
 
 void vxGrid::createSphere(const vxVector3d &center, const double radio)
