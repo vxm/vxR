@@ -21,7 +21,7 @@ class vxCirclesMap : public vxMap2d
 	bool m_circle3 {true};
 	bool m_margin  {true};
 
-	double m_margn = 0.055;
+	double m_margn = 0.04;
 };
 
 
