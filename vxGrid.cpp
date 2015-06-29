@@ -495,7 +495,6 @@ int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 		}
 
 		z+= m_boxSize;
-
 	}
 	
 	if(found)
@@ -508,89 +507,37 @@ int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 }
 
 
-
-int vxGrid::getNearestCollisionBF(const vxRayXYZ &ray, vxCollision &collide) const 
-{
-	collide.initialize();
-	
-	bool pri=true;
-	
-	vxCollision minima;
-	
-	vxBox *caja;
-	
-	for(unsigned int x=0;x<m_resolution;x++)
-	{
-		for(unsigned int y=0;y<m_resolution;y++)
-		{
-			for(unsigned int z=0;z<m_resolution;z++)
-			{
-				if (getElement(x,y,z))
-				{
-					caja->throwRay( ray, collide );
-					
-					if (collide.isValid()) 
-					{
-						
-						if (pri)
-						{
-							minima=collide;
-							
-							pri=false;
-						}
-						else
-						{
-							if(collide.position().length()<minima.position().length()) minima=collide;
-						}
-					}
-					else
-					{
-						collide.setColor(1.0,0,0);
-					}
-				}
-			}
-		}
-	}
-	
-	//
-	collide=minima;
-
-	// not right.
-	return 1;
-}
-
 int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 { 
 	if (getNearestCollision(ray, collide))
 	{	
 		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
-		const auto&& instance = geometry->at(collide.position(), m_boxSize);
+		const auto&& instance = geometry->at(collide.position(), 1.0);
 		return instance->throwRay( ray, collide );
 	}
 	else
 	{
-		collide.initialize();
 		return 0;
 	}
 }
 
-bool vxGrid::hasCollision(const vxVector3d &origin, const vxRayXYZ &ray) const
+bool vxGrid::hasCollision(const vxRayXYZ &ray) const
 {
-	auto itDoes = false;
-	vxVector3d v = ray.unit();
-	vxVector3d next(origin+v);
+	auto found = false;
+	const vxVector3d&& v = ray.unit();
+	vxVector3d next(ray.origin()+v);
 
 	while(inGrid(next))
 	{
-		if(active(indexAtPosition(next)))
+		if(active(next))
 		{
-			itDoes = true;
+			found = true;
 			break;
 		}
 		
-		next.set(next+v);
+		next+=v;
 	}
 	
-	return itDoes;
+	return found;
 }
 
