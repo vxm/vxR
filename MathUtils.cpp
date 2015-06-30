@@ -1,6 +1,8 @@
 #include "MathUtils.h"
 #include "vxVector.h"
 
+using namespace vxCore;
+
 const double MathUtils::C{299'792'458.0};
 const double MathUtils::PI {3.141'592'653'589'793'238'462'\
 643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816};
@@ -33,8 +35,8 @@ vxVector3d MathUtils::rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane)
 	default:
 		break;
 	}
-
 }
+
 
 vxVector3d MathUtils::rectAndXPlane(const vxRayXYZ &ray, double x)
 {
@@ -55,6 +57,12 @@ vxVector3d MathUtils::rectAndYPlane(const vxRayXYZ &ray, double y)
 
 	return vxVector3d(x,y,z);
 }
+
+double MathUtils::x_forRectAndYPlane(const vxRayXYZ &ray, double y)
+{
+	return (y - ray.y()) / (-ray.y()) * (-ray.x()) + ray.x();
+}
+
 
 vxVector3d MathUtils::rectAndZPlane(const vxRayXYZ &ray, double z)
 {

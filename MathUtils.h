@@ -25,6 +25,8 @@ class MathUtils
 	static vxVector3d rectAndYPlane(const vxRayXYZ &ray, double y);
 	static vxVector3d rectAndZPlane(const vxRayXYZ &ray, double z);
 
+	static double x_forRectAndYPlane(const vxRayXYZ &ray, double y);
+	
 	//Random
 	static double getRand(double range);
 	static double getBoolRand();
