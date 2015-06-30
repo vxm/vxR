@@ -417,46 +417,36 @@ int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 	auto xcota = copysign(m_midBoxSize, ray.x());
 	auto ycota = copysign(m_midBoxSize, ray.y());
 	
-	while(z <= m_zmax && !found)
+	while(z <= m_zmax)
 	{
 		auto pnt = MathUtils::rectAndZPlane(ray, z);
 		prev = curr;
-		curr = getVoxelPosition(indexAtPosition(pnt));
-		if(!inGrid(curr, m_boxSize))
-		{
-			// can we jump to the real next z?
-			z+= m_boxSize;
-			continue;
-		}
-		
+		curr = pnt.asIntPosition()+.5;
 		vxVector3d tmp = curr;
 		if(prev.x() != curr.x() || prev.y() != curr.y())
 		{
-			if(MathUtils::rectAndYPlane(ray, prev.y() + ycota).x()>(prev.x() + xcota))
+			if(MathUtils::x_forRectAndYPlane(ray, prev.y() + ycota)>(prev.x() + xcota))
 			{
 				if(curr.x()!=prev.x())
 				{
 					tmp = prev;
-					tmp.setX(curr.x());
+					tmp[0] = curr[0];
 				
-					if(inGrid(tmp, m_boxSize) && active(indexAtPosition(tmp)))
+					if(active(tmp))
 					{
 						curr = tmp;
 						found=true;
 						break;
 					}
 				}
+
+				tmp[1] = curr[1];
 				
-				if(curr.y()!=prev.y())
+				if(active(tmp))
 				{
-					tmp.setY(curr.y());
-				
-					if(inGrid(tmp, m_boxSize) && active(indexAtPosition(tmp)))
-					{
-						curr = tmp;
-						found=true;
-						break;
-					}
+					curr = tmp;
+					found=true;
+					break;
 				}
 			}
 			else
@@ -464,31 +454,28 @@ int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 				if(curr.y()!=prev.y())
 				{
 					tmp = prev;
-					tmp.setY(curr.y());
+					tmp[1] = curr[1];
 				
-					if(inGrid(tmp) && active(indexAtPosition(tmp)))
-					{
-						curr = tmp;
-						found=true;
-						break;
-					}
-				}			
-				
-				if(curr.x()!=prev.x())
-				{
-					tmp.setX(curr.x());
-				
-					if(inGrid(tmp) && active(indexAtPosition(tmp)))
+					if(active(tmp))
 					{
 						curr = tmp;
 						found=true;
 						break;
 					}
 				}
-			}
+				
+				tmp[0] = curr[0];
+			
+				if(active(tmp))
+				{
+					curr = tmp;
+					found=true;
+					break;
+				}
+		}
 		}
 		
-		if(inGrid(curr, m_boxSize) && active(indexAtPosition(curr)))
+		if(active(curr))
 		{
 			found=true;
 			break;
