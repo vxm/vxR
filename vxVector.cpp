@@ -281,6 +281,7 @@ double& vxVector3d::operator[](const unsigned int idx)
 	}
 }
 
+
 vxVector3d vxVector3d::inverted() const
 {
 	return vxVector3d(-m_x,-m_y,-m_z);
@@ -288,11 +289,11 @@ vxVector3d vxVector3d::inverted() const
 
 vxVector3d::axis vxVector3d::mainAxis() const
 {
-	if(m_x>m_y && m_x>m_z)
+	if(fabs(m_x)>fabs(m_y) && fabs(m_x)>fabs(m_z))
 	{
 		return axis::kX;
 	}
-	if(m_y>m_z)
+	if(fabs(m_y)>fabs(m_z))
 	{
 		return axis::kY;
 	}
