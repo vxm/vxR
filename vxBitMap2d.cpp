@@ -30,9 +30,10 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 	
 	int r = (unsigned char)(*px);
 	
-	vxColor outColor(pow(r/255.0,1/0.5),
-					 pow(g/255.0,1/0.5),
-					 pow(b/255.0,1/0.5));
+	auto gamma = 2.2;
+	vxColor outColor(pow(r/255.0,gamma),
+					 pow(g/255.0,gamma),
+					 pow(b/255.0,gamma));
 
 	return outColor;
 }
