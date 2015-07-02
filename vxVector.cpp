@@ -251,6 +251,21 @@ double vxVector3d::y() const {return m_y;}
 
 double vxVector3d::z() const {return m_z;}
 
+double vxVector3d::operator[](const unsigned int idx) const
+{
+	switch(idx)
+	{
+	case 0:
+		return m_x;
+	case 1:
+		return m_y;
+	case 2:
+		return m_z;
+	default:
+		return m_z;
+	}
+}
+
 double& vxVector3d::operator[](const unsigned int idx)
 {
 	switch(idx)
