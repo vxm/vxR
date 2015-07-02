@@ -65,8 +65,10 @@ vxStatus::code vxRenderProcess::execute()
 	m_finished = false;
 
 #if USE_THREADS
-	const auto &updateInterval = 2; //seconds
-
+	const auto &minUpdateInterval = 2; //seconds
+	const auto &maxUpdateInterval = 20; //seconds
+	unsigned int customUpdateInterval = minUpdateInterval;
+	
 	std::cout << "Using " << m_nThreads << " threads" << std::endl;
 	std::vector<std::thread> threads;
 	
@@ -76,10 +78,23 @@ vxStatus::code vxRenderProcess::execute()
 		threads.push_back(std::move(th));
 	}
 	
+	double accelerationRatio = 0.2;
+	double prevProgress = -1;
 	while(!m_finished)
 	{
-		std::this_thread::sleep_for(std::chrono::seconds(updateInterval));
-		std::cout << "(" << updateInterval << ") progress update: " << std::setprecision(2) << progress() << " %"<< std::endl;
+		double dProgress = progress();
+		if((dProgress-prevProgress)<accelerationRatio)
+		{
+			customUpdateInterval+=1;
+		}
+		
+		std::this_thread::sleep_for(std::chrono::seconds((int)customUpdateInterval));
+		std::cout << "(" << customUpdateInterval
+				  << ") progress update: " 
+				  << std::setprecision(2) 
+				  << dProgress << " %"<< std::endl;
+		
+		prevProgress = dProgress;
 	}
 
 	for(auto &&th: threads)
