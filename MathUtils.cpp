@@ -63,6 +63,10 @@ double MathUtils::x_forRectAndYPlane(const vxRayXYZ &ray, double y)
 	return (y - ray.y()) / (-ray.y()) * (-ray.x()) + ray.x();
 }
 
+double MathUtils::z_forRectAndYPlane(const vxRayXYZ &ray, double y)
+{
+	return (y - ray.y()) / (-ray.y()) * (-ray.z()) + ray.z();
+}
 
 vxVector3d MathUtils::rectAndZPlane(const vxRayXYZ &ray, double z)
 {
