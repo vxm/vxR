@@ -63,9 +63,9 @@ vxRayXYZ vxCamera::ray(const vxVector2d &coord, const vxSampler &sampler) const
 					- 1.0/(double)(2.0 * m_ry)
 					+ sampler.y()/m_ry;
 	
-	auto ret = vxRayXYZ(compY, compX, m_focusDistance);
-
-	ret.rotateX(.333);
+	auto&& ret = vxRayXYZ(compY, compX, m_focusDistance);
+	ret.rotateX(-7*(MathUtils::PI/4.0));
+	//ret.rotateX(0.33);
 	return ret;
 }
 
