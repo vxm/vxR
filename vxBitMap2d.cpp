@@ -3,12 +3,15 @@
 
 using namespace vxCore;
 
+///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
+////home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
 vxBitMap2d::vxBitMap2d()
 {
 	//TODO:Constructor very populated.
 	//TODO:stolen QImage object, replace with non QT functions. Please soon.
 	QImage img;
-	img.load("/home/john/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg", "jpg");
+	img.load("/home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg", "jpg");
 	m_prop = std::make_shared<ImageProperties>(img.width(), img.height());
 	
 	m_prop->setFormat(ImageProperties::ImgFormat::k8);
