@@ -12,6 +12,12 @@ class MathUtils
 	public:
 		MathUtils();
 
+	// Rationals
+	constexpr static double ratio(double a, double b);
+	constexpr static double ratio(double a, int b);
+	constexpr static double ratio(int a, double b);
+	constexpr static double ratio(int a, int b);
+	
 	// Speed of light
 	static const double C;
 	static const double PI;
@@ -21,18 +27,20 @@ class MathUtils
 
 	//Intersections
 	static vxVector3d rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane);
+
 	static vxVector3d rectAndXPlane(const vxRayXYZ &ray, double x);
 	static vxVector3d rectAndYPlane(const vxRayXYZ &ray, double y);
-	static vxVector3d rectAndZPlane(const vxRayXYZ &ray, double z);
-
 	static double x_forRectAndYPlane(const vxRayXYZ &ray, double y);
 	static double z_forRectAndYPlane(const vxRayXYZ &ray, double y);
+
+	static vxVector3d rectAndZPlane(const vxRayXYZ &ray, double z);
 
 	//Random
 	static double getRand(double range);
 	static double getBoolRand();
 	static vxVector3d getHollowSphereRand(double radius = 1.0);
 	static vxVector3d getSphereRand(double radius = 1.0);
+	static vxVector3d getHollowHemisphereRand(double radius, const vxVector3d &normal);
 	
 	// Ranges
 	static bool inRange(double r, double min, double max);
