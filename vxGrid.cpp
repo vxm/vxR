@@ -88,9 +88,24 @@ void vxGrid::setSize(const double size)
 	setBoxSize();
 }
 
+unsigned int vxGrid::size() const
+{
+	return m_size;
+}
+
 void vxGrid::setPosition(const vxVector3d position)
 {
 	m_position=position;
+}
+
+vxVector3d vxGrid::position() const
+{
+	return m_position;
+}
+
+unsigned int vxGrid::resolution() const
+{
+	return m_resolution;
 }
 
 void vxGrid::setBoxSize()

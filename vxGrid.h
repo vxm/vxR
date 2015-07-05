@@ -69,98 +69,75 @@ public:
 	vxGrid(double x, double y,  double z,  double size);
 	~vxGrid();
 
+// GETTER AND SETTERS
+	
 	void createGridData(const unsigned int resolution);
-	
 	void setResolution(unsigned int resolution);
-
 	void setSize(const double size);
-
+	unsigned int size() const;
 	void setPosition(const vxVector3d position);
-
+	vxVector3d position() const;
+	unsigned int resolution() const;
 	void setBoxSize();
-
 	void updateBB();
-	
 	void createDiagonals();
-	
 	void createCorners();
-	
 	void createGround(unsigned int offset = 0);
-
 	void createEdges();
-	
 	void createSphere(const vxVector3d &center, const double radio);
-
 	void createSphere(int x, int y, int z, const double radio);
-
 	bool getRandomBoolean(double ratio = 1.0);
-
 	void createRandom(double ratio = 1.0);
-
 	void addVertices(const std::vector<vxVector3d> &verts, 
 					 const vxVector3d &offset, 
 					 const vxVector3d &scale);
 	
+// OPERATION WITH GRID
+	
 	//sets every single vxl to 0.
 	void initialize(bool value = false);
-	
 	//returns number of active voxels
 	unsigned int numActiveVoxels();
-	
 	int getNumberOfVoxels() const;
-
 	// returns true if voxel at x y z is active
 	inline bool active(const vxVector3d& pos) const;
-	
 	// returns true if voxel at index is active
 	inline bool active(unsigned int idx) const;
-
 	// returns true if voxel at index is active
 	inline bool active(const unsigned int x, 
 					   const unsigned int y, 
 					   const unsigned int z) const;
-	
 	// sets active voxel at coordinates x y z
 	void activate(const unsigned int x, 
 				  const unsigned int y, 
 				  const unsigned int z);
-
 	// sets unactive vxl at coordinates x y z
 	void deactivate(const unsigned int x, 
 					const unsigned int y, 
 					const unsigned int z);
-
 	// returns true if element at local coords 
 	// is true
 	inline bool getElement(const unsigned int x, 
 						   const unsigned int y, 
 						   const unsigned int z) const;
-
 	// changes the value of the element at local
 	// coords x y z to be same as parameter value
 	inline void setElement(const unsigned int x, 
 						   const unsigned int y, 
 						   const unsigned int z, 
 							bool value);
-
 	inline void setElement(unsigned int idx, bool value);
-	
 	vxVector3d getVoxelPosition(const unsigned int x, 
 								const unsigned int y, 
 								const unsigned int z) const;
-
 	vxVector3d getVoxelPosition(unsigned int idx) const;
-
 	inline unsigned int indexAtPosition(const vxVector3d &position) const;
-
 	bool inGrid(const vxVector3d &pnt, double tolerance = 0.0) const;
 	
-	int getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const;
-	
+	int getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const;	
 	int getNearestCollisionUsingX(const vxRayXYZ &, vxCollision &collide) const;
 	int getNearestCollisionUsingY(const vxRayXYZ &, vxCollision &collide) const;
 	int getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide) const;
-	int getNearestCollisionUsingZ_old(const vxRayXYZ &ray, vxCollision &collide) const;
 	
 	int throwRay(const vxRayXYZ &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRayXYZ &ray) const;
