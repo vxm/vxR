@@ -65,8 +65,7 @@ vxStatus::code vxRenderProcess::execute()
 	m_finished = false;
 
 #if USE_THREADS
-	const auto &minUpdateInterval = 2; //seconds
-	const auto &maxUpdateInterval = 20; //seconds
+	const auto &minUpdateInterval = 1; //seconds
 	unsigned int customUpdateInterval = minUpdateInterval;
 	
 	std::cout << "Using " << m_nThreads << " threads" << std::endl;
@@ -92,7 +91,7 @@ vxStatus::code vxRenderProcess::execute()
 		std::cout << "(" << customUpdateInterval
 				  << ") progress update: " 
 				  << std::setprecision(2) 
-				  << dProgress << " %"<< std::endl;
+				  << dProgress << "%"<< std::endl;
 		
 		prevProgress = dProgress;
 	}
