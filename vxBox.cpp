@@ -93,35 +93,35 @@ bool vxBox::hasCollision(const vxRayXYZ &ray) const
 	double minX = p.x() - mSize;
 	double minY = p.y() - mSize;
 	double minZ = p.z() - mSize;
-	
+
 	double maxX = p.x() + mSize;
 	double maxY = p.y() + mSize;
 	double maxZ = p.z() + mSize;
-	
+
 	bool bMax = std::signbit(maxX);
 	const auto hitX = MathUtils::rectAndXPlane(ray, bMax ? maxX : minX);
-	if( std::isless(hitX.z(),maxZ) 
-		&& std::isgreater(hitX.z(),minZ)
-		&& std::isless(hitX.y(),maxY)
-		&& std::isgreater(hitX.y(),minY))
+	if( std::islessequal(hitX.z(),maxZ) 
+		&& std::isgreaterequal(hitX.z(),minZ)
+		&& std::islessequal(hitX.y(),maxY)
+		&& std::isgreaterequal(hitX.y(),minY))
 	{
 		return true;
 	}
 	
 	bMax = std::signbit(maxY);
 	const auto hitY = MathUtils::rectAndYPlane(ray, bMax ? maxY : minY);
-	if( std::isless(hitY.x(),maxX) && std::isgreater(hitY.x(),minX)
-			&&	std::isless(hitY.z(),maxZ) && std::isgreater(hitY.z(),minZ))
+	if( std::islessequal(hitY.x(),maxX) && std::isgreaterequal(hitY.x(),minX)
+			&&	std::islessequal(hitY.z(),maxZ) && std::isgreaterequal(hitY.z(),minZ))
 	{
 		return true;
 	}
 	
 	bMax = std::signbit(maxZ);
 	const auto hitZ = MathUtils::rectAndZPlane(ray, bMax ? maxZ : minZ);
-	if( std::isless(hitZ.x(),maxX) 
-			&& std::isgreater(hitZ.x(),minX)
-			&& std::isless(hitZ.y(),maxY) 
-			&& std::isgreater(hitZ.y(),minY))
+	if( std::islessequal(hitZ.x(),maxX) 
+			&& std::isgreaterequal(hitZ.x(),minX)
+			&& std::islessequal(hitZ.y(),maxY) 
+			&& std::isgreaterequal(hitZ.y(),minY))
 	{
 		return true;
 	}
