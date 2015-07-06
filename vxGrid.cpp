@@ -203,8 +203,7 @@ void vxGrid::addVertices(const std::vector<vxVector3d> &verts,
 {
 	for(const auto& v : verts)
 	{
-		const auto& v1 = (v*scale)+offset;
-		setElement(indexAtPosition(v1), true);
+		activate((v*scale)+offset);
 	}
 }
 
@@ -247,7 +246,7 @@ inline bool vxGrid::active(const vxVector3d &pos) const
 		&& MathUtils::inRange(pos.y(), m_ymin, m_ymax)
 		&& MathUtils::inRange(pos.z(), m_zmin, m_zmax))
 	{
-		const auto& fPos = pos - (m_position - m_midSize);
+		const auto&& fPos = pos - (m_position - m_midSize);
 		return getElement((unsigned int)floor(fPos.x()),
 						  (unsigned int)floor(fPos.y()),
 						  (unsigned int)floor(fPos.z()));
@@ -271,6 +270,20 @@ inline void vxGrid::activate(const unsigned int x,
 {
 	setElement(x,y,z,true);
 }
+
+void vxGrid::activate(const vxVector3d &pos)
+{
+	if(	MathUtils::inRange(pos.x(), m_xmin, m_xmax)
+		&& MathUtils::inRange(pos.y(), m_ymin, m_ymax)
+		&& MathUtils::inRange(pos.z(), m_zmin, m_zmax))
+	{
+		const auto&& offsetPos = pos - (m_position - m_midSize);
+		setElement((unsigned int)floor(offsetPos.x()),
+						  (unsigned int)floor(offsetPos.y()),
+						  (unsigned int)floor(offsetPos.z()), true);
+	}
+}
+
 
 inline void vxGrid::deactivate(const unsigned int x, const unsigned int y, const unsigned int z)
 {

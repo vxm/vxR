@@ -111,6 +111,8 @@ public:
 	void activate(const unsigned int x, 
 				  const unsigned int y, 
 				  const unsigned int z);
+	// sets active voxel at world space position
+	void activate(const vxVector3d &pos);
 	// sets unactive vxl at coordinates x y z
 	void deactivate(const unsigned int x, 
 					const unsigned int y, 
