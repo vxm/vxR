@@ -27,6 +27,7 @@ void vxRenderProcess::setNMaxThreads(unsigned int nMaxThreads)
 {
 	m_nThreads = std::min(std::thread::hardware_concurrency(), nMaxThreads);
 }
+
 vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 	:	m_bucketList(prop, 10)
 	,	m_prop(prop)
