@@ -1,5 +1,9 @@
 TODO:
 
+- write logger 
+	- in vxGlobal
+	- to disk
+	
 - Rework getNearestCollision for optimization.
 	- HasCollission skips some boxes.
 	- fix errors
