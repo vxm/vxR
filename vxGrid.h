@@ -134,7 +134,8 @@ public:
 								const unsigned int z) const;
 	vxVector3d getVoxelPosition(unsigned int idx) const;
 	inline unsigned int indexAtPosition(const vxVector3d &position) const;
-	bool inGrid(const vxVector3d &pnt, double tolerance = 0.0) const;
+	bool inGrid(const vxVector3d &pnt, double tolerance) const;
+	bool inGrid(const vxVector3d &pnt) const;
 	
 	int getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const;	
 	int getNearestCollisionUsingX(const vxRayXYZ &, vxCollision &collide) const;

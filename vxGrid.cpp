@@ -363,13 +363,24 @@ void vxGrid::createSphere(const vxVector3d &center, const double radio)
 
 inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
 {
-	return pnt.x()<=(m_xmax+tol)
-			&& pnt.x()>=(m_xmin-tol)
-			&& pnt.y()<=(m_ymax+tol)
-			&& pnt.y()>=(m_ymin-tol)
-			&& pnt.z()<=(m_zmax+tol)
-			&& pnt.z()>=(m_zmin-tol);
+	return std::islessequal(pnt.x(),m_xmax+tol)
+			&& std::isgreaterequal(pnt.x(),m_xmin-tol)
+			&& std::islessequal(pnt.y(),m_ymax+tol)
+			&& std::isgreaterequal(pnt.y(),m_ymin-tol)
+			&& std::islessequal(pnt.z(),m_zmax+tol)
+			&& std::isgreaterequal(pnt.z(),m_zmin-tol);
 }
+
+inline bool vxGrid::inGrid(const vxVector3d &pnt) const
+{
+	return std::islessequal(pnt.x(),m_xmax)
+			&& std::isgreaterequal(pnt.x(),m_xmin)
+			&& std::islessequal(pnt.y(),m_ymax)
+			&& std::isgreaterequal(pnt.y(),m_ymin)
+			&& std::islessequal(pnt.z(),m_zmax)
+			&& std::isgreaterequal(pnt.z(),m_zmin);
+}
+
 
 int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const
 {
