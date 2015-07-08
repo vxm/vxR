@@ -157,7 +157,7 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	return true;
 }
 
-int vxScene::throwRay(const vxRayXYZ &ray,
+int vxScene::throwRay(const vxRay &ray,
 						vxCollision &collide) const
 {
 	if(m_grids[0]->throwRay(ray, collide))
@@ -183,7 +183,7 @@ int vxScene::throwRay(const vxRayXYZ &ray,
 //	}
 //	else
 	{
-		const auto&& cart = MathUtils::normalToCartesian(ray);
+		const auto&& cart = MathUtils::normalToCartesian(ray.direction());
 		collide.setUV(cart);
 		auto environmentColor = m_environment.compute(collide);
 		
@@ -195,7 +195,7 @@ int vxScene::throwRay(const vxRayXYZ &ray,
 	return 0;
 }
 
-bool vxScene::hasCollision(const vxRayXYZ &ray)
+bool vxScene::hasCollision(const vxRay &ray)
 {
 	dRays++;
 	return m_grids[0]->hasCollision(ray);

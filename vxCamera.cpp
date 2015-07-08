@@ -53,23 +53,23 @@ void vxCamera::set(const vxVector3d& position,
 	m_vApTan = tan(-m_verticalAperture/2.0);
 }
 
-vxRayXYZ vxCamera::ray(const vxVector2d &coord, const vxSampler &sampler) const
+vxRay vxCamera::ray(const vxVector2d &coord, const vxSampler &sampler) const
 {
 	double compX = m_hApTan * (( coord.x() * 2.0)-1.0) 
 					- 1.0/(double)(2.0 * m_rx)
 					+ sampler.x()/m_rx;
-	
+
 	double compY = m_vApTan * (( coord.y() * 2.0)-1.0)
 					- 1.0/(double)(2.0 * m_ry)
 					+ sampler.y()/m_ry;
-	
-	auto&& ret = vxRayXYZ(compY, compX, m_focusDistance);
-	//ret.rotateX(-7*(MathUtils::PI/4.0));
-	ret.rotateX(0.33);
+
+	auto&& ret = vxRay(compY, compX, m_focusDistance);
+	ret.direction().rotateX( -14 * (MathUtils::PI/8.0) );
+	//ret.rotateX(0.33);
 	return ret;
 }
 
-vxRayXYZ vxCamera::givemeRandRay(const vxVector2d &coord)
+vxRay vxCamera::givemeRandRay(const vxVector2d &coord)
 {
 	double compX = m_hApTan * (( coord.x() * 2.0) -1.0 ) 
 			- 1.0/(double)(2.0 * m_prop->rx()) 
@@ -79,21 +79,22 @@ vxRayXYZ vxCamera::givemeRandRay(const vxVector2d &coord)
 			- 1.0/(double)(2.0 * m_prop->ry()) 
 			+ ((rand()/(double)RAND_MAX))/(double)(m_prop->ry());
 
-	auto ret = vxRayXYZ( compY, compX, m_focusDistance );
-	ret.rotateY(0.333);
+	auto ret = vxRay( compY, compX, m_focusDistance );
+	ret.direction().rotateY(0.333);
 	return ret;
 }
 
-vxRayXYZ vxCamera::givemeNextRay(const vxContactBuffer &imagen, double ang)
+vxRay vxCamera::givemeNextRay(const vxContactBuffer &imagen, double ang)
 {
-	vxRayXYZ ret;
-	ret.set(tan(m_verticalAperture/2.0) * ((imagen.getScanYd()*2)-1) , tan(m_horizontalAperture/2.0)*(( imagen.getScanXd() *2)-1), m_focusDistance);
-	ret=ret.unit();
-	ret=ret.rotateY(ang);
+	vxRay ret;
+	auto&& direction = ret.direction();
+	direction.set(tan(m_verticalAperture/2.0) * ((imagen.getScanYd()*2)-1) , tan(m_horizontalAperture/2.0)*(( imagen.getScanXd() *2)-1), m_focusDistance);
+	direction.setUnit();
+	direction=direction.rotateY(ang);
 	return ret;
 }
 
-vxRayXYZ vxCamera::givemeRandomRay(const vxVector2d &coord)
+vxRay vxCamera::givemeRandomRay(const vxVector2d &coord)
 {
 	double yrv,xrv;
 	xrv=((rand()/double(RAND_MAX)))/m_prop->rx();

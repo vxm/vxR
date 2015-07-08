@@ -7,6 +7,7 @@
 #include <thread>
 
 #include "vxVector.h"
+#include "vxRay.h"
 #include "vxCollision.h"
 #include "MathUtils.h"
 
@@ -38,8 +39,8 @@ public:
 	std::shared_ptr<vxBox> at(const vxVector3d &pos, double size);
 	void set(const vxVector3d &pos, double size);
 	
-	int throwRay(const vxRayXYZ &ray, vxCollision &collide) const;
-	bool hasCollision(const vxRayXYZ &ray) const;
+	int throwRay(const vxRay &ray, vxCollision &collide) const;
+	bool hasCollision(const vxRay &ray) const;
 };
 
 }

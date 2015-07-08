@@ -190,7 +190,7 @@ vxColor vxLight::acummulationLight(const vxCollision &collision) const
 	{
 		auto r = MathUtils::getHollowSphereRand(radius());
 
-		const vxRayXYZ f(cPnt, position() + r);
+		const vxRay f(cPnt, position() + r);
 		auto lumm = m_intensity * lightRatio(cPnt, 
 											 collision.normal(), 
 											 position() + r);
@@ -218,15 +218,15 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 	{
 		const auto&& r = MathUtils::getHollowHemisphereRand(radius(),
 													  collision.normal());
-		const vxRayXYZ f(cPnt, collision.normal()+r);
+		const vxRay f(cPnt, collision.normal()+r);
 
 		auto lumm = m_intensity * lightRatio(cPnt, 
 											 collision.normal(), 
-											cPnt + f);
+											cPnt + f.direction());
 
 		if (lumm>0.001 && !scn->hasCollision(f))
 		{
-			const auto&& cart = MathUtils::normalToCartesian(f);
+			const auto&& cart = MathUtils::normalToCartesian(f.direction());
 			environment.setUV(cart);
 			auto environmentColor = m_map.compute(environment);
 			

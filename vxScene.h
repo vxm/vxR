@@ -6,7 +6,7 @@
 #include<vector>
 #include<future>
 
-#include "vxObject.h"
+#include "vxRay.h"
 #include "vxMatrix.h"
 #include "vxLight.h"
 #include "vxGrid.h"
@@ -72,10 +72,10 @@ public:
 	
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo
-	int throwRay( const vxRayXYZ &ray,
+	int throwRay( const vxRay &ray,
 						 vxCollision &collide) const;
 
-	bool hasCollision(const vxRayXYZ &ray);
+	bool hasCollision(const vxRay &ray);
 	
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);

@@ -382,7 +382,7 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt) const
 }
 
 
-int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const
+int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide) const
 {
 	if(!m_boundingBox->hasCollision(ray))
 	{
@@ -391,97 +391,38 @@ int vxGrid::getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const
 	
 	switch(ray.mainAxis())
 	{
-	case vxVector3d::axis::kZ:
-		return getNearestCollisionUsingZ(ray, collide);
-		break;
 	case vxVector3d::axis::kX:
 		return getNearestCollisionUsingX(ray, collide);
 		break;
 	case vxVector3d::axis::kY:
 		return getNearestCollisionUsingY(ray, collide);
 		break;
+	case vxVector3d::axis::kZ:
+		return getNearestCollisionUsingZ(ray, collide);
+		break;
 	}
 
 	return 0;
 }
 
-int vxGrid::getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide) const
+int vxGrid::getNearestCollisionUsingX(const vxRay &ray, vxCollision &collide) const
 {
-	double vel = -m_boxSize;
-	vxVector3d curr(m_xmax, 0.0, 0.0);
+	vxVector3d curr(collide.position().asIntPosition()+.5);
+	const double &vel = std::copysign(m_boxSize, curr.x());
 	vxVector3d prev;
 	bool found = false;
-	double x = m_xmin;
 	
-	auto zcota = copysign(m_midBoxSize, ray.z());
-	auto ycota = copysign(m_midBoxSize, ray.y());
-	
-	while(x >= m_xmin)
-	{
-		auto pnt = MathUtils::rectAndXPlane(ray, x);
-		prev = curr;
-		curr = pnt.asIntPosition()+.5;
-		vxVector3d tmp = curr;
-		if(prev.z() != curr.z() || prev.y() != curr.y())
-		{
-			if(MathUtils::z_forRectAndYPlane(ray, prev.y() + ycota)>(prev.z() + zcota))
-			{
-				if(curr.z()!=prev.z())
-				{
-					tmp = prev;
-					tmp[2] = curr[2];
-				
-					if(active(tmp))
-					{
-						curr = tmp;
-						found=true;
-						break;
-					}
-				}
-
-				tmp[1] = curr[1];
-				
-				if(active(tmp))
-				{
-					curr = tmp;
-					found=true;
-					break;
-				}
-			}
-			else
-			{
-				if(curr.y()!=prev.y())
-				{
-					tmp = prev;
-					tmp[1] = curr[1];
-				
-					if(active(tmp))
-					{
-						curr = tmp;
-						found=true;
-						break;
-					}
-				}
-				
-				tmp[2] = curr[2];
-			
-				if(active(tmp))
-				{
-					curr = tmp;
-					found=true;
-					break;
-				}
-			}
-		}
-		
+	do {
 		if(active(curr))
 		{
 			found=true;
 			break;
 		}
 
-		x+= vel;
+		curr[0]+= vel;
+		curr = MathUtils::rectAndXPlane(ray.direction(), curr[0]).asIntPosition()+.5;
 	}
+	while(inGrid(curr));
 	
 	if(found)
 	{
@@ -492,52 +433,66 @@ int vxGrid::getNearestCollisionUsingX(const vxRayXYZ &ray, vxCollision &collide)
 	return (int)found;
 }
 
-int vxGrid::getNearestCollisionUsingY(const vxRayXYZ &, vxCollision &collide) const
+int vxGrid::getNearestCollisionUsingY(const vxRay &ray, vxCollision &collide) const
 {
-	assert(true);
-	return 0;
-}
-
-
-int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide) const
-{
-	const double &vel = m_boxSize;
-	vxVector3d curr(m_zmin, 0.0, 0.0);
+	vxVector3d curr(collide.position().asIntPosition()+.5);
+	const double &vel = std::copysign(m_boxSize, curr.y());
 	vxVector3d prev;
 	bool found = false;
-	double z = m_zmin;
 	
-	auto xcota = copysign(m_midBoxSize, ray.x());
-	auto ycota = copysign(m_midBoxSize, ray.y());
-	
-	while(z <= m_zmax)
-	{
-		auto pnt = MathUtils::rectAndZPlane(ray, z);
-		prev = curr;
-		curr = pnt.asIntPosition()+.5;
-		vxVector3d tmp = curr;
-		if(prev.x() != curr.x() || prev.y() != curr.y())
+	do {
+		if(active(curr))
 		{
-			if(MathUtils::x_forRectAndYPlane(ray, prev.y() + ycota)>(prev.x() + xcota))
+			found=true;
+			break;
+		}
+
+		curr[1]+= vel;
+		curr = MathUtils::rectAndYPlane(ray.direction(), curr[1]).asIntPosition()+.5;
+	}
+	while(inGrid(curr));
+	
+	if(found)
+	{
+		collide.setPosition(curr);
+		collide.setValid();
+	}
+
+	return (int)found;
+}
+
+int vxGrid::getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const
+{
+	vxVector3d curr(collide.position().asIntPosition()+.5);
+	const double &vel = std::copysign(m_boxSize, curr.z());
+	vxVector3d prev;
+	bool found = false;
+	do {
+		// has relative horizontal or vertical progress
+		if((prev.x() != curr.x()) || (prev.y() != curr.y()))
+		{
+			auto xcota = copysign(m_midBoxSize, ray.direction().x());
+			auto ycota = copysign(m_midBoxSize, ray.direction().y());
+			vxVector3d deviated;
+		
+			// will decide the order of execution
+			if(MathUtils::x_forRectAndYPlane(ray.direction(), prev.y() + ycota)>(prev.x() + xcota))
 			{
 				if(curr.x()!=prev.x())
 				{
-					tmp = prev;
-					tmp[0] = curr[0];
-				
-					if(active(tmp))
+					deviated.set(curr[0],prev[1],prev[2]);
+					if(active(deviated))
 					{
-						curr = tmp;
+						curr = deviated.asIntPosition()+.5;
 						found=true;
 						break;
 					}
 				}
 
-				tmp[1] = curr[1];
-				
-				if(active(tmp))
+				deviated.set(prev[0],curr[1],prev[2]);
+				if(active(deviated))
 				{
-					curr = tmp;
+					curr = deviated.asIntPosition()+.5;
 					found=true;
 					break;
 				}
@@ -546,27 +501,26 @@ int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 			{
 				if(curr.y()!=prev.y())
 				{
-					tmp = prev;
-					tmp[1] = curr[1];
-				
-					if(active(tmp))
+					deviated.set(prev[0],curr[1],prev[2]);
+					if(active(deviated))
 					{
-						curr = tmp;
+						curr = deviated.asIntPosition()+.5;
 						found=true;
 						break;
 					}
 				}
 				
-				tmp[0] = curr[0];
-			
-				if(active(tmp))
+				deviated.set(curr[0],prev[1],prev[2]);
+				if(active(deviated))
 				{
-					curr = tmp;
+					curr = deviated;
 					found=true;
 					break;
 				}
+			}
 		}
-		}
+
+		prev = curr;
 		
 		if(active(curr))
 		{
@@ -574,8 +528,10 @@ int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 			break;
 		}
 
-		z+= vel;
+		curr[2]+= vel;
+		curr = MathUtils::rectAndZPlane(ray.direction(), curr[2]);
 	}
+	while(inGrid(curr));
 	
 	if(found)
 	{
@@ -586,9 +542,14 @@ int vxGrid::getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide)
 	return (int)found;
 }
 
-
-int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
+#define DRAWBBOX 0
+int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 { 
+#if DRAWBBOX
+	const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
+	const auto&& instance = geometry->at(position(), size());
+	return instance->throwRay( ray, collide );
+#else
 	if (getNearestCollision(ray, collide))
 	{	
 		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
@@ -599,12 +560,13 @@ int vxGrid::throwRay(const vxRayXYZ &ray, vxCollision &collide) const
 	{
 		return 0;
 	}
+#endif
 }
 
-bool vxGrid::hasCollision(const vxRayXYZ &ray) const
+bool vxGrid::hasCollision(const vxRay &ray) const
 {
 	auto found = false;
-	const vxVector3d&& v = ray.unit();
+	const vxVector3d&& v = ray.direction().unit();
 	vxVector3d next(ray.origin()+v);
 
 	while(inGrid(next))

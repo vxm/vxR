@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #include "vxVector.h"
+#include "vxRay.h"
 #include "ImageProperties.h"
 #include "vxContactBuffer.h"
 #include "vxSampler.h"
@@ -52,15 +53,15 @@ public:
 			 double apertureH = 0.0, 
 			 double apertureV = 0.0);
 	
-	vxRayXYZ ray(const vxVector2d &coord, const vxSampler &sampler) const;
+	vxRay ray(const vxVector2d &coord, const vxSampler &sampler) const;
 	
-	vxRayXYZ givemeRandRay(const vxVector2d &coord);
+	vxRay givemeRandRay(const vxVector2d &coord);
 
 	void next(unsigned int skip = 1u);
 
-	vxRayXYZ givemeNextRay(const vxContactBuffer &imagen, double ang);
+	vxRay givemeNextRay(const vxContactBuffer &imagen, double ang);
 
-	vxRayXYZ givemeRandomRay(const vxVector2d &coord);
+	vxRay givemeRandomRay(const vxVector2d &coord);
 	
 	std::shared_ptr<const ImageProperties> prop() const;
 	

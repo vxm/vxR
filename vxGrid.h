@@ -12,6 +12,7 @@
 #include <time.h>
 #include <iostream>
 #include <vector>
+#include "vxRay.h"
 
 #include "MathUtils.h"
 #include "vxGlobal.h"
@@ -137,13 +138,13 @@ public:
 	bool inGrid(const vxVector3d &pnt, double tolerance) const;
 	bool inGrid(const vxVector3d &pnt) const;
 	
-	int getNearestCollision(const vxRayXYZ &ray, vxCollision &collide) const;	
-	int getNearestCollisionUsingX(const vxRayXYZ &, vxCollision &collide) const;
-	int getNearestCollisionUsingY(const vxRayXYZ &, vxCollision &collide) const;
-	int getNearestCollisionUsingZ(const vxRayXYZ &ray, vxCollision &collide) const;
+	int getNearestCollision(const vxRay &ray, vxCollision &collide) const;	
+	int getNearestCollisionUsingX(const vxRay &, vxCollision &collide) const;
+	int getNearestCollisionUsingY(const vxRay &, vxCollision &collide) const;
+	int getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const;
 	
-	int throwRay(const vxRayXYZ &ray, vxCollision &collide) const;
-	bool hasCollision(const vxRayXYZ &ray) const;
+	int throwRay(const vxRay &ray, vxCollision &collide) const;
+	bool hasCollision(const vxRay &ray) const;
 };
 
 /*
