@@ -20,8 +20,8 @@ void vxRay::setDirection(const vxVector3d &direction)
 vxRay::vxRay()
 {}
 
-vxRay::vxRay(const vxVector3d &other)
-	:m_direction(other)
+vxRay::vxRay(const vxVector3d &direction)
+	:m_direction(direction)
 {
 }
 
