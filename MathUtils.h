@@ -2,6 +2,7 @@
 #define MathUtils_H
 
 #include "vxVector.h"
+#include "vxRay.h"
 #include "vxPlane.h"
 #include "vxCollision.h"
 
@@ -23,17 +24,16 @@ class MathUtils
 	static const double PI;
 
 	//Polar coordinates.
-	static vxVector2d normalToCartesian(const vxVector3d normal);
+	static vxVector2d normalToCartesian(const vxVector3d& normal);
 
 	//Intersections
-	static vxVector3d rectAndPlane(const vxRayXYZ &ray, const vxPlane &plane);
+	static vxVector3d rectAndPlane(const vxVector3d&& ray, const vxPlane &plane);
+	static vxVector3d rectAndXPlane(const vxVector3d&& ray, double x);
+	static vxVector3d rectAndYPlane(const vxVector3d&& ray, double y);
+	static double x_forRectAndYPlane(const vxVector3d&& ray, double y);
+	static double z_forRectAndYPlane(const vxVector3d&& ray, double y);
 
-	static vxVector3d rectAndXPlane(const vxRayXYZ &ray, double x);
-	static vxVector3d rectAndYPlane(const vxRayXYZ &ray, double y);
-	static double x_forRectAndYPlane(const vxRayXYZ &ray, double y);
-	static double z_forRectAndYPlane(const vxRayXYZ &ray, double y);
-
-	static vxVector3d rectAndZPlane(const vxRayXYZ &ray, double z);
+	static vxVector3d rectAndZPlane(const vxVector3d&& ray, double z);
 
 	//Random
 	static double getRand(double range);
