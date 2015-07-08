@@ -389,7 +389,7 @@ int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide) const
 		return 0;
 	}
 	
-	switch(ray.mainAxis())
+	switch(ray.direction().mainAxis())
 	{
 	case vxVector3d::axis::kX:
 		return getNearestCollisionUsingX(ray, collide);
