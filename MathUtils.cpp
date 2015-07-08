@@ -15,22 +15,21 @@ constexpr double MathUtils::ratio(double a, double b)
 {
 	return a/(double)b;
 }
-						
+
 constexpr double MathUtils::ratio(int a, double b)
 {
-return a/(double)b;
+	return a/(double)b;
 }
 
 constexpr double MathUtils::ratio(double a, int b)
 {
-return a/(double)b;
+	return a/(double)b;
 }
 
 constexpr double MathUtils::ratio(int a, int b)
 {
-return a/(double)b;
+	return a/(double)b;
 }
-																		
 vxVector2d MathUtils::normalToCartesian(const vxVector3d normal)
 {
 	auto normalized = normal.unit();
