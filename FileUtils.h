@@ -21,7 +21,7 @@ class FileUtils : public vxManager
 	{
 		std::string name;
 		std::string ext;
-		int number;
+		unsigned int number;
 	};
 
 	static fileDesc splitFileName(const std::string &filePath);
