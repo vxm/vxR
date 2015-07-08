@@ -88,8 +88,20 @@ public:
 	enum class axis{kX, kY, kZ};
 
 	vxVector3d ();
-	
+	vxVector3d (const vxVector3d&& other)
+		:m_x{std::move(other.m_x)}
+		,m_y{std::move(other.m_y)}
+		,m_z{std::move(other.m_z)}
+	{}
+
+	vxVector3d (const vxVector3d& other)
+		:m_x{other.m_x}
+		,m_y{other.m_y}
+		,m_z{other.m_z}
+	{}
 	vxVector3d (double x, double y, double z);
+	~vxVector3d(){}
+	
 
 	void set(double x, double y, double z);
 	void set(const vxVector3d &other);
