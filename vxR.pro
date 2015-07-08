@@ -54,7 +54,9 @@ SOURCES += main.cpp\
     vxPLYImporter.cpp \
     vxBitMap2d.cpp \
     imageData.cpp \
-    vxLegoBlock.cpp
+    vxLegoBlock.cpp \
+    sseUtils.cpp \
+    vxRay.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -98,7 +100,9 @@ HEADERS  += \
     vxPLYImporter.h \
     vxBitMap2d.h \
     imageData.h \
-    vxLegoBlock.h
+    vxLegoBlock.h \
+    sseUtils.h \
+    vxRay.h
 
 FORMS    += vxrendermain.ui
 
