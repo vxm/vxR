@@ -289,16 +289,26 @@ vxVector3d vxVector3d::inverted() const
 
 vxVector3d::axis vxVector3d::mainAxis() const
 {
+	//TODO:be more clever, like commented code
+	
 	if(fabs(m_x)>fabs(m_y) && fabs(m_x)>fabs(m_z))
-	{
 		return axis::kX;
-	}
-	if(fabs(m_y)>fabs(m_z))
-	{
+
+	if(fabs(m_y)>fabs(m_x) && fabs(m_x)>fabs(m_z))
 		return axis::kY;
-	}
-	else
-		return axis::kZ;
+	
+	return axis::kZ;
+
+//	if(fabs(m_x)>fabs(m_y) && fabs(m_x)>fabs(m_z))
+//	{
+//		return axis::kX;
+//	}
+//	if(fabs(m_y)>fabs(m_z))
+//	{
+//		return axis::kY;
+//	}
+//	else
+//		return axis::kZ;
 }
 
 double vxVector3d::length() const
@@ -491,35 +501,3 @@ void vxVector3d::vectorZX(vxVector2d &local) const
 	local.set(m_x,m_y);
 }
 
-
-
-vxRayXYZ::vxRayXYZ()
-	: vxVector3d()
-{}
-
-vxRayXYZ::vxRayXYZ(const vxVector3d &other)
-	: vxVector3d(other)
-{
-}
-
-vxRayXYZ::vxRayXYZ(const vxVector3d &origin, 
-		   const vxVector3d &direction)
-	: vxVector3d(direction)
-	,  m_origin(origin)
-{
-}
-
-vxRayXYZ::vxRayXYZ(double x, double y, double z)
-	: vxVector3d(x,y,z)
-{
-}
-
-vxVector3d vxRayXYZ::origin() const
-{
-	return m_origin;
-}
-
-void vxRayXYZ::setOrigin(const vxVector3d &origin)
-{
-	m_origin = origin;
-}

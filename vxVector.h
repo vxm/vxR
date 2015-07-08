@@ -4,8 +4,9 @@
 
 #include <math.h>
 #include <stdio.h>
-#include "vxObject.h"
 #include <iostream>
+
+#include "vxObject.h"
 
 namespace vxCore {
 
@@ -177,22 +178,6 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 	{
 		return os << v.m_x << " " << v.m_y << " " << v.m_z;
 	}
-};
-
-class vxRayXYZ :public vxVector3d
-{
-		vxVector3d m_origin;
-
-public:
-		vxRayXYZ ();
-		vxRayXYZ (const vxVector3d& other);
-		vxRayXYZ (const vxVector3d& origin, 
-				  const vxVector3d& direction);
-		
-		vxRayXYZ (double x, double y, double z);
-		
-		vxVector3d origin() const;
-		void setOrigin(const vxVector3d &origin);
 };
 
 }
