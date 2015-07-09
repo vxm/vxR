@@ -114,6 +114,7 @@ public:
 				  const unsigned int z);
 	// sets active voxel at world space position
 	void activate(const vxVector3d &pos);
+	bool activeInRange(const vxVector3d &pos) const;
 	// sets unactive vxl at coordinates x y z
 	void deactivate(const unsigned int x, 
 					const unsigned int y, 
@@ -138,10 +139,10 @@ public:
 	bool inGrid(const vxVector3d &pnt, double tolerance) const;
 	bool inGrid(const vxVector3d &pnt) const;
 	
-	int getNearestCollision(const vxRay &ray, vxCollision &collide) const;	
-	int getNearestCollisionUsingX(const vxRay &, vxCollision &collide) const;
-	int getNearestCollisionUsingY(const vxRay &, vxCollision &collide) const;
-	int getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const;
+	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;	
+	unsigned int getNearestCollisionUsingX(const vxRay &, vxCollision &collide) const;
+	unsigned int getNearestCollisionUsingY(const vxRay &, vxCollision &collide) const;
+	unsigned int getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const;
 	
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
