@@ -119,6 +119,7 @@ class vxIBLight:public vxLight
 public:
 	vxIBLight();
 	vxIBLight(double instensity, const vxColor &col);
+	vxIBLight(double instensity, const std::string path);
 	
 	// vxLight interface
 	public:

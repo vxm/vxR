@@ -164,11 +164,19 @@ void vxDirectLight::set(const vxVector3d &orientation, bool bidirectional)
 
 
 vxIBLight::vxIBLight()
+	:m_map("")
 {
 }
 
 vxIBLight::vxIBLight(double instensity, const vxColor &col)
 	:vxLight(instensity, col)
+	,m_map("")
+{
+}
+
+vxIBLight::vxIBLight(double instensity, const std::string path)
+	:vxLight(instensity, vxColor::white)
+	,m_map(path)
 {
 }
 

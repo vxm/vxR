@@ -12,9 +12,14 @@ class vxScene;
 #define PX resl/1.1
 #define PY 0.0
 #define PZ resl*2.60
+///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
+///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
+///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
 
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
+	, m_environment("/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg")
 {}
 
 vxScene::~vxScene()
@@ -32,10 +37,10 @@ void vxScene::build()
 	const double resl = RESL;
 	vxVector3d p{PX, PY, PZ};
 
-	auto l3 = createIBLight();
+	auto l3 = createIBLight(m_environment.path());
 	l3->setSamples(nLightSamples);
 	l3->setRadius(0.97);
-	l3->setIntensity(3.0);
+	l3->setIntensity(2.0);
 
 	createCamera(vxMatrix());
 	createGrid();
@@ -104,9 +109,9 @@ std::shared_ptr<vxPointLight> vxScene::createPointLight()
 	return pl1;
 }
 
-std::shared_ptr<vxIBLight> vxScene::createIBLight()
+std::shared_ptr<vxIBLight> vxScene::createIBLight(const std::string path)
 {
-	auto ibl1 = std::make_shared<vxIBLight>(1.0, vxColor::white);
+	auto ibl1 = std::make_shared<vxIBLight>(1.0, path);
 	m_IBLights.push_back(ibl1);
 	m_lights.push_back(ibl1);
 	ibl1->setScene(shared_from_this());

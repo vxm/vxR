@@ -11,17 +11,14 @@ namespace vxCore
 class vxBitMap2d : public vxMap2d
 {
 public:
-	vxBitMap2d();
-	
+	vxBitMap2d(const std::string path);
 	virtual vxColor compute(const vxCollision &collision) const;
-
 	std::shared_ptr<ImageProperties> m_prop;
 	ImageData m_data;
-
-	double m_radius[5] = {1.1, 2.6, 3.0, 7.0};
-	bool m_circle1 {true};
-	bool m_circle2 {true};
-	bool m_circle3 {true};
+	std::string m_path;
+	bool loadImage();
+	std::string path() const;
+	void setPath(const std::string &path);
 };
 
 
