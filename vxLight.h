@@ -39,7 +39,11 @@ public:
 	void setIntensity(double intensity);
 	void setColor(const vxColor &color);
 
-	vxVector3d position() const {return m_position;}
+	vxVector3d position() const 
+	{
+		return m_position;
+	}
+	
 	double intensity() const {return m_intensity;}
 	vxColor color() const {return m_color;}
 
@@ -106,8 +110,9 @@ public:
 	vxDirectLight(const vxVector3d &orientation,
 				  bool bidirectional);
 	
-	void set(const vxVector3d &orientation,bool bidirectional);
+	vxColor acummulationLight(const vxCollision &collision) const override;
 	
+	void set(const vxVector3d &orientation,bool bidirectional);
 	void setOrientation (const vxVector3d &orientation) {m_orientation.set(orientation);}
 	void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
 	
