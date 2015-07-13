@@ -15,25 +15,25 @@ vxVector3d vxRay::direction() const
 
 void vxRay::setDirection(const vxVector3d &direction)
 {
-	m_direction = direction;
+	m_direction = direction.unit();
 }
 vxRay::vxRay()
 {}
 
 vxRay::vxRay(const vxVector3d &direction)
-	:m_direction(direction)
+	:m_direction(direction.unit())
 {
 }
 
 vxRay::vxRay(const vxVector3d &origin, 
 			 const vxVector3d &direction)
-	:m_direction(direction)
+	:m_direction(direction.unit())
 	,m_origin(origin)
 {
 }
 
 vxRay::vxRay(double x, double y, double z)
-	:m_direction(x,y,z)
+	:m_direction(vxVector3d(x,y,z).unit())
 {
 }
 

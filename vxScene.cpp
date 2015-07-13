@@ -27,8 +27,12 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples = 25;
-	
+	int nLightSamples = 50;
+	const double sunIntensity{1.5};
+	const auto sunCoords = vxVector2d{	2 * 0.172000 * MathUtils::PI,
+										 0.224000  };
+	const auto sunColor = vxColor::lookup256(255,240,241);
+
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
 	m_shader->setScene(shared_from_this());
@@ -37,19 +41,32 @@ void vxScene::build()
 	const double resl = RESL;
 	vxVector3d p{PX, PY, PZ};
 
+	//Environment tint.
 	auto l3 = createIBLight(m_environment.path());
 	l3->setSamples(nLightSamples);
 	l3->setRadius(0.97);
-	l3->setIntensity(2.0);
+	l3->setIntensity(1.0);
 
-	createCamera(vxMatrix());
+	//This simulates the sun.
+	auto l4 = createDirectLight();
+	l4->setSamples(5);
+	l4->setRadius(0.1);
+	l4->setOrientation(MathUtils::cartesianToNormal(sunCoords));
+	l4->setIntensity(sunIntensity);
+	l4->setColor(sunColor);
+	
+	
+	createCamera(vxMatrix{});
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("../vxR/juan_0.ply");
+	//plyReader->processPLYFile("../vxR/juan_0.ply");
+	plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
+	//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
 	loadFromFile(plyReader);
 	
-	auto iRadius = 7.0;
+	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
+	auto iRadius = 5.0;
 	auto distSph = (resl/3.0);
 	m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
@@ -57,13 +74,11 @@ void vxScene::build()
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	//m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createEdges(); // of the grid
-	
+	//m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	//m_grids[0]->createEdges(); // of the grid
 	m_grids[0]->createGround();
-	
 
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
