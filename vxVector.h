@@ -31,6 +31,7 @@ public:
 	double& operator[](const unsigned int);
 	vxVector2d asIntPosition() const;
 	double length() const;
+	vxVector2d inverted() const;
 	vxVector2d unit() const;
 	vxVector2d operator+(vxVector2d other) const;
 	vxVector2d operator+(double factor) const;
@@ -126,6 +127,7 @@ public:
 	double length() const;
 	double distance(const vxVector3d &ref) const;
 	
+	vxVector3d orthoVector() const;
 	vxVector3d asIntPosition() const;
 	//TODO:fix clash with math ceil
 //	vxVector3d ceil() const;

@@ -94,6 +94,11 @@ vxVector2d vxVector2d::unit() const
 	return vxVector2d(m_x/lng,m_y/lng);
 }
 
+vxVector2d vxVector2d::inverted() const
+{
+	return vxVector2d(-m_x,-m_y);
+}
+
 vxVector2d vxVector2d::operator+(int factor) const 
 {
 	return vxVector2d(factor+m_x,factor+m_y);
@@ -314,6 +319,16 @@ vxVector3d::axis vxVector3d::mainAxis() const
 double vxVector3d::length() const
 {
 	return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);
+}
+
+#include <cmath>
+
+
+vxVector3d vxVector3d::orthoVector() const
+{
+	return vxVector3d(std::copysign(1.0,m_x),
+					  std::copysign(1.0,m_y),
+					  std::copysign(1.0,m_z));
 }
 
 
