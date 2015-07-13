@@ -397,13 +397,14 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		return 0;
 	}
 	
+	//NOTE:could be done checking normals.
 	switch(ray.direction().mainAxis())
 	{
 	case vxVector3d::axis::kX:
-		return getNearestCollisionUsingZ(ray, collide);
+		return getNearestCollisionUsingX(ray, collide);
 		break;
 	case vxVector3d::axis::kY:
-		return getNearestCollisionUsingZ(ray, collide);
+		return getNearestCollisionUsingY(ray, collide);
 		break;
 	case vxVector3d::axis::kZ:
 		return getNearestCollisionUsingZ(ray, collide);
@@ -415,26 +416,77 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 
 unsigned int vxGrid::getNearestCollisionUsingX(const vxRay &ray, vxCollision &collide) const
 {
-	vxVector3d curr(collide.position().asIntPosition()+.5);
-	const double &vel = std::copysign(m_boxSize, curr.x());
-	vxVector3d prev;
+	const auto&& vel = collide.position().orthoVector()/2.0;
+	vxVector3d cIter{collide.position().asIntPosition()+vel};
+	vxVector3d storedIter{cIter};
 	bool found = false;
+	double x = floor(cIter.x());
 	
-	do {
-		if(active(curr))
+	while(MathUtils::inRange(x, m_xmin, m_xmax))
+	{
+		storedIter = cIter;
+		cIter = MathUtils::rectAndXPlane(ray.direction(), x).asIntPosition()+.5;
+		if(storedIter.z() != cIter.z() || storedIter.y() != cIter.y())
+		{
+			vxVector3d deviated;
+			if(MathUtils::z_forRectAndYPlane(
+										collide.position(),
+										storedIter.y() + vel[1])>(storedIter.z() + vel[2]))
+			{
+				if(cIter.z()!=storedIter.z())
+				{
+					deviated.set(storedIter[0], storedIter[1], cIter[2]);
+					if(active(deviated))
+					{
+						cIter = deviated;
+						found=true;
+						break;
+					}
+				}
+
+				deviated[1] = cIter[1];
+				if(active(deviated))
+				{
+					cIter = deviated;
+					found=true;
+					break;
+				}
+			}
+			else
+			{
+				if(cIter.y()!=storedIter.y())
+				{
+					deviated.set(storedIter[0], cIter[1], storedIter[2]);
+					if(active(deviated))
+					{
+						cIter = deviated;
+						found=true;
+						break;
+					}
+				}
+				
+				deviated[2] = cIter[2];
+				if(active(deviated))
+				{
+					cIter = deviated;
+					found=true;
+					break;
+				}
+			}
+		}
+		
+		if(active(cIter))
 		{
 			found=true;
 			break;
 		}
 
-		curr[0]+= vel;
-		curr = MathUtils::rectAndXPlane(ray.direction(), curr[0]).asIntPosition()+.5;
+		x+= vel[0];
 	}
-	while(inGrid(curr));
 	
 	if(found)
 	{
-		collide.setPosition(curr);
+		collide.setPosition(cIter);
 		collide.setValid();
 	}
 
@@ -444,73 +496,145 @@ unsigned int vxGrid::getNearestCollisionUsingX(const vxRay &ray, vxCollision &co
 unsigned int vxGrid::getNearestCollisionUsingY(const vxRay &ray, vxCollision &collide) const
 {
 	const auto&& vel = collide.position().orthoVector()/2.0;
-	vxVector3d curr(collide.position());
-	vxVector3d prev;
+	vxVector3d cIter{collide.position().asIntPosition()+vel};
+	vxVector3d storedIter{cIter};
 	bool found = false;
-	double z = m_zmin;
+	double y = floor(cIter.y());
 	
-	auto xcota = copysign(m_midBoxSize, ray.direction().x());
-	auto ycota = copysign(m_midBoxSize, ray.direction().y());
-	
-	while(z <= m_zmax)
+	while(MathUtils::inRange(y, m_ymin, m_ymax))
 	{
-		auto pnt = MathUtils::rectAndZPlane(ray.direction(), z);
-		prev = curr;
-		curr = pnt.asIntPosition()+.5;
-		vxVector3d tmp = curr;
-		if(prev.x() != curr.x() || prev.y() != curr.y())
+		auto pnt = MathUtils::rectAndYPlane(ray.direction(), y);
+		storedIter = cIter;
+		cIter = pnt.asIntPosition()+.5;
+		if(storedIter.x() != cIter.x() || storedIter.y() != cIter.y())
 		{
-			if(MathUtils::x_forRectAndYPlane(ray.direction(), prev.y() + ycota)>(prev.x() + xcota))
+			vxVector3d deviated;
+			if(MathUtils::x_forRectAndYPlane(
+										collide.position(),
+										storedIter.y() + vel[1])<=(storedIter.x() + vel[0]))
 			{
-				if(curr.x()!=prev.x())
+				if(cIter.x()!=storedIter.x())
 				{
-					tmp = prev;
-					tmp[0] = curr[0];
-				
-					if(active(tmp))
+					deviated.set(cIter[0], storedIter[1], storedIter[1]);
+					if(active(deviated))
 					{
-						curr = tmp;
+						cIter = deviated;
 						found=true;
 						break;
 					}
 				}
 
-				tmp[1] = curr[1];
-				
-				if(active(tmp))
+				deviated[1] = cIter[1];
+				if(active(deviated))
 				{
-					curr = tmp;
+					cIter = deviated;
 					found=true;
 					break;
 				}
 			}
 			else
 			{
-				if(curr.y()!=prev.y())
+				if(cIter.y()!=storedIter.y())
 				{
-					tmp = prev;
-					tmp[1] = curr[1];
-				
-					if(active(tmp))
+					deviated.set(storedIter[0], cIter[1], storedIter[1]);
+					if(active(deviated))
 					{
-						curr = tmp;
+						cIter = deviated;
 						found=true;
 						break;
 					}
 				}
 				
-				tmp[0] = curr[0];
-			
-				if(active(tmp))
+				deviated[0] = cIter[0];
+				if(active(deviated))
 				{
-					curr = tmp;
+					cIter = deviated;
 					found=true;
 					break;
 				}
 			}
 		}
 		
-		if(active(curr))
+		if(active(cIter))
+		{
+			found=true;
+			break;
+		}
+
+		y+= vel[1];
+	}
+	
+	if(found)
+	{
+		collide.setPosition(cIter);
+		collide.setValid();
+	}
+
+	return (int)found;
+}
+
+unsigned int vxGrid::getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const
+{
+	const auto&& vel = collide.position().orthoVector()/2.0;
+	vxVector3d cIter{collide.position().asIntPosition()+vel};
+	vxVector3d storedIter{cIter};
+	bool found = false;
+	double z = floor(cIter.z());
+	
+	while(MathUtils::inRange(z, m_zmin, m_zmax))
+	{
+		storedIter = cIter;
+		cIter = MathUtils::rectAndZPlane(ray.direction(), z).asIntPosition()+.5;
+		if(storedIter.x() != cIter.x() || storedIter.y() != cIter.y())
+		{
+			vxVector3d deviated;
+			if(MathUtils::x_forRectAndYPlane(
+										collide.position(),
+										storedIter.y() + vel[1])>(storedIter.x() + vel[0]))
+			{
+				if(cIter.x()!=storedIter.x())
+				{
+					deviated.set(cIter[0], storedIter[1], storedIter[2]);
+					if(active(deviated))
+					{
+						cIter = deviated;
+						found=true;
+						break;
+					}
+				}
+
+				deviated[1] = cIter[1];
+				if(active(deviated))
+				{
+					cIter = deviated;
+					found=true;
+					break;
+				}
+			}
+			else
+			{
+				if(cIter.y()!=storedIter.y())
+				{
+					deviated.set(storedIter[0], cIter[1], storedIter[2]);
+					if(active(deviated))
+					{
+						cIter = deviated;
+						found=true;
+						break;
+					}
+				}
+				
+				deviated[0] = cIter[0];
+				if(active(deviated))
+				{
+					cIter = deviated;
+					found=true;
+					break;
+				}
+			}
+		}
+		
+		if(active(cIter))
 		{
 			found=true;
 			break;
@@ -521,95 +645,7 @@ unsigned int vxGrid::getNearestCollisionUsingY(const vxRay &ray, vxCollision &co
 	
 	if(found)
 	{
-		collide.setPosition(curr);
-		collide.setValid();
-	}
-
-	return (int)found;
-}
-
-unsigned int vxGrid::getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const
-{
-	const auto&& vel = collide.position().orthoVector()/2.0;
-	vxVector3d curr(collide.position().asIntPosition()+.5);
-	vxVector3d prev;
-	bool found = false;
-	double z = m_zmin;
-	
-	const auto& xVel = vel[0];
-	const auto& yVel = vel[1];
-	const auto& zVel = vel[2];
-	
-	while(z <= m_zmax)
-	{
-		auto pnt = MathUtils::rectAndZPlane(ray.direction(), z);
-		prev = curr;
-		curr = pnt.asIntPosition()+.5;
-		vxVector3d tmp = curr;
-		if(prev.x() != curr.x() || prev.y() != curr.y())
-		{
-			if(MathUtils::x_forRectAndYPlane(ray.direction(), prev.y() + yVel)>(prev.x() + xVel))
-			{
-				if(curr.x()!=prev.x())
-				{
-					tmp = prev;
-					tmp[0] = curr[0];
-				
-					if(active(tmp))
-					{
-						curr = tmp;
-						found=true;
-						break;
-					}
-				}
-
-				tmp[1] = curr[1];
-				
-				if(active(tmp))
-				{
-					curr = tmp;
-					found=true;
-					break;
-				}
-			}
-			else
-			{
-				if(curr.y()!=prev.y())
-				{
-					tmp = prev;
-					tmp[1] = curr[1];
-				
-					if(active(tmp))
-					{
-						curr = tmp;
-						found=true;
-						break;
-					}
-				}
-				
-				tmp[0] = curr[0];
-			
-				if(active(tmp))
-				{
-					curr = tmp;
-					found=true;
-					break;
-				}
-			}
-		}
-		
-		if(active(curr))
-		{
-			found=true;
-			break;
-		}
-
-		z+= zVel;
-	}
-	
-	if(found)
-	{
-		collide.setPosition(curr);
+		collide.setPosition(cIter);
 		collide.setValid();
 	}
 
