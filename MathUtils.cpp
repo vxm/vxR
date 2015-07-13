@@ -34,9 +34,20 @@ constexpr double MathUtils::ratio(int a, int b)
 vxVector2d MathUtils::normalToCartesian(const vxVector3d& normal)
 {
 	auto normalized = normal.unit();
+	
 	auto x = (PI + atan2(normalized.z(), normalized.x()))/(2*PI);
 	auto y = ((PI/2.0) + asin( normalized.y())) / PI;
+	
 	return vxVector2d(x, y);
+}
+
+vxVector3d MathUtils::cartesianToNormal(const vxVector2d& coords)
+{
+	auto x = cos(coords.x()) * cos(coords.y());
+	auto y = cos(coords.x()) * sin(coords.y());
+	auto z = sin(coords.x());
+
+	return vxVector3d(x,y,z).unit();
 }
 
 vxVector3d MathUtils::rectAndPlane(const vxVector3d&& ray, const vxPlane &plane)
@@ -111,15 +122,10 @@ double MathUtils::getBoolRand()
 vxVector3d MathUtils::getHollowSphereRand(double radius)
 {
 	//TODO:real random scatter point in sphere missing
-	auto a = 2.0 * PI * (getRand());
-	//auto b = acos(2.0 * getRand() - 1.0);
-	auto b = 2.0 * PI * (getRand());
-	
-	auto x = radius * cos(a) * cos(b);
-	auto y = radius * cos(a) * sin(b);
-	auto z = radius * sin(a);
+	auto r2d = vxVector2d{2.0 * PI * (getRand()),
+							2.0 * PI * (getRand())};
 
-	return vxVector3d(x,y,z);
+	return cartesianToNormal(r2d);
 }
 
 vxVector3d MathUtils::getHollowHemisphereRand(double radius, const vxVector3d &normal)

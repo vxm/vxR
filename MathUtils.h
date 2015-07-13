@@ -25,6 +25,7 @@ class MathUtils
 
 	//Polar coordinates.
 	static vxVector2d normalToCartesian(const vxVector3d& normal);
+	static vxVector3d cartesianToNormal(const vxVector2d& coords);
 
 	//Intersections
 	static vxVector3d rectAndPlane(const vxVector3d&& ray, const vxPlane &plane);
