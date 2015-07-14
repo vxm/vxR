@@ -48,8 +48,8 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		collide.setValid(true);
 		collide.setNormal(bMax ? vxVector3d::constX : vxVector3d::constMinusX);
 		collide.setPosition(hitX);
-		collide.setUV(vxVector2d((mSize + hitX.z() - p.z())/size,
-								 (mSize + hitX.y() - p.y())/size));
+		collide.setUV(vxVector2d{(mSize + hitX.z() - p.z())/size,
+								 (mSize + hitX.y() - p.y())/size});
 		return 1;
 	}
 	
@@ -61,8 +61,8 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 	    collide.setValid(true);
 	    collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
 	    collide.setPosition(hitZ);
-	    collide.setUV(vxVector2d((mSize + hitZ.x() - p.x())/size,
-							     (mSize + hitZ.y() - p.y())/size));
+	    collide.setUV(vxVector2d{(mSize + hitZ.x() - p.x())/size,
+							     (mSize + hitZ.y() - p.y())/size});
 	    return 1;
     }
     
@@ -75,8 +75,8 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		collide.setValid(true);
 		collide.setNormal(bMax ? vxVector3d::constY : vxVector3d::constMinusY);
 		collide.setPosition(hitY);
-		collide.setUV(vxVector2d((mSize + hitY.x() - p.x())/size,
-								 (mSize + hitY.z() - p.z())/size));
+		collide.setUV(vxVector2d{(mSize + hitY.x() - p.x())/size,
+								 (mSize + hitY.z() - p.z())/size});
 		return 1;
 	}
 

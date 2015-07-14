@@ -175,7 +175,7 @@ void vxGrid::createEdges()
 
 void vxGrid::createSphere(int x, int y, int z, const double radio)
 {
-	createSphere(vxVector3d(x,y,z), radio);
+	createSphere(vxVector3d{x,y,z}, radio);
 }
 
 bool vxGrid::getRandomBoolean(double ratio)
@@ -340,14 +340,14 @@ inline unsigned int vxGrid::indexAtPosition(const vxVector3d &position) const
 	return idx;
 }
 
-inline vxVector3d vxGrid::getVoxelPosition(const unsigned int x, 
-										   const unsigned int y, 
-										   const unsigned int z) const
+inline vxVector3d vxGrid::getVoxelPosition(const unsigned int iX, 
+										   const unsigned int iY, 
+										   const unsigned int iZ) const
 {
-	double retx = (m_position.x() - m_midSize) + (x * m_boxSize) + m_resDivTres;
-	double rety = (m_position.y() - m_midSize) + (y * m_boxSize) + m_resDivTres;
-	double retz = (m_position.z() - m_midSize) + (z * m_boxSize) + m_resDivTres;
-	return vxVector3d(retx, rety, retz);
+	double x = (m_position.x() - m_midSize) + (iX * m_boxSize) + m_resDivTres;
+	double y = (m_position.y() - m_midSize) + (iY * m_boxSize) + m_resDivTres;
+	double z = (m_position.z() - m_midSize) + (iZ * m_boxSize) + m_resDivTres;
+	return vxVector3d{x,y,z};
 }
 
 void vxGrid::createSphere(const vxVector3d &center, const double radio)

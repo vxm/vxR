@@ -131,9 +131,9 @@ public:
 						   const unsigned int z, 
 							bool value);
 	inline void setElement(unsigned int idx, bool value);
-	vxVector3d getVoxelPosition(const unsigned int x, 
-								const unsigned int y, 
-								const unsigned int z) const;
+	vxVector3d getVoxelPosition(const unsigned int iX, 
+								const unsigned int iY, 
+								const unsigned int iZ) const;
 	vxVector3d getVoxelPosition(unsigned int idx) const;
 	inline unsigned int indexAtPosition(const vxVector3d &position) const;
 	bool inGrid(const vxVector3d &pnt, double tolerance) const;

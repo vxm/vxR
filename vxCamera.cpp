@@ -98,9 +98,9 @@ vxRay vxCamera::givemeRandomRay(const vxVector2d &coord)
 	double yrv,xrv;
 	xrv=((rand()/double(RAND_MAX)))/m_prop->rx();
 	yrv=((rand()/double(RAND_MAX)))/m_prop->ry();
-	return vxVector3d(m_hApTan * (((coord.y()+yrv)*2.0)-1.0) ,
+	return vxVector3d{m_hApTan * (((coord.y()+yrv)*2.0)-1.0) ,
 						m_vApTan * (((coord.x()+xrv)*2.0)-1.0), 
-						m_focusDistance);
+						m_focusDistance};
 }
 
 std::shared_ptr<const ImageProperties> vxCamera::prop() const

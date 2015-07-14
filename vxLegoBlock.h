@@ -60,7 +60,7 @@ public:
 			collide.setValid(true);
 			collide.setNormal(bMax ? vxVector3d::constX : vxVector3d::constMinusX);
 			collide.setPosition(hitX);
-			collide.setUV(vxVector2d(maxZ - hitX.z(), maxY - hitX.y()));
+			collide.setUV(vxVector2d{maxZ - hitX.z(), maxY - hitX.y()});
 			return 1;
 		}
 
@@ -72,7 +72,7 @@ public:
 			collide.setValid(true);
 			collide.setNormal(bMax ? vxVector3d::constY : vxVector3d::constMinusY);
 			collide.setPosition(hitY);
-			collide.setUV(vxVector2d(maxX - hitY.x(), maxZ - hitY.z()));
+			collide.setUV(vxVector2d{maxX - hitY.x(), maxZ - hitY.z()});
 			return 1;
 		}
 		
@@ -84,7 +84,7 @@ public:
 			collide.setValid(true);
 			collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
 			collide.setPosition(hitZ);
-			collide.setUV(vxVector2d(maxX - hitZ.x(), maxY - hitZ.y()));
+			collide.setUV(vxVector2d{maxX - hitZ.x(), maxY - hitZ.y()});
 			return 1;
 		}
 		

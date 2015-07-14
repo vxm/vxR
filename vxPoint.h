@@ -11,14 +11,14 @@ class vxPoint:public vxVector3d
 public:
 	
 	vxPoint()
-		:vxVector3d()
+		:vxVector3d{}
 	{
 	}
 	
 	vxPoint(double x,
 			double y,
 			double z)
-		:vxVector3d(x,y,z)
+		:vxVector3d{x,y,z}
 	{
 	}
 

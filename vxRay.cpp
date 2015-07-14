@@ -33,7 +33,7 @@ vxRay::vxRay(const vxVector3d &origin,
 }
 
 vxRay::vxRay(double x, double y, double z)
-	:m_direction(vxVector3d(x,y,z).unit())
+	:m_direction(vxVector3d{x,y,z}.unit())
 {
 }
 

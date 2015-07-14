@@ -90,8 +90,8 @@ vxScene::createCamera(const vxMatrix &,
 						double vAperture)
 {
 	m_camera = std::make_shared<vxCamera>(m_prop);
-	m_camera->set( vxVector3d(0,0,0),
-					vxVector3d(0,0,1),
+	m_camera->set( vxVector3d::zero,
+					vxVector3d::constZ,
 					2.8,
 					hAperture,
 					vAperture);
@@ -170,9 +170,9 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	const double resl = RESL;
 	const auto& vts = importer->getPointCloud();
 	m_grids[0]->addVertices(vts,
-							vxVector3d(PX,PY-(resl/2),PZ),
-							vxVector3d(resl, resl, resl));
-//							vxVector3d(resl/2.4, resl/2.4, resl/2.4));
+							vxVector3d{PX,PY-(resl/2),PZ},
+							vxVector3d{resl, resl, resl});
+//							vxVector3d{resl/2.4, resl/2.4, resl/2.4});
 	return true;
 }
 

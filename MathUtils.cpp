@@ -36,7 +36,7 @@ vxVector2d MathUtils::normalToCartesian(const vxVector3d& normal)
 	auto normalized = normal.unit();
 	auto x = (PI + atan2(normalized.z(), normalized.x()))/(2.0*PI);
 	auto y = ((PI/2.0) + asin( normalized.y())) / PI;
-	return vxVector2d(x, y);
+	return vxVector2d{x, y};
 }
 
 vxVector3d MathUtils::cartesianToNormal(const vxVector2d& coords)
@@ -45,7 +45,7 @@ vxVector3d MathUtils::cartesianToNormal(const vxVector2d& coords)
 	auto y = cos(coords.x()) * sin(coords.y());
 	auto z = sin(coords.x());
 
-	return vxVector3d(x,y,z).unit();
+	return vxVector3d{x,y,z}.unit();
 }
 
 vxVector3d MathUtils::rectAndPlane(const vxVector3d&& ray, const vxPlane &plane)
@@ -74,7 +74,7 @@ vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
 	auto y = t * -ray.y() + ray.y();
 	auto z = t * -ray.z() + ray.z();
 
-	return vxVector3d(x,y,z);
+	return vxVector3d{x,y,z};
 }
 
 vxVector3d MathUtils::rectAndYPlane(const vxVector3d&& ray, double y)
@@ -84,7 +84,7 @@ vxVector3d MathUtils::rectAndYPlane(const vxVector3d&& ray, double y)
 	auto x = t * (-ray.x()) + ray.x();
 	auto z = t * (-ray.z()) + ray.z();
 
-	return vxVector3d(x,y,z);
+	return vxVector3d{x,y,z};
 }
 
 double MathUtils::x_forRectAndYPlane(const vxVector3d&& ray, double y)
@@ -104,7 +104,7 @@ vxVector3d MathUtils::rectAndZPlane(const vxVector3d&& ray, double z)
 	auto x = t * -ray.x() + ray.x();
 	auto y = t * -ray.y() + ray.y();
 
-	return vxVector3d(x,y,z);
+	return vxVector3d{x,y,z};
 }
 
 double MathUtils::getRand(double range = 1.0)

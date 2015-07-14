@@ -66,7 +66,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		else
 		{
 			//std::cout << "PLY: X " << x << "  Y "  << y << "  Z "  << z << " found on line: " << k << std::endl;
-			m_pointCloud.push_back(vxVector3d(x,y,z));
+			m_pointCloud.push_back(vxVector3d{x,y,z});
 		}
 		
 		k++;

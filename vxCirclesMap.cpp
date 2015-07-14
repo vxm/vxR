@@ -11,7 +11,7 @@ vxColor vxCirclesMap::compute(const vxCollision &collision) const
 	vxColor outColor(vxColor::white);
 
 	auto distanceToCenter = 
-			vxVector2d(collision.u()-.5,collision.v()-.5).length();
+			vxVector2d{collision.u()-.5,collision.v()-.5}.length();
 
 
 	if(m_circle1)
