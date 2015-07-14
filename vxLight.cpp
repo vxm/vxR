@@ -220,11 +220,11 @@ vxColor vxDirectLight::acummulationLight(const vxCollision &collision) const
 	const auto &scn = m_scene.lock();
 
 	// compute all sort of shadows.
-	const vxRay f(cPnt, collision.normal());
 	auto lumm = m_intensity * lightRatio(cPnt, 
 										 collision.normal(), 
 										cPnt + m_orientation.inverted());
 
+	const vxRay f(cPnt, m_orientation);
 	return scn->hasCollision(f) ? vxColor::black : color().gained(lumm);
 }
 
