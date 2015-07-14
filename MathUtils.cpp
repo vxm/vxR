@@ -34,10 +34,8 @@ constexpr double MathUtils::ratio(int a, int b)
 vxVector2d MathUtils::normalToCartesian(const vxVector3d& normal)
 {
 	auto normalized = normal.unit();
-	
-	auto x = (PI + atan2(normalized.z(), normalized.x()))/(2*PI);
+	auto x = (PI + atan2(normalized.z(), normalized.x()))/(2.0*PI);
 	auto y = ((PI/2.0) + asin( normalized.y())) / PI;
-	
 	return vxVector2d(x, y);
 }
 
