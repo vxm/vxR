@@ -19,6 +19,8 @@ vxVector3d vxVector3d::constMinusXZ	{-1.0,  0.0,  1.0};
 vxVector3d vxVector3d::constMinusYZ	{ 0.0, -1.0, -1.0};
 vxVector3d vxVector3d::constMinusXYZ{-1.0, -1.0, -1.0};
 
+vxVector3d vxVector3d::zero{0.0, 0.0, 0.0};
+
 
 vxVector2d::vxVector2d() 
 {}

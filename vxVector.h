@@ -86,6 +86,7 @@ public:
 	static vxVector3d constMinusXZ;
 	static vxVector3d constMinusYZ;
 	static vxVector3d constMinusXYZ;
+	static vxVector3d zero;
 	
 	enum class axis{kX, kY, kZ};
 
