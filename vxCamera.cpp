@@ -55,17 +55,16 @@ void vxCamera::set(const vxVector3d& position,
 
 vxRay vxCamera::ray(const vxVector2d &coord, const vxSampler &sampler) const
 {
-	double compX = m_hApTan * (( coord.x() * 2.0)-1.0) 
+	double compX = m_hApTan * (( coord[0] * 2.0)-1.0)
 					- 1.0/(double)(2.0 * m_rx)
 					+ sampler.x()/m_rx;
 
-	double compY = m_vApTan * (( coord.y() * 2.0)-1.0)
+	double compY = m_vApTan * (( coord[1] * 2.0)-1.0)
 					- 1.0/(double)(2.0 * m_ry)
 					+ sampler.y()/m_ry;
 
-	auto&& ret = vxRay(compY, compX, m_focusDistance);
-	ret.direction().rotateX( -14 * (MathUtils::PI/8.0) );
-	//ret.rotateX(0.33);
+	auto&& ret = vxRay{compY, compX, m_focusDistance};
+	ret.direction().rotateX( -2 * (MathUtils::PI/8.0) );
 	return ret;
 }
 
