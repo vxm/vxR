@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 20
+#define RESL 10
 #define PX resl * 2 
 #define PY resl * 0
 #define PZ resl * 2
@@ -29,7 +29,7 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples{5};
+	int nLightSamples{3};
 	const double sunIntensity{0.5};
 	const auto sunCoords = vxVector2d{-0.222000, -0.124000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
@@ -58,27 +58,8 @@ void vxScene::build()
 	createCamera(vxMatrix{});
 	createGrid();
 	
-	auto plyReader = std::make_shared<vxPLYImporter>();
-	//plyReader->processPLYFile("../vxR/juan_0.ply");
-	plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
-	//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-	loadFromFile(plyReader);
 	
-	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
-	auto iRadius = 4.0;
-	auto distSph = (resl/3.0);
-	//m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	//m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	//m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	//m_grids[0]->createEdges(); // of the grid
-	m_grids[0]->createGround();
-
+	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
 	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
