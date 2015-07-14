@@ -78,8 +78,8 @@ vxStatus::code vxRenderProcess::execute()
 		threads.push_back(std::move(th));
 	}
 	
-	double accelerationRatio = 0.2;
-	double prevProgress = -1;
+	double accelerationRatio{1.0};
+	double prevProgress{-1};
 	while(!m_finished)
 	{
 		double dProgress = progress();
@@ -121,7 +121,7 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 2;
+	unsigned int nSamples = 1;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
