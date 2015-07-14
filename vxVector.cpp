@@ -76,6 +76,11 @@ double& vxVector2d::operator[](const unsigned int idx)
 	return idx == 0 ? m_x : m_y;
 }
 
+double vxVector2d::operator[](const unsigned int idx) const
+{
+	return idx == 0 ? m_x : m_y;
+}
+
 
 vxVector2d vxVector2d::asIntPosition() const
 {

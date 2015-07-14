@@ -29,6 +29,7 @@ public:
 	double x() const;
 	double y() const;
 	double& operator[](const unsigned int);
+	double operator[](const unsigned int) const;
 	vxVector2d asIntPosition() const;
 	double length() const;
 	vxVector2d inverted() const;
