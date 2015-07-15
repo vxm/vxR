@@ -11,6 +11,7 @@
 #include "ImageProperties.h"
 #include "TimeUtils.h"
 #include "vxSampler.h"
+#include "vxThreadPool.h"
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
@@ -162,6 +163,9 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			m_progress.store(m_progress.load() + 1);
 		}
 	}
+
+	auto thInfo = vxThreadPool::threadInfo(std::this_thread::get_id());
+	std::cout << "Finished task on thread ::" << thInfo.id << "::" << std::endl;
 
 	m_finished = true;
 	
