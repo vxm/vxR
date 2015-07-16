@@ -173,9 +173,9 @@ void vxGrid::createEdges()
 	}
 }
 
-void vxGrid::createSphere(int x, int y, int z, const double radio)
+void vxGrid::createSphere(double x, double y, double z, const double radio)
 {
-	createSphere(vxVector3d{x,y,z}, radio);
+	createSphere(vxVector3d{(double)x,(double)y,(double)z}, radio);
 }
 
 bool vxGrid::getRandomBoolean(double ratio)

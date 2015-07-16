@@ -86,7 +86,7 @@ public:
 	void createGround(unsigned int offset = 0);
 	void createEdges();
 	void createSphere(const vxVector3d &center, const double radio);
-	void createSphere(int x, int y, int z, const double radio);
+	void createSphere(double x, double y, double z, const double radio);
 	bool getRandomBoolean(double ratio = 1.0);
 	void createRandom(double ratio = 1.0);
 	void addVertices(const std::vector<vxVector3d> &verts, 
