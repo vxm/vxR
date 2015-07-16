@@ -11,8 +11,7 @@ class vxScene;
 #define RESL 10
 #define PX resl * 2 
 #define PY resl * 0
-#define PZ resl * 2
-
+#define PZ -resl * 2
 
 ///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
 ///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
@@ -59,7 +58,7 @@ void vxScene::build()
 	createGrid();
 	
 	
-	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
+	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl); 
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
 	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;

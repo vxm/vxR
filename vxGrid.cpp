@@ -416,13 +416,13 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 
 unsigned int vxGrid::getNearestCollisionUsingX(const vxRay &ray, vxCollision &collide) const
 {
-	const auto&& vel = collide.position().orthoVector()/2.0;
+	const auto&& vel = collide.position().aaVector()/2.0;
 	vxVector3d cIter{collide.position().asIntPosition()+vel};
 	vxVector3d storedIter{cIter};
 	bool found = false;
 	double x = floor(cIter.x());
 	
-	while(MathUtils::inRange(x, m_xmin, m_xmax))
+	while(!found && MathUtils::inRange(x, m_xmin, m_xmax))
 	{
 		storedIter = cIter;
 		cIter = MathUtils::rectAndXPlane(ray.direction(), x).asIntPosition()+.5;
@@ -495,7 +495,7 @@ unsigned int vxGrid::getNearestCollisionUsingX(const vxRay &ray, vxCollision &co
 
 unsigned int vxGrid::getNearestCollisionUsingY(const vxRay &ray, vxCollision &collide) const
 {
-	const auto&& vel = collide.position().orthoVector()/2.0;
+	const auto&& vel = collide.position().aaVector()/2.0;
 	vxVector3d cIter{collide.position().asIntPosition()+vel};
 	vxVector3d storedIter{cIter};
 	bool found = false;
@@ -575,9 +575,9 @@ unsigned int vxGrid::getNearestCollisionUsingY(const vxRay &ray, vxCollision &co
 
 unsigned int vxGrid::getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const
 {
-	const auto&& vel = collide.position().orthoVector()/2.0;
-	vxVector3d cIter{collide.position().asIntPosition()+vel};
-	vxVector3d storedIter{cIter};
+	const auto&& vel = collide.position().aaVector()/2.0;
+	vxVector3d cIter{collide.position().asIntPosition()-(vel)};
+	vxVector3d storedIter;
 	bool found = false;
 	double z = floor(cIter.z());
 	
