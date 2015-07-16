@@ -508,18 +508,18 @@ vxVector3d vxVector3d::operator+=(const vxVector3d &entrada)
 	return *this;
 }
 
-void vxVector3d::vectorXY(vxVector2d &local) const
+vxVector2d vxVector3d::vectorXY() const
 {
-	local.set(m_x,m_y);
+	return vxVector2d(m_x,m_y);
 }
 
-void vxVector3d::vectorYZ(vxVector2d &local) const
+vxVector2d vxVector3d::vectorYZ() const
 {
-	local.set(m_x,m_y);
+	return vxVector2d(m_x,m_y);
 }
 
-void vxVector3d::vectorZX(vxVector2d &local) const
+vxVector2d vxVector3d::vectorZX() const
 {
-	local.set(m_x,m_y);
+	return vxVector2d(m_x,m_y);
 }
 
