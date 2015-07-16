@@ -129,7 +129,7 @@ public:
 	double length() const;
 	double distance(const vxVector3d &ref) const;
 	
-	vxVector3d orthoVector() const;
+	vxVector3d aaVector() const;
 	vxVector3d asIntPosition() const;
 	//TODO:fix clash with math ceil
 //	vxVector3d ceil() const;

@@ -331,7 +331,7 @@ double vxVector3d::length() const
 #include <cmath>
 
 
-vxVector3d vxVector3d::orthoVector() const
+vxVector3d vxVector3d::aaVector() const
 {
 	return vxVector3d(std::copysign(1.0,m_x),
 					  std::copysign(1.0,m_y),
