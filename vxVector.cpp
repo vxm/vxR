@@ -344,9 +344,15 @@ double vxVector3d::distance(const vxVector3d &ref) const
 	return (*this-ref).length();
 }
 
-vxVector3d vxVector3d::asIntPosition() const
+vxVector3d vxVector3d::floorVector() const
 {
 	return vxVector3d(floor(m_x),floor(m_y),floor(m_z));
+}
+
+
+vxVector3d vxVector3d::ceilVector() const
+{
+	return vxVector3d(ceil(m_x),ceil(m_y),ceil(m_z));
 }
 
 //vxVector3d vxVector3d::ceil() const

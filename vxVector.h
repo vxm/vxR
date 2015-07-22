@@ -161,7 +161,8 @@ public:
 	double distance(const vxVector3d &ref) const;
 	
 	vxVector3d aaVector() const;
-	vxVector3d asIntPosition() const;
+	vxVector3d floorVector() const;
+	vxVector3d ceilVector() const;
 	//TODO:fix clash with math ceil
 //	vxVector3d ceil() const;
 	vxVector3d unit() const;
