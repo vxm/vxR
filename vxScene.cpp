@@ -29,9 +29,6 @@ vxScene::~vxScene()
 void vxScene::build()
 {
 	int nLightSamples{3};
-	const double sunIntensity{0.5};
-	const auto sunCoords = vxVector2d{-0.222000, -0.124000};
-	const auto sunColor = vxColor::lookup256(255,240,241);
 
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -42,23 +39,17 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 
 	//Environment tint.
-	auto envLight = createIBLight(m_environment.path());
+	auto envLight = createDirectLight();
+	envLight->setOrientation(vxVector3d(-PX,-(PY/2.2),-(PZ/2.2)).inverted().unit());
 	envLight->setSamples(nLightSamples);
 	envLight->setRadius(0.97);
 	envLight->setIntensity(2.0);
 
-	//This simulates the sun.
-	auto sunLight = createDirectLight();
-	const auto&& sunOrientation = MathUtils::cartesianToNormal(sunCoords);
-	sunLight->setOrientation(sunOrientation);
-	sunLight->setIntensity(sunIntensity);
-	sunLight->setColor(sunColor);
-	
 	createCamera(vxMatrix{});
 	createGrid();
 	
-	
-	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl); 
+	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/3.0);
+	m_grids[0]->createEdges();
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
 	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
