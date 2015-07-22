@@ -58,9 +58,9 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 	
 	int r = (unsigned char)(*px);
 	
-	vxColor outColor(0.5*(r/255.0),
-					 0.5*(g/255.0),
-					 0.5*(b/255.0));
+	vxColor outColor(0.2*(r/255.0),
+					 0.2*(g/255.0),
+					 0.2*(b/255.0));
 
 	return outColor;
 }
