@@ -287,8 +287,8 @@ void vxGrid::activate(const vxVector3d &pos)
 	{
 		const auto&& offsetPos = pos - (m_position - m_midSize);
 		setElement((unsigned int)floor(offsetPos.x()),
-						  (unsigned int)floor(offsetPos.y()),
-						  (unsigned int)floor(offsetPos.z()), true);
+						(unsigned int)floor(offsetPos.y()),
+						(unsigned int)floor(offsetPos.z()), true);
 	}
 }
 
