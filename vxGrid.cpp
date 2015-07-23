@@ -389,6 +389,42 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt) const
 			&& std::isgreaterequal(pnt.z(),m_zmin);
 }
 
+vxVector3d vxGrid::nextVoxel(const vxRay &ray) const
+{
+	double minX = floor(ray.origin()[0]);
+	double minY = floor(ray.origin()[1]);
+	double minZ = floor(ray.origin()[2]);
+
+	const bool xSigned = std::signbit(ray.direction().x());
+	const bool ySigned = std::signbit(ray.direction().y());
+	const bool zSigned = std::signbit(ray.direction().z());
+
+	double maxX = xSigned ? minX+1.0 : minX;
+	double maxY = ySigned ? minY+1.0 : minY;
+	double maxZ = zSigned ? minZ+1.0 : minZ;
+
+	auto xCollision = MathUtils::rectAndXPlane(ray.direction(), maxX);
+	auto yCollision = MathUtils::rectAndYPlane(ray.direction(), maxY);
+	auto zCollision = MathUtils::rectAndZPlane(ray.direction(), maxZ);
+	
+	if( MathUtils::inRange(xCollision.z(), minZ, maxZ)
+		&& MathUtils::inRange(xCollision.y(), minY, maxY))
+	{
+		xCollision[0] += nextafter(xCollision.x(), maxX);
+		return xCollision.floorVector()+.5;
+	}
+	
+	if( MathUtils::inRange( yCollision.z(), minZ, maxZ)
+		&& MathUtils::inRange( yCollision.x(), minX, maxX))
+	{
+		yCollision[1] += nextafter(yCollision.y(), maxY);
+		return yCollision;
+	}
+
+	zCollision[2] += nextafter(zCollision.z(), maxZ);
+	return zCollision;
+}
+
 
 unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide) const
 {
@@ -397,264 +433,37 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		return 0;
 	}
 	
-	//NOTE:could be done checking normals.
-	switch(ray.direction().mainAxis())
+	vxRay r{ray};
+	bool found = false;
+	vxVector3d vx{ray.origin()+(r.direction()/10.0)};
+	do
 	{
-	case vxVector3d::axis::kX:
-		return getNearestCollisionUsingX(ray, collide);
-		break;
-	case vxVector3d::axis::kY:
-		return getNearestCollisionUsingY(ray, collide);
-		break;
-	case vxVector3d::axis::kZ:
-		return getNearestCollisionUsingZ(ray, collide);
-		break;
+		r.setOrigin(r.origin()+(r.direction()/10.0));
+		vx = nextVoxel(ray);
+		if(active(vx))
+		{
+			found = true;
+			break;
+		}
 	}
+	while(inGrid(vx));
+	
+	if(found)
+	{
+		collide.setPosition(vx);
+		collide.setValid(true);
+	}
+
+	return (int)found;
 
 	return 0;
 }
 
-unsigned int vxGrid::getNearestCollisionUsingX(const vxRay &ray, vxCollision &collide) const
-{
-	const auto&& vel = collide.position().aaVector()/2.0;
-	vxVector3d cIter{collide.position().asIntPosition()+vel};
-	vxVector3d storedIter{cIter};
-	bool found = false;
-	double x = floor(cIter.x());
-	
-	while(!found && MathUtils::inRange(x, m_xmin, m_xmax))
-	{
-		storedIter = cIter;
-		cIter = MathUtils::rectAndXPlane(ray.direction(), x).asIntPosition()+.5;
-		if(storedIter.z() != cIter.z() || storedIter.y() != cIter.y())
-		{
-			vxVector3d deviated;
-			if(MathUtils::z_forRectAndYPlane(
-										collide.position(),
-										storedIter.y() + vel[1])>(storedIter.z() + vel[2]))
-			{
-				if(cIter.z()!=storedIter.z())
-				{
-					deviated.set(storedIter[0], storedIter[1], cIter[2]);
-					if(active(deviated))
-					{
-						cIter = deviated;
-						found=true;
-						break;
-					}
-				}
-
-				deviated[1] = cIter[1];
-				if(active(deviated))
-				{
-					cIter = deviated;
-					found=true;
-					break;
-				}
-			}
-			else
-			{
-				if(cIter.y()!=storedIter.y())
-				{
-					deviated.set(storedIter[0], cIter[1], storedIter[2]);
-					if(active(deviated))
-					{
-						cIter = deviated;
-						found=true;
-						break;
-					}
-				}
-				
-				deviated[2] = cIter[2];
-				if(active(deviated))
-				{
-					cIter = deviated;
-					found=true;
-					break;
-				}
-			}
-		}
-		
-		if(active(cIter))
-		{
-			found=true;
-			break;
-		}
-
-		x+= vel[0];
-	}
-	
-	if(found)
-	{
-		collide.setPosition(cIter);
-		collide.setValid();
-	}
-
-	return (int)found;
-}
-
-unsigned int vxGrid::getNearestCollisionUsingY(const vxRay &ray, vxCollision &collide) const
-{
-	const auto&& vel = collide.position().aaVector()/2.0;
-	vxVector3d cIter{collide.position().asIntPosition()+vel};
-	vxVector3d storedIter{cIter};
-	bool found = false;
-	double y = floor(cIter.y());
-	
-	while(MathUtils::inRange(y, m_ymin, m_ymax))
-	{
-		auto pnt = MathUtils::rectAndYPlane(ray.direction(), y);
-		storedIter = cIter;
-		cIter = pnt.asIntPosition()+.5;
-		if(storedIter.x() != cIter.x() || storedIter.y() != cIter.y())
-		{
-			vxVector3d deviated;
-			if(MathUtils::x_forRectAndYPlane(
-										collide.position(),
-										storedIter.y() + vel[1])<=(storedIter.x() + vel[0]))
-			{
-				if(cIter.x()!=storedIter.x())
-				{
-					deviated.set(cIter[0], storedIter[1], storedIter[1]);
-					if(active(deviated))
-					{
-						cIter = deviated;
-						found=true;
-						break;
-					}
-				}
-
-				deviated[1] = cIter[1];
-				if(active(deviated))
-				{
-					cIter = deviated;
-					found=true;
-					break;
-				}
-			}
-			else
-			{
-				if(cIter.y()!=storedIter.y())
-				{
-					deviated.set(storedIter[0], cIter[1], storedIter[1]);
-					if(active(deviated))
-					{
-						cIter = deviated;
-						found=true;
-						break;
-					}
-				}
-				
-				deviated[0] = cIter[0];
-				if(active(deviated))
-				{
-					cIter = deviated;
-					found=true;
-					break;
-				}
-			}
-		}
-		
-		if(active(cIter))
-		{
-			found=true;
-			break;
-		}
-
-		y+= vel[1];
-	}
-	
-	if(found)
-	{
-		collide.setPosition(cIter);
-		collide.setValid();
-	}
-
-	return (int)found;
-}
-
-unsigned int vxGrid::getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const
-{
-	const auto&& vel = collide.position().aaVector()/2.0;
-	vxVector3d cIter{collide.position().asIntPosition()-(vel)};
-	vxVector3d storedIter;
-	bool found = false;
-	double z = floor(cIter.z());
-	
-	while(MathUtils::inRange(z, m_zmin, m_zmax))
-	{
-		storedIter = cIter;
-		cIter = MathUtils::rectAndZPlane(ray.direction(), z).asIntPosition()+.5;
-		if(storedIter.x() != cIter.x() || storedIter.y() != cIter.y())
-		{
-			vxVector3d deviated;
-			if(MathUtils::x_forRectAndYPlane(
-										collide.position(),
-										storedIter.y() + vel[1])>(storedIter.x() + vel[0]))
-			{
-				if(cIter.x()!=storedIter.x())
-				{
-					deviated.set(cIter[0], storedIter[1], storedIter[2]);
-					if(active(deviated))
-					{
-						cIter = deviated;
-						found=true;
-						break;
-					}
-				}
-
-				deviated[1] = cIter[1];
-				if(active(deviated))
-				{
-					cIter = deviated;
-					found=true;
-					break;
-				}
-			}
-			else
-			{
-				if(cIter.y()!=storedIter.y())
-				{
-					deviated.set(storedIter[0], cIter[1], storedIter[2]);
-					if(active(deviated))
-					{
-						cIter = deviated;
-						found=true;
-						break;
-					}
-				}
-				
-				deviated[0] = cIter[0];
-				if(active(deviated))
-				{
-					cIter = deviated;
-					found=true;
-					break;
-				}
-			}
-		}
-		
-		if(active(cIter))
-		{
-			found=true;
-			break;
-		}
-
-		z+= vel[2];
-	}
-	
-	if(found)
-	{
-		collide.setPosition(cIter);
-		collide.setValid();
-	}
-
-	return (int)found;
-}
 
 #define DRAWBBOX 0
 int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 { 
+	collide.setColor(vxColor::black);
 #if DRAWBBOX
 	const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
 	const auto&& instance = geometry->at(position(), size());

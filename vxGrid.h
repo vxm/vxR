@@ -1,14 +1,14 @@
 #ifndef _VXGRIDMC_
 #define _VXGRIDMC_
-
 #include <memory>
+
 #include <bitset>
+#include <climits>
 
 #include "vxObject.h"
 #include "vxGlobal.h"
 
-
-#include <math.h>
+#include <cmath>
 #include <time.h>
 #include <iostream>
 #include <vector>
@@ -92,6 +92,7 @@ public:
 	void addVertices(const std::vector<vxVector3d> &verts, 
 					 const vxVector3d &offset, 
 					 const vxVector3d &scale);
+	vxVector3d nextVoxel(const vxRay &ray) const;
 	
 // OPERATION WITH GRID
 	
@@ -139,10 +140,7 @@ public:
 	bool inGrid(const vxVector3d &pnt, double tolerance) const;
 	bool inGrid(const vxVector3d &pnt) const;
 	
-	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;	
-	unsigned int getNearestCollisionUsingX(const vxRay &, vxCollision &collide) const;
-	unsigned int getNearestCollisionUsingY(const vxRay &, vxCollision &collide) const;
-	unsigned int getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const;
+	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;
 	
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
