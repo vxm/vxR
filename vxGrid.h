@@ -1,14 +1,14 @@
 #ifndef _VXGRIDMC_
 #define _VXGRIDMC_
-
 #include <memory>
+
 #include <bitset>
+#include <climits>
 
 #include "vxObject.h"
 #include "vxGlobal.h"
 
-
-#include <math.h>
+#include <cmath>
 #include <time.h>
 #include <iostream>
 #include <vector>
@@ -86,7 +86,7 @@ public:
 	void createGround(unsigned int offset = 0);
 	void createEdges();
 	void createSphere(const vxVector3d &center, const double radio);
-	void createSphere(int x, int y, int z, const double radio);
+	void createSphere(double x, double y, double z, const double radio);
 	bool getRandomBoolean(double ratio = 1.0);
 	void createRandom(double ratio = 1.0);
 	void addVertices(const std::vector<vxVector3d> &verts, 
@@ -95,6 +95,7 @@ public:
 	
 // OPERATION WITH GRID
 	
+	static vxVector3d nextVoxel(const vxRay &ray);
 	//sets every single vxl to 0.
 	void initialize(bool value = false);
 	//returns number of active voxels
@@ -139,10 +140,7 @@ public:
 	bool inGrid(const vxVector3d &pnt, double tolerance) const;
 	bool inGrid(const vxVector3d &pnt) const;
 	
-	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;	
-	unsigned int getNearestCollisionUsingX(const vxRay &, vxCollision &collide) const;
-	unsigned int getNearestCollisionUsingY(const vxRay &, vxCollision &collide) const;
-	unsigned int getNearestCollisionUsingZ(const vxRay &ray, vxCollision &collide) const;
+	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;
 	
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;

@@ -270,6 +270,11 @@ void vxColor::gain(double gain)
 	m_b+=gain;
 }
 
+vxColor vxColor::dimm(double factor) const
+{
+	return (*this)*(1.0/factor);
+}
+
 vxColor vxColor::operator+(unsigned int factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_b);}
 
 vxColor vxColor::operator-(unsigned int factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
@@ -280,9 +285,21 @@ vxColor vxColor::operator/(unsigned int factor) const {return vxColor(m_r/double
 
 vxColor vxColor::operator/(int factor) const {return vxColor(m_r/double(factor),m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
 
-vxColor vxColor::operator/(double factor) const {return vxColor(m_r/(double)factor,m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
+vxColor vxColor::operator/(double factor) const 
+{
+	return vxColor(m_r/(double)factor,
+				   m_g/(double)factor,
+				   m_b/(double)factor,
+				   m_a/(double)factor);
+}
 
-vxColor vxColor::operator/(float factor) const {return vxColor(m_r/(double)factor,m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
+vxColor vxColor::operator/(float factor) const 
+{
+	return vxColor(m_r/(double)factor,
+				   m_g/(double)factor,
+				   m_b/(double)factor,
+				   m_a/(double)factor);
+}
 
 vxColor vxColor::operator/(const vxColor &entrada) const 
 {

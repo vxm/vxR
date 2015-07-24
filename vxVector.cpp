@@ -331,7 +331,7 @@ double vxVector3d::length() const
 #include <cmath>
 
 
-vxVector3d vxVector3d::orthoVector() const
+vxVector3d vxVector3d::aaVector() const
 {
 	return vxVector3d(std::copysign(1.0,m_x),
 					  std::copysign(1.0,m_y),
@@ -344,7 +344,7 @@ double vxVector3d::distance(const vxVector3d &ref) const
 	return (*this-ref).length();
 }
 
-vxVector3d vxVector3d::asIntPosition() const
+vxVector3d vxVector3d::floorVector() const
 {
 	return vxVector3d(floor(m_x),floor(m_y),floor(m_z));
 }
@@ -508,18 +508,18 @@ vxVector3d vxVector3d::operator+=(const vxVector3d &entrada)
 	return *this;
 }
 
-void vxVector3d::vectorXY(vxVector2d &local) const
+vxVector2d vxVector3d::vectorXY() const
 {
-	local.set(m_x,m_y);
+	return vxVector2d(m_x,m_y);
 }
 
-void vxVector3d::vectorYZ(vxVector2d &local) const
+vxVector2d vxVector3d::vectorYZ() const
 {
-	local.set(m_x,m_y);
+	return vxVector2d(m_x,m_y);
 }
 
-void vxVector3d::vectorZX(vxVector2d &local) const
+vxVector2d vxVector3d::vectorZX() const
 {
-	local.set(m_x,m_y);
+	return vxVector2d(m_x,m_y);
 }
 

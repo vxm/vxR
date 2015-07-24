@@ -20,6 +20,26 @@ public:
 
 	vxVector2d ();
 	vxVector2d (double x, double y);
+	vxVector2d (const vxVector2d& other)
+		:m_x(other.m_x)
+		,m_y(other.m_y)
+	{
+	}
+	
+	vxVector2d(const vxVector2d&& other)
+		:m_x{std::move(other.m_x)}
+		,m_y{std::move(other.m_y)}
+	{
+	}
+	
+	vxVector2d& operator=(const vxVector2d& other)
+	{
+		m_x = other.m_x;
+		m_y = other.m_y;
+	
+		return *this;
+	}
+	
 	void set(double x, double y);
 	void set(vxVector2d enter);
 	void setX(const double x);
@@ -51,6 +71,17 @@ public:
 	vxVector2d operator/(float factor) const;
 	vxVector2d operator/(int factor) const;
 
+	bool operator==(const vxVector2d &other) const
+	{
+		return other.m_x == m_x && other.m_y == m_y; 
+	}
+	
+	bool operator!=(const vxVector2d &other) const
+	{
+		return other.m_x != m_x || other.m_y != m_y;
+	}
+	
+	
 	double angle(const vxVector2d &other) const;
 	double angle() const;
 	
@@ -129,8 +160,9 @@ public:
 	double length() const;
 	double distance(const vxVector3d &ref) const;
 	
-	vxVector3d orthoVector() const;
-	vxVector3d asIntPosition() const;
+	vxVector3d aaVector() const;
+	vxVector3d floorVector() const;
+	vxVector3d ceilVector() const;
 	//TODO:fix clash with math ceil
 //	vxVector3d ceil() const;
 	vxVector3d unit() const;
@@ -186,9 +218,9 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 	//TODO: revisit these three rotations
 	vxVector3d rotateZ(double ang);
 
-	void vectorXY(vxVector2d &local) const;
-	void vectorYZ(vxVector2d &local) const;
-	void vectorZX(vxVector2d &local) const;
+	vxVector2d vectorXY() const;
+	vxVector2d vectorYZ() const;
+	vxVector2d vectorZX() const;
 	
 	friend std::ostream& operator<<(std::ostream &os, const vxVector3d& v)
 	{

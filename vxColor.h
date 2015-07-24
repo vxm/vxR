@@ -96,6 +96,7 @@ public:
 	void mixSumm(const vxColor &other, double alpha = 0.5);
 	void setToGamma(double gamma=2.2, double offset = 1.0);
 	void gain(double gain);
+	vxColor dimm(double factor) const;
 	vxColor gained(double gain) const;
 	
 	vxColor operator+(const vxColor &other) const;
