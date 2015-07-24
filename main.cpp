@@ -12,24 +12,29 @@
 #include "MathUtils.h"
 #include "vxVector.h"
 #include "vxGrid.h"
+#include "vxGridUnitTest.h"
 
 static const std::string baseName("image.0000001.tif");
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
 using namespace vxCore;
 
+
 int main(int argc, char *argv[])
 {
 	timePoint start = std::chrono::system_clock::now();
-	
+
 	std::cout << "Start program" << std::endl;
 
+	// Perform tests.
+	//vxGridUnitTest::testGrid();
+			
 	QApplication a(argc, argv);
 	vxRenderMain w;
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(620,620);
+	auto imgDesc = std::make_shared<ImageProperties>(700,700);
 	
 	// create the render process
 	render rp(imgDesc);
