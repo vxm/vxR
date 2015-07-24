@@ -92,7 +92,7 @@ public:
 	void addVertices(const std::vector<vxVector3d> &verts, 
 					 const vxVector3d &offset, 
 					 const vxVector3d &scale);
-	vxVector3d nextVoxel(const vxRay &ray) const;
+	static vxVector3d nextVoxel(const vxRay &ray);
 	
 // OPERATION WITH GRID
 	
