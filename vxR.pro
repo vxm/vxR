@@ -56,7 +56,9 @@ SOURCES += main.cpp\
     imageData.cpp \
     vxLegoBlock.cpp \
     sseUtils.cpp \
-    vxRay.cpp
+    vxRay.cpp \
+    vxUnitTest.cpp \
+    vxGridUnitTest.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -102,7 +104,9 @@ HEADERS  += \
     imageData.h \
     vxLegoBlock.h \
     sseUtils.h \
-    vxRay.h
+    vxRay.h \
+    vxUnitTest.h \
+    vxGridUnitTest.h
 
 FORMS    += vxrendermain.ui
 
