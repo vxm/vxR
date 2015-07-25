@@ -19,21 +19,18 @@ using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
 using namespace vxCore;
 
-int main(int argc, char *argv[])
+int executeRenderProcess(int argc, char *argv[])
 {
 	timePoint start = std::chrono::system_clock::now();
-	
+
 	std::cout << "Start program" << std::endl;
 
-	// Perform tests.
-	//vxGridUnitTest::testGrid();
-			
 	QApplication a(argc, argv);
 	vxRenderMain w;
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(820,820);
+	auto imgDesc = std::make_shared<ImageProperties>(700,700);
 	
 	// create the render process
 	render rp(imgDesc);
@@ -87,4 +84,36 @@ int main(int argc, char *argv[])
 	std::cout << "done!" << std::endl;
 	return 0;
 }
+
+int main(int argc, char *argv[])
+{
+	unsigned int program{0};
+	if(argc>1)
+	{
+		std::cout << "Extra arguments detected " << std::endl;
+		
+		for(int i=0; i<argc; i++)
+		{
+			std::cout << "\t arc   " << argv[i] << std::endl;
+			if(memcmp(argv[i],"-allTests", 9)
+				|| memcmp(argv[i],"-at", 3))
+			{
+				program = 1;
+			}
+		}
+	}
+	
+	switch(program)
+	{
+		case 1:
+			vxGridUnitTest::testGrid();
+		break;
+		default:
+			executeRenderProcess(argc, argv);
+		break;
+	}
+
+	return 1;
+}
+
 
