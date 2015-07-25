@@ -92,10 +92,10 @@ public:
 	void addVertices(const std::vector<vxVector3d> &verts, 
 					 const vxVector3d &offset, 
 					 const vxVector3d &scale);
-	static vxVector3d nextVoxel(const vxRay &ray);
 	
 // OPERATION WITH GRID
 	
+	static vxVector3d nextVoxel(const vxRay &ray);
 	//sets every single vxl to 0.
 	void initialize(bool value = false);
 	//returns number of active voxels

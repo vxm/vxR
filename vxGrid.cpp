@@ -311,7 +311,11 @@ inline void vxGrid::setElement(const unsigned int x,
 						const unsigned int z, 
 						bool value)
 {
-	m_data[x+(y*m_resolution)+(z*m_resXres)]=value;
+	const auto idx{x+(y*m_resolution)+(z*m_resXres)};
+	if(idx<m_data.size())
+	{
+		m_data[idx]=value;
+	}
 }
 
 inline void vxGrid::setElement(unsigned int idx, bool value)
@@ -438,16 +442,16 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	
 	vxRay r{collide.position(), ray.direction()};
 	bool found = false;
-	vxVector3d vx{r.origin()+r.direction()};
+	vxVector3d vx{r.origin()};
 	do
 	{
-		vx = nextVoxel(r);
+		vx = vxGrid::nextVoxel(r);
 		if(active(vx))
 		{
 			found = true;
 			break;
 		}
-		r.setOrigin(vx);
+		r.setOrigin(r.origin()+r.direction()/10.0);
 	}
 	while(inGrid(vx));
 
@@ -457,7 +461,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 }
 
 
-#define DRAWBBOX 1
+#define DRAWBBOX 0
 int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 { 
 	collide.setColor(vxColor::black);
