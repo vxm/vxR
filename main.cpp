@@ -87,6 +87,8 @@ int executeRenderProcess(int argc, char *argv[])
 
 int printHelp()
 {
+	//!TODO: this help could be written in external file
+	//!and be read in compilation time.
 	std::cout << "vxR 0.2.0" << std::endl << std::endl
 				<< "\t Non realtime render for solid voxels" << std::endl
 				<< "\t vxR [-at] | [-allTests] to perform unit tests." << std::endl
