@@ -311,7 +311,11 @@ inline void vxGrid::setElement(const unsigned int x,
 						const unsigned int z, 
 						bool value)
 {
-	m_data[x+(y*m_resolution)+(z*m_resXres)]=value;
+	const auto idx{x+(y*m_resolution)+(z*m_resXres)};
+	if(idx<m_data.size())
+	{
+		m_data[idx]=value;
+	}
 }
 
 inline void vxGrid::setElement(unsigned int idx, bool value)
