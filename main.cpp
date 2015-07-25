@@ -85,27 +85,58 @@ int executeRenderProcess(int argc, char *argv[])
 	return 0;
 }
 
+int printHelp()
+{
+	std::cout << "vxR 0.2.0" << std::endl << std::endl
+				<< "\t Non realtime render for solid voxels" << std::endl
+				<< "\t vxR [-at] | [-allTests] to perform unit tests." << std::endl
+				<< "\t vxR [-help] | [--help] for this help" << std::endl;
+
+	return 0;
+}
+
+
 int main(int argc, char *argv[])
 {
 	unsigned int program{0};
+	
+	// Depending on arguments the execution will be different.
+	// Here we extract the elements on the input argument array
+	// and record the behaviour for the program.
 	if(argc>1)
 	{
 		std::cout << "Extra arguments detected " << std::endl;
 		
-		for(int i=0; i<argc; i++)
+		for(int i=1; i<argc; i++)
 		{
 			std::cout << "\t arc   " << argv[i] << std::endl;
-			if(memcmp(argv[i],"-allTests", 9)
-				|| memcmp(argv[i],"-at", 3))
+			if(memcmp(argv[i],"-allTests", 9)==0
+				|| memcmp(argv[i],"-at", 3)==0)
+			{
+				program = 2;
+			}
+			
+			if(memcmp(argv[i],"--help", 6)==0
+				|| memcmp(argv[i],"-help", 5)==0)
+			{
+				program = 1;
+			}
+
+			// If there are more arguments and are not recognized
+			// printing help should be executed.
+			if(program==0)
 			{
 				program = 1;
 			}
 		}
 	}
-	
+
 	switch(program)
 	{
 		case 1:
+			printHelp();
+		break;
+		case 2:
 			vxGridUnitTest::testGrid();
 		break;
 		default:
@@ -113,7 +144,7 @@ int main(int argc, char *argv[])
 		break;
 	}
 
-	return 1;
+	return 0;
 }
 
 
