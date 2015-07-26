@@ -49,7 +49,7 @@ vxGrid::~vxGrid()
 
 void vxGrid::updateBB()
 {
-	m_boundingBox->set(m_position, m_size+.5);
+	m_boundingBox->set(m_position, m_size+.005);
 	//TODO:missing
 }
 
