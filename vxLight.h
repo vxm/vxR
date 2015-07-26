@@ -132,6 +132,17 @@ public:
 	vxColor acummulationLight(const vxCollision &collision) const override;
 };
 
+class vxAmbientLight:public vxLight
+{
+public:
+	vxAmbientLight();
+	vxAmbientLight(double intensity, const vxColor &color);
+	
+	// vxLight interface
+	public:
+	vxVector3d getLightRay(const vxVector3d &position) const override;
+	vxColor acummulationLight(const vxCollision &collision) const override;
+};
  
 }
 #endif 

@@ -39,16 +39,14 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 
 	//Environment tint.
-	auto envLight = createDirectLight();
-	envLight->setOrientation(vxVector3d(-PX,-(PY/2.2),-(PZ/2.2)).inverted().unit());
-	envLight->setSamples(nLightSamples);
-	envLight->setRadius(0.97);
-	envLight->setIntensity(2.0);
+	auto envLight = createAmbientLight();
+	envLight->setIntensity(0.4);
+	envLight->setColor(vxColor::white);
 
 	createCamera(vxMatrix{});
 	createGrid();
 	
-	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/3.0);
+	m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0);
 	m_grids[0]->createEdges();
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
@@ -110,6 +108,15 @@ std::shared_ptr<vxDirectLight> vxScene::createDirectLight()
 	m_lights.push_back(dl1);
 	dl1->setScene(shared_from_this());
 	return dl1;
+}
+
+std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
+{
+	auto al1 = std::make_shared<vxAmbientLight>(1.0, vxColor::white);
+	m_ambientLights.push_back(al1);
+	m_lights.push_back(al1);
+	al1->setScene(shared_from_this());
+	return al1;
 }
 
 std::shared_ptr<vxGrid> vxScene::createGrid()
