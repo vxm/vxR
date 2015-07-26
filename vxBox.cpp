@@ -45,6 +45,7 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 	if( std::islessequal(hitX.z(),max.z()) && std::isgreaterequal(hitX.z(),min.z())
 			&& std::islessequal(hitX.y(),max.y()) && std::isgreaterequal(hitX.y(),min.y()))
 	{
+		collide.setColor(vxColor::red.dimm(5));
 		collide.setValid(true);
 		collide.setNormal(bMax ? vxVector3d::constX : vxVector3d::constMinusX);
 		collide.setPosition(hitX);
@@ -54,24 +55,26 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 	}
 	
 	bMax = std::signbit(max.z());
-    const auto&& hitZ = MathUtils::rectAndZPlane(ray.direction(), bMax ? max.z() : min.z());
-    if( std::islessequal(hitZ.x(),max.x()) && std::isgreaterequal(hitZ.x(),min.x())
-		    && std::islessequal(hitZ.y(),max.y()) && std::isgreaterequal(hitZ.y(),min.y()))
-    {
-	    collide.setValid(true);
-	    collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
-	    collide.setPosition(hitZ);
-	    collide.setUV(vxVector2d{(mSize + hitZ.x() - p.x())/size,
-							     (mSize + hitZ.y() - p.y())/size});
-	    return 1;
-    }
-    
+	const auto&& hitZ = MathUtils::rectAndZPlane(ray.direction(), bMax ? max.z() : min.z());
+	if( std::islessequal(hitZ.x(),max.x()) && std::isgreaterequal(hitZ.x(),min.x())
+			&& std::islessequal(hitZ.y(),max.y()) && std::isgreaterequal(hitZ.y(),min.y()))
+	{
+		collide.setColor(vxColor::green.dimm(5));
+		collide.setValid(true);
+		collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
+		collide.setPosition(hitZ);
+		collide.setUV(vxVector2d{(mSize + hitZ.x() - p.x())/size,
+								 (mSize + hitZ.y() - p.y())/size});
+		return 1;
+	}
+	
 	
 	bMax = std::signbit(max.y());
 	const auto&& hitY = MathUtils::rectAndYPlane(ray.direction(), bMax ? max.y() : min.y());
 	if( std::islessequal(hitY.x(),max.x()) && std::isgreaterequal(hitY.x(),min.x())
 			&&	std::islessequal(hitY.z(),max.z()) && std::isgreaterequal(hitY.z(),min.z()))
 	{
+		collide.setColor(vxColor::blue.dimm(5));
 		collide.setValid(true);
 		collide.setNormal(bMax ? vxVector3d::constY : vxVector3d::constMinusY);
 		collide.setPosition(hitY);
