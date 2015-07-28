@@ -395,26 +395,27 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt) const
 
 vxVector3d vxGrid::nextVoxel(const vxRay &ray, vxVector3d &exactCollision)
 {
-	const auto&& modPos = ray.origin();
-	const auto&& minX = floor(modPos[0]);
-	const auto&& minY = floor(modPos[1]);
-	const auto&& minZ = floor(modPos[2]);
+	const auto& modPos = ray.origin();
+	
+	const auto& minX = floor(modPos[0]);
+	const auto& minY = floor(modPos[1]);
+	const auto& minZ = floor(modPos[2]);
 
-	const auto&& directionX = ray.direction().x();
-	const auto&& directionY = ray.direction().y();
-	const auto&& directionZ = ray.direction().z();
+	const auto& directionX = ray.direction().x();
+	const auto& directionY = ray.direction().y();
+	const auto& directionZ = ray.direction().z();
 
-	const auto&& xSigned = std::signbit(directionX);
-	const auto&& ySigned = std::signbit(directionY);
-	const auto&& zSigned = std::signbit(directionZ);
+	const auto& xSigned = std::signbit(directionX);
+	const auto& ySigned = std::signbit(directionY);
+	const auto& zSigned = std::signbit(directionZ);
 
-	const auto&& maxX = xSigned ? minX : minX+1.0;
-	const auto&& maxY = ySigned ? minY : minY+1.0;
-	const auto&& maxZ = zSigned ? minZ : minZ+1.0;
+	const auto& maxX = xSigned ? minX : minX+1.0;
+	const auto& maxY = ySigned ? minY : minY+1.0;
+	const auto& maxZ = zSigned ? minZ : minZ+1.0;
 
-	const auto&& xCollision = MathUtils::rectAndXPlane(ray.direction(), maxX);
-	const auto&& yCollision = MathUtils::rectAndYPlane(ray.direction(), maxY);
-	const auto&& zCollision = MathUtils::rectAndZPlane(ray.direction(), maxZ);
+	const auto& xCollision = MathUtils::rectAndXPlane(ray.direction(), maxX);
+	const auto& yCollision = MathUtils::rectAndYPlane(ray.direction(), maxY);
+	const auto& zCollision = MathUtils::rectAndZPlane(ray.direction(), maxZ);
 
 	if( MathUtils::inRange(xCollision.z(), minZ, maxZ)
 		&& MathUtils::inRange(xCollision.y(), minY, maxY))
