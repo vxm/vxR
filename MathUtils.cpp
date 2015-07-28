@@ -113,6 +113,16 @@ vxVector3d MathUtils::rayAndXPlane(const vxRay &ray, double x)
 	return rectAndXPlane(ray.direction(),x-ray.origin().x())+ray.origin();
 }
 
+vxVector3d MathUtils::rayAndYPlane(const vxRay &ray, double y)
+{
+	return rectAndYPlane(ray.direction(),y-ray.origin().y())+ray.origin();
+}
+
+vxVector3d MathUtils::rayAndZPlane(const vxRay &ray, double z)
+{
+	return rectAndZPlane(ray.direction(),z-ray.origin().z())+ray.origin();
+}
+						
 double MathUtils::getRand(double range = 1.0)
 {
 	return range*(rand()/(double)RAND_MAX);
