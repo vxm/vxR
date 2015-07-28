@@ -86,7 +86,6 @@ int executeRenderProcess(int argc, char *argv[])
 	return 0;
 }
 
-<<<<<<< HEAD
 int printHelp()
 {
 	//!TODO: this help could be written in external file
@@ -107,11 +106,6 @@ int main(int argc, char *argv[])
 	// Depending on arguments the execution will be different.
 	// Here we extract the elements on the input argument array
 	// and record the behaviour for the program.
-=======
-int main(int argc, char *argv[])
-{
-	unsigned int program{0};
->>>>>>> vxRework_gridGetNearCollision
 	if(argc>1)
 	{
 		std::cout << "Extra arguments detected " << std::endl;
@@ -119,7 +113,6 @@ int main(int argc, char *argv[])
 		for(int i=1; i<argc; i++)
 		{
 			std::cout << "\t arc   " << argv[i] << std::endl;
-<<<<<<< HEAD
 			if(memcmp(argv[i],"-allTests", 9)==0
 				|| memcmp(argv[i],"-at", 3)==0)
 			{
@@ -135,16 +128,11 @@ int main(int argc, char *argv[])
 			// If there are more arguments and are not recognized
 			// printing help should be executed.
 			if(program==0)
-=======
-			if(memcmp(argv[i],"-allTests", 9)
-				|| memcmp(argv[i],"-at", 3))
->>>>>>> vxRework_gridGetNearCollision
 			{
 				program = 1;
 			}
 		}
 	}
-<<<<<<< HEAD
 
 	switch(program)
 	{
@@ -153,25 +141,13 @@ int main(int argc, char *argv[])
 		break;
 		case 2:
 			vxGridUnitTest::testGrid();
-=======
-	
-	switch(program)
-	{
-		case 1:
-			vxGridUnitTest::testGrid();
 			MathUtilsUnitTest::testMathUtils();
->>>>>>> vxRework_gridGetNearCollision
 		break;
 		default:
 			executeRenderProcess(argc, argv);
 		break;
 	}
-
-<<<<<<< HEAD
-	return 0;
-=======
 	return 1;
->>>>>>> vxRework_gridGetNearCollision
 }
 
 
