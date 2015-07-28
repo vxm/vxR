@@ -395,36 +395,36 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt) const
 
 vxVector3d vxGrid::nextVoxel(const vxRay &ray, vxVector3d &exactCollision)
 {
-	const auto& modPos = ray.origin();
+	const auto&& modPos = ray.origin();
 
-	const auto& minX = floor(modPos[0]);
-	const auto& minY = floor(modPos[1]);
-	const auto& minZ = floor(modPos[2]);
+	const auto&& minX = floor(modPos[0]);
+	const auto&& minY = floor(modPos[1]);
+	const auto&& minZ = floor(modPos[2]);
 
-	const auto& directionX = ray.direction().x();
-	const auto& directionY = ray.direction().y();
-	const auto& directionZ = ray.direction().z();
+	const auto&& directionX = ray.direction().x();
+	const auto&& directionY = ray.direction().y();
+	const auto&& directionZ = ray.direction().z();
 
-	const auto& xSigned = std::signbit(directionX);
-	const auto& ySigned = std::signbit(directionY);
-	const auto& zSigned = std::signbit(directionZ);
+	const auto&& xSigned = std::signbit(directionX);
+	const auto&& ySigned = std::signbit(directionY);
+	const auto&& zSigned = std::signbit(directionZ);
 
-	const auto& maxX = xSigned ? minX : minX+1.0;
-	const auto& maxY = ySigned ? minY : minY+1.0;
-	const auto& maxZ = zSigned ? minZ : minZ+1.0;
+	const auto&& maxX = xSigned ? minX : minX+1.0;
+	const auto&& maxY = ySigned ? minY : minY+1.0;
+	const auto&& maxZ = zSigned ? minZ : minZ+1.0;
 
-	const auto& xCollision = MathUtils::rayAndXPlane(ray, maxX);
-	const auto& yCollision = MathUtils::rayAndYPlane(ray, maxY);
-	const auto& zCollision = MathUtils::rayAndZPlane(ray, maxZ);
+	const auto&& xCollision = MathUtils::rayAndXPlane(ray, maxX);
+	const auto&& yCollision = MathUtils::rayAndYPlane(ray, maxY);
+	const auto&& zCollision = MathUtils::rayAndZPlane(ray, maxZ);
 
-	if( MathUtils::inRange(xCollision.z(), minZ, maxZ)
-		&& MathUtils::inRange(xCollision.y(), minY, maxY))
+	if( MathUtils::inRange(xCollision.z(), minZ, minZ+1.0)
+		&& MathUtils::inRange(xCollision.y(), minY, minY+1.0))
 	{
 		exactCollision = xCollision;
 		return xCollision.floorVector()+vxVector3d(xSigned ? -.5 : .5, .5,.5);
 	}
 
-	if( MathUtils::inRange( yCollision.z(), minZ, maxZ))
+	if( MathUtils::inRange( yCollision.z(), minZ, minZ+1.0))
 	{
 		exactCollision = yCollision;
 		return yCollision.floorVector()+vxVector3d(.5,ySigned ? -.5 : .5,.5);
@@ -442,7 +442,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		return 0;
 	}
 	
-	vxRay r{collide.position(), ray.direction()/100000.0};
+	vxRay r{collide.position(), ray.direction()/10000.0};
 	bool found = false;
 	vxVector3d vx{r.origin()};
 	vxVector3d exactIntersection;
@@ -451,11 +451,11 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		vx = vxGrid::nextVoxel(r, exactIntersection);
 		if(active(vx))
 		{
-			collide.setColor(vxColor::blue.dimm(10));
+			collide.setColor(vxColor::orange.dimm(5));
 			found = true;
 			break;
 		}
-		r.setOrigin(exactIntersection + r.direction()/100000.0);
+		r.setOrigin(exactIntersection + r.direction()/10000.0);
 	}
 	while(inGrid(vx));
 
