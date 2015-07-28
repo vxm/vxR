@@ -36,7 +36,7 @@ int vxGridUnitTest::testFunction_nextVoxel()
 		const auto direction{vxVector3d(0.0, 0.0, -1.0)};
 		auto nv = testNextVoxel(origin, direction);
 
-		auto f = [nv]{return nv == vxVector3d(.5, -0.5, 0.5);};
+		auto f = [nv]{return nv == vxVector3d(4.5, 4.5, 3.5);};
 		st.examine(f, "mid voxel, Y-"s);
 	}
 
