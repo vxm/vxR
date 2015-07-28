@@ -28,14 +28,18 @@ class MathUtils
 	static vxVector3d cartesianToNormal(const vxVector2d& coords);
 
 	//Intersections
-	static vxVector3d rectAndPlane(const vxVector3d&& ray, const vxPlane &plane);
-	static vxVector3d rectAndXPlane(const vxVector3d&& ray, double x);
-	static vxVector3d rectAndYPlane(const vxVector3d&& ray, double y);
-	static double x_forRectAndYPlane(const vxVector3d&& ray, double y);
-	static double z_forRectAndYPlane(const vxVector3d&& ray, double y);
+	static vxVector3d rectAndPlane(const vxVector3d& ray, const vxPlane &plane);
+	static vxVector3d rectAndXPlane(const vxVector3d& ray, double x);
+	static vxVector3d rectAndYPlane(const vxVector3d& ray, double y);
+	static vxVector3d rectAndZPlane(const vxVector3d& ray, double z);
+	static double x_forRectAndYPlane(const vxVector3d& ray, double y);
+	static double z_forRectAndYPlane(const vxVector3d& ray, double y);
 
-	static vxVector3d rectAndZPlane(const vxVector3d&& ray, double z);
-
+	static vxVector3d rayAndXPlane(const vxRay& ray, double x);
+	static vxVector3d rayAndYPlane(const vxRay& ray, double y);
+	static vxVector3d rayAndZPlane(const vxRay& ray, double z);
+	
+	
 	//Random
 	static double getRand(double range);
 	static double getBoolRand();

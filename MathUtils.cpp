@@ -48,7 +48,7 @@ vxVector3d MathUtils::cartesianToNormal(const vxVector2d& coords)
 	return vxVector3d{x,y,z}.unit();
 }
 
-vxVector3d MathUtils::rectAndPlane(const vxVector3d&& ray, const vxPlane &plane)
+vxVector3d MathUtils::rectAndPlane(const vxVector3d& ray, const vxPlane &plane)
 {
 	switch(plane.m_type)
 	{
@@ -67,7 +67,7 @@ vxVector3d MathUtils::rectAndPlane(const vxVector3d&& ray, const vxPlane &plane)
 }
 
 
-vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
+vxVector3d MathUtils::rectAndXPlane(const vxVector3d& ray, double x)
 {
 	// parametric ecuation of the linconst vxVector3d &&ray, - ray.x()) / -ray.x();
 	auto t = (x - ray.x()) / (-ray.x());
@@ -77,7 +77,7 @@ vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
 	return vxVector3d{x,y,z};
 }
 
-vxVector3d MathUtils::rectAndYPlane(const vxVector3d&& ray, double y)
+vxVector3d MathUtils::rectAndYPlane(const vxVector3d& ray, double y)
 {
 	// parametric ecuation of the line solved.
 	auto t = (y - ray.y()) / (-ray.y());
@@ -87,17 +87,18 @@ vxVector3d MathUtils::rectAndYPlane(const vxVector3d&& ray, double y)
 	return vxVector3d{x,y,z};
 }
 
-double MathUtils::x_forRectAndYPlane(const vxVector3d&& ray, double y)
+double MathUtils::x_forRectAndYPlane(const vxVector3d& ray, double y)
 {
 	return (y - ray.y()) / (-ray.y()) * (-ray.x()) + ray.x();
 }
 
-double MathUtils::z_forRectAndYPlane(const vxVector3d&& ray, double y)
+double MathUtils::z_forRectAndYPlane(const vxVector3d& ray, double y)
 {
 	return (y - ray.y()) / (-ray.y()) * (-ray.z()) + ray.z();
 }
 
-vxVector3d MathUtils::rectAndZPlane(const vxVector3d&& ray, double z)
+
+vxVector3d MathUtils::rectAndZPlane(const vxVector3d& ray, double z)
 {
 	// parametric ecuation of the linconst vxVector3d &&ray, - ray.z()) / -ray.z();
 	auto t = (z - ray.z()) / (-ray.z());
@@ -107,6 +108,21 @@ vxVector3d MathUtils::rectAndZPlane(const vxVector3d&& ray, double z)
 	return vxVector3d{x,y,z};
 }
 
+vxVector3d MathUtils::rayAndXPlane(const vxRay &ray, double x)
+{
+	return rectAndXPlane(ray.direction(),x-ray.origin().x())+ray.origin();
+}
+
+vxVector3d MathUtils::rayAndYPlane(const vxRay &ray, double y)
+{
+	return rectAndYPlane(ray.direction(),y-ray.origin().y())+ray.origin();
+}
+
+vxVector3d MathUtils::rayAndZPlane(const vxRay &ray, double z)
+{
+	return rectAndZPlane(ray.direction(),z-ray.origin().z())+ray.origin();
+}
+						
 double MathUtils::getRand(double range = 1.0)
 {
 	return range*(rand()/(double)RAND_MAX);

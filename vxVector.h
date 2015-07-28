@@ -164,7 +164,6 @@ public:
 	vxVector3d floorVector() const;
 	vxVector3d ceilVector() const;
 	//TODO:fix clash with math ceil
-//	vxVector3d ceil() const;
 	vxVector3d unit() const;
 	void setUnit();
 	vxVector3d operator+(const vxVector3d &entrada) const;
@@ -190,6 +189,13 @@ public:
 	vxVector3d operator/(int factor) const;
 	vxVector3d operator^(const vxVector3d &b) const;
 
+	// comparision
+	bool operator==(const vxVector3d &other) const;
+	bool operator!=(const vxVector3d &other) const;
+	bool operator>(const vxVector3d &other) const;
+	bool operator<(const vxVector3d &other) const;
+
+	
 	double angle(const vxVector3d &b) const;
 	double angleXY(const vxVector3d &other) const;
 	double angleYZ(const vxVector3d &other) const;

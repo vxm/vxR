@@ -1,3 +1,4 @@
+#include <cmath>
 #include "vxVector.h"
 
 using namespace vxCore;
@@ -257,11 +258,20 @@ void vxVector3d::get(double &x, double &y, double &z) const
 	z=m_z;
 }
 
-double vxVector3d::x() const {return m_x;}
+double vxVector3d::x() const 
+{
+	return m_x;
+}
 
-double vxVector3d::y() const {return m_y;}
+double vxVector3d::y() const 
+{
+	return m_y;
+}
 
-double vxVector3d::z() const {return m_z;}
+double vxVector3d::z() const 
+{
+	return m_z;
+}
 
 double vxVector3d::operator[](const unsigned int idx) const
 {
@@ -310,17 +320,6 @@ vxVector3d::axis vxVector3d::mainAxis() const
 		return axis::kY;
 	
 	return axis::kZ;
-
-//	if(fabs(m_x)>fabs(m_y) && fabs(m_x)>fabs(m_z))
-//	{
-//		return axis::kX;
-//	}
-//	if(fabs(m_y)>fabs(m_z))
-//	{
-//		return axis::kY;
-//	}
-//	else
-//		return axis::kZ;
 }
 
 double vxVector3d::length() const
@@ -328,7 +327,6 @@ double vxVector3d::length() const
 	return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);
 }
 
-#include <cmath>
 
 
 vxVector3d vxVector3d::aaVector() const
@@ -349,10 +347,11 @@ vxVector3d vxVector3d::floorVector() const
 	return vxVector3d(floor(m_x),floor(m_y),floor(m_z));
 }
 
-//vxVector3d vxVector3d::ceil() const
-//{
-//	return vxVector3d(ceil(m_x),ceil(m_y),ceil(m_z));
-//}
+
+vxVector3d vxVector3d::ceilVector() const
+{
+	return vxVector3d(ceil(m_x),ceil(m_y),ceil(m_z));
+}
 
 vxVector3d vxVector3d::unit() const
 {
@@ -369,51 +368,117 @@ void vxVector3d::setUnit()
 }
 
 vxVector3d vxVector3d::operator+(int factor) const
-{return vxVector3d(factor+m_x,factor+m_y,factor+m_z);}
+{
+	return vxVector3d(factor+m_x,
+					  factor+m_y,
+					  factor+m_z);
+}
 
 vxVector3d vxVector3d::operator-=(const vxVector3d &entrada)
-{	m_x-=entrada.m_x;
+{
+	m_x-=entrada.m_x;
 	m_y-=entrada.m_y;
 	m_z-=entrada.m_z;
+
 	return *this;
 }
 
 vxVector3d vxVector3d::operator-(int factor) const 
-{return vxVector3d(m_x-factor,m_y-factor,m_z-factor);}
+{
+	return vxVector3d(m_x-factor,
+					  m_y-factor,
+					  m_z-factor);
+}
 
-vxVector3d vxVector3d::operator*(float factor) const {return vxVector3d(factor*m_x,factor*m_y,factor*m_z);}
+vxVector3d vxVector3d::operator*(float factor) const 
+{
+	return vxVector3d(factor*m_x,
+					  factor*m_y,
+					  factor*m_z);
+}
 
-vxVector3d vxVector3d::operator*(int factor) const {return vxVector3d(factor*m_x,factor*m_y,factor*m_z);}
+vxVector3d vxVector3d::operator*(int factor) const 
+{
+	return vxVector3d(factor*m_x,
+					  factor*m_y,
+					  factor*m_z);
+}
 
 vxVector3d vxVector3d::operator/(int factor) const 
-{return vxVector3d(m_x/(double)factor,m_y/(double)factor,m_z/(double)factor);}
+{
+	return vxVector3d(m_x/(double)factor,
+					  m_y/(double)factor,
+					  m_z/(double)factor);
+}
 
-vxVector3d vxVector3d::operator^(const vxVector3d &b) const
+vxVector3d vxVector3d::operator^(const vxVector3d& b) const
 {return vxVector3d((m_y*b.m_z)-(m_z*b.m_y),(m_x*b.m_z)-(m_z*b.m_x),(m_x*b.m_y)-(m_y*b.m_x));}
 
-double vxVector3d::angle(const vxVector3d &b) const
+bool vxVector3d::operator==(const vxVector3d& other) const
+{
+	return m_x==other.x()
+			&& m_y==other.y()
+			&& m_z==other.z();
+}
+
+bool vxVector3d::operator!=(const vxVector3d& other) const
+{
+	return m_x!=other.x()
+			|| m_y!=other.y()
+			|| m_z!=other.z();
+}
+
+bool vxVector3d::operator>(const vxVector3d& other) const
+{
+	const auto&& a = m_x*m_x+m_y*m_y+m_z*m_z;
+	const auto&& b = other.m_x*other.m_x+other.m_y*other.m_y+other.m_z*other.m_z;
+	
+	return a>b;
+}
+
+bool vxVector3d::operator<(const vxVector3d& other) const
+{
+	const auto&& a = m_x*m_x+m_y*m_y+m_z*m_z;
+	const auto&& b = other.m_x*other.m_x+other.m_y*other.m_y+other.m_z*other.m_z;
+	
+	return a<b;
+}
+
+double vxVector3d::angle(const vxVector3d& b) const
 {
 	double an=(m_x*b.m_x+m_y*b.m_y+m_z*b.m_z)/((sqrt((m_x*m_x)+(m_y*m_y)+(m_z*m_z)))*(sqrt((b.m_x*b.m_x)+(b.m_y*b.m_y)+(b.m_z*b.m_z))));
 	return acos(an);
 }
 
-double vxVector3d::angleXY(const vxVector3d &other) const
-{return angleXY()-other.angleXY();}
+double vxVector3d::angleXY(const vxVector3d& other) const
+{
+	return angleXY()-other.angleXY();
+}
 
 double vxVector3d::angleYZ(const vxVector3d &other) const
-{return angleYZ()-other.angleYZ();}
+{
+	return angleYZ()-other.angleYZ();
+}
 
 double vxVector3d::angleZX(const vxVector3d &other) const
-{return angleZX()-other.angleZX();}
+{
+	return angleZX()-other.angleZX();
+}
 
 double vxVector3d::angleXY() const 
-{return atan2(m_y,m_x);}
+{
+	return atan2(m_y,m_x);
+}
 
 double vxVector3d::angleYZ() const 
-{return atan2(m_z,m_y);}
+{
+	return atan2(m_z,m_y);
+}
 
 double vxVector3d::angleZX() const 
-{return atan2(m_x,m_z);}
+{
+	return atan2(m_x,m_z);
+}
 
 vxVector3d vxVector3d::operator=(const vxVector3d &otro)
 {
@@ -433,7 +498,7 @@ vxVector3d vxVector3d::rotateX(double ang)
 
 vxVector3d vxVector3d::rotateY(double ang)
 {
-	auto angk = ang + angleXY();
+	const auto&& angk = ang + angleXY();
 	return vxVector3d(m_z, cos(angk), sin(angk));
 }
 

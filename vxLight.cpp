@@ -224,7 +224,7 @@ vxColor vxDirectLight::acummulationLight(const vxCollision &collision) const
 										 collision.normal(), 
 										cPnt + m_orientation.inverted());
 
-	const vxRay f(cPnt, m_orientation.inverted());
+	const vxRay f(cPnt, m_orientation);
 	return scn->hasCollision(f) ? vxColor::black : color().gained(lumm);
 }
 
@@ -273,6 +273,26 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 	}
 
 	return acumColor;
+}
+
+vxAmbientLight::vxAmbientLight()
+{
+	
+}
+
+vxAmbientLight::vxAmbientLight(double intensity, const vxColor &color)
+	:vxLight(intensity, color)
+{
+}
+
+vxVector3d vxAmbientLight::getLightRay(const vxVector3d &position) const
+{
+	return position.inverted();
+}
+
+vxColor vxAmbientLight::acummulationLight(const vxCollision &collision) const
+{
+	return m_color*m_intensity;
 }
 
 

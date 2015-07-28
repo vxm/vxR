@@ -24,6 +24,7 @@ class vxLight;
 class vxIBLight;
 class vxPointLight;
 class vxDirectLight;
+class vxAmbientLight;
 
 class vxScene: public std::enable_shared_from_this<vxScene>
 {
@@ -35,6 +36,8 @@ protected:
 	std::vector<std::shared_ptr<vxIBLight>> m_IBLights;
 	std::vector<std::shared_ptr<vxPointLight>> m_pointLights;
 	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
+	std::vector<std::shared_ptr<vxAmbientLight>> m_ambientLights;
+
 	std::vector<std::shared_ptr<vxLight>> m_lights;
 
 	std::shared_ptr<vxShader> m_shader = {nullptr};
@@ -89,6 +92,7 @@ public:
 	std::shared_ptr<vxPointLight> createPointLight();
 	std::shared_ptr<vxDirectLight> createDirectLight();
 	std::shared_ptr<vxIBLight> createIBLight(const std::__cxx11::string path);
+	std::shared_ptr<vxAmbientLight> createAmbientLight();
 };
 
 }

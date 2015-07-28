@@ -95,7 +95,7 @@ public:
 	
 // OPERATION WITH GRID
 	
-	static vxVector3d nextVoxel(const vxRay &ray);
+	static vxVector3d nextVoxel(const vxRay &ray, vxVector3d &exactCollision);
 	//sets every single vxl to 0.
 	void initialize(bool value = false);
 	//returns number of active voxels

@@ -1,5 +1,6 @@
 #ifndef VXGRIDUNITTEST_H
 #define VXGRIDUNITTEST_H
+#include <string>
 
 #include "vxUnitTest.h"
 #include "vxGrid.h"
@@ -10,12 +11,13 @@
 namespace vxCore {
 
 
+
 class vxGridUnitTest : public vxUnitTest
 {
 public:
 	vxGridUnitTest();
-	static int testNextVoxel(vxVector3d org, vxVector3d dir);
-	static int testFunction_nextVoxel();
+	vxVector3d testNextVoxel(vxVector3d org, vxVector3d dir);
+	int testFunction_nextVoxel();
 	static int testGrid();
 };
 

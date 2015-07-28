@@ -8,15 +8,12 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 350
+#define RESL 20
 #define PX resl * 2 
 #define PY resl * 0
 #define PZ resl * 2
 
 
-//plyReader->processPLYFile("../vxR/juan_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
 ///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
 ///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
 ///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
@@ -32,8 +29,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples{25};
-	const double sunIntensity{0.4};
+	int nLightSamples{5};
+	const double sunIntensity{0.5};
 	const auto sunCoords = vxVector2d{-0.222000, -0.124000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
 
@@ -62,22 +59,24 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
+	//plyReader->processPLYFile("../vxR/juan_0.ply");
+	plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
+	//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
 	loadFromFile(plyReader);
 	
-//	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
-//	auto iRadius = 4.0;
-//	auto distSph = (resl/3.0);
-//	//m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-//	//m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-//	//m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-//	//m_grids[0]->createEdges(); // of the grid
+	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
+	auto iRadius = 4.0;
+	auto distSph = (resl/3.0);
+	//m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	//m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	//m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	//m_grids[0]->createEdges(); // of the grid
 	m_grids[0]->createGround();
 
 	auto na = m_grids[0]->numActiveVoxels();
@@ -140,6 +139,15 @@ std::shared_ptr<vxDirectLight> vxScene::createDirectLight()
 	m_lights.push_back(dl1);
 	dl1->setScene(shared_from_this());
 	return dl1;
+}
+
+std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
+{
+	auto al1 = std::make_shared<vxAmbientLight>(1.0, vxColor::white);
+	m_ambientLights.push_back(al1);
+	m_lights.push_back(al1);
+	al1->setScene(shared_from_this());
+	return al1;
 }
 
 std::shared_ptr<vxGrid> vxScene::createGrid()
