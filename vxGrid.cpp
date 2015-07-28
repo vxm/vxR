@@ -396,7 +396,7 @@ inline bool vxGrid::inGrid(const vxVector3d &pnt) const
 vxVector3d vxGrid::nextVoxel(const vxRay &ray, vxVector3d &exactCollision)
 {
 	const auto& modPos = ray.origin();
-	
+
 	const auto& minX = floor(modPos[0]);
 	const auto& minY = floor(modPos[1]);
 	const auto& minZ = floor(modPos[2]);
@@ -413,9 +413,9 @@ vxVector3d vxGrid::nextVoxel(const vxRay &ray, vxVector3d &exactCollision)
 	const auto& maxY = ySigned ? minY : minY+1.0;
 	const auto& maxZ = zSigned ? minZ : minZ+1.0;
 
-	const auto& xCollision = MathUtils::rectAndXPlane(ray.direction(), maxX);
-	const auto& yCollision = MathUtils::rectAndYPlane(ray.direction(), maxY);
-	const auto& zCollision = MathUtils::rectAndZPlane(ray.direction(), maxZ);
+	const auto& xCollision = MathUtils::rayAndXPlane(ray, maxX);
+	const auto& yCollision = MathUtils::rayAndYPlane(ray, maxY);
+	const auto& zCollision = MathUtils::rayAndZPlane(ray, maxZ);
 
 	if( MathUtils::inRange(xCollision.z(), minZ, maxZ)
 		&& MathUtils::inRange(xCollision.y(), minY, maxY))
