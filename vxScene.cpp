@@ -61,7 +61,7 @@ vxScene::createCamera(const vxMatrix &,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set( vxVector3d::zero,
 					vxVector3d::constZ,
-					2.8,
+					2.1,
 					hAperture,
 					vAperture);
 
@@ -160,7 +160,7 @@ int vxScene::throwRay(const vxRay &ray,
 	if(m_grids[0]->throwRay(ray, collide))
 	{
 		vxColor col(defaultShader()->getColor(collide));
-		collide.setColor( col );
+		collide.setColor( collide.color()+col );
 		return 1;
 	}
 

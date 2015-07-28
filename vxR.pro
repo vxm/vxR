@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     sseUtils.cpp \
     vxRay.cpp \
     vxUnitTest.cpp \
-    vxGridUnitTest.cpp
+    vxGridUnitTest.cpp \
+    MathUtilsUnitTest.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -106,7 +107,8 @@ HEADERS  += \
     sseUtils.h \
     vxRay.h \
     vxUnitTest.h \
-    vxGridUnitTest.h
+    vxGridUnitTest.h \
+    MathUtilsUnitTest.h
 
 FORMS    += vxrendermain.ui
 
