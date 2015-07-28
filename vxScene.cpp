@@ -8,10 +8,10 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 10
-#define PX resl * 2 
+#define RESL 400
+#define PX -resl * 2 
 #define PY resl * 0
-#define PZ resl * 2
+#define PZ -resl * 2
 
 ///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
 ///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
