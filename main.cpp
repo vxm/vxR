@@ -10,6 +10,7 @@
 #include "renderPresset.h"
 #include "TimeUtils.h"
 #include "MathUtils.h"
+#include "MathUtilsUnitTest.h"
 #include "vxVector.h"
 #include "vxGrid.h"
 #include "vxGridUnitTest.h"
