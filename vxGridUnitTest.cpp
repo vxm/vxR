@@ -31,8 +31,26 @@ int vxGridUnitTest::testFunction_nextVoxel()
 	std::cout << "Init grid:: nextVoxel tests" << std::endl;	
 	vxStatus st;
 
-	const auto origin{vxVector3d(4.5, 4.5, 4.5)};
 	{// 
+		const auto origin{vxVector3d(1.2, -1.5, -1.95)};
+		const auto direction{vxVector3d(0.1, -0.1, -0.1)};
+		auto nv = testNextVoxel(origin, direction);
+
+		auto f = [nv]{return nv == vxVector3d(0.57735, -0.57735, -0.57735);};
+		st.examine(f, "mid voxel, Y-"s);
+	}
+
+	{// 
+		const auto origin{vxVector3d(1.1, 0.5, -1.95)};
+		const auto direction{vxVector3d(0.1, -0.4, -1.0)};
+		auto nv = testNextVoxel(origin, direction);
+
+		auto f = [nv]{return nv == vxVector3d(4.5, 4.5, 3.5);};
+		st.examine(f, "mid voxel, Y-"s);
+	}
+	
+	{// 
+		const auto origin{vxVector3d(4.5, 4.5, 4.5)};
 		const auto direction{vxVector3d(0.0, 0.0, -1.0)};
 		auto nv = testNextVoxel(origin, direction);
 
