@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	{
 		std::cout << "Extra arguments detected " << std::endl;
 		
-		for(int i=0; i<argc; i++)
+		for(int i=1; i<argc; i++)
 		{
 			std::cout << "\t arc   " << argv[i] << std::endl;
 			if(memcmp(argv[i],"-allTests", 9)
@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
 	{
 		case 1:
 			vxGridUnitTest::testGrid();
+			MathUtilsUnitTest::testMathUtils();
 		break;
 		default:
 			executeRenderProcess(argc, argv);
