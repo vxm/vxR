@@ -8,14 +8,15 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 20
+#define RESL 390
 #define PX resl * 2 
 #define PY resl * 0
-#define PZ resl * 2
+#define PZ -resl * 2
 
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
 //plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
+//plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
 //plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
 ///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
 ///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
@@ -32,9 +33,9 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples{25};
-	const double sunIntensity{0.4};
-	const auto sunCoords = vxVector2d{-0.222000, -0.124000};
+	int nLightSamples{45};
+	const double sunIntensity{0.55};
+	const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
 
 	m_shader = std::make_shared<vxLambert>();
@@ -48,12 +49,12 @@ void vxScene::build()
 	//Environment tint.
 	auto envLight = createIBLight(m_environment.path());
 	envLight->setSamples(nLightSamples);
-	envLight->setRadius(0.97);
+	envLight->setRadius(0.997);
 	envLight->setIntensity(2.0);
 
 	//This simulates the sun.
 	auto sunLight = createDirectLight();
-	const auto&& sunOrientation = MathUtils::cartesianToNormal(sunCoords);
+	const auto&& sunOrientation = vxVector3d(3,-10,2).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
 	sunLight->setOrientation(sunOrientation);
 	sunLight->setIntensity(sunIntensity);
 	sunLight->setColor(sunColor);
@@ -62,21 +63,22 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
+	plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
 	loadFromFile(plyReader);
 	
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
-	auto iRadius = 4.0;
+	auto iRadius = 6.0;
 	auto distSph = (resl/3.0);
+	
 	//m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
+	//m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/(iRadius*3))); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	//m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	//m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	//m_grids[0]->createEdges(); // of the grid
 	m_grids[0]->createGround();
 
@@ -182,7 +184,7 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	m_grids[0]->addVertices(vts,
 							vxVector3d{PX,PY-(resl/2),PZ},
 //							vxVector3d{resl, resl, resl});
-							vxVector3d{resl/1.2, resl/1.2, resl/1.2});
+							vxVector3d{resl/2.2, resl/2.2, resl/2.2});
 	return true;
 }
 

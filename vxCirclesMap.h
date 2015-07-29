@@ -14,7 +14,7 @@ class vxCirclesMap : public vxMap2d
 	public:
 		virtual vxColor compute(const vxCollision &collision) const;
 
-	double m_radius[5] = {0.1, 0.2, 0.3, 0.4, 0.5};
+	double m_radius[5] = {0.05, 0.08, 0.1, 0.15, 0.5};
 		
 	bool m_circle1 {true};
 	bool m_circle2 {true};
