@@ -32,8 +32,8 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
 
-	const vxVector3d&& ip = instance.position();
-	const vxVector3d&& p = ip - ray.origin();
+	const auto&& ip = instance.position();
+	const auto&& p = ip - ray.origin();
 	const double&& size = instance.size();
 	const double&& mSize = size/2.0;
 	
@@ -41,7 +41,7 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 	const auto&& max = p + mSize;
 	
 	bool bMax = std::signbit(max.x());
-	const auto&& hitX = MathUtils::rectAndXPlane(ray.direction(), bMax ? max.x() : min.x());
+	const auto&& hitX = MathUtils::rayAndXPlane(ray, bMax ? max.x() : min.x());
 	if( std::islessequal(hitX.z(),max.z()) && std::isgreaterequal(hitX.z(),min.z())
 			&& std::islessequal(hitX.y(),max.y()) && std::isgreaterequal(hitX.y(),min.y()))
 	{
@@ -54,7 +54,7 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 	}
 	
 	bMax = std::signbit(max.z());
-    const auto&& hitZ = MathUtils::rectAndZPlane(ray.direction(), bMax ? max.z() : min.z());
+    const auto&& hitZ = MathUtils::rayAndZPlane(ray, bMax ? max.z() : min.z());
     if( std::islessequal(hitZ.x(),max.x()) && std::isgreaterequal(hitZ.x(),min.x())
 		    && std::islessequal(hitZ.y(),max.y()) && std::isgreaterequal(hitZ.y(),min.y()))
     {
@@ -68,7 +68,7 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
     
 	
 	bMax = std::signbit(max.y());
-	const auto&& hitY = MathUtils::rectAndYPlane(ray.direction(), bMax ? max.y() : min.y());
+	const auto&& hitY = MathUtils::rayAndYPlane(ray, bMax ? max.y() : min.y());
 	if( std::islessequal(hitY.x(),max.x()) && std::isgreaterequal(hitY.x(),min.x())
 			&&	std::islessequal(hitY.z(),max.z()) && std::isgreaterequal(hitY.z(),min.z()))
 	{
@@ -79,7 +79,6 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 								 (mSize + hitY.z() - p.z())/size});
 		return 1;
 	}
-
 	
 	return 0;
 }
