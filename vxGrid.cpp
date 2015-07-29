@@ -442,7 +442,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		return 0;
 	}
 	
-	vxRay r{collide.position(), ray.direction()/10000.0};
+	vxRay r{collide.position()+ray.origin(), ray.direction()/10000.0};
 	bool found = false;
 	vxVector3d vx{r.origin()};
 	vxVector3d exactIntersection;
