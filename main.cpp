@@ -31,7 +31,7 @@ int executeRenderProcess(int argc, char *argv[])
 	//w.show();
 	
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(470,470);
+	auto imgDesc = std::make_shared<ImageProperties>(870,870);
 	
 	// create the render process
 	render rp(imgDesc);

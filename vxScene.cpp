@@ -65,7 +65,7 @@ vxScene::createCamera(const vxMatrix &,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set( vxVector3d::zero,
 					vxVector3d::constZ,
-					2.2,
+					1.8,
 					hAperture,
 					vAperture);
 
@@ -161,37 +161,10 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 int vxScene::throwRay(const vxRay &ray,
 						vxCollision &collide) const
 {
-	if(m_grids[0]->throwRay(ray, collide))
-	{
-		vxColor col(defaultShader()->getColor(collide));
-		collide.setColor( col );
-		return 1;
-	}
-
-	//TODO:take this to a dommo object or something like..
-//	auto p = MathUtils::rectAndYPlane(ray, (-1) - RESL/2.0);
-//	if(!std::signbit(p.z()))
-//	{
-//		collide.setNormal(vxVector3d::constY);
-//		collide.setPosition(p);
-//		collide.setU(fmod(p.x(),1.0));
-//		collide.setV(fmod(p.z(),1.0));
-
-//		vxColor col(defaultShader()->getColor(collide));
-//		collide.setColor( col );
-//		collide.setValid();
-//		return 1;
-//	}
-//	else
-	{
-		const auto&& cart = MathUtils::normalToCartesian(ray.direction());
-		collide.setUV(cart);
-		auto environmentColor = m_environment.compute(collide);
-		
-		collide.setValid();
-		collide.setColor( environmentColor );
-		return 1;
-	}
+	m_grids[0]->throwRay(ray, collide);
+	vxColor col(defaultShader()->getColor(collide));
+	collide.setColor( collide.color() + col );
+	return 1;
 	
 	return 0;
 }

@@ -60,7 +60,7 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 }
 
 
-#define USE_THREADS 1
+#define USE_THREADS 0
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
