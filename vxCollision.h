@@ -37,7 +37,7 @@ public:
 	vxColor color() const;
 	void setNormal(const vxVector3d &val);
 	vxVector3d normal() const;
-	void setUV(const vxVector2d &uvVec);
+	void setUV(const vxVector2d &&uvVec);
 	void setU(double u);
 	double u() const;
 	void setV(double v);

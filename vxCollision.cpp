@@ -50,7 +50,7 @@ vxVector3d vxCollision::normal() const
 	return m_normal;
 }
 
-void vxCollision::setUV(const vxVector2d &uvVec)
+void vxCollision::setUV(const vxVector2d&& uvVec)
 {
 	m_uv = uvVec; 
 }
