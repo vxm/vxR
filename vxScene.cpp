@@ -165,8 +165,6 @@ int vxScene::throwRay(const vxRay &ray,
 	vxColor col(defaultShader()->getColor(collide));
 	collide.setColor( collide.color() + col );
 	return 1;
-	
-	return 0;
 }
 
 bool vxScene::hasCollision(const vxRay &ray)

@@ -32,53 +32,67 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
 
-	const auto&& ip = instance.position();
-	const auto&& p = ip - ray.origin();
-	const double&& size = instance.size();
-	const double&& mSize = size/2.0;
+	const auto&& instancePosition = instance.position();
+	const auto& boxPosition = instancePosition;
+	const auto&& size = instance.size();
+	const auto&& mSize = size/2.0;
 	
-	const auto&& min = p - mSize;
-	const auto&& max = p + mSize;
+	const auto&& min = boxPosition - mSize;
+	const auto&& max = boxPosition + mSize;
 	
-	bool bMax = std::signbit(max.x());
-	const auto&& hitX = MathUtils::rayAndXPlane(ray, bMax ? max.x() : min.x());
-	if( std::islessequal(hitX.z(),max.z()) && std::isgreaterequal(hitX.z(),min.z())
-			&& std::islessequal(hitX.y(),max.y()) && std::isgreaterequal(hitX.y(),min.y()))
+	bool aMax = std::signbit(ray.direction().x());
+	
+	const auto&& hitX = MathUtils::rayAndXPlane(ray, aMax ? max.x() : min.x());
+	if( std::islessequal(hitX.z(),max.z()) 
+			&& std::isgreaterequal(hitX.z(),min.z())
+			&& std::islessequal(hitX.y(),max.y()) 
+			&& std::isgreaterequal(hitX.y(),min.y()))
 	{
+		collide.setColor(vxColor::red.dimm(5));
+		
 		collide.setValid(true);
-		collide.setNormal(bMax ? vxVector3d::constX : vxVector3d::constMinusX);
+		collide.setNormal(aMax ? vxVector3d::constX : vxVector3d::constMinusX);
 		collide.setPosition(hitX);
-		collide.setUV(vxVector2d{(mSize + hitX.z() - p.z())/size,
-								 (mSize + hitX.y() - p.y())/size});
+		collide.setUV(vxVector2d{(mSize + hitX.z() - boxPosition.z())/size,
+								 (mSize + hitX.y() - boxPosition.y())/size});
 		return 1;
 	}
 	
-	bMax = std::signbit(max.z());
-    const auto&& hitZ = MathUtils::rayAndZPlane(ray, bMax ? max.z() : min.z());
-    if( std::islessequal(hitZ.x(),max.x()) && std::isgreaterequal(hitZ.x(),min.x())
-		    && std::islessequal(hitZ.y(),max.y()) && std::isgreaterequal(hitZ.y(),min.y()))
-    {
-	    collide.setValid(true);
-	    collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
-	    collide.setPosition(hitZ);
-	    collide.setUV(vxVector2d{(mSize + hitZ.x() - p.x())/size,
-							     (mSize + hitZ.y() - p.y())/size});
-	    return 1;
-    }
-    
-	
-	bMax = std::signbit(max.y());
-	const auto&& hitY = MathUtils::rayAndYPlane(ray, bMax ? max.y() : min.y());
-	if( std::islessequal(hitY.x(),max.x()) && std::isgreaterequal(hitY.x(),min.x())
-			&&	std::islessequal(hitY.z(),max.z()) && std::isgreaterequal(hitY.z(),min.z()))
+	bool bMax = std::signbit(ray.direction().z());
+	const auto&& hitZ = MathUtils::rayAndZPlane(ray, bMax ? max.z() : min.z());
+	if( std::islessequal(hitZ.x(),max.x()) 
+			&& std::isgreaterequal(hitZ.x(),min.x())
+			&& std::islessequal(hitZ.y(),max.y()) 
+			&& std::isgreaterequal(hitZ.y(),min.y()))
 	{
+	
+		collide.setColor(vxColor::blue.dimm(5));
 		collide.setValid(true);
-		collide.setNormal(bMax ? vxVector3d::constY : vxVector3d::constMinusY);
-		collide.setPosition(hitY);
-		collide.setUV(vxVector2d{(mSize + hitY.x() - p.x())/size,
-								 (mSize + hitY.z() - p.z())/size});
+		collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
+		collide.setPosition(hitZ);
+		collide.setUV(vxVector2d{(mSize + hitZ.x() - boxPosition.x())/size,
+								 (mSize + hitZ.y() - boxPosition.y())/size});
 		return 1;
 	}
+	
+	bool cMax = std::signbit(ray.direction().y());
+	const auto&& hitY = MathUtils::rayAndYPlane(ray, cMax ? max.y() : min.y());
+	if( std::islessequal(hitY.x(),max.x()) 
+			&& std::isgreaterequal(hitY.x(),min.x())
+			&& std::islessequal(hitY.z(),max.z()) 
+			&& std::isgreaterequal(hitY.z(),min.z()))
+	{
+		collide.setColor(vxColor::green.dimm(5));
+	
+		collide.setValid(true);
+		collide.setNormal(cMax ? vxVector3d::constY : vxVector3d::constMinusY);
+		collide.setPosition(hitY);
+		collide.setUV(vxVector2d{(mSize + hitY.x() - boxPosition.x())/size,
+								 (mSize + hitY.z() - boxPosition.z())/size});
+		return 1;
+	}
+
+	collide.setColor(vxColor::purple.dimm(5));
 	
 	return 0;
 }

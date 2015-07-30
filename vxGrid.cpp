@@ -446,7 +446,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	
 	collide.setColor(vxColor::green.dimm(10));
 	
-	vxRay r{collide.position()+ray.origin(), ray.direction()/10000.0};
+	vxRay r{collide.position(), ray.direction()/10000.0};
 	bool found = false;
 	vxVector3d vx{r.origin()};
 	vxVector3d exactIntersection;
@@ -464,7 +464,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	}
 	while(inGrid(vx));
 
-	collide.setPosition(found ? vx : collide.position());
+	collide.setPosition(found ? vx+ray.origin() : collide.position());
 	collide.setValid(true);
 	return (int)found;
 }
@@ -474,15 +474,16 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 { 
 #if DRAWBBOX
+	collide.setColor(vxColor::black);
 	const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
-	const auto&& instance = geometry->at(position(), size());
+	const auto&& instance = geometry->at(position()+ray.origin(), size());
 
 	return instance->throwRay( ray, collide );
 #else
 	if (getNearestCollision(ray, collide))
 	{
 		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
-		const auto&& instance = geometry->at(collide.position(), 1.0);
+		const auto&& instance = geometry->at(collide.position()-ray.origin(), 1.0);
 		return instance->throwRay( ray, collide );
 	}
 	else
