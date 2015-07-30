@@ -8,10 +8,10 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 10
+#define RESL 390
 #define PX resl * 2 
 #define PY resl * 0
-#define PZ resl * 2
+#define PZ -resl * 2
 
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
@@ -33,6 +33,11 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
+	int nLightSamples{45};
+	const double sunIntensity{0.55};
+	const auto sunCoords = vxVector2d{-13.022000, -10.1000};
+	const auto sunColor = vxColor::lookup256(255,240,241);
+
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
 	m_shader->setScene(shared_from_this());
@@ -42,14 +47,39 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 
 	//Environment tint.
-	auto ambientLight = createAmbientLight();
-	ambientLight->setIntensity(0.5);
+	auto envLight = createIBLight(m_environment.path());
+	envLight->setSamples(nLightSamples);
+	envLight->setRadius(0.997);
+	envLight->setIntensity(2.0);
 
+	//This simulates the sun.
+	auto sunLight = createDirectLight();
+	const auto&& sunOrientation = vxVector3d(3,-10,2).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
+	sunLight->setOrientation(sunOrientation);
+	sunLight->setIntensity(sunIntensity);
+	sunLight->setColor(sunColor);
+	
 	createCamera(vxMatrix{});
 	createGrid();
 	
-	m_grids[0]->createSphere(p.x(), p.y()+1, p.z(), (resl/2.5)); // Position, radius
-	m_grids[0]->createEdges(); // of the grid
+	auto plyReader = std::make_shared<vxPLYImporter>();
+	plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
+	loadFromFile(plyReader);
+	
+	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
+	auto iRadius = 6.0;
+	auto distSph = (resl/3.0);
+	
+	//m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
+	//m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/(iRadius*3))); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	//m_grids[0]->createEdges(); // of the grid
 	m_grids[0]->createGround();
 
 	auto na = m_grids[0]->numActiveVoxels();
@@ -65,7 +95,7 @@ vxScene::createCamera(const vxMatrix &,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set( vxVector3d::zero,
 					vxVector3d::constZ,
-					1.8,
+					2.8,
 					hAperture,
 					vAperture);
 
@@ -161,10 +191,38 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 int vxScene::throwRay(const vxRay &ray,
 						vxCollision &collide) const
 {
-	m_grids[0]->throwRay(ray, collide);
-	vxColor col(defaultShader()->getColor(collide));
-	collide.setColor( collide.color() + col );
-	return 1;
+	if(m_grids[0]->throwRay(ray, collide))
+	{
+		vxColor col(defaultShader()->getColor(collide));
+		collide.setColor( col );
+		return 1;
+	}
+
+	//TODO:take this to a dommo object or something like..
+//	auto p = MathUtils::rectAndYPlane(ray, (-1) - RESL/2.0);
+//	if(!std::signbit(p.z()))
+//	{
+//		collide.setNormal(vxVector3d::constY);
+//		collide.setPosition(p);
+//		collide.setU(fmod(p.x(),1.0));
+//		collide.setV(fmod(p.z(),1.0));
+
+//		vxColor col(defaultShader()->getColor(collide));
+//		collide.setColor( col );
+//		collide.setValid();
+//		return 1;
+//	}
+//	else
+	{
+		collide.setUV(MathUtils::normalToCartesian(ray.direction()));
+		auto environmentColor = m_environment.compute(collide);
+		
+		collide.setValid();
+		collide.setColor( environmentColor );
+		return 1;
+	}
+	
+	return 0;
 }
 
 bool vxScene::hasCollision(const vxRay &ray)

@@ -474,16 +474,15 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 { 
 #if DRAWBBOX
-	collide.setColor(vxColor::black);
 	const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
 	const auto&& instance = geometry->at(position()+ray.origin(), size());
 
 	return instance->throwRay( ray, collide );
 #else
 	if (getNearestCollision(ray, collide))
-	{
+	{	
 		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
-		const auto&& instance = geometry->at(collide.position()-ray.origin(), 1.0);
+		const auto&& instance = geometry->at(collide.position(), 1.0);
 		return instance->throwRay( ray, collide );
 	}
 	else
