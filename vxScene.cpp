@@ -214,8 +214,7 @@ int vxScene::throwRay(const vxRay &ray,
 //	}
 //	else
 	{
-		const auto&& cart = MathUtils::normalToCartesian(ray.direction());
-		collide.setUV(cart);
+		collide.setUV(MathUtils::normalToCartesian(ray.direction()));
 		auto environmentColor = m_environment.compute(collide);
 		
 		collide.setValid();

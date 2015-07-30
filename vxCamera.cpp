@@ -64,7 +64,8 @@ vxRay vxCamera::ray(const vxVector2d &coord, const vxSampler &sampler) const
 					+ sampler.y()/m_ry;
 
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
-	ret.direction().rotateX( 6 * (MathUtils::PI/8.0) );
+	ret.direction().rotateX( 6.05 * (MathUtils::PI/8.0) );
+	ret.setOrigin(ret.origin()+vxVector3d(0,4,0));
 	return ret;
 }
 

@@ -250,8 +250,7 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 
 		if (lumm>0.001 && !scn->hasCollision(f))
 		{
-			const auto&& cart = MathUtils::normalToCartesian(f.direction());
-			environment.setUV(cart);
+			environment.setUV(MathUtils::normalToCartesian(f.direction()));
 			auto environmentColor = m_map.compute(environment);
 			
 //			/// This emulates the sun
