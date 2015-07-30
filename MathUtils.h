@@ -1,6 +1,8 @@
 #ifndef MathUtils_H
 #define MathUtils_H
 
+#include<cmath>
+
 #include "vxVector.h"
 #include "vxRay.h"
 #include "vxPlane.h"

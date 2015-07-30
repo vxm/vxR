@@ -154,7 +154,7 @@ vxVector3d MathUtils::getSphereRand(double radius)
 						
 bool MathUtils::inRange(double r, double min, double max)
 {
-	return r>=min && r<=max;
+	return std::isgreaterequal(r,min) && std::islessequal(r,max);
 }
 
 double MathUtils::clamp(double val, double min, double max)
