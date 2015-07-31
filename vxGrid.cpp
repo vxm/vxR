@@ -443,9 +443,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		collide.setColor(vxColor::red.dimm(5));
 		return 0;
 	}
-	
-	collide.setColor(vxColor::green.dimm(10));
-	
+
 	vxRay r{collide.position(), ray.direction()/10000.0};
 	bool found = false;
 	vxVector3d vx{r.origin()};
