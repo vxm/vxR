@@ -60,7 +60,7 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 }
 
 
-#define USE_THREADS 0
+#define USE_THREADS 1
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
@@ -122,7 +122,7 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 1;
+	unsigned int nSamples = 6;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
