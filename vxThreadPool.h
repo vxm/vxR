@@ -1,9 +1,9 @@
 #ifndef VXTHREADPOOL_H
 #define VXTHREADPOOL_H
 
-#import <map>
-#import <thread>
-#import "vxColor.h"
+#include <map>
+#include <thread>
+#include "vxColor.h"
 
 namespace vxCore {
 

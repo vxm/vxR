@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 460
+#define RESL 10
 #define PX resl * 2 
 #define PY resl * 0
 #define PZ resl * 2
@@ -47,38 +47,23 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 
 	//Environment tint.
-	auto envLight = createIBLight(m_environment.path());
-	envLight->setSamples(nLightSamples);
-	envLight->setRadius(0.997);
-	envLight->setIntensity(2.0);
+	auto ambientLight = createAmbientLight();
+	ambientLight->setIntensity(0.4);
 
-	//This simulates the sun.
-	auto sunLight = createDirectLight();
-	const auto&& sunOrientation = vxVector3d(7,-10,2).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
-	sunLight->setOrientation(sunOrientation);
-	sunLight->setIntensity(sunIntensity);
-	sunLight->setColor(sunColor);
-	
 	createCamera(vxMatrix{});
 	createGrid();
-	
-	auto plyReader = std::make_shared<vxPLYImporter>();
-	//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-	plyReader->processPLYFile("/home/john/Downloads/lucyTop.ply");
-
-	loadFromFile(plyReader);
 	
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
 	auto iRadius = 10.0;
 	auto distSph = (resl/3.0);
 	
-	//m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/(7.0))); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/5.0)); // Position, radius
 	m_grids[0]->createEdges(); // of the grid
