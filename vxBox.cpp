@@ -33,12 +33,11 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
 
 	const auto&& instancePosition = instance.position();
-	const auto& boxPosition = instancePosition;
 	const auto&& size = instance.size();
 	const auto&& mSize = size/2.0;
 	
-	const auto&& min = boxPosition - mSize;
-	const auto&& max = boxPosition + mSize;
+	const auto&& min = instancePosition - mSize;
+	const auto&& max = instancePosition + mSize;
 	
 	bool aMax = std::signbit(ray.direction().x());
 	
@@ -48,13 +47,11 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			&& std::islessequal(hitX.y(),max.y()) 
 			&& std::isgreaterequal(hitX.y(),min.y()))
 	{
-		collide.setColor(vxColor::red.dimm(5));
-		
 		collide.setValid(true);
 		collide.setNormal(aMax ? vxVector3d::constX : vxVector3d::constMinusX);
 		collide.setPosition(hitX);
-		collide.setUV(vxVector2d{(mSize + hitX.z() - boxPosition.z())/size,
-								 (mSize + hitX.y() - boxPosition.y())/size});
+		collide.setUV(vxVector2d{(mSize + hitX.z() - instancePosition.z())/size,
+								 (mSize + hitX.y() - instancePosition.y())/size});
 		return 1;
 	}
 	
@@ -65,13 +62,12 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			&& std::islessequal(hitZ.y(),max.y()) 
 			&& std::isgreaterequal(hitZ.y(),min.y()))
 	{
-	
 		collide.setColor(vxColor::blue.dimm(5));
 		collide.setValid(true);
 		collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
 		collide.setPosition(hitZ);
-		collide.setUV(vxVector2d{(mSize + hitZ.x() - boxPosition.x())/size,
-								 (mSize + hitZ.y() - boxPosition.y())/size});
+		collide.setUV(vxVector2d{(mSize + hitZ.x() - instancePosition.x())/size,
+								 (mSize + hitZ.y() - instancePosition.y())/size});
 		return 1;
 	}
 	
@@ -82,18 +78,14 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			&& std::islessequal(hitY.z(),max.z()) 
 			&& std::isgreaterequal(hitY.z(),min.z()))
 	{
-		collide.setColor(vxColor::green.dimm(5));
-	
 		collide.setValid(true);
 		collide.setNormal(cMax ? vxVector3d::constY : vxVector3d::constMinusY);
 		collide.setPosition(hitY);
-		collide.setUV(vxVector2d{(mSize + hitY.x() - boxPosition.x())/size,
-								 (mSize + hitY.z() - boxPosition.z())/size});
+		collide.setUV(vxVector2d{(mSize + hitY.x() - instancePosition.x())/size,
+								 (mSize + hitY.z() - instancePosition.z())/size});
 		return 1;
 	}
-
-	collide.setColor(vxColor::purple.dimm(5));
-	
+	collide.setValid(false);
 	return 0;
 }
 

@@ -182,6 +182,7 @@ int vxScene::throwRay(const vxRay &ray,
 	{
 		vxColor col(defaultShader()->getColor(collide));
 		collide.setColor( col );
+		collide.setValid(true);
 		return 1;
 	}
 
@@ -204,7 +205,7 @@ int vxScene::throwRay(const vxRay &ray,
 		collide.setUV(MathUtils::normalToCartesian(ray.direction()));
 		auto environmentColor = m_environment.compute(collide);
 		
-		collide.setValid();
+		collide.setValid(false);
 		collide.setColor( environmentColor );
 		return 1;
 	}

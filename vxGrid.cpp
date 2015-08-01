@@ -437,14 +437,11 @@ vxVector3d vxGrid::nextVoxel(const vxRay &ray, vxVector3d &exactCollision)
 
 unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide) const
 {
-	auto newRay{ray};
-	
 	if(inGrid(ray.origin()))
 	{
 		collide.setPosition(ray.origin());
-
 	}
-	else if(!m_boundingBox->throwRay(newRay, collide))
+	else if(!m_boundingBox->throwRay(ray, collide))
 	{
 		collide.setColor(vxColor::red.dimm(3));
 		return 0;
@@ -468,9 +465,9 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	}
 	while(inGrid(vx));
 
-	collide.setPosition(found ? vx+ray.origin() : collide.position());
-	collide.setValid(true);
-	return (int)found;
+	collide.setPosition(found ? vx+ray.origin() : std::move(collide.position()));
+	collide.setValid(found);
+	return found ? 1 : 0;
 }
 
 
@@ -489,10 +486,9 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 		const auto&& instance = geometry->at(collide.position()-ray.origin(), 1.0);
 		return instance->throwRay( ray, collide );
 	}
-	else
-	{
-		return 0;
-	}
+	
+	collide.setValid(false);
+	return 0;
 #endif
 }
 
