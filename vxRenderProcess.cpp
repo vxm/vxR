@@ -60,7 +60,7 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 }
 
 
-#define USE_THREADS 1
+#define USE_THREADS 0
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
@@ -122,11 +122,10 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 6;
+	unsigned int nSamples = 1;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
-	vxCollision collision;
 
 	// moving to start point.
 	unsigned int itH {offset};
@@ -135,24 +134,40 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	// on eachpixel.
 	while(!(itV>=(m_prop->ry())))
 	{
-		vxColor c;
-		vxVector2d cors(itH/(double)m_prop->rx(),
-						itV/(double)m_prop->ry());
+		vxColor color;
+		vxVector2d hitCoordinates(itH/(double)m_prop->rx(),
+								itV/(double)m_prop->ry());
 
 		//TODO: return this to smart pointer.
-		auto bk = m_bucketList.getBucket(cors);
+		auto bk = m_bucketList.getBucket(hitCoordinates);
 		for(unsigned int s=0;s<nSamples;s++)
 		{
-			const auto& ray = rCamera->ray(cors, sampler);
+			vxCollision collision;
+			const auto& ray = rCamera->ray(hitCoordinates, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
-				c.add(collision.color());
+				const auto&& baseColor = collision.color();
+				color.add(baseColor);
+				
+				const auto&& incidence = ray.direction().angle(collision.normal());
+				if(collision.isValid() && (incidence<1.77))
+				{
+					vxCollision refxCollision;
+					const auto&& reflexRay = vxRay(collision.position()+(collision.normal()/1000.0),
+												   ray.direction()*collision.normal());
+					if(m_scene->throwRay(reflexRay, refxCollision))
+					{
+						const auto &&reflColor = refxCollision.color();
+						color.set(reflColor.dimm(3));
+						color.add(vxColor::red.dimm(33));
+					}
+				}
 			}
 			sampler.next();
 		}
 		sampler.resetIterator();
 		
-		bk->append(c*invSamples, cors);
+		bk->append(color*invSamples, hitCoordinates);
 
 		itH+=by;
 		if(itH >= m_prop->rx())
