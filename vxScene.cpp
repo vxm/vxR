@@ -8,8 +8,8 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 460
-#define PX resl * 2 
+#define RESL 480
+#define PX resl * 2
 #define PY resl * 0
 #define PZ resl * 2
 
@@ -18,6 +18,7 @@ class vxScene;
 //plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
 //plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
 //plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
+//plyReader->processPLYFile("/home/john/Downloads/lucyTop_1.ply");
 ///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
 ///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
 ///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
@@ -34,7 +35,7 @@ vxScene::~vxScene()
 void vxScene::build()
 {
 	int nLightSamples{35};
-	const double sunIntensity{0.6};
+	const double sunIntensity{1.0};
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
 
@@ -63,8 +64,7 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-	plyReader->processPLYFile("/home/john/Downloads/lucyTop.ply");
+	plyReader->processPLYFile("/home/john/Downloads/mercury.ply");
 
 	loadFromFile(plyReader);
 	
