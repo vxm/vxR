@@ -136,30 +136,29 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	{
 		vxColor color;
 		vxVector2d hitCoordinates(itH/(double)m_prop->rx(),
-								itV/(double)m_prop->ry());
+									itV/(double)m_prop->ry());
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(hitCoordinates);
 		for(unsigned int s=0;s<nSamples;s++)
 		{
 			vxCollision collision;
-			const auto& ray = rCamera->ray(hitCoordinates, sampler);
+			const auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
+				const auto&& incidence = ray.incidence(collision.normal());
 				const auto&& baseColor = collision.color();
 				color.add(baseColor);
 				
-				const auto&& incidence = ray.direction().angle(collision.normal());
-				if(collision.isValid() && (incidence<1.77))
+				if(collision.isValid() && (incidence<0.4))
 				{
 					vxCollision refxCollision;
-					const auto&& reflexRay = vxRay(collision.position()+(collision.normal()/1000.0),
-												   ray.direction()*collision.normal());
+					const auto&& reflexRay = vxRay(collision.position() + (collision.normal()/200.0),
+												   ray.direction()*vxVector3d(1,-1,1));
 					if(m_scene->throwRay(reflexRay, refxCollision))
 					{
 						const auto &&reflColor = refxCollision.color();
-						color.set(reflColor.dimm(3));
-						color.add(vxColor::red.dimm(33));
+						color.mixSumm(reflColor,incidence);
 					}
 				}
 			}
