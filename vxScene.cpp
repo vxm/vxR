@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 10
+#define RESL 8
 #define PX resl * 2 
 #define PY resl * 0
 #define PZ resl * 2
@@ -54,7 +54,7 @@ void vxScene::build()
 	createGrid();
 	
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
-	auto iRadius = 10.0;
+	auto iRadius = 7.0;
 	auto distSph = (resl/3.0);
 	
 	m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
