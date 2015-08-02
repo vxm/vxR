@@ -437,14 +437,11 @@ vxVector3d vxGrid::nextVoxel(const vxRay &ray, vxVector3d &exactCollision)
 
 unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide) const
 {
-	auto newRay{ray};
-	
 	if(inGrid(ray.origin()))
 	{
 		collide.setPosition(ray.origin());
-
 	}
-	else if(!m_boundingBox->throwRay(newRay, collide))
+	else if(!m_boundingBox->throwRay(ray, collide))
 	{
 		collide.setColor(vxColor::red.dimm(3));
 		return 0;
