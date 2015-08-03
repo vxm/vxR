@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 480
+#define RESL 50
 #define PX resl * 2
 #define PY resl * 0
 #define PZ resl * 2
@@ -34,8 +34,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples{35};
-	const double sunIntensity{1.0};
+	int nLightSamples{25};
+	const double sunIntensity{0.9};
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
 
@@ -51,7 +51,7 @@ void vxScene::build()
 	auto envLight = createIBLight(m_environment.path());
 	envLight->setSamples(nLightSamples);
 	envLight->setRadius(0.997);
-	envLight->setIntensity(2.0);
+	envLight->setIntensity(1.0);
 
 	//This simulates the sun.
 	auto sunLight = createDirectLight();
@@ -64,8 +64,10 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/john/Downloads/mercury.ply");
+	plyReader->processPLYFile("/home/john/Downloads/mercury_1.ply");
+	loadFromFile(plyReader);
 
+	plyReader->processPLYFile("/home/john/Downloads/ninph_1.ply");
 	loadFromFile(plyReader);
 	
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
@@ -81,7 +83,7 @@ void vxScene::build()
 //	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/5.0)); // Position, radius
-	m_grids[0]->createEdges(); // of the grid
+	//m_grids[0]->createEdges(); // of the grid
 	m_grids[0]->createGround();
 
 	auto na = m_grids[0]->numActiveVoxels();

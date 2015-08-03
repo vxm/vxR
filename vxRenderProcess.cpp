@@ -122,7 +122,7 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 6;
+	unsigned int nSamples = 2;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
@@ -135,24 +135,47 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	// on eachpixel.
 	while(!(itV>=(m_prop->ry())))
 	{
-		vxColor c;
-		vxVector2d cors(itH/(double)m_prop->rx(),
-						itV/(double)m_prop->ry());
+		vxColor color;
+		vxVector2d hitCoordinates(itH/(double)m_prop->rx(),
+									itV/(double)m_prop->ry());
 
 		//TODO: return this to smart pointer.
-		auto bk = m_bucketList.getBucket(cors);
+		auto bk = m_bucketList.getBucket(hitCoordinates);
 		for(unsigned int s=0;s<nSamples;s++)
 		{
-			const auto& ray = rCamera->ray(cors, sampler);
+			vxCollision collision;
+			const auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
-				c.add(collision.color());
+				const auto&& N = collision.normal();
+				const auto&& incidence = ray.incidence(N);
+				const auto&& baseColor = collision.color();
+				color.add(baseColor);
+				
+				if(collision.isValid())
+				{
+					for(int k = 0;k<2;k++)
+					{
+						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
+														N[1]==0 ? 1 : -1,
+														N[2]==0 ? 1 : -1);
+						invV+=MathUtils::getSphereRand(0.05);
+						vxCollision refxCollision;
+						const auto&& reflexRay = vxRay(collision.position() + (vxVector3d(N) / 2000.0),
+													   ray.direction()*invV);
+						if(m_scene->throwRay(reflexRay, refxCollision))
+						{
+							const auto &&reflColor = refxCollision.color();
+							color.mixSumm(reflColor, incidence/8.0);
+						}
+					}
+				}
 			}
 			sampler.next();
 		}
 		sampler.resetIterator();
 		
-		bk->append(c*invSamples, cors);
+		bk->append(color*invSamples, hitCoordinates);
 
 		itH+=by;
 		if(itH >= m_prop->rx())

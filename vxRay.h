@@ -37,6 +37,8 @@ public:
 	vxVector3d direction() const;
 	vxVector3d& direction();
 	void setDirection(const vxVector3d &direction);
+
+	double incidence(const vxVector3d &normal) const;
 };
 
 }
