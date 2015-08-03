@@ -33,7 +33,6 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
 
 	const auto&& instancePosition = instance.position();
-	const auto& boxPosition = instancePosition;
 	const auto&& size = instance.size();
 	const auto&& mSize = size/2.0;
 	
