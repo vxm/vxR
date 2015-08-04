@@ -58,9 +58,7 @@ void vxGrid::createGridData(const unsigned int resolution)
 	m_resolution = resolution;
 	m_resXres=resolution*resolution;
 	m_resXresXres=m_resXres*resolution;
-	//m_data=(bool*)malloc(sizeof(bool)*m_resXresXres);
-	m_data.resize(m_resXresXres, false);
-	//invRes=1/resolution;
+	m_data.resize(m_resXresXres);
 	m_resDivTres = m_midSize/(double)m_resolution;
 	setBoxSize();
 	
