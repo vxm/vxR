@@ -85,7 +85,7 @@ protected:
 	unsigned int m_resolution	= {5u};
 	double m_invRes				= {1/5.0};
 
-	std::vector<bool>		 m_data;
+	std::vector<vx>	m_data;
 	std::unique_ptr<vxBox> m_boundingBox;
 
 	double m_resDivTres	= {m_size/3.0};
@@ -134,6 +134,9 @@ public:
 					 const vxVector3d &scale);
 	
 // OPERATION WITH GRID
+	inline unsigned int index(const unsigned int x, 
+								const unsigned int y, 
+								const unsigned int z) const;
 	
 	static vxVector3d nextVoxel(const vxRay &ray, vxVector3d &exactCollision);
 	//sets every single vxl to 0.
@@ -156,15 +159,19 @@ public:
 	// sets active voxel at world space position
 	void activate(const vxVector3d &pos);
 	bool activeInRange(const vxVector3d &pos) const;
+
 	// sets unactive vxl at coordinates x y z
 	void deactivate(const unsigned int x, 
 					const unsigned int y, 
 					const unsigned int z);
+
 	// returns true if element at local coords 
 	// is true
 	inline bool getElement(const unsigned int x, 
 						   const unsigned int y, 
 						   const unsigned int z) const;
+	
+	void setElementColorIndex(const unsigned int x, const unsigned int y, const unsigned int z, const unsigned char c);
 	// changes the value of the element at local
 	// coords x y z to be same as parameter value
 	inline void setElement(const unsigned int x, 
@@ -177,6 +184,15 @@ public:
 								const unsigned int iZ) const;
 	vxVector3d getVoxelPosition(unsigned int idx) const;
 	inline unsigned int indexAtPosition(const vxVector3d &position) const;
+	inline vx& vxAtPosition(const vxVector3d &position);
+	inline vx& vxAt(const unsigned int iX, 
+					const unsigned int iY, 
+					const unsigned int iZ);
+	vx vxAtPosition(const vxVector3d &position) const;
+	vx vxAt(const unsigned int iX, 
+			const unsigned int iY, 
+			const unsigned int iZ) const;
+
 	bool inGrid(const vxVector3d &pnt, double tolerance) const;
 	bool inGrid(const vxVector3d &pnt) const;
 	
@@ -184,6 +200,7 @@ public:
 	
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
+	unsigned char elementColorIndex(const unsigned int x, const unsigned int y, const unsigned int z) const;
 };
 
 /*
