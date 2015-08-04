@@ -25,15 +25,55 @@ class vxBox;
 class vxOrthIter
 {
 	std::shared_ptr<vxGrid> m_grid;
-	public:
+public:
+	
+	vxOrthIter(std::shared_ptr<vxGrid> grid)
+		:m_grid(grid)
+	{
 		
-		vxOrthIter(std::shared_ptr<vxGrid> grid)
-			:m_grid(grid)
-		{
-			
-		}
-		
-		
+	}
+};
+
+struct vx
+{
+	unsigned char v = 0b00000000;
+	unsigned char c = 0b00000000;
+	
+	vx()
+	{
+		//This is simply impossible.
+		static_assert(sizeof(c)==1, "unsigned char is not of size 1");
+	}
+	
+	inline void activate(bool active)
+	{
+		active ? activate() : deactivate();
+	}
+
+	inline bool active() const
+	{
+		return (bool)v;
+	}
+
+	inline void activate()
+	{
+		v=0b00000001;
+	}
+	
+	inline void deactivate()
+	{
+		v=0b00000000;
+	}
+
+	inline unsigned char colorIndex() const
+	{
+		return c;
+	}
+
+	inline void setColorIndex(unsigned char ci)
+	{
+		c=ci;
+	}
 };
 
 class vxGrid
