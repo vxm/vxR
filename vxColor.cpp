@@ -32,16 +32,16 @@ vxColor vxColor::indexColor(const int idx)
 	switch(idx%25)
 	{
 	case 0:
-		return red;
+		return white;
 	break;
 	case 1:
-		return green;
+		return red;
 	break;
 	case 2:
-		return blue;
+		return green;
 	break;
 	case 3:
-		return white;
+		return blue;
 	break;
 	case 4:
 		return yellow;
