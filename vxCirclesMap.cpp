@@ -11,12 +11,8 @@ vxColor vxCirclesMap::compute(const vxCollision &collision) const
 	auto&& geoColor = collision.color();
 	geoColor.set(collision.color().gained(1.2));
 	vxColor outColor(geoColor);
-
-	auto distanceToCenter = 
-			vxVector2d{collision.u()-.5,collision.v()-.5}.length();
-
 	outColor.set(geoColor);
-	
+
 	if(m_margin)
 	{
 		if (((collision.u()<m_margn || collision.u()>(1.-m_margn)) 
