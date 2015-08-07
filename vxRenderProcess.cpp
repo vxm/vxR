@@ -122,11 +122,10 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 2;
+	unsigned int nSamples = 1;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
-	vxCollision collision;
 
 	// moving to start point.
 	unsigned int itH {offset};
@@ -147,27 +146,19 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			const auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
-				const auto&& N = collision.normal();
-				const auto&& incidence = ray.incidence(N);
+				const auto&& incidence = ray.incidence(collision.normal());
 				const auto&& baseColor = collision.color();
 				color.add(baseColor);
 				
-				if(collision.isValid())
+				if(collision.isValid() && (incidence<0.4))
 				{
-					for(int k = 0;k<2;k++)
+					vxCollision refxCollision;
+					const auto&& reflexRay = vxRay(collision.position() + (collision.normal()/200.0),
+												   ray.direction()*vxVector3d(1,-1,1));
+					if(m_scene->throwRay(reflexRay, refxCollision))
 					{
-						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
-														N[1]==0 ? 1 : -1,
-														N[2]==0 ? 1 : -1);
-						invV+=MathUtils::getSphereRand(0.05);
-						vxCollision refxCollision;
-						const auto&& reflexRay = vxRay(collision.position() + (vxVector3d(N) / 2000.0),
-													   ray.direction()*invV);
-						if(m_scene->throwRay(reflexRay, refxCollision))
-						{
-							const auto &&reflColor = refxCollision.color();
-							color.mixSumm(reflColor, incidence/8.0);
-						}
+						const auto &&reflColor = refxCollision.color();
+						color.mixSumm(reflColor,incidence);
 					}
 				}
 			}

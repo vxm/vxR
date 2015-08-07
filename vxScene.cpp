@@ -8,8 +8,8 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 50
-#define PX resl * 2
+#define RESL 8
+#define PX resl * 2 
 #define PY resl * 0
 #define PZ resl * 2
 
@@ -34,8 +34,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples{25};
-	const double sunIntensity{0.9};
+	int nLightSamples{35};
+	const double sunIntensity{0.6};
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
 
@@ -83,7 +83,7 @@ void vxScene::build()
 //	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/5.0)); // Position, radius
-	//m_grids[0]->createEdges(); // of the grid
+	m_grids[0]->createEdges(); // of the grid
 	m_grids[0]->createGround();
 
 	auto na = m_grids[0]->numActiveVoxels();
