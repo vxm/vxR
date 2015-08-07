@@ -438,7 +438,8 @@ void vxGrid::createSphere(const vxVector3d &center, const double radio)
 				auto& voxel = vxAt(x, y, z);
 				if(center.distance(getVoxelPosition(x, y, z))<radio)
 				{
-					voxel.setColorIndex((unsigned char)MathUtils::getRand(10.0));
+					voxel.setColorIndex((unsigned char)
+										MathUtils::getRand(24));
 					voxel.activate();
 				}
 			}
