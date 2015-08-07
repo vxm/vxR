@@ -119,19 +119,36 @@ double vxRenderProcess::progress() const
 	return  100.0 * m_progress.load() / (m_prop->ry()*m_nThreads);
 }
 
+#define SINGLERAY 0
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 2;
+	unsigned int nSamples = 3;
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);
-	vxCollision collision;
 
 	// moving to start point.
 	unsigned int itH {offset};
 	unsigned int itV {0u};
 
+#if SINGLERAY
+	vxColor color;
+	vxVector2d hitCoordinates(.55, .25);
+
+//TODO: return this to smart pointer.
+	auto bk = m_bucketList.getBucket(hitCoordinates);
+	vxCollision collision;
+	const auto&& ray = rCamera->ray(hitCoordinates, sampler);
+	if(m_scene->throwRay(ray, collision))
+	{
+		const auto&& baseColor = collision.color();
+		color.add(baseColor);
+	}
+	
+	bk->append(color*invSamples, hitCoordinates);
+
+#else
 	// on eachpixel.
 	while(!(itV>=(m_prop->ry())))
 	{
@@ -147,28 +164,35 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			const auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
-				const auto&& N = collision.normal();
-				const auto&& incidence = ray.incidence(N);
-				const auto&& baseColor = collision.color();
-				color.add(baseColor);
 				
+				const auto reflectRays{4u};
 				if(collision.isValid())
 				{
-					for(int k = 0;k<2;k++)
+					const auto&& baseColor = collision.color();
+					color.mixSumm(baseColor, 0.8);
+					
+					const auto&& N = collision.normal();
+					const auto&& incidence = ray.incidence(N);
+					for(int k = 0;k<reflectRays;k++)
 					{
 						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
 														N[1]==0 ? 1 : -1,
 														N[2]==0 ? 1 : -1);
-						invV+=MathUtils::getSphereRand(0.05);
+						//invV+=MathUtils::getSphereRand(0.001);
 						vxCollision refxCollision;
 						const auto&& reflexRay = vxRay(collision.position() + (vxVector3d(N) / 2000.0),
 													   ray.direction()*invV);
 						if(m_scene->throwRay(reflexRay, refxCollision))
 						{
 							const auto &&reflColor = refxCollision.color();
-							color.mixSumm(reflColor, incidence/8.0);
+							color.mixSumm(reflColor, incidence/reflectRays);
 						}
 					}
+				}
+				else
+				{
+					const auto&& baseColor = collision.color();
+					color.add(baseColor);
 				}
 			}
 			sampler.next();
@@ -186,6 +210,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			m_progress.store(m_progress.load() + 1);
 		}
 	}
+#endif
 
 	auto thInfo = vxThreadPool::threadInfo(std::this_thread::get_id());
 	std::cout << "Finished task on thread ::" << thInfo.id << "::" << std::endl;
