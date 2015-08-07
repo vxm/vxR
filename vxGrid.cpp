@@ -411,7 +411,7 @@ inline unsigned int vxGrid::indexAtPosition(const vxVector3d &position) const
 	unsigned int idx = floor(pos.x());
 	idx += floor(pos.y()) * m_resolution;
 	idx += floor(pos.z()) * m_resXres;
-	return idx;
+	return idx<m_resXresXres ? idx: 0;
 }
 
 
