@@ -556,12 +556,12 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 #else
 	if (getNearestCollision(ray, collide))
 	{
-		const auto&& pos = collide.position();
-		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
-		const auto&& instance = geometry->at(pos-ray.origin(), 1.0);
-		const auto& eci = m_data[indexAtPosition(pos)];
-		const auto&& c = vxColor::indexColor(eci.colorIndex());
-
+		const auto& pos = collide.position()-ray.origin();
+		const auto& geometry = vxGlobal::getInstance()->getExistingBox();
+		const auto& instance = geometry->at(pos, 1.0);
+		const auto& iap = indexAtPosition(pos);
+		const auto& eci = m_data[iap];
+		const auto& c = vxColor::indexColor(eci.colorIndex());
 		collide.setColor(c);
 		return instance->throwRay( ray, collide );
 	}
