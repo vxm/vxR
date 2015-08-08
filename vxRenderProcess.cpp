@@ -149,18 +149,6 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				const auto&& incidence = ray.incidence(collision.normal());
 				const auto&& baseColor = collision.color();
 				color.add(baseColor);
-				
-				if(collision.isValid() && (incidence<0.4))
-				{
-					vxCollision refxCollision;
-					const auto&& reflexRay = vxRay(collision.position() + (collision.normal()/200.0),
-												   ray.direction()*vxVector3d(1,-1,1));
-					if(m_scene->throwRay(reflexRay, refxCollision))
-					{
-						const auto &&reflColor = refxCollision.color();
-						color.mixSumm(reflColor,incidence);
-					}
-				}
 			}
 			sampler.next();
 		}

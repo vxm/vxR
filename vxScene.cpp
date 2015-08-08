@@ -48,27 +48,11 @@ void vxScene::build()
 	vxVector3d p{PX, PY, PZ};
 
 	//Environment tint.
-	auto envLight = createIBLight(m_environment.path());
-	envLight->setSamples(nLightSamples);
-	envLight->setRadius(0.997);
-	envLight->setIntensity(1.0);
+	auto envLight = createAmbientLight();
+	envLight->setIntensity(0.34);
 
-	//This simulates the sun.
-	auto sunLight = createDirectLight();
-	const auto&& sunOrientation = vxVector3d(7,-10,2).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
-	sunLight->setOrientation(sunOrientation);
-	sunLight->setIntensity(sunIntensity);
-	sunLight->setColor(sunColor);
-	
 	createCamera(vxMatrix{});
 	createGrid();
-	
-	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/john/Downloads/mercury_1.ply");
-	loadFromFile(plyReader);
-
-	plyReader->processPLYFile("/home/john/Downloads/ninph_1.ply");
-	loadFromFile(plyReader);
 	
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
 	auto iRadius = 10.0;
@@ -83,7 +67,7 @@ void vxScene::build()
 //	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
 	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/5.0)); // Position, radius
-	m_grids[0]->createEdges(); // of the grid
+	//m_grids[0]->createEdges(); // of the grid
 	m_grids[0]->createGround();
 
 	auto na = m_grids[0]->numActiveVoxels();

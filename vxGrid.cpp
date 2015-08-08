@@ -482,7 +482,7 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 #else
 	if (getNearestCollision(ray, collide))
 	{
-		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
+		const auto&& geometry = vxGlobal::getInstance()->getExistingLegoBlock();
 		const auto&& instance = geometry->at(collide.position()-ray.origin(), 1.0);
 		return instance->throwRay( ray, collide );
 	}
