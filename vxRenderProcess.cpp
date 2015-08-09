@@ -122,15 +122,17 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 1;
-	const auto& rCamera = scene()->defaultCamera();
-	const double invSamples = 1.0/(double)nSamples;
-	vxSampler sampler(nSamples);
+	const unsigned int visSamples {4u};
+	const unsigned int rfxSamples {3u};
+	const auto&& rCamera = scene()->defaultCamera();
+	const auto&& invSamples = 1.0/(double)visSamples;
+	vxSampler sampler(visSamples);
 
 	// moving to start point.
 	unsigned int itH {offset};
 	unsigned int itV {0u};
 
+	
 	// on eachpixel.
 	while(!(itV>=(m_prop->ry())))
 	{
@@ -140,26 +142,39 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(hitCoordinates);
-		for(unsigned int s=0;s<nSamples;s++)
+		for(unsigned int s=0;s<visSamples;s++)
 		{
 			vxCollision collision;
 			const auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
-				const auto&& incidence = ray.incidence(collision.normal());
-				const auto&& baseColor = collision.color();
-				color.add(baseColor);
-				
-				if(collision.isValid() && (incidence<0.4))
+				if(collision.isValid())
 				{
-					vxCollision refxCollision;
-					const auto&& reflexRay = vxRay(collision.position() + (collision.normal()/200.0),
-												   ray.direction()*vxVector3d(1,-1,1));
-					if(m_scene->throwRay(reflexRay, refxCollision))
+					const auto&& N = collision.normal();
+					auto incidence = ray.incidence(N);
+					for(int k = 0;k<rfxSamples;k++)
 					{
-						const auto &&reflColor = refxCollision.color();
-						color.mixSumm(reflColor,incidence);
+						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
+														N[1]==0 ? 1 : -1,
+														N[2]==0 ? 1 : -1);
+						invV+=vxVector3d(MathUtils::getRand(0.5)-0.25,
+										 MathUtils::getRand(0.5)-0.25,
+										 MathUtils::getRand(0.5)-0.25);
+						vxCollision refxCollision;
+						const auto&& reflexRay = vxRay(collision.position()
+													   +N/10000,
+													   ray.direction()*invV);
+						if(m_scene->throwRay(reflexRay, refxCollision))
+						{
+							const auto &&reflColor = refxCollision.color();
+							color.mixSumm(reflColor, 0.3/rfxSamples);
+						}
 					}
+					color.mixSumm(collision.color(), incidence * 0.7);
+				}
+				else
+				{
+					color.add(collision.color());
 				}
 			}
 			sampler.next();
