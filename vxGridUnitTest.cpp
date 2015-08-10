@@ -32,8 +32,8 @@ int vxGridUnitTest::testFunction_nextVoxel()
 	vxStatus st;
 
 	{// 
-		const auto origin{vxVector3d(1.2, -1.5, -1.95)};
-		const auto direction{vxVector3d(0.1, -0.1, -0.1)};
+		const vxVector3d origin{vxVector3d(1.2, -1.5, -1.95)};
+		const vxVector3d direction{vxVector3d(0.1, -0.1, -0.1)};
 		auto nv = testNextVoxel(origin, direction);
 
 		auto f = [nv]{return nv == vxVector3d(0.57735, -0.57735, -0.57735);};
@@ -41,8 +41,8 @@ int vxGridUnitTest::testFunction_nextVoxel()
 	}
 
 	{// 
-		const auto origin{vxVector3d(1.1, 0.5, -1.95)};
-		const auto direction{vxVector3d(0.1, -0.4, -1.0)};
+		const vxVector3d origin{vxVector3d(1.1, 0.5, -1.95)};
+		const vxVector3d direction{vxVector3d(0.1, -0.4, -1.0)};
 		auto nv = testNextVoxel(origin, direction);
 
 		auto f = [nv]{return nv == vxVector3d(4.5, 4.5, 3.5);};
@@ -50,8 +50,8 @@ int vxGridUnitTest::testFunction_nextVoxel()
 	}
 	
 	{// 
-		const auto origin{vxVector3d(4.5, 4.5, 4.5)};
-		const auto direction{vxVector3d(0.0, 0.0, -1.0)};
+		const vxVector3d origin{vxVector3d(4.5, 4.5, 4.5)};
+		const vxVector3d direction{vxVector3d(0.0, 0.0, -1.0)};
 		auto nv = testNextVoxel(origin, direction);
 
 		auto f = [nv]{return nv == vxVector3d(4.5, 4.5, 3.5);};
@@ -59,10 +59,10 @@ int vxGridUnitTest::testFunction_nextVoxel()
 	}
 
 	{
-		const auto origin{vxVector3d(.5,.5,.5)};
+		const vxVector3d origin{vxVector3d(.5,.5,.5)};
 		
 		{// +Z
-			const auto direction{vxVector3d(0.0,0.0,1.0)};
+			const vxVector3d direction{vxVector3d(0.0,0.0,1.0)};
 			auto nv = testNextVoxel(origin, direction);
 		
 			auto f = [nv]{return nv == vxVector3d(0.5, 0.5, 1.5);};
@@ -70,7 +70,7 @@ int vxGridUnitTest::testFunction_nextVoxel()
 		}
 	
 		{// -Z
-			const auto direction{vxVector3d(0.0,0.0,-1.0)};
+			const vxVector3d direction{vxVector3d(0.0,0.0,-1.0)};
 			auto nv = testNextVoxel(origin, direction);
 		
 			auto f = [nv]{return nv == vxVector3d(0.5, 0.5, -0.5);};
@@ -78,7 +78,7 @@ int vxGridUnitTest::testFunction_nextVoxel()
 		}
 	
 		{// +X
-			const auto direction{vxVector3d(1.0,0.0,0.0)};
+			const vxVector3d direction{vxVector3d(1.0,0.0,0.0)};
 			auto nv = testNextVoxel(origin, direction);
 	
 			auto f = [nv]{return nv == vxVector3d(1.5, 0.5, 0.5);};
@@ -86,7 +86,7 @@ int vxGridUnitTest::testFunction_nextVoxel()
 		}
 		
 		{// -X
-			const auto direction{vxVector3d(-1.0,0.0,0.0)};
+			const vxVector3d direction{vxVector3d(-1.0,0.0,0.0)};
 			auto nv = testNextVoxel(origin, direction);
 	
 			auto f = [nv]{return nv == vxVector3d(-0.5, 0.5, 0.5);};
@@ -94,7 +94,7 @@ int vxGridUnitTest::testFunction_nextVoxel()
 		}
 	
 		{// +Y
-			const auto direction{vxVector3d(0.0,1.0,0.0)};
+			const vxVector3d direction{vxVector3d(0.0,1.0,0.0)};
 			auto nv = testNextVoxel(origin, direction);
 	
 			auto f = [nv]{return nv == vxVector3d(0.5, 1.5, 0.5);};
@@ -102,7 +102,7 @@ int vxGridUnitTest::testFunction_nextVoxel()
 		}
 		
 		{// -Y
-			const auto direction{vxVector3d(0.0,-1.0,0.0)};
+			const vxVector3d direction{vxVector3d(0.0,-1.0,0.0)};
 			auto nv = testNextVoxel(origin, direction);
 	
 			auto f = [nv]{return nv == vxVector3d(0.5, -0.5, 0.5);};

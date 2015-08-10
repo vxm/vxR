@@ -15,8 +15,8 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 
 	// TEST 1
 	{
-		const auto origin{vxVector3d(4.5, 4.5, 4.5)};
-		const auto direction{vxVector3d(1.0, 0.0, 0.0)};
+		const vxVector3d origin{vxVector3d(4.5, 4.5, 4.5)};
+		const vxVector3d direction{vxVector3d(1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
 		auto intersection = MathUtils::rayAndXPlane(ray, 13.0);
 		
@@ -30,8 +30,8 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 	
 	// TEST 2
 	{
-		const auto origin{vxVector3d(-30, 5.0, 5.0)};
-		const auto direction{vxVector3d(1.0, 0.0, 0.0)};
+		const vxVector3d origin{vxVector3d(-30, 5.0, 5.0)};
+		const vxVector3d direction{vxVector3d(1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
 		auto intersection = MathUtils::rayAndXPlane(ray, -20.0);
 		
@@ -45,8 +45,8 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 
 	// TEST 3
 	{
-		const auto origin{vxVector3d(-30, -5.0, -5.0)};
-		const auto direction{vxVector3d(-1.0, 0.0, 0.0)};
+		const vxVector3d origin{vxVector3d(-30, -5.0, -5.0)};
+		const vxVector3d direction{vxVector3d(-1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
 		auto intersection = MathUtils::rayAndXPlane(ray, -200.0);
 		
@@ -60,8 +60,8 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 	
 	// TEST 4
 	{
-		const auto origin{vxVector3d(5.0, 5.0, 5.0)};
-		const auto direction{vxVector3d(10.0, 1.0, 1.0)};
+		const vxVector3d origin{vxVector3d(5.0, 5.0, 5.0)};
+		const vxVector3d direction{vxVector3d(10.0, 1.0, 1.0)};
 		const auto& ray = vxRay{origin,direction};
 		auto intersection = MathUtils::rayAndXPlane(ray, 40.0);
 

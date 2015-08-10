@@ -3,7 +3,7 @@
 
 using namespace vxCore;
 
-vxBitMap2d::vxBitMap2d(const std::__cxx11::string path)
+vxBitMap2d::vxBitMap2d(const std::string path)
 	:m_path(path)
 {
 	//TODO:Constructor very populated.

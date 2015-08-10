@@ -91,7 +91,7 @@ public:
 
 	std::shared_ptr<vxPointLight> createPointLight();
 	std::shared_ptr<vxDirectLight> createDirectLight();
-	std::shared_ptr<vxIBLight> createIBLight(const std::__cxx11::string path);
+	std::shared_ptr<vxIBLight> createIBLight(const std::string path);
 	std::shared_ptr<vxAmbientLight> createAmbientLight();
 };
 

@@ -8,25 +8,25 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 250
-#define PX resl * 2 
+#define RESL 50
+#define PX resl * 2
 #define PY resl * 0
 #define PZ resl * 2
 
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/lucyTop_1.ply");
-///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
-///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
-///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
-///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
+//plyReader->processPLYFile("/home/mario/Downloads/statue_and_dog_1.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/dragon_1.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/vmilo_0.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/lucyTop_1.ply");
+///home/mario/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg
+///home/mario/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
+///home/mario/code/vxR/Milkyway/Milkyway_BG.jpg
 
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
-	, m_environment("/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg") //TODO: if string is empty program crashes, fix it.
+	, m_environment("/home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg") //TODO: if string is empty program crashes, fix it.
 {}
 
 vxScene::~vxScene()
@@ -64,12 +64,9 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/john/Downloads/mercury_1.ply");
+	plyReader->processPLYFile("/home/mario/Downloads/wow_5.ply");
 	loadFromFile(plyReader);
 
-	plyReader->processPLYFile("/home/john/Downloads/ninph_1.ply");
-	loadFromFile(plyReader);
-	
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
 	auto iRadius = 10.0;
 	auto distSph = (resl/3.0);

@@ -202,7 +202,7 @@ void vxGrid::addVertices(const std::vector<vxVector3d> &verts,
 {
 	for(const auto& v : verts)
 	{
-		const auto && p{(v*scale)+offset};
+		const vxVector3d && p{(v*scale)+offset};
 		activate(p);
 		auto idx = indexAtPosition(p);
 		vxAtPosition(p).setColorIndex((unsigned char)
@@ -329,7 +329,7 @@ inline void vxGrid::setElement(const unsigned int x,
 								const unsigned int z, 
 								bool value)
 {
-	const auto idx{x+(y*m_resolution)+(z*m_resXres)};
+    const unsigned int idx{x+(y*m_resolution)+(z*m_resXres)};
 	if(idx<m_data.size())
 	{
 		m_data[idx].activate(value);
@@ -349,7 +349,7 @@ inline void vxGrid::setElementColorIndex(const unsigned int x,
 											const unsigned int z, 
 											const unsigned char c)
 {
-	const auto idx{index(x,y,z)};
+	const unsigned int idx{index(x,y,z)};
 	if(idx<m_data.size())
 	{
 		m_data[idx].setColorIndex(c);
