@@ -1,5 +1,26 @@
 #include "vxLegoBlock.h"
 
+
+double vxLegoBlock::boxHeigh() const
+{
+	return m_boxHeigh;
+}
+
+void vxLegoBlock::setBoxHeigh(double boxHeigh)
+{
+	m_boxHeigh = boxHeigh;
+}
+
+double vxLegoBlock::cRadius() const
+{
+	return m_cRadius;
+}
+
+void vxLegoBlock::setCRadius(double cRadius)
+{
+	m_cRadius = cRadius;
+}
+
 vxLegoBlock::vxLegoBlock()
 {
 }
@@ -30,12 +51,16 @@ int vxLegoBlock::throwRay(const vxRay &ray, vxCollision &collide) const
 	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
 
 	const auto&& instancePosition = instance.position();
+	
+	if(ray.origin()>instancePosition+.5)
+	{
+		return 0;
+	}
 	const auto&& size = instance.size();
 	const auto&& mSize = size/2.0;
-	
 	const auto&& min = instancePosition - mSize;
 	auto&& max = instancePosition + mSize;
-	max[1]-=.5;
+	max[1]=min[1]+m_boxHeigh;
 	
 	bool aMax = std::signbit(ray.direction().x());
 	

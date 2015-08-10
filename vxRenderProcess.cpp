@@ -122,7 +122,7 @@ double vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	unsigned int nSamples = 1;
+	const unsigned int nSamples{1};
 	const auto& rCamera = scene()->defaultCamera();
 	const double invSamples = 1.0/(double)nSamples;
 	vxSampler sampler(nSamples);

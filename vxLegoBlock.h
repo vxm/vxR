@@ -32,6 +32,9 @@ private:
 	mutable std::map<std::thread::id, vxLegoBlockInGrid> m_instance;
 	bool m_useDefault = {false};
 	mutable vxLegoBlockInGrid m_default;
+
+	double m_boxHeigh{0.7};
+	double m_cRadius{0.3};
 	
 public:
 	vxLegoBlock();
@@ -42,6 +45,10 @@ public:
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
 	
+	double boxHeigh() const;
+	void setBoxHeigh(double boxHeigh);
+	double cRadius() const;
+	void setCRadius(double cRadius);
 };
 
 }
