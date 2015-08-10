@@ -62,7 +62,6 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			&& std::islessequal(hitZ.y(),max.y()) 
 			&& std::isgreaterequal(hitZ.y(),min.y()))
 	{
-		collide.setColor(vxColor::blue.dimm(5));
 		collide.setValid(true);
 		collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
 		collide.setPosition(hitZ);
