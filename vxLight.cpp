@@ -232,14 +232,12 @@ vxColor vxDirectLight::acummulationLight(const vxCollision &collision) const
 vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 {
 	vxColor acumColor;
-	const auto& cPnt = collision.position();
-	const auto& n = samples();
-	const auto &scn = m_scene.lock();
-	double colorRatio = 1.0/(double)n;
 	// compute all sort of shadows.
 	vxCollision environment;
+	const auto&& n = samples();
 	for(auto i=0; i<n; i++)
 	{
+		const auto&& cPnt = collision.position();
 		const auto&& r = MathUtils::getHollowHemisphereRand(radius(),
 													  collision.normal());
 		const vxRay f(cPnt, collision.normal()+r);
@@ -248,25 +246,12 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 											 collision.normal(), 
 											cPnt + f.direction());
 
-		if (lumm>0.001 && !scn->hasCollision(f))
+		const auto &scn = m_scene.lock();
+		if (lumm>0.0001 && !scn->hasCollision(f))
 		{
+			double colorRatio = 1.0/(double)n;
 			environment.setUV(MathUtils::normalToCartesian(f.direction()));
 			auto environmentColor = m_map.compute(environment);
-			
-//			/// This emulates the sun
-//			//TODO: create an entity with this and read from ibl file.
-//			if(((vxVector2d(0.172000, 0.224000)-cart).length()<.27)
-//				&& (abs(environmentColor.r()-(255/255.0)))<.001
-//						&& (abs(environmentColor.g()-(244/255.0)))<.001
-//						&&  (abs(environmentColor.b()-(221/255.0)))<.001)
-//			{
-//				lumm *=2.0; 
-//			}	
-//			else
-//			{
-//				lumm /=5.0; 
-//			}
-			
 			acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
 		}
 	}
