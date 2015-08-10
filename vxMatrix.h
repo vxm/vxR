@@ -29,9 +29,9 @@ public:
 	const double *	operator[] (unsigned int row) const;
 	vxStatus::code	get(double dest[]) const;
 	vxStatus::code	get(float dest[]) const;
-	vxMatrix	transpose() const;
+	vxMatrix		transpose() const;
 	vxMatrix&		setToIdentity();
-	vxMatrix&		setToProduct(const vxMatrix&left, const vxMatrix&right);
+	vxMatrix&		setToProduct(const vxMatrix&, const vxMatrix&);
 	vxMatrix&		operator+= (const vxMatrix&right);
 	vxMatrix		operator+ (const vxMatrix&right) const;
 	vxMatrix&		operator-= (const vxMatrix&right);

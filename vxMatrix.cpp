@@ -99,7 +99,7 @@ vxMatrix& vxMatrix::setToIdentity()
 	return *this;
 }
 
-vxMatrix& vxMatrix::setToProduct(const vxMatrix &left, const vxMatrix &right)
+vxMatrix& vxMatrix::setToProduct(const vxMatrix &, const vxMatrix &)
 {
 	
 	return *this;

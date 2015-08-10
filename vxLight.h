@@ -141,7 +141,7 @@ public:
 	// vxLight interface
 	public:
 	vxVector3d getLightRay(const vxVector3d &position) const override;
-	vxColor acummulationLight(const vxCollision &collision) const override;
+	vxColor acummulationLight(const vxCollision &) const override;
 };
  
 }

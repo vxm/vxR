@@ -274,7 +274,7 @@ vxVector3d vxAmbientLight::getLightRay(const vxVector3d &position) const
 	return position.inverted();
 }
 
-vxColor vxAmbientLight::acummulationLight(const vxCollision &collision) const
+vxColor vxAmbientLight::acummulationLight(const vxCollision &) const
 {
 	return m_color*m_intensity;
 }
