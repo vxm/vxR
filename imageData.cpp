@@ -60,7 +60,7 @@ unsigned char* ImageData::initialise()
 	unsigned char *tmpp = buff;	
 	for(;tmpp<buff+numElements;tmpp++)
 	{
-		*tmpp = '\0';
+		*tmpp = 0b00000000;
 	}		
 	
 	return buff;
