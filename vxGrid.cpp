@@ -53,7 +53,7 @@ void vxGrid::updateBB()
 	//TODO:missing
 }
 
-void vxGrid::createGridData(const unsigned int resolution)
+void vxGrid::createGridData(const unsigned long resolution)
 {
 	m_resolution = resolution;
 	m_resXres=resolution*resolution;
@@ -71,7 +71,7 @@ void vxGrid::createGridData(const unsigned int resolution)
 	
 }
 
-void vxGrid::setResolution(unsigned int resolution)
+void vxGrid::setResolution(unsigned long resolution)
 {	
 	if(resolution!=m_resolution)
 	{
@@ -86,7 +86,7 @@ void vxGrid::setSize(const double size)
 	setBoxSize();
 }
 
-unsigned int vxGrid::size() const
+unsigned long vxGrid::size() const
 {
 	return m_size;
 }
@@ -101,7 +101,7 @@ vxVector3d vxGrid::position() const
 	return m_position;
 }
 
-unsigned int vxGrid::resolution() const
+unsigned long vxGrid::resolution() const
 {
 	return m_resolution;
 }
@@ -115,8 +115,8 @@ void vxGrid::setBoxSize()
 
 void vxGrid::createDiagonals()
 {
-	unsigned int resminusone=m_resolution-1;
-	for (unsigned int i=0;i<m_resolution;i++)
+	unsigned long resminusone=m_resolution-1;
+	for (unsigned long i=0;i<m_resolution;i++)
 	{
 		activate(i,i,i);
 		activate(resminusone-i,resminusone-i,i);
@@ -127,7 +127,7 @@ void vxGrid::createDiagonals()
 
 void vxGrid::createCorners()
 {
-	unsigned int resminusone=m_resolution-1;
+	unsigned long resminusone=m_resolution-1;
 	activate(resminusone, resminusone, resminusone);
 	activate(resminusone, resminusone,			 0);
 	activate(resminusone,	0,			resminusone);
@@ -137,13 +137,13 @@ void vxGrid::createCorners()
 	activate(0,	0,			resminusone);
 	activate(0,	0,					0);	}
 
-void vxGrid::createGround(unsigned int offset)
+void vxGrid::createGround(unsigned long offset)
 {
 	if(offset>=m_resolution)
 		return;
 	
-	for (unsigned int i=0;i<m_resolution;i++)
-		for (unsigned int j=0;j<m_resolution;j++)
+	for (unsigned long i=0;i<m_resolution;i++)
+		for (unsigned long j=0;j<m_resolution;j++)
 		{
 			vxAt(i,offset,j).activate();
 			vxAt(i,offset,j).setColorIndex(0);
@@ -152,8 +152,8 @@ void vxGrid::createGround(unsigned int offset)
 
 void vxGrid::createEdges()
 {
-	unsigned int resminusone=m_resolution-1;
-	for (unsigned int i=0;i<m_resolution;i++)
+	unsigned long resminusone=m_resolution-1;
+	for (unsigned long i=0;i<m_resolution;i++)
 	{
 		activate(i,0,0);
 		activate(i,resminusone,resminusone);
@@ -210,7 +210,7 @@ void vxGrid::addVertices(const std::vector<vxVector3d> &verts,
 	}
 }
 
-unsigned int vxGrid::index(const unsigned int x, const unsigned int y, const unsigned int z) const
+unsigned long vxGrid::index(const unsigned long x, const unsigned long y, const unsigned long z) const
 {
 	return x+(y*m_resolution)+(z*m_resXres);
 }
@@ -219,25 +219,25 @@ void vxGrid::initialize(bool value)
 {
 	if(value)
 	{
-		for(unsigned int i=0;i<m_data.size();i++)
+		for(unsigned long i=0;i<m_data.size();i++)
 		{
 			m_data[i].activate();
 		}
 	}
 	else
 	{
-		for(unsigned int i=0;i<m_data.size();i++)
+		for(unsigned long i=0;i<m_data.size();i++)
 		{
 			m_data[i].deactivate();
 		}
 	}
 }
 
-unsigned int vxGrid::numActiveVoxels()
+unsigned long vxGrid::numActiveVoxels()
 {
-	unsigned int av{0};
+	unsigned long av{0};
 	
-	for(unsigned int i=0;i<m_data.size();i++)
+	for(unsigned long i=0;i<m_data.size();i++)
 	{
 		if(m_data[i].active())
 			av++;
@@ -246,14 +246,14 @@ unsigned int vxGrid::numActiveVoxels()
 	return av;
 }
 
-int vxGrid::getNumberOfVoxels() const
+long vxGrid::getNumberOfVoxels() const
 {
 	return m_resXresXres;
 }
 
-bool vxGrid::active(const unsigned int x, 
-					const unsigned int y, 
-					const unsigned int z) const
+bool vxGrid::active(const unsigned long x, 
+					const unsigned long y, 
+					const unsigned long z) const
 {
 	return getElement(x,y,z);
 }
@@ -265,9 +265,9 @@ inline bool vxGrid::active(const vxVector3d &pos) const
 		&& MathUtils::inRange(pos.z(), m_zmin, m_zmax))
 	{
 		const auto&& fPos = pos - (m_position - m_midSize);
-		return getElement((unsigned int)floor(fPos.x()),
-						  (unsigned int)floor(fPos.y()),
-						  (unsigned int)floor(fPos.z()));
+		return getElement((unsigned long)floor(fPos.x()),
+						  (unsigned long)floor(fPos.y()),
+						  (unsigned long)floor(fPos.z()));
 	}
 	
 	return false;
@@ -276,13 +276,13 @@ inline bool vxGrid::active(const vxVector3d &pos) const
 inline bool vxGrid::activeInRange(const vxVector3d &pos) const
 {
 	const auto&& fPos = pos - (m_position - m_midSize);
-	return getElement((unsigned int)floor(fPos.x()),
-					  (unsigned int)floor(fPos.y()),
-					  (unsigned int)floor(fPos.z()));
+	return getElement((unsigned long)floor(fPos.x()),
+					  (unsigned long)floor(fPos.y()),
+					  (unsigned long)floor(fPos.z()));
 }
 
 
-inline bool vxGrid::active(unsigned int idx) const
+inline bool vxGrid::active(unsigned long idx) const
 {
 	if (idx<m_resXresXres)
 		return m_data[idx].active();
@@ -290,9 +290,9 @@ inline bool vxGrid::active(unsigned int idx) const
 		return false;
 }
 
-inline void vxGrid::activate(const unsigned int x, 
-					  const unsigned int y, 
-					  const unsigned int z)
+inline void vxGrid::activate(const unsigned long x, 
+					  const unsigned long y, 
+					  const unsigned long z)
 {
 	setElement(x,y,z,true);
 }
@@ -304,32 +304,32 @@ void vxGrid::activate(const vxVector3d &pos)
 		&& MathUtils::inRange(pos.z(), m_zmin, m_zmax))
 	{
 		const auto&& offsetPos = pos - (m_position - m_midSize);
-		setElement((unsigned int)floor(offsetPos.x()),
-						(unsigned int)floor(offsetPos.y()),
-						(unsigned int)floor(offsetPos.z()), true);
+		setElement((unsigned long)floor(offsetPos.x()),
+						(unsigned long)floor(offsetPos.y()),
+						(unsigned long)floor(offsetPos.z()), true);
 	}
 }
 
 
-inline void vxGrid::deactivate(const unsigned int x, const unsigned int y, const unsigned int z)
+inline void vxGrid::deactivate(const unsigned long x, const unsigned long y, const unsigned long z)
 {
 	setElement(x,y,z,false);
 }
 
-inline bool vxGrid::getElement(const unsigned int x, 
-								const unsigned int y, 
-								const unsigned int z) const
+inline bool vxGrid::getElement(const unsigned long x, 
+								const unsigned long y, 
+								const unsigned long z) const
 {
 	auto p = x+(y*m_resolution)+(z*m_resXres);
 	return m_data[p].active();
 }
 
-inline void vxGrid::setElement(const unsigned int x, 
-								const unsigned int y, 
-								const unsigned int z, 
+inline void vxGrid::setElement(const unsigned long x, 
+								const unsigned long y, 
+								const unsigned long z, 
 								bool value)
 {
-    const unsigned int idx{x+(y*m_resolution)+(z*m_resXres)};
+    const unsigned long idx{x+(y*m_resolution)+(z*m_resXres)};
 	if(idx<m_data.size())
 	{
 		m_data[idx].activate(value);
@@ -337,26 +337,26 @@ inline void vxGrid::setElement(const unsigned int x,
 }
 
 
-inline unsigned char vxGrid::elementColorIndex(const unsigned int x, 
-												const unsigned int y, 
-												const unsigned int z) const
+inline unsigned char vxGrid::elementColorIndex(const unsigned long x, 
+												const unsigned long y, 
+												const unsigned long z) const
 {
 	return vxAt(x,y,z).colorIndex();
 }
 
-inline void vxGrid::setElementColorIndex(const unsigned int x, 
-											const unsigned int y, 
-											const unsigned int z, 
+inline void vxGrid::setElementColorIndex(const unsigned long x, 
+											const unsigned long y, 
+											const unsigned long z, 
 											const unsigned char c)
 {
-	const unsigned int idx{index(x,y,z)};
+	const unsigned long idx{index(x,y,z)};
 	if(idx<m_data.size())
 	{
 		m_data[idx].setColorIndex(c);
 	}
 }
 
-inline void vxGrid::setElement(unsigned int idx, bool value)
+inline void vxGrid::setElement(unsigned long idx, bool value)
 {
 	if(idx<m_data.size())
 	{
@@ -364,11 +364,11 @@ inline void vxGrid::setElement(unsigned int idx, bool value)
 	}
 }
 
-inline vxVector3d vxGrid::getVoxelPosition(unsigned int idx) const
+inline vxVector3d vxGrid::getVoxelPosition(unsigned long idx) const
 {
-	int retz = idx / m_resXres;
-	int rety = (idx%m_resXres) / m_resolution;
-	int retx = idx % m_resolution;
+	long retz = idx / m_resXres;
+	long rety = (idx%m_resXres) / m_resolution;
+	long retx = idx % m_resolution;
 	
 	return getVoxelPosition(retx, rety, retz);
 }
@@ -376,13 +376,13 @@ inline vxVector3d vxGrid::getVoxelPosition(unsigned int idx) const
 inline vx& vxGrid::vxAtPosition(const vxVector3d &position)
 {
 	vxVector3d pos = position - (m_position-m_midSize); 
-	unsigned int idx = floor(pos.x());
+	unsigned long idx = floor(pos.x());
 	idx += floor(pos.y()) * m_resolution;
 	idx += floor(pos.z()) * m_resXres;
 	return m_data[idx];
 }
 
-vx &vxGrid::vxAt(const unsigned int iX, const unsigned int iY, const unsigned int iZ)
+vx &vxGrid::vxAt(const unsigned long iX, const unsigned long iY, const unsigned long iZ)
 {
 	return m_data[index(iX,iY,iZ)];
 }
@@ -391,32 +391,32 @@ vx &vxGrid::vxAt(const unsigned int iX, const unsigned int iY, const unsigned in
 inline vx vxGrid::vxAtPosition(const vxVector3d &position) const
 {
 	vxVector3d pos = position - (m_position-m_midSize); 
-	unsigned int idx = floor(pos.x());
+	unsigned long idx = floor(pos.x());
 	idx += floor(pos.y()) * m_resolution;
 	idx += floor(pos.z()) * m_resXres;
 	return m_data[idx];
 }
 
-vx vxGrid::vxAt(const unsigned int iX, 
-				const unsigned int iY, 
-				const unsigned int iZ) const
+vx vxGrid::vxAt(const unsigned long iX, 
+				const unsigned long iY, 
+				const unsigned long iZ) const
 {
 	return m_data[index(iX,iY,iZ)];
 }
 
-inline unsigned int vxGrid::indexAtPosition(const vxVector3d &position) const
+inline unsigned long vxGrid::indexAtPosition(const vxVector3d &position) const
 {
 	vxVector3d pos = position - (m_position-m_midSize); 
-	unsigned int idx = floor(pos.x());
+	unsigned long idx = floor(pos.x());
 	idx += floor(pos.y()) * m_resolution;
 	idx += floor(pos.z()) * m_resXres;
 	return idx<m_resXresXres ? idx: 0;
 }
 
 
-inline vxVector3d vxGrid::getVoxelPosition(const unsigned int iX, 
-										   const unsigned int iY, 
-										   const unsigned int iZ) const
+inline vxVector3d vxGrid::getVoxelPosition(const unsigned long iX, 
+										   const unsigned long iY, 
+										   const unsigned long iZ) const
 {
 	double x = (m_position.x() - m_midSize) + (iX * m_boxSize) + m_resDivTres;
 	double y = (m_position.y() - m_midSize) + (iY * m_boxSize) + m_resDivTres;
@@ -426,7 +426,7 @@ inline vxVector3d vxGrid::getVoxelPosition(const unsigned int iX,
 
 void vxGrid::createSphere(const vxVector3d &center, const double radio)
 {
-	unsigned int x, y, z;
+	unsigned long x, y, z;
 	
 	for(x=0;x<m_resolution;x++)
 	{
