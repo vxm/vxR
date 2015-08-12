@@ -36,7 +36,6 @@ public:
 
 struct vx
 {
-	unsigned char v{0b0000'0000};
 	unsigned char c{0b0000'0000};
 		
 	inline void activate(bool active)
@@ -46,27 +45,27 @@ struct vx
 
 	inline bool active() const
 	{
-		return (bool)v;
+		return (bool)c;
 	}
 
 	inline void activate()
 	{
-		v=0b00000001;
+		c|=0b00000001;
 	}
 	
 	inline void deactivate()
 	{
-		v=0b00000000;
+		c&=0b00000000;
 	}
 
 	inline unsigned char colorIndex() const
 	{
-		return c;
+		return c>>1;
 	}
 
 	inline void setColorIndex(const unsigned char ci)
 	{
-		c=ci;
+		c=ci|0b00000001;
 	}
 };
 
