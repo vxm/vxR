@@ -20,9 +20,9 @@ void ImageData::setProperties(std::shared_ptr<ImageProperties> &prop)
 unsigned char *ImageData::get(const vxVector2d &coords) const
 {
 	size_t numElements = m_prop->numElements();
-	const unsigned int&& compX = coords.y() * (m_prop->rx()+1);
-	const unsigned int&& compY = coords.x() * (m_prop->ry()+1);
-	unsigned int dist = (compX + (compY * m_prop->rx())) * m_prop->numChannels();
+	const unsigned long&& compX = coords.y() * (m_prop->rx()+1);
+	const unsigned long&& compY = coords.x() * (m_prop->ry()+1);
+	unsigned long dist = (compX + (compY * m_prop->rx())) * m_prop->numChannels();
 	//std::cout << (m_prop->rx() * m_prop->ry() * m_prop->numChannels()) << "         " << dist << std::endl; 
 	if(dist>numElements)
 	{
