@@ -125,7 +125,9 @@ public:
 	void addVertices(const std::vector<vxVector3d> &verts, 
 					 const vxVector3d &offset, 
 					 const vxVector3d &scale);
-	
+	void dumpFileInMemory(const std::__cxx11::string &fileName);
+	void dumpNumericTypeInMemory();
+
 // OPERATION WITH GRID
 	inline unsigned long index(const unsigned long x, 
 								const unsigned long y, 

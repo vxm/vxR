@@ -1,9 +1,9 @@
 #include <cassert>
 #include <mutex>
+#include <fstream>
 
 #include "MathUtils.h"
 #include "vxGrid.h"
-
 std::mutex gridMutex;
 
 vxGrid::vxGrid()
@@ -125,6 +125,35 @@ void vxGrid::createDiagonals()
 	}
 }
 
+void vxGrid::dumpFileInMemory(const std::string &fileName)
+{
+	std::ifstream file(fileName, std::ios::binary);
+	file.seekg(0, std::ios::end);
+	std::streamsize size = file.tellg();
+	file.seekg(0, std::ios::beg);
+	
+	if(size>m_data.size())
+	{
+		std::cout << "Error, trying to dump long file to memory "
+					<< fileName << std::endl;
+		return;
+	}
+	
+	
+	std::vector<char> buffer(size);
+	if (file.read((char*)&(m_data[0]), size))
+	{
+	    /* worked! */
+	}
+}
+
+void vxGrid::dumpNumericTypeInMemory()
+{
+	using numType = int;
+	void *p = (void*) &m_data[0];
+	new (p) numType(std::numeric_limits<numType>::max());
+}
+
 void vxGrid::createCorners()
 {
 	unsigned long resminusone=m_resolution-1;
@@ -135,7 +164,8 @@ void vxGrid::createCorners()
 	activate(0, resminusone, resminusone);
 	activate(0, resminusone,			 0);
 	activate(0,	0,			resminusone);
-	activate(0,	0,					0);	}
+	activate(0,	0,					0);	
+}
 
 void vxGrid::createGround(unsigned long offset)
 {
