@@ -15,7 +15,10 @@
 #include "vxGrid.h"
 #include "vxGridUnitTest.h"
 
+#include "vxSceneParser.h"
+
 static const std::string baseName("image.0000001.tif");
+using namespace std::string_literals;
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
 using namespace vxCore;
@@ -113,6 +116,12 @@ int main(int argc, char *argv[])
 		for(int i=1; i<argc; i++)
 		{
 			std::cout << "\t arc   " << argv[i] << std::endl;
+			if("-r"s==argv[i])
+			{
+				program = 3;
+				break;
+			}
+			
 			if(memcmp(argv[i],"-allTests", 9)==0
 				|| memcmp(argv[i],"-at", 3)==0)
 			{
@@ -133,7 +142,30 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
+	
+	std::string scenePath;
+	// Look for a scene argument.
+	if(program==3)
+	{
+		bool sceneParam{false};
+		for(int i=1; i<argc; i++)
+		{
+			if(sceneParam)
+			{
+				scenePath = argv[i];
+			}
+			
+			if("-scene"s==argv[i])
+			{
+				sceneParam = true;
+			}
+		}
+	}
+	std::cout << "\t Caputred scene file argument: " << scenePath << std::endl;
 
+	vxSceneParser scene(scenePath);
+	scene.procesScene();
+	
 	switch(program)
 	{
 		case 1:
@@ -147,6 +179,7 @@ int main(int argc, char *argv[])
 			executeRenderProcess(argc, argv);
 		break;
 	}
+
 	return 1;
 }
 
