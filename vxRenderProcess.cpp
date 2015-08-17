@@ -175,9 +175,10 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
 														N[1]==0 ? 1 : -1,
 														N[2]==0 ? 1 : -1);
-						invV+=vxVector3d(MathUtils::getRand(0.8)-0.4,
-										 MathUtils::getRand(0.8)-0.4,
-										 MathUtils::getRand(0.8)-0.4);
+						const auto range=0.2;
+						invV+=vxVector3d(MathUtils::getRand(range)-(range/2.0),
+										 MathUtils::getRand(range)-(range/2.0),
+										 MathUtils::getRand(range)-(range/2.0));
 						vxCollision refxCollision;
 						const auto&& reflexRay = vxRay(collision.position()
 														+N/10000,
