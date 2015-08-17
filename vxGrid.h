@@ -116,6 +116,7 @@ public:
 	void updateBB();
 	void createDiagonals();
 	void createCorners();
+	void createRoof(unsigned long offset = 0);
 	void createGround(unsigned long offset = 0);
 	void createEdges();
 	void createSphere(const vxVector3d &center, const double radio);

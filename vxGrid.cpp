@@ -180,6 +180,20 @@ void vxGrid::createGround(unsigned long offset)
 		}
 }
 
+void vxGrid::createRoof(unsigned long offset)
+{
+	if(offset>=m_resolution)
+		return;
+	
+	for (unsigned long i=0;i<m_resolution;i++)
+		for (unsigned long j=0;j<m_resolution;j++)
+		{
+			vxAt(i,(m_resolution-offset-1),j).activate();
+			vxAt(i,(m_resolution-offset-1),j).setColorIndex(10);
+		}
+}
+
+
 void vxGrid::createEdges()
 {
 	unsigned long resminusone=m_resolution-1;
