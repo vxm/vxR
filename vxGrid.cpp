@@ -229,9 +229,7 @@ bool vxGrid::getRandomBoolean(double ratio)
 
 void vxGrid::createRandom(double ratio)
 {
-	for(auto &&it = begin(m_data);
-					it!= end(m_data);
-									++it)
+	for(auto &&it = begin(m_data);it!= end(m_data);	++it)
 	{
 		if(getRandomBoolean(ratio))
 		{
