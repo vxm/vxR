@@ -180,6 +180,8 @@ public:
 								const unsigned long iZ) const;
 	vxVector3d getVoxelPosition(unsigned long idx) const;
 	inline unsigned long indexAtPosition(const vxVector3d &position) const;
+	inline vx& vxAt(const unsigned long idx);
+	inline vx vxAt(const unsigned long idx) const;
 	inline vx& vxAtPosition(const vxVector3d &position);
 	inline vx& vxAt(const unsigned long iX, 
 					const unsigned long iY, 

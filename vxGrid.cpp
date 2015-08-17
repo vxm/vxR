@@ -262,14 +262,14 @@ void vxGrid::initialize(bool value)
 	{
 		for(unsigned long i=0;i<m_data.size();i++)
 		{
-			m_data[i].activate();
+			vxAt(i).activate();
 		}
 	}
 	else
 	{
 		for(unsigned long i=0;i<m_data.size();i++)
 		{
-			m_data[i].deactivate();
+			vxAt(i).deactivate();
 		}
 	}
 }
@@ -280,7 +280,7 @@ unsigned long vxGrid::numActiveVoxels()
 	
 	for(unsigned long i=0;i<m_data.size();i++)
 	{
-		if(m_data[i].active())
+		if(vxAt(i).active())
 			av++;
 	}
 	
@@ -361,8 +361,7 @@ inline bool vxGrid::getElement(const unsigned long x,
 								const unsigned long y, 
 								const unsigned long z) const
 {
-	auto p = x+(y*m_resolution)+(z*m_resXres);
-	return m_data[p].active();
+	return active(index(x,y,z));
 }
 
 inline void vxGrid::setElement(const unsigned long x, 
@@ -370,11 +369,7 @@ inline void vxGrid::setElement(const unsigned long x,
 								const unsigned long z, 
 								bool value)
 {
-    const unsigned long idx{x+(y*m_resolution)+(z*m_resXres)};
-	if(idx<m_data.size())
-	{
-		m_data[idx].activate(value);
-	}
+	vxAt(x,y,z).activate(value);
 }
 
 
@@ -382,7 +377,7 @@ inline unsigned char vxGrid::elementColorIndex(const unsigned long x,
 												const unsigned long y, 
 												const unsigned long z) const
 {
-	return vxAt(x,y,z).colorIndex();
+	return (index(x,y,z))%8;
 }
 
 inline void vxGrid::setElementColorIndex(const unsigned long x, 
@@ -390,19 +385,12 @@ inline void vxGrid::setElementColorIndex(const unsigned long x,
 											const unsigned long z, 
 											const unsigned char c)
 {
-	const unsigned long idx{index(x,y,z)};
-	if(idx<m_data.size())
-	{
-		m_data[idx].setColorIndex(c);
-	}
+	vxAt(x,y,z).setColorIndex(c);
 }
 
 inline void vxGrid::setElement(unsigned long idx, bool value)
 {
-	if(idx<m_data.size())
-	{
-		m_data[idx].activate(value);
-	}
+	vxAt(idx).activate(value);
 }
 
 inline vxVector3d vxGrid::getVoxelPosition(unsigned long idx) const
@@ -420,14 +408,13 @@ inline vx& vxGrid::vxAtPosition(const vxVector3d &position)
 	unsigned long idx = floor(pos.x());
 	idx += floor(pos.y()) * m_resolution;
 	idx += floor(pos.z()) * m_resXres;
-	return m_data[idx];
+	return vxAt(idx);
 }
 
 vx &vxGrid::vxAt(const unsigned long iX, const unsigned long iY, const unsigned long iZ)
 {
-	return m_data[index(iX,iY,iZ)];
+	return vxAt(index(iX,iY,iZ));
 }
-
 
 inline vx vxGrid::vxAtPosition(const vxVector3d &position) const
 {
@@ -435,14 +422,14 @@ inline vx vxGrid::vxAtPosition(const vxVector3d &position) const
 	unsigned long idx = floor(pos.x());
 	idx += floor(pos.y()) * m_resolution;
 	idx += floor(pos.z()) * m_resXres;
-	return m_data[idx];
+	return vxAt(idx);
 }
 
 vx vxGrid::vxAt(const unsigned long iX, 
 				const unsigned long iY, 
 				const unsigned long iZ) const
 {
-	return m_data[index(iX,iY,iZ)];
+	return vxAt(index(iX,iY,iZ));
 }
 
 inline unsigned long vxGrid::indexAtPosition(const vxVector3d &position) const
@@ -454,6 +441,27 @@ inline unsigned long vxGrid::indexAtPosition(const vxVector3d &position) const
 	return idx<m_resXresXres ? idx: 0;
 }
 
+inline vx &vxGrid::vxAt(const unsigned long idx)
+{
+	return m_data[idx];
+}
+
+inline vx vxGrid::vxAt(const unsigned long idx) const
+{
+	return m_data[idx];
+}
+
+bool vxGrid::bitInBufferData(const unsigned long idx) const
+{
+	auto byte = m_data[idx/8];
+	unsigned char ch = byte.c;
+	const unsigned char sh = (7 - (idx%8));
+	//Doing this so we loose any left information
+	// and bit gets filtered.
+	ch<<=sh;
+	ch>>=sh;
+	return (bool)ch;
+}
 
 inline vxVector3d vxGrid::getVoxelPosition(const unsigned long iX, 
 										   const unsigned long iY, 
