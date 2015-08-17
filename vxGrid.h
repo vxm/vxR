@@ -199,6 +199,7 @@ public:
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
 	unsigned char elementColorIndex(const unsigned long x, const unsigned long y, const unsigned long z) const;
+	bool bitInBufferData(const unsigned long idx) const;
 };
 
 /*
