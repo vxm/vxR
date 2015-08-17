@@ -565,7 +565,9 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	}
 	else if(!m_boundingBox->throwRay(ray, collide))
 	{
-		collide.setColor(vxColor::red.dimm(3));
+		//This is not possible, only from an error.
+		//red is the graphical assert.
+		collide.setColor(vxColor::red);
 		return 0;
 	}
 
