@@ -13,6 +13,11 @@
 #include "vxSampler.h"
 #include "vxThreadPool.h"
 
+#define USE_THREADS 1
+#define SINGLERAY 0
+const unsigned int visSamples {3u};
+const unsigned int rfxSamples {0u};
+
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
 
@@ -60,7 +65,6 @@ vxStatus::code vxRenderProcess::postProcess(vxProcess *p)
 }
 
 
-#define USE_THREADS 1
 vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
@@ -119,12 +123,9 @@ double vxRenderProcess::progress() const
 	return  100.0 * m_progress.load() / (m_prop->ry()*m_nThreads);
 }
 
-#define SINGLERAY 0
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	const unsigned int visSamples {3u};
-	const unsigned int rfxSamples {4u};
 	const auto&& rCamera = scene()->defaultCamera();
 	const auto&& invSamples = 1.0/(double)visSamples;
 	vxSampler sampler(visSamples);
@@ -136,7 +137,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 
 #if SINGLERAY
 	vxColor color;
-	vxVector2d hitCoordinates(.55, .25);
+	vxVector2d hitCoordinates((283.0/300.0), (150.0/300.0));
 
 //TODO: return this to smart pointer.
 	auto bk = m_bucketList.getBucket(hitCoordinates);
