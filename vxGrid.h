@@ -119,6 +119,7 @@ public:
 	void createRoof(unsigned long offset = 0);
 	void createGround(unsigned long offset = 0);
 	void createEdges();
+	void fill();
 	void createSphere(const vxVector3d &center, const double radio);
 	void createSphere(double x, double y, double z, const double radio);
 	bool getRandomBoolean(double ratio = 1.0);

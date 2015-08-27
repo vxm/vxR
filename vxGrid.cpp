@@ -219,6 +219,14 @@ void vxGrid::createEdges()
 	}
 }
 
+void vxGrid::fill()
+{
+	for(unsigned long i=0;i<m_data.size();i++)
+	{
+		vxAt(i).activate();
+	}	
+}
+
 void vxGrid::createSphere(double x, double y, double z, const double radio)
 {
 	createSphere(vxVector3d{(double)x,(double)y,(double)z}, radio);
