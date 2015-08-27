@@ -337,7 +337,7 @@ inline bool vxGrid::activeInRange(const vxVector3d &pos) const
 inline bool vxGrid::active(unsigned long idx) const
 {
 	if (idx<m_resXresXres)
-		return m_data[idx].active();
+		return vxAt(idx).active();
 	else
 		return false;
 }
@@ -621,9 +621,8 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 		const auto& geometry = vxGlobal::getInstance()->getExistingBox();
 		const auto& instance = geometry->at(pos, 1.0);
 		const auto& iap = indexAtPosition(pos);
-		const auto& eci = m_data[iap];
-		const auto& c = vxColor::indexColor(eci.colorIndex());
-		collide.setColor(c);
+		const auto& c = vxColor::indexColor(vxAt(iap).colorIndex());
+		collide.setColor(collide.color()+c);
 		return instance->throwRay( ray, collide );
 	}
 	
