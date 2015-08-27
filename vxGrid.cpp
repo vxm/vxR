@@ -591,7 +591,6 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		vx = vxGrid::nextVoxel(r, exactIntersection);
 		if(active(vx))
 		{
-			collide.setColor(vxColor::blue.dimm(10));
 			
 			found = true;
 			break;
