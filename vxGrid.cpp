@@ -6,6 +6,9 @@
 #include "vxGrid.h"
 std::mutex gridMutex;
 
+#define DBL_EPSILON 1e-12
+
+
 vxGrid::vxGrid()
 {
 	m_boundingBox = std::make_unique<vxBox>(true);
@@ -49,7 +52,7 @@ vxGrid::~vxGrid()
 
 void vxGrid::updateBB()
 {
-	m_boundingBox->set(m_position, m_size+.005);
+	m_boundingBox->set(m_position, m_size + DBL_EPSILON);
 	//TODO:missing
 }
 
