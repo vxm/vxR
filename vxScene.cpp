@@ -8,25 +8,25 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 50
+#define RESL 80
 #define PX resl * 2
 #define PY resl * 0
 #define PZ resl * 2
 
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
-//plyReader->processPLYFile("/home/mario/Downloads/statue_and_dog_1.ply");
-//plyReader->processPLYFile("/home/mario/Downloads/dragon_1.ply");
-//plyReader->processPLYFile("/home/mario/Downloads/vmilo_0.ply");
-//plyReader->processPLYFile("/home/mario/Downloads/lucyTop_1.ply");
-///home/mario/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
-///home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg
-///home/mario/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
-///home/mario/code/vxR/Milkyway/Milkyway_BG.jpg
+//plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
+//plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
+//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
+//plyReader->pro	cessPLYFile("/home/john/Downloads/lucyTop_1.ply");
+///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
+///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
+///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
 
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
-	, m_environment("/home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg") //TODO: if string is empty program crashes, fix it.
+	, m_environment("/home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg") //TODO: if string is empty program crashes, fix it.
 {}
 
 vxScene::~vxScene()
@@ -34,8 +34,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples{35};
-	const double sunIntensity{1.2};
+	int nLightSamples{55};
+	const double sunIntensity{0.9};
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
 
@@ -51,11 +51,11 @@ void vxScene::build()
 	auto envLight = createIBLight(m_environment.path());
 	envLight->setSamples(nLightSamples);
 	envLight->setRadius(0.997);
-	envLight->setIntensity(1.0);
+	envLight->setIntensity(2.1);
 
-	//This simulates the sun.
+//	//This simulates the sun.
 	auto sunLight = createDirectLight();
-	const auto&& sunOrientation = vxVector3d(7,-10,2).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
+	const auto&& sunOrientation = vxVector3d(-7,-10,-2).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
 	sunLight->setOrientation(sunOrientation);
 	sunLight->setIntensity(sunIntensity);
 	sunLight->setColor(sunColor);
@@ -64,25 +64,30 @@ void vxScene::build()
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/mario/Downloads/wow_5.ply");
+//	plyReader->processPLYFile("/home/john/Downloads/wow_4.ply");
+	plyReader->processPLYFile("../vxR/juan_0.ply");
 	loadFromFile(plyReader);
 
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
-	auto iRadius = 10.0;
-	auto distSph = (resl/3.0);
+	auto iRadius = 6.0;
+	auto distSph = (resl/3.3);
 	
-	//m_grids[0]->createSphere(p.x(), p.y()-(resl/2.0), p.z(),  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph,  (resl/(7.0))); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph,  (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph,  (resl/5.0)); // Position, radius
+//	m_grids[0]->fill();
+//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph, (resl/(7.0))); // Position, radius
+//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph, (resl/5.0)); // Position, radius
 	//m_grids[0]->createEdges(); // of the grid
 	m_grids[0]->createGround();
+//	m_grids[0]->createRoof();
 
+	//m_grids[0]->dumpFileInMemory("/home/john/code/build-vxR-Desktop-Release/vxR");
+	//m_grids[0]->dumpFileInMemory("/home/john/code/build-vxR-Desktop-Release/image.0000002.tif");
+	
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
 	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
@@ -96,7 +101,7 @@ vxScene::createCamera(const vxMatrix &,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set( vxVector3d::zero,
 					vxVector3d::constZ,
-					2.8,
+					2.2,
 					hAperture,
 					vAperture);
 
@@ -183,9 +188,9 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	const double resl = RESL;
 	const auto& vts = importer->getPointCloud();
 	m_grids[0]->addVertices(vts,
-							vxVector3d{PX,PY-(resl/2),PZ},
-							vxVector3d{resl, resl, resl});
-//							vxVector3d{resl/2.2, resl/2.2, resl/2.2});
+							vxVector3d{PX,PY,PZ},
+//							vxVector3d{resl, resl resl});
+							vxVector3d{resl*1.99, resl*1.99, resl*1.99});
 	return true;
 }
 

@@ -196,7 +196,6 @@ void vxGrid::createRoof(unsigned long offset)
 		}
 }
 
-
 void vxGrid::createEdges()
 {
 	unsigned long resminusone=m_resolution-1;

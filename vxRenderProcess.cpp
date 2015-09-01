@@ -15,8 +15,8 @@
 
 #define USE_THREADS 1
 #define SINGLERAY 0
-const unsigned int visSamples {3u};
-const unsigned int rfxSamples {0u};
+const unsigned int visSamples {2u};
+const unsigned int rfxSamples {1u};
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
