@@ -15,16 +15,16 @@ vxColor vxColor::lookup(const vxColor col)
 
 vxColor vxColor::lookup(const double r, const double g, const double b)
 {
-	return vxColor( MathUtils::remap(r, mnc, mxc),
+	return std::move(vxColor( MathUtils::remap(r, mnc, mxc),
 					MathUtils::remap(g, mnc, mxc),
-					MathUtils::remap(b, mnc, mxc));
+					MathUtils::remap(b, mnc, mxc)));
 }
 
 vxColor vxColor::lookup256(const int r, const int g, const int b)
 {
-	return vxColor( MathUtils::remap(r/255.0, mnc, mxc),
+	return std::move(vxColor( MathUtils::remap(r/255.0, mnc, mxc),
 					MathUtils::remap(g/255.0, mnc, mxc),
-					MathUtils::remap(b/255.0, mnc, mxc));
+					MathUtils::remap(b/255.0, mnc, mxc)));
 }
 
 vxColor vxColor::indexColor(const int idx)
@@ -218,7 +218,9 @@ void vxColor::get(double &ri, double &gi, double &bi, double &ai) const
 
 vxColor vxColor::gained(double gain) const 
 {
-	return vxColor(m_r*gain,m_g*gain,m_b*gain);
+	return std::move(vxColor{m_r*gain,
+							 m_g*gain,
+							 m_b*gain});
 }
 
 
@@ -275,89 +277,163 @@ vxColor vxColor::dimm(double factor) const
 	return (*this)*(1.0/factor);
 }
 
-vxColor vxColor::operator+(unsigned int factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_b);}
+vxColor vxColor::operator+(unsigned int factor) const 
+{
+	return std::move(vxColor(factor+m_r,
+							 factor+m_g,
+							 factor+m_b,
+							 factor+m_b));
+}
 
-vxColor vxColor::operator-(unsigned int factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
+vxColor vxColor::operator-(unsigned int factor) const 
+{
+	return std::move(vxColor(m_r-factor,
+							 m_g-factor,
+							 m_b-factor,
+							 m_a-factor));
+}
 
-vxColor vxColor::operator*(unsigned int factor) const {return vxColor(factor*m_r,factor*m_g,factor*m_b,factor*m_a);}
+vxColor vxColor::operator*(unsigned int factor) const 
+{
+	return std::move(vxColor(factor*m_r,
+							 factor*m_g,
+							 factor*m_b,
+							 factor*m_a));
+}
 
-vxColor vxColor::operator/(unsigned int factor) const {return vxColor(m_r/double(factor),m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
+vxColor vxColor::operator/(unsigned int factor) const 
+{
+	return std::move(vxColor(m_r/double(factor),
+							 m_g/(double)factor,
+							 m_b/(double)factor,
+							 m_a/(double)factor));
+}
 
-vxColor vxColor::operator/(int factor) const {return vxColor(m_r/double(factor),m_g/(double)factor,m_b/(double)factor,m_a/(double)factor);}
+vxColor vxColor::operator/(int factor) const 
+{
+	return std::move(vxColor(m_r/double(factor),
+							 m_g/(double)factor,
+							 m_b/(double)factor,
+							 m_a/(double)factor));
+}
 
 vxColor vxColor::operator/(double factor) const 
 {
-	return vxColor(m_r/(double)factor,
+	return std::move(vxColor(m_r/(double)factor,
 				   m_g/(double)factor,
 				   m_b/(double)factor,
-				   m_a/(double)factor);
+				   m_a/(double)factor));
 }
 
 vxColor vxColor::operator/(float factor) const 
 {
-	return vxColor(m_r/(double)factor,
+	return std::move(vxColor(m_r/(double)factor,
 				   m_g/(double)factor,
 				   m_b/(double)factor,
-				   m_a/(double)factor);
+				   m_a/(double)factor));
 }
 
 vxColor vxColor::operator/(const vxColor &entrada) const 
 {
-	return vxColor(entrada.m_r/m_r,
+	return std::move(vxColor(entrada.m_r/m_r,
 				   entrada.m_g/m_g,
 				   entrada.m_b/m_b,
-				   entrada.m_a/m_a);
+				   entrada.m_a/m_a));
 }
 
 vxColor vxColor::operator*(const vxColor &entrada) const 
 {
-	return vxColor(entrada.m_r*m_r,
+	return std::move(vxColor(entrada.m_r*m_r,
 					entrada.m_g*m_g,
 					entrada.m_b*m_b,
-					entrada.m_a*m_a);
+					entrada.m_a*m_a));
 }
 vxColor vxColor::operator*(const int factor) const 
 {
-	return vxColor(factor*m_r,
+	return std::move(vxColor(factor*m_r,
 					factor*m_g,
 					factor*m_b,
-					factor*m_a);
+					factor*m_a));
 }
 
 vxColor vxColor::operator*(const float factor) const 
 {
-	return vxColor(factor*m_r,
+	return std::move(vxColor(factor*m_r,
 					factor*m_g,
 					factor*m_b,
-					factor*m_a);
+					factor*m_a));
 }
 
 vxColor vxColor::operator*(double factor) const 
 {
-	return vxColor(factor*m_r,
+	return std::move(vxColor(factor*m_r,
 					factor*m_g,
 					factor*m_b,
-					factor*m_a);
+					factor*m_a));
 }
 
+vxColor vxColor::operator-(int factor) const 
+{
+	return std::move(vxColor(m_r-factor,
+							 m_g-factor,
+							 m_b-factor,
+							 m_a-factor));
+}
 
-vxColor vxColor::operator-(int factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
+vxColor vxColor::operator-(float factor) const 
+{
+	return std::move(vxColor(m_r-factor,
+							 m_g-factor,
+							 m_b-factor,
+							 m_a-factor));
+}
 
-vxColor vxColor::operator-(float factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
+vxColor vxColor::operator-(double factor) const 
+{
+	return std::move(vxColor(m_r-factor,
+							 m_g-factor,
+							 m_b-factor,
+							 m_a-factor));
+}
 
-vxColor vxColor::operator-(double factor) const {return vxColor(m_r-factor,m_g-factor,m_b-factor,m_a-factor);}
+vxColor vxColor::operator-(const vxColor &entrada) const 
+{
+	return std::move(vxColor(m_r-entrada.m_r,
+							 m_g-entrada.m_g,
+							 m_b-entrada.m_b,
+							 m_a-entrada.m_a));
+}
 
-vxColor vxColor::operator-(const vxColor &entrada) const {return vxColor(m_r-entrada.m_r,m_g-entrada.m_g,m_b-entrada.m_b,m_a-entrada.m_a);}
+vxColor vxColor::operator+(int factor) const 
+{
+	return std::move(vxColor(factor+m_r,
+							 factor+m_g,
+							 factor+m_b,
+							 factor+m_b));
+}
 
-vxColor vxColor::operator+(int factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_b);}
+vxColor vxColor::operator+(float factor) const 
+{
+	return std::move(vxColor(factor+m_r,
+							 factor+m_g,
+							 factor+m_b,
+							 factor+m_a));
+}
 
-vxColor vxColor::operator+(float factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_a);}
-
-vxColor vxColor::operator+(double factor) const {return vxColor(factor+m_r,factor+m_g,factor+m_b,factor+m_a);}
+vxColor vxColor::operator+(double factor) const 
+{
+	return std::move(vxColor(factor+m_r,
+							 factor+m_g,
+							 factor+m_b,
+							 factor+m_a));
+}
 
 vxColor vxColor::operator+(const vxColor &other) const
 {
-	return vxColor(other.m_r+m_r, other.m_g+m_g, other.m_b+m_b, other.m_a+m_a);
+	return std::move(vxColor(other.m_r+m_r, 
+							 other.m_g+m_g, 
+							 other.m_b+m_b, 
+							 other.m_a+m_a));
 }
 
 void vxColor::toRGBA8888(unsigned char *tbuff) const
