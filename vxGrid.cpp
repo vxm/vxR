@@ -419,11 +419,9 @@ inline vxVector3d vxGrid::getVoxelPosition(unsigned long idx) const
 
 inline vx& vxGrid::vxAtPosition(const vxVector3d &position)
 {
-	vxVector3d pos = position - (m_position-m_midSize); 
-	unsigned long idx = floor(pos.x());
-	idx += floor(pos.y()) * m_resolution;
-	idx += floor(pos.z()) * m_resXres;
-	return vxAt(idx);
+	const auto&& pos = (position - (m_position-m_midSize)).floorVector(); 
+	unsigned long idx = index(pos.x(),pos.y(),pos.z());
+	return vxAt(idx>=m_resXresXres ? 0:idx);
 }
 
 vx &vxGrid::vxAt(const unsigned long iX, const unsigned long iY, const unsigned long iZ)
@@ -433,11 +431,9 @@ vx &vxGrid::vxAt(const unsigned long iX, const unsigned long iY, const unsigned 
 
 inline vx vxGrid::vxAtPosition(const vxVector3d &position) const
 {
-	vxVector3d pos = position - (m_position-m_midSize); 
-	unsigned long idx = floor(pos.x());
-	idx += floor(pos.y()) * m_resolution;
-	idx += floor(pos.z()) * m_resXres;
-	return vxAt(idx);
+	const auto&& pos = (position - (m_position-m_midSize)).floorVector(); 
+	unsigned long idx = index(pos.x(),pos.y(),pos.z());
+	return vxAt(idx>=m_resXresXres ? 0:idx);
 }
 
 vx vxGrid::vxAt(const unsigned long iX, 
