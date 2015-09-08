@@ -72,6 +72,8 @@ public:
 
 	// Loads from a file using an importer object.
 	bool loadFromFile(std::shared_ptr<vxImporter> importer);
+
+	int throwRay(const vxRay &ray) const;
 	
 	// devuelve 0 si no le da a la caja
 	// 1 si da y 2 y el resultado es optimo

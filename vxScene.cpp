@@ -194,6 +194,12 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	return true;
 }
 
+int vxScene::throwRay(const vxRay &ray) const
+{
+	return m_grids[0]->throwRay(ray);
+}
+
+
 int vxScene::throwRay(const vxRay &ray,
 						vxCollision &collide) const
 {
