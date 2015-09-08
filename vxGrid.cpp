@@ -694,3 +694,13 @@ bool vxGrid::hasCollision(const vxRay &ray) const
 	return found;
 }
 
+/*
+std::cout << "minX " << m_xmin << std::endl;
+std::cout << "minY " << m_ymin << std::endl;
+std::cout << "minZ " << m_zmin << std::endl;
+
+std::cout << "maxX " << m_xmax << std::endl;
+std::cout << "maxY " << m_ymax << std::endl;
+std::cout << "maxZ " << m_zmax << std::endl;
+*/
+
