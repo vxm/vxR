@@ -252,12 +252,17 @@ void vxGrid::addVertices(const std::vector<vxVector3d> &verts,
 						 const vxVector3d &offset,
 						 const vxVector3d &scale)
 {
-	for(const auto& v : verts)
+	for(const auto& vert : verts)
 	{
-		const vxVector3d && p{(v*scale)+offset};
-		activate(p);
-		vxAtPosition(p).setColorIndex((unsigned char)
-									  MathUtils::getRand(24));
+		const auto&& p{(vert*scale)+offset};
+		
+		if(inGrid(p))
+		{
+			auto&& v = vxAtPosition(p);
+			v.activate();
+			v.setColorIndex((unsigned char)
+							MathUtils::getRand(24));
+		}
 	}
 }
 
