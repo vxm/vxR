@@ -216,16 +216,28 @@ vxColor vxLight::acummulationLight(const vxCollision &collision) const
 
 vxColor vxDirectLight::acummulationLight(const vxCollision &collision) const
 {
-	const auto& cPnt = collision.position();
-	const auto &scn = m_scene.lock();
+	const auto&& cPnt = collision.position();
+	const auto&& scn = m_scene.lock();
 
 	// compute all sort of shadows.
-	auto lumm = m_intensity * lightRatio(cPnt, 
-										 collision.normal(), 
-										cPnt + m_orientation.inverted());
+	const auto&& ratio = lightRatio(cPnt, 
+								  collision.normal(), 
+								 cPnt + m_orientation.inverted());
+	vxColor ret{vxColor::black};
+	
+	if(ratio>0.0)
+	{
+		auto lumm = m_intensity * ratio;
 
-	const vxRay f(cPnt, m_orientation.inverted());
-	return scn->hasCollision(f) ? vxColor::black : color().gained(lumm);
+		const vxRay f(cPnt, m_orientation.inverted());
+		
+		if (!scn->throwRay(f))
+		{
+			ret = color().gained(lumm);
+		}
+	}
+		
+	return ret;
 }
 
 
