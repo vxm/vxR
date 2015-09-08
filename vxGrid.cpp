@@ -316,9 +316,7 @@ bool vxGrid::active(const unsigned long x,
 
 inline bool vxGrid::active(const vxVector3d &pos) const
 {
-	if(	MathUtils::inRange(pos.x(), m_xmin, m_xmax)
-		&& MathUtils::inRange(pos.y(), m_ymin, m_ymax)
-		&& MathUtils::inRange(pos.z(), m_zmin, m_zmax))
+	if(inGrid(pos))
 	{
 		const auto&& fPos = pos - (m_position - m_midSize);
 		return getElement((unsigned long)floor(fPos.x()),
@@ -347,23 +345,25 @@ inline bool vxGrid::active(unsigned long idx) const
 }
 
 inline void vxGrid::activate(const unsigned long x, 
-					  const unsigned long y, 
-					  const unsigned long z)
+								const unsigned long y, 
+								const unsigned long z)
 {
 	setElement(x,y,z,true);
 }
 
-void vxGrid::activate(const vxVector3d &pos)
+bool vxGrid::activate(const vxVector3d &pos)
 {
-	if(	MathUtils::inRange(pos.x(), m_xmin, m_xmax)
-		&& MathUtils::inRange(pos.y(), m_ymin, m_ymax)
-		&& MathUtils::inRange(pos.z(), m_zmin, m_zmax))
+	if(!inGrid(pos))
 	{
-		const auto&& offsetPos = pos - (m_position - m_midSize);
-		setElement((unsigned long)floor(offsetPos.x()),
-						(unsigned long)floor(offsetPos.y()),
-						(unsigned long)floor(offsetPos.z()), true);
+		return false;
 	}
+	
+	const auto&& offsetPos = pos - (m_position - m_midSize);
+	setElement((unsigned long)floor(offsetPos.x()),
+					(unsigned long)floor(offsetPos.y()),
+					(unsigned long)floor(offsetPos.z()), true);
+
+	return true;
 }
 
 
