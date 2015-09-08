@@ -642,6 +642,12 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	return found ? 1 : 0;
 }
 
+bool vxGrid::throwRay(const vxRay &ray) const
+{ 
+	vxCollision col;
+	getNearestCollision(ray,col);
+	return col.isValid();
+}
 
 #define DRAWBBOX 0
 int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
