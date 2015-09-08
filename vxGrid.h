@@ -197,6 +197,7 @@ public:
 	
 	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;
 	
+	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
 	unsigned char elementColorIndex(const unsigned long x, const unsigned long y, const unsigned long z) const;
