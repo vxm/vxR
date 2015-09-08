@@ -584,7 +584,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 
 	vxRay r{collide.position(), ray.direction()/10000.0};
 	bool found{false};
-	vxVector3d vx{r.origin()};
+	auto&& vx{r.origin()};
 
 	const auto&& directionX = r.direction().x();
 	const auto&& directionY = r.direction().y();
