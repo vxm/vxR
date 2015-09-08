@@ -50,12 +50,12 @@ struct vx
 
 	inline void activate()
 	{
-		c|=0b00000001;
+		c|=0b0000'0001;
 	}
 	
 	inline void deactivate()
 	{
-		c&=0b00000000;
+		c&=0b0000'0000;
 	}
 
 	inline unsigned char colorIndex() const
