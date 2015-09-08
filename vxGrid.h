@@ -154,7 +154,8 @@ public:
 				  const unsigned long y, 
 				  const unsigned long z);
 	// sets active voxel at world space position
-	void activate(const vxVector3d &pos);
+	// returns true if could find a voxel.
+	bool activate(const vxVector3d &pos);
 	bool activeInRange(const vxVector3d &pos) const;
 
 	// sets unactive vxl at coordinates x y z
