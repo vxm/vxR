@@ -211,21 +211,21 @@ int vxScene::throwRay(const vxRay &ray,
 		return 1;
 	}
 
-	//TODO:take this to a dommo object or something like..
-//	auto p = MathUtils::rectAndYPlane(ray, (-1) - RESL/2.0);
-//	if(!std::signbit(p.z()))
-//	{
-//		collide.setNormal(vxVector3d::constY);
-//		collide.setPosition(p);
-//		collide.setU(fmod(p.x(),1.0));
-//		collide.setV(fmod(p.z(),1.0));
+//	TODO:take this to a dommo object or something like..
+	auto p = MathUtils::rectAndYPlane(ray.direction(), (-1) - RESL/2.0);
+	if(!std::signbit(p.z()))
+	{
+		collide.setNormal(vxVector3d::constY);
+		collide.setPosition(p);
+		collide.setU(fmod(p.x(),1.0));
+		collide.setV(fmod(p.z(),1.0));
 
-//		vxColor col(defaultShader()->getColor(collide));
-//		collide.setColor( col );
-//		collide.setValid();
-//		return 1;
-//	}
-//	else
+		vxColor col(defaultShader()->getColor(collide));
+		collide.setColor( col );
+		collide.setValid();
+		return 1;
+	}
+	else
 	{
 		collide.setUV(MathUtils::normalToCartesian(ray.direction()));
 		auto environmentColor = m_environment.compute(collide);
