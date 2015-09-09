@@ -420,7 +420,7 @@ inline vxVector3d vxGrid::getVoxelPosition(unsigned long idx) const
 inline vx& vxGrid::vxAtPosition(const vxVector3d &position)
 {
 	const auto&& pos = (position - (m_position-m_midSize)).floorVector(); 
-	unsigned long idx = index(pos.x(),pos.y(),pos.z());
+	const auto&& idx = index(pos.x(),pos.y(),pos.z());
 	return vxAt(idx>=m_resXresXres ? 0:idx);
 }
 
@@ -432,7 +432,7 @@ vx &vxGrid::vxAt(const unsigned long iX, const unsigned long iY, const unsigned 
 inline vx vxGrid::vxAtPosition(const vxVector3d &position) const
 {
 	const auto&& pos = (position - (m_position-m_midSize)).floorVector(); 
-	unsigned long idx = index(pos.x(),pos.y(),pos.z());
+	const auto&& idx = index(pos.x(),pos.y(),pos.z());
 	return vxAt(idx>=m_resXresXres ? 0:idx);
 }
 
@@ -660,13 +660,13 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 #else
 	if (getNearestCollision(ray, collide))
 	{
-		const auto& pos = collide.position()-ray.origin();
-		const auto& geometry = vxGlobal::getInstance()->getExistingBox();
-		const auto& instance = geometry->at(pos, 1.0);
-		const auto& iap = indexAtPosition(pos);
-		const auto& c = vxColor::indexColor(vxAt(iap).colorIndex());
+		const auto&& pos = collide.position()-ray.origin();
+		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
+		const auto&& instance = geometry->at(pos, 1.0);
+		const auto&& iap = indexAtPosition(pos);
+		const auto&& c = vxColor::indexColor(vxAt(iap).colorIndex());
 		collide.setColor(collide.color()+c);
-		return instance->throwRay( ray, collide );
+		return instance->throwRay(ray, collide );
 	}
 	
 	collide.setValid(false);
@@ -677,8 +677,8 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 bool vxGrid::hasCollision(const vxRay &ray) const
 {
 	auto found = false;
-	const vxVector3d&& v = ray.direction().unit();
-	vxVector3d next(ray.origin()+v);
+	const auto&& v{ray.direction().unit()};
+	vxVector3d next{ray.origin()+v};
 
 	while(inGrid(next))
 	{

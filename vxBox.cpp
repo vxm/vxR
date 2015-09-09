@@ -90,20 +90,20 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 
 bool vxBox::hasCollision(const vxRay &ray) const
 {
-	const auto& instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
-	const vxVector3d& p = instance.position() - ray.origin();
-	const double mSize = instance.size()/2.0;
+	const auto instance = m_useDefault ? m_default : m_instance[std::this_thread::get_id()];
+	const auto&& p = instance.position() - ray.origin();
+	const auto mSize = instance.size()/2.0;
 	
-	double minX = p.x() - mSize;
-	double minY = p.y() - mSize;
-	double minZ = p.z() - mSize;
+	auto minX = p.x() - mSize;
+	auto minY = p.y() - mSize;
+	auto minZ = p.z() - mSize;
 
-	double maxX = p.x() + mSize;
-	double maxY = p.y() + mSize;
-	double maxZ = p.z() + mSize;
+	auto maxX = p.x() + mSize;
+	auto maxY = p.y() + mSize;
+	auto maxZ = p.z() + mSize;
 
-	bool bMax = std::signbit(maxX);
-	const auto hitX = MathUtils::rectAndXPlane(ray.direction(), bMax ? maxX : minX);
+	auto bMax = std::signbit(maxX);
+	const auto&& hitX = MathUtils::rectAndXPlane(ray.direction(), bMax ? maxX : minX);
 	if( std::islessequal(hitX.z(),maxZ) 
 		&& std::isgreaterequal(hitX.z(),minZ)
 		&& std::islessequal(hitX.y(),maxY)
