@@ -41,7 +41,7 @@ public:
 	}
 	
 	void set(double x, double y);
-	void set(vxVector2d enter);
+	void set(const vxVector2d &enter);
 	void setX(const double x);
 	void setY(const double y);
 	vxVector2d get() const;
@@ -54,19 +54,19 @@ public:
 	double length() const;
 	vxVector2d inverted() const;
 	vxVector2d unit() const;
-	vxVector2d operator+(vxVector2d other) const;
+	vxVector2d operator+(const vxVector2d& other) const;
 	vxVector2d operator+(double factor) const;
 	vxVector2d operator+(float factor) const;
 	vxVector2d operator+(int factor) const;
-	vxVector2d operator-(vxVector2d entrada) const;
+	vxVector2d operator-(const vxVector2d& entrada) const;
 	vxVector2d operator-(double factor) const;
 	vxVector2d operator-(float factor) const;
 	vxVector2d operator-(int factor) const;
-	vxVector2d operator*(vxVector2d entrada) const;
+	vxVector2d operator*(const vxVector2d& entrada) const;
 	vxVector2d operator*(double factor) const;
 	vxVector2d operator*(float factor) const;
 	vxVector2d operator*(int factor) const;
-	vxVector2d operator/(vxVector2d entrada) const;
+	vxVector2d operator/(const vxVector2d& entrada) const;
 	vxVector2d operator/(double factor) const;
 	vxVector2d operator/(float factor) const;
 	vxVector2d operator/(int factor) const;

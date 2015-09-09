@@ -37,7 +37,7 @@ void vxVector2d::set(double x, double y)
 	m_y=y;
 }
 
-void vxVector2d::set(vxVector2d enter) 
+void vxVector2d::set(const vxVector2d& enter) 
 {
 	m_x = enter.m_x;
 	m_y = enter.m_y;
@@ -134,7 +134,7 @@ vxVector2d vxVector2d::operator/(int factor) const
 								m_y/(double)factor));
 }
 
-double vxVector2d::angle(const vxVector2d &other) const 
+double vxVector2d::angle(const vxVector2d& other) const 
 {
 	return angle()-other.angle();
 }
@@ -156,7 +156,7 @@ vxVector2d vxVector2d::operator/(double factor) const
 					  m_y/(double)factor));
 }
 
-vxVector2d vxVector2d::operator/(vxVector2d entrada) const 
+vxVector2d vxVector2d::operator/(const vxVector2d& entrada) const 
 {
 	return std::move(vxVector2d(m_x/entrada.x(),
 					  m_y/entrada.y()));
@@ -172,7 +172,7 @@ vxVector2d vxVector2d::operator*(double factor) const
 	return std::move(vxVector2d(factor*m_x,factor*m_y));
 }
 
-vxVector2d vxVector2d::operator*(vxVector2d entrada) const 
+vxVector2d vxVector2d::operator*(const vxVector2d& entrada) const 
 {
 	return std::move(vxVector2d(entrada.x()*m_x,
 					  entrada.y()*m_y));
@@ -190,7 +190,7 @@ vxVector2d vxVector2d::operator-(double factor) const
 								m_y-factor));
 }
 
-vxVector2d vxVector2d::operator-(vxVector2d entrada) const 
+vxVector2d vxVector2d::operator-(const vxVector2d& entrada) const 
 {
 	return std::move(vxVector2d(m_x-entrada.x(),
 					  m_y-entrada.y()));
@@ -208,7 +208,7 @@ vxVector2d vxVector2d::operator+(double factor) const
 								factor+m_y));
 }
 
-vxVector2d vxVector2d::operator+(vxVector2d other) const
+vxVector2d vxVector2d::operator+(const vxVector2d& other) const
 {
 	return std::move(vxVector2d(other.m_x+m_x,
 								other.m_y+m_y));
