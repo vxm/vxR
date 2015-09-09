@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 80
+#define RESL 350
 #define PX resl * 2
 #define PY resl * 0
 #define PZ resl * 2
@@ -18,7 +18,7 @@ class vxScene;
 //plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
 //plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
 //plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-//plyReader->pro	cessPLYFile("/home/john/Downloads/lucyTop_1.ply");
+//plyReader->processPLYFile("/home/john/Downloads/lucyTop_1.ply");
 ///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
 ///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
 ///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
@@ -26,7 +26,7 @@ class vxScene;
 
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
-	, m_environment("/home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg") //TODO: if string is empty program crashes, fix it.
+	, m_environment("/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg") //TODO: if string is empty program crashes, fix it.
 {}
 
 vxScene::~vxScene()
@@ -34,8 +34,8 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples{55};
-	const double sunIntensity{0.9};
+	int nLightSamples{15};
+	const double sunIntensity{0.45};
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
 
