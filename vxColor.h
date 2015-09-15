@@ -23,31 +23,6 @@ protected:
 
 public:
 
-	static vxColor blue;
-	static vxColor bluishGreen;
-	static vxColor bluegreen;
-	static vxColor bluishPurple;
-	static vxColor greenishYellow;
-	static vxColor green;
-	static vxColor greenishBlue;
-	static vxColor orangePink;
-	static vxColor orange;
-	static vxColor pink;
-	static vxColor reddishOrange;
-	static vxColor red;
-	static vxColor reddishPurple;
-	static vxColor redPurple;
-	static vxColor purple;
-	static vxColor purplishBlue;
-	static vxColor purplishPink;
-	static vxColor purplishRed;
-	static vxColor white;
-	static vxColor yellowGreen;
-	static vxColor yellowishOrange;
-	static vxColor yellow;
-	static vxColor yellowishGreen;
-	static vxColor black;
-	static vxColor grey;
 
 	static vxColor lookup(const vxColor col);
 	static vxColor lookup(const double r,
@@ -125,6 +100,32 @@ public:
 	
 	void toRGBA8888(unsigned char *tbuff) const;
 	
+	static vxColor blue;
+	static vxColor bluishGreen;
+	static vxColor bluegreen;
+	static vxColor bluishPurple;
+	static vxColor greenishYellow;
+	static vxColor green;
+	static vxColor greenishBlue;
+	static vxColor orangePink;
+	static vxColor orange;
+	static vxColor pink;
+	static vxColor reddishOrange;
+	static vxColor red;
+	static vxColor reddishPurple;
+	static vxColor redPurple;
+	static vxColor purple;
+	static vxColor purplishBlue;
+	static vxColor purplishPink;
+	static vxColor purplishRed;
+	static vxColor white;
+	static vxColor yellowGreen;
+	static vxColor yellowishOrange;
+	static vxColor yellow;
+	static vxColor yellowishGreen;
+	static vxColor black;
+	static vxColor grey;
+
 	friend std::ostream& operator<<(std::ostream &os, const vxColor &c)
 	{
 		return os << c.m_r << " " << c.m_g << " " << c.m_b << " " << c.m_a;

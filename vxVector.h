@@ -101,23 +101,6 @@ protected:
 	double m_z {0.0};
 
 public:
-
-	static vxVector3d constX;
-	static vxVector3d constY;
-	static vxVector3d constZ;
-	static vxVector3d constXY;
-	static vxVector3d constXZ;
-	static vxVector3d constYZ;
-	static vxVector3d constXYZ;
-
-	static vxVector3d constMinusX;
-	static vxVector3d constMinusY;
-	static vxVector3d constMinusZ;
-	static vxVector3d constMinusXY;
-	static vxVector3d constMinusXZ;
-	static vxVector3d constMinusYZ;
-	static vxVector3d constMinusXYZ;
-	static vxVector3d zero;
 	
 	enum class axis{kX, kY, kZ};
 
@@ -227,6 +210,23 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 	vxVector2d vectorXY() const;
 	vxVector2d vectorYZ() const;
 	vxVector2d vectorZX() const;
+	
+	static vxVector3d constX;
+	static vxVector3d constY;
+	static vxVector3d constZ;
+	static vxVector3d constXY;
+	static vxVector3d constXZ;
+	static vxVector3d constYZ;
+	static vxVector3d constXYZ;
+	
+	static vxVector3d constMinusX;
+	static vxVector3d constMinusY;
+	static vxVector3d constMinusZ;
+	static vxVector3d constMinusXY;
+	static vxVector3d constMinusXZ;
+	static vxVector3d constMinusYZ;
+	static vxVector3d constMinusXYZ;
+	static vxVector3d zero;
 	
 	friend std::ostream& operator<<(std::ostream &os, const vxVector3d& v)
 	{
