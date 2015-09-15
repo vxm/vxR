@@ -4,13 +4,18 @@
 #include <functional>
 #include "FileUtils.h"
 #include "vxMatrix.h"
+#include "vxStatus.h"`
 
 namespace vxCore {
 
-static long nNodes{0};
+using namespace std::string_literals;
+using VS = vxStatus::code;
+
+static unsigned long nNodes{0};
 
 struct vxNode
 {
+	int id{0};
 	vxNode()
 	{
 		id=nNodes++;
@@ -19,8 +24,6 @@ struct vxNode
 	std::string name;
 	std::string type;
 	vxMatrix transform{vxMatrix::identity};
-	
-	int id{0};
 
 	friend std::ostream& operator<<(std::ostream &os, const vxNode& v)
 	{
@@ -30,7 +33,7 @@ struct vxNode
 
 };
 
-class nodeMap:public std::map<std::string, vxNode*>
+class nodeMap:public std::map<std::string, std::unique_ptr<vxNode>>
 {
 public:
 	nodeMap()
@@ -46,23 +49,19 @@ class vxSceneParser
 public:
 
 	vxSceneParser(const std::string &fileName);
-	
-	void procesScene();
-	
+
 	decltype(auto) getLine(std::ifstream &f, std::string &line) const;
 
-	void printSceneInfo()
-	{
-		for(const auto& node: m_nodes)
-		{
-			std::cout << (*node.second) << std::endl;
-		}
-	}
-	
-	void clear()
-	{
-		m_nodes.clear();
-	}
+	std::pair<std::string, std::string> parseAttribute(const std::string &txt);
+
+	std::string parseNodeBody(std::ifstream &inFile, 
+							  std::shared_ptr<vxNode> node);
+
+	VS procesScene();
+
+	void printSceneInfo();
+
+	void clear();
 };
 
 }
