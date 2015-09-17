@@ -17,26 +17,21 @@ decltype(auto) vxSceneParser::getLine(std::ifstream &f, std::string &line) const
 std::pair<std::string, std::string> 
 vxSceneParser::parseAttribute(const std::string &txt)
 {
-	std::cout << "\t\tParsing attribute" << txt << std::endl;
+	std::cout << "\t\tParsing attribute: " << txt << std::endl;
 	std::pair<std::string, std::string> ret;
 	std::string line;
 	std::smatch base_match;
 
-	const std::string re1="((?:[a-z][a-z]+))";	// Word 1
-	const std::string re2="(\\s+)";	// White Space 1
-	const std::string re3="(=)";	// Any Single Character 1
-	const std::string re4="(\\s+)";	// White Space 2
-	const std::string re5="(\".*?\")";	// Double Quote String 1
+	const std::string sp{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)(\".*?\")"s};	// Double Quote String 1
 	
-	const std::regex rel(re1+re2+re3+re4+re5);
-	if (std::regex_match(line, base_match, rel))
+	const std::regex rel(sp);
+	
+	if (std::regex_match(txt, base_match, rel))
 	{
-		std::string word1 = base_match[1].str();
-		std::string ws1 = base_match[2].str();
-		std::string c1 = base_match[3].str();
-		std::string ws2 = base_match[4].str();
-		std::string string1 = base_match[5].str();
-		std::cout << "("<<word1<<")"<<"("<<ws1<<")"<<"("<<c1<<")"<<"("<<ws2<<")"<<"("<<string1<<")"<< std::endl;
+		ret.first = base_match[1].str();
+		auto strLiteral = base_match[5].str();
+		ret.second = strLiteral.substr(1,strLiteral.size()-2);
+		std::cout << "("<<ret.first<<")="<<"("<<ret.second<<")"<< std::endl;
 	}
 
 	return ret;
