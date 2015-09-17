@@ -29,7 +29,7 @@ vxSceneParser::parseAttribute(const std::string &txt)
 		ret.first = base_match[1].str();
 		auto strLiteral = base_match[5].str();
 		ret.second = strLiteral.substr(1,strLiteral.size()-2);
-		std::cout << "("<<ret.first<<")="<<"("<<ret.second<<")"<< std::endl;
+		std::cout << " * ("<<ret.first<<")="<<"("<<ret.second<<")"<< std::endl;
 	}
 
 	return ret;
