@@ -69,12 +69,23 @@ std::string vxSceneParser::parseNodeBody(std::ifstream &inFile,
 				continue;
 			}
 			
+			auto ind = StringUtils::indentation(line);
+			
 			// then we are reading an attribute
-			auto attr = parseAttribute(line.substr(firstNonSpace));
+			auto attr = parseAttribute(line.substr(ind));
+			
+			//Looking for node name
 			if(attr.first=="name"s)
 			{
 				name = attr.second;
 			}
+			
+			//Looking for node type
+			if(attr.first=="type"s)
+			{
+				node->type = attr.second;
+			}
+			
 		}
 	}
 	while(!found);
