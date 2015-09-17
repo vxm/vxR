@@ -33,7 +33,7 @@ struct vxNode
 
 };
 
-class nodeMap:public std::map<std::string, std::unique_ptr<vxNode>>
+class nodeMap:public std::map<std::string, std::shared_ptr<vxNode>>
 {
 public:
 	nodeMap()
