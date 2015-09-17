@@ -65,8 +65,18 @@ std::string vxSceneParser::parseNodeBody(std::ifstream &inFile,
 		}
 		else
 		{
+			auto firstNonSpace = line.find_first_not_of('\t');
+			if(firstNonSpace>=line.size())
+			{
+				continue;
+			}
+			
 			// then we are reading an attribute
-			parseAttribute(line);
+			auto attr = parseAttribute(line.substr(firstNonSpace));
+			if(attr.first=="name"s)
+			{
+				name = attr.second;
+			}
 		}
 	}
 	while(!found);
