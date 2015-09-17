@@ -118,24 +118,27 @@ VS vxSceneParser::procesScene()
 	
 	// capturing nodes.
 	while(getLine(iFile, line))
-	{	
-		//std::cout << "line: '" << line << "'" << std::endl;
-		std::regex rel("(node)");
+	{
 		// Extraction of a sub-match
 		std::smatch base_match;
-		if (std::regex_match(line, base_match, rel))
+		//looking for nodes to start
+		if (std::regex_match(line, base_match, std::regex("(node)")))
 		{
 			auto newNode = std::make_shared<vxNode>();
 			const auto nodeName = parseNodeBody(iFile, newNode);
 			
-			if (m_nodes.find(nodeName)==std::cend(m_nodes))
+			if (m_nodes.find(nodeName)!=m_nodes.end())
 			{
-				std::cout << "Node " << nodeName << "already existed in scene" << std::endl;
+				std::cout << "Node '" << nodeName << "' already existed in scene" << std::endl;
 			}
-			
-			std::cout << "found a node" << std::endl;
+			else
+			{
+				m_nodes[nodeName] = newNode;
+			}
 		}
 	}
+	
+	
 
 	std::cout << "scene parse: " << m_fileName << " finished:: '" << m_nodes.size() << "' nodes taken" << std::endl;
 	return VS::kSuccess;
