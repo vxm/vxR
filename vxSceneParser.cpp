@@ -9,9 +9,7 @@ vxSceneParser::vxSceneParser(const std::string &fileName)
 
 decltype(auto) vxSceneParser::getLine(std::ifstream &f, std::string &line) const
 {
-	decltype(auto) a = std::getline(f, line);
-
-	return a;
+	return std::getline(f, line);
 }
 
 std::pair<std::string, std::string> 
