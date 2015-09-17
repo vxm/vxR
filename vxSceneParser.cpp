@@ -117,7 +117,7 @@ VS vxSceneParser::procesScene()
 	}
 	
 	// checking if ASCII
-	std::getline(iFile, line);
+	getline(iFile, line);
 	std::cout << "line: '" << line << "'" << std::endl;
 	if(line!="#format ascii 1.0"s)
 	{

@@ -3,6 +3,7 @@
 
 #include <functional>
 #include "FileUtils.h"
+#include "StringUtils.h"
 #include "vxMatrix.h"
 #include "vxStatus.h"`
 
