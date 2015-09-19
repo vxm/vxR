@@ -61,7 +61,9 @@ SOURCES += main.cpp\
     vxGridUnitTest.cpp \
     MathUtilsUnitTest.cpp \
     vxThreadPool.cpp \
-    vxSceneParser.cpp
+    vxSceneParser.cpp \
+    StringUtils.cpp \
+    vxValue.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -112,7 +114,9 @@ HEADERS  += \
     vxGridUnitTest.h \
     MathUtilsUnitTest.h \
     vxThreadPool.h \
-    vxSceneParser.h
+    vxSceneParser.h \
+    StringUtils.h \
+    vxValue.h
 
 FORMS    += vxrendermain.ui
 
