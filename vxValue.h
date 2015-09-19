@@ -1,6 +1,14 @@
 #ifndef VXVALUE_H
 #define VXVALUE_H
 
+#include <string>
+#include <memory>
+
+#include "vxVector.h"
+#include "vxMatrix.h"
+
+namespace vxCore {
+
 enum class vxValueType
 {
 	kBool,
@@ -16,6 +24,7 @@ enum class vxValueType
 	kLongDouble,
 	kVector2d,
 	kVector3d,
+	kString,
 	kMatrix44,
 };
 
@@ -34,6 +43,7 @@ class vxValue
 		float f;
 		double d;
 		long double ld;
+		//std::shared_ptr<std::string> str;
 		//TODO: could this be a shared ptr to void?
 		void * vp;
 	} 
