@@ -5,7 +5,8 @@
 #include "FileUtils.h"
 #include "StringUtils.h"
 #include "vxMatrix.h"
-#include "vxStatus.h"`
+#include "vxStatus.h"
+#include "vxValue.h"
 
 namespace vxCore {
 
@@ -53,7 +54,7 @@ public:
 
 	decltype(auto) getLine(std::ifstream &f, std::string &line) const;
 
-	std::pair<std::string, std::string> parseAttribute(const std::string &txt);
+	std::pair<std::__cxx11::string, vxValue> parseAttribute(const std::string &txt);
 
 	std::string parseNodeBody(std::ifstream &inFile, 
 							  std::shared_ptr<vxNode> node);

@@ -12,23 +12,23 @@ decltype(auto) vxSceneParser::getLine(std::ifstream &f, std::string &line) const
 	return std::getline(f, line);
 }
 
-std::pair<std::string, std::string> 
+std::pair<std::string, vxValue> 
 vxSceneParser::parseAttribute(const std::string &txt)
 {
 	std::cout << "\t\tParsing attribute: " << txt << std::endl;
-	std::pair<std::string, std::string> ret;
+	std::pair<std::string, vxValue> ret;
 	std::string line;
 	std::smatch base_match;
 
 	const std::string sp{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)(\".*?\")"s};	// Double Quote String 1
-	
+
 	const std::regex rel(sp);
-	
+
 	if (std::regex_match(txt, base_match, rel))
 	{
 		ret.first = base_match[1].str();
 		auto strLiteral = base_match[5].str();
-		ret.second = strLiteral.substr(1,strLiteral.size()-2);
+		ret.second = vxValue(strLiteral.substr(1,strLiteral.size()-2));
 		std::cout << " * ("<<ret.first<<")="<<"("<<ret.second<<")"<< std::endl;
 	}
 
@@ -77,13 +77,14 @@ std::string vxSceneParser::parseNodeBody(std::ifstream &inFile,
 			//Looking for node name
 			if(attr.first=="name"s)
 			{
-				name = attr.second;
+				name = attr.second.asString();
+				node->name = attr.first;
 			}
 			
 			//Looking for node type
 			if(attr.first=="type"s)
 			{
-				node->type = attr.second;
+				node->type = attr.second.asString();
 			}
 			
 		}
@@ -134,11 +135,15 @@ VS vxSceneParser::procesScene()
 		if (std::regex_match(line, base_match, std::regex("(node)")))
 		{
 			auto newNode = std::make_shared<vxNode>();
-			const auto nodeName = parseNodeBody(iFile, newNode);
+			parseNodeBody(iFile, newNode);
+			const auto nodeName{newNode->name};
 			
 			if (m_nodes.find(nodeName)!=m_nodes.end())
 			{
-				std::cout << "Node '" << nodeName << "' already existed in scene" << std::endl;
+				std::cout << "Node '" 
+						<< nodeName 
+						<< "' not added. There is already a node"
+						<< " with that name in scene" << std::endl;
 			}
 			else
 			{
