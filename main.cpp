@@ -161,10 +161,12 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-	std::cout << "\t Caputred scene file argument: " << scenePath << std::endl;
+	std::cout << "\t Captured scene file argument: " << scenePath << std::endl;
 
+	//TODO:find a home for this next two lines of code.
 	vxSceneParser scene(scenePath);
 	scene.procesScene();
+	return 1;
 	
 	switch(program)
 	{
