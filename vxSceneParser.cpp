@@ -2,6 +2,22 @@
 
 using namespace vxCore;
 
+
+void vxNode::addAttribute(Attribute attr)
+{
+	//Looking for node name
+	if(attr.first=="name"s)
+	{
+		name = attr.first;
+	}
+	
+	//Looking for node type
+	if(attr.first=="type"s)
+	{
+		type = attr.second.asString();
+	}	
+}
+
 vxSceneParser::vxSceneParser(const std::string &fileName)
 	:m_fileName(fileName)
 {
@@ -12,11 +28,10 @@ decltype(auto) vxSceneParser::getLine(std::ifstream &f, std::string &line) const
 	return std::getline(f, line);
 }
 
-std::pair<std::string, vxValue> 
-vxSceneParser::parseAttribute(const std::string &txt)
+Attribute vxSceneParser::parseAttribute(const std::string &txt)
 {
 	std::cout << "\t\tParsing attribute: " << txt << std::endl;
-	std::pair<std::string, vxValue> ret;
+	Attribute ret;
 	std::string line;
 	std::smatch base_match;
 
