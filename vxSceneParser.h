@@ -10,6 +10,7 @@
 
 namespace vxCore {
 
+using Attribute = std::pair<std::string, vxValue>;
 using namespace std::string_literals;
 using VS = vxStatus::code;
 
@@ -26,6 +27,9 @@ struct vxNode
 	std::string name;
 	std::string type;
 	vxMatrix transform{vxMatrix::identity};
+
+	//Adds the attribute identifying it first.
+	void addAttribute(Attribute attr);
 
 	friend std::ostream& operator<<(std::ostream &os, const vxNode& v)
 	{
@@ -52,11 +56,12 @@ public:
 
 	vxSceneParser(const std::string &fileName);
 
+	
 	decltype(auto) getLine(std::ifstream &f, std::string &line) const;
 
 	std::pair<std::__cxx11::string, vxValue> parseAttribute(const std::string &txt);
 
-	std::string parseNodeBody(std::ifstream &inFile, 
+	vxStatus parseNodeBody(std::ifstream &inFile, 
 							  std::shared_ptr<vxNode> node);
 
 	VS procesScene();

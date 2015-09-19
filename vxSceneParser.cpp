@@ -44,20 +44,21 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 		ret.first = base_match[1].str();
 		auto strLiteral = base_match[5].str();
 		ret.second = vxValue(strLiteral.substr(1,strLiteral.size()-2));
-		std::cout << " * ("<<ret.first<<")="<<"("<<ret.second<<")"<< std::endl;
+		std::cout << " * ("<<ret.first<<")="<<"("<<ret.second.asString()<<")"<< std::endl;
 	}
 
 	return ret;
 }
 
-std::string vxSceneParser::parseNodeBody(std::ifstream &inFile, 
+
+vxStatus vxSceneParser::parseNodeBody(std::ifstream &inFile, 
 										 std::shared_ptr<vxNode> node)
 {
 	// Condition to finish node reading.
 	const std::regex rel("(\\})");
 	std::smatch base_match;
 
-	std::string name;
+	vxStatus status;
 	std::string line;
 	bool found{false};
 	// Not optional lines.
@@ -89,24 +90,12 @@ std::string vxSceneParser::parseNodeBody(std::ifstream &inFile,
 			// then we are reading an attribute
 			auto attr = parseAttribute(line.substr(ind));
 			
-			//Looking for node name
-			if(attr.first=="name"s)
-			{
-				name = attr.second.asString();
-				node->name = attr.first;
-			}
-			
-			//Looking for node type
-			if(attr.first=="type"s)
-			{
-				node->type = attr.second.asString();
-			}
-			
+			node->addAttribute(attr);
 		}
 	}
 	while(!found);
 
-	return name;
+	return status;
 }
 
 VS vxSceneParser::procesScene()
@@ -119,13 +108,12 @@ VS vxSceneParser::procesScene()
 
 	std::ifstream iFile(m_fileName);
 	std::string line;
-	auto k {0u};
 
 	// Not optional lines.
 	getLine(iFile, line);
 	std::cout << "line: '" << line << "'" << std::endl;
 	
-	// checking this contains a scene
+	// checking this contains a vx scene description
 	if(line!="#vxR scene")
 	{
 		std::cout << "scene parse: '" << m_fileName << "' doesn't contain vxR scene information." << std::endl;
