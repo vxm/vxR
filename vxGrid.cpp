@@ -142,12 +142,13 @@ void vxGrid::dumpFileInMemory(const std::string &fileName)
 		return;
 	}
 	
-	
 	std::vector<char> buffer(size);
 	if (file.read((char*)&(m_data[0]), size))
 	{
 	    /* worked! */
 	}
+
+	file.close();
 }
 
 void vxGrid::dumpNumericTypeInMemory()

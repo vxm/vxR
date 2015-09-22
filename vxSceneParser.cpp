@@ -155,7 +155,7 @@ VS vxSceneParser::procesScene()
 		}
 	}
 	
-	
+	iFile.close();
 
 	std::cout << "scene parse: " << m_fileName << " finished:: '" << m_nodes.size() << "' nodes taken" << std::endl;
 	return VS::kSuccess;

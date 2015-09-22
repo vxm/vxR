@@ -73,7 +73,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	}
 	
 	std::cout << "PLY file " << fileName << " Ended:: '" << m_pointCloud.size() << "' points taken" << std::endl;
-	
+	iFile.close();
 }
 
 std::vector<vxVector3d> &vxPLYImporter::getPointCloud()
