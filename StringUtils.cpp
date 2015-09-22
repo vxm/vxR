@@ -8,12 +8,12 @@ unsigned int StringUtils::indentation(const std::string &line)
 {
 	auto n = 0u;
 
-	for(auto c:line)
+	for(const auto c:line)
 	{
 		auto notFound{true};
 		if(c=='\t')
 		{
-			n+=SPACES_ARE_A_TAB;
+			n+= SPACES_ARE_A_TAB;
 			notFound = false;
 		}
 		
