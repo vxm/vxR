@@ -30,8 +30,20 @@ enum class vxValueType
 
 class vxValue
 {
-	union valueTypes
+
+public:
+	
+	struct valueTypes
 	{
+		valueTypes()
+		{
+		};
+
+		~valueTypes()
+		{
+		};
+		
+
 		bool b;
 		char c;
 		unsigned char uc;
@@ -43,16 +55,313 @@ class vxValue
 		float f;
 		double d;
 		long double ld;
-		//std::shared_ptr<std::string> str;
-		//TODO: could this be a shared ptr to void?
-		void * vp;
-	} 
-	value;
+		std::shared_ptr<std::string> str;
+		std::shared_ptr<vxMatrix> mat;
+		std::shared_ptr<vxVector3d> v3d;
+		std::shared_ptr<vxVector2d> v2d;
+	
+	}value;
 
 	vxValueType valueType;
 
 public:
-	vxValue();
+
+	vxValue()
+	{
+	}
+	
+	~vxValue()
+	{
+		switch(valueType)
+		{
+			case vxValueType::kVector2d:
+			{
+				value.v2d.reset();
+				break;
+			}
+			case vxValueType::kVector3d:
+			{
+				value.v3d.reset();
+				break;
+			}
+			case vxValueType::kMatrix44:
+			{
+				value.mat.reset();
+				break;
+			}
+			case vxValueType::kString:
+			{
+				value.str.reset();
+				break;
+			}
+		}
+	}
+	
+	vxValue(const vxValue &val)
+	{
+		valueType = val.valueType;
+		switch(valueType)
+		{
+			case vxValueType::kBool:
+			{
+				value.b = (val.value.b);
+				break;
+			}
+			case vxValueType::kInt:
+			{
+				value.i = (val.value.i);
+				break;
+			}
+			case vxValueType::kChar:
+			{
+				value.c = (val.value.c);
+				break;
+			}
+			case vxValueType::kUChar:
+			{
+				value.uc = (val.value.uc);
+				break;
+			}
+			case vxValueType::kUInt:
+			{
+				value.ui = (val.value.ui);
+				break;
+			}
+			case vxValueType::kLong:
+			{
+				value.l = (val.value.l);
+				break;
+			}
+			case vxValueType::kULong:
+			{
+				value.ul = (val.value.ul);
+				break;
+			}
+			case vxValueType::kLongLong:
+			{
+				value.ll = (val.value.ll);
+				break;
+			}
+			case vxValueType::kFloat:
+			{
+				value.f = (val.value.f);
+				break;
+			}
+			case vxValueType::kDouble:
+			{
+				value.d = (val.value.d);
+				break;
+			}
+			case vxValueType::kLongDouble:
+			{
+				value.ld = (val.value.ld);
+				break;
+			}
+			case vxValueType::kVector2d:
+			{
+				value.v2d = (val.value.v2d);
+				break;
+			}
+			case vxValueType::kVector3d:
+			{
+				value.v3d = (val.value.v3d);
+				break;
+			}
+			case vxValueType::kMatrix44:
+			{
+				value.mat = (val.value.mat);
+				break;
+			}
+			case vxValueType::kString:
+			{
+				value.str = val.value.str;
+				break;
+			}
+			default:
+			{
+				value.i = (val.value.i);
+				break;
+			}
+		}
+	}
+	
+	vxValue& operator=(const vxValue &val)
+	{
+		valueType = val.valueType;
+		switch(valueType)
+		{
+			case vxValueType::kBool:
+			{
+				value.b = (val.value.b);
+				break;
+			}
+			case vxValueType::kInt:
+			{
+				value.i = (val.value.i);
+				break;
+			}
+			case vxValueType::kChar:
+			{
+				value.c = (val.value.c);
+				break;
+			}
+			case vxValueType::kUChar:
+			{
+				value.uc = (val.value.uc);
+				break;
+			}
+			case vxValueType::kUInt:
+			{
+				value.ui = (val.value.ui);
+				break;
+			}
+			case vxValueType::kLong:
+			{
+				value.l = (val.value.l);
+				break;
+			}
+			case vxValueType::kULong:
+			{
+				value.ul = (val.value.ul);
+				break;
+			}
+			case vxValueType::kLongLong:
+			{
+				value.ll = (val.value.ll);
+				break;
+			}
+			case vxValueType::kFloat:
+			{
+				value.f = (val.value.f);
+				break;
+			}
+			case vxValueType::kDouble:
+			{
+				value.d = (val.value.d);
+				break;
+			}
+			case vxValueType::kLongDouble:
+			{
+				value.ld = (val.value.ld);
+				break;
+			}
+			case vxValueType::kVector2d:
+			{
+				value.v2d = (val.value.v2d);
+				break;
+			}
+			case vxValueType::kVector3d:
+			{
+				value.v3d = (val.value.v3d);
+				break;
+			}
+			case vxValueType::kMatrix44:
+			{
+				value.mat = (val.value.mat);
+				break;
+			}
+			case vxValueType::kString:
+			{
+				value.str = val.value.str;
+				break;
+			}
+			default:
+			{
+				value.i = (val.value.i);
+				break;
+			}
+		}
+		
+		return *this;
+	}
+	
+	vxValue(vxValue &&val)
+	{
+		valueType = val.valueType;
+		switch(valueType)
+		{
+			case vxValueType::kBool:
+			{
+				value.b = (val.value.b);
+				break;
+			}
+			case vxValueType::kInt:
+			{
+				value.i = (val.value.i);
+				break;
+			}
+			case vxValueType::kChar:
+			{
+				value.c = (val.value.c);
+				break;
+			}
+			case vxValueType::kUChar:
+			{
+				value.uc = (val.value.uc);
+				break;
+			}
+			case vxValueType::kUInt:
+			{
+				value.ui = (val.value.ui);
+				break;
+			}
+			case vxValueType::kLong:
+			{
+				value.l = (val.value.l);
+				break;
+			}
+			case vxValueType::kULong:
+			{
+				value.ul = (val.value.ul);
+				break;
+			}
+			case vxValueType::kLongLong:
+			{
+				value.ll = (val.value.ll);
+				break;
+			}
+			case vxValueType::kFloat:
+			{
+				value.f = (val.value.f);
+				break;
+			}
+			case vxValueType::kDouble:
+			{
+				value.d = (val.value.d);
+				break;
+			}
+			case vxValueType::kLongDouble:
+			{
+				value.ld = (val.value.ld);
+				break;
+			}
+			case vxValueType::kVector2d:
+			{
+				value.v2d = (val.value.v2d);
+				break;
+			}
+			case vxValueType::kVector3d:
+			{
+				value.v3d = (val.value.v3d);
+				break;
+			}
+			case vxValueType::kMatrix44:
+			{
+				value.mat = (val.value.mat);
+				break;
+			}
+			case vxValueType::kString:
+			{
+				value.str = val.value.str;
+				break;
+			}
+			default:
+			{
+				value.i = (val.value.i);
+				break;
+			}
+		}
+	}
 	
 	vxValue(bool b)
 		: valueType{vxValueType::kBool}
@@ -120,12 +429,123 @@ public:
 		value.ld = ld;
 	}
 
-	vxValue(std::string str)
-		: valueType{vxValueType::kString} 
+	vxValue(std::shared_ptr<std::string> str)
+		: valueType{vxValueType::kString}
 	{
-		value.vp = (void*)str.c_str();
+		value.str = str;
 	}
 
+	vxValue(std::shared_ptr<vxVector2d> v2d)
+		: valueType{vxValueType::kVector2d} 
+	{
+		value.v2d = v2d;
+	}
+
+	vxValue(std::shared_ptr<vxVector3d> v3d)
+		: valueType{vxValueType::kVector3d} 
+	{
+		value.v3d = v3d;
+	}
+	
+	vxValue(std::shared_ptr<vxMatrix> m44)
+		: valueType{vxValueType::kMatrix44} 
+	{
+		value.mat = m44 ;
+	}
+	
+	
+	
+	
+	void setBool(bool other)
+	{
+		valueType = vxValueType::kBool;
+		value.b = other;
+	}
+	
+	void setChar(char other)
+	{
+		valueType = vxValueType::kChar;
+		value.c = other;
+	}
+	
+	void setUChar(unsigned char other)
+	{
+		valueType = vxValueType::kBool;
+		value.uc = other;
+	}
+	
+	void setInt(int other)
+	{
+		valueType = vxValueType::kInt;
+		value.i = other;
+	}
+	
+	void setUInt(unsigned int other)
+	{
+		valueType = vxValueType::kUInt;
+		value.ui = other;
+	}
+	
+	void setLong(long other)
+	{
+		valueType = vxValueType::kLong;
+		value.l = other;
+	}
+	
+	void setULong(unsigned long other)
+	{
+		valueType = vxValueType::kULong;
+		value.ul = other;
+	}
+	
+	void setLongLong(long long other)
+	{
+		valueType = vxValueType::kLongLong;
+		value.ll = other;
+	}
+	
+	void setFloat(float other)
+	{
+		valueType = vxValueType::kFloat;
+		value.f = other;
+	}
+	
+	void setDouble(double other)
+	{
+		valueType = vxValueType::kDouble;
+		value.d = other;
+	}
+	
+	void setLongDouble(long double other)
+	{
+		valueType = vxValueType::kLongDouble;
+		value.ld = other;
+	}
+	
+	void setVector2d(std::shared_ptr<vxVector2d> other)
+	{
+		valueType = vxValueType::kVector2d;
+		value.v2d = other;
+	}
+	
+	void setVector3d(std::shared_ptr<vxVector3d> other)
+	{
+		valueType = vxValueType::kVector3d;
+		value.v3d = other;
+	}
+	
+	void setString(std::shared_ptr<std::string> other)
+	{
+		valueType = vxValueType::kString;
+		value.str = other;
+	}
+	
+	void setMatrix44(std::shared_ptr<vxMatrix> other)
+	{
+		valueType = vxValueType::kMatrix44;
+		value.mat = other;
+	}
+	
 	bool asBool() const
 	{
 		return value.b;
@@ -181,26 +601,25 @@ public:
 		return value.ld;
 	}
 	
-	vxVector2d asVector2d() const
+	std::shared_ptr<vxVector2d> asVector2d() const
 	{
-		return *(vxVector2d*)value.vp;
+		return value.v2d;
 	}
 	
-	vxVector3d asVector3d() const
+	std::shared_ptr<vxVector3d> asVector3d() const
 	{
-		return *(vxVector3d*)value.vp;
+		return value.v3d;
 	}
 	
-	std::string asString() const
+	std::shared_ptr<std::string> asString() const
 	{
-		return std::string((const char*)value.vp);
+		return value.str;
 	}
 	
-	vxMatrix asMatrix44() const
+	std::shared_ptr<vxMatrix> asMatrix44() const
 	{
-		return *(vxMatrix*)value.vp;
+		return value.mat;
 	}
-	
 	
 	friend std::ostream& operator<<(std::ostream &os, const vxValue& v)
 	{
