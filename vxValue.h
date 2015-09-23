@@ -432,10 +432,10 @@ public:
 		value.ld = ld;
 	}
 
-	vxValue(std::shared_ptr<std::string> str)
+	vxValue(std::string str)
 		: valueType{vxValueType::kString}
+		, value(str)
 	{
-		value.str = str;
 	}
 
 	vxValue(std::shared_ptr<vxVector2d> v2d)
@@ -537,7 +537,7 @@ public:
 		value.v3d = other;
 	}
 	
-	void setString(std::shared_ptr<std::string> other)
+	void setString(std::string other)
 	{
 		valueType = vxValueType::kString;
 		value.str = other;
@@ -614,7 +614,7 @@ public:
 		return value.v3d;
 	}
 	
-	std::shared_ptr<std::string> asString() const
+	std::string asString() const
 	{
 		return value.str;
 	}
