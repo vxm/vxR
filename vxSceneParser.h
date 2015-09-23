@@ -8,10 +8,43 @@
 #include "vxStatus.h"
 #include "vxValue.h"
 
+using namespace std::string_literals;
+//simple
+const std::regex var_string("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)(\".*?\")"s);
+const std::regex var_int("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)(\\d+)"s);
+const std::string floatReg = "([+-]?\\d*\\.\\d+)(?![-+0-9\\.])"s;
+const std::regex var_float("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s + floatReg);
+
+// complex
+const std::regex var_float_float("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+									+ floatReg 
+									+ "(\\s+)"s
+									+ floatReg);
+
+const std::regex var_float_float_float("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+										+ floatReg 
+										+ "(\\s+)"s
+										+ floatReg
+										+ "(\\s+)"s
+										+ floatReg);
+
+const std::regex var_int_int("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+								+ "(\\d+)"s
+								+ "(\\s+)"s
+								+ "(\\d+)"s);
+
+const std::regex var_int_int_int("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+										+ "(\\d+)"s
+										+ "(\\s+)"s
+										+ "(\\d+)"s
+										+ "(\\s+)"s
+										+ "(\\d+)"s);
+
+
+
 namespace vxCore {
 
 using Attribute = std::pair<std::string, vxValue>;
-using namespace std::string_literals;
 using VS = vxStatus::code;
 
 static unsigned long nNodes{0};
