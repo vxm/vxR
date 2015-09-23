@@ -34,7 +34,7 @@ vxScene::~vxScene()
 
 void vxScene::build()
 {
-	int nLightSamples{15};
+	int nLightSamples{10};
 	const double sunIntensity{0.45};
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
@@ -51,11 +51,16 @@ void vxScene::build()
 	auto envLight = createIBLight(m_environment.path());
 	envLight->setSamples(nLightSamples);
 	envLight->setRadius(0.997);
-	envLight->setIntensity(2.1);
+	envLight->setIntensity(1.2);
 
+//	auto envLight = createAmbientLight();
+//	envLight->setSamples(nLightSamples);
+//	envLight->setRadius(0.997);
+//	envLight->setIntensity(0.3);
+	
 //	//This simulates the sun.
 	auto sunLight = createDirectLight();
-	const auto&& sunOrientation = vxVector3d(-7,-10,-2).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
+	const auto&& sunOrientation = vxVector3d(5,-14,-8).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
 	sunLight->setOrientation(sunOrientation);
 	sunLight->setIntensity(sunIntensity);
 	sunLight->setColor(sunColor);
@@ -63,26 +68,27 @@ void vxScene::build()
 	createCamera(vxMatrix{});
 	createGrid();
 	
-	auto plyReader = std::make_shared<vxPLYImporter>();
-//	plyReader->processPLYFile("/home/john/Downloads/wow_4.ply");
-	plyReader->processPLYFile("../vxR/juan_0.ply");
-	loadFromFile(plyReader);
+//	auto plyReader = std::make_shared<vxPLYImporter>();
+//	plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
+//	plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
+//	loadFromFile(plyReader);
 
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
 	auto iRadius = 6.0;
 	auto distSph = (resl/3.3);
 	
 //	m_grids[0]->fill();
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph, (resl/(7.0))); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph, (resl/5.0)); // Position, radius
-	//m_grids[0]->createEdges(); // of the grid
-	m_grids[0]->createGround();
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph, (resl/2.6)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph, (resl/(7.0))); // Position, radius
+	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
+	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph, (resl/3.0)); // Position, radius
+	m_grids[0]->createEdges(); // of the grid
+//	m_grids[0]->createGround(0);
+//	m_grids[0]->createGround(3);
 //	m_grids[0]->createRoof();
 
 	//m_grids[0]->dumpFileInMemory("/home/john/code/build-vxR-Desktop-Release/vxR");
@@ -188,9 +194,9 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	const double resl = RESL;
 	const auto& vts = importer->getPointCloud();
 	m_grids[0]->addVertices(vts,
-							vxVector3d{PX,PY,PZ},
-//							vxVector3d{resl, resl resl});
-							vxVector3d{resl*1.99, resl*1.99, resl*1.99});
+							vxVector3d{PX,PY-(resl/2.0),PZ},
+//							vxVector3d{resl, resl, resl});
+							vxVector3d{resl*0.45, resl*0.45, resl*0.45});
 	return true;
 }
 
@@ -212,7 +218,7 @@ int vxScene::throwRay(const vxRay &ray,
 	}
 
 //	TODO:take this to a dommo object or something like..
-	auto p = MathUtils::rectAndYPlane(ray.direction(), (-1) - RESL/2.0);
+	auto p = MathUtils::rectAndYPlane(ray.direction(),  - RESL/2.0);
 	if(!std::signbit(p.z()))
 	{
 		collide.setNormal(vxVector3d::constY);

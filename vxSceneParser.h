@@ -109,7 +109,6 @@ public:
 
 	vxSceneParser(const std::string &fileName);
 
-	
 	decltype(auto) getLine(std::ifstream &f, std::string &line) const;
 
 	std::pair<std::__cxx11::string, vxValue> parseAttribute(const std::string &txt);
