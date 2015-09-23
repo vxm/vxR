@@ -31,22 +31,135 @@ decltype(auto) vxSceneParser::getLine(std::ifstream &f, std::string &line) const
 Attribute vxSceneParser::parseAttribute(const std::string &txt)
 {
 	std::cout << "\t\tParsing attribute: " << txt << std::endl;
-	Attribute ret;
 	std::string line;
 	std::smatch base_match;
 
-	const std::string sp{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)(\".*?\")"s};	// Double Quote String 1
-
-	const std::regex rel(sp);
-
-	if (std::regex_match(txt, base_match, rel))
+	Attribute ret;
+	if (std::regex_match(txt, base_match, var_string))
 	{
 		ret.first = base_match[1].str();
 		auto strLiteral = base_match[5].str();
-		ret.second = vxValue(strLiteral.substr(1,strLiteral.size()-2));
-		std::cout << " * ("<<ret.first<<")="<<"("<<ret.second.asString()<<")"<< std::endl;
+		auto convert = strLiteral.substr(1,strLiteral.size()-2);
+
+		ret.second = vxValue(convert);
+		std::cout << " string ("
+				  << ret.first
+				  << ")="
+				  << "("
+				  << ret.second.asString()
+				  << ")"
+				  << std::endl;
+
 	}
 
+	if (std::regex_match(txt, base_match, var_int))
+	{
+		ret.first = base_match[1].str();
+		auto strValue = std::stringstream(base_match[5].str());
+		int intValue;
+		strValue >> intValue;
+		ret.second.setInt(intValue);
+		std::cout << " int ("
+				  <<ret.first
+				 <<")="
+				<<"("<<ret.second.asInt()<<")"<< std::endl;
+	}
+
+	if (std::regex_match(txt, base_match, var_float))
+	{
+		ret.first = base_match[1].str();
+		auto strValue = std::stringstream(base_match[5].str());
+		float floatValue;
+		strValue >> floatValue;
+		ret.second.setFloat(floatValue);
+		std::cout << " float ("
+				  << ret.first
+				  << ")="
+				  << "("
+				  << ret.second.asFloat()
+				  << ")"<< std::endl;
+	}
+
+	if (std::regex_match(txt, base_match, var_int_int))
+	{
+		ret.first = base_match[1].str();
+		auto strValue = std::stringstream(base_match[5].str());
+		int intValue1, intValue2;
+		strValue >> intValue1;
+		strValue >> intValue2;
+		ret.second.setVector2d(std::make_shared<vxVector2d>(intValue1, intValue2));
+		auto capt = ret.second.asVector2d();
+		std::cout << " vxVector2d (" << ret.first 
+				  << ")="
+				  << "(" << capt->x()
+				  << ", " << capt->y()
+				  << ")" << std::endl;
+	}
+	
+	if (std::regex_match(txt, base_match, var_int_int_int))
+	{
+		ret.first = base_match[1].str();
+		auto strValue = std::stringstream(base_match[5].str());
+		int intValue1, intValue2, intValue3;
+		strValue >> intValue1;
+		strValue >> intValue2;
+		strValue >> intValue3;
+		ret.second.setVector3d(std::make_shared<vxVector3d>(intValue1, intValue2, intValue3));
+		auto capt = ret.second.asVector3d();
+		std::cout << " vxVector3d (" << ret.first 
+				  << ")="
+				  << "(" << capt->x()
+				  << ", " << capt->y()
+				  << ", " << capt->z()
+				  << ")" << std::endl;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	if (std::regex_match(txt, base_match, var_float_float))
+	{
+		ret.first = base_match[1].str();
+		auto strValue = std::stringstream(base_match[5].str());
+		float floatValue1, floatValue2;
+		strValue >> floatValue1;
+		strValue >> floatValue2;
+		ret.second.setVector2d(std::make_shared<vxVector2d>(floatValue1, floatValue2));
+		auto capt = ret.second.asVector2d();
+		std::cout << " vxVector2d (" << ret.first 
+				  << ")="
+				  << "(" << capt->x()
+				  << ", " << capt->y()
+				  << ")" << std::endl;
+	}
+	
+	
+	if (std::regex_match(txt, base_match, var_float_float_float))
+	{
+		ret.first = base_match[1].str();
+		auto strValue = std::stringstream(base_match[5].str());
+		float floatValue1, floatValue2, floatValue3;
+		strValue >> floatValue1;
+		strValue >> floatValue2;
+		strValue >> floatValue3;
+		ret.second.setVector3d(std::make_shared<vxVector3d>(floatValue1, 
+															floatValue2,
+															floatValue3));
+		auto capt = ret.second.asVector2d();
+		std::cout << " vxVector3d (" << ret.first 
+				  << ")="
+				  << "(" << capt->x()
+				  << ", " << capt->y()
+				  << ")" << std::endl;
+	}
+	
 	return ret;
 }
 
@@ -79,18 +192,18 @@ vxStatus vxSceneParser::parseNodeBody(std::ifstream &inFile,
 		}
 		else
 		{
-			auto firstNonSpace = line.find_first_not_of('\t');
-			if(firstNonSpace>=line.size())
+			int ind = StringUtils::indentation(line);
+			if(ind>=line.size())
 			{
 				continue;
 			}
 			
-			auto ind = StringUtils::indentation(line);
-			
 			// then we are reading an attribute
-			auto attr = parseAttribute(line.substr(ind));
-			
-			node->addAttribute(attr);
+			const auto&& attr = parseAttribute(line.substr(ind));
+			if(attr.first.size())
+			{
+				node->addAttribute(attr);
+			}
 		}
 	}
 	while(!found);
