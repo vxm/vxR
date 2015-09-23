@@ -3,12 +3,12 @@
 using namespace vxCore;
 
 
-void vxNode::addAttribute(Attribute attr)
+void vxNode::addAttribute(const Attribute &attr)
 {
 	//Looking for node name
 	if(attr.first=="name"s)
 	{
-		name = attr.first;
+		name = attr.second.asString();
 	}
 	
 	//Looking for node type
