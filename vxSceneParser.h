@@ -57,12 +57,32 @@ struct vxNode
 		id=nNodes++;
 	}
 	
+	~vxNode()
+	{
+		nNodes--;
+	}
+	
+	vxNode(vxNode &&other)
+	{
+		id=nNodes++;
+	}
+
+	vxNode(const vxNode &other)
+	{
+		id=nNodes++;
+	}
+	
+	vxNode(const vxNode &&other)
+	{
+		id=nNodes++;
+	}
+	
 	std::string name;
 	std::string type;
 	vxMatrix transform{vxMatrix::identity};
 
 	//Adds the attribute identifying it first.
-	void addAttribute(Attribute attr);
+	void addAttribute(const Attribute &attr);
 
 	friend std::ostream& operator<<(std::ostream &os, const vxNode& v)
 	{
