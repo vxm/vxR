@@ -18,6 +18,8 @@ void vxNode::addAttribute(const Attribute &attr)
 	}	
 }
 
+//----------------------------------
+
 vxSceneParser::vxSceneParser(const std::string &fileName)
 	:m_fileName(fileName)
 {
