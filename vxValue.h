@@ -58,7 +58,7 @@ public:
 		float f;
 		double d;
 		long double ld;
-		std::shared_ptr<std::string> str;
+		std::string str;
 		std::shared_ptr<vxMatrix> mat;
 		std::shared_ptr<vxVector3d> v3d;
 		std::shared_ptr<vxVector2d> v2d;
@@ -94,7 +94,7 @@ public:
 			}
 			case vxValueType::kString:
 			{
-				value.str.reset();
+				value.str.clear();
 				break;
 			}
 		}
