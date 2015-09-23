@@ -33,16 +33,19 @@ class vxValue
 
 public:
 	
+	//TODO: move back valueTypes to union
+	//! it was very advanced already.
 	struct valueTypes
 	{
 		valueTypes()
-		{
-		};
+		{}
 
-		~valueTypes()
-		{
-		};
+		valueTypes(std::string instr)
+			:str(instr)
+		{}
 		
+		~valueTypes()
+		{}
 
 		bool b;
 		char c;
