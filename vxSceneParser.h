@@ -2,43 +2,54 @@
 #define VXSCENEPARSER_H
 
 #include <functional>
+
 #include "FileUtils.h"
 #include "StringUtils.h"
 #include "vxMatrix.h"
 #include "vxStatus.h"
 #include "vxValue.h"
+#include "vxNode.h"
 
 using namespace std::string_literals;
+
+//rule descriptions
+const std::string floatReg{"([+-]?\\d*\\.\\d+)(?![-+0-9\\.])"s};
+const std::string spaceReg{"(\\s+)"s};
+const std::string intReg{"(\\d+)"s};
+
 //simple
-const std::regex var_string("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)(\".*?\")"s);
-const std::regex var_int("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)(\\d+)"s);
-const std::string floatReg = "([+-]?\\d*\\.\\d+)(?![-+0-9\\.])"s;
-const std::regex var_float("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s + floatReg);
+const std::regex var_string{"((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)(\".*?\")"s};
+const std::regex var_int{"((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)(\\d+)"s};
+const std::regex var_float{"((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)"s 
+									+ floatReg};
 
-// complex
-const std::regex var_float_float("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+const std::regex var_brakets{"((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)"s 
+									+ "(\\[.*?\\])"s};
+
+// complex numbers
+const std::regex var_float_float{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
 									+ floatReg 
-									+ "(\\s+)"s
-									+ floatReg);
+									+ spaceReg
+									+ floatReg};
 
-const std::regex var_float_float_float("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+const std::regex var_float_float_float{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
 										+ floatReg 
-										+ "(\\s+)"s
+										+ spaceReg
 										+ floatReg
-										+ "(\\s+)"s
-										+ floatReg);
+										+ spaceReg
+										+ floatReg};
 
-const std::regex var_int_int("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
-								+ "(\\d+)"s
-								+ "(\\s+)"s
-								+ "(\\d+)"s);
+const std::regex var_int_int{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+								+ intReg
+								+ spaceReg
+								+ intReg};
 
-const std::regex var_int_int_int("((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
-										+ "(\\d+)"s
-										+ "(\\s+)"s
-										+ "(\\d+)"s
-										+ "(\\s+)"s
-										+ "(\\d+)"s);
+const std::regex var_int_int_int{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+										+ intReg
+										+ spaceReg
+										+ intReg
+										+ spaceReg
+										+ intReg};
 
 
 
@@ -46,59 +57,6 @@ namespace vxCore {
 
 using Attribute = std::pair<std::string, vxValue>;
 using VS = vxStatus::code;
-
-static unsigned long nNodes{0};
-
-struct vxNode
-{
-	int id{0};
-	vxNode()
-	{
-		id=nNodes++;
-	}
-	
-	~vxNode()
-	{
-		nNodes--;
-	}
-	
-	vxNode(vxNode &&other)
-	{
-		id=nNodes++;
-	}
-
-	vxNode(const vxNode &other)
-	{
-		id=nNodes++;
-	}
-	
-	vxNode(const vxNode &&other)
-	{
-		id=nNodes++;
-	}
-	
-	std::string name;
-	std::string type;
-	vxMatrix transform{vxMatrix::identity};
-
-	//Adds the attribute identifying it first.
-	void addAttribute(const Attribute &attr);
-
-	friend std::ostream& operator<<(std::ostream &os, const vxNode& v)
-	{
-		return os << "Node ::" << v.id << ":: " << v.name << std::endl
-					 << "Type: " << v.type << std::endl;
-	}
-
-};
-
-class nodeMap:public std::map<std::string, std::shared_ptr<vxNode>>
-{
-public:
-	nodeMap()
-	{}
-	
-};
 
 class vxSceneParser
 {

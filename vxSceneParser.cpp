@@ -2,6 +2,7 @@
 
 using namespace vxCore;
 
+#define COUT_PARSING 0
 
 
 vxSceneParser::vxSceneParser(const std::string &fileName)
@@ -16,7 +17,9 @@ decltype(auto) vxSceneParser::getLine(std::ifstream &f, std::string &line) const
 
 Attribute vxSceneParser::parseAttribute(const std::string &txt)
 {
+#if COUT_PARSING
 	std::cout << "\t\tParsing attribute: " << txt << std::endl;
+#endif
 	std::string line;
 	std::smatch base_match;
 
@@ -26,8 +29,8 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 		ret.first = base_match[1].str();
 		auto strLiteral = base_match[5].str();
 		auto convert = strLiteral.substr(1,strLiteral.size()-2);
-
 		ret.second = vxValue(convert);
+#if COUT_PARSING
 		std::cout << " string ("
 				  << ret.first
 				  << ")="
@@ -35,7 +38,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 				  << ret.second.asString()
 				  << ")"
 				  << std::endl;
-
+#endif
 	}
 
 	if (std::regex_match(txt, base_match, var_int))
@@ -45,10 +48,14 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 		int intValue;
 		strValue >> intValue;
 		ret.second.setInt(intValue);
+#if COUT_PARSING
 		std::cout << " int ("
-				  <<ret.first
-				 <<")="
-				<<"("<<ret.second.asInt()<<")"<< std::endl;
+				  << ret.first
+				  << ")="
+				  << "("
+				  << ret.second.asInt()
+				  << ")"<< std::endl;
+#endif
 	}
 
 	if (std::regex_match(txt, base_match, var_float))
@@ -58,39 +65,52 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 		float floatValue;
 		strValue >> floatValue;
 		ret.second.setFloat(floatValue);
+#if COUT_PARSING
 		std::cout << " float ("
 				  << ret.first
 				  << ")="
 				  << "("
 				  << ret.second.asFloat()
 				  << ")"<< std::endl;
+#endif
 	}
 
 	if (std::regex_match(txt, base_match, var_int_int))
 	{
 		ret.first = base_match[1].str();
-		auto strValue = std::stringstream(base_match[5].str());
 		int intValue1, intValue2;
-		strValue >> intValue1;
-		strValue >> intValue2;
-		ret.second.setVector2d(std::make_shared<vxVector2d>(intValue1, intValue2));
+		std::stringstream strValue;
+		strValue << base_match[5]
+					<< ' '
+					<< base_match[7];
+
+		strValue >> intValue1 >> intValue2;
+		ret.second.setVector2d(std::make_shared<vxVector2d>(intValue1, 
+															intValue2));
+#if COUT_PARSING
 		auto capt = ret.second.asVector2d();
 		std::cout << " vxVector2d (" << ret.first 
 				  << ")="
 				  << "(" << capt->x()
 				  << ", " << capt->y()
 				  << ")" << std::endl;
+#endif
 	}
 	
 	if (std::regex_match(txt, base_match, var_int_int_int))
 	{
 		ret.first = base_match[1].str();
-		auto strValue = std::stringstream(base_match[5].str());
 		int intValue1, intValue2, intValue3;
-		strValue >> intValue1;
-		strValue >> intValue2;
-		strValue >> intValue3;
+		std::stringstream strValue;
+		strValue << base_match[5]
+					<< ' '
+					<< base_match[7]
+					<< ' '
+					<< base_match[9];
+
+		strValue >> intValue1 >> intValue2 >> intValue3;
 		ret.second.setVector3d(std::make_shared<vxVector3d>(intValue1, intValue2, intValue3));
+#if COUT_PARSING
 		auto capt = ret.second.asVector3d();
 		std::cout << " vxVector3d (" << ret.first 
 				  << ")="
@@ -98,52 +118,77 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 				  << ", " << capt->y()
 				  << ", " << capt->z()
 				  << ")" << std::endl;
+#endif
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	if (std::regex_match(txt, base_match, var_float_float))
 	{
 		ret.first = base_match[1].str();
-		auto strValue = std::stringstream(base_match[5].str());
-		float floatValue1, floatValue2;
-		strValue >> floatValue1;
-		strValue >> floatValue2;
+		int floatValue1, floatValue2;
+		std::stringstream strValue;
+		strValue << base_match[5]
+					<< ' '
+					<< base_match[7];
+
+		strValue >> floatValue1 >> floatValue2;
 		ret.second.setVector2d(std::make_shared<vxVector2d>(floatValue1, floatValue2));
-		auto capt = ret.second.asVector2d();
-		std::cout << " vxVector2d (" << ret.first 
-				  << ")="
-				  << "(" << capt->x()
-				  << ", " << capt->y()
-				  << ")" << std::endl;
-	}
-	
-	
-	if (std::regex_match(txt, base_match, var_float_float_float))
-	{
-		ret.first = base_match[1].str();
-		auto strValue = std::stringstream(base_match[5].str());
-		float floatValue1, floatValue2, floatValue3;
-		strValue >> floatValue1;
-		strValue >> floatValue2;
-		strValue >> floatValue3;
-		ret.second.setVector3d(std::make_shared<vxVector3d>(floatValue1, 
-															floatValue2,
-															floatValue3));
-		auto capt = ret.second.asVector2d();
+#if COUT_PARSING
+		auto capt = ret.second.asVector3d();
 		std::cout << " vxVector3d (" << ret.first 
 				  << ")="
 				  << "(" << capt->x()
 				  << ", " << capt->y()
 				  << ")" << std::endl;
+#endif
+	}
+	
+	if (std::regex_match(txt, base_match, var_float_float_float))
+	{
+		ret.first = base_match[1].str();
+		int floatValue1, floatValue2, floatValue3;
+		std::stringstream strValue;
+		strValue << base_match[5]
+					<< ' '
+					<< base_match[7]
+					<< ' '
+					<< base_match[9];
+
+		strValue >> floatValue1 >> floatValue2 >> floatValue3;
+		ret.second.setVector3d(std::make_shared<vxVector3d>(floatValue1, floatValue2, floatValue3));
+#if COUT_PARSING
+		auto capt = ret.second.asVector3d();
+		std::cout << " vxVector3d (" << ret.first 
+				  << ")="
+				  << "(" << capt->x()
+				  << ", " << capt->y()
+				  << ", " << capt->z()
+				  << ")" << std::endl;
+#endif
+	}
+	
+	if (std::regex_match(txt, base_match, var_brakets))
+	{
+		ret.first = base_match[1].str();
+
+		double m[16];
+		auto matValues = base_match[5].str().substr(1,base_match[5].str().size()-2);
+		std::stringstream strValue(matValues);
+		for(int i=0;i<16;i++)
+		{
+			strValue >> m[i];
+		}
+		
+		ret.second.setMatrix44(std::make_shared<vxMatrix>(m));
+		
+#if COUT_PARSING
+		std::cout << " matrix (" << ret.first << ")=";
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+		{
+			std::cout << "[" << ret.second.asMatrix44()->operator ()(i,j) << "]";
+		}
+		std::cout << ")" << std::endl;
+#endif
 	}
 	
 	return ret;
@@ -211,14 +256,14 @@ VS vxSceneParser::procesScene()
 	// Not optional lines.
 	getLine(iFile, line);
 	std::cout << "line: '" << line << "'" << std::endl;
-	
+
 	// checking this contains a vx scene description
 	if(line!="#vxR scene")
 	{
 		std::cout << "scene parse: '" << m_fileName << "' doesn't contain vxR scene information." << std::endl;
 		return VS::kError;
 	}
-	
+
 	// checking if ASCII
 	getline(iFile, line);
 	std::cout << "line: '" << line << "'" << std::endl;
@@ -238,7 +283,7 @@ VS vxSceneParser::procesScene()
 		{
 			auto newNode = std::make_shared<vxNode>();
 			parseNodeBody(iFile, newNode);
-			const auto nodeName{newNode->name};
+			const auto nodeName{newNode->name()};
 			
 			if (m_nodes.find(nodeName)!=m_nodes.end())
 			{
