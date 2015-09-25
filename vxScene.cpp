@@ -76,7 +76,7 @@ void vxScene::build()
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
 	auto iRadius = 6.0;
 	auto distSph = (resl/3.3);
-	
+
 //	m_grids[0]->fill();
 	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph, (resl/2.6)); // Position, radius
 	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
