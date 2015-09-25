@@ -166,7 +166,6 @@ int main(int argc, char *argv[])
 	//TODO:find a home for this next two lines of code.
 	vxSceneParser scene(scenePath);
 	scene.procesScene();
-	return 1;
 	
 	switch(program)
 	{
