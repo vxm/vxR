@@ -3,22 +3,6 @@
 using namespace vxCore;
 
 
-void vxNode::addAttribute(const Attribute &attr)
-{
-	//Looking for node name
-	if(attr.first=="name"s)
-	{
-		name = attr.second.asString();
-	}
-	
-	//Looking for node type
-	if(attr.first=="type"s)
-	{
-		type = attr.second.asString();
-	}	
-}
-
-//----------------------------------
 
 vxSceneParser::vxSceneParser(const std::string &fileName)
 	:m_fileName(fileName)
