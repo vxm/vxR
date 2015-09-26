@@ -15,8 +15,8 @@
 
 #define USE_THREADS 1
 #define SINGLERAY 0
-const unsigned int visSamples {2u};
-const unsigned int rfxSamples {1u};
+const unsigned int visSamples {4u};
+const unsigned int rfxSamples {2u};
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
@@ -164,6 +164,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		for(unsigned int s=0;s<visSamples;s++)
 		{
 			vxCollision collision;
+			vxCollision refxCollision;
+			vxColor reflection;
 			const auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
@@ -176,21 +178,24 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
 														N[1]==0 ? 1 : -1,
 														N[2]==0 ? 1 : -1);
-						const auto range=0.2;
+						const auto range=0.06;
 						invV+=vxVector3d(MathUtils::getRand(range)-(range/2.0),
 										 MathUtils::getRand(range)-(range/2.0),
 										 MathUtils::getRand(range)-(range/2.0));
-						vxCollision refxCollision;
 						const auto&& reflexRay = vxRay(collision.position()
 														+N/10000,
 														ray.direction()*invV);
 						if(m_scene->throwRay(reflexRay, refxCollision))
 						{
-							color.mixSumm(refxCollision.color(), 0.25 * (1.0/rfxSamples) );
+							reflection.mixSumm(refxCollision.color(), (0.4/rfxSamples));
 						}
 					}
+					color.add((collision.color()*.95) + reflection);
 				}
-				color.add(collision.color());
+				else
+				{
+					color.add(collision.color());
+				}
 			}
 			sampler.next();
 		}
