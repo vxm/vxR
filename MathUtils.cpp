@@ -193,6 +193,13 @@ vxColor MathUtils::remap(const vxColor &col, double min, double max)
 				   (remap(col.b(),min,max)));
 }
 
+vxColor MathUtils::lerp(const vxColor &c1, const vxColor &c2, double r)
+{	
+	return std::move(vxColor(	(lerp(c1.r(),c2.r(),r)),
+								(lerp(c1.g(),c2.g(),r)),
+								(lerp(c1.b(),c2.b(),r))));
+}
+						
 double MathUtils::remap(double v, double min, double max)
 {
 	return (v+min)*(max-min);

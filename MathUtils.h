@@ -58,6 +58,7 @@ class MathUtils
 	static double remap(double v, double max);
 	static double remap(double v, double min, double max);
 	static vxColor remap(const vxColor &col, double min, double max);
+	static vxColor lerp(const vxColor &c1, const vxColor &c2, double r);
 
 };
 
