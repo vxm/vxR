@@ -35,19 +35,24 @@ void vxNode::setAttributes(const std::vector<Attribute> &attributes)
 {
 	m_attributes = attributes;
 }
+
 void vxNode::addAttribute(const Attribute &attr)
 {
 	//Looking for node name
 	if(attr.first=="name"s)
 	{
 		m_name = attr.second.asString();
+		return;
 	}
 	
 	//Looking for node type
 	if(attr.first=="type"s)
 	{
 		m_type = attr.second.asString();
-	}	
+		return;
+	}
+
+	m_attributes.push_back(attr);
 }
 
 //----------------------------------
