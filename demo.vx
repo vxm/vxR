@@ -1,0 +1,57 @@
+#vxR scene
+#format ascii 1.0
+
+node
+{
+name = "renderSettings"
+type = "vxRenderSettings"
+    resolution = 720 720
+    pixelSamples = 2
+    reflectionSamples = 2
+}
+
+node
+{
+name = "persp"
+type = "vxCamera"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+}
+
+node
+{
+name = "grid"
+type = "vxGrid"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    resolution = 160
+    size = 160
+}
+
+node
+{
+name = "environment"
+type = "vxIBLight"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+    intensity = 1.0
+    color = 255 255 255
+    samples = 35
+    radius = 0.997
+}
+
+node
+{
+name = "sun"
+type = "vxDirectLight"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    intensity = 1.1
+    color = 255 240 241
+    samples = 1
+}
+
+node
+{
+name = "sphere1"
+type = "vxSphere"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    radius = 1
+}
