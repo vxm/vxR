@@ -26,15 +26,35 @@ using namespace vxCore;
 int executeRenderProcess(int argc, char *argv[])
 {
 	timePoint start = std::chrono::system_clock::now();
-
 	std::cout << "Start program" << std::endl;
 
 	QApplication a(argc, argv);
 	vxRenderMain w;
 	//w.show();
+
+	std::string scenePath;
+	// Look for a scene argument.
+	bool sceneParam{false};
+	for(int i=1; i<argc; i++)
+	{
+		if(sceneParam)
+		{
+			scenePath = argv[i];
+		}
+		
+		if("-scene"s==argv[i])
+		{
+			sceneParam = true;
+		}
+	}
+	std::cout << "\t Captured scene file argument: " << scenePath << std::endl;
 	
+	//TODO:find a home for this next two lines of code.
+	vxSceneParser scene(scenePath);
+	scene.procesScene();
+
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(700,700);
+	auto imgDesc = std::make_shared<ImageProperties>(1700,1700);
 	
 	// create the render process
 	render rp(imgDesc);
@@ -142,30 +162,6 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-	
-	std::string scenePath;
-	// Look for a scene argument.
-	if(program==3)
-	{
-		bool sceneParam{false};
-		for(int i=1; i<argc; i++)
-		{
-			if(sceneParam)
-			{
-				scenePath = argv[i];
-			}
-			
-			if("-scene"s==argv[i])
-			{
-				sceneParam = true;
-			}
-		}
-	}
-	std::cout << "\t Captured scene file argument: " << scenePath << std::endl;
-
-	//TODO:find a home for this next two lines of code.
-	vxSceneParser scene(scenePath);
-	scene.procesScene();
 	
 	switch(program)
 	{
