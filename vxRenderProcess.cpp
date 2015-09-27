@@ -15,8 +15,8 @@
 
 #define USE_THREADS 1
 #define SINGLERAY 0
-const unsigned int visSamples {4u};
-const unsigned int rfxSamples {2u};
+const unsigned int visSamples {2u};
+const unsigned int rfxSamples {1u};
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
@@ -187,10 +187,10 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 														ray.direction()*invV);
 						if(m_scene->throwRay(reflexRay, refxCollision))
 						{
-							reflection.mixSumm(refxCollision.color(), (0.4/rfxSamples));
+							reflection.mixSumm(refxCollision.color(), (1.0/rfxSamples));
 						}
 					}
-					color.add((collision.color()*.95) + reflection);
+					color.add(MathUtils::lerp(reflection, collision.color(), 0.55));
 				}
 				else
 				{
