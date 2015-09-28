@@ -317,3 +317,18 @@ void vxSceneParser::clear()
 {
 	m_nodes.clear();
 }
+
+std::vector<std::shared_ptr<vxNode> > vxSceneParser::getNodesByType(const std::__cxx11::string &type)
+{
+	std::vector<std::shared_ptr<vxNode>> ret;
+	for(const auto nodePair: m_nodes)
+	{
+		const auto& node = nodePair.second;
+		if(node->type()==type)
+		{
+			ret.push_back(nodePair.second);
+		}
+	}
+	
+	return ret;
+}

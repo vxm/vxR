@@ -79,6 +79,8 @@ public:
 	void printSceneInfo();
 
 	void clear();
+	
+	std::vector<std::shared_ptr<vxNode>> getNodesByType(const std::string &type);
 };
 
 }
