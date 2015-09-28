@@ -50,14 +50,16 @@ int executeRenderProcess(int argc, char *argv[])
 	std::cout << "\t Captured scene file argument: " << scenePath << std::endl;
 	
 	//TODO:find a home for this next two lines of code.
-	vxSceneParser scene(scenePath);
-	scene.procesScene();
+	auto sceneParser = std::make_shared<vxSceneParser>(scenePath);
+	sceneParser->procesScene();
 
 	// Img properties for render.
-	auto imgDesc = std::make_shared<ImageProperties>(1700,1700);
+	auto imgDesc = std::make_shared<ImageProperties>(700,700);
 	
 	// create the render process
 	render rp(imgDesc);
+	
+	rp.setDatabase(sceneParser);
 	
 	// creates the bucket list (vector) using the img 
 	// description.

@@ -6,6 +6,7 @@
 #include<vector>
 #include<future>
 
+#include "vxSceneParser.h"
 #include "vxRay.h"
 #include "vxMatrix.h"
 #include "vxLight.h"
@@ -58,7 +59,7 @@ public:
 	
 	~vxScene();
 
-	void build();
+	void build(std::shared_ptr<vxSceneParser> scn);
 
 	std::shared_ptr<vxCamera>
 		createCamera(const vxMatrix &,

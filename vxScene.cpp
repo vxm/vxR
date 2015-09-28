@@ -32,10 +32,18 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 vxScene::~vxScene()
 {}
 
-void vxScene::build()
+void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 {
-	int nLightSamples{10};
-	const double sunIntensity{0.45};
+	std::cout << " -- Building process scene -- " << std::endl;
+	
+	auto lights = scn->getNodesByType("vxDirectLight");
+	for(auto light: lights)
+	{
+		std::cout << "Light: " << light->name() << std::endl; 
+	}
+	
+	int nLightSamples{20};
+	const double sunIntensity{1.35};
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	const auto sunColor = vxColor::lookup256(255,240,241);
 

@@ -40,8 +40,15 @@ vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 	,	m_imageData(prop)
 {
 	m_scene = std::make_shared<vxScene>(prop);
-	m_scene->build();
 	setNMaxThreads(100);
+}
+
+vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> scn)
+{
+	if(m_scene!=nullptr)
+	{
+		m_scene->build(scn);
+	}
 }
 
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)

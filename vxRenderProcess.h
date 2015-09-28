@@ -8,6 +8,7 @@
 #include "vxStatus.h"
 #include "vxBucketList.h"
 #include "ImageProperties.h"
+#include "vxSceneParser.h"
 #include "vxScene.h"
 #include "imageData.h"
 
@@ -51,6 +52,7 @@ public:
 	void createBucketList();
 	const unsigned char *generateImage();
 
+	vxStatus setDatabase(std::shared_ptr<vxSceneParser> scn);
 	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties);
 	std::shared_ptr<const ImageProperties> imageProperties() const;
 
