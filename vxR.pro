@@ -126,4 +126,5 @@ CONFIG(debug, release|debug):DEFINES += _DEBUG
 CONFIG += c++14
 
 OTHER_FILES += \
-    todo.txt
+    todo.txt \
+    demo.vx
