@@ -34,19 +34,31 @@ vxScene::~vxScene()
 
 void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 {
+	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
+	int nLightSamples{20};
 	std::cout << " -- Building process scene -- " << std::endl;
 	
-	auto lights = scn->getNodesByType("vxDirectLight");
-	for(auto light: lights)
+	auto directLights = scn->getNodesByType("vxDirectLight");
+	for(auto light: directLights)
 	{
-		std::cout << "Light: " << light->name() << std::endl; 
+		const auto intensity{1.35};
+		const auto&& sunOrientation = vxVector3d(5,-14,-8).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
+		
+		//This simulates the sun.
+		auto directLight = createDirectLight();
+		directLight->setOrientation(sunOrientation);
+		directLight->setIntensity(intensity);
+		
+		const auto color = light->getColorAttribute("color");
+		if(!color.isInvalid())
+		{
+			auto asColor{*color.asVector3d()};
+			directLight->setColor(vxColor::lookup256((int)asColor.x(), 
+													 (int)asColor.y(), 
+													 (int)asColor.z()));
+		}
 	}
 	
-	int nLightSamples{20};
-	const double sunIntensity{1.35};
-	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
-	const auto sunColor = vxColor::lookup256(255,240,241);
-
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
 	m_shader->setScene(shared_from_this());
@@ -56,46 +68,40 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 	vxVector3d p{PX, PY, PZ};
 
 	//Environment tint.
-	auto envLight = createIBLight(m_environment.path());
-	envLight->setSamples(nLightSamples);
-	envLight->setRadius(0.997);
-	envLight->setIntensity(1.2);
+//	auto envLight = createIBLight(m_environment.path());
+//	envLight->setSamples(nLightSamples);
+//	envLight->setRadius(0.997);
+//	envLight->setIntensity(1.0);
 
 //	auto envLight = createAmbientLight();
 //	envLight->setSamples(nLightSamples);
 //	envLight->setRadius(0.997);
 //	envLight->setIntensity(0.3);
 	
-//	//This simulates the sun.
-	auto sunLight = createDirectLight();
-	const auto&& sunOrientation = vxVector3d(5,-14,-8).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
-	sunLight->setOrientation(sunOrientation);
-	sunLight->setIntensity(sunIntensity);
-	sunLight->setColor(sunColor);
 	
 	createCamera(vxMatrix{});
 	createGrid();
 	
-//	auto plyReader = std::make_shared<vxPLYImporter>();
-//	plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
+	auto plyReader = std::make_shared<vxPLYImporter>();
+	plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
 //	plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-//	loadFromFile(plyReader);
+	loadFromFile(plyReader);
 
 	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
-	auto iRadius = 6.0;
+	auto iRadius = 12.0;
 	auto distSph = (resl/3.3);
 
 //	m_grids[0]->fill();
-	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph, (resl/2.6)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph, (resl/(7.0))); // Position, radius
-	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
-	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph, (resl/3.0)); // Position, radius
-	m_grids[0]->createEdges(); // of the grid
-//	m_grids[0]->createGround(0);
+//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph, (resl/(7.0))); // Position, radius
+//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
+//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph, (resl/5.0)); // Position, radius
+//	m_grids[0]->createEdges(); // of the grid
+	m_grids[0]->createGround(0);
 //	m_grids[0]->createGround(3);
 //	m_grids[0]->createRoof();
 
@@ -105,6 +111,8 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 	auto na = m_grids[0]->numActiveVoxels();
 	auto totals = m_grids[0]->getNumberOfVoxels();
 	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
+	std::cout << " -- Finished building process scene -- " << std::endl;
+
 }
 
 std::shared_ptr<vxCamera> 
@@ -115,7 +123,7 @@ vxScene::createCamera(const vxMatrix &,
 	m_camera = std::make_shared<vxCamera>(m_prop);
 	m_camera->set( vxVector3d::zero,
 					vxVector3d::constZ,
-					2.2,
+					2.4,
 					hAperture,
 					vAperture);
 
