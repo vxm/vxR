@@ -2,4 +2,5 @@
 
 using namespace vxCore;
 
+vxValue vxValue::invalid;
 

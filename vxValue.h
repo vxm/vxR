@@ -26,6 +26,7 @@ enum class vxValueType
 	kVector3d,
 	kString,
 	kMatrix44,
+	kInvalid
 };
 
 class vxValue
@@ -33,8 +34,10 @@ class vxValue
 
 public:
 	
+	static vxValue invalid;
+	
 	//TODO: move back valueTypes to union
-	//! it was very advanced already.
+	// it was very advanced already.
 	struct valueTypes
 	{
 		valueTypes()
@@ -70,6 +73,7 @@ public:
 public:
 
 	vxValue()
+		:valueType{vxValueType::kInvalid}
 	{
 	}
 	
@@ -279,88 +283,88 @@ public:
 	}
 	
 	vxValue(vxValue &&val)
+		: valueType{std::move(val.valueType)}
 	{
-		valueType = val.valueType;
 		switch(valueType)
 		{
 			case vxValueType::kBool:
 			{
-				value.b = (val.value.b);
+				value.b = std::move(val.value.b);
 				break;
 			}
 			case vxValueType::kInt:
 			{
-				value.i = (val.value.i);
+				value.i = std::move(val.value.i);
 				break;
 			}
 			case vxValueType::kChar:
 			{
-				value.c = (val.value.c);
+				value.c = std::move(val.value.c);
 				break;
 			}
 			case vxValueType::kUChar:
 			{
-				value.uc = (val.value.uc);
+				value.uc = std::move(val.value.uc);
 				break;
 			}
 			case vxValueType::kUInt:
 			{
-				value.ui = (val.value.ui);
+				value.ui = std::move(val.value.ui);
 				break;
 			}
 			case vxValueType::kLong:
 			{
-				value.l = (val.value.l);
+				value.l = std::move(val.value.l);
 				break;
 			}
 			case vxValueType::kULong:
 			{
-				value.ul = (val.value.ul);
+				value.ul = std::move(val.value.ul);
 				break;
 			}
 			case vxValueType::kLongLong:
 			{
-				value.ll = (val.value.ll);
+				value.ll = std::move(val.value.ll);
 				break;
 			}
 			case vxValueType::kFloat:
 			{
-				value.f = (val.value.f);
+				value.f = std::move(val.value.f);
 				break;
 			}
 			case vxValueType::kDouble:
 			{
-				value.d = (val.value.d);
+				value.d = std::move(val.value.d);
 				break;
 			}
 			case vxValueType::kLongDouble:
 			{
-				value.ld = (val.value.ld);
+				value.ld = std::move(val.value.ld);
 				break;
 			}
 			case vxValueType::kVector2d:
 			{
-				value.v2d = (val.value.v2d);
+				value.v2d = std::move(val.value.v2d);
 				break;
 			}
 			case vxValueType::kVector3d:
 			{
-				value.v3d = (val.value.v3d);
+				value.v3d = std::move(val.value.v3d);
 				break;
 			}
 			case vxValueType::kMatrix44:
 			{
-				value.mat = (val.value.mat);
+				value.mat = std::move(val.value.mat);
 				break;
 			}
 			case vxValueType::kString:
 			{
-				value.str = val.value.str;
+				value.str = std::move(val.value.str);
 				break;
 			}
 			default:
 			{
-				value.i = (val.value.i);
+				value.i = std::move(val.value.i);
 				break;
 			}
 		}
@@ -455,9 +459,6 @@ public:
 	{
 		value.mat = m44 ;
 	}
-	
-	
-	
 	
 	void setBool(bool other)
 	{
@@ -693,6 +694,10 @@ public:
 		return os;
 	}
 	
+	bool isInvalid() const
+	{
+		return valueType == vxValueType::kInvalid;
+	}
 };
 
 } // Namespace 
