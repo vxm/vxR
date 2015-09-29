@@ -61,6 +61,7 @@ public:
 					 << "Type: " << v.m_type << std::endl;
 	}
 
+	vxValue getColorAttribute(const std::string attrName);
 	std::string name() const;
 	void setName(const std::string &name);
 	std::string type() const;

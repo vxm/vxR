@@ -55,5 +55,18 @@ void vxNode::addAttribute(const Attribute &attr)
 	m_attributes.push_back(attr);
 }
 
+vxValue vxNode::getColorAttribute(const std::__cxx11::string attrName)
+{
+	for(const auto nodeAttr: m_attributes)
+	{
+		if(nodeAttr.first == attrName)
+		{
+			return nodeAttr.second;
+		}
+	}
+
+	return vxValue::invalid;
+}
+
 //----------------------------------
 
