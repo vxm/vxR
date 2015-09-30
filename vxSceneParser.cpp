@@ -2,7 +2,7 @@
 
 using namespace vxCore;
 
-#define COUT_PARSING 0
+#define COUT_PARSING 1
 
 
 vxSceneParser::vxSceneParser(const std::string &fileName)
@@ -44,9 +44,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 	if (std::regex_match(txt, base_match, var_int))
 	{
 		ret.first = base_match[1].str();
-		auto strValue = std::stringstream(base_match[5].str());
-		int intValue;
-		strValue >> intValue;
+		auto intValue = std::stoi(base_match[5].str());
 		ret.second.setInt(intValue);
 #if COUT_PARSING
 		std::cout << " int ("
@@ -61,9 +59,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 	if (std::regex_match(txt, base_match, var_float))
 	{
 		ret.first = base_match[1].str();
-		auto strValue = std::stringstream(base_match[5].str());
-		float floatValue;
-		strValue >> floatValue;
+		auto floatValue = std::stof(base_match[5].str());
 		ret.second.setFloat(floatValue);
 #if COUT_PARSING
 		std::cout << " float ("
@@ -124,17 +120,13 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 	if (std::regex_match(txt, base_match, var_float_float))
 	{
 		ret.first = base_match[1].str();
-		int floatValue1, floatValue2;
-		std::stringstream strValue;
-		strValue << base_match[5]
-					<< ' '
-					<< base_match[7];
-
-		strValue >> floatValue1 >> floatValue2;
+		auto floatValue1 = std::stod(base_match[5]);
+		auto floatValue2 = std::stod(base_match[7]);
+		
 		ret.second.setVector2d(std::make_shared<vxVector2d>(floatValue1, floatValue2));
 #if COUT_PARSING
 		auto capt = ret.second.asVector3d();
-		std::cout << " vxVector3d (" << ret.first 
+		std::cout << " vxVector2d (" << ret.first 
 				  << ")="
 				  << "(" << capt->x()
 				  << ", " << capt->y()
@@ -145,21 +137,17 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 	if (std::regex_match(txt, base_match, var_float_float_float))
 	{
 		ret.first = base_match[1].str();
-		int floatValue1, floatValue2, floatValue3;
-		std::stringstream strValue;
-		strValue << base_match[5]
-					<< ' '
-					<< base_match[7]
-					<< ' '
-					<< base_match[9];
+		auto floatValue1 = std::stod(base_match[5]);
+		auto floatValue2 = std::stod(base_match[7]);
+		auto floatValue3 = std::stod(base_match[9]);
 
-		strValue >> floatValue1 >> floatValue2 >> floatValue3;
 		ret.second.setVector3d(std::make_shared<vxVector3d>(floatValue1, floatValue2, floatValue3));
+
 #if COUT_PARSING
 		auto capt = ret.second.asVector3d();
 		std::cout << " vxVector3d (" << ret.first 
 				  << ")="
-				  << "(" << capt->x()
+				  << "--------(" << capt->x()
 				  << ", " << capt->y()
 				  << ", " << capt->z()
 				  << ")" << std::endl;
@@ -182,10 +170,10 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 		
 #if COUT_PARSING
 		std::cout << " matrix (" << ret.first << ")=";
-		for(int i=0;i<4;i++)
-			for(int j=0;j<4;j++)
+		for(unsigned int i=0;i<4;i++)
+			for(unsigned int j=0;j<4;j++)
 		{
-			std::cout << "[" << ret.second.asMatrix44()->operator ()(i,j) << "]";
+			std::cout << "[" << (ret.second.asMatrix44()->operator()(i,j)) << "]";
 		}
 		std::cout << ")" << std::endl;
 #endif
