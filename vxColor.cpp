@@ -8,7 +8,48 @@ using namespace vxCore;
 double mxc = 220.0/256.0;
 double mnc = 10.0/256.0;
 
-vxColor vxColor::lookup(const vxColor col)
+
+vxColor::vxColor()
+{}
+
+vxColor::vxColor(const double r, 
+				 const double g, 
+				 const double b, 
+				 const double a) 
+	: m_r(r)
+	, m_g(g)
+	, m_b(b)
+	, m_a(a)
+{}
+
+
+vxColor::vxColor(const double r,
+				 const double g,
+				 const double b)
+	: m_r(r)
+	, m_g(g)
+	, m_b(b)
+{}
+
+vxColor::vxColor(const vxColor &other)
+	: m_r(other.m_r)
+	, m_g(other.m_g)
+	, m_b(other.m_b)
+{}
+
+vxColor::vxColor(const vxVector3d &other) 
+	: m_r(other.x())
+	, m_g(other.y())
+	, m_b(other.z())
+{}
+
+vxColor &vxColor::operator=(const vxVector3d &otro)
+{
+	set(otro.x(), otro.y(), otro.z());
+	return *this;
+}
+
+vxColor vxColor::lookup(const vxColor &col)
 {
 	return MathUtils::remap(col, mnc, mxc);
 }
@@ -23,8 +64,13 @@ vxColor vxColor::lookup(const double r, const double g, const double b)
 vxColor vxColor::lookup256(const int r, const int g, const int b)
 {
 	return std::move(vxColor( MathUtils::remap(r/255.0, mnc, mxc),
-					MathUtils::remap(g/255.0, mnc, mxc),
-					MathUtils::remap(b/255.0, mnc, mxc)));
+								MathUtils::remap(g/255.0, mnc, mxc),
+								MathUtils::remap(b/255.0, mnc, mxc)));
+}
+
+vxColor vxColor::lookup256(const vxColor &col)
+{
+	return std::move(MathUtils::remap(col, mnc, mxc));
 }
 
 vxColor vxColor::indexColor(const int idx)
@@ -114,62 +160,6 @@ vxColor vxColor::indexColor(const int idx)
 	return red;
 }
 
-vxColor vxColor::blue			(vxColor::lookup256(92, 138, 202));
-vxColor vxColor::bluishGreen	(vxColor::lookup256(24, 162, 121));
-vxColor vxColor::bluegreen		(vxColor::lookup256(95, 164, 190));
-vxColor vxColor::bluishPurple	(vxColor::lookup256(92, 102, 177));
-vxColor vxColor::greenishYellow	(vxColor::lookup256(235, 233, 0));
-vxColor vxColor::green			(vxColor::lookup256(0, 163, 71));
-vxColor vxColor::greenishBlue	(vxColor::lookup256(110, 175, 199));
-vxColor vxColor::orangePink		(vxColor::lookup256(240, 204, 162));
-vxColor vxColor::orange			(vxColor::lookup256(228, 184, 29));
-vxColor vxColor::pink			(vxColor::lookup256(245, 220, 208));
-vxColor vxColor::reddishOrange	(vxColor::lookup256(216, 119, 51));
-vxColor vxColor::red			(vxColor::lookup256(191, 27, 75));
-vxColor vxColor::reddishPurple	(vxColor::lookup256(196, 64, 143));
-vxColor vxColor::redPurple		(vxColor::lookup256(175, 35, 132));
-vxColor vxColor::purple			(vxColor::lookup256(246, 85, 158));
-vxColor vxColor::purplishBlue	(vxColor::lookup256(88,  121, 191));
-vxColor vxColor::purplishPink	(vxColor::lookup256(243, 208, 219));
-vxColor vxColor::purplishRed	(vxColor::lookup256(209, 65, 136));
-vxColor vxColor::white			(vxColor::lookup256(255, 255, 255));
-vxColor vxColor::yellowGreen	(vxColor::lookup256(185, 214, 4));
-vxColor vxColor::yellowishOrange(vxColor::lookup256(231, 224, 0));
-vxColor vxColor::yellow			(vxColor::lookup256(234, 231, 94));
-vxColor vxColor::yellowishGreen	(vxColor::lookup256(170, 209, 60));
-vxColor vxColor::black			{mnc, mnc, mnc};
-vxColor vxColor::grey			{(mnc+mxc)/2.0, (mnc+mxc)/2.0, (mnc+mxc)/2.0};
-
-
-
-vxColor::vxColor(double r, double g, double b, double a) 
-	: m_r(r)
-	, m_g(g)
-	, m_b(b)
-	, m_a(a)
-{}
-
-vxColor::vxColor()
-{}
-
-vxColor::vxColor(double r, double g, double b) 
-	: m_r(r)
-	, m_g(g)
-	, m_b(b)
-{}
-
-vxColor::vxColor(const vxColor &other) 
-	: m_r(other.m_r)
-	, m_g(other.m_g)
-	, m_b(other.m_b)
-{}
-
-vxColor &vxColor::operator=(const vxVector3d &otro)
-{
-	set(otro.x(), otro.y(), otro.z());
-	return *this;
-}
-
 void vxColor::set(double r, double g, double b, double a)
 {
 	m_r=r;
@@ -214,7 +204,6 @@ void vxColor::get(double &ri, double &gi, double &bi, double &ai) const
 	bi=m_b;
 	ai=m_a;
 }
-
 
 vxColor vxColor::gained(double gain) const 
 {
@@ -450,5 +439,31 @@ void vxColor::toRGBA8888(unsigned char *tbuff) const
 	*tbuff += (unsigned char)char(MathUtils::remap(1.0,255.0));
 	
 }
+
+vxColor vxColor::blue			(vxColor::lookup256(92, 138, 202));
+vxColor vxColor::bluishGreen	(vxColor::lookup256(24, 162, 121));
+vxColor vxColor::bluegreen		(vxColor::lookup256(95, 164, 190));
+vxColor vxColor::bluishPurple	(vxColor::lookup256(92, 102, 177));
+vxColor vxColor::greenishYellow	(vxColor::lookup256(235, 233, 0));
+vxColor vxColor::green			(vxColor::lookup256(0, 163, 71));
+vxColor vxColor::greenishBlue	(vxColor::lookup256(110, 175, 199));
+vxColor vxColor::orangePink		(vxColor::lookup256(240, 204, 162));
+vxColor vxColor::orange			(vxColor::lookup256(228, 184, 29));
+vxColor vxColor::pink			(vxColor::lookup256(245, 220, 208));
+vxColor vxColor::reddishOrange	(vxColor::lookup256(216, 119, 51));
+vxColor vxColor::red			(vxColor::lookup256(191, 27, 75));
+vxColor vxColor::reddishPurple	(vxColor::lookup256(196, 64, 143));
+vxColor vxColor::redPurple		(vxColor::lookup256(175, 35, 132));
+vxColor vxColor::purple			(vxColor::lookup256(246, 85, 158));
+vxColor vxColor::purplishBlue	(vxColor::lookup256(88,  121, 191));
+vxColor vxColor::purplishPink	(vxColor::lookup256(243, 208, 219));
+vxColor vxColor::purplishRed	(vxColor::lookup256(209, 65, 136));
+vxColor vxColor::white			(vxColor::lookup256(255, 255, 255));
+vxColor vxColor::yellowGreen	(vxColor::lookup256(185, 214, 4));
+vxColor vxColor::yellowishOrange(vxColor::lookup256(231, 224, 0));
+vxColor vxColor::yellow			(vxColor::lookup256(234, 231, 94));
+vxColor vxColor::yellowishGreen	(vxColor::lookup256(170, 209, 60));
+vxColor vxColor::black			{mnc, mnc, mnc};
+vxColor vxColor::grey			{(mnc+mxc)/2.0, (mnc+mxc)/2.0, (mnc+mxc)/2.0};
 
 

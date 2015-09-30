@@ -23,8 +23,21 @@ protected:
 
 public:
 
+	vxColor ();
+	vxColor (const double r,
+			 const double g,
+			 const double b);
 
-	static vxColor lookup(const vxColor col);
+	vxColor (const double r, 
+			 const double g, 
+			 const double b, 
+			 const double a);
+	
+	vxColor (const vxColor& other);
+	vxColor (const vxVector3d& other);
+	vxColor& operator=(const vxVector3d &otro);
+	
+	static vxColor lookup(const vxColor &col);
 	static vxColor lookup(const double r,
 							const double g,
 							const double b);
@@ -32,17 +45,9 @@ public:
 	static vxColor lookup256(const int r,
 								const int g,
 								const int b);
+	static vxColor lookup256(const vxColor &col);
 
 	static vxColor indexColor(const int idx);
-	
-	vxColor ();
-	vxColor (const double r,
-			 const double g,
-			 const double b);
-
-	vxColor (double r, double g, double b, double a);
-	vxColor (const vxColor& other);
-	vxColor& operator=(const vxVector3d &otro);
 	
 	void set(double r, double g, double b, double a);
 	void set(double r, double g, double b);
