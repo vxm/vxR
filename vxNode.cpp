@@ -55,17 +55,94 @@ void vxNode::addAttribute(const Attribute &attr)
 	m_attributes.push_back(attr);
 }
 
-vxValue vxNode::getColorAttribute(const std::__cxx11::string attrName)
+// It will retrieve the matching vector3d attribute and will cast
+// it's values to a color to be returned.
+vxColor vxNode::getColorAttribute(const std::__cxx11::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
 		if(nodeAttr.first == attrName)
 		{
-			return nodeAttr.second;
+			return vxColor(*nodeAttr.second.asVector3d());
 		}
 	}
 
-	return vxValue::invalid;
+	return vxColor::black;
+}
+
+// It will retrieve the matching vector3d attribute and will cast
+// it's values to a color to be returned.
+vxVector3d vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
+{
+	for(const auto nodeAttr: m_attributes)
+	{
+		if(nodeAttr.first == attrName)
+		{
+			return *nodeAttr.second.asVector3d();
+		}
+	}
+
+	return vxVector3d::zero;
+}
+
+// It will retrieve the matching vector3d attribute and will cast
+// it's values to a color to be returned.
+vxVector2d vxNode::getVector2dAttribute(const std::__cxx11::string attrName)
+{
+	for(const auto nodeAttr: m_attributes)
+	{
+		if(nodeAttr.first == attrName)
+		{
+			return *nodeAttr.second.asVector2d();
+		}
+	}
+
+	return vxVector2d::zero;
+}
+
+// It will retrieve the matching vector3d attribute and will cast
+// it's values to a color to be returned.
+float vxNode::getFloatAttribute(const std::__cxx11::string attrName)
+{
+	for(const auto nodeAttr: m_attributes)
+	{
+		if(nodeAttr.first == attrName)
+		{
+			return nodeAttr.second.asFloat();
+		}
+	}
+
+	return 0.f;
+}
+
+// It will retrieve the matching vector3d attribute and will cast
+// it's values to a color to be returned.
+int vxNode::getIntAttribute(const std::__cxx11::string attrName)
+{
+	for(const auto nodeAttr: m_attributes)
+	{
+		if(nodeAttr.first == attrName)
+		{
+			return nodeAttr.second.asInt();
+		}
+	}
+
+	return 0;
+}
+
+// It will retrieve the matching vector3d attribute and will cast
+// it's values to a color to be returned.
+std::__cxx11::string vxNode::getStringAttribute(const std::__cxx11::string attrName)
+{
+	for(const auto nodeAttr: m_attributes)
+	{
+		if(nodeAttr.first == attrName)
+		{
+			return nodeAttr.second.asString();
+		}
+	}
+
+	return ""s;
 }
 
 //----------------------------------

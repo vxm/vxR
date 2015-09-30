@@ -3,6 +3,8 @@
 
 #include <map>
 #include <vector>
+#include "vxVector.h"
+#include "vxColor.h"
 #include "vxValue.h"
 
 static unsigned long nNodes{0};
