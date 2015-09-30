@@ -38,6 +38,7 @@ public:
 	
 	//TODO: move back valueTypes to union
 	// it was very advanced already.
+	//TODO: for performance, this is really bad. bad!
 	struct valueTypes
 	{
 		valueTypes()
@@ -101,6 +102,8 @@ public:
 				value.str.clear();
 				break;
 			}
+		default:
+			value.str.clear();
 		}
 	}
 	
