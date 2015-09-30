@@ -188,9 +188,9 @@ double MathUtils::remap(double v, double max)
 
 vxColor MathUtils::remap(const vxColor &col, double min, double max)
 {
-	return vxColor((remap(col.r(),min,max)),
-				   (remap(col.g(),min,max)),
-				   (remap(col.b(),min,max)));
+	return std::move(vxColor((remap(col.r(),min,max)),
+							   (remap(col.g(),min,max)),
+							   (remap(col.b(),min,max))));
 }
 
 vxColor MathUtils::lerp(const vxColor &c1, const vxColor &c2, double r)
