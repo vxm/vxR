@@ -8,11 +8,10 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 350
+#define RESL 60
 #define PX resl * 2
 #define PY resl * 0
 #define PZ resl * 2
-
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
 //plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
@@ -36,28 +35,65 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 {
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	int nLightSamples{20};
-	std::cout << " -- Building process scene -- " << std::endl;
+	std::cout << " -- Building scene process -- " << std::endl;
 	
-	auto directLights = scn->getNodesByType("vxDirectLight");
-	for(auto light: directLights)
+	for(auto dlNode: scn->getNodesByType("vxDirectLight"))
 	{
-		const auto intensity{1.35};
-		const auto&& sunOrientation = vxVector3d(5,-14,-8).unit();//MathUtils::cartesianToNormal(sunCoords).unit();
-		
-		//This simulates the sun.
 		auto directLight = createDirectLight();
-		directLight->setOrientation(sunOrientation);
+
+		const auto intensity = dlNode->getFloatAttribute("intensity");
 		directLight->setIntensity(intensity);
 		
-		const auto color = light->getColorAttribute("color");
-		if(!color.isInvalid())
-		{
-			auto asColor{*color.asVector3d()};
-			directLight->setColor(vxColor::lookup256((int)asColor.x(), 
-													 (int)asColor.y(), 
-													 (int)asColor.z()));
-		}
+		const auto color = dlNode->getColorAttribute("color");
+		directLight->setColor(vxColor::lookup256(color));
+		
+		const auto&& orienentation = dlNode->getVector3dAttribute("orientation");
+		directLight->setOrientation(orienentation);
 	}
+
+	for(auto iblNode: scn->getNodesByType("vxIBLight"))
+	{
+		const auto path = iblNode->getStringAttribute("filePath");
+
+		//Environment tint.
+		auto envLight = createIBLight( path );
+
+		const auto intensity = iblNode->getFloatAttribute("intensity");
+		envLight->setIntensity(intensity);
+
+		const auto color = iblNode->getColorAttribute("color");
+		envLight->setColor(vxColor::lookup256(color));
+
+		const auto samples = iblNode->getIntAttribute("samples");
+		envLight->setSamples(nLightSamples);
+		
+		const auto radius = iblNode->getFloatAttribute("radius");
+		envLight->setRadius(radius);
+	}
+
+	auto ambLights = scn->getNodesByType("vxAmbientLight");
+	for(auto ambLNode: ambLights)
+	{
+		auto ambLight = createAmbientLight();
+
+		const auto intensity = ambLNode->getFloatAttribute("intensity");
+		ambLight->setIntensity(intensity);
+
+		const auto color = ambLNode->getColorAttribute("color");
+		ambLight->setColor(vxColor::lookup256(color));
+	}
+	
+	for(auto cmNode: scn->getNodesByType("vxCamera"))
+	{
+		m_camera = std::make_shared<vxCamera>(m_prop);
+		m_camera->set( vxVector3d::zero,
+						vxVector3d::constZ,
+						2.4,
+						hAperture,
+						vAperture);
+	}
+	
+	createCamera(vxMatrix{});
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -67,19 +103,8 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 	const double resl = RESL;
 	vxVector3d p{PX, PY, PZ};
 
-	//Environment tint.
-//	auto envLight = createIBLight(m_environment.path());
-//	envLight->setSamples(nLightSamples);
-//	envLight->setRadius(0.997);
-//	envLight->setIntensity(1.0);
-
-//	auto envLight = createAmbientLight();
-//	envLight->setSamples(nLightSamples);
-//	envLight->setRadius(0.997);
-//	envLight->setIntensity(0.3);
 	
 	
-	createCamera(vxMatrix{});
 	createGrid();
 	
 	auto plyReader = std::make_shared<vxPLYImporter>();
@@ -120,15 +145,7 @@ vxScene::createCamera(const vxMatrix &,
 						double hAperture,
 						double vAperture)
 {
-	m_camera = std::make_shared<vxCamera>(m_prop);
-	m_camera->set( vxVector3d::zero,
-					vxVector3d::constZ,
-					2.4,
-					hAperture,
-					vAperture);
 
-	return m_camera;
-}
 
 void vxScene::setShader(std::shared_ptr<vxShader> shader)
 {
@@ -212,7 +229,7 @@ bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 	m_grids[0]->addVertices(vts,
 							vxVector3d{PX,PY-(resl/2.0),PZ},
 //							vxVector3d{resl, resl, resl});
-							vxVector3d{resl*0.45, resl*0.45, resl*0.45});
+							vxVector3d{resl*0.75, resl*0.75, resl*0.75});
 	return true;
 }
 
@@ -234,19 +251,19 @@ int vxScene::throwRay(const vxRay &ray,
 	}
 
 //	TODO:take this to a dommo object or something like..
-	auto p = MathUtils::rectAndYPlane(ray.direction(),  - RESL/2.0);
-	if(!std::signbit(p.z()))
-	{
-		collide.setNormal(vxVector3d::constY);
-		collide.setPosition(p);
-		collide.setU(fmod(p.x(),1.0));
-		collide.setV(fmod(p.z(),1.0));
+//	auto p = MathUtils::rectAndYPlane(ray.direction(),  - RESL/2.0);
+//	if(!std::signbit(p.z()))
+//	{
+//		collide.setNormal(vxVector3d::constY);
+//		collide.setPosition(p);
+//		collide.setU(fmod(p.x(),1.0));
+//		collide.setV(fmod(p.z(),1.0));
 
-		vxColor col(defaultShader()->getColor(collide));
-		collide.setColor( col );
-		collide.setValid();
-		return 1;
-	}
+//		vxColor col(defaultShader()->getColor(collide));
+//		collide.setColor( col );
+//		collide.setValid();
+//		return 1;
+//	}
 	else
 	{
 		collide.setUV(MathUtils::normalToCartesian(ray.direction()));
