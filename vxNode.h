@@ -52,18 +52,36 @@ public:
 	{
 		id = nNodes++;
 	}
-
 	
 	//Adds the attribute identifying it first.
 	void addAttribute(const Attribute &attr);
 
 	friend std::ostream& operator<<(std::ostream &os, const vxNode& v)
 	{
-		return os << "Node ::" << v.id << ":: " << v.m_name << std::endl
-					 << "Type: " << v.m_type << std::endl;
+		os << "Node ::" 
+			<< v.id 
+			<< ":: " 
+			<< v.m_name 
+			<< std::endl
+			<< "Type: " 
+			<< v.m_type
+			<< std::endl;
+
+		for(const auto nodeAttr: v.m_attributes)
+		{
+			os << "\t" << nodeAttr.first << std::endl;
+		}
+		
+		return os;
 	}
 
-	vxValue getColorAttribute(const std::string attrName);
+	vxColor getColorAttribute(const std::string attrName);
+	float getFloatAttribute(const std::__cxx11::string attrName);
+	vxVector3d getVector3dAttribute(const std::__cxx11::string attrName);
+	vxVector2d getVector2dAttribute(const std::__cxx11::string attrName);
+	int getIntAttribute(const std::__cxx11::string attrName);
+	std::string getStringAttribute(const std::__cxx11::string attrName);
+
 	std::string name() const;
 	void setName(const std::string &name);
 	std::string type() const;
