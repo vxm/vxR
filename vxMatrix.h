@@ -24,9 +24,6 @@ public:
 	vxMatrix (std::initializer_list<double> list);
 	~vxMatrix ();
 
-	vxMatrix&		operator= (const vxMatrix &m);
-	double			operator() (unsigned int row, unsigned int col) const;
-	const double *	operator[] (unsigned int row) const;
 	vxStatus::code	get(double dest[]) const;
 	vxStatus::code	get(float dest[]) const;
 	vxMatrix		transpose() const;
@@ -42,6 +39,11 @@ public:
 	vxMatrix		operator* (double) const;
 	bool			operator== (const vxMatrix&other) const;
 	bool			operator!= (const vxMatrix&other) const;
+	vxMatrix&		operator= (const vxMatrix &m);
+	const double *	operator[] (unsigned int row) const;
+	double &		operator() (unsigned int row, unsigned int col);
+	double			operator() (unsigned int row, unsigned int col) const;
+	double *		operator[] (unsigned int row);
 	vxMatrix		inverse() const;
 	vxMatrix		adjoint() const;
 	vxMatrix		homogenize() const;
@@ -49,8 +51,6 @@ public:
 	double			det3x3() const;
 	bool			isEquivalent (const vxMatrix&other, double tolerance=1.0e-10) const;
 	bool			isSingular() const;
-	inline double &		operator() (unsigned int row, unsigned int col);
-	double *		operator[] (unsigned int row);
 	static const vxMatrix identity;
 	
 	//vxMatrix		operator* (double, const vxMatrix&right);

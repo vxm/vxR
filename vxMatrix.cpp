@@ -39,15 +39,6 @@ vxMatrix::~vxMatrix()
 	// array will be destructed by itself
 }
 
-double vxMatrix::operator()(unsigned int row, unsigned int col) const
-{
-	return (m_matrix[4*row+col]);
-}
-
-const double *vxMatrix::operator[](unsigned int row) const
-{
-	return &m_matrix[row*4];
-}
 
 vxStatus::code vxMatrix::get(double dest[]) const
 {
@@ -176,6 +167,11 @@ vxMatrix vxMatrix::operator*(double) const
 	return *this;
 }
 
+const double *vxMatrix::operator[](unsigned int row) const
+{
+	return &m_matrix[row*4];
+}
+
 bool vxMatrix::operator==(const vxMatrix &other) const
 {
 	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(double));
@@ -232,6 +228,11 @@ bool vxMatrix::isSingular() const
 }
 
 double &vxMatrix::operator()(unsigned int row, unsigned int col)
+{
+	return (m_matrix[4*row+col]);
+}
+
+double vxMatrix::operator()(unsigned int row, unsigned int col) const
 {
 	return (m_matrix[4*row+col]);
 }
