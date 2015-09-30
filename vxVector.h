@@ -70,6 +70,7 @@ public:
 	vxVector2d operator/(double factor) const;
 	vxVector2d operator/(float factor) const;
 	vxVector2d operator/(int factor) const;
+	static vxVector2d zero;
 
 	bool operator==(const vxVector2d &other) const
 	{

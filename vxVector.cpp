@@ -22,6 +22,7 @@ vxVector3d vxVector3d::constMinusXYZ{-1.0, -1.0, -1.0};
 
 vxVector3d vxVector3d::zero{0.0, 0.0, 0.0};
 
+vxVector2d vxVector2d::zero{0.0, 0.0};
 
 vxVector2d::vxVector2d() 
 {}
