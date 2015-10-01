@@ -2,8 +2,7 @@
 
 using namespace vxCore;
 
-#define COUT_PARSING 1
-
+#define COUT_PARSING 0
 
 vxSceneParser::vxSceneParser(const std::string &fileName)
 	:m_fileName(fileName)
