@@ -38,6 +38,7 @@ private:
 	ImageData m_imageData;
 	
 	unsigned int m_visSamples{1};
+	double m_c_invSamples{1/(double)m_visSamples};
 	unsigned int m_reflectionSamples{0};
 public:
 

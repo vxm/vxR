@@ -41,6 +41,7 @@ unsigned int vxRenderProcess::visSamples() const
 void vxRenderProcess::setVisSamples(unsigned int visSamples)
 {
 	m_visSamples = visSamples;
+	m_c_invSamples = 1.0/(double)m_visSamples;
 }
 
 unsigned int vxRenderProcess::reflectionSamples() const
@@ -152,13 +153,11 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
 	const auto&& rCamera = scene()->defaultCamera();
-	const auto&& invSamples = 1.0/(double)m_visSamples;
 	vxSampler sampler(m_visSamples);
 
 	// moving to start point.
 	unsigned int itH {offset};
 	unsigned int itV {0u};
-
 
 #if SINGLERAY
 	vxColor color;
@@ -174,7 +173,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		color.add(baseColor);
 	}
 	
-	bk->append(color*invSamples, hitCoordinates);
+	bk->append(color*m_c_invSamples, hitCoordinates);
 
 #else	
 	// on eachpixel.
@@ -227,7 +226,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		}
 		sampler.resetIterator();
 		
-		bk->append(color*invSamples, hitCoordinates);
+		bk->append(color*m_c_invSamples, hitCoordinates);
 
 		itH+=by;
 		if(itH >= m_prop->rx())
