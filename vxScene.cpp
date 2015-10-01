@@ -183,20 +183,6 @@ std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
 	return al1;
 }
 
-std::shared_ptr<vxGrid> vxScene::createGrid()
-{
-	// this is the grid object
-	const double resl = RESL;
-	vxVector3d p{PX, PY, PZ};
-	
-	// this is a hardcode program to test the rays. 
-	//TODO:get rid of this hard-coded values.
-	m_grids.push_back(std::make_shared<vxGrid>(p.x(), p.y(), p.z(), resl));
-	m_grids[0]->setResolution(resl);
-	
-	return m_grids[0];
-}
-
 std::shared_ptr<ImageProperties> vxScene::imageProperties() const
 {
 	return m_prop;
@@ -209,12 +195,6 @@ void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 
 bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
 {
-	const double resl = RESL;
-	const auto& vts = importer->getPointCloud();
-	m_grids[0]->addVertices(vts,
-							vxVector3d{PX,PY-(resl/2.0),PZ},
-//							vxVector3d{resl, resl, resl});
-							vxVector3d{resl*0.75, resl*0.75, resl*0.75});
 	return true;
 }
 
