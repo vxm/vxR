@@ -5,9 +5,9 @@ node
 {
 name = "renderSettings"
 type = "vxRenderSettings"
-    resolution = 720 720
-    pixelSamples = 2
-    reflectionSamples = 2
+    resolution = 1200 1200
+    pixelSamples = 5
+    reflectionSamples = 0
 }
 
 node
