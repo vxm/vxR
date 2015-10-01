@@ -31,7 +31,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	int nLightSamples{20};
 
-	for(auto dlNode: scn->getNodesByType("vxDirectLight"))
+	for(const auto dlNode: scn->getNodesByType("vxDirectLight"))
 	{
 		auto directLight = createDirectLight();
 
@@ -45,7 +45,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 		directLight->setOrientation(orienentation);
 	}
 
-	for(auto iblNode: scn->getNodesByType("vxIBLight"))
+	for(const auto iblNode: scn->getNodesByType("vxIBLight"))
 	{
 		const auto path = iblNode->getStringAttribute("filePath");
 
@@ -65,8 +65,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 		envLight->setRadius(radius);
 	}
 
-	auto ambLights = scn->getNodesByType("vxAmbientLight");
-	for(auto ambLNode: ambLights)
+	for(const auto ambLNode: scn->getNodesByType("vxAmbientLight"))
 	{
 		auto ambLight = createAmbientLight();
 
@@ -77,7 +76,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 		ambLight->setColor(vxColor::lookup256(color));
 	}
 	
-	for(auto cameraNode: scn->getNodesByType("vxCamera"))
+	for(const auto cameraNode: scn->getNodesByType("vxCamera"))
 	{
 		m_camera = std::make_shared<vxCamera>(m_prop);
 
