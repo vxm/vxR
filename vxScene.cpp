@@ -8,7 +8,7 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 60
+#define RESL 300
 #define PX resl * 2
 #define PY resl * 0
 #define PZ resl * 2
@@ -141,13 +141,6 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 	std::cout << " -- Finished building process scene -- " << std::endl;
 
 }
-
-std::shared_ptr<vxCamera> 
-vxScene::createCamera(const vxMatrix &,
-						double hAperture,
-						double vAperture)
-{
-
 
 void vxScene::setShader(std::shared_ptr<vxShader> shader)
 {
