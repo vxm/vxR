@@ -70,7 +70,7 @@ vxColor vxColor::lookup256(const int r, const int g, const int b)
 
 vxColor vxColor::lookup256(const vxColor &col)
 {
-	return std::move(MathUtils::remap(col, mnc, mxc));
+	return std::move(MathUtils::remap(col/255.0, mnc, mxc));
 }
 
 vxColor vxColor::indexColor(const int idx)
