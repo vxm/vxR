@@ -35,8 +35,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 {
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	int nLightSamples{20};
-	std::cout << " -- Building scene process -- " << std::endl;
-	
+
 	for(auto dlNode: scn->getNodesByType("vxDirectLight"))
 	{
 		auto directLight = createDirectLight();
