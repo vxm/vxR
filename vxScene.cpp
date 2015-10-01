@@ -8,11 +8,6 @@
 namespace vxCore{
 class vxScene;
 
-#define RESL 300
-#define PX resl * 2
-#define PY resl * 0
-#define PZ resl * 2
-
 //plyReader->processPLYFile("../vxR/juan_0.ply");
 //plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
 //plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
@@ -97,49 +92,45 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 						vAperture);
 	}
 	
+	for(const auto gridNode: scn->getNodesByType("vxGrid"))
+	{
+		const auto resolution = gridNode->getIntAttribute("resolution");
+
+		// this is a hardcode program to test the rays. 
+		//TODO:get rid of this hard-coded values.
+		m_grids.push_back(std::make_shared<vxGrid>(resolution * 2, 
+												   resolution * 0, 
+												   resolution * 2, 
+												   resolution));
+
+		for(const auto gridGeometry: scn->getNodesByType("vxGridGeometry"))
+		{
+			const auto path = gridGeometry->getStringAttribute("filePath");
+			const auto pos = gridGeometry->getVector3dAttribute("position");
+			const auto sf = gridGeometry->getFloatAttribute("scaleFactor");
+			
+			auto plyReader = std::make_shared<vxPLYImporter>();
+			plyReader->processPLYFile(path);
+			const auto& vts = plyReader->getPointCloud();
+			m_grids[0]->addVertices(vts, 
+									pos, 
+									vxVector3d(resolution,
+											   resolution,
+											   resolution) * sf);
+
+			m_grids[0]->createGround(0);
+		}
+		
+		auto na = m_grids[0]->numActiveVoxels();
+		auto totals = m_grids[0]->getNumberOfVoxels();
+		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
+	}
+
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
 	m_shader->setScene(shared_from_this());
-
-	//TODO: remove this debug code
-	const double resl = RESL;
-	vxVector3d p{PX, PY, PZ};
-
 	
-	
-	createGrid();
-	
-	auto plyReader = std::make_shared<vxPLYImporter>();
-	plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
-//	plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-	loadFromFile(plyReader);
-
-	//m_grids[0]->createSphere(p.x(), p.y(), p.z(),  resl/2.0); 
-	auto iRadius = 12.0;
-	auto distSph = (resl/3.3);
-
-//	m_grids[0]->fill();
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()+distSph, (resl/(7.0))); // Position, radius
-//	m_grids[0]->createSphere(p.x()-distSph, p.y()-distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()+distSph, p.z()-distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()+distSph, (resl/iRadius)); // Position, radius
-//	m_grids[0]->createSphere(p.x()+distSph, p.y()-distSph, p.z()-distSph, (resl/5.0)); // Position, radius
-//	m_grids[0]->createEdges(); // of the grid
-	m_grids[0]->createGround(0);
-//	m_grids[0]->createGround(3);
-//	m_grids[0]->createRoof();
-
-	//m_grids[0]->dumpFileInMemory("/home/john/code/build-vxR-Desktop-Release/vxR");
-	//m_grids[0]->dumpFileInMemory("/home/john/code/build-vxR-Desktop-Release/image.0000002.tif");
-	
-	auto na = m_grids[0]->numActiveVoxels();
-	auto totals = m_grids[0]->getNumberOfVoxels();
-	std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 	std::cout << " -- Finished building process scene -- " << std::endl;
-
 }
 
 void vxScene::setShader(std::shared_ptr<vxShader> shader)
