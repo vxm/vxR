@@ -82,17 +82,20 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 		ambLight->setColor(vxColor::lookup256(color));
 	}
 	
-	for(auto cmNode: scn->getNodesByType("vxCamera"))
+	for(auto cameraNode: scn->getNodesByType("vxCamera"))
 	{
 		m_camera = std::make_shared<vxCamera>(m_prop);
-		m_camera->set( vxVector3d::zero,
+
+		const auto fDistance = cameraNode->getFloatAttribute("focusDistance");
+		const auto hAperture = cameraNode->getFloatAttribute("horizontalAperture");
+		const auto vAperture = cameraNode->getFloatAttribute("verticalAperture");
+
+		m_camera->set(vxVector3d::zero,
 						vxVector3d::constZ,
-						2.4,
+						fDistance,
 						hAperture,
 						vAperture);
 	}
-	
-	createCamera(vxMatrix{});
 	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
