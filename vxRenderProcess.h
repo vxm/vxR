@@ -36,7 +36,9 @@ private:
 	
 	std::atomic<double> m_progress;
 	ImageData m_imageData;
-
+	
+	unsigned int m_visSamples{1};
+	unsigned int m_reflectionSamples{0};
 public:
 
 	// constructor with imageproperties propagation
@@ -63,6 +65,10 @@ public:
 	unsigned int nMaxThreads() const;
 
 	double progress() const;
+	unsigned int visSamples() const;
+	void setVisSamples(unsigned int visSamples);
+	unsigned int reflectionSamples() const;
+	void setReflectionSamples(unsigned int reflectionSamples);
 };
 
 #endif // VXRENDERPROCESS_H

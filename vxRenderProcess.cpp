@@ -15,8 +15,6 @@
 
 #define USE_THREADS 1
 #define SINGLERAY 0
-const unsigned int visSamples {2u};
-const unsigned int rfxSamples {1u};
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
@@ -34,6 +32,26 @@ void vxRenderProcess::setNMaxThreads(unsigned int nMaxThreads)
 	m_nThreads = std::min(std::thread::hardware_concurrency(), nMaxThreads);
 }
 
+
+unsigned int vxRenderProcess::visSamples() const
+{
+	return m_visSamples;
+}
+
+void vxRenderProcess::setVisSamples(unsigned int visSamples)
+{
+	m_visSamples = visSamples;
+}
+
+unsigned int vxRenderProcess::reflectionSamples() const
+{
+	return m_reflectionSamples;
+}
+
+void vxRenderProcess::setReflectionSamples(unsigned int reflectionSamples)
+{
+	m_reflectionSamples = reflectionSamples;
+}
 vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 	:	m_bucketList(prop, 10)
 	,	m_prop(prop)
@@ -134,8 +152,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
 	const auto&& rCamera = scene()->defaultCamera();
-	const auto&& invSamples = 1.0/(double)visSamples;
-	vxSampler sampler(visSamples);
+	const auto&& invSamples = 1.0/(double)m_visSamples;
+	vxSampler sampler(m_visSamples);
 
 	// moving to start point.
 	unsigned int itH {offset};
@@ -168,7 +186,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 
 		//TODO: return this to smart pointer.
 		auto bk = m_bucketList.getBucket(hitCoordinates);
-		for(unsigned int s=0;s<visSamples;s++)
+		for(unsigned int s=0;s<m_visSamples;s++)
 		{
 			vxCollision collision;
 			vxCollision refxCollision;
@@ -180,7 +198,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				{
 					const auto&& N = collision.normal();
 					auto incidence = ray.incidence(N);
-					for(int k = 0;k<rfxSamples;k++)
+					for(int k = 0;k<m_reflectionSamples;k++)
 					{
 						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
 														N[1]==0 ? 1 : -1,
@@ -194,10 +212,11 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 														ray.direction()*invV);
 						if(m_scene->throwRay(reflexRay, refxCollision))
 						{
-							reflection.mixSumm(refxCollision.color(), (1.0/rfxSamples));
+							reflection.mixSumm(refxCollision.color(), 
+												(1.0/m_reflectionSamples));
 						}
 					}
-					color.add(MathUtils::lerp(reflection, collision.color(), 0.55));
+					color.add(MathUtils::lerp(reflection, collision.color(), 0.75));
 				}
 				else
 				{
