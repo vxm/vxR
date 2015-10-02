@@ -25,12 +25,12 @@ vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 vxScene::~vxScene()
 {}
 
-void vxScene::build(std::shared_ptr<vxSceneParser> scn)
+void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 {
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
 	int nLightSamples{20};
 
-	for(const auto dlNode: scn->getNodesByType("vxDirectLight"))
+	for(const auto dlNode: nodeDB->getNodesByType("vxDirectLight"))
 	{
 		auto directLight = createDirectLight();
 
@@ -44,7 +44,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 		directLight->setOrientation(orienentation);
 	}
 
-	for(const auto iblNode: scn->getNodesByType("vxIBLight"))
+	for(const auto iblNode: nodeDB->getNodesByType("vxIBLight"))
 	{
 		const auto path = iblNode->getStringAttribute("filePath");
 
@@ -64,7 +64,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 		envLight->setRadius(radius);
 	}
 
-	for(const auto ambLNode: scn->getNodesByType("vxAmbientLight"))
+	for(const auto ambLNode: nodeDB->getNodesByType("vxAmbientLight"))
 	{
 		auto ambLight = createAmbientLight();
 
@@ -75,7 +75,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 		ambLight->setColor(vxColor::lookup256(color));
 	}
 	
-	for(const auto cameraNode: scn->getNodesByType("vxCamera"))
+	for(const auto cameraNode: nodeDB->getNodesByType("vxCamera"))
 	{
 		m_camera = std::make_shared<vxCamera>(m_prop);
 
@@ -90,18 +90,18 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 						vAperture);
 	}
 	
-	for(const auto gridNode: scn->getNodesByType("vxGrid"))
+	for(const auto gridNode: nodeDB->getNodesByType("vxGrid"))
 	{
 		const auto resolution = gridNode->getIntAttribute("resolution");
+		const auto pos = gridNode->getVector3dAttribute("position");
+		const auto size = gridNode->getIntAttribute("size");
 
 		// this is a hardcode program to test the rays. 
 		//TODO:get rid of this hard-coded values.
-		m_grids.push_back(std::make_shared<vxGrid>(resolution * 2, 
-												   resolution * 0, 
-												   resolution * 2, 
-												   resolution));
+		m_grids.push_back(std::make_shared<vxGrid>(pos, size));
+		m_grids[0]->setResolution(resolution);
 
-		for(const auto gridGeometry: scn->getNodesByType("vxGridGeometry"))
+		for(const auto gridGeometry: nodeDB->getNodesByType("vxGridGeometry"))
 		{
 			const auto path = gridGeometry->getStringAttribute("filePath");
 			const auto pos = gridGeometry->getVector3dAttribute("position");
@@ -112,12 +112,12 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 			const auto& vts = plyReader->getPointCloud();
 			m_grids[0]->addVertices(vts, 
 									pos, 
-									vxVector3d(resolution,
-											   resolution,
-											   resolution) * sf);
-
-			m_grids[0]->createGround(0);
+									vxVector3d(resolution * sf,
+											   resolution * sf,
+											   resolution * sf) );
 		}
+		
+		m_grids[0]->createGround();
 		
 		auto na = m_grids[0]->numActiveVoxels();
 		auto totals = m_grids[0]->getNumberOfVoxels();
