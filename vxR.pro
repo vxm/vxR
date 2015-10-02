@@ -64,7 +64,8 @@ SOURCES += main.cpp\
     vxSceneParser.cpp \
     StringUtils.cpp \
     vxValue.cpp \
-    vxNode.cpp
+    vxNode.cpp \
+    vxDom.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -118,7 +119,8 @@ HEADERS  += \
     vxSceneParser.h \
     StringUtils.h \
     vxValue.h \
-    vxNode.h
+    vxNode.h \
+    vxDom.h
 
 FORMS    += vxrendermain.ui
 
