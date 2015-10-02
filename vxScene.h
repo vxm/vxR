@@ -16,6 +16,7 @@
 #include "vxShader.h"
 #include "vxPLYImporter.h"
 #include "vxBitMap2d.h"
+#include "vxDom.h"
 
 namespace vxCore {
 
@@ -41,6 +42,9 @@ protected:
 
 	std::vector<std::shared_ptr<vxLight>> m_lights;
 
+	std::vector<std::shared_ptr<vxBitMap2d>> m_bitMaps;
+	std::vector<std::shared_ptr<vxDom>> m_doms;
+
 	std::shared_ptr<vxShader> m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
 
@@ -48,9 +52,6 @@ protected:
 	std::vector<vxGrid> m_cameras;
 	std::shared_ptr<ImageProperties> m_prop = {nullptr};
 
-	// Light domm
-	vxBitMap2d m_environment;
-	
 public:
 	//TODO: private and getter setter.
 	long long dRays{0};
@@ -59,7 +60,7 @@ public:
 	
 	~vxScene();
 
-	void build(std::shared_ptr<vxSceneParser> scn);
+	void build(std::shared_ptr<vxSceneParser> nodeDB);
 
 	std::shared_ptr<vxCamera>
 		createCamera(const vxMatrix &,
@@ -96,6 +97,9 @@ public:
 	std::shared_ptr<vxDirectLight> createDirectLight();
 	std::shared_ptr<vxIBLight> createIBLight(const std::string path);
 	std::shared_ptr<vxAmbientLight> createAmbientLight();
+	std::shared_ptr<vxDom> createDom(const std::string path);
+	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
+
 };
 
 }

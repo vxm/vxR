@@ -124,6 +124,12 @@ void vxScene::build(std::shared_ptr<vxSceneParser> scn)
 		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 	}
 
+	for(const auto domNode: nodeDB->getNodesByType("vxDom"))
+	{
+		const auto path = domNode->getStringAttribute("imagePath");
+		createDom(path);
+	}
+		
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
 	m_shader->setScene(shared_from_this());
@@ -182,6 +188,30 @@ std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
 	return al1;
 }
 
+std::shared_ptr<vxDom> vxScene::createDom(const std::__cxx11::string path)
+{
+	auto image = createImage(path);
+	auto dom = std::make_shared<vxDom>(image);
+
+	m_doms.push_back(dom);
+	return dom;
+}
+
+std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path)
+{
+	for(auto img: m_bitMaps)
+	{
+		if(img->path()==path)
+		{
+			return img;
+		}
+	}
+	
+	auto image = std::make_shared<vxBitMap2d>(path);
+	m_bitMaps.push_back(image);
+	return image;
+}
+
 std::shared_ptr<ImageProperties> vxScene::imageProperties() const
 {
 	return m_prop;
@@ -230,12 +260,10 @@ int vxScene::throwRay(const vxRay &ray,
 //	}
 	else
 	{
-		collide.setUV(MathUtils::normalToCartesian(ray.direction()));
-		auto environmentColor = m_environment.compute(collide);
-		
-		collide.setValid(false);
-		collide.setColor( environmentColor );
-		return 1;
+		if(m_doms.size())
+		{
+			m_doms[0]->throwRay(ray, collide);
+		}
 	}
 	
 	return 0;
