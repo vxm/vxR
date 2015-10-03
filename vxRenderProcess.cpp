@@ -196,7 +196,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				if(collision.isValid())
 				{
 					const auto&& N = collision.normal();
-					auto incidence = ray.incidence(N);
+//					auto incidence = ray.incidence(N);
 					for(int k = 0;k<m_reflectionSamples;k++)
 					{
 						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
