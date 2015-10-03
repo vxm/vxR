@@ -31,7 +31,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	std::getline(iFile, line);
 	if(line!="format ascii 1.0")
 	{
-		std::cout << "PLY: File " << fileName << " is not ASCII" << std::endl;
+		std::cerr << "PLY: File " << fileName << " is not ASCII" << std::endl;
 		return;
 	}
 	
