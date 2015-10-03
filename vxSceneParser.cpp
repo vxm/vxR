@@ -210,7 +210,7 @@ vxStatus vxSceneParser::parseNodeBody(std::ifstream &inFile,
 		}
 		else
 		{
-			int ind = StringUtils::indentation(line);
+			unsigned int ind = StringUtils::indentation(line);
 			if(ind>=line.size())
 			{
 				continue;
