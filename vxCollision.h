@@ -13,8 +13,8 @@ class vxCollision
 private:
 
 	vxPoint m_position;
-	vxColor m_color;
 	vxVector3d m_normal;
+	vxColor m_color;
 
 	bool m_valid {false};
 	vxVector2d m_uv;

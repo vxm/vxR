@@ -16,12 +16,12 @@ class vxCirclesMap : public vxMap2d
 
 	double m_radius[5] = {0.05, 0.2, 0.32, 0.45, 0.5};
 		
-	bool m_circle1 {true};
-	bool m_circle2 {true};
-	bool m_circle3 {true};
+	bool m_circle1 {false};
+	bool m_circle2 {false};
+	bool m_circle3 {false};
 	bool m_margin  {true};
 
-	double m_margn = 0.02;
+	double m_margn = 0.05;
 };
 
 
