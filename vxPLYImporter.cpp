@@ -43,14 +43,33 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	
 	// element vertex.
 	std::getline(iFile, line);
-	std::cout << "PLY: Num vertex " << line.substr(15) << std::endl;
+	std::cout << "PLY: Num vertex: " << line.substr(15) << std::endl;
 	int numVertex = strtol(line.substr(15).c_str(), 
 						   (char **)NULL, 
 						   10/*Base 10*/);
 	
+	unsigned int nFaces{0u};
+	
+	// reading properties.
 	do
 	{
 		std::getline(iFile, line);
+	
+		auto lineTokens = StringUtils::tokenizeSpace(line);
+		std::cout << "PLY: paramter tokens: ";
+		for(auto t:lineTokens)
+		{
+			std::cout << " [" << t << "]";
+		}
+		std::cout << std::endl;
+		
+		if(lineTokens.size()==3
+				&& lineTokens[0]=="element"
+				&& lineTokens[1]=="face")
+		{
+			nFaces = std::stoi(lineTokens[2]);
+			std::cout << "PLY: num faces: " << nFaces << std::endl;
+		}
 	}
 	while(line!="end_header");
 	

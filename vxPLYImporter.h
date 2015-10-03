@@ -5,6 +5,7 @@
 
 #include "vximporter.h"
 #include "FileUtils.h"
+#include "StringUtils.h"
 
 namespace vxCore {
 
