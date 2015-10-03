@@ -5,6 +5,17 @@
 #include <iostream>
 
 #define SPACES_ARE_A_TAB 4
+#include <regex>
+
+using namespace std::string_literals;
+using std::regex;
+using std::sregex_token_iterator;
+
+namespace vxCore
+{
+
+// Delimiters are spaces (\s) and/or commas
+static std::regex spaceDelimiter("[\\s,]+"s);
 
 class StringUtils
 {
@@ -14,6 +25,10 @@ public:
 	//Returns indentation of a line, or in other words the tabs or
 	// int division of SPACES_ARE_A_TAB in spaces or a combination of both.
 	static unsigned int indentation(const std::string &line);
+
+	static std::vector<std::string> tokenizeSpace(const std::string &str);
 };
 
+
+}
 #endif // STRINGUTILS_H
