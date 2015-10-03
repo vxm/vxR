@@ -129,4 +129,5 @@ CONFIG += c++14
 
 OTHER_FILES += \
     todo.txt \
-    demo.vx
+    demo.vx \
+    juan_0.ply
