@@ -242,7 +242,7 @@ int vxScene::throwRay(const vxRay &ray,
 	}
 
 //	TODO:take this to a dommo object or something like..
-//	auto p = MathUtils::rectAndYPlane(ray.direction(),  - RESL/2.0);
+//	auto p = MathUtils::rectAndYPlane(ray.direction(), -110.0);
 //	if(!std::signbit(p.z()))
 //	{
 //		collide.setNormal(vxVector3d::constY);
@@ -255,11 +255,12 @@ int vxScene::throwRay(const vxRay &ray,
 //		collide.setValid();
 //		return 1;
 //	}
-	else
+//	else
 	{
 		if(m_doms.size())
 		{
 			m_doms[0]->throwRay(ray, collide);
+			return 1;
 		}
 	}
 	
