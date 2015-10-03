@@ -110,14 +110,11 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			auto plyReader = std::make_shared<vxPLYImporter>();
 			plyReader->processPLYFile(path);
 			const auto& vts = plyReader->getPointCloud();
-			m_grids[0]->addVertices(vts, 
-									pos, 
-									vxVector3d(resolution * sf,
+			m_grids[0]->addVertices(vts, pos, vxVector3d(resolution * sf,
 											   resolution * sf,
 											   resolution * sf) );
+			m_grids[0]->createGround();
 		}
-		
-		m_grids[0]->createGround();
 		
 		auto na = m_grids[0]->numActiveVoxels();
 		auto totals = m_grids[0]->getNumberOfVoxels();
