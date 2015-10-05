@@ -1,7 +1,7 @@
-#include "vximporter.h"
+#include "vxGeometryImporter.h"
 
 using namespace vxCore;
 
-vxImporter::vxImporter()
+vxGeometryImporter::vxGeometryImporter()
 {
 }

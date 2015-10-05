@@ -7,12 +7,10 @@
 namespace vxCore {
 
 
-class vxImporter
+class vxGeometryImporter
 {
 public:
-	vxImporter();
-	
-	virtual std::vector<vxVector3d>& getPointCloud() = 0;
+	vxGeometryImporter();
 };
 
 #endif // VXIMPORTER_H
