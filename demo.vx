@@ -34,19 +34,11 @@ type = "vxGrid"
 
 node
 {
-name = "dom"
-type = "vxDom"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
-}
-
-node
-{
 name = "dragon"
 type = "vxGridGeometry"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/Downloads/dragon_1.ply"
-    position = 940.0 -230.0 830.0
+    position = 940.0 -230.0 855.0
     scaleFactor = 0.75
 }
 
@@ -56,11 +48,19 @@ name = "dragon2"
 type = "vxGridGeometry"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/Downloads/dragon_1.ply"
-    position = 820.0 -230.0 940.0
+    position = 820.0 -220.0 940.0
     scaleFactor = 0.45
 }
 
 
+
+node
+{
+name = "dom"
+type = "vxDom"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    imagePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+}
 
 node
 {
