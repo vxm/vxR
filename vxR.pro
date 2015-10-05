@@ -50,7 +50,6 @@ SOURCES += main.cpp\
     vxCirclesMap.cpp \
     vxramp.cpp \
     renderPresset.cpp \
-    vximporter.cpp \
     vxPLYImporter.cpp \
     vxBitMap2d.cpp \
     imageData.cpp \
@@ -65,7 +64,9 @@ SOURCES += main.cpp\
     StringUtils.cpp \
     vxValue.cpp \
     vxNode.cpp \
-    vxDom.cpp
+    vxDom.cpp \
+    vxGeometry.cpp \
+    vxGeometryImporter.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -105,7 +106,6 @@ HEADERS  += \
     vxCirclesMap.h \
     vxramp.h \
     renderPresset.h \
-    vximporter.h \
     vxPLYImporter.h \
     vxBitMap2d.h \
     imageData.h \
@@ -120,7 +120,9 @@ HEADERS  += \
     StringUtils.h \
     vxValue.h \
     vxNode.h \
-    vxDom.h
+    vxDom.h \
+    vxGeometry.h \
+    vxGeometryImporter.h
 
 FORMS    += vxrendermain.ui
 
