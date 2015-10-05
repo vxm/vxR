@@ -48,7 +48,8 @@ vxVector3d MathUtils::cartesianToNormal(const vxVector2d& coords)
 	return vxVector3d{x,y,z}.unit();
 }
 
-vxVector3d MathUtils::rectAndPlane(const vxVector3d&& ray, const vxPlane &plane)
+vxVector3d MathUtils::rectAndPlane(const vxVector3d&& ray, 
+								   const vxPlane &plane)
 {
 	switch(plane.m_type)
 	{

@@ -1,5 +1,5 @@
-#ifndef MathUtils_H
-#define MathUtils_H
+#ifndef MATHUTILS_H
+#define MATHUTILS_H
 
 #include<cmath>
 
@@ -30,7 +30,8 @@ class MathUtils
 	static vxVector3d cartesianToNormal(const vxVector2d& coords);
 
 	//Intersections
-	static vxVector3d rectAndPlane(const vxVector3d&& ray, const vxPlane &plane);
+	static vxVector3d rectAndPlane(const vxVector3d&& ray,
+								   const vxPlane &plane);
 	static vxVector3d rectAndXPlane(const vxVector3d&& ray, double x);
 	static vxVector3d rectAndYPlane(const vxVector3d&& ray, double y);
 	static vxVector3d rectAndZPlane(const vxVector3d&& ray, double z);
@@ -73,4 +74,4 @@ class MathUtils
 	std::cout << "on x = " << r << std::endl;
 */
 
-#endif // MathUtils_H
+#endif // MATHUTILS_H
