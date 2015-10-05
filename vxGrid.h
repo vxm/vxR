@@ -4,11 +4,12 @@
 
 #include <bitset>
 #include <climits>
+#include <cmath>
 
 #include "vxObject.h"
+#include "vxGeometry.h"
 #include "vxGlobal.h"
 
-#include <cmath>
 #include <time.h>
 #include <iostream>
 #include <vector>
@@ -37,7 +38,7 @@ public:
 struct vx
 {
 	unsigned char c{0b0000'0000};
-		
+
 	inline void activate(bool active)
 	{
 		active ? activate() : deactivate();
@@ -60,7 +61,7 @@ struct vx
 
 	inline unsigned char colorIndex() const
 	{
-		return c>>1;
+		return c;
 	}
 
 	inline void setColorIndex(const unsigned char ci)
@@ -124,7 +125,7 @@ public:
 	void createSphere(double x, double y, double z, const double radio);
 	bool getRandomBoolean(double ratio = 1.0);
 	void createRandom(double ratio = 1.0);
-	void addVertices(const std::vector<vxVector3d> &verts, 
+	void addGeometry(const std::shared_ptr<vxGeometry> geo, 
 					 const vxVector3d &offset, 
 					 const vxVector3d &scale);
 	void dumpFileInMemory(const std::__cxx11::string &fileName);

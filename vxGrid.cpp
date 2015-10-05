@@ -249,21 +249,52 @@ void vxGrid::createRandom(double ratio)
 	}
 }
 
-void vxGrid::addVertices(const std::vector<vxVector3d> &verts,
-						 const vxVector3d &offset,
-						 const vxVector3d &scale)
+void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
+										const vxVector3d &offset,
+										const vxVector3d &scale)
 {
-	for(const auto& vert : verts)
+	vxVector3d vert1;
+	vxVector3d vert2;
+	vxVector3d vert3;
+	for(auto tri: geo->m_triangles)
 	{
-		const auto&& p{(vert*scale)+offset};
-		
-		if(inGrid(p))
 		{
-			auto&& v = vxAtPosition(p);
-			v.activate();
-			v.setColorIndex((unsigned char)
-							MathUtils::getRand(24));
+			vert1 = geo->m_vertices[tri.a];
+			const auto&& p{(vert1*scale)+offset};
+			if(inGrid(p))
+			{
+				auto&& v = vxAtPosition(p);
+				v.setColorIndex(v.colorIndex()+1);
+			}
 		}
+		{
+			vert2 = geo->m_vertices[tri.b];
+			const auto&& p{(vert2*scale)+offset};
+			if(inGrid(p))
+			{
+				auto&& v = vxAtPosition(p);
+				v.setColorIndex(v.colorIndex()+1);
+			}
+		}
+		{
+			vert3 = geo->m_vertices[tri.c];
+			const auto&& p{(vert3*scale)+offset};
+			if(inGrid(p))
+			{
+				auto&& v = vxAtPosition(p);
+				v.setColorIndex(v.colorIndex()+1);
+			}
+		}
+		{
+			vxVector3d vert4 = (vert1+vert2+vert3)/3.0;
+			const auto&& p{(vert4*scale)+offset};
+			if(inGrid(p))
+			{
+				auto&& v = vxAtPosition(p);
+				v.setColorIndex(v.colorIndex()+1);
+			}
+		}
+
 	}
 }
 
