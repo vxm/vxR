@@ -96,7 +96,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		const auto pos = gridNode->getVector3dAttribute("position");
 		const auto size = gridNode->getIntAttribute("size");
 
-		// this is a hardcode program to test the rays. 
+		// this is a hardcode program to test the rays.
 		//TODO:get rid of this hard-coded values.
 		m_grids.push_back(std::make_shared<vxGrid>(pos, size));
 		m_grids[0]->setResolution(resolution);
@@ -107,12 +107,14 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			const auto pos = gridGeometry->getVector3dAttribute("position");
 			const auto sf = gridGeometry->getFloatAttribute("scaleFactor");
 			
-			auto plyReader = std::make_shared<vxPLYImporter>();
+			auto geo = createGeometry();
+			auto plyReader = std::make_shared<vxPLYImporter>(geo);
 			plyReader->processPLYFile(path);
-			const auto& vts = plyReader->getPointCloud();
-			m_grids[0]->addVertices(vts, pos, vxVector3d(resolution * sf,
-											   resolution * sf,
-											   resolution * sf) );
+			m_grids[0]->addGeometry(geo,
+									pos,
+									vxVector3d(resolution * sf,
+												resolution * sf,
+												resolution * sf) );
 			m_grids[0]->createGround();
 		}
 		
@@ -196,6 +198,7 @@ std::shared_ptr<vxDom> vxScene::createDom(const std::__cxx11::string path)
 
 std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path)
 {
+	// looking for previouly opened images.
 	for(auto img: m_bitMaps)
 	{
 		if(img->path()==path)
@@ -209,6 +212,13 @@ std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path
 	return image;
 }
 
+std::shared_ptr<vxGeometry> vxScene::createGeometry()
+{
+	auto geo = std::make_shared<vxGeometry>();
+	m_geometries.push_back(geo);
+	return geo;
+}
+
 std::shared_ptr<ImageProperties> vxScene::imageProperties() const
 {
 	return m_prop;
@@ -219,7 +229,7 @@ void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 	m_prop = prop;
 }
 
-bool vxScene::loadFromFile(std::shared_ptr<vxImporter> importer)
+bool vxScene::loadFromFile(std::shared_ptr<vxGeometryImporter> importer)
 {
 	return true;
 }
@@ -277,5 +287,7 @@ std::shared_ptr<vxShader> vxScene::defaultShader() const
 {
 	return m_shader;
 }
+
+
 
 }

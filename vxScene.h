@@ -39,6 +39,7 @@ protected:
 	std::vector<std::shared_ptr<vxPointLight>> m_pointLights;
 	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
 	std::vector<std::shared_ptr<vxAmbientLight>> m_ambientLights;
+	std::vector<std::shared_ptr<vxGeometry>> m_geometries;
 
 	std::vector<std::shared_ptr<vxLight>> m_lights;
 
@@ -73,7 +74,7 @@ public:
 	void setImageProperties(const std::shared_ptr<vxCore::ImageProperties> &imageProperties);
 
 	// Loads from a file using an importer object.
-	bool loadFromFile(std::shared_ptr<vxImporter> importer);
+	bool loadFromFile(std::shared_ptr<vxGeometryImporter> importer);
 
 	int throwRay(const vxRay &ray) const;
 	
@@ -99,6 +100,7 @@ public:
 	std::shared_ptr<vxAmbientLight> createAmbientLight();
 	std::shared_ptr<vxDom> createDom(const std::string path);
 	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
+	std::shared_ptr<vxGeometry> createGeometry();
 
 };
 
