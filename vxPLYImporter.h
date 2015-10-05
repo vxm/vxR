@@ -3,23 +3,26 @@
 
 #include <fstream>
 
-#include "vximporter.h"
+#include "vxGeometryImporter.h"
+#include "vxGeometry.h"
 #include "FileUtils.h"
 #include "StringUtils.h"
 
 namespace vxCore {
 
 
-class vxPLYImporter : public vxImporter
+class vxPLYImporter : public vxGeometryImporter
 {
+	std::shared_ptr<vxGeometry> m_geo;
+
 public:
-	vxPLYImporter();
-	
-	std::vector<vxVector3d> m_pointCloud;
+
+	vxPLYImporter(std::shared_ptr<vxGeometry> geo);
 
 	void processPLYFile(const std::string &fileName);
 	
-	virtual std::vector<vxVector3d>& getPointCloud() override;
+	std::shared_ptr<vxGeometry> getGeometry() const;
+	void setGeo(const std::shared_ptr<vxGeometry> &geo);
 };
 
 }

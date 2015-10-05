@@ -2,13 +2,23 @@
 
 using namespace vxCore;
 
-vxPLYImporter::vxPLYImporter()
+vxPLYImporter::vxPLYImporter(std::shared_ptr<vxGeometry> geo)
+	:m_geo(geo)
 {
+}
+
+std::shared_ptr<vxGeometry> vxPLYImporter::getGeometry() const
+{
+	return m_geo;
+}
+
+void vxPLYImporter::setGeo(const std::shared_ptr<vxGeometry> &geo)
+{
+	m_geo = geo;
 }
 
 void vxPLYImporter::processPLYFile(const std::string &fileName)
 {
-	m_pointCloud.clear();
 	if (!FileUtils::fileExists(fileName))
 	{
 		std::cout << "PLY: File " << fileName << " doesn't exist" << std::endl;
@@ -39,7 +49,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	
 	// comments.
 	std::getline(iFile, line);
-	std::cout << "PLY File Comments:: '" << line.substr(8) << "'" << std::endl;
+	std::cout << "PLY: File Comments:: '" << line.substr(8) << "'" << std::endl;
 	
 	// element vertex.
 	std::getline(iFile, line);
@@ -85,17 +95,36 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		else
 		{
 			//std::cout << "PLY: X " << x << "  Y "  << y << "  Z "  << z << " found on line: " << k << std::endl;
-			m_pointCloud.push_back(vxVector3d{x,y,z});
+			m_geo->addVertex(vxVector3d{x,y,z});
 		}
 		
 		k++;
 	}
 	
-	std::cout << "PLY file " << fileName << " Ended:: '" << m_pointCloud.size() << "' points taken" << std::endl;
+	
+	// reading properties.
+	while(std::getline(iFile, line))
+	{
+		auto lineTokens = StringUtils::tokenizeSpace(line);
+		if(lineTokens.size()==4	&& lineTokens[0]=="3")
+		{
+			int a = std::stoi(lineTokens[1]);
+			int b = std::stoi(lineTokens[2]);
+			int c = std::stoi(lineTokens[3]);
+			m_geo->addTriangle(a,b,c);
+		}
+	}
+	
+	std::cout << "PLY: file " 
+			  << fileName 
+			  << " :: '" 
+			  << m_geo->vertexCount() 
+			  << "' vertices " 
+			  << " :: '" 
+			  << m_geo->triangleCount() 
+			  << "' triangles taken" 
+			  << std::endl;
+	
 	iFile.close();
 }
 
-std::vector<vxVector3d> &vxPLYImporter::getPointCloud()
-{
-	return m_pointCloud;
-}
