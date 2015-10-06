@@ -128,6 +128,40 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		const auto path = domNode->getStringAttribute("imagePath");
 		createDom(path);
 	}
+	
+	for(const auto planeNode: nodeDB->getNodesByType("vxPlane"))
+	{
+		const auto planeTypeName = planeNode->getStringAttribute("planeType");
+		vxPlane::type planeType;
+		if(planeTypeName=="X"s)
+		{
+			planeType = vxPlane::type::kX;
+		}
+		if(planeTypeName=="Y"s)
+		{
+			planeType = vxPlane::type::kX;
+		}
+		if(planeTypeName=="z"s)
+		{
+			planeType = vxPlane::type::kX;
+		}
+		if(planeTypeName=="free"s)
+		{
+			planeType = vxPlane::type::kFree;
+		}
+
+		const auto x = planeNode->getFloatAttribute("x");
+		const auto y = planeNode->getFloatAttribute("y");
+		const auto z = planeNode->getFloatAttribute("z");
+		const auto d = planeNode->getFloatAttribute("d");
+
+		auto plane = createPlane(planeType);
+
+		plane->setD(x);
+		plane->setD(y);
+		plane->setD(z);
+		plane->setD(d);
+	}
 		
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
@@ -187,13 +221,19 @@ std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
 	return al1;
 }
 
-std::shared_ptr<vxDom> vxScene::createDom(const std::__cxx11::string path)
+std::shared_ptr<vxDome> vxScene::createDom(const std::__cxx11::string path)
 {
 	auto image = createImage(path);
-	auto dom = std::make_shared<vxDom>(image);
-
-	m_doms.push_back(dom);
+	auto dom = std::make_shared<vxDome>(image);
+	m_domes.push_back(dom);
 	return dom;
+}
+
+std::shared_ptr<vxPlane> vxScene::createPlane(vxPlane::type type)
+{
+	auto plane = std::make_shared<vxPlane>(type);
+	m_planes.push_back(plane);
+	return plane;
 }
 
 std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path)
@@ -236,40 +276,63 @@ bool vxScene::loadFromFile(std::shared_ptr<vxGeometryImporter> importer)
 
 int vxScene::throwRay(const vxRay &ray) const
 {
-	return m_grids[0]->throwRay(ray);
+	for(auto grid:m_grids)
+	{
+		if(grid->throwRay(ray))
+		{
+			return 1;
+		}
+	}
+	
+	for(auto plane:m_planes)
+	{
+		if(plane->hasCollision(ray))
+		{
+			return 1;
+		}
+	}
+
+//	for(auto dome:m_domes)
+//	{
+//		if(dome->throwRay(ray))
+//		{
+//			return 0;
+//		}
+//	}
+	
+	return 0;
 }
 
 
 int vxScene::throwRay(const vxRay &ray,
 						vxCollision &collide) const
 {
-	if(m_grids[0]->throwRay(ray, collide))
+	for(auto grid:m_grids)
 	{
-		vxColor col(defaultShader()->getColor(collide));
-		collide.setColor( col );
-		collide.setValid(true);
-		return 1;
+		if(grid->throwRay(ray, collide))
+		{
+			vxColor col(defaultShader()->getColor(collide));
+			collide.setColor( col );
+			collide.setValid(true);
+			return 1;
+		}
+	}
+	
+	for(auto plane:m_planes)
+	{
+		if(plane->throwRay(ray, collide))
+		{
+			vxColor col(defaultShader()->getColor(collide));
+			collide.setColor( col );
+			collide.setValid();
+			return 1;
+		}
 	}
 
-//	TODO:take this to a dommo object or something like..
-//	auto p = MathUtils::rectAndYPlane(ray.direction(), -110.0);
-//	if(!std::signbit(p.z()))
-//	{
-//		collide.setNormal(vxVector3d::constY);
-//		collide.setPosition(p);
-//		collide.setU(fmod(p.x(),1.0));
-//		collide.setV(fmod(p.z(),1.0));
-
-//		vxColor col(defaultShader()->getColor(collide));
-//		collide.setColor( col );
-//		collide.setValid();
-//		return 1;
-//	}
-//	else
+	for(auto dome:m_domes)
 	{
-		if(m_doms.size())
+		if(dome->throwRay(ray, collide))
 		{
-			m_doms[0]->throwRay(ray, collide);
 			return 1;
 		}
 	}
@@ -277,10 +340,33 @@ int vxScene::throwRay(const vxRay &ray,
 	return 0;
 }
 
-bool vxScene::hasCollision(const vxRay &ray)
+bool vxScene::hasCollision(const vxRay &ray) const
 {
-	dRays++;
-	return m_grids[0]->hasCollision(ray);
+	for(auto grid:m_grids)
+	{
+		if(grid->hasCollision(ray))
+		{
+			return true;
+		}
+	}
+	
+	for(auto plane:m_planes)
+	{
+		if(plane->hasCollision(ray))
+		{
+			return true;
+		}
+	}
+	
+	/*for(auto dome:m_domes)
+	{
+		if(dome->throwRay(ray, collide))
+		{
+			return 1;
+		}
+	}*/
+
+	return false;
 }
 
 std::shared_ptr<vxShader> vxScene::defaultShader() const

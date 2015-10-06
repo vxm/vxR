@@ -8,6 +8,7 @@
 
 #include "vxSceneParser.h"
 #include "vxRay.h"
+#include "vxPlane.h"
 #include "vxMatrix.h"
 #include "vxLight.h"
 #include "vxGrid.h"
@@ -16,7 +17,7 @@
 #include "vxShader.h"
 #include "vxPLYImporter.h"
 #include "vxBitMap2d.h"
-#include "vxDom.h"
+#include "vxDome.h"
 
 namespace vxCore {
 
@@ -31,7 +32,6 @@ class vxAmbientLight;
 class vxScene: public std::enable_shared_from_this<vxScene>
 {
 protected:
-
 	bool m_defaultLight = {true};
 	bool m_defaultShader = {true};
 
@@ -40,11 +40,12 @@ protected:
 	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
 	std::vector<std::shared_ptr<vxAmbientLight>> m_ambientLights;
 	std::vector<std::shared_ptr<vxGeometry>> m_geometries;
+	std::vector<std::shared_ptr<vxPlane>> m_planes;
 
 	std::vector<std::shared_ptr<vxLight>> m_lights;
 
 	std::vector<std::shared_ptr<vxBitMap2d>> m_bitMaps;
-	std::vector<std::shared_ptr<vxDom>> m_doms;
+	std::vector<std::shared_ptr<vxDome>> m_domes;
 
 	std::shared_ptr<vxShader> m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
@@ -83,7 +84,7 @@ public:
 	int throwRay( const vxRay &ray,
 						 vxCollision &collide) const;
 
-	bool hasCollision(const vxRay &ray);
+	bool hasCollision(const vxRay &ray) const;
 	
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
@@ -98,7 +99,8 @@ public:
 	std::shared_ptr<vxDirectLight> createDirectLight();
 	std::shared_ptr<vxIBLight> createIBLight(const std::string path);
 	std::shared_ptr<vxAmbientLight> createAmbientLight();
-	std::shared_ptr<vxDom> createDom(const std::string path);
+	std::shared_ptr<vxDome> createDom(const std::string path);
+	std::shared_ptr<vxPlane> createPlane(vxPlane::type type);
 	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
 	std::shared_ptr<vxGeometry> createGeometry();
 
