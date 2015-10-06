@@ -139,6 +139,7 @@ public:
 	double& operator[](const unsigned int);
 	double operator[](const unsigned int) const;
 
+	vxVector3d cross(const vxVector3d& v) const;
 	vxVector3d inverted() const;
 	axis mainAxis() const;
 	double length() const;

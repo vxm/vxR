@@ -297,6 +297,11 @@ double vxVector3d::operator[](const unsigned int idx) const
 	}
 }
 
+vxVector3d vxVector3d::cross(const vxVector3d &v) const
+{
+	return (*this)^v;
+}
+
 double& vxVector3d::operator[](const unsigned int idx)
 {
 	switch(idx)
