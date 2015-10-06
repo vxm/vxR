@@ -36,10 +36,7 @@ public:
 	void addVertex(const vxVector3d &v3);
 	void addTriangle(unsigned int a,
 					 unsigned int b,
-					 unsigned int c)
-	{
-		m_triangles.push_back(int3(a,b,c));
-	}
+					 unsigned int c);
 
 	unsigned int vertexCount() const;
 	unsigned int triangleCount() const;
