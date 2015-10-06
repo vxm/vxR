@@ -9,9 +9,15 @@ vxSceneParser::vxSceneParser(const std::string &fileName)
 {
 }
 
-decltype(auto) vxSceneParser::getLine(std::ifstream &f, std::string &line) const
+decltype(auto) vxSceneParser::getLine(std::ifstream &f, 
+									  std::string &line) const
 {
-	return std::getline(f, line);
+	decltype(auto) ln = std::getline(f, line);
+	if(ln && line[0]=='/' && line[1]=='/')
+	{
+		line.clear();
+	}
+	return ln;
 }
 
 Attribute vxSceneParser::parseAttribute(const std::string &txt)
