@@ -159,8 +159,8 @@ vxVector2d vxVector2d::operator/(double factor) const
 
 vxVector2d vxVector2d::operator/(const vxVector2d& entrada) const 
 {
-	return std::move(vxVector2d(m_x/entrada.x(),
-					  m_y/entrada.y()));
+	return std::move(vxVector2d(m_x/entrada.m_x,
+					  m_y/entrada.m_y));
 }
 
 vxVector2d vxVector2d::operator*(float factor) const 
@@ -175,8 +175,8 @@ vxVector2d vxVector2d::operator*(double factor) const
 
 vxVector2d vxVector2d::operator*(const vxVector2d& entrada) const 
 {
-	return std::move(vxVector2d(entrada.x()*m_x,
-					  entrada.y()*m_y));
+	return std::move(vxVector2d(entrada.m_x*m_x,
+					  entrada.m_y*m_y));
 }
 
 vxVector2d vxVector2d::operator-(float factor) const 
@@ -193,8 +193,8 @@ vxVector2d vxVector2d::operator-(double factor) const
 
 vxVector2d vxVector2d::operator-(const vxVector2d& entrada) const 
 {
-	return std::move(vxVector2d(m_x-entrada.x(),
-					  m_y-entrada.y()));
+	return std::move(vxVector2d(m_x-entrada.m_x,
+					  m_y-entrada.m_y));
 }
 
 vxVector2d vxVector2d::operator+(float factor) const 
@@ -435,16 +435,16 @@ vxVector3d vxVector3d::operator^(const vxVector3d& b) const
 
 bool vxVector3d::operator==(const vxVector3d& other) const
 {
-	return m_x==other.x()
-			&& m_y==other.y()
-			&& m_z==other.z();
+	return m_x==other.m_x
+			&& m_y==other.m_y
+			&& m_z==other.m_z;
 }
 
 bool vxVector3d::operator!=(const vxVector3d& other) const
 {
-	return m_x!=other.x()
-			|| m_y!=other.y()
-			|| m_z!=other.z();
+	return m_x!=other.m_x
+			|| m_y!=other.m_y
+			|| m_z!=other.m_z;
 }
 
 bool vxVector3d::operator>(const vxVector3d& other) const
@@ -504,7 +504,7 @@ double vxVector3d::angleZX() const
 
 vxVector3d vxVector3d::operator=(const vxVector3d &otro)
 {
-	set(otro.x(),otro.y(),otro.z());
+	set(otro.m_x,otro.y(),otro.m_z);
 	return std::move(*this);
 }
 
@@ -539,18 +539,18 @@ vxVector3d vxVector3d::operator/(float factor) const
 								m_z/(double)factor));
 }
 
-vxVector3d vxVector3d::operator/(double factor)
+vxVector3d vxVector3d::operator/(double factor) const
 {
 	return std::move(vxVector3d(m_x/(double)factor,
 								m_y/(double)factor,
 								m_z/(double)factor));
 }
 
-vxVector3d vxVector3d::operator/(const vxVector3d &entrada) 
+vxVector3d vxVector3d::operator/(const vxVector3d &entrada) const
 {
-	return std::move(vxVector3d(entrada.x()/m_x,
-								entrada.y()/m_y,
-								entrada.z()/m_z));
+	return std::move(vxVector3d(entrada.m_x/m_x,
+								entrada.m_y/m_y,
+								entrada.m_z/m_z));
 }
 
 vxVector3d vxVector3d::operator*(double factor) const 
@@ -562,9 +562,9 @@ vxVector3d vxVector3d::operator*(double factor) const
 
 vxVector3d vxVector3d::operator*(const vxVector3d other) const 
 {
-	return std::move(vxVector3d(other.x()*m_x,
-								other.y()*m_y,
-								other.z()*m_z));
+	return std::move(vxVector3d(other.m_x*m_x,
+								other.m_y*m_y,
+								other.m_z*m_z));
 }
 
 vxVector3d vxVector3d::operator-(float factor) const 
@@ -583,9 +583,9 @@ vxVector3d vxVector3d::operator-(double factor) const
 
 vxVector3d vxVector3d::operator-(const vxVector3d &entrada) const 
 {
-	return std::move(vxVector3d(m_x-entrada.x(),
-					  m_y-entrada.y(),
-					  m_z-entrada.z()));
+	return std::move(vxVector3d(m_x-entrada.m_x,
+					  m_y-entrada.m_y,
+					  m_z-entrada.m_z));
 }
 
 vxVector3d vxVector3d::operator+(float factor) const
@@ -600,9 +600,9 @@ vxVector3d vxVector3d::operator+(double factor) const
 
 vxVector3d vxVector3d::operator+(const vxVector3d &entrada) const
 {
-	return std::move(vxVector3d(entrada.x()+m_x,
-								entrada.y()+m_y,
-								entrada.z()+m_z));
+	return std::move(vxVector3d(entrada.m_x+m_x,
+								entrada.m_y+m_y,
+								entrada.m_z+m_z));
 }
 
 vxVector3d vxVector3d::operator+=(const vxVector3d &entrada)
