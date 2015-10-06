@@ -1,17 +1,19 @@
-#ifndef VXDOM_H
-#define VXDOM_H
+#ifndef VXDOME_H
+#define VXDOME_H
 
 #include "MathUtils.h"
 #include "vxBitMap2d.h"
+#include "vxRay.h"
+#include "vxCollision.h"
 
-class vxDom
+class vxDome
 {
 	// Light domm
 	std::shared_ptr<vxBitMap2d> m_image;
 	
 public:
-	vxDom();
-	vxDom(std::shared_ptr<vxBitMap2d> env);
+	vxDome();
+	vxDome(std::shared_ptr<vxBitMap2d> env);
 
 	
 	//renderable interface
