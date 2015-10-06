@@ -5,8 +5,8 @@ node
 {
 name = "renderSettings"
 type = "vxRenderSettings"
-    resolution = 700 700
-    pixelSamples = 2
+    resolution = 600 600
+    pixelSamples = 1
     reflectionSamples = 1
     numThreads = -1
 }
@@ -16,7 +16,7 @@ node
 name = "persp"
 type = "vxCamera"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 3.3
+    focusDistance = 3.0
     horizontalAperture = 1.3
     verticalAperture = 1.3
     focalLenth = 2.0
@@ -38,7 +38,7 @@ name = "dragon"
 type = "vxGridGeometry"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/Downloads/dragon_1.ply"
-    position = 940.0 -230.0 855.0
+    position = 940.0 -225.0 855.0
     scaleFactor = 0.75
 }
 
@@ -48,16 +48,14 @@ name = "dragon2"
 type = "vxGridGeometry"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/Downloads/dragon_1.ply"
-    position = 820.0 -220.0 940.0
+    position = 820.0 -225.0 940.0
     scaleFactor = 0.45
 }
-
-
 
 node
 {
 name = "dom"
-type = "vxDom"
+type = "vxDome"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imagePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
 }
@@ -68,9 +66,9 @@ name = "environment"
 type = "vxIBLight"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
-    intensity = 1.2
+    intensity = 1.9
     color = 255 255 255
-    samples = 3
+    samples = 5
     radius = 0.997
 }
 
@@ -103,5 +101,5 @@ type = "vxPlane"
     y = 0.0
     z = 0.0
     d = -220.0
-	color = 100 100 100
+    color = 10 10 10
 }

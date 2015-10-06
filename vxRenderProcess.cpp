@@ -202,7 +202,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
 														N[1]==0 ? 1 : -1,
 														N[2]==0 ? 1 : -1);
-						const auto range=0.06;
+						const auto range=0.02;
 						invV+=vxVector3d(MathUtils::getRand(range)-(range/2.0),
 										 MathUtils::getRand(range)-(range/2.0),
 										 MathUtils::getRand(range)-(range/2.0));
