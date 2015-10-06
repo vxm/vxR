@@ -122,7 +122,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 	}
 
-	for(const auto domNode: nodeDB->getNodesByType("vxDom"))
+	for(const auto domNode: nodeDB->getNodesByType("vxDome"))
 	{
 		const auto path = domNode->getStringAttribute("imagePath");
 		createDom(path);
