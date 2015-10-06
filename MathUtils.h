@@ -41,7 +41,11 @@ class MathUtils
 	static vxVector3d rayAndXPlane(const vxRay& ray, double x);
 	static vxVector3d rayAndYPlane(const vxRay& ray, double y);
 	static vxVector3d rayAndZPlane(const vxRay& ray, double z);
-
+	vxVector3d rectAndPlane(const vxRay& ray,
+										const vxVector3d&& a, 
+										const vxVector3d&& b, 
+										const vxVector3d&& c, 
+										const vxVector3d&& d) const;
 	//Random
 	static double getRand(double range);
 	static double getBoolRand();

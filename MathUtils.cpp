@@ -49,7 +49,7 @@ vxVector3d MathUtils::cartesianToNormal(const vxVector2d& coords)
 }
 
 vxVector3d MathUtils::rectAndPlane(const vxVector3d&& ray, 
-								   const vxPlane &plane)
+									const vxPlane &plane)
 {
 	switch(plane.m_type)
 	{
@@ -65,15 +65,31 @@ vxVector3d MathUtils::rectAndPlane(const vxVector3d&& ray,
 	default:
 		break;
 	}
+	
+	return vxVector3d::zero;
 }
 
+						
+vxVector3d MathUtils::rectAndPlane(const vxRay& ray,
+									const vxVector3d&& a, 
+									const vxVector3d&& b, 
+									const vxVector3d&& c, 
+									const vxVector3d&& d) const
+{
+	const auto &s = b-a;
+	const auto &t = c-a;
+	const auto &n = s^t;
 
+	return n/ray.direction();
+}
+						
+						
 vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
 {
 	// parametric ecuation of the linconst vxVector3d &&ray, - ray.x()) / -ray.x();
-	auto t = (x - ray.x()) / (-ray.x());
-	auto y = t * -ray.y() + ray.y();
-	auto z = t * -ray.z() + ray.z();
+	const auto t = (x - ray.x()) / (-ray.x());
+	const auto y = t * -ray.y() + ray.y();
+	const auto z = t * -ray.z() + ray.z();
 
 	return vxVector3d{x,y,z};
 }
