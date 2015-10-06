@@ -120,9 +120,9 @@ HEADERS  += \
     StringUtils.h \
     vxValue.h \
     vxNode.h \
-    vxDom.h \
     vxGeometry.h \
-    vxGeometryImporter.h
+    vxGeometryImporter.h \
+    vxDome.h
 
 FORMS    += vxrendermain.ui
 
