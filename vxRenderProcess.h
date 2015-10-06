@@ -34,7 +34,7 @@ private:
 	std::atomic_bool m_finished;
 	unsigned int m_nThreads;
 	
-	std::atomic<double> m_progress;
+	std::atomic<double> m_progress{0.0};
 	ImageData m_imageData;
 	
 	unsigned int m_visSamples{1};
