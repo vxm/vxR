@@ -3,6 +3,16 @@
 
 using namespace vxCore;
 
+vxColor vxPlane::color() const
+{
+	return m_color;
+}
+
+void vxPlane::setColor(const vxColor &color)
+{
+	m_color = color;
+}
+
 vxPlane::vxPlane()
 {
 }
@@ -74,7 +84,7 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 		collide.setPosition(p);
 		collide.setU(fmod(p.x(),1.0));
 		collide.setV(fmod(p.z(),1.0));
-		collide.setColor(vxColor::white);
+		collide.setColor(m_color);
 		return 1;
 	}
 	

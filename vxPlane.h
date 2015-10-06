@@ -13,6 +13,8 @@ class vxPlane
 	double m_z {0.0};
 	double m_d {0.0};
 	
+	vxColor m_color{vxColor::white};
+	
 	public:
 
 		enum class type
@@ -65,6 +67,8 @@ class vxPlane
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
 	
+	vxColor color() const;
+	void setColor(const vxColor &color);
 };
 
 }

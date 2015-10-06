@@ -148,14 +148,17 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		{
 			planeType = vxPlane::type::kFree;
 		}
-
+		const auto color = planeNode->getColorAttribute("color");
+		
 		const auto x = planeNode->getFloatAttribute("x");
 		const auto y = planeNode->getFloatAttribute("y");
 		const auto z = planeNode->getFloatAttribute("z");
 		const auto d = planeNode->getFloatAttribute("d");
 
 		auto plane = createPlane(planeType);
-
+		
+		//geometry color.
+		plane->setColor(color);
 		plane->setD(x);
 		plane->setD(y);
 		plane->setD(z);
