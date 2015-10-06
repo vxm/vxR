@@ -72,6 +72,27 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 		auto f = [intersection]{return intersection == vxVector3d(-200, -5.0, -5.0);};
 		st.examine(f, " 4.5 in all axys, direction is x=1, plane 3"s);
 	}
+
+	// TEST 5 //Cross product
+	{
+		const vxVector3d a{vxVector3d(5.0, 3.0, 5.0)};
+		const vxVector3d b{vxVector3d(6.0, 1.0, 4.0)};
+		const vxVector3d n = a^b;
+	
+		std::cout << "A (" << a << "), B (" << b <<") cross is: "s
+					 << n
+					 << std::endl;
+		/*
+		 *	octave:1> a = [5,3,5]
+		 *	octave:2> b = [6,1,4]
+		 *	octave:3> n = cross(a,b)
+		 *	n =
+		 *		7   10  -13
+		*/
+		auto f = [n]{return n == vxVector3d(7, 10, -13.0);};
+		st.examine(f, " 4.5 in all axys, direction is x=1, plane 3"s);
+	}
+	
 	
 	if(st.isSuccess())
 	{
