@@ -92,3 +92,16 @@ type = "vxSphere"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     radius = 1
 }
+
+node
+{
+name = "floor"
+type = "vxPlane"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    planeType = "y"
+    x = 0.0
+    y = 0.0
+    z = 0.0
+    d = -220.0
+	color = 100 100 100
+}
