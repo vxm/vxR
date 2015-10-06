@@ -158,7 +158,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		auto plane = createPlane(planeType);
 		
 		//geometry color.
-		plane->setColor(color);
+		plane->setColor(vxColor::lookup256(color));
 		plane->setD(x);
 		plane->setD(y);
 		plane->setD(z);
