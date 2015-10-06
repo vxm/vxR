@@ -28,7 +28,6 @@ vxScene::~vxScene()
 void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 {
 	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
-	int nLightSamples{20};
 
 	for(const auto dlNode: nodeDB->getNodesByType("vxDirectLight"))
 	{
@@ -58,7 +57,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		envLight->setColor(vxColor::lookup256(color));
 
 		const auto samples = iblNode->getIntAttribute("samples");
-		envLight->setSamples(nLightSamples);
+		envLight->setSamples(samples);
 		
 		const auto radius = iblNode->getFloatAttribute("radius");
 		envLight->setRadius(radius);
