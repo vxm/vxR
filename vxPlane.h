@@ -1,6 +1,11 @@
 #ifndef VXPLANE_H
 #define VXPLANE_H
 
+#include "vxCollision.h"
+#include "vxRay.h"
+
+namespace vxCore {
+
 class vxPlane
 {
 	double m_x {0.0};
@@ -54,6 +59,13 @@ class vxPlane
 
 	double d() const;
 	void setD(double d);
+	
+	//renderable interface
+	bool throwRay(const vxRay &ray) const;
+	int throwRay(const vxRay &ray, vxCollision &collide) const;
+	bool hasCollision(const vxRay &ray) const;
+	
 };
 
+}
 #endif // VXPLANE_H
