@@ -168,8 +168,8 @@ public:
 	vxVector3d operator*(float factor) const;
 	vxVector3d operator*(int factor) const;
 
-	vxVector3d operator/(const vxVector3d &entrada);
-	vxVector3d operator/(double factor);
+	vxVector3d operator/(const vxVector3d &entrada) const;
+	vxVector3d operator/(double factor) const;
 	vxVector3d operator/(float factor) const;
 	vxVector3d operator/(int factor) const;
 	vxVector3d operator^(const vxVector3d &b) const;
