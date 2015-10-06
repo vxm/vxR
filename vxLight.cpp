@@ -189,7 +189,7 @@ vxVector3d vxIBLight::getLightRay(const vxVector3d &position) const
 vxColor vxLight::acummulationLight(const vxCollision &collision) const
 {
 	vxColor acumColor;
-	const auto& cPnt = collision.position();
+	const auto&& cPnt = collision.position();
 	const auto& n = samples();
 	const auto& scn = m_scene.lock();
 	const auto colorRatio = 1.0/(double)n;
