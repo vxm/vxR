@@ -64,9 +64,9 @@ SOURCES += main.cpp\
     StringUtils.cpp \
     vxValue.cpp \
     vxNode.cpp \
-    vxDom.cpp \
     vxGeometry.cpp \
-    vxGeometryImporter.cpp
+    vxGeometryImporter.cpp \
+    vxDome.cpp
 
 HEADERS  += \
     vxVector.h \
