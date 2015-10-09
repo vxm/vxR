@@ -99,10 +99,15 @@ int executeRenderProcess(int argc, char *argv[])
 						renderProperties->rx(),
 						renderProperties->ry(),
 						QImage::Format_RGBA8888);
-	
+
 			std::string fileName = 
 					FileUtils::makeUnique(baseName);
-	
+
+			std::cout << "Opening file: " 
+					  << fileName 
+					  << " to write." 
+					  << std::endl;
+
 			//TODO: investigate other formats and resolution limits
 			img.save(QString(fileName.c_str()),"TIFF",100);
 			
