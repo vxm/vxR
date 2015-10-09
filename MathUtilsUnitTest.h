@@ -4,7 +4,6 @@
 #include <string>
 
 #include "vxUnitTest.h"
-#include "MathUtils.h"
 
 namespace vxCore {
 
@@ -15,6 +14,8 @@ public:
 	
 	int testFunction_rectAndXPlane();
 	static int testMathUtils();
+	int testFunction_VectorBasics();
+	int testFunction_Intersection();
 };
 }
 #endif // MATHUTILSUNITTEST_H
