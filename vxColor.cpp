@@ -298,6 +298,142 @@ vxColor vxColor::operator/(unsigned int factor) const
 							 m_a/(double)factor));
 }
 
+vxColor &vxColor::operator*=(const vxColor &entrada)
+{
+	m_r *= entrada.m_r;
+	m_g *= entrada.m_g;
+	m_b *= entrada.m_b;
+
+	return *this;
+}
+
+vxColor &vxColor::operator*=(double factor)
+{
+	m_r *= factor;
+	m_g *= factor;
+	m_b *= factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator*=(float factor)
+{
+	m_r *= factor;
+	m_g *= factor;
+	m_b *= factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator*=(int factor)
+{
+	m_r *= factor;
+	m_g *= factor;
+	m_b *= factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator*=(unsigned int factor)
+{
+	m_r *= factor;
+	m_g *= factor;
+	m_b *= factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator+=(const vxColor &entrada)
+{
+	m_r += entrada.m_r;
+	m_g += entrada.m_g;
+	m_b += entrada.m_b;
+
+	return *this;
+}
+
+vxColor &vxColor::operator+=(double factor)
+{
+	m_r += factor;
+	m_g += factor;
+	m_b += factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator+=(float factor)
+{
+	m_r += factor;
+	m_g += factor;
+	m_b += factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator+=(int factor)
+{
+	m_r += factor;
+	m_g += factor;
+	m_b += factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator+=(unsigned int factor)
+{
+	m_r += factor;
+	m_g += factor;
+	m_b += factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator-=(const vxColor &entrada)
+{
+	m_r -= entrada.m_r;
+	m_g -= entrada.m_g;
+	m_b -= entrada.m_b;
+
+	return *this;
+}
+
+vxColor &vxColor::operator-=(double factor)
+{
+	m_r -= factor;
+	m_g -= factor;
+	m_b -= factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator-=(float factor)
+{
+	m_r -= factor;
+	m_g -= factor;
+	m_b -= factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator-=(int factor)
+{
+	m_r -= factor;
+	m_g -= factor;
+	m_b -= factor;
+
+	return *this;
+}
+
+vxColor &vxColor::operator-=(unsigned int factor)
+{
+	m_r -= factor;
+	m_g -= factor;
+	m_b -= factor;
+
+	return *this;
+}
+
+
 vxColor vxColor::operator/(int factor) const 
 {
 	return std::move(vxColor(m_r/double(factor),

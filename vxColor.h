@@ -102,6 +102,24 @@ public:
 	vxColor operator/(float factor) const;
 	vxColor operator/(int factor) const;
 	vxColor operator/(unsigned int factor) const;
+
+	vxColor& operator*=(const vxColor &entrada);
+	vxColor& operator*=(double factor);
+	vxColor& operator*=(float factor);
+	vxColor& operator*=(int factor);
+	vxColor& operator*=(unsigned int factor);
+
+	vxColor& operator+=(const vxColor &entrada);
+	vxColor& operator+=(double factor);
+	vxColor& operator+=(float factor);
+	vxColor& operator+=(int factor);
+	vxColor& operator+=(unsigned int factor);
+
+	vxColor& operator-=(const vxColor &entrada);
+	vxColor& operator-=(double factor);
+	vxColor& operator-=(float factor);
+	vxColor& operator-=(int factor);
+	vxColor& operator-=(unsigned int factor);
 	
 	void toRGBA8888(unsigned char *tbuff) const;
 	
