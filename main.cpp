@@ -53,24 +53,24 @@ int executeRenderProcess(int argc, char *argv[])
 	auto sceneParser = std::make_shared<vxSceneParser>(scenePath);
 	sceneParser->procesScene();
 
-	for(auto renderPropertiesNode: sceneParser->getNodesByType("vxRenderSettings"))
+	for(auto node: sceneParser->getNodesByType("vxRenderSettings"))
 	{
-		const auto resolution = renderPropertiesNode->getVector2dAttribute("resolution");
-		const auto pixelSamples = renderPropertiesNode->getIntAttribute("pixelSamples");
-		const auto reflectionSamples = renderPropertiesNode->getIntAttribute("reflectionSamples");
+		const auto resolution = node->getVector2dAttribute("resolution");
+		const auto samples = node->getIntAttribute("pixelSamples");
+		const auto reflectionSamples = node->getIntAttribute("reflectionSamples");
 		
 		// Img properties for render.
 		auto renderProperties = std::make_shared<ImageProperties>(resolution.x(),
 																  resolution.y());
 		// create the render process
-		render rp(renderProperties);
+		render rp(renderProperties, samples);
 		rp.setDatabase(sceneParser);
-		rp.setVisSamples(pixelSamples);
+		rp.setVisSamples(samples);
 		rp.setReflectionSamples(reflectionSamples);
 		
 		// creates the bucket list (vector) using the img 
 		// description.
-		rp.createBucketList();
+		//rp.createBucketList(samples);
 		
 		std::cout << "Render process: " << TimeUtils::decorateTime(start,2) << std::endl;
 		
