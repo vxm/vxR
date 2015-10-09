@@ -297,6 +297,12 @@ double vxVector3d::operator[](const unsigned int idx) const
 	}
 }
 
+double vxVector3d::dot(const vxVector3d &v) const
+{
+	const auto tmp(v*(*this));
+	return (tmp.m_x + tmp.m_y + tmp.m_z) ;
+}
+
 vxVector3d vxVector3d::cross(const vxVector3d &v) const
 {
 	return (*this)^v;
@@ -433,9 +439,9 @@ vxVector3d vxVector3d::operator/(int factor) const
 
 vxVector3d vxVector3d::operator^(const vxVector3d& b) const
 {
-	return std::move(vxVector3d((m_y*b.m_z)-(m_z*b.m_y),
-						(m_x*b.m_z)-(m_z*b.m_x),
-						(m_x*b.m_y)-(m_y*b.m_x)));
+	return std::move(vxVector3d((m_y*b.m_z)+(m_z*b.m_y),
+								-((m_x*b.m_z)+(m_z*b.m_x)),
+								(m_x*b.m_y)+(m_y*b.m_x)));
 }
 
 bool vxVector3d::operator==(const vxVector3d& other) const
