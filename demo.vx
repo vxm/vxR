@@ -5,8 +5,8 @@ node
 {
 name = "renderSettings"
 type = "vxRenderSettings"
-    resolution = 600 600
-    pixelSamples = 1
+    resolution = 700 700
+    pixelSamples = 3
     reflectionSamples = 1
     numThreads = -1
 }
@@ -27,37 +27,27 @@ node
 name = "grid"
 type = "vxGrid"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    resolution = 440
-    position = 880 0 880
-    size = 440
+    resolution = 110
+    position = 220.0 0.0 220.0
+    size = 110.0
 }
 
 node
 {
-name = "dragon"
+name = "gnome"
 type = "vxGridGeometry"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/Downloads/dragon_1.ply"
-    position = 940.0 -225.0 855.0
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    position = 220.0 -54.0 220.0
     scaleFactor = 0.75
 }
 
 node
 {
-name = "dragon2"
-type = "vxGridGeometry"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/Downloads/dragon_1.ply"
-    position = 820.0 -225.0 940.0
-    scaleFactor = 0.45
-}
-
-node
-{
-name = "dom"
+name = "dome"
 type = "vxDome"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+    imagePath = "/home/john/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg"
 }
 
 node
@@ -65,23 +55,25 @@ node
 name = "environment"
 type = "vxIBLight"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
-    intensity = 1.9
+    filePath = "/home/john/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg"
+    intensity = 10.5
     color = 255 255 255
-    samples = 5
+    samples = 10
     radius = 0.997
+    gain = 0.3
+    gamma = 3.2
 }
 
-node
-{
-name = "sun"
-type = "vxDirectLight"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 1.26
-    color = 255 230 240
-    orientation = 5.0 -8.0 -8.0
-    samples = 1
-}
+//node
+//{
+//name = "sun"
+//type = "vxDirectLight"
+//    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+//    intensity = 1.36
+//    color = 255 230 240
+//    orientation = 5.0 -8.0 -8.0
+//    samples = 1
+//}
 
 node
 {
@@ -91,15 +83,16 @@ type = "vxSphere"
     radius = 1
 }
 
-node
-{
-name = "floor"
-type = "vxPlane"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    planeType = "y"
-    x = 0.0
-    y = 0.0
-    z = 0.0
-    d = -220.0
-    color = 10 10 10
-}
+//node
+//{
+//name = "floor"
+//type = "vxPlane"
+//    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+//    planeType = "y"
+//    x = 0.0
+//    y = 0.0
+//    z = 0.0
+//    d = -220.0
+//    color = 30 30 50
+//}
+
