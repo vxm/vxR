@@ -6,7 +6,6 @@
 
 #include "vxProcess.h"
 #include "vxStatus.h"
-#include "vxBucketList.h"
 #include "ImageProperties.h"
 #include "vxSceneParser.h"
 #include "vxScene.h"
@@ -22,13 +21,9 @@ using namespace vxCore;
  * in a vxContactBuffer
  */
 
-
 class vxRenderProcess : public vxProcess
 {
 private:
-
-	vxBucketList						m_bucketList;
-
 	std::shared_ptr<const ImageProperties> m_prop;
 	std::shared_ptr<vxScene> m_scene;
 	std::atomic_bool m_finished;
@@ -36,6 +31,7 @@ private:
 	
 	std::atomic<double> m_progress{0.0};
 	ImageData m_imageData;
+	vxContactBuffer m_contactBuffer;
 	
 	unsigned int m_visSamples{1};
 	double m_c_invSamples{1/(double)m_visSamples};
@@ -43,7 +39,8 @@ private:
 public:
 
 	// constructor with imageproperties propagation
-	vxRenderProcess(std::shared_ptr<ImageProperties> &prop);
+	vxRenderProcess(std::shared_ptr<ImageProperties> &prop,
+					unsigned int samples);
 	
 	virtual vxStatus::code preProcess(vxProcess* p=nullptr) override;
 	virtual vxStatus::code postProcess(vxProcess* p=nullptr) override;
@@ -52,7 +49,7 @@ public:
 
 	vxStatus::code render(unsigned int by = 1u, unsigned int offset = 0u);
 
-	void createBucketList();
+	//void createBucketList(unsigned int samples);
 	const unsigned char *generateImage();
 
 	vxStatus setDatabase(std::shared_ptr<vxSceneParser> scn);

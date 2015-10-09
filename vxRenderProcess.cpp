@@ -53,10 +53,12 @@ void vxRenderProcess::setReflectionSamples(unsigned int reflectionSamples)
 {
 	m_reflectionSamples = reflectionSamples;
 }
-vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
-	:	m_bucketList(prop, 10)
-	,	m_prop(prop)
+
+vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop, 
+								 unsigned int samples)
+	:	m_prop(prop)
 	,	m_imageData(prop)
+	,	m_contactBuffer(prop->numPixels())
 {
 	m_scene = std::make_shared<vxScene>(prop);
 	setNMaxThreads(100);
@@ -64,10 +66,14 @@ vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop)
 
 vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> scn)
 {
+	vxStatus st;
+
 	if(m_scene!=nullptr)
 	{
-		m_scene->build(scn);
+		/*st = */m_scene->build(scn);
 	}
+	
+	return st;
 }
 
 vxStatus::code vxRenderProcess::preProcess(vxProcess *p)
@@ -183,8 +189,6 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		vxVector2d hitCoordinates(itH/(double)m_prop->rx(),
 									itV/(double)m_prop->ry());
 
-		//TODO: return this to smart pointer.
-		auto bk = m_bucketList.getBucket(hitCoordinates);
 		for(unsigned int s=0;s<m_visSamples;s++)
 		{
 			vxCollision collision;
@@ -252,10 +256,6 @@ vxStatus::code vxRenderProcess::preConditions()
 	return vxStatus::code::kSuccess;
 }
 
-void vxRenderProcess::createBucketList()
-{
-	m_bucketList.reset(m_prop,10);
-}
 
 const unsigned char *
 vxRenderProcess::generateImage()
@@ -268,20 +268,16 @@ vxRenderProcess::generateImage()
 
 	auto buff = m_imageData.initialise();
 	
+	int k = 0;
+	auto pixel = m_imageData.m_pc.get();
 	// on each bucket
-	for(unsigned int i=0;i<m_bucketList.size();i++)
+	//for(unsigned int i=0;i<m_contactBuffer.size();i++)
+	for(auto& px:m_contactBuffer.m_pxs)
 	{
-		std::vector<Hit> *bk = m_bucketList[i].m_pb.getHits();
-		auto sz = m_bucketList[i].m_pb.hitsCount();
-		for(unsigned int j=0;j<sz;j++)
-		{
-			Hit &h = (*bk)[j];
-			auto pixel = m_imageData.get(h.m_xyCoef);
-
-			// Pixel postprocess
-			h.m_px.setToGamma(2.2);
-			h.m_px.toRGBA8888(pixel);
-		}
+		px.m_color.setToGamma(2.2);
+		px.m_color.toRGBA8888(pixel);
+		k++;
+		pixel+=4;
 	}
 
 	return buff;
