@@ -74,9 +74,6 @@ public:
 	
 	void setImageProperties(const std::shared_ptr<vxCore::ImageProperties> &imageProperties);
 
-	// Loads from a file using an importer object.
-	bool loadFromFile(std::shared_ptr<vxGeometryImporter> importer);
-
 	int throwRay(const vxRay &ray) const;
 	
 	// devuelve 0 si no le da a la caja

@@ -251,11 +251,6 @@ void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 	m_prop = prop;
 }
 
-bool vxScene::loadFromFile(std::shared_ptr<vxGeometryImporter> importer)
-{
-	return true;
-}
-
 int vxScene::throwRay(const vxRay &ray) const
 {
 	for(auto grid:m_grids)
