@@ -162,9 +162,11 @@ vxVector3d MathUtils::getHollowSphereRand(double radius)
 	return cartesianToNormal(r2d);
 }
 
-vxVector3d MathUtils::getHollowHemisphereRand(double radius, const vxVector3d &normal)
+vxVector3d MathUtils::getHollowHemisphereRand(double radius, 
+											  const vxVector3d &normal)
 {
 	auto r = getHollowSphereRand(radius);
+	//TODO:implement half of sphere
 	return r;
 }
 
