@@ -14,7 +14,6 @@
 #include "vxVector.h"
 #include "vxGrid.h"
 #include "vxGridUnitTest.h"
-
 #include "vxSceneParser.h"
 
 static const std::string baseName("image.0000001.tif");
