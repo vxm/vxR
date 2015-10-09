@@ -35,6 +35,7 @@ class vxValue
 public:
 	
 	static vxValue invalid;
+	vxValueType valueType;
 	
 	//TODO: move back valueTypes to union
 	// it was very advanced already.
@@ -69,7 +70,6 @@ public:
 	
 	}value;
 
-	vxValueType valueType;
 
 public:
 
