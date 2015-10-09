@@ -39,6 +39,25 @@ public:
 	void setDirection(const vxVector3d &direction);
 
 	double incidence(const vxVector3d &normal) const;
+
+	friend std::ostream& operator<<(std::ostream &os, const vxRay& ray)
+	{
+		const auto &org = ray.origin();
+		const auto &dr = ray.direction();
+
+		return os << org.x()
+					  << " " 
+					  << org.y()
+					  << " " 
+					  << org.z()
+					  << ", " 
+					  << dr.x()
+					  << " " 
+					  << dr.y()
+					  << " " 
+					  << dr.z();
+	}
+
 };
 
 }
