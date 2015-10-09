@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "vxVector.h"
+#include "vxRay.h"
+#include "vxCollision.h"
 
 namespace vxCore {
 
@@ -40,6 +42,11 @@ public:
 
 	unsigned int vertexCount() const;
 	unsigned int triangleCount() const;
+
+	//renderable interface
+	bool throwRay(const vxRay &ray) const;
+	int throwRay(const vxRay &ray, vxCollision &collide) const;
+	bool hasCollision(const vxRay &ray) const;
 };
 
 }

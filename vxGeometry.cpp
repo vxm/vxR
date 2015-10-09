@@ -27,3 +27,18 @@ unsigned int vxGeometry::triangleCount() const
 	return m_triangles.size();
 }
 
+bool vxGeometry::throwRay(const vxRay &ray) const
+{
+	return false;
+}
+
+int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
+{
+	return 0;
+}
+
+bool vxGeometry::hasCollision(const vxRay &ray) const
+{
+	return false;
+}
+
