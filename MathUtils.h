@@ -24,6 +24,7 @@ class MathUtils
 	// Speed of light
 	static const double C;
 	static const double PI;
+	static const double HALF_PI;
 
 	//Polar coordinates.
 	static vxVector2d normalToCartesian(const vxVector3d& normal);

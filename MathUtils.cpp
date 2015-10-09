@@ -4,8 +4,9 @@
 using namespace vxCore;
 
 const double MathUtils::C{299'792'458.0};
-const double MathUtils::PI {3.141'592'653'589'793'238'462'\
+const double MathUtils::PI{3.141'592'653'589'793'238'462'\
 643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816};
+const double MathUtils::HALF_PI{PI/2.0};
 
 MathUtils::MathUtils()
 {
