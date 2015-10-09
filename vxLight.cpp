@@ -163,6 +163,26 @@ void vxDirectLight::set(const vxVector3d &orientation, bool bidirectional)
 }
 
 
+
+double vxIBLight::gain() const
+{
+	return m_gain;
+}
+
+void vxIBLight::setGain(double gain)
+{
+	m_gain = gain;
+}
+
+double vxIBLight::gamma() const
+{
+	return m_gamma;
+}
+
+void vxIBLight::setGamma(double gamma)
+{
+	m_gamma = gamma;
+}
 vxIBLight::vxIBLight()
 	:m_map("")
 {
@@ -199,8 +219,8 @@ vxColor vxLight::acummulationLight(const vxCollision &collision) const
 		auto r = MathUtils::getHollowSphereRand(radius());
 
 		const vxRay f(cPnt, position() + r);
-		auto lumm = m_intensity * lightRatio(cPnt, 
-											 collision.normal(), 
+		auto lumm = m_intensity * lightRatio(cPnt,
+											 collision.normal(),
 											 position() + r);
 		
 		if (lumm>0.001 && !scn->hasCollision(f))
@@ -252,17 +272,17 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 		const auto&& r = MathUtils::getHollowHemisphereRand(radius(),
 													  collision.normal());
 		const vxRay f(cPnt, collision.normal()+r);
-
-		auto lumm = m_intensity * lightRatio(cPnt, 
+		auto lumm = m_intensity * lightRatio(cPnt,
 											 collision.normal(), 
 											cPnt + f.direction());
 
 		const auto &scn = m_scene.lock();
-		if (lumm>0.0001 && !scn->hasCollision(f))
+		if (lumm>0.001 && !scn->hasCollision(f))
 		{
 			double colorRatio = 1.0/(double)n;
 			environment.setUV(MathUtils::normalToCartesian(f.direction()));
 			auto environmentColor = m_map.compute(environment);
+			environmentColor=environmentColor*(m_gain + pow(environmentColor.lumma(),m_gamma));
 			acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
 		}
 	}

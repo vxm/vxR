@@ -121,6 +121,9 @@ public:
 class vxIBLight:public vxLight
 {
 	vxBitMap2d m_map;
+	double m_gain{0.5};
+	double m_gamma{2.0};
+
 public:
 	vxIBLight();
 	vxIBLight(double instensity, const vxColor &col);
@@ -130,6 +133,10 @@ public:
 	public:
 	vxVector3d getLightRay(const vxVector3d &position) const override;
 	vxColor acummulationLight(const vxCollision &collision) const override;
+	double gain() const;
+	void setGain(double gain);
+	double gamma() const;
+	void setGamma(double gamma);
 };
 
 class vxAmbientLight:public vxLight
