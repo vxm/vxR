@@ -18,9 +18,20 @@
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
+using MU = MathUtils;
 
 namespace vxCompute 
 {
+
+vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop, 
+								 unsigned int samples)
+	:	m_prop(prop)
+	,	m_imageData(prop)
+	,	m_contactBuffer(prop->numPixels())
+{
+	m_scene = std::make_shared<vxScene>(prop);
+	setNMaxThreads(100);
+}
 
 unsigned int vxRenderProcess::nMaxThreads() const
 {
@@ -54,15 +65,6 @@ void vxRenderProcess::setReflectionSamples(unsigned int reflectionSamples)
 	m_reflectionSamples = reflectionSamples;
 }
 
-vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop, 
-								 unsigned int samples)
-	:	m_prop(prop)
-	,	m_imageData(prop)
-	,	m_contactBuffer(prop->numPixels())
-{
-	m_scene = std::make_shared<vxScene>(prop);
-	setNMaxThreads(100);
-}
 
 vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> scn)
 {
@@ -102,6 +104,9 @@ vxStatus::code vxRenderProcess::execute()
 	timePoint start = std::chrono::system_clock::now();
 	m_finished = false;
 
+	const auto numCells = m_prop->numPixels();
+	m_contactBuffer.reserve(numCells);
+	
 #if USE_THREADS
 	const auto& minUpdateInterval = 1; //seconds
 	unsigned int customUpdateInterval = minUpdateInterval;
@@ -185,11 +190,12 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	// on eachpixel.
 	while(!(itV>=(m_prop->ry())))
 	{
-		vxColor color;
-		vxVector2d hitCoordinates(itH/(double)m_prop->rx(),
-									itV/(double)m_prop->ry());
+		vxColor pixelColor;
+		const vxVector2d hitCoordinates(
+					itV/(double)m_prop->ry(),
+					itH/(double)m_prop->rx());
 
-		for(unsigned int s=0;s<m_visSamples;s++)
+		for(auto s=0u;s<m_visSamples;s++)
 		{
 			vxCollision collision;
 			vxCollision refxCollision;
@@ -199,17 +205,16 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			{
 				if(collision.isValid())
 				{
-					const auto&& N = collision.normal();
-//					auto incidence = ray.incidence(N);
+					const auto& N = collision.normal();
 					for(int k = 0;k<m_reflectionSamples;k++)
 					{
 						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
 														N[1]==0 ? 1 : -1,
 														N[2]==0 ? 1 : -1);
-						const auto range=0.02;
-						invV+=vxVector3d(MathUtils::getRand(range)-(range/2.0),
-										 MathUtils::getRand(range)-(range/2.0),
-										 MathUtils::getRand(range)-(range/2.0));
+						const auto range=0.04;
+						invV+=vxVector3d(MU::getRand(range)-(range/2.0),
+										 MU::getRand(range)-(range/2.0),
+										 MU::getRand(range)-(range/2.0));
 						const auto&& reflexRay = vxRay(collision.position()
 														+N/10000,
 														ray.direction()*invV);
@@ -219,19 +224,22 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 												(1.0/m_reflectionSamples));
 						}
 					}
-					color.add(MathUtils::lerp(reflection, collision.color(), 0.75));
+					pixelColor+= MU::lerp(reflection, collision.color(), 0.95);
 				}
 				else
 				{
-					color.add(collision.color());
+					pixelColor+=collision.color();
 				}
 			}
 			sampler.next();
 		}
-		sampler.resetIterator();
 		
-		bk->append(color*m_c_invSamples, hitCoordinates);
-
+		sampler.resetIterator();
+		pixelColor*=m_c_invSamples;
+		
+		const auto id = itH  + (itV * m_prop->rx());
+		m_contactBuffer.pixel(id) = pixelColor;
+		
 		itH+=by;
 		if(itH >= m_prop->rx())
 		{
@@ -270,8 +278,7 @@ vxRenderProcess::generateImage()
 	
 	int k = 0;
 	auto pixel = m_imageData.m_pc.get();
-	// on each bucket
-	//for(unsigned int i=0;i<m_contactBuffer.size();i++)
+
 	for(auto& px:m_contactBuffer.m_pxs)
 	{
 		px.m_color.setToGamma(2.2);
