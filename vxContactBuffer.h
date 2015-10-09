@@ -23,24 +23,24 @@ class Hit
 {
 public:
 	Hit(const vxColor &px, const vxVector2d &coord)
-		:m_px(px)
+		:m_color(px)
 		,m_xyCoef(coord)
 	{}
 	
 	Hit()
 	{}
 	
-	vxColor m_px;
+	vxColor m_color;
 	vxVector2d m_xyCoef;
 };
 
-static std::mutex m_mutex;
+//static std::mutex m_mutex;
+
 class vxContactBuffer
 {
 private:
 
 	//pxs stores the hits,
-	std::vector<Hit> m_pxs;
 	
 	int m_scanX = {0};
 	int m_scanY = {0};
@@ -48,14 +48,20 @@ private:
 	unsigned long m_k{0u};
 	
 public:
+	std::vector<Hit> m_pxs;
 
-	vxContactBuffer()
+	vxContactBuffer(unsigned int hits)
+		:m_pxs(hits)
 	{
-		m_pxs.resize(200);
 	}
 	
 	~vxContactBuffer()
 	{
+	}
+
+	vxColor& pixel(unsigned int idx)
+	{
+		return m_pxs[idx].m_color;
 	}
 	
 	std::vector<Hit>* getHits()
@@ -98,8 +104,9 @@ public:
 		return true;
 	}
 
-	void reserve()
+	void reserve(const unsigned int size)
 	{
+		m_pxs.resize(size);
 	}
 
 	int getScanX()
