@@ -49,6 +49,9 @@ public:
 	}
 	
 	vxNode(const vxNode &&other)
+		: m_name{std::move(other.m_name)}
+		, m_type{std::move(other.m_type)}
+		, m_attributes{std::move(other.m_attributes)}
 	{
 		id = nNodes++;
 	}
