@@ -27,60 +27,41 @@ vxScene::~vxScene()
 
 void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 {
-	//const auto sunCoords = vxVector2d{-13.022000, -10.1000};
-
-	for(const auto dlNode: nodeDB->getNodesByType("vxDirectLight"))
+	for(const auto node: nodeDB->getNodesByType("vxDirectLight"))
 	{
-		auto directLight = createDirectLight();
-
-		const auto intensity = dlNode->getFloatAttribute("intensity");
-		directLight->setIntensity(intensity);
-		
-		const auto color = dlNode->getColorAttribute("color");
-		directLight->setColor(vxColor::lookup256(color));
-		
-		const auto&& orienentation = dlNode->getVector3dAttribute("orientation");
-		directLight->setOrientation(orienentation);
+		auto direct = createDirectLight();
+		direct->setIntensity(node->getFloatAttribute("intensity"));
+		direct->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+		direct->setOrientation(node->getVector3dAttribute("orientation"));
 	}
 
-	for(const auto iblNode: nodeDB->getNodesByType("vxIBLight"))
+	for(const auto node: nodeDB->getNodesByType("vxIBLight"))
 	{
-		const auto path = iblNode->getStringAttribute("filePath");
+		auto env = createIBLight(node->getStringAttribute("filePath"));
+		env->setIntensity(node->getFloatAttribute("intensity"));
+		env->setColor(vxColor::lookup256(node->getColorAttribute("color")));
 
-		//Environment tint.
-		auto envLight = createIBLight( path );
+		env->setSamples(node->getIntAttribute("samples"));
+		env->setRadius(node->getFloatAttribute("radius"));
+		env->setGain(node->getFloatAttribute("gain"));
+		env->setGamma(node->getFloatAttribute("gamma"));
 
-		const auto intensity = iblNode->getFloatAttribute("intensity");
-		envLight->setIntensity(intensity);
-
-		const auto color = iblNode->getColorAttribute("color");
-		envLight->setColor(vxColor::lookup256(color));
-
-		const auto samples = iblNode->getIntAttribute("samples");
-		envLight->setSamples(samples);
-		
-		const auto radius = iblNode->getFloatAttribute("radius");
-		envLight->setRadius(radius);
 	}
 
-	for(const auto ambLNode: nodeDB->getNodesByType("vxAmbientLight"))
+	for(const auto node: nodeDB->getNodesByType("vxAmbientLight"))
 	{
-		auto ambLight = createAmbientLight();
-
-		const auto intensity = ambLNode->getFloatAttribute("intensity");
-		ambLight->setIntensity(intensity);
-
-		const auto color = ambLNode->getColorAttribute("color");
-		ambLight->setColor(vxColor::lookup256(color));
+		auto ambient = createAmbientLight();
+		ambient->setIntensity(node->getFloatAttribute("intensity"));
+		ambient->setColor(vxColor::lookup256(node->getColorAttribute("color")));
 	}
 	
-	for(const auto cameraNode: nodeDB->getNodesByType("vxCamera"))
+	for(const auto node: nodeDB->getNodesByType("vxCamera"))
 	{
 		m_camera = std::make_shared<vxCamera>(m_prop);
 
-		const auto fDistance = cameraNode->getFloatAttribute("focusDistance");
-		const auto hAperture = cameraNode->getFloatAttribute("horizontalAperture");
-		const auto vAperture = cameraNode->getFloatAttribute("verticalAperture");
+		const auto fDistance = node->getFloatAttribute("focusDistance");
+		const auto hAperture = node->getFloatAttribute("horizontalAperture");
+		const auto vAperture = node->getFloatAttribute("verticalAperture");
 
 		m_camera->set(vxVector3d::zero,
 						vxVector3d::constZ,
@@ -89,11 +70,11 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 						vAperture);
 	}
 	
-	for(const auto gridNode: nodeDB->getNodesByType("vxGrid"))
+	for(const auto node: nodeDB->getNodesByType("vxGrid"))
 	{
-		const auto resolution = gridNode->getIntAttribute("resolution");
-		const auto pos = gridNode->getVector3dAttribute("position");
-		const auto size = gridNode->getIntAttribute("size");
+		const auto resolution = node->getIntAttribute("resolution");
+		const auto pos = node->getVector3dAttribute("position");
+		const auto size = node->getFloatAttribute("size");
 
 		// this is a hardcode program to test the rays.
 		//TODO:get rid of this hard-coded values.
@@ -122,16 +103,15 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 	}
 
-	for(const auto domNode: nodeDB->getNodesByType("vxDome"))
+	for(const auto node: nodeDB->getNodesByType("vxDome"))
 	{
-		const auto path = domNode->getStringAttribute("imagePath");
-		createDom(path);
+		createDom(node->getStringAttribute("imagePath"));
 	}
 	
-	for(const auto planeNode: nodeDB->getNodesByType("vxPlane"))
+	for(const auto node: nodeDB->getNodesByType("vxPlane"))
 	{
-		const auto planeTypeName = planeNode->getStringAttribute("planeType");
-		vxPlane::type planeType;
+		const auto planeTypeName = node->getStringAttribute("planeType");
+		vxPlane::type planeType = vxPlane::type::kFree;
 		if(planeTypeName=="X"s)
 		{
 			planeType = vxPlane::type::kX;
@@ -148,12 +128,12 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		{
 			planeType = vxPlane::type::kFree;
 		}
-		const auto color = planeNode->getColorAttribute("color");
+		const auto color = node->getColorAttribute("color");
 		
-		const auto x = planeNode->getFloatAttribute("x");
-		const auto y = planeNode->getFloatAttribute("y");
-		const auto z = planeNode->getFloatAttribute("z");
-		const auto d = planeNode->getFloatAttribute("d");
+		const auto x = node->getFloatAttribute("x");
+		const auto y = node->getFloatAttribute("y");
+		const auto z = node->getFloatAttribute("z");
+		const auto d = node->getFloatAttribute("d");
 
 		auto plane = createPlane(planeType);
 		
