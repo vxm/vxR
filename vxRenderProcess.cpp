@@ -224,7 +224,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 												(1.0/m_reflectionSamples));
 						}
 					}
-					pixelColor+= MU::lerp(reflection, collision.color(), 0.95);
+					pixelColor+= MU::lerp(reflection, collision.color(), 0.9);
 				}
 				else
 				{
