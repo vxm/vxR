@@ -7,9 +7,9 @@
 #include "vxObject.h"
 #include "MathUtils.h"
 
-
 namespace vxCore {
 
+static std::vector<vxVector2d> uniformScatterFree;
 
 class vxSampler
 {
@@ -20,78 +20,24 @@ class vxSampler
 	unsigned int m_nSamples {1};
 
 	bool m_random {true};
+	unsigned int m_k{0u};
+	void populateFreeSamples();
 	
 public:
 	
-	vxSampler(unsigned int nSamples)
-	{
-		//TODO:should be constructed not initialised
-		setSamples(nSamples);
-	};
-	
-	~vxSampler()
-	{
-	}
-	
+	vxSampler(unsigned int nSamples);
+	~vxSampler();
+	void next();
+	bool isDone() const;
 
-	void next()
-	{
-		m_iter++;
-
-		if(m_iter == m_nSamples)
-		{
-			m_iter=0;
-		}
-	};
+	double x() const;
+	double y() const;
 	
-	bool isDone() const
-	{
-		return m_iter+1==m_nSamples;
-	}
-
-	double x() const
-	{
-		return MathUtils::getRand(1.0);
-	}
-
-	double y() const
-	{
-		return MathUtils::getRand(1.0);
-	}
-
-	void setSamples(unsigned int samples)
-	{
-		m_nSamples = samples;
-		
-		m_x.resize(samples);
-		m_y.resize(samples);
-		
-		if(m_random)
-		{
-			for(unsigned int i=0;i<m_nSamples;i++)
-			{
-				m_x[i]=MathUtils::getRand(1.0);
-				m_y[i]=MathUtils::getRand(1.0);
-			}
-		}
-
-		resetIterator();
-	}
-	
-	void resetIterator()
-	{
-		m_iter=0;
-	}
-	
-	bool random() const
-	{
-		return m_random;
-	}
-	
-	void setRandom(bool random)
-	{
-		m_random = random;
-	}
+	vxVector2d& xy();
+	void setSamples(unsigned int samples);
+	void resetIterator();
+	bool random() const;
+	void setRandom(bool random);
 };
 
 }
