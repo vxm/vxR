@@ -179,8 +179,7 @@ void vxGrid::createGround(unsigned long offset)
 	for (unsigned long i=0;i<m_resolution;i++)
 		for (unsigned long j=0;j<m_resolution;j++)
 		{
-			vxAt(i,offset,j).activate();
-			vxAt(i,offset,j).setColorIndex(0);
+			vxAt(i,offset,j).setColorIndex(2);
 		}
 }
 
