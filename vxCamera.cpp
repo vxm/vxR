@@ -2,6 +2,26 @@
 
 using namespace vxCore;
 
+
+double vxCamera::horizontalAperture() const
+{
+	return m_horizontalAperture;
+}
+
+void vxCamera::setHorizontalAperture(double horizontalAperture)
+{
+	m_horizontalAperture = horizontalAperture;
+}
+
+double vxCamera::verticalAperture() const
+{
+	return m_verticalAperture;
+}
+
+void vxCamera::setVerticalAperture(double verticalAperture)
+{
+	m_verticalAperture = verticalAperture;
+}
 vxCamera::vxCamera(std::shared_ptr<const ImageProperties> prop) 
 	: m_prop{prop}
 {

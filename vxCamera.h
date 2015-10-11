@@ -66,6 +66,10 @@ public:
 	std::shared_ptr<const ImageProperties> prop() const;
 	
 	void setProp(std::shared_ptr<const ImageProperties> prop);
+	double horizontalAperture() const;
+	void setHorizontalAperture(double horizontalAperture);
+	double verticalAperture() const;
+	void setVerticalAperture(double verticalAperture);
 };
 
 }
