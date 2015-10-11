@@ -53,7 +53,7 @@ public:
 			 double apertureH = 0.0, 
 			 double apertureV = 0.0);
 	
-	vxRay ray(const vxVector2d &coord, const vxSampler &sampler) const;
+	vxRay ray(const vxVector2d &coord, vxSampler &sampler) const;
 	
 	vxRay givemeRandRay(const vxVector2d &coord);
 
