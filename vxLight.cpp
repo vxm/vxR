@@ -275,7 +275,8 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 	vxColor acumColor;
 	// compute all sort of shadows.
 	vxCollision environment;
-	const auto&& n = samples();
+	const auto n = samples();
+	const auto colorRatio = 1.0/(double)n;
 	for(auto i=0; i<n; i++)
 	{
 		const auto&& cPnt = collision.position();
@@ -283,16 +284,18 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 													  collision.normal());
 		const vxRay f(cPnt, collision.normal()+r);
 		auto lumm = m_intensity * lightRatio(cPnt,
-											 collision.normal(), 
-											cPnt + f.direction());
+											 collision.normal(),
+											 cPnt + f.direction());
 
 		const auto &scn = m_scene.lock();
-		if (lumm>0.001 && !scn->hasCollision(f))
+		
+		environment.setUV(MathUtils::normalToCartesian(f.direction()));
+		auto environmentColor = m_map.compute(environment);
+		const auto &luma = environmentColor.lumma();
+		
+		if (luma>m_lowThreshold && lumm>0.001 && !scn->hasCollision(f))
 		{
-			double colorRatio = 1.0/(double)n;
-			environment.setUV(MathUtils::normalToCartesian(f.direction()));
-			auto environmentColor = m_map.compute(environment);
-			environmentColor=environmentColor*(m_gain + pow(environmentColor.lumma(),m_gamma));
+			environmentColor=environmentColor*(m_gain + pow(luma,m_gamma));
 			acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
 		}
 	}
