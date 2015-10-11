@@ -215,7 +215,9 @@ vxColor vxColor::gained(double gain) const
 
 double vxColor::lumma() const 
 {
-	return sqrt((double)m_r*m_r+m_g*m_g+m_b*m_b);
+	return sqrt( 0.299 * m_r * m_r
+				+ 0.587 * m_g * m_g
+				+ 0.114 * m_b * m_b);
 }
 
 void vxColor::mix(const vxColor &other, double alpha)
