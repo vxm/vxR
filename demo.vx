@@ -5,9 +5,9 @@ node
 {
 name = "renderSettings"
 type = "vxRenderSettings"
-    resolution = 700 700
-    pixelSamples = 3
-    reflectionSamples = 1
+    resolution = 1366 768
+    pixelSamples = 12
+    reflectionSamples = 2
     numThreads = -1
 }
 
@@ -16,9 +16,9 @@ node
 name = "persp"
 type = "vxCamera"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 3.0
-    horizontalAperture = 1.3
-    verticalAperture = 1.3
+    focusDistance = 4.0
+    horizontalAperture = 1.30
+    verticalAperture = 1.7786
     focalLenth = 2.0
 }
 
@@ -47,7 +47,7 @@ node
 name = "dome"
 type = "vxDome"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg"
+    imagePath = "/home/john/code/vxR/Old_Industrial_Hall/fin4_Bg.jpg"
 }
 
 node
@@ -55,13 +55,14 @@ node
 name = "environment"
 type = "vxIBLight"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg"
-    intensity = 10.5
+    filePath = "/home/john/code/vxR/Old_Industrial_Hall/fin4_Ref.exr"
+    intensity = 14.0
     color = 255 255 255
-    samples = 10
+    samples = 50
     radius = 0.997
     gain = 0.3
-    gamma = 3.2
+    gamma = 1.4
+    lowThreshold = 0.03
 }
 
 //node
