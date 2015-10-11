@@ -45,7 +45,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		env->setRadius(node->getFloatAttribute("radius"));
 		env->setGain(node->getFloatAttribute("gain"));
 		env->setGamma(node->getFloatAttribute("gamma"));
-
+		env->setLowThreshold(node->getFloatAttribute("lowThreshold"));
 	}
 
 	for(const auto node: nodeDB->getNodesByType("vxAmbientLight"))
