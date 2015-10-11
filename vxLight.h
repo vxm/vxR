@@ -20,8 +20,8 @@ protected:
 	vxVector3d m_position	{0.0,0.0,0.0};
 	double m_intensity		{1.0};
 	vxColor m_color			{vxColor::white};
-	double m_radius			{0.0};
-	int m_samples			{1};
+	double m_radius			{1.0};
+	unsigned int m_samples	{1u};
 	std::weak_ptr<vxScene>	m_scene;
 
 public:
@@ -57,7 +57,7 @@ public:
 	double radius() const;
 	void setRadius(double radius);
 
-	int samples() const;
+	unsigned int samples() const;
 	void setSamples(int samples);
 };
 
