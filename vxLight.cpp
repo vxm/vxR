@@ -32,7 +32,7 @@ void vxLight::setRadius(double radius)
 	m_radius = radius;
 }
 
-int vxLight::samples() const
+unsigned int vxLight::samples() const
 {
 	return m_samples;
 }
@@ -182,6 +182,16 @@ double vxIBLight::gamma() const
 void vxIBLight::setGamma(double gamma)
 {
 	m_gamma = gamma;
+}
+
+double vxIBLight::lowThreshold() const
+{
+	return m_lowThreshold;
+}
+
+void vxIBLight::setLowThreshold(double lowThreshold)
+{
+	m_lowThreshold = lowThreshold;
 }
 vxIBLight::vxIBLight()
 	:m_map("")

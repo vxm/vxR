@@ -123,6 +123,7 @@ class vxIBLight:public vxLight
 	vxBitMap2d m_map;
 	double m_gain{0.5};
 	double m_gamma{2.0};
+	double m_lowThreshold{0.1};
 
 public:
 	vxIBLight();
@@ -137,6 +138,8 @@ public:
 	void setGain(double gain);
 	double gamma() const;
 	void setGamma(double gamma);
+	double lowThreshold() const;
+	void setLowThreshold(double lowThreshold);
 };
 
 class vxAmbientLight:public vxLight
