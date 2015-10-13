@@ -7,6 +7,7 @@
 #include "vxRay.h"
 #include "vxPlane.h"
 #include "vxCollision.h"
+#include "vxTriRef.h"
 
 using namespace vxCore;
 
@@ -46,6 +47,7 @@ class MathUtils
 										const vxVector3d& a, 
 										const vxVector3d& b, 
 										const vxVector3d& c);
+	static vxVector3d rectAndPlane(const vxRay& ray, vxTriRef& t);
 	//Random
 	static double getRand(double range);
 	static double getBoolRand();

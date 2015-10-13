@@ -86,8 +86,21 @@ vxVector3d MathUtils::rectAndPlane(const vxRay& ray,
 	double u = n.dot(a-p1) / n.dot(p2-p1);
 	return p1 + (p2-p1) * u;
 }
-						
-						
+
+vxVector3d MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &t)
+{
+	const auto n = t.getNormal();
+	//std::cout << n << std::endl;
+	const auto &p2 = ray.direction() - ray.origin();
+	const auto divisor = n.dot(p2);
+	if(n.dot(p2)==0.0)
+	{
+		return vxVector3d::zero;
+	}
+	
+	return ray.origin() + p2 * n.dot(t.p1-ray.origin()) / divisor;
+}
+
 vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
 {
 	// parametric ecuation of the linconst vxVector3d &&ray, - ray.x()) / -ray.x();
