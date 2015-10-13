@@ -14,7 +14,7 @@ vxCore::vxTriRef::vxTriRef(const vxVector3d &a,
 
 vxVector3d vxTriRef::getNormal() 
 {
-	if(n)
+	if(n!=nullptr)
 	{
 		return *n;
 	}

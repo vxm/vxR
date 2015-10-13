@@ -17,6 +17,7 @@ public:
 	const vxVector3d &p1;
 	const vxVector3d &p2;
 	const vxVector3d &p3;
+	//Is this atomic?
 	std::unique_ptr<vxVector3d> n;
 	
 	vxVector3d getNormal();
