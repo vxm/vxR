@@ -12,39 +12,41 @@
 
 using namespace std::string_literals;
 
+const std::string attributeNameEqSp = "((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)"s;
 //rule descriptions
 const std::string floatReg{"([+-]?\\d*\\.\\d+)(?![-+0-9\\.])"s};
 const std::string spaceReg{"(\\s+)"s};
 const std::string intReg{"(\\d+)"s};
 
 //simple
-const std::regex var_string{"((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)(\".*?\")"s};
-const std::regex var_int{"((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)(\\d+)"s};
-const std::regex var_float{"((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)"s 
+const std::regex var_string{attributeNameEqSp
+									+"(\".*?\")"s};
+const std::regex var_int{attributeNameEqSp
+									+"(\\d+)"s};
+const std::regex var_float{attributeNameEqSp 
 									+ floatReg};
-
-const std::regex var_brakets{"((?:[a-z][A-z0-9]*))(\\s+)(=)(\\s+)"s 
+const std::regex var_brakets{attributeNameEqSp
 									+ "(\\[.*?\\])"s};
 
 // complex numbers
-const std::regex var_float_float{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+const std::regex var_float_float{attributeNameEqSp 
 									+ floatReg 
 									+ spaceReg
 									+ floatReg};
 
-const std::regex var_float_float_float{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+const std::regex var_float_float_float{attributeNameEqSp 
 										+ floatReg 
 										+ spaceReg
 										+ floatReg
 										+ spaceReg
 										+ floatReg};
 
-const std::regex var_int_int{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+const std::regex var_int_int{attributeNameEqSp 
 								+ intReg
 								+ spaceReg
 								+ intReg};
 
-const std::regex var_int_int_int{"((?:[a-z][a-z]+))(\\s+)(=)(\\s+)"s 
+const std::regex var_int_int_int{attributeNameEqSp 
 										+ intReg
 										+ spaceReg
 										+ intReg
