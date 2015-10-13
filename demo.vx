@@ -84,16 +84,18 @@ type = "vxSphere"
     radius = 1
 }
 
-//node
-//{
-//name = "floor"
-//type = "vxPlane"
-//    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-//    planeType = "y"
-//    x = 0.0
-//    y = 0.0
-//    z = 0.0
-//    d = -220.0
-//    color = 30 30 50
-//}
+node
+{
+name = "floor"
+type = "vxPlane"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    planeType = "free"
+    x = 0.0
+    y = 0.0
+    z = 0.0
+    pointA = 225.0 -200.0 220.0
+    pointB = 220.0 -200.0 220.0
+    pointC = 224.0 -200.0 222.0
+    color = 30 30 50
+}
 
