@@ -66,7 +66,8 @@ vxColor vxNode::getColorAttribute(const std::__cxx11::string attrName)
 			return vxColor(*nodeAttr.second.asVector3d());
 		}
 	}
-
+	
+	std::cerr << "Node: Color attribute " << attrName<< " not found in node" << std::endl;
 	return vxColor::black;
 }
 
@@ -74,6 +75,7 @@ vxColor vxNode::getColorAttribute(const std::__cxx11::string attrName)
 // it's values to a color to be returned.
 vxVector3d vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
 {
+	int k=0;
 	for(const auto nodeAttr: m_attributes)
 	{
 		if(nodeAttr.first == attrName)
@@ -82,6 +84,7 @@ vxVector3d vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
 		}
 	}
 
+	std::cerr << "Node: Vector3d attribute " << attrName<< " not found in node" << std::endl;
 	return vxVector3d::zero;
 }
 
@@ -96,7 +99,8 @@ vxVector2d vxNode::getVector2dAttribute(const std::__cxx11::string attrName)
 			return *nodeAttr.second.asVector2d();
 		}
 	}
-
+	
+	std::cerr << "Node: Vector2d attribute " << attrName<< " not found in node" << std::endl;
 	return vxVector2d::zero;
 }
 
@@ -112,6 +116,8 @@ float vxNode::getFloatAttribute(const std::__cxx11::string attrName)
 		}
 	}
 
+	
+	std::cerr << "Node: Float attribute " << attrName<< " not found in node" << std::endl;
 	return 0.f;
 }
 
@@ -127,6 +133,8 @@ int vxNode::getIntAttribute(const std::__cxx11::string attrName)
 		}
 	}
 
+	
+	std::cerr << "Node: Int attribute " << attrName<< " not found in node" << std::endl;
 	return 0;
 }
 
@@ -142,6 +150,8 @@ std::__cxx11::string vxNode::getStringAttribute(const std::__cxx11::string attrN
 		}
 	}
 
+	
+	std::cerr << "Node: String attribute " << attrName<< " not found in node" << std::endl;
 	return ""s;
 }
 

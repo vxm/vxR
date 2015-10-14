@@ -13,6 +13,7 @@ namespace vxCore
 {
 
 using namespace std::string_literals;
+//Attribute should have default values.
 using Attribute = std::pair<std::string, vxValue>;
 
 class vxNode
