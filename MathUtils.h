@@ -80,4 +80,6 @@ class MathUtils
 	std::cout << "on x = " << r << std::endl;
 */
 
+using MU = MathUtils;
+
 #endif // MATHUTILS_H
