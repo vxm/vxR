@@ -252,14 +252,10 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 										const vxVector3d &offset,
 										const vxVector3d &scale)
 {
-	vxVector3d vert1;
-	vxVector3d vert2;
-	vxVector3d vert3;
-	for(auto tri: geo->m_triangles)
+	for(auto &tri: geo->m_triangles)
 	{
 		{
-			vert1 = geo->m_vertices[tri.a];
-			const auto&& p{(vert1*scale)+offset};
+			const auto&& p{(tri.p1*scale)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -267,8 +263,7 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 			}
 		}
 		{
-			vert2 = geo->m_vertices[tri.b];
-			const auto&& p{(vert2*scale)+offset};
+			const auto&& p{(tri.p2*scale)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -276,24 +271,13 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 			}
 		}
 		{
-			vert3 = geo->m_vertices[tri.c];
-			const auto&& p{(vert3*scale)+offset};
+			const auto&& p{(tri.p3*scale)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
 				v.setColorIndex(v.colorIndex()+1);
 			}
 		}
-		{
-			vxVector3d vert4 = (vert1+vert2+vert3)/3.0;
-			const auto&& p{(vert4*scale)+offset};
-			if(inGrid(p))
-			{
-				auto&& v = vxAtPosition(p);
-				v.setColorIndex(v.colorIndex()+1);
-			}
-		}
-
 	}
 }
 
