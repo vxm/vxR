@@ -5,12 +5,12 @@ using namespace vxCore;
 using namespace std::string_literals;
 
 
-MathUtilsUnitTest::MathUtilsUnitTest()
+MUUnitTest::MUUnitTest()
 {
 }
 
 
-int MathUtilsUnitTest::testFunction_Intersection()
+int MUUnitTest::testFunction_Intersection()
 {
 	std::cout << "Init:: Intersections tests"s << std::endl;
 	vxStatus st;
@@ -23,7 +23,7 @@ int MathUtilsUnitTest::testFunction_Intersection()
 		
 		const vxRay ray(vxVector3d(10,10,10), vxVector3d(9,8,9));
 		
-		const vxVector3d r = MathUtils::rectAndPlane(ray, a, b, c);
+		const vxVector3d r = MU::rectAndPlane(ray, a, b, c);
 
 		std::cout << "A (" << a << "), B (" << b << "), C (" << c <<") : "s
 					 << " ray (" 
@@ -49,7 +49,7 @@ int MathUtilsUnitTest::testFunction_Intersection()
 	return 0;
 }
 	
-int MathUtilsUnitTest::testFunction_VectorBasics()
+int MUUnitTest::testFunction_VectorBasics()
 {
 	std::cout << "Init:: Vector Basics tests"s << std::endl;
 	vxStatus st;
@@ -83,7 +83,7 @@ int MathUtilsUnitTest::testFunction_VectorBasics()
 	return 0;
 }
 
-int MathUtilsUnitTest::testFunction_rectAndXPlane()
+int MUUnitTest::testFunction_rectAndXPlane()
 {
 	std::cout << "Init:: rectAndXPlane tests"s << std::endl;
 	vxStatus st;
@@ -93,7 +93,7 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 		const vxVector3d origin{vxVector3d(4.5, 4.5, 4.5)};
 		const vxVector3d direction{vxVector3d(1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
-		auto intersection = MathUtils::rayAndXPlane(ray, 13.0);
+		auto intersection = MU::rayAndXPlane(ray, 13.0);
 		
 		std::cout << "From 4.5, 4.5, 4.5, with planeX 13 in x direction intersection is: "s
 					 << intersection 
@@ -108,7 +108,7 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 		const vxVector3d origin{vxVector3d(-30, 5.0, 5.0)};
 		const vxVector3d direction{vxVector3d(1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
-		auto intersection = MathUtils::rayAndXPlane(ray, -20.0);
+		auto intersection = MU::rayAndXPlane(ray, -20.0);
 		
 		std::cout << "From (-30, 5.0, 5.0), with planeX -20 in x direction intersection is: "s
 					 << intersection 
@@ -123,7 +123,7 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 		const vxVector3d origin{vxVector3d(-30, -5.0, -5.0)};
 		const vxVector3d direction{vxVector3d(-1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
-		auto intersection = MathUtils::rayAndXPlane(ray, -200.0);
+		auto intersection = MU::rayAndXPlane(ray, -200.0);
 		
 		std::cout << "From (-30, -5.0, -5.0), with planeX -200 in x direction intersection is: "s
 					 << intersection 
@@ -138,7 +138,7 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 		const vxVector3d origin{vxVector3d(5.0, 5.0, 5.0)};
 		const vxVector3d direction{vxVector3d(10.0, 1.0, 1.0)};
 		const auto& ray = vxRay{origin,direction};
-		auto intersection = MathUtils::rayAndXPlane(ray, 40.0);
+		auto intersection = MU::rayAndXPlane(ray, 40.0);
 
 		std::cout << "From (5.0, 5.0, 5.0), with planeX 40 in (10.0, 1.0, 1.0) direction intersection is: "s
 					 << intersection 
@@ -158,12 +158,12 @@ int MathUtilsUnitTest::testFunction_rectAndXPlane()
 
 
 
-int MathUtilsUnitTest::testMathUtils()
+int MUUnitTest::testMU()
 {
-	std::cout << "Init MathUtils test" << std::endl;
+	std::cout << "Init MU test" << std::endl;
 	int result{0};
 
-	static MathUtilsUnitTest mathTest;
+	static MUUnitTest mathTest;
 	mathTest.setVerbose(false);
 	result = mathTest.testFunction_rectAndXPlane();
 	result += mathTest.testFunction_VectorBasics();

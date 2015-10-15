@@ -1,5 +1,5 @@
-#ifndef MATHUTILSUNITTEST_H
-#define MATHUTILSUNITTEST_H
+#ifndef MUUNITTEST_H
+#define MUUNITTEST_H
 
 #include <string>
 
@@ -7,15 +7,15 @@
 
 namespace vxCore {
 
-class MathUtilsUnitTest : public vxUnitTest
+class MUUnitTest : public vxUnitTest
 {
 public:
-	MathUtilsUnitTest();
+	MUUnitTest();
 	
 	int testFunction_rectAndXPlane();
-	static int testMathUtils();
+	static int testMU();
 	int testFunction_VectorBasics();
 	int testFunction_Intersection();
 };
 }
-#endif // MATHUTILSUNITTEST_H
+#endif // MUUNITTEST_H
