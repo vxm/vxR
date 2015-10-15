@@ -14,7 +14,7 @@ void vxGeometry::addVertex(const vxVector3d &v3)
 
 void vxGeometry::addTriangle(unsigned int a, unsigned int b, unsigned int c)
 {
-	m_triangles.push_back(std::move(vxTriRef(m_vertices[a],
+	m_triangles.push_back((vxTriRef(m_vertices[a],
 											   m_vertices[b],
 											   m_vertices[c])));
 }

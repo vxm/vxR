@@ -81,11 +81,11 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		m_grids.push_back(std::make_shared<vxGrid>(pos, size));
 		m_grids[0]->setResolution(resolution);
 
-		for(const auto gridGeometry: nodeDB->getNodesByType("vxGridGeometry"))
+		for(const auto nodeGeo: nodeDB->getNodesByType("vxGridGeometry"))
 		{
-			const auto path = gridGeometry->getStringAttribute("filePath");
-			const auto pos = gridGeometry->getVector3dAttribute("position");
-			const auto sf = gridGeometry->getFloatAttribute("scaleFactor");
+			const auto path = nodeGeo->getStringAttribute("filePath");
+			const auto pos = nodeGeo->getVector3dAttribute("position");
+			const auto sf = nodeGeo->getFloatAttribute("scaleFactor");
 			
 			auto geo = createGeometry();
 			auto plyReader = std::make_shared<vxPLYImporter>(geo);
@@ -118,31 +118,29 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		}
 		if(planeTypeName=="Y"s)
 		{
-			planeType = vxPlane::type::kX;
+			planeType = vxPlane::type::kY;
 		}
 		if(planeTypeName=="z"s)
 		{
-			planeType = vxPlane::type::kX;
+			planeType = vxPlane::type::kZ;
 		}
 		if(planeTypeName=="free"s)
 		{
 			planeType = vxPlane::type::kFree;
+			
 		}
-		const auto color = node->getColorAttribute("color");
-		
-		const auto x = node->getFloatAttribute("x");
-		const auto y = node->getFloatAttribute("y");
-		const auto z = node->getFloatAttribute("z");
-		const auto d = node->getFloatAttribute("d");
-
 		auto plane = createPlane(planeType);
 		
 		//geometry color.
-		plane->setColor(vxColor::lookup256(color));
-		plane->setD(x);
-		plane->setD(y);
-		plane->setD(z);
-		plane->setD(d);
+		plane->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+
+		plane->setPointA(node->getVector3dAttribute("pointA"));
+		plane->setPointB(node->getVector3dAttribute("pointB"));
+		plane->setPointC(node->getVector3dAttribute("pointC"));
+		
+		plane->setX(node->getFloatAttribute("x"));
+		plane->setY(node->getFloatAttribute("y"));
+		plane->setZ(node->getFloatAttribute("z"));
 	}
 		
 	m_shader = std::make_shared<vxLambert>();

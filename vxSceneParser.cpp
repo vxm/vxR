@@ -227,6 +227,7 @@ vxStatus vxSceneParser::parseNodeBody(std::ifstream &inFile,
 			const auto&& attr = parseAttribute(line.substr(ind));
 			if(attr.first.size())
 			{
+				
 				node->addAttribute(attr);
 			}
 		}
