@@ -14,9 +14,9 @@ class vxPlane
 	double m_z {0.0};
 	double m_d {0.0};
 	
-	vxVector3d m_point1;
-	vxVector3d m_point2;
-	vxVector3d m_point3;
+	vxVector3d m_pointA;
+	vxVector3d m_pointB;
+	vxVector3d m_pointC;
 	
 	vxColor m_color{vxColor::white};
 	
@@ -74,12 +74,12 @@ class vxPlane
 	
 	vxColor color() const;
 	void setColor(const vxColor &color);
-	vxVector3d point1() const;
-	void setPoint1(const vxVector3d &point1);
-	vxVector3d point2() const;
-	void setPoint2(const vxVector3d &point2);
-	vxVector3d point3() const;
-	void setPoint3(const vxVector3d &point3);
+	vxVector3d pointA() const;
+	void setPointA(const vxVector3d &pointA);
+	vxVector3d pointB() const;
+	void setPointB(const vxVector3d &pointB);
+	vxVector3d pointC() const;
+	void setPointC(const vxVector3d &pointC);
 };
 
 }
