@@ -16,7 +16,7 @@ bool vxDome::throwRay(const vxRay &ray) const
 
 int vxDome::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-	collide.setUV(MathUtils::normalToCartesian(ray.direction()));
+	collide.setUV(MU::normalToCartesian(ray.direction()));
 	auto environmentColor = m_image->compute(collide);
 
 	//TODO: this should be valid and maybe have an alpha 0.

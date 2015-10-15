@@ -51,7 +51,6 @@ int executeRenderProcess(int argc, char *argv[])
 	//TODO:find a home for this next two lines of code.
 	auto sceneParser = std::make_shared<vxSceneParser>(scenePath);
 	sceneParser->procesScene();
-
 	for(auto node: sceneParser->getNodesByType("vxRenderSettings"))
 	{
 		const auto resolution = node->getVector2dAttribute("resolution");
@@ -184,7 +183,7 @@ int main(int argc, char *argv[])
 		break;
 		case 2:
 			vxGridUnitTest::testGrid();
-			MathUtilsUnitTest::testMathUtils();
+			MUUnitTest::testMU();
 		break;
 		default:
 			executeRenderProcess(argc, argv);

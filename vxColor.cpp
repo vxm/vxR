@@ -51,26 +51,26 @@ vxColor &vxColor::operator=(const vxVector3d &otro)
 
 vxColor vxColor::lookup(const vxColor &col)
 {
-	return MathUtils::remap(col, mnc, mxc);
+	return MU::remap(col, mnc, mxc);
 }
 
 vxColor vxColor::lookup(const double r, const double g, const double b)
 {
-	return std::move(vxColor( MathUtils::remap(r, mnc, mxc),
-					MathUtils::remap(g, mnc, mxc),
-					MathUtils::remap(b, mnc, mxc)));
+	return std::move(vxColor( MU::remap(r, mnc, mxc),
+					MU::remap(g, mnc, mxc),
+					MU::remap(b, mnc, mxc)));
 }
 
 vxColor vxColor::lookup256(const int r, const int g, const int b)
 {
-	return std::move(vxColor( MathUtils::remap(r/255.0, mnc, mxc),
-								MathUtils::remap(g/255.0, mnc, mxc),
-								MathUtils::remap(b/255.0, mnc, mxc)));
+	return std::move(vxColor( MU::remap(r/255.0, mnc, mxc),
+								MU::remap(g/255.0, mnc, mxc),
+								MU::remap(b/255.0, mnc, mxc)));
 }
 
 vxColor vxColor::lookup256(const vxColor &col)
 {
-	return std::move(MathUtils::remap(col/255.0, mnc, mxc));
+	return std::move(MU::remap(col/255.0, mnc, mxc));
 }
 
 vxColor vxColor::indexColor(const int idx)
@@ -222,9 +222,9 @@ double vxColor::lumma() const
 
 void vxColor::mix(const vxColor &other, double alpha)
 {
-	m_r += MathUtils::lerp(m_r, other.m_r, alpha);
-	m_g += MathUtils::lerp(m_g, other.m_g, alpha);
-	m_b += MathUtils::lerp(m_b, other.m_b, alpha);
+	m_r += MU::lerp(m_r, other.m_r, alpha);
+	m_g += MU::lerp(m_g, other.m_g, alpha);
+	m_b += MU::lerp(m_b, other.m_b, alpha);
 }
 
 void vxColor::mixSumm(const vxColor &other, double alpha)
@@ -565,16 +565,16 @@ vxColor vxColor::operator+(const vxColor &other) const
 
 void vxColor::toRGBA8888(unsigned char *tbuff) const
 {
-	*tbuff += (unsigned char)char(MathUtils::remap(m_r,255.0));
+	*tbuff += (unsigned char)char(MU::remap(m_r,255.0));
 	tbuff++;
 	
-	*tbuff += (unsigned char)char(MathUtils::remap(m_g,255.0));
+	*tbuff += (unsigned char)char(MU::remap(m_g,255.0));
 	tbuff++;
 	
-	*tbuff += (unsigned char)char(MathUtils::remap(m_b,255.0));
+	*tbuff += (unsigned char)char(MU::remap(m_b,255.0));
 	tbuff++;
 
-	*tbuff += (unsigned char)char(MathUtils::remap(1.0,255.0));
+	*tbuff += (unsigned char)char(MU::remap(1.0,255.0));
 	
 }
 

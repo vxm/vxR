@@ -78,16 +78,16 @@ vxRay vxCamera::ray(const vxVector2d &coord, vxSampler &sampler) const
 	auto& s = sampler.xy();
 	double compX = m_hApTan * (( coord[0] * 2.0)-1.0)
 					- 1.0/(double)(2.0 * m_rx)
-					+ (s.x()+MathUtils::getRand(0.05))/m_rx;
+					+ (s.x()+MU::getRand(0.05))/m_rx;
 
 	double compY = m_vApTan * (( coord[1] * 2.0)-1.0)
 					- 1.0/(double)(2.0 * m_ry)
-					+ (s.y()+MathUtils::getRand(0.05))/m_ry;
+					+ (s.y()+MU::getRand(0.05))/m_ry;
 
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
 	//TODO:read from scene
-	ret.direction().rotateX( 2.0 * (MathUtils::PI/8.0) );
-	ret.setOrigin(ret.origin()+vxVector3d(0,-10,0));
+	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
+	ret.setOrigin(ret.origin()+vxVector3d(0,-1,0));
 	return ret;
 }
 
