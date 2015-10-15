@@ -8,17 +8,28 @@ vxCore::vxTriRef::vxTriRef(const vxVector3d &a,
 	:p1(a)
 	,p2(b)
 	,p3(c)
+	,n{vxVector3d::zero}
+	,normal(false)
 {
 	
 }
 
-vxVector3d vxTriRef::getNormal() 
+vxTriRef::vxTriRef(vxTriRef &&other)
+	:p1{std::move(other.p1)}
+	,p2{std::move(other.p2)}
+	,p3{std::move(other.p3)}
+	,n{std::move(other.n)}
 {
-	if(n!=nullptr)
+}
+
+vxVector3d& vxTriRef::getNormal() 
+{
+	if(normal==true)
 	{
-		return *n;
+		return n;
 	}
 	
-	n = std::make_unique<vxVector3d>((p2-p1).cross(p3-p1));
-	return *n;
+	n = (p1-p3).cross(p1-p2).unit();
+	normal = true;
+	return n;
 }
