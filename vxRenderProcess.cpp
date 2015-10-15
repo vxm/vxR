@@ -103,9 +103,7 @@ vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
 	m_finished = false;
-
-	const auto numCells = m_prop->numPixels();
-	m_contactBuffer.reserve(numCells);
+	m_contactBuffer.reserve(m_prop->numPixels());
 	
 #if USE_THREADS
 	const auto& minUpdateInterval = 1; //seconds
