@@ -18,7 +18,7 @@
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
-using MU = MathUtils;
+
 
 namespace vxCompute 
 {
@@ -172,10 +172,10 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 
 #if SINGLERAY
 	vxColor color;
-	vxVector2d hitCoordinates((283.0/300.0), (150.0/300.0));
+	vxVector2d hitCoordinates(itH/(double)imageProperties()->rx(), 
+							  itV/(double)imageProperties()->ry());
 
 //TODO: return this to smart pointer.
-	auto bk = m_bucketList.getBucket(hitCoordinates);
 	vxCollision collision;
 	const auto&& ray = rCamera->ray(hitCoordinates, sampler);
 	if(m_scene->throwRay(ray, collision))
@@ -183,8 +183,10 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		const auto&& baseColor = collision.color();
 		color.add(baseColor);
 	}
-	
-	bk->append(color*m_c_invSamples, hitCoordinates);
+
+	const auto id = itH  + (itV * m_prop->rx());
+	m_contactBuffer.pixel(id) = color;
+
 
 #else	
 	// on eachpixel.
