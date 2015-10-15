@@ -364,10 +364,10 @@ vxVector3d::axis vxVector3d::mainAxis() const
 
 double vxVector3d::length() const
 {
-	return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);
+	return sqrt( fabs(m_x*m_x)
+				+fabs(m_y*m_y)
+				+fabs(m_z*m_z));
 }
-
-
 
 vxVector3d vxVector3d::aaVector() const
 {
@@ -379,7 +379,8 @@ vxVector3d vxVector3d::aaVector() const
 
 double vxVector3d::distance(const vxVector3d &ref) const
 {
-	return (*this-ref).length();
+	auto dif = (*this)-ref;
+	return dif.length();
 }
 
 vxVector3d vxVector3d::floorVector() const
