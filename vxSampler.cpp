@@ -36,8 +36,8 @@ void vxSampler::populateFreeSamples()
 	for(int i=0;i<50;i++)
 	{
 		uniformScatterFree.push_back(vxVector2d(
-										 MathUtils::getRand(1.0),
-										 MathUtils::getRand(1.0)));
+										 MU::getRand(1.0),
+										 MU::getRand(1.0)));
 	}
 }
 
@@ -68,12 +68,12 @@ bool vxSampler::isDone() const
 
 double vxSampler::x() const
 {
-	return MathUtils::getRand(1.0);
+	return MU::getRand(1.0);
 }
 
 double vxSampler::y() const
 {
-	return MathUtils::getRand(1.0);
+	return MU::getRand(1.0);
 }
 
 vxVector2d &vxSampler::xy()
@@ -110,8 +110,8 @@ void vxSampler::setSamples(unsigned int samples)
 	{
 		for(unsigned int i=0;i<m_nSamples;i++)
 		{
-			m_x[i]=MathUtils::getRand(1.0);
-			m_y[i]=MathUtils::getRand(1.0);
+			m_x[i]=MU::getRand(1.0);
+			m_y[i]=MU::getRand(1.0);
 		}
 	}
 	
