@@ -90,17 +90,15 @@ vxVector3d MathUtils::rectAndPlane(const vxRay& ray,
 vxVector3d MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &tri)
 {
 	const auto &n = tri.getNormal();
-	const auto &p2 = ray.direction() - ray.origin();
-	
-	const auto divisor = n.dot(p2);
-	if(n.dot(p2)==0.0)
+	const auto &p1 = ray.origin();
+	const auto &c = ray.direction();
+	if(n.dot(c)==0.0)
 	{
 		return vxVector3d::zero;
 	}
 	
-	const auto &t = n.dot(tri.p1-ray.origin());
-	const auto &p = ray.origin() + p2 * (t/divisor);
-	return p;
+	double u = n.dot(tri.p1-p1) / n.dot(c);
+	return (c * u);
 }
 
 vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)

@@ -22,6 +22,7 @@ decltype(auto) vxSceneParser::getLine(std::ifstream &f,
 
 Attribute vxSceneParser::parseAttribute(const std::string &txt)
 {
+	//TODO: "attributeName1" won't be caputred due to the number 1. fix it.
 #if COUT_PARSING
 	std::cout << "\t\tParsing attribute: " << txt << std::endl;
 #endif

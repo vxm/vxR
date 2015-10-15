@@ -210,7 +210,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					{
 						vxVector3d&& invV = ((N * ray.direction().dot(N)* -2) + ray.direction()) ;
 						
-						const auto range=0.06;
+						const auto range=0.04;
 						invV+=vxVector3d(MU::getRand(range)-(range/2.0),
 										 MU::getRand(range)-(range/2.0),
 										 MU::getRand(range)-(range/2.0));
@@ -223,7 +223,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 												(1.0/m_reflectionSamples));
 						}
 					}
-					pixelColor+= MU::lerp(reflection, collision.color(), 0.5);
+					pixelColor+= MU::lerp(reflection, collision.color(), 0.6);
 				}
 				else
 				{

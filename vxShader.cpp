@@ -15,7 +15,7 @@ vxColor vxLambert::getColor(const vxCollision &collide) const
 {
 	auto lumm = getLightLoop(collide);
 	
-	return MathUtils::remap(m_diffuse.compute(collide), 0.012, 0.75) * lumm;
+	return MU::remap(m_diffuse.compute(collide), 0.012, 0.75) * lumm;
 }
 
 vxVector3d vxLambert::getVector(const vxCollision &collide) const
