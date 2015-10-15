@@ -246,7 +246,6 @@ vxColor vxLight::acummulationLight(const vxCollision &collision) const
 vxColor vxDirectLight::acummulationLight(const vxCollision &collision) const
 {
 	const auto&& cPnt = collision.position();
-	const auto&& scn = m_scene.lock();
 
 	// compute all sort of shadows.
 	const auto&& ratio = lightRatio(cPnt, 
@@ -259,7 +258,7 @@ vxColor vxDirectLight::acummulationLight(const vxCollision &collision) const
 		auto lumm = m_intensity * ratio;
 
 		const vxRay f(cPnt, m_orientation.inverted());
-		
+		const auto&& scn = m_scene.lock();
 		if (!scn->throwRay(f))
 		{
 			ret = color().gained(lumm);
