@@ -3,7 +3,6 @@
 
 using namespace vxCore;
 
-
 vxVector3d vxVector3d::constX	{1.0, 0.0, 0.0};
 vxVector3d vxVector3d::constY	{0.0, 1.0, 0.0};
 vxVector3d vxVector3d::constZ	{0.0, 0.0, 1.0};
@@ -21,7 +20,6 @@ vxVector3d vxVector3d::constMinusYZ	{ 0.0, -1.0, -1.0};
 vxVector3d vxVector3d::constMinusXYZ{-1.0, -1.0, -1.0};
 
 vxVector3d vxVector3d::zero{0.0, 0.0, 0.0};
-
 vxVector2d vxVector2d::zero{0.0, 0.0};
 
 vxVector2d::vxVector2d() 
