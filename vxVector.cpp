@@ -219,6 +219,20 @@ vxVector2d vxVector2d::operator+(const vxVector2d& other) const
 vxVector3d::vxVector3d()
 {}
 
+
+vxVector3d::vxVector3d(const vxVector3d &other)
+	:m_x{other.m_x}
+	,m_y{other.m_y}
+	,m_z{other.m_z}
+{}
+
+
+vxVector3d::vxVector3d(const vxVector3d &&other)
+	:m_x{std::move(other.m_x)}
+	,m_y{std::move(other.m_y)}
+	,m_z{std::move(other.m_z)}
+{}
+
 vxVector3d::vxVector3d(double x, double y, double z)
 	: m_x(x)
 	, m_y(y)

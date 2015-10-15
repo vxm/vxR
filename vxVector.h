@@ -93,6 +93,8 @@ public:
 	
 };
 
+class vxColor;
+
 class vxVector3d
 {
 
@@ -101,22 +103,16 @@ protected:
 	double m_y {0.0};
 	double m_z {0.0};
 
+	//std::valarray<double> m_v{0.0,3};
+	
 public:
 	
 	enum class axis{kX, kY, kZ};
 
 	vxVector3d ();
-	vxVector3d (const vxVector3d&& other)
-		:m_x{std::move(other.m_x)}
-		,m_y{std::move(other.m_y)}
-		,m_z{std::move(other.m_z)}
-	{}
-
-	vxVector3d (const vxVector3d& other)
-		:m_x{other.m_x}
-		,m_y{other.m_y}
-		,m_z{other.m_z}
-	{}
+	vxVector3d (const vxVector3d&& other);
+	vxVector3d (const vxVector3d& other);
+	
 	vxVector3d (double x, double y, double z);
 	~vxVector3d(){}
 	
