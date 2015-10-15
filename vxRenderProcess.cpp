@@ -208,23 +208,22 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					const auto& N = collision.normal();
 					for(int k = 0;k<m_reflectionSamples;k++)
 					{
-						vxVector3d&& invV = vxVector3d( N[0]==0 ? 1 : -1,
-														N[1]==0 ? 1 : -1,
-														N[2]==0 ? 1 : -1);
-						const auto range=0.04;
+						vxVector3d&& invV = ((N * ray.direction().dot(N)* -2) + ray.direction()) ;
+						
+						const auto range=0.06;
 						invV+=vxVector3d(MU::getRand(range)-(range/2.0),
 										 MU::getRand(range)-(range/2.0),
 										 MU::getRand(range)-(range/2.0));
 						const auto&& reflexRay = vxRay(collision.position()
 														+N/10000,
-														ray.direction()*invV);
+														invV);
 						if(m_scene->throwRay(reflexRay, refxCollision))
 						{
 							reflection.mixSumm(refxCollision.color(), 
 												(1.0/m_reflectionSamples));
 						}
 					}
-					pixelColor+= MU::lerp(reflection, collision.color(), 0.9);
+					pixelColor+= MU::lerp(reflection, collision.color(), 0.5);
 				}
 				else
 				{
