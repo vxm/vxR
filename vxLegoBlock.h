@@ -53,7 +53,7 @@ public:
 		double maxZ = p.z() + mSize;
 
 		bool bMax = std::signbit(maxX);
-		const auto hitX = MathUtils::rectAndXPlane(ray.direction(), bMax ? maxX : minX);
+		const auto hitX = MU::rectAndXPlane(ray.direction(), bMax ? maxX : minX);
 		if( std::isless(hitX.z(),maxZ) && std::isgreater(hitX.z(),minZ)
 			&& std::isless(hitX.y(),maxY) && std::isgreater(hitX.y(),minY))
 		{
@@ -65,7 +65,7 @@ public:
 		}
 
 		bMax = std::signbit(maxY);
-		const auto hitY = MathUtils::rectAndYPlane(ray.direction(), bMax ? maxY : minY);
+		const auto hitY = MU::rectAndYPlane(ray.direction(), bMax ? maxY : minY);
 		if( std::isless(hitY.x(),maxX) && std::isgreater(hitY.x(),minX)
 			&&	std::isless(hitY.z(),maxZ) && std::isgreater(hitY.z(),minZ))
 		{
@@ -77,7 +77,7 @@ public:
 		}
 		
 		bMax = std::signbit(maxZ);
-		const auto hitZ = MathUtils::rectAndZPlane(ray.direction(), bMax ? maxZ : minZ);
+		const auto hitZ = MU::rectAndZPlane(ray.direction(), bMax ? maxZ : minZ);
 		if( std::isless(hitZ.x(),maxX) && std::isgreater(hitZ.x(),minX)
 			&& std::isless(hitZ.y(),maxY) && std::isgreater(hitZ.y(),minY))
 		{

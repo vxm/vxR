@@ -85,7 +85,7 @@ double vxLight::lightRatio(const vxVector3d &origin,
 		return 0.0;
 	}
 
-	return MathUtils::clamp(cos(angl),0.0,1.0);
+	return MU::clamp(cos(angl),0.0,1.0);
 }
 
 void vxLight::setPosition(const vxVector3d &position)
@@ -226,7 +226,7 @@ vxColor vxLight::acummulationLight(const vxCollision &collision) const
 	// compute all sort of shadows.
 	for(auto i=0; i<n; i++)
 	{
-		auto r = MathUtils::getHollowSphereRand(radius());
+		auto r = MU::getHollowSphereRand(radius());
 
 		const vxRay f(cPnt, position() + r);
 		auto lumm = m_intensity * lightRatio(cPnt,
@@ -280,23 +280,25 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 	for(auto i=0; i<n; i++)
 	{
 		const auto&& cPnt = collision.position();
-		const auto&& r = MathUtils::getHollowHemisphereRand(radius(),
+		const auto&& r = MU::getHollowHemisphereRand(radius(),
 													  collision.normal());
 		const vxRay f(cPnt, collision.normal()+r);
 		auto lumm = m_intensity * lightRatio(cPnt,
 											 collision.normal(),
 											 cPnt + f.direction());
 
-		const auto &scn = m_scene.lock();
-		
-		environment.setUV(MathUtils::normalToCartesian(f.direction()));
+		environment.setUV(MU::normalToCartesian(f.direction()));
 		auto environmentColor = m_map.compute(environment);
 		const auto &luma = environmentColor.lumma();
 		
-		if (luma>m_lowThreshold && lumm>0.001 && !scn->hasCollision(f))
+		if (luma>m_lowThreshold && lumm>0.001)
 		{
-			environmentColor=environmentColor*(m_gain + pow(luma,m_gamma));
-			acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
+			const auto &scn = m_scene.lock();
+			if(!scn->hasCollision(f))
+			{
+				environmentColor=environmentColor*(m_gain + pow(luma,m_gamma));
+				acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
+			}
 		}
 	}
 
