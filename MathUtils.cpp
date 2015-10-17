@@ -169,12 +169,21 @@ double MathUtils::getBoolRand()
 vxVector3d MathUtils::getHollowSphereRand(double radius)
 {
 	//TODO:real random scatter point in sphere missing
-	auto r2d = vxVector2d{2.0 * PI * (getRand(radius)),
-							2.0 * PI * (getRand(radius))};
+	auto r2d = vxVector2d{2.0 * PI * (getRand()),
+							2.0 * PI * (getRand())};
 
-	return cartesianToNormal(r2d);
+	return cartesianToNormal(r2d) * radius;
 }
 
+vxVector3d MathUtils::getSolidSphereRand(double radius)
+{
+	//TODO:real random scatter point in sphere missing
+	auto r2d = vxVector2d{2.0 * PI * (getRand()),
+							2.0 * PI * (getRand())};
+
+	return cartesianToNormal(r2d) * getRand(radius);
+}
+					   
 vxVector3d MathUtils::getHollowHemisphereRand(double radius, 
 											  const vxVector3d &normal)
 {

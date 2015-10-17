@@ -48,9 +48,11 @@ class MathUtils
 										const vxVector3d& b, 
 										const vxVector3d& c);
 	static vxVector3d rectAndPlane(const vxRay& ray, vxTriRef& t);
+
 	//Random
 	static double getRand(double range);
 	static double getBoolRand();
+	static vxVector3d getSolidSphereRand(double radius);
 	static vxVector3d getHollowSphereRand(double radius = 1.0);
 	static vxVector3d getSphereRand(double radius = 1.0);
 	static vxVector3d getHollowHemisphereRand(double radius, const vxVector3d &normal);
