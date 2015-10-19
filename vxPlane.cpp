@@ -92,8 +92,8 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	if(m_type==vxPlane::type::kY)
 	{
-		const auto&& p = MU::rectAndYPlane(ray.direction(), m_y);
-		if(p.z()>0.0)
+		const auto& p = MU::rectAndYPlane(ray.direction(), m_y);
+		if(ray.incidence(ray.origin()-p)<=-0.001)
 		{
 			collide.setNormal(vxVector3d::constY);
 			collide.setPosition(p);
@@ -107,12 +107,12 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 	{
 		vxTriRef t(m_pointA,m_pointB,m_pointC);
 		const auto& p = MU::rectAndPlane(ray,t);
-		if(p.z()>0.0)
+		if(ray.incidence(ray.origin()-p)<=-0.001)
 		{
 			collide.setNormal(t.getNormal());
 			collide.setPosition(p);
-			collide.setU(fmod(p.x(),1.0));
-			collide.setV(fmod(p.z(),1.0));
+			collide.setU(fmod(p.x()/10.0,1.0));
+			collide.setV(fmod(p.z()/10.0,1.0));
 			collide.setColor(m_color);
 			return 1;
 		}
@@ -126,7 +126,7 @@ bool vxPlane::hasCollision(const vxRay &ray) const
 	if(m_type==vxPlane::type::kY)
 	{
 		const auto&& p = MU::rectAndYPlane(ray.direction(), m_y);
-		if(p.z()>0.0)
+		if(ray.incidence(ray.origin()-p)<0)
 		{
 			return true;
 		}
@@ -135,11 +135,13 @@ bool vxPlane::hasCollision(const vxRay &ray) const
 	{
 		vxTriRef t(m_pointA,m_pointB,m_pointC);
 		const auto& p = MU::rectAndPlane(ray,t);
-		if(p.z()>0.0)
+		if(ray.incidence(ray.origin()-p)<0)
 		{
 			return true;
 		}
+
 	}
+
 	
 	return false;
 }
