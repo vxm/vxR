@@ -69,7 +69,7 @@ void vxRenderProcess::setReflectionSamples(unsigned int reflectionSamples)
 vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> scn)
 {
 	vxStatus st;
-
+	
 	if(m_scene!=nullptr)
 	{
 		/*st = */m_scene->build(scn);
@@ -136,7 +136,7 @@ vxStatus::code vxRenderProcess::execute()
 		
 		prevProgress = dProgress;
 	}
-
+	
 	for(auto &&th: threads)
 	{
 		if(th.joinable())
@@ -148,7 +148,7 @@ vxStatus::code vxRenderProcess::execute()
 #else
 	render(1,0);
 #endif
-
+	
 	std::cout << "Render Process done, took: " << TimeUtils::decorateTime(start, 2);
 	return vxStatus::code::kSuccess;
 }
@@ -163,30 +163,40 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	assert(offset<this->imageProperties()->rx());
 	const auto&& rCamera = scene()->defaultCamera();
 	vxSampler sampler(m_visSamples);
-
-	// moving to start point.
-	unsigned int itH {offset};
-	unsigned int itV {0u};
-
+	
 #if SINGLERAY
+	
+	// moving to start point.
+	unsigned int itH {850};
+	unsigned int itV {150};
 	vxColor color;
-	vxVector2d hitCoordinates(itH/(double)imageProperties()->rx(), 
-							  itV/(double)imageProperties()->ry());
-
-//TODO: return this to smart pointer.
+	
+	//TODO: return this to smart pointer.
 	vxCollision collision;
-	const auto&& ray = rCamera->ray(hitCoordinates, sampler);
+	
+	vxColor pixelColor;
+	const vxVector2d hitCoordinates(
+				itV/(double)m_prop->ry(),
+				itH/(double)m_prop->rx());
+	
+	const auto ray = rCamera->ray(hitCoordinates, sampler);
+	
 	if(m_scene->throwRay(ray, collision))
 	{
 		const auto&& baseColor = collision.color();
 		color.add(baseColor);
 	}
-
+	
 	const auto id = itH  + (itV * m_prop->rx());
-	m_contactBuffer.pixel(id) = color;
-
-
-#else	
+	m_contactBuffer.pixel(id) = vxColor::white;
+	
+	
+#else
+	
+	// moving to start point.
+	unsigned int itH {offset};
+	unsigned int itV {0u};
+	
 	// on eachpixel.
 	while(!(itV>=(m_prop->ry())))
 	{
@@ -194,13 +204,13 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		const vxVector2d hitCoordinates(
 					itV/(double)m_prop->ry(),
 					itH/(double)m_prop->rx());
-
+		
 		for(auto s=0u;s<m_visSamples;s++)
 		{
 			vxCollision collision;
 			vxCollision refxCollision;
 			vxColor reflection;
-			const auto&& ray = rCamera->ray(hitCoordinates, sampler);
+			const auto ray = rCamera->ray(hitCoordinates, sampler);
 			if(m_scene->throwRay(ray, collision))
 			{
 				if(collision.isValid())
@@ -208,22 +218,19 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					const auto& N = collision.normal();
 					for(int k = 0;k<m_reflectionSamples;k++)
 					{
-						vxVector3d&& invV = ((N * ray.direction().dot(N)* -2) + ray.direction()) ;
-						
-						const auto range=0.04;
-						invV+=vxVector3d(MU::getRand(range)-(range/2.0),
-										 MU::getRand(range)-(range/2.0),
-										 MU::getRand(range)-(range/2.0));
+						vxVector3d&& invV = ((N * ray.direction().dot(N)* -2) 
+											 + ray.direction()) ;
+						invV+=MU::getSolidSphereRand(0.01);
 						const auto&& reflexRay = vxRay(collision.position()
-														+N/10000,
-														invV);
+													   +(N/10000),
+													   invV);
 						if(m_scene->throwRay(reflexRay, refxCollision))
 						{
 							reflection.mixSumm(refxCollision.color(), 
-												(1.0/m_reflectionSamples));
+											   (1.0/m_reflectionSamples));
 						}
 					}
-					pixelColor+= MU::lerp(reflection, collision.color(), 0.6);
+					pixelColor+= MU::lerp(reflection, collision.color(), 0.85);
 				}
 				else
 				{
@@ -244,15 +251,15 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		{
 			itV+=1;
 			itH %= m_prop->rx();
-
+			
 			m_progress.store(m_progress.load() + 1);
 		}
 	}
 #endif
-
+	
 	auto thInfo = vxThreadPool::threadInfo(std::this_thread::get_id());
 	std::cout << "Finished task on thread ::" << thInfo.id << "::" << std::endl;
-
+	
 	m_finished = true;
 	
 	return vxStatus::code::kSuccess;
@@ -270,14 +277,14 @@ vxRenderProcess::generateImage()
 	static_assert(sizeof(float)==4, "double is no 32bits");
 	static_assert(sizeof(double)==8, "double is no 64bits");
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
-
+	
 	const auto&& prop = imageProperties();
-
+	
 	auto buff = m_imageData.initialise();
 	
 	int k = 0;
 	auto pixel = m_imageData.m_pc.get();
-
+	
 	for(auto& px:m_contactBuffer.m_pxs)
 	{
 		px.m_color.setToGamma(2.2);
@@ -285,7 +292,7 @@ vxRenderProcess::generateImage()
 		k++;
 		pixel+=4;
 	}
-
+	
 	return buff;
 }
 
