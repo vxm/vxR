@@ -615,11 +615,12 @@ vxVector3d vxGrid::nextVoxel(const vxRay &ray, vxVector3d &exactCollision)
 
 unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide) const
 {
-	if(inGrid(ray.origin()))
+	// If we start inside we dont look out for the bb.
+	if(m_boundingBox.contains(ray.origin()))
 	{
 		collide.setPosition(ray.origin());
 	}
-	else if(!m_boundingBox->throwRay(ray, collide))
+	else if(!m_boundingBox.throwRay(ray, collide))
 	{
 		//This is not possible, only from an error.
 		//red is the graphical assert.
