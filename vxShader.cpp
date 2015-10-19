@@ -11,10 +11,9 @@ vxCore::vxShader::vxShader()
 }
 
 
-vxColor vxLambert::getColor(const vxCollision &collide) const
+vxColor vxLambert::getColor(const vxRay &ray, const vxCollision &collide) const
 {
-	auto lumm = getLightLoop(collide);
-	
+	auto lumm = getLightLoop(ray, collide);
 	return MU::remap(m_diffuse.compute(collide), 0.012, 0.75) * lumm;
 }
 
@@ -25,14 +24,14 @@ vxVector3d vxLambert::getVector(const vxCollision &collide) const
 }
 
 
-vxColor vxCore::vxShader::getLightLoop(const vxCollision &collision) const
+vxColor vxCore::vxShader::getLightLoop(const vxRay &ray, const vxCollision &collision) const
 {
 	//assert(m_lights);
 	vxColor acumColor;
 
-	for(auto light = std::begin(*m_lights);	light!=std::end(*m_lights);	++light)
+	for(const auto& light:*m_lights)
 	{
-		acumColor.add( light->get()->acummulationLight(collision) );
+		acumColor.add( light->acummulationLight(ray, collision) );
 	}
 	
 	return acumColor;
