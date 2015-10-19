@@ -227,7 +227,6 @@ vxStatus vxSceneParser::parseNodeBody(std::ifstream &inFile,
 			const auto&& attr = parseAttribute(line.substr(ind));
 			if(attr.first.size())
 			{
-				
 				node->addAttribute(attr);
 			}
 		}
@@ -287,7 +286,7 @@ VS vxSceneParser::procesScene()
 						<< "' not added. There is already a node"
 						<< " with that name in scene" << std::endl;
 			}
-			else
+			else if(newNode->active())
 			{
 				m_nodes[nodeName] = newNode;
 			}
