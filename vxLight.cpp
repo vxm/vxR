@@ -73,19 +73,11 @@ vxVector3d vxLight::getLightRay(const vxVector3d &position) const
 	return m_position-position;
 }
 
-double vxLight::lightRatio(const vxVector3d &origin,
-							const vxVector3d &direction,
-							const vxVector3d &destiny) const
+double vxLight::lightRatio(const vxRay &ray,
+							const vxVector3d &lightDirection) const
 {
-	double angl = (destiny-origin).angle(direction);
-	
-	//backlight support?
-	if(angl>1.57)
-	{
-		return 0.0;
-	}
-
-	return MU::clamp(cos(angl),0.0,1.0);
+	double angl = ray.incidence(lightDirection);
+	return angl;
 }
 
 void vxLight::setPosition(const vxVector3d &position)
@@ -216,7 +208,7 @@ vxVector3d vxIBLight::getLightRay(const vxVector3d &position) const
 	return (m_position-position);
 }
 
-vxColor vxLight::acummulationLight(const vxCollision &collision) const
+vxColor vxLight::acummulationLight(const vxRay &ray, const vxCollision &collision) const
 {
 	vxColor acumColor;
 	const auto&& cPnt = collision.position();
@@ -229,9 +221,7 @@ vxColor vxLight::acummulationLight(const vxCollision &collision) const
 		auto r = MU::getHollowSphereRand(radius());
 
 		const vxRay f(cPnt, position() + r);
-		auto lumm = m_intensity * lightRatio(cPnt,
-											 collision.normal(),
-											 position() + r);
+		auto lumm = m_intensity * lightRatio(f, position() + r);
 		
 		if (lumm>0.001 && !scn->hasCollision(f))
 		{
@@ -243,23 +233,22 @@ vxColor vxLight::acummulationLight(const vxCollision &collision) const
 }
 
 
-vxColor vxDirectLight::acummulationLight(const vxCollision &collision) const
+vxColor vxDirectLight::acummulationLight(const vxRay &ray, const vxCollision &collision) const
 {
 	const auto&& cPnt = collision.position();
 
+	vxRay f(cPnt, collision.normal());
 	// compute all sort of shadows.
-	const auto&& ratio = lightRatio(cPnt, 
-								  collision.normal(), 
-								 cPnt + m_orientation.inverted());
+	const auto&& ratio = lightRatio(f, m_orientation.inverted());
 	vxColor ret{vxColor::black};
 	
-	if(ratio>0.0)
+	if(ratio>0.001)
 	{
 		auto lumm = m_intensity * ratio;
-
-		const vxRay f(cPnt, m_orientation.inverted());
+		//auto org = vxVector3d(0, 0, 0);
+		const vxRay ff(cPnt, m_orientation.inverted());
 		const auto&& scn = m_scene.lock();
-		if (!scn->throwRay(f))
+		if (!scn->throwRay(ff))
 		{
 			ret = color().gained(lumm);
 		}
@@ -269,7 +258,7 @@ vxColor vxDirectLight::acummulationLight(const vxCollision &collision) const
 }
 
 
-vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
+vxColor vxIBLight::acummulationLight(const vxRay &ray, const vxCollision &collision) const
 {
 	vxColor acumColor;
 	// compute all sort of shadows.
@@ -282,9 +271,7 @@ vxColor vxIBLight::acummulationLight(const vxCollision &collision) const
 		const auto&& r = MU::getHollowHemisphereRand(radius(),
 													  collision.normal());
 		const vxRay f(cPnt, collision.normal()+r);
-		auto lumm = m_intensity * lightRatio(cPnt,
-											 collision.normal(),
-											 cPnt + f.direction());
+		auto lumm = m_intensity * lightRatio(f, collision.normal());
 
 		environment.setUV(MU::normalToCartesian(f.direction()));
 		auto environmentColor = m_map.compute(environment);
@@ -319,7 +306,7 @@ vxVector3d vxAmbientLight::getLightRay(const vxVector3d &position) const
 	return position.inverted();
 }
 
-vxColor vxAmbientLight::acummulationLight(const vxCollision &) const
+vxColor vxAmbientLight::acummulationLight(const vxRay &ray, const vxCollision &) const
 {
 	return m_color*m_intensity;
 }

@@ -48,11 +48,10 @@ public:
 	vxColor color() const {return m_color;}
 
 	virtual vxVector3d getLightRay(const vxVector3d &position) const;
-	virtual double lightRatio(const vxVector3d &origin, 
-					const vxVector3d &direction, 
-					const vxVector3d &destiny) const;
+	virtual double lightRatio(const vxRay &ray,
+					const vxVector3d &lightDirection) const;
 
-	virtual vxColor acummulationLight(const vxCollision &collision) const;
+	virtual vxColor acummulationLight(const vxRay &ray, const vxCollision &collision) const;
 
 	double radius() const;
 	void setRadius(double radius);
@@ -110,7 +109,7 @@ public:
 	vxDirectLight(const vxVector3d &orientation,
 				  bool bidirectional);
 	
-	vxColor acummulationLight(const vxCollision &collision) const override;
+	vxColor acummulationLight(const vxRay &ray, const vxCollision &collision) const override;
 	
 	void set(const vxVector3d &orientation,bool bidirectional);
 	void setOrientation (const vxVector3d &orientation) {m_orientation.set(orientation);}
@@ -133,7 +132,7 @@ public:
 	// vxLight interface
 	public:
 	vxVector3d getLightRay(const vxVector3d &position) const override;
-	vxColor acummulationLight(const vxCollision &collision) const override;
+	vxColor acummulationLight(const vxRay &ray, const vxCollision &collision) const override;
 	double gain() const;
 	void setGain(double gain);
 	double gamma() const;
@@ -151,7 +150,7 @@ public:
 	// vxLight interface
 	public:
 	vxVector3d getLightRay(const vxVector3d &position) const override;
-	vxColor acummulationLight(const vxCollision &) const override;
+	vxColor acummulationLight(const vxRay &ray, const vxCollision &) const override;
 };
  
 }
