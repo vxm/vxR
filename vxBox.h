@@ -13,32 +13,48 @@
 
 namespace vxCore{
 
-class vxBoxInGrid
+class vxBox
 {
 private:
-	vxVector3d m_pos;
-	double m_size;
-public:
-	vxBoxInGrid()
-	{}
-	vxVector3d position() const;
-	void setPosition(const vxVector3d &value);
-	double size() const;
-	void setSize(double value);
-};
 
-class vxBox: public std::enable_shared_from_this<vxBox>
-{
-private:
-	mutable std::map<std::thread::id, vxBoxInGrid> m_instance;
-	bool m_useDefault = {false};
-	mutable vxBoxInGrid m_default;
-public:
-	vxBox(bool usesDefault);
+	vxVector3d m_position;
+	double m_size{1.0};
 
-	std::shared_ptr<vxBox> at(const vxVector3d &pos, double size);
-	void set(const vxVector3d &pos, double size);
+public:
+	vxBox()
+	{};
+
+	vxBox(const vxVector3d &pos, double size)
+		: m_position(pos)
+		, m_size(size)
+	{};
+
+	vxBox(const vxVector3d &pos)
+		: m_position(pos)
+	{};
 	
+	void set(const vxVector3d &pos);
+	void set(const vxVector3d &pos, double size);
+
+	bool contains(const vxVector3d &v) const
+	{
+		auto min = m_position - (m_size/2.0);
+		auto max = m_position + (m_size/2.0);
+		return v.x() >= min.x()
+				&&  v.y() >= min.y()
+				&&  v.z() >= min.z()
+				&&  v.x() <= max.x()
+				&&  v.y() <= max.y()
+				&&  v.z() <= max.z();
+	}
+	
+	vxVector3d position() const;
+	void setPosition(const vxVector3d &position);
+	double size() const;
+	void setSize(double size);
+
+	//renderable interface
+	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
 };

@@ -7,11 +7,11 @@
 std::mutex gridMutex;
 
 #define DBL_EPSILON 1e-12
+#define DRAWBBOX 0
 
 
 vxGrid::vxGrid()
 {
-	m_boundingBox = std::make_unique<vxBox>(true);
 	m_size=1;
 	
 	createGridData(5);
@@ -22,9 +22,8 @@ vxGrid::vxGrid()
 
 vxGrid::vxGrid(const vxVector3d &position, double size)
 	: m_position(position)
+	, m_boundingBox(position, size)
 {
-	m_boundingBox = std::make_unique<vxBox>(true);
-
 	setSize(size);
 	createGridData(5);
 	
@@ -35,7 +34,7 @@ vxGrid::vxGrid(const vxVector3d &position, double size)
 
 vxGrid::vxGrid(double x, double y, double z, double size)
 { 
-	m_boundingBox = std::make_unique<vxBox>(true);
+	m_boundingBox.set(vxVector3d(x,y,z), size);
 	m_position.set(x,y,z);
 	setSize(size);
 	
@@ -52,7 +51,7 @@ vxGrid::~vxGrid()
 
 void vxGrid::updateBB()
 {
-	m_boundingBox->set(m_position, m_size + DBL_EPSILON);
+	m_boundingBox.set(m_position, m_size + DBL_EPSILON);
 	//TODO:missing
 }
 

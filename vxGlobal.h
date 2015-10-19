@@ -23,13 +23,7 @@ public:
 	
 	static vxGlobal *getInstance();
 
-	static std::shared_ptr<vxLegoBlock> m_lego;
-	static std::shared_ptr<vxBox> m_box;
-
 	//static std::shared_ptr<vxShader> getLambert();
-
-	static std::shared_ptr<vxBox> getExistingBox();
-	static std::shared_ptr<vxLegoBlock> getExistingLegoBlock();
 };
 
 }
