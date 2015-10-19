@@ -16,7 +16,7 @@
 #include "vxRay.h"
 
 #include "MathUtils.h"
-#include "vxGlobal.h"
+#include "vxThreadPool.h"
 
 namespace vxCore {
 
@@ -80,7 +80,7 @@ protected:
 	double m_invRes				= {1/5.0};
 
 	std::vector<vx>	m_data;
-	std::unique_ptr<vxBox> m_boundingBox;
+	vxBox m_boundingBox;
 
 	double m_resDivTres	= {m_size/3.0};
 	double m_midSize	= {m_size/2.0};
@@ -199,6 +199,7 @@ public:
 	
 	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;
 	
+	//renderable interface
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
