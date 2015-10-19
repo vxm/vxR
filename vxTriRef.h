@@ -3,6 +3,8 @@
 #include <atomic>
 #include <memory>
 #include "vxVector.h"
+#include "vxRay.h"
+#include "vxCollision.h"
 
 namespace vxCore
 {
@@ -24,6 +26,11 @@ public:
 	vxVector3d n;
 	
 	vxVector3d &getNormal();
+
+	//renderable interface
+	bool throwRay(const vxRay &ray) const;
+	int throwRay(const vxRay &ray, vxCollision &collide) const;
+	bool hasCollision(const vxRay &ray) const;
 };
 
 }
