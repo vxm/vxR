@@ -61,6 +61,6 @@ void vxRay::setDirection(const vxVector3d &direction)
 
 double vxRay::incidence(const vxVector3d &normal) const
 {
-	return fabs(cos(m_direction.angle(normal)));
+	return cos(m_direction.angle(normal));
 }
 
