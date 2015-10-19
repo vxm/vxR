@@ -111,11 +111,11 @@ vxStatus::code vxRenderProcess::execute()
 	
 	std::cout << "Using " << m_nThreads << " threads" << std::endl;
 	std::vector<std::thread> threads;
-	
 	for(unsigned int i=0;i<m_nThreads; i++)
 	{
 		auto&& th = std::thread([this,i]{this->render(m_nThreads,i);});
 		threads.push_back(std::move(th));
+		auto thInfo = vxThreadPool::threadInfo(std::this_thread::get_id());
 	}
 	
 	double accelerationRatio{1.0};
