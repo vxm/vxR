@@ -18,6 +18,7 @@ using Attribute = std::pair<std::string, vxValue>;
 
 class vxNode
 {
+	bool m_active{true};
 	std::string m_name;
 	std::string m_type;
 	vxMatrix transform{vxMatrix::identity};
@@ -85,6 +86,7 @@ public:
 	vxVector2d getVector2dAttribute(const std::__cxx11::string attrName);
 	int getIntAttribute(const std::__cxx11::string attrName);
 	std::string getStringAttribute(const std::__cxx11::string attrName);
+	bool getBoolAttribute(const std::__cxx11::string attrName);
 
 	std::string name() const;
 	void setName(const std::string &name);
@@ -92,6 +94,8 @@ public:
 	void setType(const std::string &type);
 	std::vector<Attribute> attributes() const;
 	void setAttributes(const std::vector<Attribute> &attributes);
+	bool active() const;
+	void setActive(bool active);
 };
 
 class nodeMap:public std::map<std::string, std::shared_ptr<vxNode>>

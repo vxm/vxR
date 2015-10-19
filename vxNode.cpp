@@ -1,6 +1,16 @@
 #include "vxNode.h"
 using namespace vxCore;
 
+
+bool vxNode::active() const
+{
+	return m_active;
+}
+
+void vxNode::setActive(bool active)
+{
+	m_active = active;
+}
 vxNode::vxNode()
 {
 	id = nNodes++;
@@ -51,7 +61,17 @@ void vxNode::addAttribute(const Attribute &attr)
 		m_type = attr.second.asString();
 		return;
 	}
-
+	
+	//Looking for node active state
+	if(attr.first=="active"s)
+	{
+		if(attr.second.asString()=="false"s)
+		{
+			setActive(false);
+		}
+		return;
+	}
+	
 	m_attributes.push_back(attr);
 }
 
@@ -67,7 +87,7 @@ vxColor vxNode::getColorAttribute(const std::__cxx11::string attrName)
 		}
 	}
 	
-	std::cerr << "Node: Color attribute " << attrName<< " not found in node" << std::endl;
+	std::cerr << "Node: Color attribute " << attrName << " not found in node" << std::endl;
 	return vxColor::black;
 }
 
@@ -84,7 +104,7 @@ vxVector3d vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
 		}
 	}
 
-	std::cerr << "Node: Vector3d attribute " << attrName<< " not found in node" << std::endl;
+	std::cerr << "Node: Vector3d attribute " << attrName << " not found in node" << std::endl;
 	return vxVector3d::zero;
 }
 
@@ -100,7 +120,7 @@ vxVector2d vxNode::getVector2dAttribute(const std::__cxx11::string attrName)
 		}
 	}
 	
-	std::cerr << "Node: Vector2d attribute " << attrName<< " not found in node" << std::endl;
+	std::cerr << "Node: Vector2d attribute " << attrName << " not found in node" << std::endl;
 	return vxVector2d::zero;
 }
 
@@ -117,7 +137,7 @@ float vxNode::getFloatAttribute(const std::__cxx11::string attrName)
 	}
 
 	
-	std::cerr << "Node: Float attribute " << attrName<< " not found in node" << std::endl;
+	std::cerr << "Node: Float attribute " << attrName << " not found in node" << std::endl;
 	return 0.f;
 }
 
@@ -134,7 +154,7 @@ int vxNode::getIntAttribute(const std::__cxx11::string attrName)
 	}
 
 	
-	std::cerr << "Node: Int attribute " << attrName<< " not found in node" << std::endl;
+	std::cerr << "Node: Int attribute " << attrName << " not found in node" << std::endl;
 	return 0;
 }
 
@@ -151,9 +171,27 @@ std::__cxx11::string vxNode::getStringAttribute(const std::__cxx11::string attrN
 	}
 
 	
-	std::cerr << "Node: String attribute " << attrName<< " not found in node" << std::endl;
+	std::cerr << "Node: String attribute " << attrName << " not found in node" << std::endl;
 	return ""s;
 }
+
+
+// It will retrieve the matching vector3d attribute and will cast
+// it's values to a color to be returned.
+bool vxNode::getBoolAttribute(const std::__cxx11::string attrName)
+{
+	for(const auto nodeAttr: m_attributes)
+	{
+		if(nodeAttr.first == attrName)
+		{
+			return nodeAttr.second.asBool();
+		}
+	}
+	
+	std::cerr << "Node: Bool attribute " << attrName << " not found in node" << std::endl;
+	return false;
+}
+
 
 //----------------------------------
 
