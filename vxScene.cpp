@@ -96,6 +96,8 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 												resolution * sf,
 												resolution * sf) );
 			m_grids[0]->createGround();
+			m_grids[0]->createEdges();
+
 		}
 		
 		auto na = m_grids[0]->numActiveVoxels();
@@ -249,23 +251,23 @@ void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 	m_prop = prop;
 }
 
-int vxScene::throwRay(const vxRay &ray) const
+bool vxScene::throwRay(const vxRay &ray) const
 {
 	for(auto grid:m_grids)
 	{
 		if(grid->throwRay(ray))
 		{
-			return 1;
+			return true;
 		}
 	}
-	
-	for(auto plane:m_planes)
-	{
-		if(plane->hasCollision(ray))
-		{
-			return 1;
-		}
-	}
+
+//	for(auto plane:m_planes)
+//	{
+//		if(plane->hasCollision(ray))
+//		{
+//			return true;
+//		}
+//	}
 
 //	for(auto dome:m_domes)
 //	{
@@ -275,7 +277,7 @@ int vxScene::throwRay(const vxRay &ray) const
 //		}
 //	}
 	
-	return 0;
+	return false;
 }
 
 
@@ -286,7 +288,7 @@ int vxScene::throwRay(const vxRay &ray,
 	{
 		if(grid->throwRay(ray, collide))
 		{
-			vxColor col(defaultShader()->getColor(collide));
+			vxColor col(defaultShader()->getColor(ray,collide));
 			collide.setColor( col );
 			collide.setValid(true);
 			return 1;
@@ -297,7 +299,7 @@ int vxScene::throwRay(const vxRay &ray,
 	{
 		if(plane->throwRay(ray, collide))
 		{
-			vxColor col(defaultShader()->getColor(collide));
+			vxColor col(defaultShader()->getColor(ray,collide));
 			collide.setColor( col );
 			collide.setValid();
 			return 1;
@@ -325,13 +327,13 @@ bool vxScene::hasCollision(const vxRay &ray) const
 		}
 	}
 	
-	for(auto plane:m_planes)
-	{
-		if(plane->hasCollision(ray))
-		{
-			return true;
-		}
-	}
+//	for(auto plane:m_planes)
+//	{
+//		if(plane->hasCollision(ray))
+//		{
+//			return true;
+//		}
+//	}
 	
 	/*for(auto dome:m_domes)
 	{

@@ -74,14 +74,7 @@ public:
 	
 	void setImageProperties(const std::shared_ptr<vxCore::ImageProperties> &imageProperties);
 
-	int throwRay(const vxRay &ray) const;
 	
-	// devuelve 0 si no le da a la caja
-	// 1 si da y 2 y el resultado es optimo
-	int throwRay( const vxRay &ray,
-						 vxCollision &collide) const;
-
-	bool hasCollision(const vxRay &ray) const;
 	
 	std::shared_ptr<vxLight> defaultLight() const;
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
@@ -101,6 +94,10 @@ public:
 	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
 	std::shared_ptr<vxGeometry> createGeometry();
 
+	//renderable interface
+	bool throwRay(const vxRay &ray) const;
+	int throwRay(const vxRay &ray, vxCollision &collide) const;
+	bool hasCollision(const vxRay &ray) const;
 };
 
 }
