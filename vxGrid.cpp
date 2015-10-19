@@ -690,29 +690,34 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 
 bool vxGrid::throwRay(const vxRay &ray) const
 { 
+#if DRAWBBOX
+	return m_boundingBox.throwRay(ray);
+#else
 	vxCollision col;
 	getNearestCollision(ray,col);
 	return col.isValid();
+#endif
 }
 
-#define DRAWBBOX 0
 int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 { 
 #if DRAWBBOX
-	const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
-	const auto&& instance = geometry->at(position()+ray.origin(), size());
-
-	return instance->throwRay( ray, collide );
+	if(m_boundingBox.throwRay(ray, collide))
+	{
+		collide.setColor(vxColor::white);
+	}
+	
+	return collide.isValid();
 #else
 	if (getNearestCollision(ray, collide))
 	{
-		const auto&& pos = collide.position()-ray.origin();
-		const auto&& geometry = vxGlobal::getInstance()->getExistingBox();
-		const auto&& instance = geometry->at(pos, 1.0);
+		const auto&& pos = collide.position();
 		const auto&& iap = indexAtPosition(pos);
 		const auto&& c = vxColor::indexColor(vxAt(iap).colorIndex());
-		collide.setColor(collide.color()+c);
-		return instance->throwRay(ray, collide );
+		collide.setColor(c);
+		auto box = vxThreadPool::threadBox(std::this_thread::get_id());
+		box.set(box);
+		return box.throwRay(ray,collide);
 	}
 	
 	collide.setValid(false);
@@ -722,6 +727,9 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 
 bool vxGrid::hasCollision(const vxRay &ray) const
 {
+#if DRAWBBOX
+	return m_boundingBox.hasCollision(ray);
+#else
 	auto found = false;
 	const auto&& v{ray.direction().unit()};
 	vxVector3d next{ray.origin()+v};
@@ -738,6 +746,7 @@ bool vxGrid::hasCollision(const vxRay &ray) const
 	}
 	
 	return found;
+#endif
 }
 
 /*
