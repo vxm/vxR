@@ -4,6 +4,7 @@
 #include <map>
 #include <thread>
 #include "vxColor.h"
+#include "vxBox.h"
 
 namespace vxCore {
 
@@ -11,13 +12,15 @@ struct uniqueInfo
 {
 	unsigned int id;
 	vxColor color;
+	vxBox box;
 };
 
 class vxThreadPool
 {
-	static std::map<std::thread::id, uniqueInfo> threads;
 
 public:
+	static std::map<std::thread::id, uniqueInfo> threads;
+
 	vxThreadPool();
 
 	static uniqueInfo threadInfo(std::thread::id id)
@@ -29,6 +32,12 @@ public:
 		}
 		
 		return threads[id];
+	}
+	
+	
+	static vxBox& threadBox(std::thread::id id)
+	{
+		return threads[id].box;
 	}
 };
 
