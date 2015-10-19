@@ -244,8 +244,21 @@ vxColor MathUtils::lerp(const vxColor &c1, const vxColor &c2, double r)
 								(lerp(c1.g(), c2.g(), r)),
 								(lerp(c1.b(), c2.b(), r))));
 }
+
 						
 double MathUtils::remap(double v, double min, double max)
+{
+	return (v+min)*(max-min);
+}
+					
+vxVector3d MathUtils::lerp(const vxVector3d &v1, const vxVector3d &v2, double r)
+{	
+	return vxVector3d( lerp(v1.x(), v2.x(), r),
+					   lerp(v1.y(), v2.y(), r),
+					   lerp(v1.z(), v2.z(), r));
+}
+
+double MathUtils::scaleFrom01(double v, double min, double max)
 {
 	return (v+min)*(max-min);
 }

@@ -64,11 +64,13 @@ class MathUtils
 	static vxColor clamp(const vxColor &c1, double min, double max);
 
 	static double lerp(double a, double b, double r);
+	static vxVector3d lerp(const vxVector3d &v1, const vxVector3d &v2, double r);
 	static double remap(double v, double max);
 	static double remap(double v, double min, double max);
 	static vxColor remap(const vxColor &col, double min, double max);
 	static vxColor lerp(const vxColor &c1, const vxColor &c2, double r);
-
+	
+	static double scaleFrom01(double v, double min, double max);
 };
 
 
