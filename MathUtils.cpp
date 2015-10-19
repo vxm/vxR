@@ -77,14 +77,13 @@ vxVector3d MathUtils::rectAndPlane(const vxRay& ray,
 {
 	const auto n = (b-a).cross(c-a);
 	const auto &p1 = ray.origin();
-	const auto &p2 = ray.direction();
-	if(n.dot(p2-p1)==0.0)
+	if(n.dot(ray.direction())==0.0)
 	{
 		return vxVector3d::zero;
 	}
 	
-	double u = n.dot(a-p1) / n.dot(p2-p1);
-	return p1 + (p2-p1) * u;
+	double u = n.dot(a-p1) / n.dot(c);
+	return (ray.direction() * u) + ray.origin();
 }
 
 vxVector3d MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &tri)
@@ -98,7 +97,7 @@ vxVector3d MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &tri)
 	}
 	
 	double u = n.dot(tri.p1-p1) / n.dot(c);
-	return (c * u);
+	return (c * u) + ray.origin();
 }
 
 vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
@@ -143,17 +142,17 @@ vxVector3d MathUtils::rectAndZPlane(const vxVector3d&& ray, double z)
 
 vxVector3d MathUtils::rayAndXPlane(const vxRay &ray, double x)
 {
-	return rectAndXPlane(ray.direction(),x-ray.origin().x())+ray.origin();
+	return rectAndXPlane(ray.direction(),x);
 }
 
 vxVector3d MathUtils::rayAndYPlane(const vxRay &ray, double y)
 {
-	return rectAndYPlane(ray.direction(),y-ray.origin().y())+ray.origin();
+	return rectAndYPlane(ray.direction(),y);
 }
 
 vxVector3d MathUtils::rayAndZPlane(const vxRay &ray, double z)
 {
-	return rectAndZPlane(ray.direction(),z-ray.origin().z())+ray.origin();
+	return rectAndZPlane(ray.direction(),z);
 }
 						
 double MathUtils::getRand(double range = 1.0)
