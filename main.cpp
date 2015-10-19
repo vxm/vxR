@@ -137,7 +137,7 @@ int printHelp()
 
 int main(int argc, char *argv[])
 {
-	unsigned int program{0};
+	auto program{0u};
 	
 	// Depending on arguments the execution will be different.
 	// Here we extract the elements on the input argument array
