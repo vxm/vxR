@@ -17,22 +17,13 @@ public:
 	vxRay (const vxVector3d& origin, 
 			  const vxVector3d& direction);
 	vxRay (double x, double y, double z);
-	vxRay (const vxRay&& ray)
-		:m_direction{std::move(ray.m_direction)}
-		,m_origin{std::move(ray.m_origin)}
-	{
-	}
-
-	vxRay (const vxRay& ray)
-		:m_direction{ray.m_direction}
-		,m_origin{ray.m_origin}
-	{
-	}
-
+	vxRay (const vxRay&& ray);
+	vxRay (const vxRay& ray);
 	~vxRay(){}
 
 	vxVector3d origin() const;
 	void setOrigin(const vxVector3d &origin);
+
 
 	vxVector3d direction() const;
 	vxVector3d& direction();
