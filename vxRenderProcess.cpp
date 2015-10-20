@@ -28,6 +28,7 @@ vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop,
 	:	m_prop(prop)
 	,	m_imageData(prop)
 	,	m_contactBuffer(prop->numPixels())
+	,	m_visSamples{samples}
 {
 	m_scene = std::make_shared<vxScene>(prop);
 	setNMaxThreads(100);
@@ -42,7 +43,6 @@ void vxRenderProcess::setNMaxThreads(unsigned int nMaxThreads)
 {
 	m_nThreads = std::min(std::thread::hardware_concurrency(), nMaxThreads);
 }
-
 
 unsigned int vxRenderProcess::visSamples() const
 {
@@ -114,8 +114,8 @@ vxStatus::code vxRenderProcess::execute()
 	for(unsigned int i=0;i<m_nThreads; i++)
 	{
 		auto&& th = std::thread([this,i]{this->render(m_nThreads,i);});
+		vxThreadPool::threadInfo(std::this_thread::get_id());
 		threads.push_back(std::move(th));
-		auto thInfo = vxThreadPool::threadInfo(std::this_thread::get_id());
 	}
 	
 	double accelerationRatio{1.0};
@@ -168,7 +168,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	
 	// moving to start point.
 	unsigned int itH {850};
-	unsigned int itV {150};
+	unsigned int itV {550};
 	vxColor color;
 	
 	//TODO: return this to smart pointer.

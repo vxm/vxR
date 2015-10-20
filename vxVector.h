@@ -20,25 +20,9 @@ public:
 
 	vxVector2d ();
 	vxVector2d (double x, double y);
-	vxVector2d (const vxVector2d& other)
-		:m_x(other.m_x)
-		,m_y(other.m_y)
-	{
-	}
-	
-	vxVector2d(const vxVector2d&& other)
-		:m_x{std::move(other.m_x)}
-		,m_y{std::move(other.m_y)}
-	{
-	}
-	
-	vxVector2d& operator=(const vxVector2d& other)
-	{
-		m_x = other.m_x;
-		m_y = other.m_y;
-	
-		return *this;
-	}
+	vxVector2d (const vxVector2d& other);
+	vxVector2d (vxVector2d&& other);
+	vxVector2d& operator=(const vxVector2d& other);
 	
 	void set(double x, double y);
 	void set(const vxVector2d &enter);
@@ -72,10 +56,7 @@ public:
 	vxVector2d operator/(int factor) const;
 	static vxVector2d zero;
 
-	bool operator==(const vxVector2d &other) const
-	{
-		return other.m_x == m_x && other.m_y == m_y; 
-	}
+	bool operator==(const vxVector2d &other) const;
 	
 	bool operator!=(const vxVector2d &other) const
 	{
@@ -177,7 +158,7 @@ public:
 	bool operator>(const vxVector3d &other) const;
 	bool operator<(const vxVector3d &other) const;
 
-	
+	bool follows(const vxVector3d &direction) const;
 	double angle(const vxVector3d &b) const;
 	double angleXY(const vxVector3d &other) const;
 	double angleYZ(const vxVector3d &other) const;
@@ -197,10 +178,10 @@ if ($rota.x<0) $angk*=-1;
 $angk+=$ang;
 return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 */
-	//TODO: revisit these three rotations
+	//TODO: revisit these active = "false"e rotations
 	vxVector3d rotateX(double ang);
 
-	//TODO: revisit these three rotations
+	//TODO: revisit these active = "false"e rotations
 	vxVector3d rotateY(double ang);
 
 	//TODO: revisit these three rotations

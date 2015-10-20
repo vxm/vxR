@@ -75,7 +75,7 @@ void vxCamera::set(const vxVector3d& position,
 
 vxRay vxCamera::ray(const vxVector2d &coord, vxSampler &sampler) const
 {
-	auto& s = sampler.xy();
+	const auto& s = sampler.xy();
 	double compX = m_hApTan * (( coord[0] * 2.0)-1.0)
 					- 1.0/(double)(2.0 * m_rx)
 					+ (s.x()+MU::getRand(0.05))/m_rx;
@@ -86,8 +86,9 @@ vxRay vxCamera::ray(const vxVector2d &coord, vxSampler &sampler) const
 
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
 	//TODO:read from scene
-	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
-	ret.setOrigin(ret.origin()+vxVector3d(0,-1,0));
+	ret.setOrigin(vxVector3d(0,0,0));
+	ret.direction().rotateX( 2.1 * (MU::PI/8.0) );
+	ret.direction().setUnit();
 	return ret;
 }
 

@@ -10,7 +10,6 @@
 #include "vxSceneParser.h"
 #include "vxScene.h"
 #include "imageData.h"
-
 namespace vxCompute {
 
 using namespace vxCore;

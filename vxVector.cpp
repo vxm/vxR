@@ -30,6 +30,26 @@ vxVector2d::vxVector2d(double x, double y)
 	, m_y(y)
 {}
 
+vxVector2d::vxVector2d(vxVector2d &&other)
+	:m_x{std::move(other.m_x)}
+	,m_y{std::move(other.m_y)}
+{
+}
+
+vxVector2d::vxVector2d(const vxVector2d &other)
+	:m_x(other.m_x)
+	,m_y(other.m_y)
+{
+}
+
+vxVector2d &vxVector2d::operator=(const vxVector2d &other)
+{
+	m_x = other.m_x;
+	m_y = other.m_y;
+	
+	return *this;
+}
+
 void vxVector2d::set(double x, double y) 
 {
 	m_x=x;
@@ -131,6 +151,11 @@ vxVector2d vxVector2d::operator/(int factor) const
 {
 	return std::move(vxVector2d(m_x/(double)factor,
 								m_y/(double)factor));
+}
+
+bool vxVector2d::operator==(const vxVector2d &other) const
+{
+	return other.m_x == m_x && other.m_y == m_y; 
 }
 
 double vxVector2d::angle(const vxVector2d& other) const 
@@ -401,9 +426,9 @@ vxVector3d vxVector3d::unit() const
 void vxVector3d::setUnit() 
 {
 	double lng=length();
-	m_x=m_x/lng;
-	m_y=m_y/lng;
-	m_z=m_z/lng;
+	m_x/=lng;
+	m_y/=lng;
+	m_z/=lng;
 }
 
 vxVector3d vxVector3d::operator+(int factor) const
@@ -487,9 +512,14 @@ bool vxVector3d::operator<(const vxVector3d& other) const
 	return a<b;
 }
 
+bool vxVector3d::follows(const vxVector3d &direction) const
+{
+	return dot(direction)<=0.0;
+}
+
 double vxVector3d::angle(const vxVector3d& b) const
 {
-	double an=(m_x*b.m_x+m_y*b.m_y+m_z*b.m_z)/((sqrt((m_x*m_x)+(m_y*m_y)+(m_z*m_z)))*(sqrt((b.m_x*b.m_x)+(b.m_y*b.m_y)+(b.m_z*b.m_z))));
+	double an = dot(b) / (length() * b.length());
 	return acos(an);
 }
 

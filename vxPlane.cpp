@@ -93,7 +93,7 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 	if(m_type==vxPlane::type::kY)
 	{
 		const auto& p = MU::rectAndYPlane(ray.direction(), m_y);
-		if(ray.incidence(ray.origin()-p)<=-0.001)
+		if((ray.origin()-p).follows(ray.direction()))
 		{
 			collide.setNormal(vxVector3d::constY);
 			collide.setPosition(p);
@@ -107,7 +107,8 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 	{
 		vxTriRef t(m_pointA,m_pointB,m_pointC);
 		const auto& p = MU::rectAndPlane(ray,t);
-		if(ray.incidence(ray.origin()-p)<=-0.001)
+		
+		if((ray.origin()-p).follows(ray.direction()))
 		{
 			collide.setNormal(t.getNormal());
 			collide.setPosition(p);

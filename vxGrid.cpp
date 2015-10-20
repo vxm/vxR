@@ -9,7 +9,6 @@ std::mutex gridMutex;
 #define DBL_EPSILON 1e-12
 #define DRAWBBOX 0
 
-
 vxGrid::vxGrid()
 {
 	m_size=1;
@@ -620,17 +619,10 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	{
 		collide.setPosition(ray.origin());
 	}
-	else if(!m_boundingBox.throwRay(ray, collide))
-	{
-		//This is not possible, only from an error.
-		//red is the graphical assert.
-		collide.setColor(vxColor::red);
-		return 0;
-	}
-
-	vxRay r{collide.position(), ray.direction()/10000.0};
+	
+	vxRay r{collide.position(), ray.direction()};
 	bool found{false};
-	auto&& vx{r.origin()};
+	auto&& vx{r.origin()+ray.origin()};
 
 	const auto&& directionX = r.direction().x();
 	const auto&& directionY = r.direction().y();
@@ -644,7 +636,6 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		vxVector3d exactCollision{0.0,0.0,0.0};
 		const auto&& min = r.origin().floorVector();
 		const auto&& maxX = xSigned ? min.x() : min.x()+1.0;
-	
 		const auto&& xCollision = MU::rayAndXPlane(r, maxX);
 	
 		if( MU::inRange(xCollision.z(), min.z(), min.z()+1.0)
@@ -683,7 +674,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	}
 	while(inGrid(vx));
 
-	collide.setPosition(found ? vx+ray.origin() : std::move(collide.position()));
+	collide.setPosition(found ? vx : std::move(collide.position()));
 	collide.setValid(found);
 	return found ? 1 : 0;
 }
@@ -709,14 +700,16 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 	
 	return collide.isValid();
 #else
+
 	if (getNearestCollision(ray, collide))
 	{
+		std::cout << "aqui llega" << std::endl;
 		const auto&& pos = collide.position();
 		const auto&& iap = indexAtPosition(pos);
 		const auto&& c = vxColor::indexColor(vxAt(iap).colorIndex());
 		collide.setColor(c);
 		auto box = vxThreadPool::threadBox(std::this_thread::get_id());
-		box.set(box);
+		box.set(pos);
 		return box.throwRay(ray,collide);
 	}
 	
