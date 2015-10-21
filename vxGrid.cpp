@@ -281,30 +281,33 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p1, tri.p2, (i+1)/(double)interp);
-			if(inGrid(a))
+			const auto&& p{(a*scale)+offset};
+			if(inGrid(p))
 			{
-				auto& v = vxAtPosition(a);
-				v.setColorIndex(7);
+				auto&& v = vxAtPosition(p);
+				v.setColorIndex(v.colorIndex()+1);
 			}
 		}
 		
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p1, tri.p3, (i+1)/(double)interp);
-			if(inGrid(a))
+			const auto&& p{(a*scale)+offset};
+			if(inGrid(p))
 			{
-				auto& v = vxAtPosition(a);
-				v.setColorIndex(7);
+				auto&& v = vxAtPosition(p);
+				v.setColorIndex(v.colorIndex()+1);
 			}
 		}
 		
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p2, tri.p3, (i+1)/(double)interp);
-			if(inGrid(a))
+			const auto&& p{(a*scale)+offset};
+			if(inGrid(p))
 			{
-				auto& v = vxAtPosition(a);
-				v.setColorIndex(7);
+				auto&& v = vxAtPosition(p);
+				v.setColorIndex(v.colorIndex()+1);
 			}
 		}
 	}
