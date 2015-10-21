@@ -184,7 +184,7 @@ vxVector3d MathUtils::getSolidSphereRand(double radius)
 }
 					   
 vxVector3d MathUtils::getHollowHemisphereRand(double radius, 
-											  const vxVector3d &normal)
+											  const vxVector3d &)
 {
 	auto r = getHollowSphereRand(radius);
 	//TODO:implement half of sphere

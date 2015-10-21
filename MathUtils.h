@@ -55,7 +55,7 @@ class MathUtils
 	static vxVector3d getSolidSphereRand(double radius);
 	static vxVector3d getHollowSphereRand(double radius = 1.0);
 	static vxVector3d getSphereRand(double radius = 1.0);
-	static vxVector3d getHollowHemisphereRand(double radius, const vxVector3d &normal);
+	static vxVector3d getHollowHemisphereRand(double radius, const vxVector3d &);
 	
 	// Ranges
 	static bool inRange(double r, double min, double max);

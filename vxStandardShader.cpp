@@ -9,7 +9,7 @@ vxVector3d vxStandardShader::getVector(const vxCollision &collide) const
 	return collide.normal();
 }
 
-vxColor vxStandardShader::getColor(const vxRay &ray, const vxCollision &collide) const
+vxColor vxStandardShader::getColor(const vxRay&, const vxCollision &collide) const
 {
 //	if(hasDiffuseMap())
 //	{
@@ -18,9 +18,9 @@ vxColor vxStandardShader::getColor(const vxRay &ray, const vxCollision &collide)
 	return collide.color();
 }
 
-vxColor vxStandardShader::getLightLoop(const vxRay &ray, const vxCollision &col) const
+vxColor vxStandardShader::getLightLoop(const vxRay&, const vxCollision &collision) const
 {
-	return col.color();
+	return collision.color();
 }
 
 bool vxStandardShader::hasDiffuseMap() const
