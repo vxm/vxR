@@ -682,3 +682,18 @@ vxVector2d vxVector3d::vectorZX() const
 	return std::move(vxVector2d(m_x,m_y));
 }
 
+bool vxVector3d::xSign() const
+{
+	return std::signbit(m_x);
+}
+
+bool vxVector3d::ySign() const
+{
+	return std::signbit(m_y);
+}
+
+bool vxVector3d::zSign() const
+{
+	return std::signbit(m_z);
+}
+

@@ -191,6 +191,10 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 	vxVector2d vectorYZ() const;
 	vxVector2d vectorZX() const;
 	
+	bool xSign() const;
+	bool ySign() const;
+	bool zSign() const;
+	
 	static vxVector3d constX;
 	static vxVector3d constY;
 	static vxVector3d constZ;
