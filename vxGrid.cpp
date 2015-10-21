@@ -617,28 +617,26 @@ vxVector3d vxGrid::nextVoxel(const vxRay &ray, vxVector3d &exactCollision)
 
 unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide) const
 {
-	// If we start inside we dont look out for the bb.
-	if(m_boundingBox.contains(ray.origin()))
+	bool found{false};
+	
+	if(inGrid(ray.origin()))
 	{
 		collide.setPosition(ray.origin());
 	}
+	else if (!m_boundingBox.throwRay(ray, collide))
+	{
+		return 0;
+	}
 	
-	vxRay r{collide.position(), ray.direction()};
-	bool found{false};
-	auto&& vx{r.origin()+ray.origin()};
-
-	const auto&& directionX = r.direction().x();
-	const auto&& directionY = r.direction().y();
-	const auto&& directionZ = r.direction().z();
-
-	const auto&& xSigned = std::signbit(directionX);
-	const auto&& ySigned = std::signbit(directionY);
-	const auto&& zSigned = std::signbit(directionZ);
+	const auto &rd = ray.direction();
+	
+	vxRay r{collide.position(), rd};
+	vxVector3d vx;
+	vxVector3d exactCollision{0.0,0.0,0.0};
 	do
 	{
-		vxVector3d exactCollision{0.0,0.0,0.0};
 		const auto&& min = r.origin().floorVector();
-		const auto&& maxX = xSigned ? min.x() : min.x()+1.0;
+		const auto&& maxX = rd.xSign() ? min.x() : min.x()+1.0;
 		const auto&& xCollision = MU::rayAndXPlane(r, maxX);
 	
 		if( MU::inRange(xCollision.z(), min.z(), min.z()+1.0)
@@ -646,27 +644,30 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		{
 			exactCollision = xCollision;
 			vx = exactCollision.floorVector()
-					+vxVector3d(xSigned ? -0.5 : 0.5, 0.5,0.5);
+					+vxVector3d(rd.xSign() ? -0.5 : 0.5, 0.5,0.5);
 		}
+		
 		else 
 		{
-			const auto&& maxY = ySigned ? min.y() : min.y()+1.0;
+			const auto&& maxY = rd.ySign() ? min.y() : min.y()+1.0;
 			const auto&& yCollision = MU::rayAndYPlane(r, maxY);
 			if( MU::inRange( yCollision.z(), min.z(), min.z()+1.0))
 			{
 				exactCollision = yCollision;
 				vx = exactCollision.floorVector()
-						+vxVector3d(0.5, ySigned ? -0.5 : 0.5,0.5);
+					+vxVector3d(0.5, rd.ySign() ? -0.5 : 0.5,0.5);
 			}
 			else
 			{
-				const auto&& maxZ = zSigned ? min.z() : min.z()+1.0;
+				const auto&& maxZ = rd.zSign() ? min.z() : min.z()+1.0;
 				const auto&& zCollision = MU::rayAndZPlane(r, maxZ);
 				exactCollision = zCollision;
 				vx = exactCollision.floorVector()
-						+vxVector3d(0.5, 0.5, zSigned ? -0.5 : 0.5);
+					+vxVector3d(0.5, 0.5, rd.zSign() ? -0.5 : 0.5);
 			}
 		}
+		
+		vx+=ray.origin();
 		
 		if(active(vx))
 		{
@@ -706,8 +707,7 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
 
 	if (getNearestCollision(ray, collide))
 	{
-		std::cout << "aqui llega" << std::endl;
-		const auto&& pos = collide.position();
+		const auto& pos = collide.position();
 		const auto&& iap = indexAtPosition(pos);
 		const auto&& c = vxColor::indexColor(vxAt(iap).colorIndex());
 		collide.setColor(c);
