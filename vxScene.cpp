@@ -96,7 +96,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 												resolution * sf,
 												resolution * sf) );
 			m_grids[0]->createGround();
-			m_grids[0]->createEdges();
+			//m_grids[0]->createEdges();
 
 		}
 		

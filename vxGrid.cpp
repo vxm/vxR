@@ -133,7 +133,7 @@ void vxGrid::dumpFileInMemory(const std::string &fileName)
 	std::streamsize size = file.tellg();
 	file.seekg(0, std::ios::beg);
 	
-	if(size>m_data.size())
+	if(size>(std::streamsize)m_data.size())
 	{
 		std::cout << "Error, trying to dump long file to memory "
 					<< fileName << std::endl;

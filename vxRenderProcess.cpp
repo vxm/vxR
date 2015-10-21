@@ -216,7 +216,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				if(collision.isValid())
 				{
 					const auto& N = collision.normal();
-					for(int k = 0;k<m_reflectionSamples;k++)
+					for(unsigned int k = 0u;k<m_reflectionSamples;k++)
 					{
 						vxVector3d&& invV = ((N * ray.direction().dot(N)* -2) 
 											 + ray.direction()) ;
