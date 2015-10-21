@@ -54,10 +54,10 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	// element vertex.
 	std::getline(iFile, line);
 	std::cout << "PLY: Num vertex: " << line.substr(15) << std::endl;
-	int numVertex = strtol(line.substr(15).c_str(), 
-						   (char **)NULL, 
-						   10/*Base 10*/);
-	
+	unsigned int numVertex = strtol(line.substr(15).c_str(), 
+									   (char **)NULL, 
+									   10/*Base 10*/);
+				
 	unsigned int nFaces{0u};
 	
 	// reading properties.
