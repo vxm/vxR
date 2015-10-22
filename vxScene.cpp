@@ -87,7 +87,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			const auto pos = nodeGeo->getVector3dAttribute("position");
 			const auto sf = nodeGeo->getFloatAttribute("scaleFactor");
 			
-			auto geo = createGeometry();
+			auto geo = createGeometry(path);
 			auto plyReader = std::make_shared<vxPLYImporter>(geo);
 			plyReader->processPLYFile(path);
 			m_grids[0]->addGeometry(geo,
@@ -144,7 +144,18 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		plane->setY(node->getFloatAttribute("y"));
 		plane->setZ(node->getFloatAttribute("z"));
 	}
-		
+
+	for(const auto nodeGeo: nodeDB->getNodesByType("vxGeometry"))
+	{
+		const auto path = nodeGeo->getStringAttribute("filePath");
+		const auto pos = nodeGeo->getVector3dAttribute("position");
+		const auto sf = nodeGeo->getFloatAttribute("scaleFactor");
+
+		auto geo = createGeometry(path);
+		auto plyReader = std::make_shared<vxPLYImporter>(geo);
+		plyReader->processPLYFile(path);
+	}
+	
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
 	m_shader->setScene(shared_from_this());
@@ -221,7 +232,7 @@ std::shared_ptr<vxPlane> vxScene::createPlane(vxPlane::type type)
 std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path)
 {
 	// looking for previouly opened images.
-	for(auto img: m_bitMaps)
+	for(const auto& img: m_bitMaps)
 	{
 		if(img->path()==path)
 		{
@@ -234,10 +245,23 @@ std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path
 	return image;
 }
 
-std::shared_ptr<vxGeometry> vxScene::createGeometry()
+std::shared_ptr<vxGeometry> vxScene::createGeometry(const std::string &path)
 {
+	// looking for previouly opened images.
+	for(const auto& geo: m_geometries)
+	{
+		if(geo->constructionPath()==path)
+		{
+			return geo;
+		}
+	}
+	
+	//auto found = std::find_first_of(m_geometries.begin(), m_geometries.end(),
+	//	[&path](std::shared_ptr<vxGeometry> g){ return g->constructionPath()==path;});
+	
 	auto geo = std::make_shared<vxGeometry>();
 	m_geometries.push_back(geo);
+	geo->setConstructionPath(path);
 	return geo;
 }
 
@@ -253,6 +277,14 @@ void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 
 bool vxScene::throwRay(const vxRay &ray) const
 {
+	for(auto geo:m_geometries)
+	{
+		if(geo->throwRay(ray))
+		{
+			return true;
+		}
+	}
+
 	for(auto grid:m_grids)
 	{
 		if(grid->throwRay(ray))
@@ -261,13 +293,13 @@ bool vxScene::throwRay(const vxRay &ray) const
 		}
 	}
 
-//	for(auto plane:m_planes)
-//	{
-//		if(plane->hasCollision(ray))
-//		{
-//			return true;
-//		}
-//	}
+	for(auto plane:m_planes)
+	{
+		if(plane->hasCollision(ray))
+		{
+			return true;
+		}
+	}
 
 //	for(auto dome:m_domes)
 //	{
@@ -284,6 +316,17 @@ bool vxScene::throwRay(const vxRay &ray) const
 int vxScene::throwRay(const vxRay &ray,
 						vxCollision &collide) const
 {
+	for(auto geo:m_geometries)
+	{
+		if(geo->throwRay(ray, collide))
+		{
+			vxColor col(defaultShader()->getColor(ray,collide));
+			collide.setColor( col );
+			collide.setValid(true);
+			return 1;
+		}
+	}
+	
 	for(auto grid:m_grids)
 	{
 		if(grid->throwRay(ray, collide))
@@ -319,6 +362,14 @@ int vxScene::throwRay(const vxRay &ray,
 
 bool vxScene::hasCollision(const vxRay &ray) const
 {
+	for(auto geo:m_geometries)
+	{
+		if(geo->hasCollision(ray))
+		{
+			return true;
+		}
+	}
+	
 	for(auto grid:m_grids)
 	{
 		if(grid->hasCollision(ray))
@@ -327,13 +378,13 @@ bool vxScene::hasCollision(const vxRay &ray) const
 		}
 	}
 	
-//	for(auto plane:m_planes)
-//	{
-//		if(plane->hasCollision(ray))
-//		{
-//			return true;
-//		}
-//	}
+	for(auto plane:m_planes)
+	{
+		if(plane->hasCollision(ray))
+		{
+			return true;
+		}
+	}
 	
 	/*for(auto dome:m_domes)
 	{
