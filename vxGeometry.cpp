@@ -2,6 +2,16 @@
 
 using namespace vxCore;
 
+
+std::string vxGeometry::constructionPath() const
+{
+	return m_constructionPath;
+}
+
+void vxGeometry::setConstructionPath(const std::string &constructionPath)
+{
+	m_constructionPath = constructionPath;
+}
 vxGeometry::vxGeometry()
 {
 	

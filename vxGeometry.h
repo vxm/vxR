@@ -12,6 +12,8 @@ namespace vxCore {
 
 class vxGeometry
 {
+	std::string m_constructionPath;
+
 public:
 
 	vxGeometry();
@@ -32,6 +34,8 @@ public:
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
+	std::string constructionPath() const;
+	void setConstructionPath(const std::string &constructionPath);
 };
 
 }
