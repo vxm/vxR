@@ -123,6 +123,7 @@ public:
 	double length() const;
 	double distance(const vxVector3d &ref) const;
 	
+	vxVector3d midPoint(const vxVector3d &other) const;
 	vxVector3d aaVector() const;
 	vxVector3d floorVector() const;
 	vxVector3d ceilVector() const;

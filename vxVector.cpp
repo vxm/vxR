@@ -392,6 +392,11 @@ double vxVector3d::length() const
 				+fabs(m_z*m_z));
 }
 
+vxVector3d vxVector3d::midPoint(const vxVector3d &other) const
+{
+	return ((*this)+other)/2.0;
+}
+
 vxVector3d vxVector3d::aaVector() const
 {
 	return std::move(vxVector3d(std::copysign(1.0,m_x),
