@@ -40,10 +40,21 @@ node
 {
 name = "gnome"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
-    position = 220.0 -54.0 220.0
+    position = 440.0 -108.0 440.0
+    scaleFactor = 0.75
+}
+
+node
+{
+name = "gnome_tris"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    position = 440.0 -108.0 440.0
     scaleFactor = 0.75
 }
 
