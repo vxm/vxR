@@ -92,7 +92,7 @@ public:
 	std::shared_ptr<vxDome> createDom(const std::string path);
 	std::shared_ptr<vxPlane> createPlane(vxPlane::type type);
 	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
-	std::shared_ptr<vxGeometry> createGeometry();
+	std::shared_ptr<vxGeometry> createGeometry(const std::__cxx11::string &path);
 
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
