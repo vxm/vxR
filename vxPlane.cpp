@@ -107,14 +107,13 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 	{
 		vxTriRef t(m_pointA,m_pointB,m_pointC);
 		const auto& p = MU::rectAndPlane(ray,t);
-		
 		if((ray.origin()-p).follows(ray.direction()))
 		{
 			collide.setNormal(t.getNormal());
 			collide.setPosition(p);
-			collide.setU(fmod(p.x()/10.0,1.0));
-			collide.setV(fmod(p.z()/10.0,1.0));
-			collide.setColor(m_color);
+			collide.setU(fmod(p.x(),1.0));
+			collide.setV(fmod(p.z(),1.0));
+			collide.setColor(vxColor::white);
 			return 1;
 		}
 	}
