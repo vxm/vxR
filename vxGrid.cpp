@@ -621,7 +621,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	
 	if(inGrid(ray.origin()))
 	{
-		collide.setPosition(ray.origin());
+		//collide.setPosition(ray.origin());
 	}
 	else if (!m_boundingBox.throwRay(ray, collide))
 	{
