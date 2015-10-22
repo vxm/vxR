@@ -21,7 +21,7 @@ public:
 	bool m_circle3 {false};
 	bool m_margin  {true};
 
-	double m_margn = 0.04;
+	double m_margn = 0.07;
 };
 
 

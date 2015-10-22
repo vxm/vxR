@@ -19,7 +19,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 2.0
+    focusDistance = 4.0
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -29,11 +29,11 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    resolution = 110
-    position = 220.0 0.0 220.0
-    size = 110.0
+    resolution = 220
+    position = 440.0 0.0 440.0
+    size = 220.0
 }
 
 node
@@ -71,12 +71,12 @@ node
 {
 name = "environment"
 type = "vxIBLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Frozen_Waterfall/Frozen_Waterfall_HiRes_TMap.jpg"
-    intensity = 8.0
+    intensity = 16.0
     color = 255 255 255
-    samples = 10
+    samples = 20
     radius = 0.997
     gain = 0.3
     gamma = 1.4
@@ -87,7 +87,7 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 1.36
     color = 255 230 240
@@ -99,10 +99,10 @@ node
 {
 name = "amblight"
 type = "vxAmbientLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     radius = 1
-    intensity = 25.0
+    intensity = 0.925
     color = 255 255 255
 }
 
@@ -110,7 +110,7 @@ node
 {
 name = "sphere1"
 type = "vxSphere"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     radius = 1
 }
@@ -125,8 +125,8 @@ active = "true"
     x = 0.0
     y = -58.0
     z = 0.0
-    pointA = 224.0 -58.0 222.0
-    pointB = 225.0 -58.0 224.0
-    pointC = 210.0 -58.0 230.0
+    pointA = 440.0 -57.0 440.0
+    pointB = 450.0 -56.0 440.0
+    pointC = 440.0 -56.0 450.0
     color = 60 50 80
 }

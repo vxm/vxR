@@ -167,8 +167,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 #if SINGLERAY
 	
 	// moving to start point.
-	unsigned int itH {850};
-	unsigned int itV {550};
+	unsigned int itH {732};
+	unsigned int itV {501};
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
@@ -230,7 +230,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 											   (1.0/m_reflectionSamples));
 						}
 					}
-					pixelColor+= MU::lerp(reflection, collision.color(), 0.85);
+					pixelColor+= MU::lerp(reflection, collision.color(), 0.95);
 				}
 				else
 				{
