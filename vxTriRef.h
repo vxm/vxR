@@ -6,6 +6,7 @@
 #include "vxRay.h"
 #include "vxCollision.h"
 
+
 namespace vxCore
 {
 
@@ -27,6 +28,8 @@ public:
 	
 	vxVector3d &getNormal();
 
+	double area() const;
+	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
