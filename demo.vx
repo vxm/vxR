@@ -7,7 +7,8 @@ name = "renderSettings"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 4
+//  resolution = 2732 1536
+    pixelSamples = 1
     reflectionSamples = 0
     numThreads = -1
 }
