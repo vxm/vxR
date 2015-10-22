@@ -47,8 +47,14 @@ class MathUtils
 										const vxVector3d& a, 
 										const vxVector3d& b, 
 										const vxVector3d& c);
+	
 	static vxVector3d rectAndPlane(const vxRay& ray, vxTriRef& t);
 
+	//Distances
+	static vxVector3d closestPointInLine(const vxVector3d &p1,
+										 const vxVector3d &p2,
+										 const vxVector3d &p);
+	
 	//Random
 	static double getRand(double range);
 	static double getBoolRand();

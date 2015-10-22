@@ -82,7 +82,7 @@ vxVector3d MathUtils::rectAndPlane(const vxRay& ray,
 		return vxVector3d::zero;
 	}
 	
-	double u = n.dot(a-p1) / n.dot(c);
+	double u = n.dot(a-p1) / n.dot(ray.direction());
 	return (ray.direction() * u) + ray.origin();
 }
 
@@ -98,6 +98,18 @@ vxVector3d MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &tri)
 	
 	double u = n.dot(tri.p1-p1) / n.dot(c);
 	return (c * u) + ray.origin();
+}
+					   
+vxVector3d MathUtils::closestPointInLine(const vxVector3d &p1,
+										 const vxVector3d &p2,
+										 const vxVector3d &p)
+{
+	const auto v = p2 - p1;
+	const auto w = p - p1;
+	const auto c1 = w.dot(v);
+	const auto c2 = v.dot(v);
+	
+	return p1 + v * (c1 / c2);
 }
 
 vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
