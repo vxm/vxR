@@ -69,7 +69,6 @@ void vxNode::addAttribute(const Attribute &attr)
 		{
 			setActive(false);
 		}
-		return;
 	}
 	
 	m_attributes.push_back(attr);
@@ -95,7 +94,6 @@ vxColor vxNode::getColorAttribute(const std::__cxx11::string attrName)
 // it's values to a color to be returned.
 vxVector3d vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
 {
-	int k=0;
 	for(const auto nodeAttr: m_attributes)
 	{
 		if(nodeAttr.first == attrName)
@@ -192,6 +190,25 @@ bool vxNode::getBoolAttribute(const std::__cxx11::string attrName)
 	return false;
 }
 
+
+// It will retrieve the matching vector3d attribute and will cast
+// it's values to a color to be returned.
+vxMatrix vxNode::getMatrixAttribute(const std::__cxx11::string attrName)
+{
+	//TODO: I see lambdas to specify the function to convert the data type 
+	// and return the default of the value in case it didnt find the attr.
+	for(const auto nodeAttr: m_attributes)
+	{
+
+		if(nodeAttr.first == attrName)
+		{
+			return *nodeAttr.second.asMatrix44();
+		}
+	}
+
+	std::cerr << "Node: Matrix attribute " << attrName << " not found in node" << std::endl;
+	return vxMatrix::identity;
+}
 
 //----------------------------------
 

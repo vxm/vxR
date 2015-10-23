@@ -96,6 +96,7 @@ public:
 	void setAttributes(const std::vector<Attribute> &attributes);
 	bool active() const;
 	void setActive(bool active);
+	vxMatrix getMatrixAttribute(const std::__cxx11::string attrName);
 };
 
 class nodeMap:public std::map<std::string, std::shared_ptr<vxNode>>
