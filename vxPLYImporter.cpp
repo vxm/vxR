@@ -95,7 +95,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		else
 		{
 			//std::cout << "PLY: X " << x << "  Y "  << y << "  Z "  << z << " found on line: " << k << std::endl;
-			m_geo->addVertex(vxVector3d{x,y,z});
+			m_geo->addVertexTransformed(vxVector3d{x,y,z});
 		}
 		
 		k++;
