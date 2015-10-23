@@ -52,6 +52,13 @@ bool vxGeometry::throwRay(const vxRay &ray) const
 
 int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 {
+	for(const auto &tri:m_triangles)
+	{
+		if(tri.throwRay(ray,collide)==1)
+		{
+			return 1;
+		}
+	}
 	return 0;
 }
 
