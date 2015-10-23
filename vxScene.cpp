@@ -149,9 +149,11 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	{
 		const auto path = nodeGeo->getStringAttribute("filePath");
 		const auto pos = nodeGeo->getVector3dAttribute("position");
-		const auto sf = nodeGeo->getFloatAttribute("scaleFactor");
+		const auto transform = nodeGeo->getMatrixAttribute("transform");
 
 		auto geo = createGeometry(path);
+		geo->setTransform(transform);
+
 		auto plyReader = std::make_shared<vxPLYImporter>(geo);
 		plyReader->processPLYFile(path);
 	}
