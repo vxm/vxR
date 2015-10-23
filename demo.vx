@@ -7,9 +7,30 @@ name = "renderSettings"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-//  resolution = 2732 1536
-    pixelSamples = 1
+    pixelSamples = 4
     reflectionSamples = 0
+    numThreads = -1
+}
+
+node
+{
+name = "renderSettings_1"
+type = "vxRenderSettings"
+active = "true"
+    resolution = 2732 1536
+    pixelSamples = 8
+    reflectionSamples = 2
+    numThreads = -1
+}
+
+node
+{
+name = "renderSettings_2"
+type = "vxRenderSettings"
+active = "true"
+    resolution = 5464 3072
+    pixelSamples = 12
+    reflectionSamples = 4
     numThreads = -1
 }
 
@@ -19,7 +40,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 4.0
+    focusDistance = 4.5
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -29,7 +50,7 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     resolution = 220
     position = 440.0 0.0 440.0
@@ -40,10 +61,10 @@ node
 {
 name = "gnome"
 type = "vxGridGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
-    position = 440.0 -108.0 440.0
+    position = 440.0 -113.0 440.0
     scaleFactor = 0.75
 }
 
@@ -52,9 +73,9 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 440.0 -113.0 440.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
-    position = 440.0 -108.0 440.0
+    position = 440.0 -113.0 440.0
     scaleFactor = 0.75
 }
 
@@ -64,22 +85,22 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Frozen_Waterfall/Frozen_Waterfall_HiRes_TMap.jpg"
+    imagePath = "/home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg"
 }
 
 node
 {
 name = "environment"
 type = "vxIBLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/code/vxR/Frozen_Waterfall/Frozen_Waterfall_HiRes_TMap.jpg"
-    intensity = 16.0
+    filePath = "/home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg"
+    intensity = 13.0
     color = 255 255 255
-    samples = 20
+    samples = 60
     radius = 0.997
     gain = 0.3
-    gamma = 1.4
+    gamma = 2.4
     lowThreshold = 0.03
 }
 
@@ -99,7 +120,7 @@ node
 {
 name = "amblight"
 type = "vxAmbientLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     radius = 1
     intensity = 0.925
@@ -119,7 +140,7 @@ node
 {
 name = "floor"
 type = "vxPlane"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     planeType = "free"
     x = 0.0
