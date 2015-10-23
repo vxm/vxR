@@ -6,14 +6,15 @@
 #include "vxRay.h"
 #include "vxCollision.h"
 #include "vxTriRef.h"
+#include "vxMatrix.h"
 
 namespace vxCore {
-
 
 class vxGeometry
 {
 	std::string m_constructionPath;
-
+	vxMatrix m_transform;
+	
 public:
 
 	vxGeometry();
@@ -22,7 +23,7 @@ public:
 	std::vector<vxTriRef> m_triangles;
 	std::vector<vxVector3d> m_normals;
 
-	void addVertex(const vxVector3d &v3);
+	void addVertexTransformed(const vxVector3d &v3);
 	void addTriangle(unsigned int a,
 					 unsigned int b,
 					 unsigned int c);
@@ -36,6 +37,8 @@ public:
 	bool hasCollision(const vxRay &ray) const;
 	std::string constructionPath() const;
 	void setConstructionPath(const std::string &constructionPath);
+	vxMatrix transform() const;
+	void setTransform(const vxMatrix &transform);
 };
 
 }

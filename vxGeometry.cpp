@@ -2,6 +2,10 @@
 
 using namespace vxCore;
 
+vxGeometry::vxGeometry()
+{
+	
+}
 
 std::string vxGeometry::constructionPath() const
 {
@@ -12,14 +16,16 @@ void vxGeometry::setConstructionPath(const std::string &constructionPath)
 {
 	m_constructionPath = constructionPath;
 }
-vxGeometry::vxGeometry()
+
+void vxGeometry::setTransform(const vxMatrix &transform)
 {
-	
+	m_transform = transform;
 }
 
-void vxGeometry::addVertex(const vxVector3d &v3)
+void vxGeometry::addVertexTransformed(const vxVector3d &v3)
 {
-	m_vertices.push_back(v3);
+	const auto &orig = m_transform.getOrigin();
+	m_vertices.push_back(v3+orig);
 }
 
 void vxGeometry::addTriangle(unsigned int a, unsigned int b, unsigned int c)
