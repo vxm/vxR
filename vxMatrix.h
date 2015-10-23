@@ -2,7 +2,9 @@
 #define VXMATRIX_H
 
 #include "vxStatus.h"
+#include "vxVector.h"
 #include <initializer_list>
+
 
 namespace vxCore {
 
@@ -19,26 +21,26 @@ class vxMatrix
 public:
 	
 	vxMatrix();
-	vxMatrix (const vxMatrix&src);
+	vxMatrix (const vxMatrix &src);
 	vxMatrix (const double m[16]);
 	vxMatrix (std::initializer_list<double> list);
-	~vxMatrix ();
+	~vxMatrix();
 
 	vxStatus::code	get(double dest[]) const;
 	vxStatus::code	get(float dest[]) const;
 	vxMatrix		transpose() const;
 	vxMatrix&		setToIdentity();
 	vxMatrix&		setToProduct(const vxMatrix&, const vxMatrix&);
-	vxMatrix&		operator+= (const vxMatrix&right);
-	vxMatrix		operator+ (const vxMatrix&right) const;
-	vxMatrix&		operator-= (const vxMatrix&right);
-	vxMatrix		operator- (const vxMatrix&right) const;
-	vxMatrix&		operator*= (const vxMatrix&right);
-	vxMatrix		operator* (const vxMatrix&right) const;
+	vxMatrix&		operator+= (const vxMatrix& right);
+	vxMatrix		operator+ (const vxMatrix& right) const;
+	vxMatrix&		operator-= (const vxMatrix& right);
+	vxMatrix		operator- (const vxMatrix& right) const;
+	vxMatrix&		operator*= (const vxMatrix& right);
+	vxMatrix		operator* (const vxMatrix& right) const;
 	vxMatrix&		operator*= (double);
 	vxMatrix		operator* (double) const;
-	bool			operator== (const vxMatrix&other) const;
-	bool			operator!= (const vxMatrix&other) const;
+	bool			operator== (const vxMatrix& other) const;
+	bool			operator!= (const vxMatrix& other) const;
 	vxMatrix&		operator= (const vxMatrix &m);
 	const double *	operator[] (unsigned int row) const;
 	double &		operator() (unsigned int row, unsigned int col);
@@ -49,11 +51,13 @@ public:
 	vxMatrix		homogenize() const;
 	double			det4x4() const;
 	double			det3x3() const;
-	bool			isEquivalent (const vxMatrix&other, double tolerance=1.0e-10) const;
+	bool			isEquivalent (const vxMatrix&, double =1.0e-10) const;
 	bool			isSingular() const;
 	static const vxMatrix identity;
 	
-	//vxMatrix		operator* (double, const vxMatrix&right);
+	vxVector3d getOrigin() const;
+	
+	//vxMatrix		operator* (double, const vxMatrix& right);
 	//std::ostream &		operator<< (std::ostream &os, const vxMatrix&m);
 };
 

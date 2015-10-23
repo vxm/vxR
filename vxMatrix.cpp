@@ -96,31 +96,31 @@ vxMatrix& vxMatrix::setToProduct(const vxMatrix &, const vxMatrix &)
 	return *this;
 }
 
-vxMatrix& vxMatrix::operator+=(const vxMatrix &right)
+vxMatrix& vxMatrix::operator+=(const vxMatrix &)
 {
 	
 	return *this;
 }
 
-vxMatrix vxMatrix::operator+(const vxMatrix &right) const
+vxMatrix vxMatrix::operator+(const vxMatrix &) const
 {
 	
 	return *this;
 }
 
-vxMatrix& vxMatrix::operator-=(const vxMatrix &right)
+vxMatrix& vxMatrix::operator-=(const vxMatrix &)
 {
 	
 	return *this;
 }
 
-vxMatrix vxMatrix::operator-(const vxMatrix &right) const
+vxMatrix vxMatrix::operator-(const vxMatrix &) const
 {
 	
 	return *this;
 }
 
-vxMatrix& vxMatrix::operator*=(const vxMatrix &right)
+vxMatrix& vxMatrix::operator*=(const vxMatrix &)
 {
 	
 	return *this;
@@ -184,6 +184,12 @@ bool vxMatrix::operator!=(const vxMatrix &other) const
 	return r!=0;
 }
 
+vxMatrix &vxMatrix::operator=(const vxMatrix &other)
+{
+	memcpy(m_matrix, other.m_matrix, 16 * sizeof(double));
+	return *this;
+}
+
 vxMatrix vxMatrix::inverse() const
 {
 	
@@ -214,7 +220,7 @@ double vxMatrix::det3x3() const
 	return 1.0;
 }
 
-bool vxMatrix::isEquivalent(const vxMatrix &other, double tolerance) const
+bool vxMatrix::isEquivalent(const vxMatrix &, double ) const
 {
 	bool eq{false};
 			
@@ -225,6 +231,11 @@ bool vxMatrix::isSingular() const
 {
 	
 	return true;
+}
+
+vxVector3d vxMatrix::getOrigin() const
+{
+	return vxVector3d(m_matrix[12],m_matrix[13],m_matrix[14]);
 }
 
 double &vxMatrix::operator()(unsigned int row, unsigned int col)
