@@ -180,10 +180,13 @@ double MathUtils::getBoolRand()
 vxVector3d MathUtils::getHollowSphereRand(double radius)
 {
 	//TODO:real random scatter point in sphere missing
-	auto r2d = vxVector2d{2.0 * PI * (getRand()),
-							2.0 * PI * (getRand())};
+	auto u = getRand();
+	auto v = getRand();
+	
+	auto a = (2.0 * PI * u );
+	auto b = acos( (2.0 * v) - 1.0);
 
-	return cartesianToNormal(r2d) * radius;
+	return cartesianToNormal(vxVector2d{a,b}) * radius;
 }
 
 vxVector3d MathUtils::getSolidSphereRand(double radius)
