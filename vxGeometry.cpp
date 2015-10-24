@@ -25,7 +25,10 @@ void vxGeometry::setTransform(const vxMatrix &transform)
 void vxGeometry::addVertexTransformed(const vxVector3d &v3)
 {
 	const auto &orig = m_transform.getOrigin();
-	m_vertices.push_back(v3+orig);
+	const auto &newPoint = v3+orig;
+	m_bb.extend(newPoint);
+	//TODO:push_back ?
+	m_vertices.push_back(newPoint);
 }
 
 void vxGeometry::addTriangle(unsigned int a, unsigned int b, unsigned int c)
@@ -45,13 +48,21 @@ unsigned int vxGeometry::triangleCount() const
 	return m_triangles.size();
 }
 
-bool vxGeometry::throwRay(const vxRay &ray) const
+bool vxGeometry::throwRay(const vxRay &) const
 {
 	return false;
 }
 
 int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 {
+	if(m_bb.hasCollision(ray))
+	{
+		collide.setValid();
+		return 1;
+	}
+	
+	return 0;
+	
 	for(const auto &tri:m_triangles)
 	{
 		if(tri.throwRay(ray,collide)==1)

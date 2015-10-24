@@ -7,6 +7,7 @@
 #include "vxCollision.h"
 #include "vxTriRef.h"
 #include "vxMatrix.h"
+#include "vxBoundingBox.h"
 
 namespace vxCore {
 
@@ -14,6 +15,7 @@ class vxGeometry
 {
 	std::string m_constructionPath;
 	vxMatrix m_transform;
+	vxBoundingBox m_bb;
 	
 public:
 
@@ -32,7 +34,7 @@ public:
 	unsigned int triangleCount() const;
 
 	//renderable interface
-	bool throwRay(const vxRay &ray) const;
+	bool throwRay(const vxRay &) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
 	std::string constructionPath() const;
