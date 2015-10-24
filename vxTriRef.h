@@ -23,7 +23,7 @@ public:
 	const vxVector3d &p1;
 	const vxVector3d &p2;
 	const vxVector3d &p3;
-	std::atomic<bool> normal;
+	std::atomic_bool normal;
 	vxVector3d n;
 	
 	vxVector3d &getNormal();
