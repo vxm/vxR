@@ -8,15 +8,6 @@
 namespace vxCore{
 class vxScene;
 
-//plyReader->processPLYFile("../vxR/juan_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/lucyTop_1.ply");
-///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
-///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
-///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
-///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
 
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_prop(prop)
