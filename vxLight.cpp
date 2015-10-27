@@ -269,8 +269,7 @@ vxColor vxIBLight::acummulationLight(const vxRay &, const vxCollision &collision
 	for(auto i=0u; i<n; i++)
 	{
 		const auto&& cPnt = collision.position();
-		const auto&& r = MU::getHollowHemisphereRand(radius(),
-													  collision.normal());
+		const auto&& r = MU::getHollowSphereRand(radius());
 		const vxRay f(cPnt, collision.normal()+r);
 		auto lumm = m_intensity * lightRatio(f, collision.normal());
 
