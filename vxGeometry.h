@@ -36,7 +36,7 @@ public:
 	//renderable interface
 	bool throwRay(const vxRay &) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
-	bool hasCollision(const vxRay &ray) const;
+	bool hasCollision(const vxRay &) const;
 	std::string constructionPath() const;
 	void setConstructionPath(const std::string &constructionPath);
 	vxMatrix transform() const;

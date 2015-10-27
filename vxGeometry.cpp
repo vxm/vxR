@@ -1,6 +1,9 @@
 #include "vxGeometry.h"
 
+#define DRAW_BB 0
+
 using namespace vxCore;
+
 
 vxGeometry::vxGeometry()
 {
@@ -25,7 +28,7 @@ void vxGeometry::setTransform(const vxMatrix &transform)
 void vxGeometry::addVertexTransformed(const vxVector3d &v3)
 {
 	const auto &orig = m_transform.getOrigin();
-	const auto &newPoint = v3+orig;
+	const auto &newPoint = (v3);//+orig;
 	m_bb.extend(newPoint);
 	//TODO:push_back ?
 	m_vertices.push_back(newPoint);
@@ -33,9 +36,14 @@ void vxGeometry::addVertexTransformed(const vxVector3d &v3)
 
 void vxGeometry::addTriangle(unsigned int a, unsigned int b, unsigned int c)
 {
+	//TODO:push_back ?
 	m_triangles.push_back((vxTriRef(m_vertices[a],
-											   m_vertices[b],
-											   m_vertices[c])));
+									m_vertices[b],
+									m_vertices[c])));
+	//vxTriRef *tref = m_triangles[m_triangles.size()-1];
+	m_triangles[m_triangles.size()-1].computeNormal();
+	m_triangles[m_triangles.size()-1].computeArea();
+
 }
 
 unsigned int vxGeometry::vertexCount() const
@@ -55,25 +63,34 @@ bool vxGeometry::throwRay(const vxRay &) const
 
 int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 {
+#if	DRAW_BB
 	if(m_bb.hasCollision(ray))
 	{
-		collide.setValid();
+		collide.setValid(true);
 		return 1;
 	}
-	
-	return 0;
-	
-	for(const auto &tri:m_triangles)
+
+#else
+	if(!m_bb.hasCollision(ray))
 	{
-		if(tri.throwRay(ray,collide)==1)
+		return 0;
+	}
+
+	//std::cout << "Visiting triangles " << std::endl;	
+	for(auto it = std::cbegin(m_triangles);
+				it!=std::cend(m_triangles);
+									 ++it)
+	{
+		if(it->throwRay(ray,collide))
 		{
 			return 1;
 		}
 	}
+#endif
 	return 0;
 }
 
-bool vxGeometry::hasCollision(const vxRay &ray) const
+bool vxGeometry::hasCollision(const vxRay &) const
 {
 	return false;
 }
