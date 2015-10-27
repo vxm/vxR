@@ -14,9 +14,7 @@
 #include "vxContactBuffer.h"
 #include "vxSampler.h"
 
-
 namespace vxCore {
-
 
 class vxCamera
 {
