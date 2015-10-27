@@ -355,6 +355,7 @@ int vxScene::throwRay(const vxRay &ray,
 
 bool vxScene::hasCollision(const vxRay &ray) const
 {
+
 	for(auto geo:m_geometries)
 	{
 		if(geo->hasCollision(ray))
