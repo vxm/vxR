@@ -200,13 +200,20 @@ vxVector3d MathUtils::getHollowSphereRand(double radius)
 	return cartesianToNormal(vxVector2d{a,b}) * radius;
 }
 
+vxVector3d MathUtils::getSolidSphereRand2(double radius)
+{
+	return getHollowSphereRand(getRand(radius)*getRand());
+}
+
+vxVector3d MathUtils::getSolidSphereRand3(double radius)
+{
+	return getHollowSphereRand(getRand(radius)*getRand()*getRand());
+}
+
+
 vxVector3d MathUtils::getSolidSphereRand(double radius)
 {
-	//TODO:real random scatter point in sphere missing
-	auto r2d = vxVector2d{2.0 * PI * (getRand()),
-							2.0 * PI * (getRand())};
-
-	return cartesianToNormal(r2d) * getRand(radius);
+	return getHollowSphereRand(getRand(radius));
 }
 					   
 vxVector3d MathUtils::getHollowHemisphereRand(double radius, 

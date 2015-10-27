@@ -50,6 +50,11 @@ class MathUtils
 	
 	static vxVector3d rectAndPlane(const vxRay& ray, vxTriRef& t);
 
+	//Geometry
+	static double area(const vxVector3d &p1,
+					   const vxVector3d &p2,
+					   const vxVector3d &p3);
+	
 	//Distances
 	static vxVector3d closestPointInLine(const vxVector3d &p1,
 										 const vxVector3d &p2,
@@ -59,6 +64,8 @@ class MathUtils
 	static double getRand(double range);
 	static double getBoolRand();
 	static vxVector3d getSolidSphereRand(double radius);
+	static vxVector3d getSolidSphereRand2(double radius);
+	static vxVector3d getSolidSphereRand3(double radius);
 	static vxVector3d getHollowSphereRand(double radius = 1.0);
 	static vxVector3d getSphereRand(double radius = 1.0);
 	static vxVector3d getHollowHemisphereRand(double radius, const vxVector3d &);
