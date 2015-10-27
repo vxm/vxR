@@ -19,6 +19,7 @@ vxTriRef::vxTriRef(vxTriRef &&other)
 	,p2{std::move(other.p2)}
 	,p3{std::move(other.p3)}
 	,n{std::move(other.n)}
+	,ah{std::move(other.ah)}
 {
 }
 
