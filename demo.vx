@@ -7,7 +7,7 @@ name = "renderSettings"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 4
+    pixelSamples = 1
     reflectionSamples = 0
     numThreads = -1
 }
@@ -16,10 +16,10 @@ node
 {
 name = "renderSettings_1"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 2732 1536
     pixelSamples = 8
-    reflectionSamples = 2
+    reflectionSamples = 0
     numThreads = -1
 }
 
@@ -27,10 +27,10 @@ node
 {
 name = "renderSettings_2"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 5464 3072
     pixelSamples = 12
-    reflectionSamples = 4
+    reflectionSamples = 0
     numThreads = -1
 }
 
@@ -40,7 +40,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 4.5
+    focusDistance = 1.5
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -50,7 +50,7 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     resolution = 220
     position = 440.0 0.0 440.0
@@ -72,10 +72,10 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 440.0 -113.0 440.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
-    position = 440.0 -113.0 440.0
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.25 -0.75 5 1]
+    filePath = "/home/john/Downloads/two_tris.ply"
+    position = 0 0 0
     scaleFactor = 0.75
 }
 
@@ -84,11 +84,12 @@ active = "false"
 //plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
 //plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
 //plyReader->processPLYFile("/home/john/Downloads/lucyTop_1.ply");
+
 ///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
 ///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
 ///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
 ///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
-
+///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
 
 node
 {
@@ -103,7 +104,7 @@ node
 {
 name = "environment"
 type = "vxIBLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg"
     intensity = 13.0
@@ -119,7 +120,7 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 1.36
     color = 255 230 240
