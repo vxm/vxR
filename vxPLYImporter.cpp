@@ -27,13 +27,12 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 
 	std::ifstream iFile(fileName);
 	std::string line;
-	unsigned int k {0};
 
 	// Not optional lines.
 	std::getline(iFile, line);
 	if(line!="ply")
 	{
-		std::cout << "PLY: File " << fileName << " doesn't contain ply info" << std::endl;
+		std::cerr << "PLY: File " << fileName << " doesn't contain ply info" << std::endl;
 		return;
 	}
 	
@@ -53,11 +52,15 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	
 	// element vertex.
 	std::getline(iFile, line);
-	std::cout << "PLY: Num vertex: " << line.substr(15) << std::endl;
-	unsigned int numVertex = strtol(line.substr(15).c_str(), 
-									   (char **)NULL, 
-									   10/*Base 10*/);
-				
+	auto vertexAmountTok = StringUtils::tokenizeSpace(line);
+	if(vertexAmountTok.size()!=3)
+	{
+		std::cerr << "PLY: vertex count is unexpected:: '" << line << "'" << std::endl;
+		return;
+	}
+	
+	auto numVertex = std::stod(vertexAmountTok[2]);
+	std::cout << "PLY: Num vertex: " << numVertex << std::endl;
 	unsigned int nFaces{0u};
 	
 	// reading properties.
@@ -83,27 +86,30 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	}
 	while(line!="end_header");
 	
-	double x, y, z;
+	unsigned int k {0};
 	while(std::getline(iFile, line) && k<numVertex)
 	{
 		std::istringstream is(line);
-		
-		if(!(is >> x >> y >> z))
+		const auto &vts = StringUtils::tokenizeSpace(line);
+		if(vts.size()%3!=0)
 		{
-			std::cout << "PLY: Line " << k << " could not be parsed as xyx double" << std::endl;
+			std::cerr << "PLY: Line " << k << " could not be parsed as xyx double" << std::endl;
 		}
 		else
 		{
 			//std::cout << "PLY: X " << x << "  Y "  << y << "  Z "  << z << " found on line: " << k << std::endl;
+			double x, y, z;
+			x = std::stod(vts[0]);
+			y = std::stod(vts[1]);
+			z = std::stod(vts[2]);
 			m_geo->addVertexTransformed(vxVector3d{x,y,z});
 		}
 		
 		k++;
 	}
-	
-	
+
 	// reading properties.
-	while(std::getline(iFile, line))
+	do
 	{
 		auto lineTokens = StringUtils::tokenizeSpace(line);
 		if(lineTokens.size()==4	&& lineTokens[0]=="3")
@@ -112,8 +118,10 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			int b = std::stoi(lineTokens[2]);
 			int c = std::stoi(lineTokens[3]);
 			m_geo->addTriangle(a,b,c);
+			std::cout << "Adding " << m_geo->m_triangles[m_geo->m_triangles.size()-1] << std::endl;
 		}
 	}
+	while(std::getline(iFile, line));
 	
 	std::cout << "PLY: file " 
 			  << fileName 
