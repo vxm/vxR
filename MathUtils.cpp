@@ -3,40 +3,40 @@
 
 using namespace vxCore;
 
-const double MathUtils::C{299'792'458.0};
-const double MathUtils::PI{3.141'592'653'589'793'238'462'\
+const scalar MathUtils::C{299'792'458.0};
+const scalar MathUtils::PI{3.141'592'653'589'793'238'462'\
 643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816};
-const double MathUtils::HALF_PI{PI/2.0};
+const scalar MathUtils::HALF_PI{PI/(scalar)2.0};
 
 MathUtils::MathUtils()
 {
 }
 
-constexpr double MathUtils::ratio(double a, double b)
+constexpr scalar MathUtils::ratio(scalar a, scalar b)
 {
-	return a/(double)b;
+	return a/(scalar)b;
 }
 
-constexpr double MathUtils::ratio(int a, double b)
+constexpr scalar MathUtils::ratio(int a, scalar b)
 {
-	return a/(double)b;
+	return a/(scalar)b;
 }
 
-constexpr double MathUtils::ratio(double a, int b)
+constexpr scalar MathUtils::ratio(scalar a, int b)
 {
-	return a/(double)b;
+	return a/(scalar)b;
 }
 
-constexpr double MathUtils::ratio(int a, int b)
+constexpr scalar MathUtils::ratio(int a, int b)
 {
-	return a/(double)b;
+	return a/(scalar)b;
 }
 
 vxVector2d MathUtils::normalToCartesian(const vxVector3d& normal)
 {
 	auto normalized = normal.unit();
 	auto x = (PI + atan2(normalized.z(), normalized.x()))/(2.0*PI);
-	auto y = ((PI/2.0) + asin( normalized.y())) / PI;
+	auto y = ((PI/(scalar)2.0) + asin( normalized.y())) / PI;
 	return vxVector2d{x, y};
 }
 
@@ -82,7 +82,7 @@ vxVector3d MathUtils::rectAndPlane(const vxRay& ray,
 		return vxVector3d::zero;
 	}
 	
-	double u = n.dot(a-p1) / n.dot(ray.direction());
+	scalar u = n.dot(a-p1) / n.dot(ray.direction());
 	return (ray.direction() * u) + ray.origin();
 }
 
@@ -96,12 +96,12 @@ vxVector3d MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &tri)
 		return vxVector3d::zero;
 	}
 	
-	double u = n.dot(tri.p1-p1) / n.dot(c);
+	scalar u = n.dot(tri.p1-p1) / n.dot(c);
 	return (c * u) + ray.origin();
 }
  
 
-double MathUtils::area(const vxVector3d &p1, 
+scalar MathUtils::area(const vxVector3d &p1, 
 					   const vxVector3d &p2, 
 					   const vxVector3d &p3)
 {
@@ -123,7 +123,7 @@ vxVector3d MathUtils::closestPointInLine(const vxVector3d &p1,
 	return p1 + v * (c1 / c2);
 }
 
-vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
+vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, scalar x)
 {
 	// parametric ecuation of the linconst vxVector3d &&ray, - ray.x()) / -ray.x();
 	const auto t = (x - ray.x()) / (-ray.x());
@@ -133,7 +133,7 @@ vxVector3d MathUtils::rectAndXPlane(const vxVector3d&& ray, double x)
 	return vxVector3d{x,y,z};
 }
 
-vxVector3d MathUtils::rectAndYPlane(const vxVector3d&& ray, double y)
+vxVector3d MathUtils::rectAndYPlane(const vxVector3d&& ray, scalar y)
 {
 	// parametric ecuation of the line solved.
 	auto t = (y - ray.y()) / (-ray.y());
@@ -143,17 +143,17 @@ vxVector3d MathUtils::rectAndYPlane(const vxVector3d&& ray, double y)
 	return vxVector3d{x,y,z};
 }
 
-double MathUtils::x_forRectAndYPlane(const vxVector3d&& ray, double y)
+scalar MathUtils::x_forRectAndYPlane(const vxVector3d&& ray, scalar y)
 {
 	return (y - ray.y()) / (-ray.y()) * (-ray.x()) + ray.x();
 }
 
-double MathUtils::z_forRectAndYPlane(const vxVector3d&& ray, double y)
+scalar MathUtils::z_forRectAndYPlane(const vxVector3d&& ray, scalar y)
 {
 	return (y - ray.y()) / (-ray.y()) * (-ray.z()) + ray.z();
 }
 
-vxVector3d MathUtils::rectAndZPlane(const vxVector3d&& ray, double z)
+vxVector3d MathUtils::rectAndZPlane(const vxVector3d&& ray, scalar z)
 {
 	// parametric ecuation of the linconst vxVector3d &&ray, - ray.z()) / -ray.z();
 	auto t = (z - ray.z()) / (-ray.z());
@@ -163,32 +163,32 @@ vxVector3d MathUtils::rectAndZPlane(const vxVector3d&& ray, double z)
 	return vxVector3d{x,y,z};
 }
 
-vxVector3d MathUtils::rayAndXPlane(const vxRay &ray, double x)
+vxVector3d MathUtils::rayAndXPlane(const vxRay &ray, scalar x)
 {
 	return rectAndXPlane(ray.direction(),x);
 }
 
-vxVector3d MathUtils::rayAndYPlane(const vxRay &ray, double y)
+vxVector3d MathUtils::rayAndYPlane(const vxRay &ray, scalar y)
 {
 	return rectAndYPlane(ray.direction(),y);
 }
 
-vxVector3d MathUtils::rayAndZPlane(const vxRay &ray, double z)
+vxVector3d MathUtils::rayAndZPlane(const vxRay &ray, scalar z)
 {
 	return rectAndZPlane(ray.direction(),z);
 }
 						
-double MathUtils::getRand(double range = 1.0)
+scalar MathUtils::getRand(scalar range = 1.0)
 {
-	return range*(rand()/(double)RAND_MAX);
+	return range*(rand()/(scalar)RAND_MAX);
 }
 
-double MathUtils::getBoolRand()
+scalar MathUtils::getBoolRand()
 {
 	return getRand(1.0)<.5;
 }
 
-vxVector3d MathUtils::getHollowSphereRand(double radius)
+vxVector3d MathUtils::getHollowSphereRand(scalar radius)
 {
 	//TODO:real random scatter point in sphere missing
 	auto u = getRand();
@@ -200,23 +200,23 @@ vxVector3d MathUtils::getHollowSphereRand(double radius)
 	return cartesianToNormal(vxVector2d{a,b}) * radius;
 }
 
-vxVector3d MathUtils::getSolidSphereRand2(double radius)
+vxVector3d MathUtils::getSolidSphereRand2(scalar radius)
 {
 	return getHollowSphereRand(getRand(radius)*getRand());
 }
 
-vxVector3d MathUtils::getSolidSphereRand3(double radius)
+vxVector3d MathUtils::getSolidSphereRand3(scalar radius)
 {
 	return getHollowSphereRand(getRand(radius)*getRand()*getRand());
 }
 
 
-vxVector3d MathUtils::getSolidSphereRand(double radius)
+vxVector3d MathUtils::getSolidSphereRand(scalar radius)
 {
 	return getHollowSphereRand(getRand(radius));
 }
 					   
-vxVector3d MathUtils::getHollowHemisphereRand(double radius, 
+vxVector3d MathUtils::getHollowHemisphereRand(scalar radius, 
 											  const vxVector3d &)
 {
 	auto r = getHollowSphereRand(radius);
@@ -224,17 +224,17 @@ vxVector3d MathUtils::getHollowHemisphereRand(double radius,
 	return r;
 }
 
-vxVector3d MathUtils::getSphereRand(double radius)
+vxVector3d MathUtils::getSphereRand(scalar radius)
 {
-	return getHollowSphereRand(getRand(radius)-(radius/2.0));
+	return getHollowSphereRand(getRand(radius)-(radius/(scalar)2.0));
 }
 						
-bool MathUtils::inRange(double r, double min, double max)
+bool MathUtils::inRange(scalar r, scalar min, scalar max)
 {
 	return std::isgreaterequal(r,min) && std::islessequal(r,max);
 }
 
-double MathUtils::clamp(double val, double min, double max)
+scalar MathUtils::clamp(scalar val, scalar min, scalar max)
 {
 	return std::max(std::min(max, val), min);
 }
@@ -246,31 +246,31 @@ vxColor MathUtils::clamp(const vxColor &c1, const vxColor &min, const vxColor &m
 				   clamp(c1.b(), min.b(), max.b()));
 }
 
-vxColor MathUtils::clamp(const vxColor &c1, double min, double max)
+vxColor MathUtils::clamp(const vxColor &c1, scalar min, scalar max)
 {
 	return vxColor(clamp(c1.r(), min, max),
 				   clamp(c1.g(), min, max),
 				   clamp(c1.b(), min, max));
 }
 
-double MathUtils::lerp(double a, double b, double r)
+scalar MathUtils::lerp(scalar a, scalar b, scalar r)
 {
 	return (b*r)+(a*(1.0-r));
 }
 
-double MathUtils::remap(double v, double max)
+scalar MathUtils::remap(scalar v, scalar max)
 {
 	return clamp(v*max,0.0,max);
 }
 
-vxColor MathUtils::remap(const vxColor &col, double min, double max)
+vxColor MathUtils::remap(const vxColor &col, scalar min, scalar max)
 {
 	return std::move(vxColor((remap(col.r(),min,max)),
 							   (remap(col.g(),min,max)),
 							   (remap(col.b(),min,max))));
 }
 
-vxColor MathUtils::lerp(const vxColor &c1, const vxColor &c2, double r)
+vxColor MathUtils::lerp(const vxColor &c1, const vxColor &c2, scalar r)
 {	
 	return std::move(vxColor(	(lerp(c1.r(), c2.r(), r)),
 								(lerp(c1.g(), c2.g(), r)),
@@ -278,19 +278,19 @@ vxColor MathUtils::lerp(const vxColor &c1, const vxColor &c2, double r)
 }
 
 						
-double MathUtils::remap(double v, double min, double max)
+scalar MathUtils::remap(scalar v, scalar min, scalar max)
 {
 	return (v+min)*(max-min);
 }
 					
-vxVector3d MathUtils::lerp(const vxVector3d &v1, const vxVector3d &v2, double r)
+vxVector3d MathUtils::lerp(const vxVector3d &v1, const vxVector3d &v2, scalar r)
 {	
 	return vxVector3d( lerp(v1.x(), v2.x(), r),
 					   lerp(v1.y(), v2.y(), r),
 					   lerp(v1.z(), v2.z(), r));
 }
 
-double MathUtils::scaleFrom01(double v, double min, double max)
+scalar MathUtils::scaleFrom01(scalar v, scalar min, scalar max)
 {
 	return (v+min)*(max-min);
 }
