@@ -1,7 +1,9 @@
 #ifndef IMAGEPROPERTIES_H
 #define IMAGEPROPERTIES_H
+#include "vxVector.h"
 
 namespace vxCore {
+
 
 class ImageProperties
 {
@@ -51,7 +53,7 @@ public:
 	// channels multiplied by pixels
 	unsigned int numElements() const;
 
-	double aspectRatio() const;
+	scalar aspectRatio() const;
 };
 
 

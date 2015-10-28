@@ -17,9 +17,9 @@ public:
 
 	
 	//renderable interface
-	bool throwRay(const vxRay &ray) const;
+	bool throwRay(const vxRay &) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
-	bool hasCollision(const vxRay &ray) const;
+	bool hasCollision(const vxRay &) const;
 
 };
 

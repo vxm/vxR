@@ -16,7 +16,7 @@ public:
 	vxRay (const vxVector3d& direction);
 	vxRay (const vxVector3d& origin, 
 			  const vxVector3d& direction);
-	vxRay (double x, double y, double z);
+	vxRay (scalar x, scalar y, scalar z);
 	vxRay (const vxRay&& ray);
 	vxRay (const vxRay& ray);
 	~vxRay(){}
@@ -29,7 +29,7 @@ public:
 	vxVector3d& direction();
 	void setDirection(const vxVector3d &direction);
 
-	double incidence(const vxVector3d &normal) const;
+	scalar incidence(const vxVector3d &normal) const;
 
 	friend std::ostream& operator<<(std::ostream &os, const vxRay& ray)
 	{

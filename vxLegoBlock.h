@@ -13,14 +13,14 @@ class vxLegoBlockInGrid
 {
 private:
 	vxVector3d m_pos;
-	double m_size;
+	scalar m_size;
 public:
 	vxLegoBlockInGrid()
 	{}
 	vxVector3d position() const;
 	void setPosition(const vxVector3d &value);
-	double size() const;
-	void setSize(double value);
+	scalar size() const;
+	void setSize(scalar value);
 };
 
 class vxLegoBlock: public std::enable_shared_from_this<vxLegoBlock>
@@ -32,7 +32,7 @@ private:
 public:
 	vxLegoBlock();
 
-	std::shared_ptr<vxLegoBlock> at(const vxVector3d &pos, double size)
+	std::shared_ptr<vxLegoBlock> at(const vxVector3d &pos, scalar size)
 	{
 		m_instance.setPosition(pos);
 		m_instance.setSize(size);
@@ -42,15 +42,15 @@ public:
 	int throwRay(const vxRay &ray, vxCollision &collide) const
 	{
 		const vxVector3d p = m_instance.position() - ray.origin();
-		const double mSize = m_instance.size()/2;
+		const scalar mSize = m_instance.size()/2;
 		
-		double minX = p.x() - mSize;
-		double minY = p.y() - mSize;
-		double minZ = p.z() - mSize;
+		scalar minX = p.x() - mSize;
+		scalar minY = p.y() - mSize;
+		scalar minZ = p.z() - mSize;
 
-		double maxX = p.x() + mSize;
-		double maxY = p.y() + mSize;
-		double maxZ = p.z() + mSize;
+		scalar maxX = p.x() + mSize;
+		scalar maxY = p.y() + mSize;
+		scalar maxZ = p.z() + mSize;
 
 		bool bMax = std::signbit(maxX);
 		const auto hitX = MU::rectAndXPlane(ray.direction(), bMax ? maxX : minX);

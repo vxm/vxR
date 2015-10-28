@@ -14,12 +14,12 @@ void vxRamp::setInterpolation(const Interpolation &interpolation)
 	m_interpolation = interpolation;
 }
 
-std::vector<double> vxRamp::values() const
+std::vector<scalar> vxRamp::values() const
 {
 	return m_values;
 }
 
-void vxRamp::setValues(const std::vector<double> &values)
+void vxRamp::setValues(const std::vector<scalar> &values)
 {
 	m_values = values;
 }

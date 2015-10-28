@@ -22,7 +22,7 @@ vxTriRef::vxTriRef(vxTriRef &&other)
 {
 }
 
-double& vxTriRef::computeArea()
+scalar& vxTriRef::computeArea()
 {
 	const auto pb = MU::closestPointInLine(p1,p2,p3);
 	const auto b = p1.distance(p2);
@@ -31,14 +31,14 @@ double& vxTriRef::computeArea()
 	return ah;
 }
 
-double vxTriRef::area() const
+scalar vxTriRef::area() const
 {
 	return ah;
 }
 
 vxVector3d& vxTriRef::computeNormal() 
 {
-	n = (p1-p3).cross(p1-p2).unit();
+	n = (p2-p1)^(p3-p1).unit();
 	return n;
 }
 
@@ -49,12 +49,12 @@ vxVector3d vxTriRef::normal() const
 
 int vxTriRef::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-	if(n.follows(ray.direction()))
+	if(!n.follows(ray.direction()))
 	{
 		return 0;
 	}
 
-	const double threshold = -0.001;
+	const scalar threshold = -0.001;
 	const auto& p = MU::rectAndPlane(ray,p1,p2,p3);
 	
 	auto ta = area();

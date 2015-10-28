@@ -93,12 +93,12 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		const auto &vts = StringUtils::tokenizeSpace(line);
 		if(vts.size()%3!=0)
 		{
-			std::cerr << "PLY: Line " << k << " could not be parsed as xyx double" << std::endl;
+			std::cerr << "PLY: Line " << k << " could not be parsed as xyx scalar" << std::endl;
 		}
 		else
 		{
 			//std::cout << "PLY: X " << x << "  Y "  << y << "  Z "  << z << " found on line: " << k << std::endl;
-			double x, y, z;
+			scalar x, y, z;
 			x = std::stod(vts[0]);
 			y = std::stod(vts[1]);
 			z = std::stod(vts[2]);
@@ -112,25 +112,25 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	do
 	{
 		auto lineTokens = StringUtils::tokenizeSpace(line);
-		if(lineTokens.size()==4	&& lineTokens[0]=="3")
+		if(lineTokens.size()==4	&& lineTokens[0]=="3"s)
 		{
-			int a = std::stoi(lineTokens[1]);
-			int b = std::stoi(lineTokens[2]);
-			int c = std::stoi(lineTokens[3]);
+			unsigned long a = std::stoul(lineTokens[1]);
+			unsigned long b = std::stoul(lineTokens[2]);
+			unsigned long c = std::stoul(lineTokens[3]);
 			m_geo->addTriangle(a,b,c);
-			std::cout << "Adding " << m_geo->m_triangles[m_geo->m_triangles.size()-1] << std::endl;
+			//std::cout << "Adding " << m_geo->m_triangles[m_geo->m_triangles.size()-1] << std::endl;
 		}
 	}
 	while(std::getline(iFile, line));
 	
-	std::cout << "PLY: file " 
+	std::cout << "PLY: file "s 
 			  << fileName 
-			  << " :: '" 
+			  << " :: '"s
 			  << m_geo->vertexCount() 
-			  << "' vertices " 
-			  << " :: '" 
+			  << "' vertices "s
+			  << " :: '"s
 			  << m_geo->triangleCount() 
-			  << "' triangles taken" 
+			  << "' triangles taken"s
 			  << std::endl;
 	
 	iFile.close();

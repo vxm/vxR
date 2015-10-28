@@ -28,30 +28,30 @@ void vxGeometry::setTransform(const vxMatrix &transform)
 void vxGeometry::addVertexTransformed(const vxVector3d &v3)
 {
 	const auto &orig = m_transform.getOrigin();
-	const auto &newPoint = (v3);//+orig;
+	const auto &newPoint = v3+orig;
 	m_bb.extend(newPoint);
 	//TODO:push_back ?
 	m_vertices.push_back(newPoint);
 }
 
-void vxGeometry::addTriangle(unsigned int a, unsigned int b, unsigned int c)
+void vxGeometry::addTriangle(unsigned long a, unsigned long b, unsigned long c)
 {
 	//TODO:push_back ?
 	m_triangles.push_back((vxTriRef(m_vertices[a],
 									m_vertices[b],
 									m_vertices[c])));
-	//vxTriRef *tref = m_triangles[m_triangles.size()-1];
-	m_triangles[m_triangles.size()-1].computeNormal();
-	m_triangles[m_triangles.size()-1].computeArea();
+	auto &&tref = m_triangles[m_triangles.size()-1];
+	tref.computeNormal();
+	tref.computeArea();
 
 }
 
-unsigned int vxGeometry::vertexCount() const
+unsigned long vxGeometry::vertexCount() const
 {
 	return m_vertices.size();
 }
 
-unsigned int vxGeometry::triangleCount() const
+unsigned long vxGeometry::triangleCount() const
 {
 	return m_triangles.size();
 }

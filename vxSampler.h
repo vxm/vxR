@@ -13,8 +13,8 @@ static std::vector<vxVector2d> uniformScatterFree;
 
 class vxSampler
 {
-	std::vector<double> m_x = {0.5};
-	std::vector<double> m_y = {0.5};
+	std::vector<scalar> m_x = {0.5};
+	std::vector<scalar> m_y = {0.5};
 
 	unsigned int m_iter {0};
 	unsigned int m_nSamples {1};
@@ -30,8 +30,8 @@ public:
 	void next();
 	bool isDone() const;
 
-	double x() const;
-	double y() const;
+	scalar x() const;
+	scalar y() const;
 	
 	vxVector2d& xy();
 	void setSamples(unsigned int samples);

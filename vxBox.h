@@ -18,13 +18,13 @@ class vxBox
 private:
 
 	vxVector3d m_position;
-	double m_size{1.0};
+	scalar m_size{1.0};
 
 public:
 	vxBox()
 	{};
 
-	vxBox(const vxVector3d &pos, double size)
+	vxBox(const vxVector3d &pos, scalar size)
 		: m_position(pos)
 		, m_size(size)
 	{};
@@ -34,7 +34,7 @@ public:
 	{};
 	
 	void set(const vxVector3d &pos);
-	void set(const vxVector3d &pos, double size);
+	void set(const vxVector3d &pos, scalar size);
 
 	bool contains(const vxVector3d &v) const
 	{
@@ -50,8 +50,8 @@ public:
 	
 	vxVector3d position() const;
 	void setPosition(const vxVector3d &position);
-	double size() const;
-	void setSize(double size);
+	scalar size() const;
+	void setSize(scalar size);
 
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;

@@ -10,19 +10,19 @@ class vxPixel:public vxColor
 {
 private:
 	int m_comp;
-	double m_d;
+	scalar m_d;
 
 public:
 
 	vxPixel();
 
-	vxPixel(double r, double g, double b, double a)
+	vxPixel(scalar r, scalar g, scalar b, scalar a)
 	: vxColor (r, g, b, a)
 	{
 		m_comp=0;
 	}
 
-	void add(double r, double g, double b)
+	void add(scalar r, scalar g, scalar b)
 	{
 		m_r+=r;
 		m_g+=g;
@@ -40,14 +40,14 @@ public:
 
 	vxColor getResult()
 	{
-		return vxColor(m_r/(double)m_comp,m_g/(double)m_comp,m_b/(double)m_comp);
+		return vxColor(m_r/(scalar)m_comp,m_g/(scalar)m_comp,m_b/(scalar)m_comp);
 	}
 
 	void setResult()
 	{
-		m_r/=(double)m_comp;
-		m_g/=(double)m_comp;
-		m_b/=(double)m_comp;
+		m_r/=(scalar)m_comp;
+		m_g/=(scalar)m_comp;
+		m_b/=(scalar)m_comp;
 		m_comp=0;
 	}
 

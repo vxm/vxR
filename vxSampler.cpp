@@ -66,12 +66,12 @@ bool vxSampler::isDone() const
 	return m_iter+1==m_nSamples;
 }
 
-double vxSampler::x() const
+scalar vxSampler::x() const
 {
 	return MU::getRand(1.0);
 }
 
-double vxSampler::y() const
+scalar vxSampler::y() const
 {
 	return MU::getRand(1.0);
 }

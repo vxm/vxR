@@ -16,31 +16,31 @@ class vxColor
 {
 protected:
 /*tristimulus values*/
-	double m_r = {0.0};
-	double m_g = {0.0};
-	double m_b = {0.0};
-	double m_a = {1.0};
+	scalar m_r = {0.0};
+	scalar m_g = {0.0};
+	scalar m_b = {0.0};
+	scalar m_a = {1.0};
 
 public:
 
 	vxColor ();
-	vxColor (const double r,
-			 const double g,
-			 const double b);
+	vxColor (const scalar r,
+			 const scalar g,
+			 const scalar b);
 
-	vxColor (const double r, 
-			 const double g, 
-			 const double b, 
-			 const double a);
+	vxColor (const scalar r, 
+			 const scalar g, 
+			 const scalar b, 
+			 const scalar a);
 	
 	vxColor (const vxColor& other);
 	vxColor (const vxVector3d& other);
 	vxColor& operator=(const vxVector3d &otro);
 	
 	static vxColor lookup(const vxColor &col);
-	static vxColor lookup(const double r,
-							const double g,
-							const double b);
+	static vxColor lookup(const scalar r,
+							const scalar g,
+							const scalar b);
 
 	static vxColor lookup256(const int r,
 								const int g,
@@ -49,74 +49,74 @@ public:
 
 	static vxColor indexColor(const int idx);
 	
-	void set(double r, double g, double b, double a);
-	void set(double r, double g, double b);
+	void set(scalar r, scalar g, scalar b, scalar a);
+	void set(scalar r, scalar g, scalar b);
 	void set(const vxColor &other);
 	
 	void reset();
 
-	void setR(double r) {m_r=r;}
-	void setG(double g) {m_g=g;}
-	void setB(double b) {m_b=b;}
-	void setA(double a) {m_a=a;}
+	void setR(scalar r) {m_r=r;}
+	void setG(scalar g) {m_g=g;}
+	void setB(scalar b) {m_b=b;}
+	void setA(scalar a) {m_a=a;}
 
 	vxColor get() const;
 	
-	void get(double &ri, double &gi, double &bi, double &ai) const;
+	void get(scalar &ri, scalar &gi, scalar &bi, scalar &ai) const;
 
-	double r() const {return m_r;}
-	double g() const {return m_g;}
-	double b() const {return m_b;}
-	double a() const {return m_a;}
+	scalar r() const {return m_r;}
+	scalar g() const {return m_g;}
+	scalar b() const {return m_b;}
+	scalar a() const {return m_a;}
 
-	double lumma() const;
+	scalar lumma() const;
 	void add(const vxColor &other);
 	void blend(const vxColor &other);
-	void mix(const vxColor &other, double alpha = 0.5);
-	void mixSumm(const vxColor &other, double alpha = 0.5);
-	void setToGamma(double gamma=2.2, double offset = 1.0);
-	void gain(double gain);
-	vxColor dimm(double factor) const;
-	vxColor gained(double gain) const;
+	void mix(const vxColor &other, scalar alpha = 0.5);
+	void mixSumm(const vxColor &other, scalar alpha = 0.5);
+	void setToGamma(scalar gamma=2.2, scalar offset = 1.0);
+	void gain(scalar gain);
+	vxColor dimm(scalar factor) const;
+	vxColor gained(scalar gain) const;
 	
 	vxColor operator+(const vxColor &other) const;
-	vxColor operator+(double factor) const;
+	vxColor operator+(scalar factor) const;
 	vxColor operator+(float factor) const;
 	vxColor operator+(int factor) const;
 	vxColor operator+(unsigned int factor) const;
 
 	vxColor operator-(const vxColor &entrada) const;
-	vxColor operator-(double factor) const;
+	vxColor operator-(scalar factor) const;
 	vxColor operator-(float factor) const;
 	vxColor operator-(int factor) const;
 	vxColor operator-(unsigned int factor) const;
 
 	vxColor operator*(const vxColor &entrada) const;
-	vxColor operator*(double factor) const;
+	vxColor operator*(scalar factor) const;
 	vxColor operator*(float factor) const;
 	vxColor operator*(int factor) const;
 	vxColor operator*(unsigned int factor) const;
 
 	vxColor operator/(const vxColor &entrada) const;
-	vxColor operator/(double factor) const;
+	vxColor operator/(scalar factor) const;
 	vxColor operator/(float factor) const;
 	vxColor operator/(int factor) const;
 	vxColor operator/(unsigned int factor) const;
 
 	vxColor& operator*=(const vxColor &entrada);
-	vxColor& operator*=(double factor);
+	vxColor& operator*=(scalar factor);
 	vxColor& operator*=(float factor);
 	vxColor& operator*=(int factor);
 	vxColor& operator*=(unsigned int factor);
 
 	vxColor& operator+=(const vxColor &entrada);
-	vxColor& operator+=(double factor);
+	vxColor& operator+=(scalar factor);
 	vxColor& operator+=(float factor);
 	vxColor& operator+=(int factor);
 	vxColor& operator+=(unsigned int factor);
 
 	vxColor& operator-=(const vxColor &entrada);
-	vxColor& operator-=(double factor);
+	vxColor& operator-=(scalar factor);
 	vxColor& operator-=(float factor);
 	vxColor& operator-=(int factor);
 	vxColor& operator-=(unsigned int factor);

@@ -75,40 +75,40 @@ class vxGrid
 protected:
 
 	vxVector3d m_position;
-	double m_size				= {5.0};
+	scalar m_size				= {5.0};
 	unsigned long m_resolution	= {5u};
-	double m_invRes				= {1/5.0};
+	scalar m_invRes				= {1/5.0};
 
 	std::vector<vx>	m_data;
 	vxBox m_boundingBox;
 
-	double m_resDivTres	= {m_size/3.0};
-	double m_midSize	= {m_size/2.0};
+	scalar m_resDivTres	= {m_size/3.0};
+	scalar m_midSize	= {m_size/2.0};
 
 	// cache objects
-	double m_boxSize			= {1.0};
-	double m_midBoxSize			= {.5};	
+	scalar m_boxSize			= {1.0};
+	scalar m_midBoxSize			= {.5};	
 	unsigned long m_resXres		= {25};
 	unsigned long m_resXresXres	= {125};
-	double m_xmin		= {0.0};
-	double m_xmax		= {0.0};
-	double m_ymin		= {0.0};
-	double m_ymax		= {0.0};
-	double m_zmin		= {0.0};
-	double m_zmax		= {0.0};
+	scalar m_xmin		= {0.0};
+	scalar m_xmax		= {0.0};
+	scalar m_ymin		= {0.0};
+	scalar m_ymax		= {0.0};
+	scalar m_zmin		= {0.0};
+	scalar m_zmax		= {0.0};
 
 public:
 
 	vxGrid();
-	vxGrid(const vxVector3d &position, double size);
-	vxGrid(double x, double y,  double z,  double size);
+	vxGrid(const vxVector3d &position, scalar size);
+	vxGrid(scalar x, scalar y,  scalar z,  scalar size);
 	~vxGrid();
 
 // GETTER AND SETTERS
 	
 	void createGridData(const unsigned long resolution);
 	void setResolution(unsigned long resolution);
-	void setSize(const double size);
+	void setSize(const scalar size);
 	unsigned long size() const;
 	void setPosition(const vxVector3d position);
 	vxVector3d position() const;
@@ -121,13 +121,13 @@ public:
 	void createGround(unsigned long offset = 0);
 	void createEdges();
 	void fill();
-	void createSphere(const vxVector3d &center, const double radio);
-	void createSphere(double x, double y, double z, const double radio);
-	bool getRandomBoolean(double ratio = 1.0);
-	void createRandom(double ratio = 1.0);
+	void createSphere(const vxVector3d &center, const scalar radio);
+	void createSphere(scalar x, scalar y, scalar z, const scalar radio);
+	bool getRandomBoolean(scalar ratio = 1.0);
+	void createRandom(scalar ratio = 1.0);
 	void addGeometry(const std::shared_ptr<vxGeometry> geo, 
 					 const vxVector3d &offset, 
-					 const vxVector3d &scale);
+					 const vxVector3d &scaleFactor);
 	void dumpFileInMemory(const std::__cxx11::string &fileName);
 	void dumpNumericTypeInMemory();
 
@@ -194,7 +194,7 @@ public:
 			const unsigned long iY, 
 			const unsigned long iZ) const;
 
-	bool inGrid(const vxVector3d &pnt, double tolerance) const;
+	bool inGrid(const vxVector3d &pnt, scalar tolerance) const;
 	bool inGrid(const vxVector3d &pnt) const;
 	
 	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;

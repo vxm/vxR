@@ -14,7 +14,7 @@ class vxTriRef
 {
 	
 public:
-	vxTriRef(const vxVector3d& ah,
+	vxTriRef(const vxVector3d& a,
 			 const vxVector3d& b,
 			 const vxVector3d& c);
 	
@@ -24,13 +24,13 @@ public:
 	const vxVector3d &p2;
 	const vxVector3d &p3;
 	vxVector3d n;
-	double ah{0.0};
-	double &computeArea();
+	scalar ah{0.0};
+	scalar &computeArea();
 	
 	vxVector3d &computeNormal();
 	vxVector3d normal() const;
 
-	double area() const;
+	scalar area() const;
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
@@ -41,7 +41,7 @@ public:
 	{
 		return os << "a: " << t.p1 << std::endl 
 				  << "b: " << t.p2 << std::endl 
-				  << "c: " << t.p1 << std::endl
+				  << "c: " << t.p3 << std::endl
 				  << "area: " << t.ah << std::endl 
 				  << "normal: " << t.n << std::endl ;
 	}

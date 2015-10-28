@@ -10,14 +10,14 @@ class vxRamp : public vxMap
 	public:
 		vxRamp();
 
-	std::vector<double> m_values;
-	std::vector<double> m_colors;
+	std::vector<scalar> m_values;
+	std::vector<scalar> m_colors;
 	Interpolation m_interpolation;
 	
-	std::vector<double> values() const;
+	std::vector<scalar> values() const;
 	Interpolation interpolation() const;
 	
-	void setValues(const std::vector<double> &values);
+	void setValues(const std::vector<scalar> &values);
 	void setInterpolation(const Interpolation &interpolation);
 };
 

@@ -9,7 +9,7 @@
 namespace vxCore {
 
 
-using mdata = double[16];
+using mdata = scalar[16];
 
 class vxMatrix
 {
@@ -22,11 +22,11 @@ public:
 	
 	vxMatrix();
 	vxMatrix (const vxMatrix &src);
-	vxMatrix (const double m[16]);
-	vxMatrix (std::initializer_list<double> list);
+	vxMatrix (const scalar m[16]);
+	vxMatrix (std::initializer_list<scalar> list);
 	~vxMatrix();
 
-	vxStatus::code	get(double dest[]) const;
+	vxStatus::code	get(scalar dest[]) const;
 	vxStatus::code	get(float dest[]) const;
 	vxMatrix		transpose() const;
 	vxMatrix&		setToIdentity();
@@ -37,27 +37,27 @@ public:
 	vxMatrix		operator- (const vxMatrix& right) const;
 	vxMatrix&		operator*= (const vxMatrix& right);
 	vxMatrix		operator* (const vxMatrix& right) const;
-	vxMatrix&		operator*= (double);
-	vxMatrix		operator* (double) const;
+	vxMatrix&		operator*= (scalar);
+	vxMatrix		operator* (scalar) const;
 	bool			operator== (const vxMatrix& other) const;
 	bool			operator!= (const vxMatrix& other) const;
 	vxMatrix&		operator= (const vxMatrix &m);
-	const double *	operator[] (unsigned int row) const;
-	double &		operator() (unsigned int row, unsigned int col);
-	double			operator() (unsigned int row, unsigned int col) const;
-	double *		operator[] (unsigned int row);
+	const scalar *	operator[] (unsigned int row) const;
+	scalar &		operator() (unsigned int row, unsigned int col);
+	scalar			operator() (unsigned int row, unsigned int col) const;
+	scalar *		operator[] (unsigned int row);
 	vxMatrix		inverse() const;
 	vxMatrix		adjoint() const;
 	vxMatrix		homogenize() const;
-	double			det4x4() const;
-	double			det3x3() const;
-	bool			isEquivalent (const vxMatrix&, double =1.0e-10) const;
+	scalar			det4x4() const;
+	scalar			det3x3() const;
+	bool			isEquivalent (const vxMatrix&, scalar =1.0e-10) const;
 	bool			isSingular() const;
 	static const vxMatrix identity;
 	
 	vxVector3d getOrigin() const;
 	
-	//vxMatrix		operator* (double, const vxMatrix& right);
+	//vxMatrix		operator* (scalar, const vxMatrix& right);
 	//std::ostream &		operator<< (std::ostream &os, const vxMatrix&m);
 };
 

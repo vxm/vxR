@@ -75,8 +75,8 @@ unsigned int vxCore::ImageProperties::numElements() const
 	return numPixels() * numChannels();
 }
 
-double ImageProperties::aspectRatio() const
+scalar ImageProperties::aspectRatio() const
 {
-	return m_rx/(double)m_ry;
+	return m_rx/(scalar)m_ry;
 }
 

@@ -2,14 +2,13 @@
 #include "ui_vxrendermain.h"
 
 vxRenderMain::vxRenderMain(QWidget *parent) :
-	QMainWindow(parent),
-	ui(new Ui::vxRenderMain)
+	QMainWindow(parent)
 {
-	ui->setupUi(this);
+	//ui->setupUi(this);
 }
 
 vxRenderMain::~vxRenderMain()
 {
 	
-	delete ui;
+//	delete ui;
 }

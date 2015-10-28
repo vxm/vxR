@@ -18,6 +18,7 @@ StringUtils.cpp
 StringUtils.h
 TimeUtils.cpp
 TimeUtils.h
+ui_vxrendermain.h
 ui_vxrmainui.h
 vxBitMap2d.cpp
 vxBitMap2d.h

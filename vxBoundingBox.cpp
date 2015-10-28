@@ -26,62 +26,62 @@ void vxBoundingBox::extend(const vxVector3d &limit)
 	m_maxz = std::max(limit.z(), m_maxz);
 }
 
-double vxBoundingBox::minx() const
+scalar vxBoundingBox::minx() const
 {
 	return m_minx;
 }
 
-void vxBoundingBox::setMinx(double minx)
+void vxBoundingBox::setMinx(scalar minx)
 {
 	m_minx = minx;
 }
 
-double vxBoundingBox::miny() const
+scalar vxBoundingBox::miny() const
 {
 	return m_miny;
 }
 
-void vxBoundingBox::setMiny(double miny)
+void vxBoundingBox::setMiny(scalar miny)
 {
 	m_miny = miny;
 }
 
-double vxBoundingBox::minz() const
+scalar vxBoundingBox::minz() const
 {
 	return m_minz;
 }
 
-void vxBoundingBox::setMinz(double minz)
+void vxBoundingBox::setMinz(scalar minz)
 {
 	m_minz = minz;
 }
 
-double vxBoundingBox::maxx() const
+scalar vxBoundingBox::maxx() const
 {
 	return m_maxx;
 }
 
-void vxBoundingBox::setMaxx(double maxx)
+void vxBoundingBox::setMaxx(scalar maxx)
 {
 	m_maxx = maxx;
 }
 
-double vxBoundingBox::maxy() const
+scalar vxBoundingBox::maxy() const
 {
 	return m_maxy;
 }
 
-void vxBoundingBox::setMaxy(double maxy)
+void vxBoundingBox::setMaxy(scalar maxy)
 {
 	m_maxy = maxy;
 }
 
-double vxBoundingBox::maxz() const
+scalar vxBoundingBox::maxz() const
 {
 	return m_maxz;
 }
 
-void vxBoundingBox::setMaxz(double maxz)
+void vxBoundingBox::setMaxz(scalar maxz)
 {
 	m_maxz = maxz;
 }

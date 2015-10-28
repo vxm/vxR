@@ -48,32 +48,32 @@ void vxPlane::setPointC(const vxVector3d &point3)
 	m_pointC = point3;
 }
 
-double vxPlane::y() const
+scalar vxPlane::y() const
 {
 	return m_y;
 }
 
-void vxPlane::setY(double y)
+void vxPlane::setY(scalar y)
 {
 	m_y = y;
 }
 
-double vxPlane::z() const
+scalar vxPlane::z() const
 {
 	return m_z;
 }
 
-void vxPlane::setZ(double z)
+void vxPlane::setZ(scalar z)
 {
 	m_z = z;
 }
 
-double vxPlane::d() const
+scalar vxPlane::d() const
 {
 	return m_d;
 }
 
-void vxPlane::setD(double d)
+void vxPlane::setD(scalar d)
 {
 	m_d = d;
 }
@@ -146,12 +146,12 @@ bool vxPlane::hasCollision(const vxRay &ray) const
 	return false;
 }
 
-double vxPlane::x() const
+scalar vxPlane::x() const
 {
 	return m_x;
 }
 
-void vxPlane::setX(double x)
+void vxPlane::setX(scalar x)
 {
 	m_x = x;
 }

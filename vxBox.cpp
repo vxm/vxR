@@ -13,12 +13,12 @@ void vxBox::setPosition(const vxVector3d &position)
 	m_position = position;
 }
 
-double vxBox::size() const
+scalar vxBox::size() const
 {
 	return m_size;
 }
 
-void vxBox::setSize(double size)
+void vxBox::setSize(scalar size)
 {
 	m_size = size;
 }
@@ -28,7 +28,7 @@ void vxBox::set(const vxVector3d &pos)
 	m_position = pos;
 }
 
-void vxBox::set(const vxVector3d &pos, double size)
+void vxBox::set(const vxVector3d &pos, scalar size)
 {
 	m_position = pos;
 	m_size = size;

@@ -5,8 +5,13 @@
 #include <chrono>
 #include <sstream>
 
+#include "vxVector.h"
+
+namespace vxCore {
+
+
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
-using timeDuration = std::chrono::duration<double>;
+using timeDuration = std::chrono::duration<scalar>;
 
 
 class TimeUtils
@@ -19,22 +24,22 @@ class TimeUtils
 		std::stringstream sst;
 		timePoint now = std::chrono::system_clock::now();
 		timeDuration elapsed_time = timeDuration(now-start);
-		double seconds = elapsed_time.count();
-		double pow10 = pow(10, dec);
+		scalar seconds = elapsed_time.count();
+		scalar pow10 = pow(10, dec);
 		if (seconds<60)
 		{
-			double sCode = int(seconds*pow10);
-			sst << "elapsed time is " << (double)(sCode/pow10) << " seconds";
+			scalar sCode = int(seconds*pow10);
+			sst << "elapsed time is " << (scalar)(sCode/pow10) << " seconds";
 		}
 		else if(seconds<3600)
 		{
-			double sCode = int(seconds*pow10/60.0);
-			sst << "elapsed time is " << (double)(sCode/pow10) << " minutes";
+			scalar sCode = int(seconds*pow10/60.0);
+			sst << "elapsed time is " << (scalar)(sCode/pow10) << " minutes";
 		}
 		else if(seconds<(3600*24))
 		{
-			double sCode = int(seconds*pow10/3600.0);
-			sst << "elapsed time is " << (double)(sCode/pow10) << " hours";
+			scalar sCode = int(seconds*pow10/3600.0);
+			sst << "elapsed time is " << (scalar)(sCode/pow10) << " hours";
 		}
 		
 		sst << std::endl;
@@ -44,4 +49,5 @@ class TimeUtils
 
 };
 
+}
 #endif // TimeUtils_H

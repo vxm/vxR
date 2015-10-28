@@ -15,9 +15,9 @@ public:
 	{
 	}
 	
-	vxPoint(double x,
-			double y,
-			double z)
+	vxPoint(scalar x,
+			scalar y,
+			scalar z)
 		:vxVector3d{x,y,z}
 	{
 	}

@@ -14,30 +14,30 @@ class vxBoundingBox
 {
 	std::atomic_bool m_init{false};
 	
-	double m_minx;
-	double m_miny;
-	double m_minz;
+	scalar m_minx;
+	scalar m_miny;
+	scalar m_minz;
 
-	double m_maxx;
-	double m_maxy;
-	double m_maxz;
+	scalar m_maxx;
+	scalar m_maxy;
+	scalar m_maxz;
 
 public:
 	vxBoundingBox();
 	
 	void extend(const vxVector3d &limit);
-	double minx() const;
-	void setMinx(double minx);
-	double miny() const;
-	void setMiny(double miny);
-	double minz() const;
-	void setMinz(double minz);
-	double maxx() const;
-	void setMaxx(double maxx);
-	double maxy() const;
-	void setMaxy(double maxy);
-	double maxz() const;
-	void setMaxz(double maxz);
+	scalar minx() const;
+	void setMinx(scalar minx);
+	scalar miny() const;
+	void setMiny(scalar miny);
+	scalar minz() const;
+	void setMinz(scalar minz);
+	scalar maxx() const;
+	void setMaxx(scalar maxx);
+	scalar maxy() const;
+	void setMaxy(scalar maxy);
+	scalar maxz() const;
+	void setMaxz(scalar maxz);
 
 	bool contains(const vxVector3d &v) const;
 	

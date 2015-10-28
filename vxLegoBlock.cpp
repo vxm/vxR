@@ -5,12 +5,12 @@ vxLegoBlock::vxLegoBlock()
 }
 
 
-double vxLegoBlockInGrid::size() const
+scalar vxLegoBlockInGrid::size() const
 {
 	return m_size;
 }
 
-void vxLegoBlockInGrid::setSize(double value)
+void vxLegoBlockInGrid::setSize(scalar value)
 {
 	m_size = value;
 }

@@ -9,10 +9,10 @@ namespace vxCore {
 
 class vxPlane
 {
-	double m_x {0.0};
-	double m_y {0.0};
-	double m_z {0.0};
-	double m_d {0.0};
+	scalar m_x {0.0};
+	scalar m_y {0.0};
+	scalar m_z {0.0};
+	scalar m_d {0.0};
 	
 	vxVector3d m_pointA;
 	vxVector3d m_pointB;
@@ -43,10 +43,10 @@ class vxPlane
 		
 	}
 	
-	vxPlane(double x,
-			double y = 0.0,
-			double z = 0.0,
-			double d = 0.0)
+	vxPlane(scalar x,
+			scalar y = 0.0,
+			scalar z = 0.0,
+			scalar d = 0.0)
 		: m_x(x)
 		, m_y(y)
 		, m_z(z)
@@ -55,17 +55,17 @@ class vxPlane
 		
 	}
 	
-	double x() const;
-	void setX(double x);
+	scalar x() const;
+	void setX(scalar x);
 
-	double y() const;
-	void setY(double y);
+	scalar y() const;
+	void setY(scalar y);
 
-	double z() const;
-	void setZ(double z);
+	scalar z() const;
+	void setZ(scalar z);
 
-	double d() const;
-	void setD(double d);
+	scalar d() const;
+	void setD(scalar d);
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;

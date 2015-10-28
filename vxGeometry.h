@@ -26,21 +26,22 @@ public:
 	std::vector<vxVector3d> m_normals;
 
 	void addVertexTransformed(const vxVector3d &v3);
-	void addTriangle(unsigned int a,
-					 unsigned int b,
-					 unsigned int c);
+	void addTriangle(unsigned long a,
+					 unsigned long b,
+					 unsigned long c);
 
-	unsigned int vertexCount() const;
-	unsigned int triangleCount() const;
+	unsigned long vertexCount() const;
+	unsigned long triangleCount() const;
+
+	std::string constructionPath() const;
+	void setConstructionPath(const std::string &constructionPath);
+	vxMatrix transform() const;
+	void setTransform(const vxMatrix &transform);
 
 	//renderable interface
 	bool throwRay(const vxRay &) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &) const;
-	std::string constructionPath() const;
-	void setConstructionPath(const std::string &constructionPath);
-	vxMatrix transform() const;
-	void setTransform(const vxMatrix &transform);
 };
 
 }

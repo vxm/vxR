@@ -3,14 +3,17 @@
 
 #include<vector>
 #include<chrono>
+#include "vxVector.h"
 
+namespace vxCore
+{
 class vxStopwatch
 {
 	using timePoint = std::chrono::time_point<std::chrono::system_clock>;
-	using timeDuration = std::chrono::duration<double>;
+	using timeDuration = std::chrono::duration<scalar>;
 
 	timePoint m_start;
-	std::vector<double> m_memory;
+	std::vector<scalar> m_memory;
 	
 	public:
 		vxStopwatch()
@@ -33,7 +36,7 @@ class vxStopwatch
 			m_memory.clear();
 		}
 		
-		double elapsedTime() const
+		scalar elapsedTime() const
 		{
 			timePoint now = std::chrono::system_clock::now();
 			timeDuration elapsed_time = timeDuration(now-m_start);
@@ -41,4 +44,5 @@ class vxStopwatch
 		}
 };
 
+}
 #endif // VXSTOPWATCHER_H

@@ -164,7 +164,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 	{
 		ret.first = base_match[1].str();
 
-		double m[16];
+		scalar m[16];
 		auto matValues = base_match[5].str().substr(1,base_match[5].str().size()-2);
 		std::stringstream strValue(matValues);
 		for(int i=0;i<16;i++)

@@ -9,7 +9,7 @@ vxDome::vxDome(std::shared_ptr<vxBitMap2d> env)
 {
 }
 
-bool vxDome::throwRay(const vxRay &ray) const
+bool vxDome::throwRay(const vxRay &) const
 {
 	return true;
 }
@@ -25,7 +25,7 @@ int vxDome::throwRay(const vxRay &ray, vxCollision &collide) const
 	return 1;
 }
 
-bool vxDome::hasCollision(const vxRay &ray) const
+bool vxDome::hasCollision(const vxRay &) const
 {
 	return true;
 }

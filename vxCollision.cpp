@@ -20,7 +20,7 @@ bool vxCollision::isValid() const
 	return m_valid;
 }
 
-void vxCollision::setPosition(double x, double y, double z)
+void vxCollision::setPosition(scalar x, scalar y, scalar z)
 {
 	m_position.set(x,y,z);
 }
@@ -30,7 +30,7 @@ vxVector3d vxCollision::position() const
 	return m_position;
 }
 
-void vxCollision::setColor(double r, double g, double b)
+void vxCollision::setColor(scalar r, scalar g, scalar b)
 {
 	m_color.set(r,g,b);
 }
@@ -55,22 +55,22 @@ void vxCollision::setUV(const vxVector2d&& uvVec)
 	m_uv = uvVec; 
 }
 
-void vxCollision::setU(double u)
+void vxCollision::setU(scalar u)
 {
 	m_uv.setX(u);
 }
 
-double vxCollision::u() const
+scalar vxCollision::u() const
 {
 	return m_uv.x();
 }
 
-void vxCollision::setV(double v)
+void vxCollision::setV(scalar v)
 {
 	m_uv.setY(v);
 }
 
-double vxCollision::v() const
+scalar vxCollision::v() const
 {
 	return m_uv.y();
 }

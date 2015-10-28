@@ -18,25 +18,25 @@ protected:
 
 	//not every light needs a position
 	vxVector3d m_position	{0.0,0.0,0.0};
-	double m_intensity		{1.0};
+	scalar m_intensity		{1.0};
 	vxColor m_color			{vxColor::white};
-	double m_radius			{1.0};
+	scalar m_radius			{1.0};
 	unsigned int m_samples	{1u};
 	std::weak_ptr<vxScene>	m_scene;
 
 public:
 
 	vxLight();
-	vxLight(double intensity, const vxColor &color);
+	vxLight(scalar intensity, const vxColor &color);
 	vxLight(const vxVector3d &position);
-	vxLight(double x, double y, double z );
+	vxLight(scalar x, scalar y, scalar z );
 
 	void setScene(std::weak_ptr<vxScene> scene);
 	void setPosition(const vxVector3d &position);
-	void setPosition(double x, double y, double z);
+	void setPosition(scalar x, scalar y, scalar z);
 
-	void set(double intensity, const vxVector3d &color);
-	void setIntensity(double intensity);
+	void set(scalar intensity, const vxVector3d &color);
+	void setIntensity(scalar intensity);
 	void setColor(const vxColor &color);
 
 	vxVector3d position() const 
@@ -44,17 +44,17 @@ public:
 		return m_position;
 	}
 	
-	double intensity() const {return m_intensity;}
+	scalar intensity() const {return m_intensity;}
 	vxColor color() const {return m_color;}
 
 	virtual vxVector3d getLightRay(const vxVector3d &position) const;
-	virtual double lightRatio(const vxRay &ray,
+	virtual scalar lightRatio(const vxRay &ray,
 					const vxVector3d &lightDirection) const;
 
 	virtual vxColor acummulationLight(const vxRay &, const vxCollision &collision) const;
 
-	double radius() const;
-	void setRadius(double radius);
+	scalar radius() const;
+	void setRadius(scalar radius);
 
 	unsigned int samples() const;
 	void setSamples(int samples);
@@ -67,18 +67,18 @@ class vxSpotLight:public vxLight
 	private:
 		vxVector3d m_orientation;
 
-	double m_maxAngle=1.3;
-	double m_minAngle=1;
+	scalar m_maxAngle=1.3;
+	scalar m_minAngle=1;
 
  public:
 	vxSpotLight();
-	vxSpotLight(const vxVector3d &position,const vxVector3d &orientation,double maxAngle,double minAngle);
+	vxSpotLight(const vxVector3d &position,const vxVector3d &orientation,scalar maxAngle,scalar minAngle);
 
-	void set(const vxVector3d &position,const vxVector3d &orientation,double maxAngle,double minAngle);
+	void set(const vxVector3d &position,const vxVector3d &orientation,scalar maxAngle,scalar minAngle);
 
 	void setOrientation(const vxVector3d &orientation);
-	void setMin(double maxAngle) {m_maxAngle=maxAngle;}
-	void setMax(double minAngle) {m_minAngle=minAngle;}
+	void setMin(scalar maxAngle) {m_maxAngle=maxAngle;}
+	void setMax(scalar minAngle) {m_minAngle=minAngle;}
 
  };
 
@@ -88,7 +88,7 @@ class vxSpotLight:public vxLight
 
  public:
 	vxPointLight();
-	vxPointLight(double instensity, const vxColor &col);
+	vxPointLight(scalar instensity, const vxColor &col);
 
 	// vxLight interface
 	public:
@@ -104,7 +104,7 @@ protected:
 
 public:
 	vxDirectLight();
-	vxDirectLight(double instensity, const vxColor &col);
+	vxDirectLight(scalar instensity, const vxColor &col);
 	
 	vxDirectLight(const vxVector3d &orientation,
 				  bool bidirectional);
@@ -120,34 +120,34 @@ public:
 class vxIBLight:public vxLight
 {
 	vxBitMap2d m_map;
-	double m_gain{0.5};
-	double m_gamma{2.0};
-	double m_lowThreshold{0.1};
+	scalar m_gain{0.5};
+	scalar m_gamma{2.0};
+	scalar m_lowThreshold{0.1};
 	
 public:
 
 	vxIBLight();
-	vxIBLight(double instensity, const vxColor &col);
-	vxIBLight(double instensity, const std::string path);
+	vxIBLight(scalar instensity, const vxColor &col);
+	vxIBLight(scalar instensity, const std::string path);
 	
 	// vxLight interface
 	vxVector3d getLightRay(const vxVector3d &position) const override;
 	vxColor acummulationLight(const vxRay &, 
 							  const vxCollision &collision) const override;
 
-	double gain() const;
-	void setGain(double gain);
-	double gamma() const;
-	void setGamma(double gamma);
-	double lowThreshold() const;
-	void setLowThreshold(double lowThreshold);
+	scalar gain() const;
+	void setGain(scalar gain);
+	scalar gamma() const;
+	void setGamma(scalar gamma);
+	scalar lowThreshold() const;
+	void setLowThreshold(scalar lowThreshold);
 };
 
 class vxAmbientLight:public vxLight
 {
 public:
 	vxAmbientLight();
-	vxAmbientLight(double intensity, const vxColor &color);
+	vxAmbientLight(scalar intensity, const vxColor &color);
 	
 	// vxLight interface
 	public:

@@ -6,7 +6,7 @@ vxLight::vxLight()
 {
 }
 
-vxLight::vxLight(double intensity, const vxColor &color)
+vxLight::vxLight(scalar intensity, const vxColor &color)
 	:m_intensity(intensity)
 	,m_color(color)
 {
@@ -17,17 +17,17 @@ vxLight::vxLight(const vxVector3d &position)
 {
 }
 
-vxLight::vxLight(double x, double y, double z)
+vxLight::vxLight(scalar x, scalar y, scalar z)
 	:m_position(x,y,z)
 {
 }
 
-double vxLight::radius() const
+scalar vxLight::radius() const
 {
 	return m_radius;
 }
 
-void vxLight::setRadius(double radius)
+void vxLight::setRadius(scalar radius)
 {
 	m_radius = radius;
 }
@@ -47,18 +47,18 @@ void vxLight::setScene(std::weak_ptr<vxScene> scene)
 	m_scene = scene;
 }
 
-void vxLight::setPosition(double x, double y, double z) 
+void vxLight::setPosition(scalar x, scalar y, scalar z) 
 {
 	m_position.set(x,y,z);
 }
 
-void vxLight::set(double intensity, const vxVector3d &color) 
+void vxLight::set(scalar intensity, const vxVector3d &color) 
 {
 	m_intensity = intensity;
 	m_color = color;
 }
 
-void vxLight::setIntensity(double intensity) 
+void vxLight::setIntensity(scalar intensity) 
 {
 	m_intensity = intensity;
 }
@@ -73,10 +73,10 @@ vxVector3d vxLight::getLightRay(const vxVector3d &position) const
 	return m_position-position;
 }
 
-double vxLight::lightRatio(const vxRay &ray,
+scalar vxLight::lightRatio(const vxRay &ray,
 							const vxVector3d &lightDirection) const
 {
-	double angl = ray.incidence(lightDirection);
+	scalar angl = ray.incidence(lightDirection);
 	return angl;
 }
 
@@ -90,7 +90,7 @@ vxPointLight::vxPointLight()
 {
 }
 
-vxPointLight::vxPointLight(double instensity, const vxColor &col)
+vxPointLight::vxPointLight(scalar instensity, const vxColor &col)
 	:vxLight(instensity, col)
 {
 }
@@ -107,8 +107,8 @@ vxSpotLight::vxSpotLight()
 
 vxSpotLight::vxSpotLight(const vxVector3d &position, 
 						 const vxVector3d &orientation, 
-						 double maxAngle, 
-						 double minAngle)
+						 scalar maxAngle, 
+						 scalar minAngle)
 	: vxLight(position)
 	, m_orientation(orientation)
 	, m_maxAngle(maxAngle)
@@ -118,8 +118,8 @@ vxSpotLight::vxSpotLight(const vxVector3d &position,
 
 void vxSpotLight::set(const vxVector3d &position, 
 					  const vxVector3d &orientation, 
-					  double maxAngle, 
-					  double minAngle) 
+					  scalar maxAngle, 
+					  scalar minAngle) 
 {
 	m_position.set(position);
 	m_orientation.set(orientation);
@@ -137,7 +137,7 @@ vxDirectLight::vxDirectLight()
 {
 }
 
-vxDirectLight::vxDirectLight(double instensity, const vxColor &col)
+vxDirectLight::vxDirectLight(scalar instensity, const vxColor &col)
 	:vxLight(instensity, col)
 {}
 
@@ -156,32 +156,32 @@ void vxDirectLight::set(const vxVector3d &orientation, bool bidirectional)
 
 
 
-double vxIBLight::gain() const
+scalar vxIBLight::gain() const
 {
 	return m_gain;
 }
 
-void vxIBLight::setGain(double gain)
+void vxIBLight::setGain(scalar gain)
 {
 	m_gain = gain;
 }
 
-double vxIBLight::gamma() const
+scalar vxIBLight::gamma() const
 {
 	return m_gamma;
 }
 
-void vxIBLight::setGamma(double gamma)
+void vxIBLight::setGamma(scalar gamma)
 {
 	m_gamma = gamma;
 }
 
-double vxIBLight::lowThreshold() const
+scalar vxIBLight::lowThreshold() const
 {
 	return m_lowThreshold;
 }
 
-void vxIBLight::setLowThreshold(double lowThreshold)
+void vxIBLight::setLowThreshold(scalar lowThreshold)
 {
 	m_lowThreshold = lowThreshold;
 }
@@ -190,13 +190,13 @@ vxIBLight::vxIBLight()
 {
 }
 
-vxIBLight::vxIBLight(double instensity, const vxColor &col)
+vxIBLight::vxIBLight(scalar instensity, const vxColor &col)
 	:vxLight(instensity, col)
 	,m_map("")
 {
 }
 
-vxIBLight::vxIBLight(double instensity, const std::string path)
+vxIBLight::vxIBLight(scalar instensity, const std::string path)
 	:vxLight(instensity, vxColor::white)
 	,m_map(path)
 {
@@ -214,7 +214,7 @@ vxColor vxLight::acummulationLight(const vxRay &, const vxCollision &collision) 
 	const auto&& cPnt = collision.position();
 	const auto& n = samples();
 	const auto& scn = m_scene.lock();
-	const auto colorRatio = 1.0/(double)n;
+	const auto colorRatio = 1.0/(scalar)n;
 	// compute all sort of shadows.
 	for(auto i=0u; i<n; i++)
 	{
@@ -265,7 +265,7 @@ vxColor vxIBLight::acummulationLight(const vxRay &, const vxCollision &collision
 	// compute all sort of shadows.
 	vxCollision environment;
 	const auto n = samples();
-	const auto colorRatio = 1.0/(double)n;
+	const auto colorRatio = 1.0/(scalar)n;
 	for(auto i=0u; i<n; i++)
 	{
 		const auto&& cPnt = collision.position();
@@ -296,7 +296,7 @@ vxAmbientLight::vxAmbientLight()
 	
 }
 
-vxAmbientLight::vxAmbientLight(double intensity, const vxColor &color)
+vxAmbientLight::vxAmbientLight(scalar intensity, const vxColor &color)
 	:vxLight(intensity, color)
 {
 }

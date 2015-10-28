@@ -8,50 +8,54 @@
 
 #include "vxObject.h"
 
+
+
 namespace vxCore {
+
+using scalar = long double;
 
 class vxVector2d
 {
 private:
-	double m_x {0.0};
-	double m_y {0.0};
+	scalar m_x {0.0};
+	scalar m_y {0.0};
 
 public:
 
 	vxVector2d ();
-	vxVector2d (double x, double y);
+	vxVector2d (scalar x, scalar y);
 	vxVector2d (const vxVector2d& other);
 	vxVector2d (vxVector2d&& other);
 	vxVector2d& operator=(const vxVector2d& other);
 	
-	void set(double x, double y);
+	void set(scalar x, scalar y);
 	void set(const vxVector2d &enter);
-	void setX(const double x);
-	void setY(const double y);
+	void setX(const scalar x);
+	void setY(const scalar y);
 	vxVector2d get() const;
-	void get(double &xi, double &yi) const;
-	double x() const;
-	double y() const;
-	double& operator[](const unsigned int);
-	double operator[](const unsigned int) const;
+	void get(scalar &xi, scalar &yi) const;
+	scalar x() const;
+	scalar y() const;
+	scalar& operator[](const unsigned int);
+	scalar operator[](const unsigned int) const;
 	vxVector2d asIntPosition() const;
-	double length() const;
+	scalar length() const;
 	vxVector2d inverted() const;
 	vxVector2d unit() const;
 	vxVector2d operator+(const vxVector2d& other) const;
-	vxVector2d operator+(double factor) const;
+	vxVector2d operator+(scalar factor) const;
 	vxVector2d operator+(float factor) const;
 	vxVector2d operator+(int factor) const;
 	vxVector2d operator-(const vxVector2d& entrada) const;
-	vxVector2d operator-(double factor) const;
+	vxVector2d operator-(scalar factor) const;
 	vxVector2d operator-(float factor) const;
 	vxVector2d operator-(int factor) const;
 	vxVector2d operator*(const vxVector2d& entrada) const;
-	vxVector2d operator*(double factor) const;
+	vxVector2d operator*(scalar factor) const;
 	vxVector2d operator*(float factor) const;
 	vxVector2d operator*(int factor) const;
 	vxVector2d operator/(const vxVector2d& entrada) const;
-	vxVector2d operator/(double factor) const;
+	vxVector2d operator/(scalar factor) const;
 	vxVector2d operator/(float factor) const;
 	vxVector2d operator/(int factor) const;
 	static vxVector2d zero;
@@ -64,8 +68,8 @@ public:
 	}
 	
 	
-	double angle(const vxVector2d &other) const;
-	double angle() const;
+	scalar angle(const vxVector2d &other) const;
+	scalar angle() const;
 	
 	friend std::ostream& operator<<(std::ostream &os, const vxVector2d& v)
 	{
@@ -80,11 +84,11 @@ class vxVector3d
 {
 
 protected:
-	double m_x {0.0};
-	double m_y {0.0};
-	double m_z {0.0};
+	scalar m_x {0.0};
+	scalar m_y {0.0};
+	scalar m_z {0.0};
 
-	//std::valarray<double> m_v{0.0,3};
+	//std::valarray<scalar> m_v{0.0,3};
 	
 public:
 	
@@ -94,34 +98,34 @@ public:
 	vxVector3d (const vxVector3d&& other);
 	vxVector3d (const vxVector3d& other);
 	
-	vxVector3d (double x, double y, double z);
+	vxVector3d (scalar x, scalar y, scalar z);
 	~vxVector3d(){}
 	
 
-	void set(double x, double y, double z);
+	void set(scalar x, scalar y, scalar z);
 	void set(const vxVector3d &other);
 
-	void setX(double x);
-	void setY(double y);
-	void setZ(double z);
+	void setX(scalar x);
+	void setY(scalar y);
+	void setZ(scalar z);
 
 	vxVector3d get() const;
 	
-	void get(double &x, double &y, double &z) const;
+	void get(scalar &x, scalar &y, scalar &z) const;
 
-	double x() const;
-	double y() const;
-	double z() const;
+	scalar x() const;
+	scalar y() const;
+	scalar z() const;
 
-	double& operator[](const unsigned int);
-	double operator[](const unsigned int) const;
+	scalar& operator[](const unsigned int);
+	scalar operator[](const unsigned int) const;
 
-	double dot(const vxVector3d& v) const;
+	scalar dot(const vxVector3d& v) const;
 	vxVector3d cross(const vxVector3d& v) const;
 	vxVector3d inverted() const;
 	axis mainAxis() const;
-	double length() const;
-	double distance(const vxVector3d &ref) const;
+	scalar length() const;
+	scalar distance(const vxVector3d &ref) const;
 	
 	vxVector3d midPoint(const vxVector3d &other) const;
 	vxVector3d aaVector() const;
@@ -132,23 +136,23 @@ public:
 	void setUnit();
 	vxVector3d operator+(const vxVector3d &entrada) const;
 	vxVector3d operator+=(const vxVector3d &entrada);
-	vxVector3d operator+(double factor) const;
+	vxVector3d operator+(scalar factor) const;
 	vxVector3d operator+(float factor) const;
 	vxVector3d operator+(int factor) const;
 
 	vxVector3d operator-(const vxVector3d &entrada) const;
 	vxVector3d operator-=(const vxVector3d &entrada);
-	vxVector3d operator-(double factor) const;
+	vxVector3d operator-(scalar factor) const;
 	
 	vxVector3d operator-(float factor) const;
 	vxVector3d operator-(int factor) const;
 	vxVector3d operator*(const vxVector3d other) const;
-	vxVector3d operator*(double factor) const;
+	vxVector3d operator*(scalar factor) const;
 	vxVector3d operator*(float factor) const;
 	vxVector3d operator*(int factor) const;
 
 	vxVector3d operator/(const vxVector3d &entrada) const;
-	vxVector3d operator/(double factor) const;
+	vxVector3d operator/(scalar factor) const;
 	vxVector3d operator/(float factor) const;
 	vxVector3d operator/(int factor) const;
 	vxVector3d operator^(const vxVector3d &b) const;
@@ -160,14 +164,14 @@ public:
 	bool operator<(const vxVector3d &other) const;
 
 	bool follows(const vxVector3d &direction) const;
-	double angle(const vxVector3d &b) const;
-	double angleXY(const vxVector3d &other) const;
-	double angleYZ(const vxVector3d &other) const;
-	double angleZX(const vxVector3d &other) const;
+	scalar angle(const vxVector3d &b) const;
+	scalar angleXY(const vxVector3d &other) const;
+	scalar angleYZ(const vxVector3d &other) const;
+	scalar angleZX(const vxVector3d &other) const;
 
-	double angleXY() const;
-	double angleYZ() const;
-	double angleZX() const;
+	scalar angleXY() const;
+	scalar angleYZ() const;
+	scalar angleZX() const;
 
 	vxVector3d operator=(const vxVector3d &otro);
 
@@ -180,13 +184,13 @@ $angk+=$ang;
 return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 */
 	//TODO: revisit these active = "false"e rotations
-	vxVector3d rotateX(double ang);
+	vxVector3d rotateX(scalar ang);
 
 	//TODO: revisit these active = "false"e rotations
-	vxVector3d rotateY(double ang);
+	vxVector3d rotateY(scalar ang);
 
 	//TODO: revisit these three rotations
-	vxVector3d rotateZ(double ang);
+	vxVector3d rotateZ(scalar ang);
 
 	vxVector2d vectorXY() const;
 	vxVector2d vectorYZ() const;

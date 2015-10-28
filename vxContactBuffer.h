@@ -112,12 +112,12 @@ public:
 		return m_scanY;
 	}
 
-	double getScanXd() const
+	scalar getScanXd() const
 	{
 		return 0;
 	}
 
-	double getScanYd() const
+	scalar getScanYd() const
 	{
 		return 0;
 	}

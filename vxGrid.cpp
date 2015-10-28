@@ -19,7 +19,7 @@ vxGrid::vxGrid()
 	srand(time(NULL));
 }
 
-vxGrid::vxGrid(const vxVector3d &position, double size)
+vxGrid::vxGrid(const vxVector3d &position, scalar size)
 	: m_position(position)
 	, m_boundingBox(position, size)
 {
@@ -31,7 +31,7 @@ vxGrid::vxGrid(const vxVector3d &position, double size)
 	srand(time(NULL));
 }
 
-vxGrid::vxGrid(double x, double y, double z, double size)
+vxGrid::vxGrid(scalar x, scalar y, scalar z, scalar size)
 { 
 	m_boundingBox.set(vxVector3d(x,y,z), size);
 	m_position.set(x,y,z);
@@ -60,7 +60,7 @@ void vxGrid::createGridData(const unsigned long resolution)
 	m_resXres=resolution*resolution;
 	m_resXresXres=m_resXres*resolution;
 	m_data.resize(m_resXresXres);
-	m_resDivTres = m_midSize/(double)m_resolution;
+	m_resDivTres = m_midSize/(scalar)m_resolution;
 	setBoxSize();
 	
 	m_xmin = m_position.x() - m_midSize;
@@ -80,7 +80,7 @@ void vxGrid::setResolution(unsigned long resolution)
 	}
 }
 
-void vxGrid::setSize(const double size)
+void vxGrid::setSize(const scalar size)
 {
 	m_size=size;
 	m_midSize = size/2.0;
@@ -109,7 +109,7 @@ unsigned long vxGrid::resolution() const
 
 void vxGrid::setBoxSize()
 {
-	m_boxSize = m_size/double(m_resolution);
+	m_boxSize = m_size/scalar(m_resolution);
 	m_midBoxSize = m_boxSize/2.0;
 }
 
@@ -224,18 +224,18 @@ void vxGrid::fill()
 	}	
 }
 
-void vxGrid::createSphere(double x, double y, double z, const double radio)
+void vxGrid::createSphere(scalar x, scalar y, scalar z, const scalar radio)
 {
-	createSphere(vxVector3d{(double)x,(double)y,(double)z}, radio);
+	createSphere(vxVector3d{(scalar)x,(scalar)y,(scalar)z}, radio);
 }
 
-bool vxGrid::getRandomBoolean(double ratio)
+bool vxGrid::getRandomBoolean(scalar ratio)
 {
-	double num = pow((rand()/(double)RAND_MAX), 1.0/ratio);
+	scalar num = pow((rand()/(scalar)RAND_MAX), 1.0/ratio);
 	return num>.5;
 }
 
-void vxGrid::createRandom(double ratio)
+void vxGrid::createRandom(scalar ratio)
 {
 	for(auto &&it = begin(m_data);it!= end(m_data);	++it)
 	{
@@ -248,12 +248,12 @@ void vxGrid::createRandom(double ratio)
 
 void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 										const vxVector3d &offset,
-										const vxVector3d &scale)
+										const vxVector3d &scaleFactor)
 {
 	for(auto &tri: geo->m_triangles)
 	{
 		{
-			const auto&& p{(tri.p1*scale)+offset};
+			const auto&& p{(tri.p1*scaleFactor)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -261,7 +261,7 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 			}
 		}
 		{
-			const auto&& p{(tri.p2*scale)+offset};
+			const auto&& p{(tri.p2*scaleFactor)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -269,7 +269,7 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 			}
 		}
 		{
-			const auto&& p{(tri.p3*scale)+offset};
+			const auto&& p{(tri.p3*scaleFactor)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -280,8 +280,8 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 		const unsigned int interp = 4u;
 		for(uint i=0; i<interp; i++)
 		{
-			auto a = MU::lerp(tri.p1, tri.p2, (i+1)/(double)interp);
-			const auto&& p{(a*scale)+offset};
+			auto a = MU::lerp(tri.p1, tri.p2, (i+1)/(scalar)interp);
+			const auto&& p{(a*scaleFactor)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -291,8 +291,8 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 		
 		for(uint i=0; i<interp; i++)
 		{
-			auto a = MU::lerp(tri.p1, tri.p3, (i+1)/(double)interp);
-			const auto&& p{(a*scale)+offset};
+			auto a = MU::lerp(tri.p1, tri.p3, (i+1)/(scalar)interp);
+			const auto&& p{(a*scaleFactor)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -302,8 +302,8 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 		
 		for(uint i=0; i<interp; i++)
 		{
-			auto a = MU::lerp(tri.p2, tri.p3, (i+1)/(double)interp);
-			const auto&& p{(a*scale)+offset};
+			auto a = MU::lerp(tri.p2, tri.p3, (i+1)/(scalar)interp);
+			const auto&& p{(a*scaleFactor)+offset};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -525,13 +525,13 @@ inline vxVector3d vxGrid::getVoxelPosition(const unsigned long iX,
 										   const unsigned long iY, 
 										   const unsigned long iZ) const
 {
-	double x = (m_position.x() - m_midSize) + (iX * m_boxSize) + m_resDivTres;
-	double y = (m_position.y() - m_midSize) + (iY * m_boxSize) + m_resDivTres;
-	double z = (m_position.z() - m_midSize) + (iZ * m_boxSize) + m_resDivTres;
+	scalar x = (m_position.x() - m_midSize) + (iX * m_boxSize) + m_resDivTres;
+	scalar y = (m_position.y() - m_midSize) + (iY * m_boxSize) + m_resDivTres;
+	scalar z = (m_position.z() - m_midSize) + (iZ * m_boxSize) + m_resDivTres;
 	return vxVector3d{x,y,z};
 }
 
-void vxGrid::createSphere(const vxVector3d &center, const double radio)
+void vxGrid::createSphere(const vxVector3d &center, const scalar radio)
 {
 	unsigned long x, y, z;
 	
@@ -553,7 +553,7 @@ void vxGrid::createSphere(const vxVector3d &center, const double radio)
 	}
 }
 
-inline bool vxGrid::inGrid(const vxVector3d &pnt, double tol) const
+inline bool vxGrid::inGrid(const vxVector3d &pnt, scalar tol) const
 {
 	return std::islessequal(pnt.x(),m_xmax+tol)
 			&& std::isgreaterequal(pnt.x(),m_xmin-tol)
@@ -674,7 +674,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 			found = true;
 			break;
 		}
-		r.setOrigin(exactCollision + r.direction()/10000.0);
+		r.setOrigin(exactCollision + r.direction()/(scalar)10000.0);
 	}
 	while(inGrid(vx));
 

@@ -52,7 +52,7 @@ unsigned int vxRenderProcess::visSamples() const
 void vxRenderProcess::setVisSamples(unsigned int visSamples)
 {
 	m_visSamples = visSamples;
-	m_c_invSamples = 1.0/(double)m_visSamples;
+	m_c_invSamples = 1.0/(scalar)m_visSamples;
 }
 
 unsigned int vxRenderProcess::reflectionSamples() const
@@ -118,11 +118,11 @@ vxStatus::code vxRenderProcess::execute()
 		threads.push_back(std::move(th));
 	}
 	
-	double accelerationRatio{1.0};
-	double prevProgress{-1};
+	scalar accelerationRatio{1.0};
+	scalar prevProgress{-1};
 	while(!m_finished)
 	{
-		double dProgress = progress();
+		scalar dProgress = progress();
 		if((dProgress-prevProgress)<accelerationRatio)
 		{
 			customUpdateInterval+=1;
@@ -153,7 +153,7 @@ vxStatus::code vxRenderProcess::execute()
 	return vxStatus::code::kSuccess;
 }
 
-double vxRenderProcess::progress() const
+scalar vxRenderProcess::progress() const
 {
 	return  100.0 * m_progress.load() / (m_prop->ry()*m_nThreads);
 }
@@ -176,8 +176,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	
 	vxColor pixelColor;
 	const vxVector2d hitCoordinates(
-				itV/(double)m_prop->ry(),
-				itH/(double)m_prop->rx());
+				itV/(scalar)m_prop->ry(),
+				itH/(scalar)m_prop->rx());
 	
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
 	
@@ -202,8 +202,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	{
 		vxColor pixelColor;
 		const vxVector2d hitCoordinates(
-					itV/(double)m_prop->ry(),
-					itH/(double)m_prop->rx());
+					itV/(scalar)m_prop->ry(),
+					itH/(scalar)m_prop->rx());
 		
 		for(auto s=0u;s<m_visSamples;s++)
 		{
@@ -220,7 +220,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					{
 						vxVector3d&& invV = ((N * ray.direction().dot(N)* -2) 
 											 + ray.direction()) ;
-						invV+=MU::getSolidSphereRand2(0.03);
+						invV+=MU::getSolidSphereRand3(0.05);
 						const auto&& reflexRay = vxRay(collision.position()
 													   +(N/10000),
 													   invV);
@@ -230,7 +230,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 											   (1.0/m_reflectionSamples));
 						}
 					}
-					pixelColor+= MU::lerp(reflection, collision.color(), 0.75);
+					pixelColor+= MU::lerp(reflection, collision.color(), 0.85);
 				}
 				else
 				{
@@ -274,8 +274,8 @@ vxStatus::code vxRenderProcess::preConditions()
 const unsigned char *
 vxRenderProcess::generateImage()
 {
-	static_assert(sizeof(float)==4, "double is no 32bits");
-	static_assert(sizeof(double)==8, "double is no 64bits");
+	static_assert(sizeof(float)==4, "scalar is no 32bits");
+	static_assert(sizeof(double)==8, "scalar is no 64bits");
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
 	
 	const auto&& prop = imageProperties();

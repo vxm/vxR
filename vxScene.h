@@ -66,8 +66,8 @@ public:
 
 	std::shared_ptr<vxCamera>
 		createCamera(const vxMatrix &,
-					double hAperture = 0.0,
-					double vAperture = 0.0);
+					scalar hAperture = 0.0,
+					scalar vAperture = 0.0);
 
 	std::shared_ptr<vxGrid> createGrid();
 	std::shared_ptr<vxCore::ImageProperties> imageProperties() const;

@@ -16,15 +16,15 @@ vxMatrix::vxMatrix()
 
 vxMatrix::vxMatrix(const vxMatrix &src)
 {
-	memcpy(m_matrix, src.m_matrix, 16 * sizeof(double));
+	memcpy(m_matrix, src.m_matrix, 16 * sizeof(scalar));
 }
 
-vxMatrix::vxMatrix(const double m[16])
+vxMatrix::vxMatrix(const scalar m[16])
 {
-	memcpy(m_matrix, m, 16 * sizeof(double));
+	memcpy(m_matrix, m, 16 * sizeof(scalar));
 }
 
-vxMatrix::vxMatrix (std::initializer_list<double> list)
+vxMatrix::vxMatrix (std::initializer_list<scalar> list)
 {
 	auto i=0;
 	for(auto it = std::begin(list); it!= std::end(list);++it)
@@ -40,16 +40,16 @@ vxMatrix::~vxMatrix()
 }
 
 
-vxStatus::code vxMatrix::get(double dest[]) const
+vxStatus::code vxMatrix::get(scalar dest[]) const
 {
-	memcpy(dest, m_matrix, 16 * sizeof(double));
+	memcpy(dest, m_matrix, 16 * sizeof(scalar));
 	return vxStatus::code::kSuccess;
 }
 
 vxStatus::code vxMatrix::get(float dest[]) const
 {
-	//!memcpy of doubles to floats?
-	memcpy(dest, m_matrix, 16 * sizeof(double));
+	//!memcpy of scalars to floats?
+	memcpy(dest, m_matrix, 16 * sizeof(scalar));
 	return vxStatus::code::kSuccess;
 }
 
@@ -155,38 +155,38 @@ vxMatrix vxMatrix::operator*(const vxMatrix &right) const
 	return *this;
 }
 
-vxMatrix &vxMatrix::operator*=(double)
+vxMatrix &vxMatrix::operator*=(scalar)
 {
 	
 	return *this;
 }
 
-vxMatrix vxMatrix::operator*(double) const
+vxMatrix vxMatrix::operator*(scalar) const
 {
 	
 	return *this;
 }
 
-const double *vxMatrix::operator[](unsigned int row) const
+const scalar *vxMatrix::operator[](unsigned int row) const
 {
 	return &m_matrix[row*4];
 }
 
 bool vxMatrix::operator==(const vxMatrix &other) const
 {
-	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(double));
+	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(scalar));
 	return r==0;
 }
 
 bool vxMatrix::operator!=(const vxMatrix &other) const
 {
-	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(double));
+	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(scalar));
 	return r!=0;
 }
 
 vxMatrix &vxMatrix::operator=(const vxMatrix &other)
 {
-	memcpy(m_matrix, other.m_matrix, 16 * sizeof(double));
+	memcpy(m_matrix, other.m_matrix, 16 * sizeof(scalar));
 	return *this;
 }
 
@@ -208,19 +208,19 @@ vxMatrix vxMatrix::homogenize() const
 	return *this;
 }
 
-double vxMatrix::det4x4() const
+scalar vxMatrix::det4x4() const
 {
 	
 	return 1.0;
 }
 
-double vxMatrix::det3x3() const
+scalar vxMatrix::det3x3() const
 {
 	
 	return 1.0;
 }
 
-bool vxMatrix::isEquivalent(const vxMatrix &, double ) const
+bool vxMatrix::isEquivalent(const vxMatrix &, scalar ) const
 {
 	bool eq{false};
 			
@@ -238,17 +238,17 @@ vxVector3d vxMatrix::getOrigin() const
 	return vxVector3d(m_matrix[12],m_matrix[13],m_matrix[14]);
 }
 
-double &vxMatrix::operator()(unsigned int row, unsigned int col)
+scalar &vxMatrix::operator()(unsigned int row, unsigned int col)
 {
 	return (m_matrix[4*row+col]);
 }
 
-double vxMatrix::operator()(unsigned int row, unsigned int col) const
+scalar vxMatrix::operator()(unsigned int row, unsigned int col) const
 {
 	return (m_matrix[4*row+col]);
 }
 
-double *vxMatrix::operator[](unsigned int row)
+scalar *vxMatrix::operator[](unsigned int row)
 {
 	return &m_matrix[4*row];
 }

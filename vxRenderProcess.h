@@ -28,12 +28,12 @@ private:
 	std::atomic_bool m_finished;
 	unsigned int m_nThreads;
 	
-	std::atomic<double> m_progress{0.0};
+	std::atomic<scalar> m_progress{0.0};
 	ImageData m_imageData;
 	vxContactBuffer m_contactBuffer;
 	
 	unsigned int m_visSamples{1};
-	double m_c_invSamples{1/(double)m_visSamples};
+	scalar m_c_invSamples{1/(scalar)m_visSamples};
 	unsigned int m_reflectionSamples{0};
 public:
 
@@ -61,7 +61,7 @@ public:
 	void setNMaxThreads(unsigned int nMaxThreads);
 	unsigned int nMaxThreads() const;
 
-	double progress() const;
+	scalar progress() const;
 	unsigned int visSamples() const;
 	void setVisSamples(unsigned int visSamples);
 	unsigned int reflectionSamples() const;

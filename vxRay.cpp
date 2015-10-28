@@ -17,7 +17,7 @@ vxRay::vxRay(const vxVector3d &origin,
 {
 }
 
-vxRay::vxRay(double x, double y, double z)
+vxRay::vxRay(scalar x, scalar y, scalar z)
 	:m_direction(vxVector3d{x,y,z}.unit())
 {
 }
@@ -59,7 +59,7 @@ void vxRay::setDirection(const vxVector3d &direction)
 	m_direction = direction.unit();
 }
 
-double vxRay::incidence(const vxVector3d &normal) const
+scalar vxRay::incidence(const vxVector3d &normal) const
 {
 	return cos(m_direction.angle(normal));
 }
