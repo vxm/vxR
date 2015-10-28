@@ -18,7 +18,7 @@ name = "renderSettings_1"
 type = "vxRenderSettings"
 active = "false"
     resolution = 2732 1536
-    pixelSamples = 8
+    pixelSamples = 2
     reflectionSamples = 0
     numThreads = -1
 }
@@ -28,9 +28,20 @@ node
 name = "renderSettings_2"
 type = "vxRenderSettings"
 active = "false"
+    resolution = 4098 2304
+    pixelSamples = 4
+    reflectionSamples = 1
+    numThreads = -1
+}
+
+node
+{
+name = "renderSettings_3"
+type = "vxRenderSettings"
+active = "false"
     resolution = 5464 3072
     pixelSamples = 12
-    reflectionSamples = 0
+    reflectionSamples = 2
     numThreads = -1
 }
 
@@ -74,9 +85,7 @@ name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.25 -0.75 5 1]
-    filePath = "/home/john/Downloads/two_tris.ply"
-    position = 0 0 0
-    scaleFactor = 0.75
+    filePath = "/home/john/Downloads/gnome_low.ply"
 }
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
@@ -97,7 +106,7 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg"
+    imagePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
 }
 
 node
@@ -106,7 +115,7 @@ name = "environment"
 type = "vxIBLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg"
+    filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
     intensity = 13.0
     color = 255 255 255
     samples = 60
@@ -122,7 +131,7 @@ name = "sun"
 type = "vxDirectLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 1.36
+    intensity = 2.36
     color = 255 230 240
     orientation = 5.0 -8.0 -8.0
     samples = 1
