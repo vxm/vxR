@@ -80,11 +80,6 @@ bool vxBox::throwRay(const vxRay &ray) const
 
 int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-//	if(contains(ray.origin()))
-//	{
-//		return 0;
-//	}
-	
 	const auto&& p = m_position - ray.origin();
 	const auto&& mSize = m_size/(scalar)2.0;
 	const auto&& min = p - mSize;

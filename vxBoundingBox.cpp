@@ -98,10 +98,10 @@ bool vxBoundingBox::contains(const vxVector3d &v) const
 
 bool vxBoundingBox::hasCollision(const vxRay &ray) const
 {
-	if(contains(ray.origin()))
-	{
-		return true;
-	}
+//	if(contains(ray.origin()))
+//	{
+//		return true;
+//	}
 	
 	const auto&& hitX = MU::rayAndXPlane(ray, std::signbit(m_maxx) ? m_maxx : m_minx);
 	if( hitX.z()<=m_maxz && hitX.z()>=m_minz && hitX.y()<=m_maxy && hitX.y()>=m_miny)
