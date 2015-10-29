@@ -39,9 +39,9 @@ public:
 	void setTransform(const vxMatrix &transform);
 
 	//renderable interface
-	bool throwRay(const vxRay &) const;
+	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
-	bool hasCollision(const vxRay &) const;
+	bool hasCollision(const vxRay &ray) const;
 };
 
 }

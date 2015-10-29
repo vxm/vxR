@@ -36,6 +36,34 @@ scalar vxTriRef::area() const
 	return ah;
 }
 
+bool vxTriRef::throwRay(const vxRay &ray) const
+{
+	if(!n.follows(ray.direction()))
+	{
+		return 0;
+	}
+
+	const scalar threshold = -0.001;
+	const auto& p = MU::rectAndPlane(ray,p1,p2,p3);
+	
+	auto ta = area();
+	//TODO:this needs a optimization.
+	
+	ta-=MU::area(p1,p2,p);
+	if(ta<threshold)
+		return 0;
+	
+	ta-=vxTriRef(p1,p,p3).computeArea();
+	if(ta<threshold)
+		return 0;
+
+	ta-=vxTriRef(p,p2,p3).computeArea();
+	if(ta<threshold)
+		return 0;
+
+	return 1;
+}
+
 vxVector3d& vxTriRef::computeNormal() 
 {
 	n = (p2-p1)^(p3-p1).unit();
@@ -74,9 +102,35 @@ int vxTriRef::throwRay(const vxRay &ray, vxCollision &collide) const
 	
 	collide.setNormal(n);
 	collide.setPosition(p);
-	collide.setValid(true);
-	collide.setColor(vxColor::white);
 
 	return 1;
+}
+
+bool vxTriRef::hasCollision(const vxRay &ray) const
+{
+	if(!n.follows(ray.direction()))
+	{
+		return 0;
+	}
+
+	const scalar threshold = -0.001;
+	const auto& p = MU::rectAndPlane(ray,p1,p2,p3);
+	
+	auto ta = area();
+	//TODO:this needs a optimization.
+	
+	ta-=MU::area(p1,p2,p);
+	if(ta<threshold)
+		return false;
+	
+	ta-=vxTriRef(p1,p,p3).computeArea();
+	if(ta<threshold)
+		return false;
+
+	ta-=vxTriRef(p,p2,p3).computeArea();
+	if(ta<threshold)
+		return false;
+	
+	return true;
 }
 

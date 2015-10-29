@@ -56,9 +56,25 @@ unsigned long vxGeometry::triangleCount() const
 	return m_triangles.size();
 }
 
-bool vxGeometry::throwRay(const vxRay &) const
+bool vxGeometry::throwRay(const vxRay &ray) const
 {
-	return false;
+	if(!m_bb.hasCollision(ray))
+	{
+		return 0;
+	}
+
+	//std::cout << "Visiting triangles " << std::endl;	
+	for(auto it = std::cbegin(m_triangles);
+				it!=std::cend(m_triangles);
+									 ++it)
+	{
+		if(it->throwRay(ray))
+		{
+			return 1;
+		}
+	}
+	
+	return 0;
 }
 
 int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
@@ -83,6 +99,9 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 	{
 		if(it->throwRay(ray,collide))
 		{
+			collide.setColor(vxColor::white);
+			collide.setValid(true);
+			collide.setUV(vxVector2d(0.5,0.5));
 			return 1;
 		}
 	}
@@ -90,8 +109,25 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 	return 0;
 }
 
-bool vxGeometry::hasCollision(const vxRay &) const
+bool vxGeometry::hasCollision(const vxRay &ray) const
 {
+	if(!m_bb.hasCollision(ray))
+	{
+		return false;
+	}
+
+	//std::cout << "Visiting triangles " << std::endl;	
+	for(auto it = std::cbegin(m_triangles);
+				it!=std::cend(m_triangles);
+									 ++it)
+	{
+		if(it->throwRay(ray))
+		{
+			return true;
+		}
+	}
+
 	return false;
+
 }
 
