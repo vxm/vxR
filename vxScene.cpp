@@ -139,7 +139,6 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	for(const auto nodeGeo: nodeDB->getNodesByType("vxGeometry"))
 	{
 		const auto path = nodeGeo->getStringAttribute("filePath");
-		const auto pos = nodeGeo->getVector3dAttribute("position");
 		const auto transform = nodeGeo->getMatrixAttribute("transform");
 
 		auto geo = createGeometry(path);
