@@ -97,8 +97,8 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 		{
 			collide.setNormal(vxVector3d::constY);
 			collide.setPosition(p);
-			collide.setU(fmod(p.x(),1.0));
-			collide.setV(fmod(p.z(),1.0));
+			collide.setU((scalar)0.5);
+			collide.setV((scalar)0.5);
 			collide.setColor(m_color);
 			return 1;
 		}
@@ -111,8 +111,8 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 		{
 			collide.setNormal(t.computeNormal());
 			collide.setPosition(p);
-			collide.setU(fmod(p.x(),1.0));
-			collide.setV(fmod(p.z(),1.0));
+			collide.setU((scalar)0.5);
+			collide.setV((scalar)0.5);
 			collide.setColor(vxColor::white);
 			return 1;
 		}
