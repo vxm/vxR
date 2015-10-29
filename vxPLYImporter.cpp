@@ -120,6 +120,17 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			m_geo->addTriangle(a,b,c);
 			//std::cout << "Adding " << m_geo->m_triangles[m_geo->m_triangles.size()-1] << std::endl;
 		}
+
+		if(lineTokens.size()==5	&& lineTokens[0]=="4"s)
+		{
+			unsigned long a = std::stoul(lineTokens[1]);
+			unsigned long b = std::stoul(lineTokens[2]);
+			unsigned long c = std::stoul(lineTokens[3]);
+			unsigned long d = std::stoul(lineTokens[4]);
+			m_geo->addTriangle(a,b,c);
+			m_geo->addTriangle(d,a,c);
+		}
+
 	}
 	while(std::getline(iFile, line));
 	
