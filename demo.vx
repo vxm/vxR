@@ -7,8 +7,8 @@ name = "renderSettings"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 1
-    reflectionSamples = 0
+    pixelSamples = 4
+    reflectionSamples = 1
     numThreads = -1
 }
 
@@ -51,7 +51,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 1.5
+    focusDistance = 2.5
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -84,8 +84,8 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.25 -0.75 5 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 3.25 -0.75 8 1]
+    filePath = "/home/john/Downloads/torus.ply"
 }
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
@@ -113,7 +113,7 @@ node
 {
 name = "environment"
 type = "vxIBLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
     intensity = 13.0
@@ -131,7 +131,7 @@ name = "sun"
 type = "vxDirectLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 2.36
+    intensity = 1.36
     color = 255 230 240
     orientation = 5.0 -8.0 -8.0
     samples = 1
@@ -161,11 +161,11 @@ node
 {
 name = "floor"
 type = "vxPlane"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    planeType = "free"
+    planeType = "Y"
     x = 0.0
-    y = -58.0
+    y = -3.0
     z = 0.0
     pointA = 440.0 -57.0 440.0
     pointB = 450.0 -56.0 440.0
