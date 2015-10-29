@@ -81,43 +81,36 @@ public:
 	
 	vxColor operator+(const vxColor &other) const;
 	vxColor operator+(scalar factor) const;
-	vxColor operator+(float factor) const;
 	vxColor operator+(int factor) const;
 	vxColor operator+(unsigned int factor) const;
 
 	vxColor operator-(const vxColor &entrada) const;
 	vxColor operator-(scalar factor) const;
-	vxColor operator-(float factor) const;
 	vxColor operator-(int factor) const;
 	vxColor operator-(unsigned int factor) const;
 
 	vxColor operator*(const vxColor &entrada) const;
 	vxColor operator*(scalar factor) const;
-	vxColor operator*(float factor) const;
 	vxColor operator*(int factor) const;
 	vxColor operator*(unsigned int factor) const;
 
 	vxColor operator/(const vxColor &entrada) const;
 	vxColor operator/(scalar factor) const;
-	vxColor operator/(float factor) const;
 	vxColor operator/(int factor) const;
 	vxColor operator/(unsigned int factor) const;
 
 	vxColor& operator*=(const vxColor &entrada);
 	vxColor& operator*=(scalar factor);
-	vxColor& operator*=(float factor);
 	vxColor& operator*=(int factor);
 	vxColor& operator*=(unsigned int factor);
 
 	vxColor& operator+=(const vxColor &entrada);
 	vxColor& operator+=(scalar factor);
-	vxColor& operator+=(float factor);
 	vxColor& operator+=(int factor);
 	vxColor& operator+=(unsigned int factor);
 
 	vxColor& operator-=(const vxColor &entrada);
 	vxColor& operator-=(scalar factor);
-	vxColor& operator-=(float factor);
 	vxColor& operator-=(int factor);
 	vxColor& operator-=(unsigned int factor);
 	

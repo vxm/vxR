@@ -5,7 +5,6 @@
 #include "vxVector.h"
 #include <initializer_list>
 
-
 namespace vxCore {
 
 
@@ -27,7 +26,6 @@ public:
 	~vxMatrix();
 
 	vxStatus::code	get(scalar dest[]) const;
-	vxStatus::code	get(float dest[]) const;
 	vxMatrix		transpose() const;
 	vxMatrix&		setToIdentity();
 	vxMatrix&		setToProduct(const vxMatrix&, const vxMatrix&);

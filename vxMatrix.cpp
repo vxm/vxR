@@ -46,13 +46,6 @@ vxStatus::code vxMatrix::get(scalar dest[]) const
 	return vxStatus::code::kSuccess;
 }
 
-vxStatus::code vxMatrix::get(float dest[]) const
-{
-	//!memcpy of scalars to floats?
-	memcpy(dest, m_matrix, 16 * sizeof(scalar));
-	return vxStatus::code::kSuccess;
-}
-
 vxMatrix vxMatrix::transpose() const
 {
 	std::swap(m_matrix[1],	m_matrix[4]);

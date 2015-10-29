@@ -1,5 +1,5 @@
 #include "vxRenderMain.h"
-#include "ui_vxrendermain.h"
+//#include "ui_vxrendermain.h"
 
 vxRenderMain::vxRenderMain(QWidget *parent) :
 	QMainWindow(parent)

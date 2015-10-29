@@ -38,8 +38,8 @@ public:
 
 	bool contains(const vxVector3d &v) const
 	{
-		auto min = m_position - (m_size/2.0);
-		auto max = m_position + (m_size/2.0);
+		auto min = m_position - (m_size/(scalar)2.0);
+		auto max = m_position + (m_size/(scalar)2.0);
 		return v.x() >= min.x()
 				&&  v.y() >= min.y()
 				&&  v.z() >= min.z()

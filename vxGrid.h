@@ -77,13 +77,13 @@ protected:
 	vxVector3d m_position;
 	scalar m_size				= {5.0};
 	unsigned long m_resolution	= {5u};
-	scalar m_invRes				= {1/5.0};
+	scalar m_invRes				= {1/(scalar)5.0};
 
 	std::vector<vx>	m_data;
 	vxBox m_boundingBox;
 
-	scalar m_resDivTres	= {m_size/3.0};
-	scalar m_midSize	= {m_size/2.0};
+	scalar m_resDivTres	= {m_size/(scalar)3.0};
+	scalar m_midSize	= {m_size/(scalar)2.0};
 
 	// cache objects
 	scalar m_boxSize			= {1.0};

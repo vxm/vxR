@@ -6,13 +6,10 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "vxObject.h"
-
-
-
 namespace vxCore {
 
-using scalar = long double;
+//TODO: add literal for scalar 0.0r
+using scalar = double;
 
 class vxVector2d
 {
@@ -44,19 +41,15 @@ public:
 	vxVector2d unit() const;
 	vxVector2d operator+(const vxVector2d& other) const;
 	vxVector2d operator+(scalar factor) const;
-	vxVector2d operator+(float factor) const;
 	vxVector2d operator+(int factor) const;
 	vxVector2d operator-(const vxVector2d& entrada) const;
 	vxVector2d operator-(scalar factor) const;
-	vxVector2d operator-(float factor) const;
 	vxVector2d operator-(int factor) const;
 	vxVector2d operator*(const vxVector2d& entrada) const;
 	vxVector2d operator*(scalar factor) const;
-	vxVector2d operator*(float factor) const;
 	vxVector2d operator*(int factor) const;
 	vxVector2d operator/(const vxVector2d& entrada) const;
 	vxVector2d operator/(scalar factor) const;
-	vxVector2d operator/(float factor) const;
 	vxVector2d operator/(int factor) const;
 	static vxVector2d zero;
 
@@ -137,23 +130,19 @@ public:
 	vxVector3d operator+(const vxVector3d &entrada) const;
 	vxVector3d operator+=(const vxVector3d &entrada);
 	vxVector3d operator+(scalar factor) const;
-	vxVector3d operator+(float factor) const;
 	vxVector3d operator+(int factor) const;
 
 	vxVector3d operator-(const vxVector3d &entrada) const;
 	vxVector3d operator-=(const vxVector3d &entrada);
-	vxVector3d operator-(scalar factor) const;
 	
-	vxVector3d operator-(float factor) const;
+	vxVector3d operator-(scalar factor) const;
 	vxVector3d operator-(int factor) const;
 	vxVector3d operator*(const vxVector3d other) const;
 	vxVector3d operator*(scalar factor) const;
-	vxVector3d operator*(float factor) const;
 	vxVector3d operator*(int factor) const;
 
 	vxVector3d operator/(const vxVector3d &entrada) const;
 	vxVector3d operator/(scalar factor) const;
-	vxVector3d operator/(float factor) const;
 	vxVector3d operator/(int factor) const;
 	vxVector3d operator^(const vxVector3d &b) const;
 

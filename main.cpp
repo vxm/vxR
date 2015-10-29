@@ -41,7 +41,7 @@ int executeRenderProcess(int argc, char *argv[])
 			scenePath = argv[i];
 		}
 		
-		if("-scene"s==argv[i])
+		if("-scene"s==std::string(argv[i]))
 		{
 			sceneParam = true;
 		}

@@ -42,8 +42,8 @@ bool vxBox::throwRay(const vxRay &ray) const
 	}
 	
 	const auto&& p = m_position - ray.origin();
-	const auto&& min = p - m_size/2.0;
-	const auto&& max = p + m_size/2.0;
+	const auto&& min = p - m_size/(scalar)2.0;
+	const auto&& max = p + m_size/(scalar)2.0;
 	
 	bool bMax = std::signbit(ray.direction().x());
 	
@@ -86,7 +86,7 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 //	}
 	
 	const auto&& p = m_position - ray.origin();
-	const auto&& mSize = m_size/2.0;
+	const auto&& mSize = m_size/(scalar)2.0;
 	const auto&& min = p - mSize;
 	const auto&& max = p + mSize;
 	
@@ -141,7 +141,7 @@ bool vxBox::hasCollision(const vxRay &ray) const
 	}
 
 	const auto&& p = m_position - ray.origin();
-	const auto mSize = m_size/2.0;
+	const auto mSize = m_size/(scalar)2.0;
 	
 	const auto&& min = p - mSize;
 	const auto&& max = p + mSize;

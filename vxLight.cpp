@@ -282,7 +282,7 @@ vxColor vxIBLight::acummulationLight(const vxRay &, const vxCollision &collision
 			const auto &scn = m_scene.lock();
 			if(!scn->hasCollision(f))
 			{
-				environmentColor=environmentColor*(m_gain + pow(luma,m_gamma));
+				environmentColor=environmentColor*(scalar)(m_gain + pow(luma,m_gamma));
 				acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
 			}
 		}

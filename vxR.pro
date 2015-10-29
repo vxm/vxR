@@ -128,7 +128,7 @@ HEADERS  += \
     vxTriRef.h \
     vxBoundingBox.h
 
-FORMS    += vxrendermain.ui
+FORMS    +=
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
 CONFIG += c++14

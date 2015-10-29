@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+
 namespace Ui {
 class vxRenderMain;
 }
@@ -16,7 +17,7 @@ class vxRenderMain : public QMainWindow
 		~vxRenderMain();
 
 	private:
-		Ui::vxRenderMain *ui;
+		//Ui::vxRenderMain *ui;
 };
 
 #endif // VXRENDERMAIN_H
