@@ -10,6 +10,34 @@ vxGeometry::vxGeometry()
 	
 }
 
+void vxGeometry::open()
+{
+	m_openForEdition = true;
+}
+
+void vxGeometry::close()
+{
+	unsigned long triangleID;
+	for(auto &&tref:m_triangles)
+	{
+		tref.computeNormal();
+		tref.computeArea();
+		m_grid.locateTriangle(tref, triangleID);
+		triangleID++;
+	}
+	
+	updateAccelerationStuctures();
+	
+	m_openForEdition = false;
+}
+
+void vxGeometry::updateAccelerationStuctures()
+{
+	
+	
+	m_bb.close();
+}
+
 std::string vxGeometry::constructionPath() const
 {
 	return m_constructionPath;
@@ -27,6 +55,12 @@ void vxGeometry::setTransform(const vxMatrix &transform)
 
 void vxGeometry::addVertexTransformed(const vxVector3d &v3)
 {
+	if(!m_openForEdition)
+	{
+		std::cerr << "You tried to edit a geometry when is closed for edition" << std::endl;
+		return;
+	}
+	
 	const auto &orig = m_transform.getOrigin();
 	const auto &newPoint = v3+orig;
 	m_bb.extend(newPoint);
@@ -36,14 +70,16 @@ void vxGeometry::addVertexTransformed(const vxVector3d &v3)
 
 void vxGeometry::addTriangle(unsigned long a, unsigned long b, unsigned long c)
 {
+	if(!m_openForEdition)
+	{
+		std::cerr << "You tried to edit a geometry when is closed for edition" << std::endl;
+		return;
+	}
+
 	//TODO:push_back ?
 	m_triangles.push_back((vxTriRef(m_vertices[a],
 									m_vertices[b],
 									m_vertices[c])));
-	auto &&tref = m_triangles[m_triangles.size()-1];
-	tref.computeNormal();
-	tref.computeArea();
-
 }
 
 unsigned long vxGeometry::vertexCount() const

@@ -2,12 +2,14 @@
 #define VXGEOMETRY_H
 
 #include <vector>
+#include <atomic>
 #include "vxVector.h"
 #include "vxRay.h"
 #include "vxCollision.h"
 #include "vxTriRef.h"
 #include "vxMatrix.h"
 #include "vxBoundingBox.h"
+#include "vxGeoGrid.h"
 
 namespace vxCore {
 
@@ -16,6 +18,8 @@ class vxGeometry
 	std::string m_constructionPath;
 	vxMatrix m_transform;
 	vxBoundingBox m_bb;
+	vxGeoGrid m_grid;
+	std::atomic_bool m_openForEdition{false};
 	
 public:
 
@@ -25,6 +29,9 @@ public:
 	std::vector<vxTriRef> m_triangles;
 	std::vector<vxVector3d> m_normals;
 
+	void open();
+	void close();
+	
 	void addVertexTransformed(const vxVector3d &v3);
 	void addTriangle(unsigned long a,
 					 unsigned long b,
@@ -37,6 +44,7 @@ public:
 	void setConstructionPath(const std::string &constructionPath);
 	vxMatrix transform() const;
 	void setTransform(const vxMatrix &transform);
+	void updateAccelerationStuctures();
 
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;

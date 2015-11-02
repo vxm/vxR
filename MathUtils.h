@@ -83,7 +83,8 @@ class MathUtils
 	static vxColor remap(const vxColor &col, scalar min, scalar max);
 	static vxColor lerp(const vxColor &c1, const vxColor &c2, scalar r);
 	
-	static scalar scaleFrom01(scalar v, scalar min, scalar max);
+	static scalar scaleFrom01(const scalar v, const scalar min, const scalar max);
+	static scalar scaleTo01(const scalar min, const scalar max, const scalar value);
 };
 
 

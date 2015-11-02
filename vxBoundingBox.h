@@ -1,6 +1,7 @@
 #ifndef VXBOUNDINGBOX_H
 #define VXBOUNDINGBOX_H
 
+#include <memory>
 #include <atomic>
 #include "vxVector.h"
 #include "vxRay.h"
@@ -9,8 +10,8 @@
 
 namespace vxCore {
 
-
-class vxBoundingBox
+//TODO: this class needs heavy caching on "close" method.
+class vxBoundingBox: public std::enable_shared_from_this<vxBoundingBox>
 {
 	std::atomic_bool m_init{false};
 	
@@ -22,22 +23,28 @@ class vxBoundingBox
 	scalar m_maxy;
 	scalar m_maxz;
 
+	vxVector3d m_scale;
+
 public:
+
 	vxBoundingBox();
+
+	void close();
 	
 	void extend(const vxVector3d &limit);
-	scalar minx() const;
-	void setMinx(scalar minx);
-	scalar miny() const;
-	void setMiny(scalar miny);
-	scalar minz() const;
-	void setMinz(scalar minz);
-	scalar maxx() const;
-	void setMaxx(scalar maxx);
-	scalar maxy() const;
-	void setMaxy(scalar maxy);
-	scalar maxz() const;
-	void setMaxz(scalar maxz);
+
+	scalar minX() const;
+	void setMinX(scalar minx);
+	scalar minY() const;
+	void setMinY(scalar miny);
+	scalar minZ() const;
+	void setMinZ(scalar minz);
+	scalar maxX() const;
+	void setMaxX(scalar maxx);
+	scalar maxY() const;
+	void setMaxY(scalar maxy);
+	scalar maxZ() const;
+	void setMaxZ(scalar maxz);
 
 	bool contains(const vxVector3d &v) const;
 	

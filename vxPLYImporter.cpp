@@ -86,6 +86,8 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	}
 	while(line!="end_header");
 	
+	m_geo->open();
+	
 	unsigned int k {0};
 	while(std::getline(iFile, line) && k<numVertex)
 	{
@@ -118,7 +120,6 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			unsigned long b = std::stoul(lineTokens[2]);
 			unsigned long c = std::stoul(lineTokens[3]);
 			m_geo->addTriangle(a,b,c);
-			//std::cout << "Adding " << m_geo->m_triangles[m_geo->m_triangles.size()-1] << std::endl;
 		}
 
 		if(lineTokens.size()==5	&& lineTokens[0]=="4"s)
@@ -130,7 +131,6 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			m_geo->addTriangle(a,b,c);
 			m_geo->addTriangle(d,a,c);
 		}
-
 	}
 	while(std::getline(iFile, line));
 	
@@ -143,7 +143,8 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			  << m_geo->triangleCount() 
 			  << "' triangles taken"s
 			  << std::endl;
-	
+
+	m_geo->close();
 	iFile.close();
 }
 

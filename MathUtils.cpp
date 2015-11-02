@@ -294,3 +294,9 @@ scalar MathUtils::scaleFrom01(scalar v, scalar min, scalar max)
 {
 	return (v+min)*(max-min);
 }
+
+scalar MathUtils::scaleTo01(const scalar min, const scalar max, const scalar value)
+{
+	return (value-min)/(max-min);
+}
+

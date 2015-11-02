@@ -68,7 +68,8 @@ SOURCES += main.cpp\
     vxGeometryImporter.cpp \
     vxDome.cpp \
     vxTriRef.cpp \
-    vxBoundingBox.cpp
+    vxBoundingBox.cpp \
+    vxGeoGrid.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -126,7 +127,8 @@ HEADERS  += \
     vxGeometryImporter.h \
     vxDome.h \
     vxTriRef.h \
-    vxBoundingBox.h
+    vxBoundingBox.h \
+    vxGeoGrid.h
 
 FORMS    +=
 

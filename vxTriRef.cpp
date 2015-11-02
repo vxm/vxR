@@ -114,7 +114,10 @@ bool vxTriRef::hasCollision(const vxRay &ray) const
 	}
 
 	const scalar threshold = -0.001;
-	const auto& p = MU::rectAndPlane(ray,p1,p2,p3);
+	const auto& p = MU::rectAndPlane(ray,
+										p1,
+										p2,
+										p3);
 	
 	auto ta = area();
 	//TODO:this needs a optimization.
@@ -130,7 +133,7 @@ bool vxTriRef::hasCollision(const vxRay &ray) const
 	ta-=vxTriRef(p,p2,p3).computeArea();
 	if(ta<threshold)
 		return false;
-	
+
 	return true;
 }
 
