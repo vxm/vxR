@@ -70,7 +70,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	
 		auto lineTokens = StringUtils::tokenizeSpace(line);
 		std::cout << "PLY: paramter tokens: ";
-		for(auto t:lineTokens)
+		for(auto&& t:lineTokens)
 		{
 			std::cout << " [" << t << "]";
 		}

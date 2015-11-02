@@ -269,7 +269,7 @@ void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 
 bool vxScene::throwRay(const vxRay &ray) const
 {
-	for(auto geo:m_geometries)
+	for(auto&& geo:m_geometries)
 	{
 		if(geo->throwRay(ray))
 		{
@@ -277,7 +277,7 @@ bool vxScene::throwRay(const vxRay &ray) const
 		}
 	}
 
-	for(auto grid:m_grids)
+	for(auto&& grid:m_grids)
 	{
 		if(grid->throwRay(ray))
 		{
@@ -285,7 +285,7 @@ bool vxScene::throwRay(const vxRay &ray) const
 		}
 	}
 
-	for(auto plane:m_planes)
+	for(auto&& plane:m_planes)
 	{
 		if(plane->hasCollision(ray))
 		{
@@ -293,7 +293,7 @@ bool vxScene::throwRay(const vxRay &ray) const
 		}
 	}
 
-//	for(auto dome:m_domes)
+//	for(auto&& dome:m_domes)
 //	{
 //		if(dome->throwRay(ray))
 //		{
@@ -308,7 +308,7 @@ bool vxScene::throwRay(const vxRay &ray) const
 int vxScene::throwRay(const vxRay &ray,
 						vxCollision &collide) const
 {
-	for(auto geo:m_geometries)
+	for(auto&& geo:m_geometries)
 	{
 		if(geo->throwRay(ray, collide))
 		{
@@ -319,7 +319,7 @@ int vxScene::throwRay(const vxRay &ray,
 		}
 	}
 	
-	for(auto grid:m_grids)
+	for(auto&& grid:m_grids)
 	{
 		if(grid->throwRay(ray, collide))
 		{
@@ -330,7 +330,7 @@ int vxScene::throwRay(const vxRay &ray,
 		}
 	}
 	
-	for(auto plane:m_planes)
+	for(auto&& plane:m_planes)
 	{
 		if(plane->throwRay(ray, collide))
 		{
@@ -341,7 +341,7 @@ int vxScene::throwRay(const vxRay &ray,
 		}
 	}
 
-	for(auto dome:m_domes)
+	for(auto&& dome:m_domes)
 	{
 		if(dome->throwRay(ray, collide))
 		{
@@ -355,7 +355,7 @@ int vxScene::throwRay(const vxRay &ray,
 bool vxScene::hasCollision(const vxRay &ray) const
 {
 
-	for(auto geo:m_geometries)
+	for(auto&& geo:m_geometries)
 	{
 		if(geo->hasCollision(ray))
 		{
@@ -363,7 +363,7 @@ bool vxScene::hasCollision(const vxRay &ray) const
 		}
 	}
 	
-	for(auto grid:m_grids)
+	for(auto&& grid:m_grids)
 	{
 		if(grid->hasCollision(ray))
 		{
@@ -371,7 +371,7 @@ bool vxScene::hasCollision(const vxRay &ray) const
 		}
 	}
 	
-	for(auto plane:m_planes)
+	for(auto&& plane:m_planes)
 	{
 		if(plane->hasCollision(ray))
 		{
@@ -379,7 +379,7 @@ bool vxScene::hasCollision(const vxRay &ray) const
 		}
 	}
 	
-	/*for(auto dome:m_domes)
+	/*for(auto&& dome:m_domes)
 	{
 		if(dome->throwRay(ray, collide))
 		{

@@ -27,9 +27,9 @@ vxMatrix::vxMatrix(const scalar m[16])
 vxMatrix::vxMatrix (std::initializer_list<scalar> list)
 {
 	auto i=0;
-	for(auto it = std::begin(list); it!= std::end(list);++it)
+	for(auto&& d:list)
 	{
-		m_matrix[i] = *it;
+		m_matrix[i] = d;
 		++i;
 	}
 }

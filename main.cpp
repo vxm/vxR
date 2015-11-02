@@ -51,7 +51,7 @@ int executeRenderProcess(int argc, char *argv[])
 	//TODO:find a home for this next two lines of code.
 	auto sceneParser = std::make_shared<vxSceneParser>(scenePath);
 	sceneParser->procesScene();
-	for(auto node: sceneParser->getNodesByType("vxRenderSettings"))
+	for(auto&& node: sceneParser->getNodesByType("vxRenderSettings"))
 	{
 		const auto resolution = node->getVector2dAttribute("resolution");
 		const auto samples = node->getIntAttribute("pixelSamples");

@@ -285,7 +285,7 @@ vxRenderProcess::generateImage()
 	int k = 0;
 	auto pixel = m_imageData.m_pc.get();
 	
-	for(auto& px:m_contactBuffer.m_pxs)
+	for(auto&& px:m_contactBuffer.m_pxs)
 	{
 		px.m_color.setToGamma(2.2);
 		px.m_color.toRGBA8888(pixel);

@@ -22,7 +22,9 @@ void vxGeometry::close()
 	{
 		tref.computeNormal();
 		tref.computeArea();
+
 		m_grid.locateTriangle(tref, triangleID);
+
 		triangleID++;
 	}
 	
@@ -100,7 +102,7 @@ bool vxGeometry::throwRay(const vxRay &ray) const
 	}
 
 	//std::cout << "Visiting triangles " << std::endl;	
-	for(auto it = std::cbegin(m_triangles);
+	for(auto&& it = std::cbegin(m_triangles);
 				it!=std::cend(m_triangles);
 									 ++it)
 	{

@@ -237,11 +237,11 @@ bool vxGrid::getRandomBoolean(scalar ratio)
 
 void vxGrid::createRandom(scalar ratio)
 {
-	for(auto &&it = begin(m_data);it!= end(m_data);	++it)
+	for(auto&& it:m_data)
 	{
 		if(getRandomBoolean(ratio))
 		{
-			it->activate();
+			it.activate();
 		}
 	}
 }
@@ -250,7 +250,7 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 										const vxVector3d &offset,
 										const vxVector3d &scaleFactor)
 {
-	for(auto &tri: geo->m_triangles)
+	for(const auto&& tri: geo->m_triangles)
 	{
 		{
 			const auto&& p{(tri.p1*scaleFactor)+offset};
