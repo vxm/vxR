@@ -109,24 +109,34 @@ bool vxBoundingBox::hasCollision(const vxRay &ray) const
 //	{
 //		return true;
 //	}
+	auto&& d = ray.direction();
+
+	auto t = ((std::signbit(m_maxx) ? m_maxx : m_minx) - d.x()) / (-d.x());
+	auto y = t * (-d.y()) + d.y();
+	auto z = t * (-d.z()) + d.z();
 	
-	const auto&& hitX = MU::rayAndXPlane(ray, std::signbit(m_maxx) ? m_maxx : m_minx);
-	if( hitX.z()<=m_maxz && hitX.z()>=m_minz && hitX.y()<=m_maxy && hitX.y()>=m_miny)
+	if( y<=m_maxy && y>=m_miny && z<=m_maxz && z>=m_minz)
 	{
 		return true;
 	}
+
+	t = ((std::signbit(m_maxy) ? m_maxy : m_miny) - d.y()) / (-d.y());
+	auto x = t * (-d.x()) + d.x();
+	z = t * (-d.z()) + d.z();
 	
-	const auto hitY = MU::rayAndYPlane(ray, std::signbit(m_maxy) ? m_maxy : m_miny);
-	if( hitY.x()<=m_maxx && hitY.x()>=m_minx && hitY.z()<=m_maxz && hitY.z()>=m_minz)
+	if(x<=m_maxx && x>=m_minx && z<=m_maxz && z>=m_minz)
 	{
 		return true;
 	}
+
+	t = ((std::signbit(m_maxz) ? m_maxz : m_minz) - d.z()) / (-d.z());
+	x = t * (-d.x()) + d.x();
+	y = t * (-d.y()) + d.y();
 	
-	const auto hitZ = MU::rayAndZPlane(ray, std::signbit(m_maxz) ? m_maxz : m_minz);
-	if( hitZ.x()<=m_maxx && hitZ.x()>=m_minx && hitZ.y()<=m_maxy && hitZ.y()>=m_miny)
+	if(x<=m_maxx && x>=m_minx && y<=m_maxy && y>=m_miny)
 	{
 		return true;
 	}
-	
+
 	return false;
 }
