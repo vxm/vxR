@@ -3,13 +3,13 @@
 
 using namespace vxCore;
 
-vxCore::vxTriRef::vxTriRef(const vxVector3d &a, 
-						   const vxVector3d &b, 
-						   const vxVector3d &c)
+vxCore::vxTriRef::vxTriRef(const v3 &a, 
+						   const v3 &b, 
+						   const v3 &c)
 	:p1(a)
 	,p2(b)
 	,p3(c)
-	,n{vxVector3d::zero}
+	,n{v3::zero}
 {
 }
 
@@ -64,13 +64,13 @@ bool vxTriRef::throwRay(const vxRay &ray) const
 	return 1;
 }
 
-vxVector3d& vxTriRef::computeNormal() 
+v3& vxTriRef::computeNormal() 
 {
 	n = (p2-p1)^(p3-p1).unit();
 	return n;
 }
 
-vxVector3d vxTriRef::normal() const
+v3 vxTriRef::normal() const
 {
 	return n;
 }

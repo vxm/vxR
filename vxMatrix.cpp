@@ -226,9 +226,9 @@ bool vxMatrix::isSingular() const
 	return true;
 }
 
-vxVector3d vxMatrix::getOrigin() const
+v3 vxMatrix::getOrigin() const
 {
-	return vxVector3d(m_matrix[12],m_matrix[13],m_matrix[14]);
+	return v3(m_matrix[12],m_matrix[13],m_matrix[14]);
 }
 
 scalar &vxMatrix::operator()(unsigned int row, unsigned int col)

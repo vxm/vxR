@@ -18,32 +18,32 @@ void vxPlane::setColor(const vxColor &color)
 }
 
 
-vxVector3d vxPlane::pointA() const
+v3 vxPlane::pointA() const
 {
 	return m_pointA;
 }
 
-void vxPlane::setPointA(const vxVector3d &point1)
+void vxPlane::setPointA(const v3 &point1)
 {
 	m_pointA = point1;
 }
 
-vxVector3d vxPlane::pointB() const
+v3 vxPlane::pointB() const
 {
 	return m_pointB;
 }
 
-void vxPlane::setPointB(const vxVector3d &point2)
+void vxPlane::setPointB(const v3 &point2)
 {
 	m_pointB = point2;
 }
 
-vxVector3d vxPlane::pointC() const
+v3 vxPlane::pointC() const
 {
 	return m_pointC;
 }
 
-void vxPlane::setPointC(const vxVector3d &point3)
+void vxPlane::setPointC(const v3 &point3)
 {
 	m_pointC = point3;
 }
@@ -95,7 +95,7 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 		const auto& p = MU::rectAndYPlane(ray.direction(), m_y);
 		if((ray.origin()-p).follows(ray.direction()))
 		{
-			collide.setNormal(vxVector3d::constY);
+			collide.setNormal(v3::constY);
 			collide.setPosition(p);
 			collide.setU((scalar)0.5);
 			collide.setV((scalar)0.5);

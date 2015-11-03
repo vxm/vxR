@@ -56,7 +56,7 @@ void vxGeometry::setTransform(const vxMatrix &transform)
 	m_transform = transform;
 }
 
-void vxGeometry::addVertexTransformed(const vxVector3d &v3)
+void vxGeometry::addVertexTransformed(const v3 &v3)
 {
 	if(!m_openForEdition)
 	{
@@ -119,28 +119,25 @@ bool vxGeometry::throwRay(const vxRay &ray) const
 int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 #if	DRAW_BB
-	if(m_bb.hasCollision(ray))
+	if(m_bb->hasCollision(ray))
 	{
 		collide.setValid(true);
 		return 1;
 	}
-
 #else
 	if(!m_bb->hasCollision(ray))
 	{
 		return 0;
 	}
 
-	//std::cout << "Visiting triangles " << std::endl;	
-	for(auto it = std::cbegin(m_triangles);
-				it!=std::cend(m_triangles);
-									 ++it)
+	for(auto&& id:m_grid.getList(ray))
 	{
-		if(it->throwRay(ray,collide))
+		auto&& tri = m_triangles[id];
+		if(tri.throwRay(ray,collide))
 		{
 			collide.setColor(vxColor::white);
 			collide.setValid(true);
-			collide.setUV(vxVector2d(0.5,0.5));
+			collide.setUV(v2(0.5,0.5));
 			return 1;
 		}
 	}

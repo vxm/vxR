@@ -24,6 +24,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		direct->setIntensity(node->getFloatAttribute("intensity"));
 		direct->setColor(vxColor::lookup256(node->getColorAttribute("color")));
 		direct->setOrientation(node->getVector3dAttribute("orientation"));
+		direct->setCastShadows(node->getBoolAttribute("castShadows"));
 	}
 
 	for(const auto node: nodeDB->getNodesByType("vxIBLight"))
@@ -54,8 +55,8 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		const auto hAperture = node->getFloatAttribute("horizontalAperture");
 		const auto vAperture = node->getFloatAttribute("verticalAperture");
 
-		m_camera->set(vxVector3d::zero,
-						vxVector3d::constZ,
+		m_camera->set(v3::zero,
+						v3::constZ,
 						fDistance,
 						hAperture,
 						vAperture);
@@ -83,7 +84,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			plyReader->processPLYFile(path);
 			m_grids[0]->addGeometry(geo,
 									pos,
-									vxVector3d(resolution * sf,
+									v3(resolution * sf,
 												resolution * sf,
 												resolution * sf) );
 			m_grids[0]->createGround();

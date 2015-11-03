@@ -16,7 +16,7 @@ class vxGridUnitTest : public vxUnitTest
 {
 public:
 	vxGridUnitTest();
-	vxVector3d testNextVoxel(vxVector3d org, vxVector3d dir);
+	v3 testNextVoxel(v3 org, v3 dir);
 	int testFunction_nextVoxel();
 	static int testGrid();
 };

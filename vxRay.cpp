@@ -5,20 +5,20 @@ using namespace vxCore;
 vxRay::vxRay()
 {}
 
-vxRay::vxRay(const vxVector3d &direction)
+vxRay::vxRay(const v3 &direction)
 	:m_direction(direction.unit())
 {
 }
 
-vxRay::vxRay(const vxVector3d &origin, 
-			 const vxVector3d &direction)
+vxRay::vxRay(const v3 &origin, 
+			 const v3 &direction)
 	:m_direction(direction.unit())
 	,m_origin(origin)
 {
 }
 
 vxRay::vxRay(scalar x, scalar y, scalar z)
-	:m_direction(vxVector3d{x,y,z}.unit())
+	:m_direction(v3{x,y,z}.unit())
 {
 }
 
@@ -34,32 +34,32 @@ vxRay::vxRay(const vxRay &&ray)
 {
 }
 
-vxVector3d vxRay::origin() const
+v3 vxRay::origin() const
 {
 	return m_origin;
 }
 
-void vxRay::setOrigin(const vxVector3d &origin)
+void vxRay::setOrigin(const v3 &origin)
 {
 	m_origin = origin;
 }
 
-vxVector3d& vxRay::direction()
+v3& vxRay::direction()
 {
 	return m_direction;
 }
 
-vxVector3d vxRay::direction() const
+v3 vxRay::direction() const
 {
 	return m_direction;
 }
 
-void vxRay::setDirection(const vxVector3d &direction)
+void vxRay::setDirection(const v3 &direction)
 {
 	m_direction = direction.unit();
 }
 
-scalar vxRay::incidence(const vxVector3d &normal) const
+scalar vxRay::incidence(const v3 &normal) const
 {
 	return cos(m_direction.angle(normal));
 }

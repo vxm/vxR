@@ -4,7 +4,7 @@ vxStandardShader::vxStandardShader()
 {
 }
 
-vxVector3d vxStandardShader::getVector(const vxCollision &collide) const
+v3 vxStandardShader::getVector(const vxCollision &collide) const
 {
 	return collide.normal();
 }

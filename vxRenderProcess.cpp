@@ -175,7 +175,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	vxCollision collision;
 	
 	vxColor pixelColor;
-	const vxVector2d hitCoordinates(
+	const v2 hitCoordinates(
 				itV/(scalar)m_prop->ry(),
 				itH/(scalar)m_prop->rx());
 	
@@ -201,7 +201,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	while(!(itV>=(m_prop->ry())))
 	{
 		vxColor pixelColor;
-		const vxVector2d hitCoordinates(
+		const v2 hitCoordinates(
 					itV/(scalar)m_prop->ry(),
 					itH/(scalar)m_prop->rx());
 		
@@ -218,7 +218,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					const auto& N = collision.normal();
 					for(unsigned int k = 0u;k<m_reflectionSamples;k++)
 					{
-						vxVector3d&& invV = ((N * ray.direction().dot(N)* -2) 
+						v3&& invV = ((N * ray.direction().dot(N)* -2) 
 											 + ray.direction()) ;
 						invV+=MU::getSolidSphereRand3(0.05);
 						const auto&& reflexRay = vxRay(collision.position()

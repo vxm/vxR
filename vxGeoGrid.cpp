@@ -93,3 +93,9 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 	}
 }
 
+voxelMembers vxGeoGrid::getList(const vxRay &ray) const
+{
+	for()
+	return  ;
+}
+

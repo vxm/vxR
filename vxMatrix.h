@@ -53,7 +53,7 @@ public:
 	bool			isSingular() const;
 	static const vxMatrix identity;
 	
-	vxVector3d getOrigin() const;
+	v3 getOrigin() const;
 	
 	//vxMatrix		operator* (scalar, const vxMatrix& right);
 	//std::ostream &		operator<< (std::ostream &os, const vxMatrix&m);

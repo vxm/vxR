@@ -17,10 +17,10 @@ vxColor vxLambert::getColor(const vxRay &ray, const vxCollision &collide) const
 	return MU::remap(m_diffuse.compute(collide), 0.012, 0.75) * lumm;
 }
 
-vxVector3d vxLambert::getVector(const vxCollision &collide) const
+v3 vxLambert::getVector(const vxCollision &collide) const
 {
 	const auto& c = m_diffuse.compute(collide);
-	return vxVector3d(c.r(), c.g(), c.b());
+	return v3(c.r(), c.g(), c.b());
 }
 
 

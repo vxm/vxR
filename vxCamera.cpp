@@ -30,8 +30,8 @@ vxCamera::vxCamera(std::shared_ptr<const ImageProperties> prop)
 	m_ry = (scalar)m_prop->ry();
 }
 
-vxCamera::vxCamera(const vxVector3d &position, 
-					const vxVector3d &orientation, 
+vxCamera::vxCamera(const v3 &position, 
+					const v3 &orientation, 
 					scalar focusD, 
 					scalar apertureH, 
 					scalar apertureV)
@@ -48,8 +48,8 @@ vxCamera::vxCamera(const vxVector3d &position,
 	srand(time(NULL));
 }
 
-void vxCamera::set(const vxVector3d& position, 
-					const vxVector3d& orientation, 
+void vxCamera::set(const v3& position, 
+					const v3& orientation, 
 					scalar focusD, 
 					scalar apertureH, 
 					scalar apertureV) 
@@ -73,7 +73,7 @@ void vxCamera::set(const vxVector3d& position,
 	m_vApTan = tan(-m_verticalAperture/2.0);
 }
 
-vxRay vxCamera::ray(const vxVector2d &coord, vxSampler &sampler) const
+vxRay vxCamera::ray(const v2 &coord, vxSampler &sampler) const
 {
 	const auto& s = sampler.xy();
 	scalar compX = m_hApTan * (( coord[0] * 2.0)-1.0)
@@ -87,13 +87,13 @@ vxRay vxCamera::ray(const vxVector2d &coord, vxSampler &sampler) const
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
 
 	//TODO:read from scene
-//	ret.setOrigin(vxVector3d(-15.0,-21.0,0.0));
-	ret.direction().rotateX( 1.1 * (MU::PI/8.0) );
+//	ret.setOrigin(v3(-15.0,-21.0,0.0));
+	ret.direction().rotateX( 16.1 * (MU::PI/8.0) );
 	ret.direction().setUnit();
 	return ret;
 }
 
-vxRay vxCamera::givemeRandRay(const vxVector2d &coord)
+vxRay vxCamera::givemeRandRay(const v2 &coord)
 {
 	scalar compX = m_hApTan * (( coord.x() * 2.0) -1.0 ) 
 			- 1.0/(scalar)(2.0 * m_prop->rx()) 
@@ -118,12 +118,12 @@ vxRay vxCamera::givemeNextRay(const vxContactBuffer &imagen, scalar ang)
 	return ret;
 }
 
-vxRay vxCamera::givemeRandomRay(const vxVector2d &coord)
+vxRay vxCamera::givemeRandomRay(const v2 &coord)
 {
 	scalar yrv,xrv;
 	xrv=((rand()/scalar(RAND_MAX)))/m_prop->rx();
 	yrv=((rand()/scalar(RAND_MAX)))/m_prop->ry();
-	return vxVector3d{m_hApTan * (((coord.y()+yrv)*2.0)-1.0) ,
+	return v3{m_hApTan * (((coord.y()+yrv)*2.0)-1.0) ,
 						m_vApTan * (((coord.x()+xrv)*2.0)-1.0), 
 						m_focusDistance};
 }

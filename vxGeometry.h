@@ -25,14 +25,14 @@ public:
 
 	vxGeometry();
 
-	std::vector<vxVector3d> m_vertices;
+	std::vector<v3> m_vertices;
 	std::vector<vxTriRef> m_triangles;
-	std::vector<vxVector3d> m_normals;
+	std::vector<v3> m_normals;
 
 	void open();
 	void close();
 	
-	void addVertexTransformed(const vxVector3d &v3);
+	void addVertexTransformed(const v3 &v3);
 	void addTriangle(unsigned long a,
 					 unsigned long b,
 					 unsigned long c);

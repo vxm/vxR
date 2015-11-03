@@ -8,28 +8,28 @@ namespace vxCore{
 class vxRay
 {
 private:
-	vxVector3d m_direction{1.0,0.0,0.0};
-	vxVector3d m_origin{0.0,0.0,0.0};
+	v3 m_direction{1.0,0.0,0.0};
+	v3 m_origin{0.0,0.0,0.0};
 
 public:
 	vxRay ();
-	vxRay (const vxVector3d& direction);
-	vxRay (const vxVector3d& origin, 
-			  const vxVector3d& direction);
+	vxRay (const v3& direction);
+	vxRay (const v3& origin, 
+			  const v3& direction);
 	vxRay (scalar x, scalar y, scalar z);
 	vxRay (const vxRay&& ray);
 	vxRay (const vxRay& ray);
 	~vxRay(){}
 
-	vxVector3d origin() const;
-	void setOrigin(const vxVector3d &origin);
+	v3 origin() const;
+	void setOrigin(const v3 &origin);
 
 
-	vxVector3d direction() const;
-	vxVector3d& direction();
-	void setDirection(const vxVector3d &direction);
+	v3 direction() const;
+	v3& direction();
+	void setDirection(const v3 &direction);
 
-	scalar incidence(const vxVector3d &normal) const;
+	scalar incidence(const v3 &normal) const;
 
 	friend std::ostream& operator<<(std::ostream &os, const vxRay& ray)
 	{

@@ -6,23 +6,23 @@
 namespace vxCore {
 
 
-class vxPoint:public vxVector3d
+class vxPoint:public v3
 {
 public:
 	
 	vxPoint()
-		:vxVector3d{}
+		:v3{}
 	{
 	}
 	
 	vxPoint(scalar x,
 			scalar y,
 			scalar z)
-		:vxVector3d{x,y,z}
+		:v3{x,y,z}
 	{
 	}
 
-	void operator=(const vxVector3d &otro)
+	void operator=(const v3 &otro)
 	{
 		set(otro.x(),otro.y(),otro.z());
 	}

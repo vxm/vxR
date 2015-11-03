@@ -2,6 +2,16 @@
 namespace vxCore 
 {
 
+bool vxLight::getCastShadows() const
+{
+	return m_castShadows;
+}
+
+void vxLight::setCastShadows(bool castShadows)
+{
+	m_castShadows = castShadows;
+}
+
 vxLight::vxLight()
 {
 }
@@ -12,7 +22,7 @@ vxLight::vxLight(scalar intensity, const vxColor &color)
 {
 }
 
-vxLight::vxLight(const vxVector3d &position) 
+vxLight::vxLight(const v3 &position) 
 	:m_position(position)
 {
 }
@@ -52,7 +62,7 @@ void vxLight::setPosition(scalar x, scalar y, scalar z)
 	m_position.set(x,y,z);
 }
 
-void vxLight::set(scalar intensity, const vxVector3d &color) 
+void vxLight::set(scalar intensity, const v3 &color) 
 {
 	m_intensity = intensity;
 	m_color = color;
@@ -68,19 +78,19 @@ void vxLight::setColor(const vxColor &color)
 	m_color = color;
 }
 
-vxVector3d vxLight::getLightRay(const vxVector3d &position) const
+v3 vxLight::getLightRay(const v3 &position) const
 {
 	return m_position-position;
 }
 
 scalar vxLight::lightRatio(const vxRay &ray,
-							const vxVector3d &lightDirection) const
+							const v3 &lightDirection) const
 {
 	scalar angl = ray.incidence(lightDirection);
 	return angl;
 }
 
-void vxLight::setPosition(const vxVector3d &position)
+void vxLight::setPosition(const v3 &position)
 {
 	m_position.set(position);
 }
@@ -95,7 +105,7 @@ vxPointLight::vxPointLight(scalar instensity, const vxColor &col)
 {
 }
 
-vxVector3d vxPointLight::getLightRay(const vxVector3d &position) const
+v3 vxPointLight::getLightRay(const v3 &position) const
 {
 	return vxLight::getLightRay(position);
 }
@@ -105,8 +115,8 @@ vxSpotLight::vxSpotLight()
 {
 }
 
-vxSpotLight::vxSpotLight(const vxVector3d &position, 
-						 const vxVector3d &orientation, 
+vxSpotLight::vxSpotLight(const v3 &position, 
+						 const v3 &orientation, 
 						 scalar maxAngle, 
 						 scalar minAngle)
 	: vxLight(position)
@@ -116,8 +126,8 @@ vxSpotLight::vxSpotLight(const vxVector3d &position,
 {
 }
 
-void vxSpotLight::set(const vxVector3d &position, 
-					  const vxVector3d &orientation, 
+void vxSpotLight::set(const v3 &position, 
+					  const v3 &orientation, 
 					  scalar maxAngle, 
 					  scalar minAngle) 
 {
@@ -127,7 +137,7 @@ void vxSpotLight::set(const vxVector3d &position,
 	m_minAngle=minAngle;
 }
 
-void vxSpotLight::setOrientation(const vxVector3d &orientation) 
+void vxSpotLight::setOrientation(const v3 &orientation) 
 {
 	m_orientation.set(orientation);
 }
@@ -142,13 +152,13 @@ vxDirectLight::vxDirectLight(scalar instensity, const vxColor &col)
 {}
 
 
-vxDirectLight::vxDirectLight(const vxVector3d &orientation, bool bidirectional) 
+vxDirectLight::vxDirectLight(const v3 &orientation, bool bidirectional) 
 	: m_orientation(orientation)
 	, m_biDirectional(bidirectional)
 {
 }
 
-void vxDirectLight::set(const vxVector3d &orientation, bool bidirectional) 
+void vxDirectLight::set(const v3 &orientation, bool bidirectional) 
 {
 	m_orientation.set(orientation.unit());
 	m_biDirectional=bidirectional;
@@ -203,7 +213,7 @@ vxIBLight::vxIBLight(scalar instensity, const std::string path)
 }
 
 
-vxVector3d vxIBLight::getLightRay(const vxVector3d &position) const
+v3 vxIBLight::getLightRay(const v3 &position) const
 {
 	return (m_position-position);
 }
@@ -241,15 +251,14 @@ vxColor vxDirectLight::acummulationLight(const vxRay &, const vxCollision &colli
 	// compute all sort of shadows.
 	vxColor ret{vxColor::black};
 	
-	
 	if(f.direction().follows(m_orientation))
 	{
 		const auto&& ratio = lightRatio(f, m_orientation.inverted());
 		auto lumm = m_intensity * ratio;
-		//auto org = vxVector3d(0, 0, 0);
+		//auto org = v3(0, 0, 0);
 		const vxRay ff(cPnt, m_orientation.inverted());
 		const auto&& scn = m_scene.lock();
-		if (!scn->throwRay(ff))
+		if (!m_castShadows || !scn->throwRay(ff))
 		{
 			ret = color().gained(lumm);
 		}
@@ -301,7 +310,7 @@ vxAmbientLight::vxAmbientLight(scalar intensity, const vxColor &color)
 {
 }
 
-vxVector3d vxAmbientLight::getLightRay(const vxVector3d &position) const
+v3 vxAmbientLight::getLightRay(const v3 &position) const
 {
 	return position.inverted();
 }

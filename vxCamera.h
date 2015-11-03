@@ -21,8 +21,8 @@ class vxCamera
 
 private:
 
-	vxVector3d m_position{0.0, 0.0, 0.0};
-	vxVector3d m_orientation{0.0, 0.0, 1.0};
+	v3 m_position{0.0, 0.0, 0.0};
+	v3 m_orientation{0.0, 0.0, 1.0};
 
 	scalar m_focusDistance = {1.0};
 	scalar m_horizontalAperture = {1.42};
@@ -39,27 +39,27 @@ private:
 public:
 	
 	vxCamera(std::shared_ptr<const ImageProperties> prop);
-	vxCamera(const vxVector3d &position,
-				const vxVector3d &orientation,
+	vxCamera(const v3 &position,
+				const v3 &orientation,
 				scalar focusD,
 				scalar apertureH,
 				scalar apertureV);
 
-	void set(const vxVector3d &position, 
-			 const vxVector3d &orientation, 
+	void set(const v3 &position, 
+			 const v3 &orientation, 
 			 scalar focusD = 1.0, 
 			 scalar apertureH = 0.0, 
 			 scalar apertureV = 0.0);
 	
-	vxRay ray(const vxVector2d &coord, vxSampler &sampler) const;
+	vxRay ray(const v2 &coord, vxSampler &sampler) const;
 	
-	vxRay givemeRandRay(const vxVector2d &coord);
+	vxRay givemeRandRay(const v2 &coord);
 
 	void next(unsigned int skip = 1u);
 
 	vxRay givemeNextRay(const vxContactBuffer &imagen, scalar ang);
 
-	vxRay givemeRandomRay(const vxVector2d &coord);
+	vxRay givemeRandomRay(const v2 &coord);
 	
 	std::shared_ptr<const ImageProperties> prop() const;
 	

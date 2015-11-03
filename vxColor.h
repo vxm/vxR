@@ -34,8 +34,8 @@ public:
 			 const scalar a);
 	
 	vxColor (const vxColor& other);
-	vxColor (const vxVector3d& other);
-	vxColor& operator=(const vxVector3d &otro);
+	vxColor (const v3& other);
+	vxColor& operator=(const v3 &otro);
 	
 	static vxColor lookup(const vxColor &col);
 	static vxColor lookup(const scalar r,

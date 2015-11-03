@@ -23,7 +23,7 @@ class vxBoundingBox: public std::enable_shared_from_this<vxBoundingBox>
 	scalar m_maxy;
 	scalar m_maxz;
 
-	vxVector3d m_scale;
+	v3 m_scale;
 
 public:
 
@@ -31,7 +31,7 @@ public:
 
 	void close();
 	
-	void extend(const vxVector3d &limit);
+	void extend(const v3 &limit);
 
 	scalar minX() const;
 	void setMinX(scalar minx);
@@ -46,7 +46,7 @@ public:
 	scalar maxZ() const;
 	void setMaxZ(scalar maxz);
 
-	bool contains(const vxVector3d &v) const;
+	bool contains(const v3 &v) const;
 	
 	
 	//renderable interface

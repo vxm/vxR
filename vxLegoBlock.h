@@ -12,13 +12,13 @@ namespace vxCore{
 class vxLegoBlockInGrid
 {
 private:
-	vxVector3d m_pos;
+	v3 m_pos;
 	scalar m_size;
 public:
 	vxLegoBlockInGrid()
 	{}
-	vxVector3d position() const;
-	void setPosition(const vxVector3d &value);
+	v3 position() const;
+	void setPosition(const v3 &value);
 	scalar size() const;
 	void setSize(scalar value);
 };
@@ -32,7 +32,7 @@ private:
 public:
 	vxLegoBlock();
 
-	std::shared_ptr<vxLegoBlock> at(const vxVector3d &pos, scalar size)
+	std::shared_ptr<vxLegoBlock> at(const v3 &pos, scalar size)
 	{
 		m_instance.setPosition(pos);
 		m_instance.setSize(size);
@@ -41,7 +41,7 @@ public:
 	
 	int throwRay(const vxRay &ray, vxCollision &collide) const
 	{
-		const vxVector3d p = m_instance.position() - ray.origin();
+		const v3 p = m_instance.position() - ray.origin();
 		const scalar mSize = m_instance.size()/2;
 		
 		scalar minX = p.x() - mSize;
@@ -58,9 +58,9 @@ public:
 			&& std::isless(hitX.y(),maxY) && std::isgreater(hitX.y(),minY))
 		{
 			collide.setValid(true);
-			collide.setNormal(bMax ? vxVector3d::constX : vxVector3d::constMinusX);
+			collide.setNormal(bMax ? v3::constX : v3::constMinusX);
 			collide.setPosition(hitX);
-			collide.setUV(vxVector2d{maxZ - hitX.z(), maxY - hitX.y()});
+			collide.setUV(v2{maxZ - hitX.z(), maxY - hitX.y()});
 			return 1;
 		}
 
@@ -70,9 +70,9 @@ public:
 			&&	std::isless(hitY.z(),maxZ) && std::isgreater(hitY.z(),minZ))
 		{
 			collide.setValid(true);
-			collide.setNormal(bMax ? vxVector3d::constY : vxVector3d::constMinusY);
+			collide.setNormal(bMax ? v3::constY : v3::constMinusY);
 			collide.setPosition(hitY);
-			collide.setUV(vxVector2d{maxX - hitY.x(), maxZ - hitY.z()});
+			collide.setUV(v2{maxX - hitY.x(), maxZ - hitY.z()});
 			return 1;
 		}
 		
@@ -82,9 +82,9 @@ public:
 			&& std::isless(hitZ.y(),maxY) && std::isgreater(hitZ.y(),minY))
 		{
 			collide.setValid(true);
-			collide.setNormal(bMax ? vxVector3d::constZ : vxVector3d::constMinusZ);
+			collide.setNormal(bMax ? v3::constZ : v3::constMinusZ);
 			collide.setPosition(hitZ);
-			collide.setUV(vxVector2d{maxX - hitZ.x(), maxY - hitZ.y()});
+			collide.setUV(v2{maxX - hitZ.x(), maxY - hitZ.y()});
 			return 1;
 		}
 		

@@ -65,8 +65,8 @@ public:
 		long double ld;
 		std::string str;
 		std::shared_ptr<vxMatrix> mat;
-		std::shared_ptr<vxVector3d> v3d;
-		std::shared_ptr<vxVector2d> v2d;
+		std::shared_ptr<v3> v3d;
+		std::shared_ptr<v2> v2d;
 	
 	}value;
 
@@ -445,13 +445,13 @@ public:
 	{
 	}
 
-	vxValue(std::shared_ptr<vxVector2d> v2d)
+	vxValue(std::shared_ptr<v2> v2d)
 		: valueType{vxValueType::kVector2d} 
 	{
 		value.v2d = v2d;
 	}
 
-	vxValue(std::shared_ptr<vxVector3d> v3d)
+	vxValue(std::shared_ptr<v3> v3d)
 		: valueType{vxValueType::kVector3d} 
 	{
 		value.v3d = v3d;
@@ -529,13 +529,13 @@ public:
 		value.ld = other;
 	}
 	
-	void setVector2d(std::shared_ptr<vxVector2d> other)
+	void setVector2d(std::shared_ptr<v2> other)
 	{
 		valueType = vxValueType::kVector2d;
 		value.v2d = other;
 	}
 	
-	void setVector3d(std::shared_ptr<vxVector3d> other)
+	void setVector3d(std::shared_ptr<v3> other)
 	{
 		valueType = vxValueType::kVector3d;
 		value.v3d = other;
@@ -608,12 +608,12 @@ public:
 		return value.ld;
 	}
 	
-	std::shared_ptr<vxVector2d> asVector2d() const
+	std::shared_ptr<v2> asVector2d() const
 	{
 		return value.v2d;
 	}
 	
-	std::shared_ptr<vxVector3d> asVector3d() const
+	std::shared_ptr<v3> asVector3d() const
 	{
 		return value.v3d;
 	}

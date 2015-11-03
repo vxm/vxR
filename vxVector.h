@@ -212,5 +212,9 @@ return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 	}
 };
 
+
+using v2 = vxVector2d;
+using v3 = vxVector3d;
+
 }
 #endif

@@ -14,21 +14,21 @@ class vxTriRef
 {
 	
 public:
-	vxTriRef(const vxVector3d& a,
-			 const vxVector3d& b,
-			 const vxVector3d& c);
+	vxTriRef(const v3& a,
+			 const v3& b,
+			 const v3& c);
 	
 	vxTriRef(vxTriRef&& other);
 	
-	const vxVector3d &p1;
-	const vxVector3d &p2;
-	const vxVector3d &p3;
-	vxVector3d n;
+	const v3 &p1;
+	const v3 &p2;
+	const v3 &p3;
+	v3 n;
 	scalar ah{0.0};
 	scalar &computeArea();
 	
-	vxVector3d &computeNormal();
-	vxVector3d normal() const;
+	v3 &computeNormal();
+	v3 normal() const;
 
 	scalar area() const;
 	

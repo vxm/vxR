@@ -9,7 +9,7 @@
 
 namespace vxCore {
 
-static std::vector<vxVector2d> uniformScatterFree;
+static std::vector<v2> uniformScatterFree;
 
 class vxSampler
 {
@@ -33,7 +33,7 @@ public:
 	scalar x() const;
 	scalar y() const;
 	
-	vxVector2d& xy();
+	v2& xy();
 	void setSamples(unsigned int samples);
 	void resetIterator();
 	bool random() const;

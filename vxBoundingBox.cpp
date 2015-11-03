@@ -13,7 +13,7 @@ void vxBoundingBox::close()
 				 (scalar)1.0/fabs(m_maxz - m_minz));
 }
 
-void vxBoundingBox::extend(const vxVector3d &limit)
+void vxBoundingBox::extend(const v3 &limit)
 {
 	if(!m_init)
 	{
@@ -93,7 +93,7 @@ void vxBoundingBox::setMaxZ(scalar maxz)
 	m_maxz = maxz;
 }
 
-bool vxBoundingBox::contains(const vxVector3d &v) const
+bool vxBoundingBox::contains(const v3 &v) const
 {
 	return v.x() >= m_minx
 			&&  v.y() >= m_miny

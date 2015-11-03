@@ -92,7 +92,7 @@ vxColor vxNode::getColorAttribute(const std::__cxx11::string attrName)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-vxVector3d vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
+v3 vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -103,12 +103,12 @@ vxVector3d vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
 	}
 
 	std::cerr << "Node: Vector3d attribute " << attrName << " not found in node" << std::endl;
-	return vxVector3d::zero;
+	return v3::zero;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-vxVector2d vxNode::getVector2dAttribute(const std::__cxx11::string attrName)
+v2 vxNode::getVector2dAttribute(const std::__cxx11::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -119,7 +119,7 @@ vxVector2d vxNode::getVector2dAttribute(const std::__cxx11::string attrName)
 	}
 	
 	std::cerr << "Node: Vector2d attribute " << attrName << " not found in node" << std::endl;
-	return vxVector2d::zero;
+	return v2::zero;
 }
 
 // It will retrieve the matching vector3d attribute and will cast

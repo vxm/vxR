@@ -16,8 +16,9 @@ class vxLight
 {
 protected:
 
+	bool m_castShadows{true};
 	//not every light needs a position
-	vxVector3d m_position	{0.0,0.0,0.0};
+	v3 m_position	{0.0,0.0,0.0};
 	scalar m_intensity		{1.0};
 	vxColor m_color			{vxColor::white};
 	scalar m_radius			{1.0};
@@ -28,18 +29,18 @@ public:
 
 	vxLight();
 	vxLight(scalar intensity, const vxColor &color);
-	vxLight(const vxVector3d &position);
+	vxLight(const v3 &position);
 	vxLight(scalar x, scalar y, scalar z );
 
 	void setScene(std::weak_ptr<vxScene> scene);
-	void setPosition(const vxVector3d &position);
+	void setPosition(const v3 &position);
 	void setPosition(scalar x, scalar y, scalar z);
 
-	void set(scalar intensity, const vxVector3d &color);
+	void set(scalar intensity, const v3 &color);
 	void setIntensity(scalar intensity);
 	void setColor(const vxColor &color);
 
-	vxVector3d position() const 
+	v3 position() const 
 	{
 		return m_position;
 	}
@@ -47,9 +48,9 @@ public:
 	scalar intensity() const {return m_intensity;}
 	vxColor color() const {return m_color;}
 
-	virtual vxVector3d getLightRay(const vxVector3d &position) const;
+	virtual v3 getLightRay(const v3 &position) const;
 	virtual scalar lightRatio(const vxRay &ray,
-					const vxVector3d &lightDirection) const;
+					const v3 &lightDirection) const;
 
 	virtual vxColor acummulationLight(const vxRay &, const vxCollision &collision) const;
 
@@ -58,25 +59,27 @@ public:
 
 	unsigned int samples() const;
 	void setSamples(int samples);
+	bool getCastShadows() const;
+	void setCastShadows(bool castShadows);
 };
 
 
 
 class vxSpotLight:public vxLight
 {
-	private:
-		vxVector3d m_orientation;
+private:
+	v3 m_orientation;
 
 	scalar m_maxAngle=1.3;
 	scalar m_minAngle=1;
 
  public:
 	vxSpotLight();
-	vxSpotLight(const vxVector3d &position,const vxVector3d &orientation,scalar maxAngle,scalar minAngle);
+	vxSpotLight(const v3 &position,const v3 &orientation,scalar maxAngle,scalar minAngle);
 
-	void set(const vxVector3d &position,const vxVector3d &orientation,scalar maxAngle,scalar minAngle);
+	void set(const v3 &position,const v3 &orientation,scalar maxAngle,scalar minAngle);
 
-	void setOrientation(const vxVector3d &orientation);
+	void setOrientation(const v3 &orientation);
 	void setMin(scalar maxAngle) {m_maxAngle=maxAngle;}
 	void setMax(scalar minAngle) {m_minAngle=minAngle;}
 
@@ -92,27 +95,27 @@ class vxSpotLight:public vxLight
 
 	// vxLight interface
 	public:
-	vxVector3d getLightRay(const vxVector3d &position) const override;
+	v3 getLightRay(const v3 &position) const override;
  };
 
 
 class vxDirectLight : public vxLight
 {
 protected:
-	vxVector3d m_orientation;
+	v3 m_orientation;
 	bool m_biDirectional;
 
 public:
 	vxDirectLight();
 	vxDirectLight(scalar instensity, const vxColor &col);
 	
-	vxDirectLight(const vxVector3d &orientation,
+	vxDirectLight(const v3 &orientation,
 				  bool bidirectional);
 	
 	vxColor acummulationLight(const vxRay &, const vxCollision &collision) const override;
 	
-	void set(const vxVector3d &orientation,bool bidirectional);
-	void setOrientation (const vxVector3d &orientation) {m_orientation.set(orientation);}
+	void set(const v3 &orientation,bool bidirectional);
+	void setOrientation (const v3 &orientation) {m_orientation.set(orientation);}
 	void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
 	
 };
@@ -131,7 +134,7 @@ public:
 	vxIBLight(scalar instensity, const std::string path);
 	
 	// vxLight interface
-	vxVector3d getLightRay(const vxVector3d &position) const override;
+	v3 getLightRay(const v3 &position) const override;
 	vxColor acummulationLight(const vxRay &, 
 							  const vxCollision &collision) const override;
 
@@ -151,7 +154,7 @@ public:
 	
 	// vxLight interface
 	public:
-	vxVector3d getLightRay(const vxVector3d &position) const override;
+	v3 getLightRay(const v3 &position) const override;
 	vxColor acummulationLight(const vxRay &, const vxCollision &) const override;
 };
  

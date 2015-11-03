@@ -6,9 +6,20 @@ node
 name = "renderSettings"
 type = "vxRenderSettings"
 active = "true"
+    resolution = 683 384
+    pixelSamples = 1
+    reflectionSamples = 1
+    numThreads = -1
+}
+
+node
+{
+name = "renderSettings"
+type = "vxRenderSettings"
+active = "false"
     resolution = 1366 768
     pixelSamples = 4
-    reflectionSamples = 1
+    reflectionSamples = 2
     numThreads = -1
 }
 
@@ -84,7 +95,7 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 3.25 -0.75 8 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.25 -0.75 12 1]
     filePath = "/home/john/Downloads/torus.ply"
 }
 
@@ -113,7 +124,7 @@ node
 {
 name = "environment"
 type = "vxIBLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
     intensity = 13.0
@@ -135,6 +146,7 @@ active = "true"
     color = 255 230 240
     orientation = 5.0 -8.0 -8.0
     samples = 1
+    castShadows = "false"
 }
 
 node

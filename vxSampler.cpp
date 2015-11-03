@@ -2,30 +2,30 @@
 
 using namespace vxCore;
 
-static std::vector<vxVector2d> uniformScatter1
+static std::vector<v2> uniformScatter1
 {
-	vxVector2d(0.5, 0.5)
+	v2(0.5, 0.5)
 };
 
-static std::vector<vxVector2d> uniformScatter2
+static std::vector<v2> uniformScatter2
 {
-	vxVector2d(0.25, 0.75),
-	vxVector2d(0.75, 0.25),
+	v2(0.25, 0.75),
+	v2(0.75, 0.25),
 };
 
-static std::vector<vxVector2d> uniformScatter3
+static std::vector<v2> uniformScatter3
 {
-	vxVector2d(0.5, 0.33),
-	vxVector2d(0.31, 0.69),
-	vxVector2d(0.66, 0.62)
+	v2(0.5, 0.33),
+	v2(0.31, 0.69),
+	v2(0.66, 0.62)
 };
 
-static std::vector<vxVector2d> uniformScatter4
+static std::vector<v2> uniformScatter4
 {
-	vxVector2d(0.25, 0.25),
-	vxVector2d(0.75, 0.75),
-	vxVector2d(0.25, 0.75),
-	vxVector2d(0.75, 0.25),
+	v2(0.25, 0.25),
+	v2(0.75, 0.75),
+	v2(0.25, 0.75),
+	v2(0.75, 0.25),
 };
 
 void vxSampler::populateFreeSamples()
@@ -35,7 +35,7 @@ void vxSampler::populateFreeSamples()
 	
 	for(int i=0;i<50;i++)
 	{
-		uniformScatterFree.push_back(vxVector2d(
+		uniformScatterFree.push_back(v2(
 										 MU::getRand(1.0),
 										 MU::getRand(1.0)));
 	}
@@ -76,7 +76,7 @@ scalar vxSampler::y() const
 	return MU::getRand(1.0);
 }
 
-vxVector2d &vxSampler::xy()
+v2 &vxSampler::xy()
 {
 	m_k>=m_nSamples ? m_k=0 : m_k++;
 	switch(m_nSamples)

@@ -15,7 +15,7 @@ class vxStandardShader : public vxShader
 	public:
 
 		virtual vxColor getColor(const vxRay &, const vxCollision &collide) const override;
-		virtual vxVector3d getVector(const vxCollision &collide) const override;
+		virtual v3 getVector(const vxCollision &collide) const override;
 		virtual vxColor getLightLoop(const vxRay &, const vxCollision &collision) const override;
 
 		bool hasDiffuseMap() const;
