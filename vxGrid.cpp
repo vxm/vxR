@@ -250,7 +250,7 @@ void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
 										const vxVector3d &offset,
 										const vxVector3d &scaleFactor)
 {
-	for(const auto&& tri: geo->m_triangles)
+	for(auto&& tri: geo->m_triangles)
 	{
 		{
 			const auto&& p{(tri.p1*scaleFactor)+offset};
