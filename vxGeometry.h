@@ -17,7 +17,7 @@ class vxGeometry
 {
 	std::string m_constructionPath;
 	vxMatrix m_transform;
-	vxBoundingBox m_bb;
+	std::shared_ptr<vxBoundingBox> m_bb;
 	vxGeoGrid m_grid;
 	std::atomic_bool m_openForEdition{false};
 	

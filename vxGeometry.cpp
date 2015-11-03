@@ -7,7 +7,7 @@ using namespace vxCore;
 
 vxGeometry::vxGeometry()
 {
-	
+	m_bb = std::make_shared<vxBoundingBox>();
 }
 
 void vxGeometry::open()
@@ -18,12 +18,13 @@ void vxGeometry::open()
 void vxGeometry::close()
 {
 	unsigned long triangleID;
+	m_grid.setBb(m_bb);
 	for(auto &&tref:m_triangles)
 	{
 		tref.computeNormal();
 		tref.computeArea();
 
-		m_grid.locateTriangle(tref, triangleID);
+		m_grid.locateAndRegister(tref, triangleID);
 
 		triangleID++;
 	}
@@ -37,7 +38,7 @@ void vxGeometry::updateAccelerationStuctures()
 {
 	
 	
-	m_bb.close();
+	m_bb->close();
 }
 
 std::string vxGeometry::constructionPath() const
@@ -65,7 +66,7 @@ void vxGeometry::addVertexTransformed(const vxVector3d &v3)
 	
 	const auto &orig = m_transform.getOrigin();
 	const auto &newPoint = v3+orig;
-	m_bb.extend(newPoint);
+	m_bb->extend(newPoint);
 	//TODO:push_back ?
 	m_vertices.push_back(newPoint);
 }
@@ -96,7 +97,7 @@ unsigned long vxGeometry::triangleCount() const
 
 bool vxGeometry::throwRay(const vxRay &ray) const
 {
-	if(!m_bb.hasCollision(ray))
+	if(!m_bb->hasCollision(ray))
 	{
 		return 0;
 	}
@@ -125,7 +126,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 	}
 
 #else
-	if(!m_bb.hasCollision(ray))
+	if(!m_bb->hasCollision(ray))
 	{
 		return 0;
 	}
@@ -149,7 +150,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 
 bool vxGeometry::hasCollision(const vxRay &ray) const
 {
-	if(!m_bb.hasCollision(ray))
+	if(!m_bb->hasCollision(ray))
 	{
 		return false;
 	}
