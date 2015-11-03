@@ -18,7 +18,6 @@ class vxGeoGrid
 	unsigned int m_rz = {5u};
 	
 public:
-	
 	vxGeoGrid();
 	
 	std::vector<voxelMembers> m_members;
@@ -34,6 +33,8 @@ public:
 
 	unsigned int lookupVoxel(const scalar a, const scalar b, const scalar c);
 	void locateAndRegister(const vxTriRef &tri, unsigned long triangleID);
+	
+	voxelMembers getList(const vxRay &ray) const;
 };
 
 }
