@@ -113,7 +113,7 @@ public:
 	scalar& operator[](const unsigned int);
 	scalar operator[](const unsigned int) const;
 
-	scalar dot(const vxVector3d& v) const;
+	scalar dot(const vxVector3d &v) const;
 	vxVector3d cross(const vxVector3d& v) const;
 	vxVector3d inverted() const;
 	axis mainAxis() const;
