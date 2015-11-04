@@ -17,7 +17,7 @@ void vxGeometry::open()
 
 void vxGeometry::close()
 {
-	unsigned long triangleID;
+	auto triangleID = 0ul;
 	m_grid.setBb(m_bb);
 	for(auto &&tref:m_triangles)
 	{
@@ -25,7 +25,6 @@ void vxGeometry::close()
 		tref.computeArea();
 
 		m_grid.locateAndRegister(tref, triangleID);
-
 		triangleID++;
 	}
 	
@@ -130,7 +129,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 		return 0;
 	}
 
-	for(auto&& id:m_grid.getList(ray))
+	for(auto&& id:*m_grid.getList(ray))
 	{
 		auto&& tri = m_triangles[id];
 		if(tri.throwRay(ray,collide))

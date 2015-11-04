@@ -10,6 +10,7 @@ namespace vxCore {
 
 using listRef = std::shared_ptr<std::vector<unsigned long>>;
 
+
 class vxGeoGrid
 {
 	std::shared_ptr<vxBoundingBox> m_bb;
@@ -18,9 +19,11 @@ class vxGeoGrid
 	unsigned int m_rz = {5u};
 	
 public:
+	static listRef emptyListRef;
+	
 	vxGeoGrid();
 	
-	std::vector<voxelMembers> m_members;
+	std::vector<listRef> m_members;
 	std::shared_ptr<vxBoundingBox> bb() const;
 	void setBb(const std::shared_ptr<vxBoundingBox> &bb);
 	
@@ -34,7 +37,7 @@ public:
 	unsigned int lookupVoxel(const scalar a, const scalar b, const scalar c);
 	void locateAndRegister(const vxTriRef &tri, unsigned long triangleID);
 	
-	voxelMembers getList(const vxRay &ray) const;
+	listRef getList(const vxRay &ray) const;
 };
 
 }

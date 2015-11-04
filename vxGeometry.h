@@ -1,6 +1,7 @@
 #ifndef VXGEOMETRY_H
 #define VXGEOMETRY_H
 
+#include <typeinfo>
 #include <vector>
 #include <atomic>
 #include "vxVector.h"

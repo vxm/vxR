@@ -91,13 +91,24 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 
 	for(auto&& index:indices)
 	{
-		m_members[index].push_back(triangleID);
+		if(m_members[index]==nullptr)
+		{
+			m_members[index] = std::make_shared<std::vector<unsigned long>>();
+		}
+		
+		m_members[index]->push_back(triangleID);
 	}
 }
 
-voxelMembers vxGeoGrid::getList(const vxRay &ray) const
+listRef vxGeoGrid::getList(const vxRay &ray) const
 {
-	for()
-	return  ;
+	//std::vector<unsigned long> r{1,2,3,4,5,6,7,8};
+//	std::cout << "Accessing elements" << std::endl;
+
+	auto member{87ul};
+	if(m_members[member]==nullptr)
+		return vxGeoGrid::emptyListRef;
+	
+	return m_members[member];
 }
 
