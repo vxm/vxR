@@ -118,18 +118,17 @@ bool vxGeometry::throwRay(const vxRay &ray) const
 int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 #if	DRAW_BB
-	if(m_bb->hasCollision(ray))
+	if(m_bb->throwRay(ray, collide))
 	{
-		collide.setValid(true);
 		return 1;
 	}
 #else
-	if(!m_bb->hasCollision(ray))
+	if(!m_bb->throwRay(ray, collide))
 	{
 		return 0;
 	}
 
-	for(auto&& id:*m_grid.getList(ray))
+	for(auto&& id:*m_grid.getList(ray, collide.position()))
 	{
 		auto&& tri = m_triangles[id];
 		if(tri.throwRay(ray,collide))

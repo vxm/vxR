@@ -103,39 +103,93 @@ bool vxBoundingBox::contains(const v3 &v) const
 			&&  v.z() <= m_maxz;
 }
 
-bool vxBoundingBox::hasCollision(const vxRay &ray) const
+int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-//	if(contains(ray.origin()))
-//	{
-//		return true;
-//	}
 	auto&& d = ray.direction();
 
-	auto t = ((std::signbit(m_maxx) ? m_maxx : m_minx) - d.x()) / (-d.x());
+	auto t = ((d.xSign() ? m_maxx : m_minx) - d.x()) / -d.x();
 	auto y = t * (-d.y()) + d.y();
-	auto z = t * (-d.z()) + d.z();
-	
-	if( y<=m_maxy && y>=m_miny && z<=m_maxz && z>=m_minz)
+	if( y<=m_maxy && y>=m_miny)
 	{
-		return true;
+		auto z = t * (-d.z()) + d.z();
+		if(z<=m_maxz && z>=m_minz)
+		{
+			collide.setNormal(d.xSign() ? v3::constX : v3::constMinusX);
+			collide.setValid();
+			collide.setUV(v2(.5,.5));
+			collide.setColor(vxColor::white);
+			return 1;
+		}
 	}
-
-	t = ((std::signbit(m_maxy) ? m_maxy : m_miny) - d.y()) / (-d.y());
+	
+	t = ((d.ySign() ? m_maxy : m_miny) - d.y()) / -d.y();
 	auto x = t * (-d.x()) + d.x();
-	z = t * (-d.z()) + d.z();
-	
-	if(x<=m_maxx && x>=m_minx && z<=m_maxz && z>=m_minz)
+	if(x<=m_maxx && x>=m_minx)
 	{
-		return true;
+		auto z = t * (-d.z()) + d.z();
+		if(z<=m_maxz && z>=m_minz)
+		{
+			collide.setNormal(d.ySign() ? v3::constY : v3::constMinusY);
+			collide.setValid();
+			collide.setUV(v2(.5,.5));
+			collide.setColor(vxColor::white);
+			return 1;
+		}
 	}
 
-	t = ((std::signbit(m_maxz) ? m_maxz : m_minz) - d.z()) / (-d.z());
+	t = ((d.zSign() ? m_maxz : m_minz) - d.z()) / -d.z();
 	x = t * (-d.x()) + d.x();
-	y = t * (-d.y()) + d.y();
-	
-	if(x<=m_maxx && x>=m_minx && y<=m_maxy && y>=m_miny)
+	if(x<=m_maxx && x>=m_minx)
 	{
-		return true;
+		y = t * (-d.y()) + d.y();
+		if(y<=m_maxy && y>=m_miny)
+		{
+			collide.setNormal(d.zSign() ? v3::constZ : v3::constMinusZ);
+			collide.setValid();
+			collide.setUV(v2(.5,.5));
+			collide.setColor(vxColor::white);
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+bool vxBoundingBox::hasCollision(const vxRay &ray) const
+{
+	auto&& d = ray.direction();
+
+	auto t = ((d.xSign() ? m_maxx : m_minx) - d.x()) / -d.x();
+	auto y = t * (-d.y()) + d.y();
+	if( y<=m_maxy && y>=m_miny)
+	{
+		auto z = t * (-d.z()) + d.z();
+		if(z<=m_maxz && z>=m_minz)
+		{
+			return true;
+		}
+	}
+	
+	t = ((d.ySign() ? m_maxy : m_miny) - d.y()) / -d.y();
+	auto x = t * (-d.x()) + d.x();
+	if(x<=m_maxx && x>=m_minx)
+	{
+		auto z = t * (-d.z()) + d.z();
+		if(z<=m_maxz && z>=m_minz)
+		{
+			return true;
+		}
+	}
+
+	t = ((d.zSign() ? m_maxz : m_minz) - d.z()) / -d.z();
+	x = t * (-d.x()) + d.x();
+	if(x<=m_maxx && x>=m_minx)
+	{
+		y = t * (-d.y()) + d.y();
+		if(y<=m_maxy && y>=m_miny)
+		{
+			return true;
+		}
 	}
 
 	return false;
