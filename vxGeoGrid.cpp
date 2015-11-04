@@ -47,7 +47,7 @@ void vxGeoGrid::setRz(unsigned int rz)
 	m_rz = rz;
 }
 
-unsigned int vxGeoGrid::lookupVoxel(const scalar a, const scalar b, const scalar c)
+unsigned int vxGeoGrid::lookupVoxel(const scalar a, const scalar b, const scalar c) const
 {
 	auto&& x = (unsigned int)floor(m_rx * a);
 	auto&& y = (unsigned int)floor(m_ry * b);
