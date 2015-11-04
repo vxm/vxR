@@ -100,15 +100,15 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 	}
 }
 
-listRef vxGeoGrid::getList(const vxRay &ray) const
+listRef vxGeoGrid::getList(const vxRay &ray, const v3 &pos) const
 {
-	//std::vector<unsigned long> r{1,2,3,4,5,6,7,8};
-//	std::cout << "Accessing elements" << std::endl;
-
-	auto member{87ul};
-	if(m_members[member]==nullptr)
-		return vxGeoGrid::emptyListRef;
+	auto retVal{lookupVoxel(pos.x(),pos.y(),pos.z())};
 	
-	return m_members[member];
+	if(m_members[retVal]==nullptr)
+	{
+		return vxGeoGrid::emptyListRef;
+	}
+	
+	return m_members[retVal];
 }
 

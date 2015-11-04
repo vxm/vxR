@@ -8,7 +8,7 @@ type = "vxRenderSettings"
 active = "true"
     resolution = 683 384
     pixelSamples = 1
-    reflectionSamples = 1
+    reflectionSamples = 0
     numThreads = -1
 }
 
@@ -95,7 +95,7 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 3.25 -0.75 8 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 3.25 -1.25 8.0 1]
     filePath = "/home/john/Downloads/torus.ply"
 }
 
@@ -177,7 +177,7 @@ active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     planeType = "Y"
     x = 0.0
-    y = -3.0
+    y = -5.0
     z = 0.0
     pointA = 440.0 -57.0 440.0
     pointB = 450.0 -56.0 440.0
