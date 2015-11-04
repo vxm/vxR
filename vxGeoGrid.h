@@ -8,7 +8,7 @@
 
 namespace vxCore {
 
-using voxelMembers = std::vector<unsigned long>;
+using listRef = std::shared_ptr<std::vector<unsigned long>>;
 
 class vxGeoGrid
 {

@@ -1,5 +1,7 @@
 #include "vxGeoGrid.h"
 
+listRef vxGeoGrid::emptyListRef = std::make_shared<std::vector<unsigned long>>();
+
 vxGeoGrid::vxGeoGrid()
 {
 	m_members.resize(m_rx * m_ry * m_rz);
