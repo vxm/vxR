@@ -128,7 +128,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
 		return 0;
 	}
 
-	for(auto&& id:*m_grid.getList(ray, collide.position()+ray.origin()/(scalar)2.0))
+	for(auto&& id:*m_grid.getList(ray, collide.position()))
 	{
 		auto&& tri = m_triangles[id];
 		if(tri.throwRay(ray,collide))
