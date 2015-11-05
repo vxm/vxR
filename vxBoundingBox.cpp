@@ -107,46 +107,55 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	auto&& d = ray.direction();
 
-	auto t = ((d.xSign() ? m_maxx : m_minx) - d.x()) / -d.x();
+	auto x = d.xSign() ? m_maxx : m_minx;
+	auto t = (x - d.x()) / -d.x();
 	auto y = t * (-d.y()) + d.y();
 	if( y<=m_maxy && y>=m_miny)
 	{
 		auto z = t * (-d.z()) + d.z();
 		if(z<=m_maxz && z>=m_minz)
 		{
+			collide.setPosition(x, y, z);
 			collide.setNormal(d.xSign() ? v3::constX : v3::constMinusX);
 			collide.setValid();
-			collide.setUV(v2(.5,.5));
+			collide.setUV(v2( (y - m_miny) / (m_maxy - m_miny),
+							  (z - m_minz) / (m_maxz - m_minz)));
 			collide.setColor(vxColor::white);
 			return 1;
 		}
 	}
 	
-	t = ((d.ySign() ? m_maxy : m_miny) - d.y()) / -d.y();
-	auto x = t * (-d.x()) + d.x();
+	y = d.ySign() ? m_maxy : m_miny;
+	t = (y - d.y()) / -d.y();
+	x = t * (-d.x()) + d.x();
 	if(x<=m_maxx && x>=m_minx)
 	{
 		auto z = t * (-d.z()) + d.z();
 		if(z<=m_maxz && z>=m_minz)
 		{
+			collide.setPosition(x, y, z);
 			collide.setNormal(d.ySign() ? v3::constY : v3::constMinusY);
 			collide.setValid();
-			collide.setUV(v2(.5,.5));
+			collide.setUV(v2( (x - m_minx) / (m_maxx - m_minx),
+							  (z - m_minz) / (m_maxz - m_minz)));
 			collide.setColor(vxColor::white);
 			return 1;
 		}
 	}
 
-	t = ((d.zSign() ? m_maxz : m_minz) - d.z()) / -d.z();
+	auto z = d.zSign() ? m_maxz : m_minz;
+	t = (z - d.z()) / -d.z();
 	x = t * (-d.x()) + d.x();
 	if(x<=m_maxx && x>=m_minx)
 	{
 		y = t * (-d.y()) + d.y();
 		if(y<=m_maxy && y>=m_miny)
 		{
+			collide.setPosition(x, y, z);
 			collide.setNormal(d.zSign() ? v3::constZ : v3::constMinusZ);
 			collide.setValid();
-			collide.setUV(v2(.5,.5));
+			collide.setUV(v2( (x - m_minx) / (m_maxx - m_minx),
+							  (y - m_miny) / (m_maxy - m_miny)));
 			collide.setColor(vxColor::white);
 			return 1;
 		}

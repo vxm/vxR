@@ -102,7 +102,9 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 
 listRef vxGeoGrid::getList(const vxRay &ray, const v3 &pos) const
 {
-	auto retVal{lookupVoxel(pos.x(),pos.y(),pos.z())};
+	auto retVal{lookupVoxel(pos.x(), pos.y(), pos.z())};
+	
+	std::cout << "found voxel: " << retVal << " for pos " << pos << std::endl;
 	
 	if(m_members[retVal]==nullptr)
 	{
