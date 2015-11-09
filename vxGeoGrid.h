@@ -13,17 +13,22 @@ using triangleIdsRef = std::shared_ptr<triangleIds>;
 
 class vxGeoGrid
 {
+	
 	std::shared_ptr<vxBoundingBox> m_bb;
 	unsigned int m_rx = {5u};
 	unsigned int m_ry = {5u};
 	unsigned int m_rz = {5u};
 	
+	std::vector<scalar> m_xvalues;
+	std::vector<scalar> m_yvalues;
+	std::vector<scalar> m_zvalues;
+	
 public:
-	static listRef emptyListRef;
+	static triangleIdsRef emptyListRef;
 	
 	vxGeoGrid();
 	
-	std::vector<listRef> m_members;
+	std::vector<triangleIdsRef> m_members;
 	std::shared_ptr<vxBoundingBox> bb() const;
 	void setBb(const std::shared_ptr<vxBoundingBox> &bb);
 	void close();
