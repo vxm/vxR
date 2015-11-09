@@ -22,7 +22,7 @@ public:
 	bool m_circle3 {false};
 	bool m_margin  {true};
 
-	scalar m_margn = 0.07;
+	scalar m_margn = 0.01;
 };
 
 
