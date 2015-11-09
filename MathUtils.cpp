@@ -49,7 +49,7 @@ v3 MathUtils::cartesianToNormal(const v2& coords)
 	return v3{x,y,z}.unit();
 }
 
-v3 MathUtils::rectAndPlane(const v3&& ray, 
+v3 MathUtils::rectAndPlane(const v3& ray, 
 									const vxPlane &plane)
 {
 	switch(plane.m_type)
@@ -123,7 +123,7 @@ v3 MathUtils::closestPointInLine(const v3 &p1,
 	return p1 + v * (c1 / c2);
 }
 
-v3 MathUtils::rectAndXPlane(const v3&& ray, scalar x)
+v3 MathUtils::rectAndXPlane(const v3& ray, scalar x)
 {
 	// parametric ecuation of the linconst v3 &&ray, - ray.x()) / -ray.x();
 	const auto t = (x - ray.x()) / (-ray.x());
@@ -133,7 +133,7 @@ v3 MathUtils::rectAndXPlane(const v3&& ray, scalar x)
 	return v3{x,y,z};
 }
 
-v3 MathUtils::rectAndYPlane(const v3&& ray, scalar y)
+v3 MathUtils::rectAndYPlane(const v3& ray, scalar y)
 {
 	// parametric ecuation of the line solved.
 	auto t = (y - ray.y()) / (-ray.y());
@@ -143,17 +143,17 @@ v3 MathUtils::rectAndYPlane(const v3&& ray, scalar y)
 	return v3{x,y,z};
 }
 
-scalar MathUtils::x_forRectAndYPlane(const v3&& ray, scalar y)
+scalar MathUtils::x_forRectAndYPlane(const v3& ray, scalar y)
 {
 	return (y - ray.y()) / (-ray.y()) * (-ray.x()) + ray.x();
 }
 
-scalar MathUtils::z_forRectAndYPlane(const v3&& ray, scalar y)
+scalar MathUtils::z_forRectAndYPlane(const v3& ray, scalar y)
 {
 	return (y - ray.y()) / (-ray.y()) * (-ray.z()) + ray.z();
 }
 
-v3 MathUtils::rectAndZPlane(const v3&& ray, scalar z)
+v3 MathUtils::rectAndZPlane(const v3& ray, scalar z)
 {
 	// parametric ecuation of the linconst v3 &&ray, - ray.z()) / -ray.z();
 	auto t = (z - ray.z()) / (-ray.z());

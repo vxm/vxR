@@ -32,13 +32,13 @@ class MathUtils
 	static v3 cartesianToNormal(const v2& coords);
 
 	//Intersections
-	static v3 rectAndPlane(const v3&& ray,
+	static v3 rectAndPlane(const v3& ray,
 								   const vxPlane &plane);
-	static v3 rectAndXPlane(const v3&& ray, scalar x);
-	static v3 rectAndYPlane(const v3&& ray, scalar y);
-	static v3 rectAndZPlane(const v3&& ray, scalar z);
-	static scalar x_forRectAndYPlane(const v3&& ray, scalar y);
-	static scalar z_forRectAndYPlane(const v3&& ray, scalar y);
+	static v3 rectAndXPlane(const v3& ray, scalar x);
+	static v3 rectAndYPlane(const v3& ray, scalar y);
+	static v3 rectAndZPlane(const v3& ray, scalar z);
+	static scalar x_forRectAndYPlane(const v3& ray, scalar y);
+	static scalar z_forRectAndYPlane(const v3& ray, scalar y);
 
 	static v3 rayAndXPlane(const vxRay& ray, scalar x);
 	static v3 rayAndYPlane(const vxRay& ray, scalar y);
