@@ -11,6 +11,7 @@
 #include "vxMatrix.h"
 #include "vxBoundingBox.h"
 #include "vxGeoGrid.h"
+#include <set>
 
 namespace vxCore {
 

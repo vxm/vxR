@@ -4,7 +4,6 @@
 
 using namespace vxCore;
 
-
 vxGeometry::vxGeometry()
 {
 	m_bb = std::make_shared<vxBoundingBox>();
@@ -35,9 +34,8 @@ void vxGeometry::close()
 
 void vxGeometry::updateAccelerationStuctures()
 {
-	
-	
 	m_bb->close();
+	m_grid.close();
 }
 
 std::string vxGeometry::constructionPath() const
@@ -115,27 +113,30 @@ bool vxGeometry::throwRay(const vxRay &ray) const
 	return 0;
 }
 
-int vxGeometry::throwRay(const vxRay &ray, vxCollision &collide) const
+int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 {
 #if	DRAW_BB
-	if(m_bb->throwRay(ray, collide))
+	if(m_bb->throwRay(ray, col))
 	{
 		return 1;
 	}
 #else
-	if(!m_bb->throwRay(ray, collide))
+	if(!m_bb->throwRay(ray, col))
 	{
 		return 0;
 	}
 
-	for(auto&& id:*m_grid.getList(ray, collide.position()))
+	const auto&& triangles = m_grid.getList(ray, col.position() 
+												 + col.normal().inverted()/(scalar)100.0);
+	for(auto &&id: *triangles )
 	{
 		auto&& tri = m_triangles[id];
-		if(tri.throwRay(ray,collide))
+		
+		if(tri.throwRay(ray,col))
 		{
-			collide.setColor(vxColor::white);
-			collide.setValid(true);
-			collide.setUV(v2(0.5,0.5));
+			col.setColor(vxColor::white);
+			col.setValid(true);
+			col.setUV(v2(0.5,0.5));
 			return 1;
 		}
 	}
