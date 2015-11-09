@@ -13,8 +13,13 @@
 #include "vxSampler.h"
 #include "vxThreadPool.h"
 
-#define USE_THREADS 1
 #define SINGLERAY 0
+
+#ifdef _DEBUG
+#define USE_THREADS 0
+#else
+#define USE_THREADS 1
+#endif
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::vxRenderProcess;
@@ -167,14 +172,12 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 #if SINGLERAY
 	
 	// moving to start point.
-	unsigned int itH {732};
-	unsigned int itV {501};
+	unsigned int itH = 782.0/2.0;
+	unsigned int itV = 451.0/2.0;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
 	vxCollision collision;
-	
-	vxColor pixelColor;
 	const v2 hitCoordinates(
 				itV/(scalar)m_prop->ry(),
 				itH/(scalar)m_prop->rx());
@@ -188,6 +191,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	}
 	
 	const auto id = itH  + (itV * m_prop->rx());
+	//TODO:check ranges here, it might fail.
 	m_contactBuffer.pixel(id) = vxColor::white;
 	
 	
