@@ -1,6 +1,6 @@
 #include "vxGeoGrid.h"
 
-listRef vxGeoGrid::emptyListRef = std::make_shared<std::vector<unsigned long>>();
+triangleIdsRef vxGeoGrid::emptyListRef = std::make_shared<std::vector<unsigned long>>();
 
 vxGeoGrid::vxGeoGrid()
 {

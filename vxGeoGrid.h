@@ -8,8 +8,8 @@
 
 namespace vxCore {
 
-using listRef = std::shared_ptr<std::vector<unsigned long>>;
-
+using triangleIds = std::vector<unsigned long>; 
+using triangleIdsRef = std::shared_ptr<triangleIds>;
 
 class vxGeoGrid
 {
