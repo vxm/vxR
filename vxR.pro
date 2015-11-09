@@ -133,9 +133,12 @@ HEADERS  += \
 FORMS    +=
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
-CONFIG += c++14
 
 OTHER_FILES += \
     todo.txt \
     demo.vx \
     juan_0.ply
+    
+CONFIG += c++14
+
+QMAKE_CXXFLAGS += -Wpedantic
