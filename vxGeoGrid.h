@@ -26,7 +26,9 @@ public:
 	std::vector<listRef> m_members;
 	std::shared_ptr<vxBoundingBox> bb() const;
 	void setBb(const std::shared_ptr<vxBoundingBox> &bb);
+	void close();
 	
+	unsigned long numVoxels() const;
 	unsigned int rx() const;
 	void setRx(unsigned int rx);
 	unsigned int ry() const;

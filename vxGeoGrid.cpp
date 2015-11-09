@@ -17,6 +17,41 @@ void vxGeoGrid::setBb(const std::shared_ptr<vxBoundingBox> &bb)
 	m_bb = bb;
 }
 
+void vxGeoGrid::close()
+{
+	m_xvalues.resize(m_rx);
+	
+	//Recording xlices to the grid.
+	auto xSlice = fabs(m_bb->maxX() - m_bb->minX())/(scalar)(m_rx-1);
+	auto k=0u;
+	for(auto&& xval:m_xvalues)
+	{
+		xval = m_bb->minX() + xSlice * k++;
+	}
+
+	m_yvalues.resize(m_ry);
+	auto ySlice = fabs(m_bb->maxY() - m_bb->minY())/(scalar)(m_ry-1);
+	k=0u;
+	for(auto&& yval:m_yvalues)
+	{
+		yval = m_bb->minY() + ySlice * k++;
+	}
+
+	m_zvalues.resize(m_rz);
+	auto zSlice = fabs(m_bb->maxZ() - m_bb->minZ())/(scalar)(m_rz-1);
+	k=0u;
+	for(auto&& zval:m_zvalues)
+	{
+		zval = m_bb->minZ() + zSlice * k++;
+	}
+	
+}
+
+unsigned long vxGeoGrid::numVoxels() const
+{
+	return m_rx * m_ry * m_rz;
+}
+
 unsigned int vxGeoGrid::rx() const
 {
 	return m_rx;
