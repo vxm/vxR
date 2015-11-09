@@ -41,10 +41,13 @@ public:
 	unsigned int rz() const;
 	void setRz(unsigned int rz);
 
-	unsigned int lookupVoxel(const scalar a, const scalar b, const scalar c) const;
+	int lookupVoxel(const v3 &v) const;
+	int lookupVoxel(const scalar a, const scalar b, const scalar c) const;
 	void locateAndRegister(const vxTriRef &tri, unsigned long triangleID);
 	
-	listRef getList(const vxRay &ray, const v3 &pos) const;
+	const triangleIdsRef getList(const vxRay &ray, const v3 &sp) const;
+	bool indexIsValid(long idx) const;
+	bool hasTriangles(long idx) const;
 };
 
 }
