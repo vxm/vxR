@@ -18,6 +18,9 @@ void vxGeometry::close()
 {
 	auto triangleID = 0ul;
 	m_grid.setBb(m_bb);
+	
+	updateAccelerationStuctures();
+	
 	for(auto &&tref:m_triangles)
 	{
 		tref.computeNormal();
@@ -27,7 +30,6 @@ void vxGeometry::close()
 		triangleID++;
 	}
 	
-	updateAccelerationStuctures();
 	
 	m_openForEdition = false;
 }

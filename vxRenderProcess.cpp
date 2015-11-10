@@ -172,8 +172,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 #if SINGLERAY
 	
 	// moving to start point.
-	unsigned int itH = 782.0/2.0;
-	unsigned int itV = 451.0/2.0;
+	unsigned int itH = 738.0/2.0;
+	unsigned int itV = 311.0/2.0;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.

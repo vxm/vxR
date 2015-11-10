@@ -82,54 +82,101 @@ void vxGeoGrid::setRz(unsigned int rz)
 	m_rz = rz;
 }
 
-int vxGeoGrid::lookupVoxel(const v3 &v) const
+int vxGeoGrid::lookupVoxel(const v3 &v, 
+						   unsigned int &a, 
+						   unsigned int &b, 
+						   unsigned int &c) const
 {
-	return lookupVoxel(v.x(), v.y(), v.z());
+	if(v.x()<m_xvalues.front() || v.y()<m_yvalues.front() || v.z()<m_zvalues.front())
+		return -1;
+	
+	if(v.x()>m_xvalues.back() || v.y()>m_yvalues.back() || v.z()>m_zvalues.back())
+		return -1;
+	
+	a = -1;
+	for(auto&&x:m_xvalues)
+	{
+		if(v.x()<x)
+		{
+			break;
+		}
+
+		a++;
+	}
+
+	b = -1;
+	for(auto&&y:m_yvalues)
+	{
+		if(v.y()<y)
+		{
+			break;
+		}
+
+		b++;
+	}
+	
+	c = -1;
+	for(auto&&z:m_zvalues)
+	{
+		if(v.z()<z)
+		{
+			break;
+		}
+
+		c++;
+	}
+	
+	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
 }
 
-int vxGeoGrid::lookupVoxel(const scalar a, const scalar b, const scalar c) const
+
+int vxGeoGrid::lookupVoxel(const v3 &v) const
 {
-	auto&& x = (long)floor(m_rx * a);
-	auto&& y = (long)floor(m_ry * b);
-	auto&& z = (long)floor(m_rz * c);
+	if(!m_bb->contains(v))
+		return -1;
 	
-	if(x==m_rx)
+	auto a = -1;
+	for(auto&&x:m_xvalues)
 	{
-		x=m_rx-1;
+		if(v.x()<x)
+		{
+			break;
+		}
+
+		a++;
+	}
+
+	auto b = -1;
+	for(auto&&y:m_yvalues)
+	{
+		if(v.y()<y)
+		{
+			break;
+		}
+
+		b++;
 	}
 	
-	if(y==m_ry)
+	auto c = -1;
+	for(auto&&z:m_zvalues)
 	{
-		y=m_ry-1;
+		if(v.z()<z)
+		{
+			break;
+		}
+
+		c++;
 	}
 	
-	if(z==m_rz)
-	{
-		z=m_rz-1;
-	}
-	
-	return ((m_ry * m_rx) * z) + (m_rx * y) + x;
+	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
 }
 
 void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 {
-	auto r1x = MU::scaleTo01(m_bb->minX(), m_bb->maxX(), tri.p1.x());
-	auto r1y = MU::scaleTo01(m_bb->minY(), m_bb->maxY(), tri.p1.y());
-	auto r1z = MU::scaleTo01(m_bb->minZ(), m_bb->maxZ(), tri.p1.z());
-
-	std::set<unsigned long> indices{lookupVoxel(r1x, r1y, r1z)};
-
-	auto r2x = MU::scaleTo01(m_bb->minX(), m_bb->maxX(), tri.p2.x());
-	auto r2y = MU::scaleTo01(m_bb->minY(), m_bb->maxY(), tri.p2.y());
-	auto r2z = MU::scaleTo01(m_bb->minZ(), m_bb->maxZ(), tri.p2.z());
-
-	indices.insert(lookupVoxel(r2x, r2y, r2z));
-
-	auto r3x = MU::scaleTo01(m_bb->minX(), m_bb->maxX(), tri.p3.x());
-	auto r3y = MU::scaleTo01(m_bb->minY(), m_bb->maxY(), tri.p3.y());
-	auto r3z = MU::scaleTo01(m_bb->minZ(), m_bb->maxZ(), tri.p3.z());
-
-	indices.insert(lookupVoxel(r3x, r3y, r3z));
+	std::set<unsigned long> indices;
+	indices.insert(lookupVoxel(tri.p1));
+	indices.insert(lookupVoxel(tri.p2));
+	indices.insert(lookupVoxel(tri.p3));
 
 	for(auto&& index:indices)
 	{
@@ -149,7 +196,7 @@ bool vxGeoGrid::hasTriangles(long idx) const
 
 bool vxGeoGrid::indexIsValid(long idx) const
 {
-	return !(idx<0 || idx>=numVoxels() || !hasTriangles(idx));
+	return !(idx<0 || idx>=numVoxels());
 }
 
 const triangleIdsRef vxGeoGrid::getList(const vxRay &ray, const v3 &sp) const
@@ -162,44 +209,44 @@ const triangleIdsRef vxGeoGrid::getList(const vxRay &ray, const v3 &sp) const
 	auto xvel = d.xSign() ? -1 : 1;
 	auto yvel = d.ySign() ? -1 : 1;
 	auto zvel = d.zSign() ? -1 : 1;
+
+	unsigned int idX;
+	unsigned int idY;
+	unsigned int idZ;
 	
 	do
 	{
-		auto&& r1x = MU::scaleTo01(m_bb->minX(), m_bb->maxX(), pIt.x());
-		auto&& r1y = MU::scaleTo01(m_bb->minY(), m_bb->maxY(), pIt.y());
-		auto&& r1z = MU::scaleTo01(m_bb->minZ(), m_bb->maxZ(), pIt.z());
-
-		retVal = lookupVoxel(r1x,r1y,r1z);
-		if(hasTriangles(retVal))
+		retVal = lookupVoxel(pIt, idX, idY, idZ);
+		if(indexIsValid(retVal) && hasTriangles(retVal))
 		{
-			return  m_members[retVal];
+			return m_members[retVal];
 		}
 
-		auto xIterator = m_xvalues[((long)floor(m_rx * r1x)) + xvel];
-		auto yIterator = m_yvalues[((long)floor(m_ry * r1y)) + yvel];
-		auto zIterator = m_zvalues[((long)floor(m_rz * r1z)) + zvel];
+		auto xIterator = m_xvalues[idX + xvel];
+		auto yIterator = m_yvalues[idY + yvel];
+		auto zIterator = m_zvalues[idZ + zvel];
 
 		auto&& xPlaneIntersec = MU::rectAndXPlane(d, xIterator);
-		auto&& yPlaneIntersec = MU::rectAndYPlane(d, yIterator);
-		auto&& zPlaneIntersec = MU::rectAndZPlane(d, zIterator);
-
 		if(xPlaneIntersec.z() < zIterator)
 		{
 			pIt = xPlaneIntersec;
 			continue;
 		}
 
+		auto&& yPlaneIntersec = MU::rectAndYPlane(d, yIterator);
 		if(yPlaneIntersec.x() < xIterator)
 		{
 			pIt = yPlaneIntersec;
 			continue;
 		}
-		
+
+		auto&& zPlaneIntersec = MU::rectAndZPlane(d, zIterator);
 		if(zPlaneIntersec.x() < xIterator)
 		{
 			pIt = zPlaneIntersec;
 			continue;
 		}
+		
 	}
 	while(m_bb->contains(pIt));
 
