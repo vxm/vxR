@@ -35,7 +35,7 @@ public:
 	
 	unsigned long index(unsigned int a,
 						unsigned int b,
-						unsigned int c);
+						unsigned int c) const;
 	
 	unsigned long numVoxels() const;
 	unsigned int rx() const;
@@ -50,8 +50,8 @@ public:
 	void locateAndRegister(const vxTriRef &tri, unsigned long triangleID);
 	
 	const triangleIdsRef getList(const vxRay &ray, const v3 &sp) const;
-	bool indexIsValid(long idx) const;
-	bool hasTriangles(long idx) const;
+	bool indexIsValid(const long idx) const;
+	bool hasTriangles(const long idx) const;
 };
 
 }

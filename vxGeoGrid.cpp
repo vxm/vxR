@@ -47,7 +47,9 @@ void vxGeoGrid::close()
 	}
 }
 
-unsigned long vxGeoGrid::index(unsigned int a, unsigned int b, unsigned int c)
+unsigned long vxGeoGrid::index(unsigned int a, 
+							   unsigned int b, 
+							   unsigned int c) const
 {
 	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
 }
@@ -136,7 +138,7 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
 	}
 	
-	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
+	return index(a,b,c);
 }
 
 
@@ -183,43 +185,61 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v) const
 		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
 	}
 	
-	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
+	return index(a,b,c);
 }
 
 void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 {
-	auto idx1 = lookupVoxel(tri.p1);
-	auto idx2 = lookupVoxel(tri.p2);
-	auto idx3 = lookupVoxel(tri.p3);
+	int a1,b1,c1;
+	auto idx1 = lookupVoxel(tri.p1,a1,b1,c1);
 	
-	std::set<unsigned long> indices{idx1,idx2,idx3};
+	int a2,b2,c2;
+	auto idx2 = lookupVoxel(tri.p2,a2,b2,c2);
+	
+	int a3,b3,c3;
+	auto idx3 = lookupVoxel(tri.p3,a3,b3,c3);
+	
+	//std::set<unsigned long> indices{idx1,idx2,idx3};
 
-	for(auto&& index:indices)
+	auto aMin = std::min(a3,std::min(a1,a2));
+	auto bMin = std::min(b3,std::min(b1,b2));
+	auto cMin = std::min(c3,std::min(c1,c2));
+	
+	auto aMax = std::max(a3,std::max(a1,a2));
+	auto bMax = std::max(b3,std::max(b1,b2));
+	auto cMax = std::max(c3,std::max(c1,c2));
+	
+	//for(auto&& index:indices)
+	for(auto x = aMin; x<= aMax; x++)
+		for(auto y = bMin; y<= bMax; y++)
+			for(auto z = cMin; z<= cMax; z++)
 	{
-		if(indexIsValid(index))
+		auto idx = index(x,y,z);
+
+		if(indexIsValid(idx))
 		{
-			if(m_members[index]==nullptr)
+			if(m_members[idx]==nullptr)
 			{
-				m_members[index] = std::make_shared<std::vector<unsigned long>>();
+				m_members[idx] = std::make_shared<std::vector<unsigned long>>();
 			}
 
-			m_members[index]->push_back(triangleID);
+			m_members[idx]->push_back(triangleID);
 		}
 		else
 		{
 			std::cerr << "Looking up for index invalid while adding points " 
-					  << index 
+					  << idx 
 					  << std::endl;
 		}
 	}
 }
 
-bool vxGeoGrid::hasTriangles(long idx) const
+bool vxGeoGrid::hasTriangles(const long idx) const
 {
 	return !(m_members[idx]==nullptr);
 }
 
-bool vxGeoGrid::indexIsValid(long idx) const
+bool vxGeoGrid::indexIsValid(const long idx) const
 {
 	return !(idx<0 || idx>=numVoxels());
 }
