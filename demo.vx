@@ -95,8 +95,8 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 3.25 1.25 8.0 1]
-    filePath = "/home/john/Downloads/torus.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 12.5 1]
+    filePath = "/home/john/Downloads/tri.ply"
 }
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");

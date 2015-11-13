@@ -54,6 +54,7 @@ unsigned int vxRenderProcess::visSamples() const
 	return m_visSamples;
 }
 
+
 void vxRenderProcess::setVisSamples(unsigned int visSamples)
 {
 	m_visSamples = visSamples;
@@ -172,8 +173,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 #if SINGLERAY
 	
 	// moving to start point.
-	unsigned int itH = 738.0/2.0;
-	unsigned int itV = 311.0/2.0;
+	unsigned int itH = 369;
+	unsigned int itV = 209;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
