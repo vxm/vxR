@@ -33,6 +33,10 @@ public:
 	void setBb(const std::shared_ptr<vxBoundingBox> &bb);
 	void close();
 	
+	unsigned long index(unsigned int a,
+						unsigned int b,
+						unsigned int c);
+	
 	unsigned long numVoxels() const;
 	unsigned int rx() const;
 	void setRx(unsigned int rx);

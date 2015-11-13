@@ -47,6 +47,11 @@ void vxGeoGrid::close()
 	}
 }
 
+unsigned long vxGeoGrid::index(unsigned int a, unsigned int b, unsigned int c)
+{
+	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
+}
+
 unsigned long vxGeoGrid::numVoxels() const
 {
 	return m_rx * m_ry * m_rz;
