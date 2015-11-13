@@ -1,3 +1,4 @@
+#include <climits>
 #include "vxGeoGrid.h"
 
 triangleIdsRef vxGeoGrid::emptyListRef = std::make_shared<std::vector<unsigned long>>();
@@ -19,32 +20,31 @@ void vxGeoGrid::setBb(const std::shared_ptr<vxBoundingBox> &bb)
 
 void vxGeoGrid::close()
 {
-	m_xvalues.resize(m_rx);
+	m_xvalues.resize(m_rx+1);
 	
 	//Recording xlices to the grid.
-	auto xSlice = fabs(m_bb->maxX() - m_bb->minX())/(scalar)(m_rx-1);
+	auto xSlice = fabs(m_bb->maxX() - m_bb->minX())/(scalar)(m_rx);
 	auto k=0u;
 	for(auto&& xval:m_xvalues)
 	{
 		xval = m_bb->minX() + xSlice * k++;
 	}
 
-	m_yvalues.resize(m_ry);
-	auto ySlice = fabs(m_bb->maxY() - m_bb->minY())/(scalar)(m_ry-1);
+	m_yvalues.resize(m_ry+1);
+	auto ySlice = fabs(m_bb->maxY() - m_bb->minY())/(scalar)(m_ry);
 	k=0u;
 	for(auto&& yval:m_yvalues)
 	{
 		yval = m_bb->minY() + ySlice * k++;
 	}
 
-	m_zvalues.resize(m_rz);
-	auto zSlice = fabs(m_bb->maxZ() - m_bb->minZ())/(scalar)(m_rz-1);
+	m_zvalues.resize(m_rz+1);
+	auto zSlice = fabs(m_bb->maxZ() - m_bb->minZ())/(scalar)(m_rz);
 	k=0u;
 	for(auto&& zval:m_zvalues)
 	{
 		zval = m_bb->minZ() + zSlice * k++;
 	}
-	
 }
 
 unsigned long vxGeoGrid::numVoxels() const
@@ -82,21 +82,21 @@ void vxGeoGrid::setRz(unsigned int rz)
 	m_rz = rz;
 }
 
-int vxGeoGrid::lookupVoxel(const v3 &v, 
-						   unsigned int &a, 
-						   unsigned int &b, 
-						   unsigned int &c) const
+unsigned long vxGeoGrid::lookupVoxel(const v3 &v, 
+									int &a, 
+									int &b, 
+									int &c) const
 {
 	if(v.x()<m_xvalues.front() || v.y()<m_yvalues.front() || v.z()<m_zvalues.front())
-		return -1;
+		return ULONG_MAX;
 	
 	if(v.x()>m_xvalues.back() || v.y()>m_yvalues.back() || v.z()>m_zvalues.back())
-		return -1;
+		return ULONG_MAX;
 	
-	a = -1;
-	for(auto&&x:m_xvalues)
+	a = 0;
+	for(int i=1;i<m_xvalues.size()-1;i++)
 	{
-		if(v.x()<x)
+		if( v.x() < m_xvalues[i] )
 		{
 			break;
 		}
@@ -104,10 +104,10 @@ int vxGeoGrid::lookupVoxel(const v3 &v,
 		a++;
 	}
 
-	b = -1;
-	for(auto&&y:m_yvalues)
+	b = 0;
+	for(int i=1;i<m_yvalues.size()-1;i++)
 	{
-		if(v.y()<y)
+		if( v.y() < m_yvalues[i] )
 		{
 			break;
 		}
@@ -115,30 +115,35 @@ int vxGeoGrid::lookupVoxel(const v3 &v,
 		b++;
 	}
 	
-	c = -1;
-	for(auto&&z:m_zvalues)
+	c = 0;
+	for(int i=1;i<m_zvalues.size()-1;i++)
 	{
-		if(v.z()<z)
+		if( v.z() < m_zvalues[i] )
 		{
 			break;
 		}
 
 		c++;
+	}
+	
+	if(a<0 || b<0 || c<0)
+	{
+		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
 	}
 	
 	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
 }
 
 
-int vxGeoGrid::lookupVoxel(const v3 &v) const
+unsigned long vxGeoGrid::lookupVoxel(const v3 &v) const
 {
 	if(!m_bb->contains(v))
 		return -1;
 	
-	auto a = -1;
-	for(auto&&x:m_xvalues)
+	auto a = 0;
+	for(int i=1;i<m_xvalues.size()-1;i++)
 	{
-		if(v.x()<x)
+		if( v.x() < m_xvalues[i] )
 		{
 			break;
 		}
@@ -146,10 +151,10 @@ int vxGeoGrid::lookupVoxel(const v3 &v) const
 		a++;
 	}
 
-	auto b = -1;
-	for(auto&&y:m_yvalues)
+	auto b = 0;
+	for(int i=1;i<m_yvalues.size()-1;i++)
 	{
-		if(v.y()<y)
+		if( v.y() < m_yvalues[i] )
 		{
 			break;
 		}
@@ -157,15 +162,20 @@ int vxGeoGrid::lookupVoxel(const v3 &v) const
 		b++;
 	}
 	
-	auto c = -1;
-	for(auto&&z:m_zvalues)
+	auto c = 0;
+	for(int i=1;i<m_zvalues.size()-1;i++)
 	{
-		if(v.z()<z)
+		if( v.z() < m_zvalues[i] )
 		{
 			break;
 		}
 
 		c++;
+	}
+	
+	if(a<0 || b<0 || c<0)
+	{
+		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
 	}
 	
 	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
@@ -173,19 +183,29 @@ int vxGeoGrid::lookupVoxel(const v3 &v) const
 
 void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 {
-	std::set<unsigned long> indices;
-	indices.insert(lookupVoxel(tri.p1));
-	indices.insert(lookupVoxel(tri.p2));
-	indices.insert(lookupVoxel(tri.p3));
+	auto idx1 = lookupVoxel(tri.p1);
+	auto idx2 = lookupVoxel(tri.p2);
+	auto idx3 = lookupVoxel(tri.p3);
+	
+	std::set<unsigned long> indices{idx1,idx2,idx3};
 
 	for(auto&& index:indices)
 	{
-		if(m_members[index]==nullptr)
+		if(indexIsValid(index))
 		{
-			m_members[index] = std::make_shared<std::vector<unsigned long>>();
-		}
+			if(m_members[index]==nullptr)
+			{
+				m_members[index] = std::make_shared<std::vector<unsigned long>>();
+			}
 
-		m_members[index]->push_back(triangleID);
+			m_members[index]->push_back(triangleID);
+		}
+		else
+		{
+			std::cerr << "Looking up for index invalid while adding points " 
+					  << index 
+					  << std::endl;
+		}
 	}
 }
 
@@ -206,13 +226,13 @@ const triangleIdsRef vxGeoGrid::getList(const vxRay &ray, const v3 &sp) const
 
 	const auto& d = ray.direction();
 
-	auto xvel = d.xSign() ? -1 : 1;
-	auto yvel = d.ySign() ? -1 : 1;
-	auto zvel = d.zSign() ? -1 : 1;
+	auto velX = d.xPositive() ? 1 : 0;
+	auto velY = d.yPositive() ? 1 : 0;
+	auto velZ = d.zPositive() ? 1 : 0;
 
-	unsigned int idX;
-	unsigned int idY;
-	unsigned int idZ;
+	int idX;
+	int idY;
+	int idZ;
 	
 	do
 	{
@@ -222,33 +242,43 @@ const triangleIdsRef vxGeoGrid::getList(const vxRay &ray, const v3 &sp) const
 			return m_members[retVal];
 		}
 
-		auto xIterator = m_xvalues[idX + xvel];
-		auto yIterator = m_yvalues[idY + yvel];
-		auto zIterator = m_zvalues[idZ + zvel];
+		auto arrayIdxX = idX + velX;
+		auto arrayIdxY = idY + velY;
+		auto arrayIdxZ = idZ + velZ;
+		
+		auto xVal = m_xvalues[arrayIdxX];
+		auto yVal = m_yvalues[arrayIdxY];
+		auto zVal = m_zvalues[arrayIdxZ];
 
-		auto&& xPlaneIntersec = MU::rectAndXPlane(d, xIterator);
-		if(xPlaneIntersec.z() < zIterator)
+		v3 intersectX = MU::rectAndXPlane(d, xVal);
+		if(intersectX.y() <= yVal
+			|| intersectX.z() <= zVal)
 		{
-			pIt = xPlaneIntersec;
+			pIt = intersectX + v3((velX ? 1 : -1)/20.0, 0.0, 0.0);
 			continue;
 		}
 
-		auto&& yPlaneIntersec = MU::rectAndYPlane(d, yIterator);
-		if(yPlaneIntersec.x() < xIterator)
+		v3 intersectY = MU::rectAndYPlane(d, yVal);
+		if(intersectY.x() <= xVal
+			|| intersectY.z() <= zVal)
 		{
-			pIt = yPlaneIntersec;
+			pIt = intersectY + v3(0.0, (velY ? 1 : -1)/20.0, 0.0);
 			continue;
 		}
 
-		auto&& zPlaneIntersec = MU::rectAndZPlane(d, zIterator);
-		if(zPlaneIntersec.x() < xIterator)
+		v3 intersectZ = MU::rectAndZPlane(d, zVal);
+		if(intersectZ.x() <= xVal
+			|| intersectZ.y() <= yVal)
 		{
-			pIt = zPlaneIntersec;
+			pIt = intersectZ + v3(0.0, 0.0, (velZ ? 1 : -1)/20.0);
 			continue;
+		}
+		{
+			std::cerr << "Not alocated ray. vxGeoGrid.cpp:284 () hitThis should not happen: " << std::endl;
 		}
 		
 	}
-	while(m_bb->contains(pIt));
+	while(indexIsValid(retVal) && m_bb->contains(pIt));
 
 	return vxGeoGrid::emptyListRef;
 }

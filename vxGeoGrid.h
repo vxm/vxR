@@ -41,8 +41,8 @@ public:
 	unsigned int rz() const;
 	void setRz(unsigned int rz);
 
-	int lookupVoxel(const v3 &v) const;
-	int lookupVoxel(const v3 &v, unsigned int &a, unsigned int &b, unsigned int &c) const;
+	unsigned long lookupVoxel(const v3 &v) const;
+	unsigned long lookupVoxel(const v3 &v, int &a, int &b, int &c) const;
 	void locateAndRegister(const vxTriRef &tri, unsigned long triangleID);
 	
 	const triangleIdsRef getList(const vxRay &ray, const v3 &sp) const;
