@@ -107,7 +107,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	auto&& d = ray.direction();
 
-	auto x = d.xSign() ? m_maxx : m_minx;
+	auto x = d.xPositive() ? m_minx : m_maxx;
 	auto t = (x - d.x()) / -d.x();
 	auto y = t * (-d.y()) + d.y();
 	if( y<=m_maxy && y>=m_miny)
@@ -116,7 +116,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		if(z<=m_maxz && z>=m_minz)
 		{
 			collide.setPosition(x, y, z);
-			collide.setNormal(d.xSign() ? v3::constX : v3::constMinusX);
+			collide.setNormal(d.xPositive() ? v3::constMinusX : v3::constX);
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(y - m_miny)) / ( (m_maxy - m_miny)),
 							  (5.0 *(z - m_minz)) / ( (m_maxz - m_minz))));
@@ -125,7 +125,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		}
 	}
 	
-	y = d.ySign() ? m_maxy : m_miny;
+	y = d.yPositive() ? m_miny : m_maxy;
 	t = (y - d.y()) / -d.y();
 	x = t * (-d.x()) + d.x();
 	if(x<=m_maxx && x>=m_minx)
@@ -134,7 +134,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		if(z<=m_maxz && z>=m_minz)
 		{
 			collide.setPosition(x, y, z);
-			collide.setNormal(d.ySign() ? v3::constY : v3::constMinusY);
+			collide.setNormal(d.yPositive() ? v3::constMinusY : v3::constY);
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(x - m_minx)) / ((m_maxx - m_minx)),
 							  (5.0 *(z - m_minz)) / ((m_maxz - m_minz))));
@@ -143,7 +143,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		}
 	}
 
-	auto z = d.zSign() ? m_maxz : m_minz;
+	auto z = d.zPositive() ? m_minz : m_maxz;
 	t = (z - d.z()) / -d.z();
 	x = t * (-d.x()) + d.x();
 	if(x<=m_maxx && x>=m_minx)
@@ -152,7 +152,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		if(y<=m_maxy && y>=m_miny)
 		{
 			collide.setPosition(x, y, z);
-			collide.setNormal(d.zSign() ? v3::constZ : v3::constMinusZ);
+			collide.setNormal(d.zPositive() ? v3::constMinusZ :  v3::constZ);
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(x - m_minx)) /  (m_maxx - m_minx),
 							  (5.0 *(y - m_miny)) /  (m_maxy - m_miny)));
@@ -168,7 +168,7 @@ bool vxBoundingBox::hasCollision(const vxRay &ray) const
 {
 	auto&& d = ray.direction();
 
-	auto t = ((d.xSign() ? m_maxx : m_minx) - d.x()) / -d.x();
+	auto t = ((d.xPositive() ? m_minx : m_maxx) - d.x()) / -d.x();
 	auto y = t * (-d.y()) + d.y();
 	if( y<=m_maxy && y>=m_miny)
 	{
@@ -179,7 +179,7 @@ bool vxBoundingBox::hasCollision(const vxRay &ray) const
 		}
 	}
 	
-	t = ((d.ySign() ? m_maxy : m_miny) - d.y()) / -d.y();
+	t = ((d.yPositive() ? m_miny : m_maxy) - d.y()) / -d.y();
 	auto x = t * (-d.x()) + d.x();
 	if(x<=m_maxx && x>=m_minx)
 	{
@@ -190,7 +190,7 @@ bool vxBoundingBox::hasCollision(const vxRay &ray) const
 		}
 	}
 
-	t = ((d.zSign() ? m_maxz : m_minz) - d.z()) / -d.z();
+	t = ((d.zPositive() ? m_minz : m_maxz) - d.z()) / -d.z();
 	x = t * (-d.x()) + d.x();
 	if(x<=m_maxx && x>=m_minx)
 	{
