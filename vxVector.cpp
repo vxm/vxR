@@ -641,18 +641,18 @@ vxVector2d vxVector3d::vectorZX() const
 	return (vxVector2d(m_x,m_y));
 }
 
-bool vxVector3d::xSign() const
+bool vxVector3d::xPositive() const
 {
-	return std::signbit(m_x);
+	return m_x>=0.0;
 }
 
-bool vxVector3d::ySign() const
+bool vxVector3d::yPositive() const
 {
-	return std::signbit(m_y);
+	return m_y>=0.0;
 }
 
-bool vxVector3d::zSign() const
+bool vxVector3d::zPositive() const
 {
-	return std::signbit(m_z);
+	return m_z>=0.0;
 }
 

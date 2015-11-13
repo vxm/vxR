@@ -636,7 +636,7 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 	do
 	{
 		const auto&& min = r.origin().floorVector();
-		const auto&& maxX = rd.xSign() ? min.x() : min.x()+1.0;
+		const auto&& maxX = rd.xPositive() ? min.x()+1.0 : min.x();
 		const auto&& xCollision = MU::rayAndXPlane(r, maxX);
 	
 		if( MU::inRange(xCollision.z(), min.z(), min.z()+1.0)
@@ -644,26 +644,26 @@ unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide)
 		{
 			exactCollision = xCollision;
 			vx = exactCollision.floorVector()
-					+v3(rd.xSign() ? -0.5 : 0.5, 0.5,0.5);
+					+v3(rd.xPositive() ?  0.5 : -0.5, 0.5,0.5);
 		}
 		
 		else 
 		{
-			const auto&& maxY = rd.ySign() ? min.y() : min.y()+1.0;
+			const auto&& maxY = rd.yPositive() ? min.y()+1.0 : min.y();
 			const auto&& yCollision = MU::rayAndYPlane(r, maxY);
 			if( MU::inRange( yCollision.z(), min.z(), min.z()+1.0))
 			{
 				exactCollision = yCollision;
 				vx = exactCollision.floorVector()
-					+v3(0.5, rd.ySign() ? -0.5 : 0.5,0.5);
+					+v3(0.5, rd.yPositive() ? 0.5 : -0.5,0.5);
 			}
 			else
 			{
-				const auto&& maxZ = rd.zSign() ? min.z() : min.z()+1.0;
+				const auto&& maxZ = rd.zPositive() ? min.z()+1.0 : min.z();
 				const auto&& zCollision = MU::rayAndZPlane(r, maxZ);
 				exactCollision = zCollision;
 				vx = exactCollision.floorVector()
-					+v3(0.5, 0.5, rd.zSign() ? -0.5 : 0.5);
+					+v3(0.5, 0.5, rd.zPositive() ? 0.5 : -0.5);
 			}
 		}
 		
