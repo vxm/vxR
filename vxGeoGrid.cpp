@@ -89,6 +89,14 @@ void vxGeoGrid::setRz(unsigned int rz)
 	m_rz = rz;
 }
 
+///
+/// \brief vxGeoGrid::lookupVoxel
+/// \param v
+/// \param a
+/// \param b
+/// \param c
+/// \return 
+/// Very inneficient to lookup in arrays.
 unsigned long vxGeoGrid::lookupVoxel(const v3 &v, 
 									int &a, 
 									int &b, 
