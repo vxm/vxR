@@ -27,10 +27,6 @@ int executeRenderProcess(int argc, char *argv[])
 	timePoint start = std::chrono::system_clock::now();
 	std::cout << "Start program" << std::endl;
 
-	QApplication a(argc, argv);
-	vxRenderMain w;
-	//w.show();
-
 	std::string scenePath;
 	// Look for a scene argument.
 	bool sceneParam{false};
