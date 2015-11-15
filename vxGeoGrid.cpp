@@ -199,6 +199,22 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 	int a3,b3,c3;
 	auto idx3 = lookupVoxel(tri.p3,a3,b3,c3);
 	
+	// like the most of the cases.
+	if(idx1==idx2 && idx2==idx3)
+	{
+		if(indexIsValid(idx1))
+		{
+			if(m_members[idx1]==nullptr)
+			{
+				m_members[idx1] = std::make_shared<std::vector<unsigned long>>();
+			}
+
+			m_members[idx1]->push_back(triangleID);
+		}
+		
+		return;
+	}
+	
 	//std::set<unsigned long> indices{idx1,idx2,idx3};
 
 	auto aMin = std::min(a3,std::min(a1,a2));
