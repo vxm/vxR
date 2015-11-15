@@ -149,53 +149,6 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 	return index(a,b,c);
 }
 
-
-unsigned long vxGeoGrid::lookupVoxel(const v3 &v) const
-{
-	if(!m_bb->contains(v))
-		return -1;
-	
-	auto a = 0;
-	for(int i=1;i<m_xvalues.size()-1;i++)
-	{
-		if( v.x() < m_xvalues[i] )
-		{
-			break;
-		}
-
-		a++;
-	}
-
-	auto b = 0;
-	for(int i=1;i<m_yvalues.size()-1;i++)
-	{
-		if( v.y() < m_yvalues[i] )
-		{
-			break;
-		}
-
-		b++;
-	}
-	
-	auto c = 0;
-	for(int i=1;i<m_zvalues.size()-1;i++)
-	{
-		if( v.z() < m_zvalues[i] )
-		{
-			break;
-		}
-
-		c++;
-	}
-	
-	if(a<0 || b<0 || c<0)
-	{
-		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
-	}
-	
-	return index(a,b,c);
-}
-
 void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 {
 	int a1,b1,c1;
