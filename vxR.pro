@@ -129,7 +129,8 @@ HEADERS  += \
     vxDome.h \
     vxTriRef.h \
     vxBoundingBox.h \
-    vxGeoGrid.h
+    vxGeoGrid.h \
+    vxList.h
 
 FORMS    +=
 
