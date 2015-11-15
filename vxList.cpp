@@ -122,3 +122,34 @@ template<class T> vxListNode<T> *vxList<T>::createNode(const T &value)
 	
 	return newNode;
 }
+
+
+/*
+	std::cout << "building 10 ints value 0" << std::endl;
+	vxList<int> ints(1000000l, 0);
+	
+	std::cout << "Size of list is " << ints.size() << std::endl;
+	
+	std::cout << "Removing at postition 5" << std::endl;
+	ints.removeAt(4);
+	
+	std::cout << "Now size of list is " << ints.size() << std::endl;
+	
+	std::cout << "looking for 5" << std::endl;
+	ints.find(5);
+
+	std::cout << "At position 3" << std::endl;
+	auto v = ints.at(5);
+	
+	if(v!=nullptr)
+	{
+		std::cout << "Assigning value 5" << std::endl;
+		*v = 5;
+		
+		std::cout << "Looking for 5" << std::endl;
+		auto f = ints.find(5);
+		
+		std::cout << "this is what I found add:  " << *f << std::endl;
+	}
+	
+	return 1;*/
