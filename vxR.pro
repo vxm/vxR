@@ -69,7 +69,8 @@ SOURCES += main.cpp\
     vxDome.cpp \
     vxTriRef.cpp \
     vxBoundingBox.cpp \
-    vxGeoGrid.cpp
+    vxGeoGrid.cpp \
+    vxList.cpp
 
 HEADERS  += \
     vxVector.h \
