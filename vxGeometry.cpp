@@ -130,7 +130,6 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 
 	std::vector<vxCollision> cols;
 	
-	/*
 	const auto&& triangles = m_grid.getList(ray, col.position() 
 												 + col.normal().inverted()/(scalar)100.0);
 	
@@ -143,8 +142,8 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 			cols.push_back(col);
 		}
 	}
-	*/
 	
+	/*
 	for(auto &&tri: m_triangles )
 	{
 		if(tri.throwRay(ray,col))
@@ -152,6 +151,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 			cols.push_back(col);
 		}
 	}
+	*/
 	
 	if(cols.size())
 	{
