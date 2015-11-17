@@ -128,19 +128,52 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 		return 0;
 	}
 
+	std::vector<vxCollision> cols;
+	
+	/*
 	const auto&& triangles = m_grid.getList(ray, col.position() 
 												 + col.normal().inverted()/(scalar)100.0);
+	
 	for(auto &&id: *triangles )
 	{
 		auto&& tri = m_triangles[id];
 		
 		if(tri.throwRay(ray,col))
 		{
-			col.setColor(vxColor::white);
-			col.setValid(true);
-			col.setUV(v2(0.5,0.5));
-			return 1;
+			cols.push_back(col);
 		}
+	}
+	*/
+	
+	for(auto &&tri: m_triangles )
+	{
+		if(tri.throwRay(ray,col))
+		{
+			cols.push_back(col);
+		}
+	}
+	
+	if(cols.size())
+	{
+		//Length to origin
+		auto mind  = cols[0].position().length();
+		col = cols[0];
+
+		for(auto&& c:cols)
+		{
+			//Length to origin
+			if(c.position().length() < mind)
+			{
+				col = c;
+			}
+			
+		}
+		
+		col.setColor(vxColor::white);
+		col.setValid(true);
+		col.setUV(v2(0.5,0.5));
+		
+		return 1;
 	}
 #endif
 	return 0;
