@@ -30,7 +30,7 @@ int executeRenderProcess(int argc, char *argv[])
 	std::string scenePath;
 	// Look for a scene argument.
 	bool sceneParam{false};
-	for(int i=1; i<argc; i++)
+	for(int i=1; i<argc && !scenePath.size(); i++)
 	{
 		if(sceneParam)
 		{
