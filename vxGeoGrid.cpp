@@ -218,7 +218,7 @@ bool vxGeoGrid::hasTriangles(const long idx) const
 
 bool vxGeoGrid::indexIsValid(const long idx) const
 {
-	return !(idx<0 || idx>=numVoxels());
+	return !(idx<0l || idx>=numVoxels());
 }
 
 const triangleIdsRef vxGeoGrid::getList(const vxRay &ray, const v3 &sp) const
