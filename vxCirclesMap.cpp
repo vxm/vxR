@@ -8,7 +8,8 @@ vxCirclesMap::vxCirclesMap()
 
 vxColor vxCirclesMap::compute(const vxCollision &collision) const
 {
-	vxColor outColor(collision.color());
+	vxColor outColor(vxColor::white);
+	return collision.color();
 	
 	auto&& u = fmod(collision.u(),1.0);
 	auto&& v = fmod(collision.v(),1.0);

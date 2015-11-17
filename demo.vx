@@ -3,7 +3,7 @@
 
 node
 {
-name = "renderSettings"
+name = "renderSettings_low"
 type = "vxRenderSettings"
 active = "true"
     resolution = 683 384
@@ -14,7 +14,7 @@ active = "true"
 
 node
 {
-name = "renderSettings"
+name = "renderSettings_full"
 type = "vxRenderSettings"
 active = "false"
     resolution = 1366 768
@@ -95,8 +95,8 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 12.5 1]
-    filePath = "/home/john/Downloads/tri.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 5 0 10.5 1]
+    filePath = "/home/john/Downloads/monkey_0.ply"
 }
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
@@ -142,9 +142,9 @@ name = "sun"
 type = "vxDirectLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 1.36
+    intensity = 0.66
     color = 255 230 240
-    orientation = 5.0 -8.0 -8.0
+    orientation = 5.0 -8.0 8.0
     samples = 1
     castShadows = "false"
 }
