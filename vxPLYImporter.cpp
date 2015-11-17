@@ -21,7 +21,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 {
 	if (!FileUtils::fileExists(fileName))
 	{
-		std::cout << "PLY: File " << fileName << " doesn't exist" << std::endl;
+		std::cerr << "PLY: File " << fileName << " doesn't exist" << std::endl;
 		return;
 	}
 

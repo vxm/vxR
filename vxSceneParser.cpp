@@ -240,7 +240,7 @@ VS vxSceneParser::procesScene()
 {
 	if (!FileUtils::fileExists(m_fileName))
 	{
-		std::cout << "Scene file " << m_fileName << " doesn't exist" << std::endl;
+		std::cerr << "Scene file " << m_fileName << " doesn't exist" << std::endl;
 		return VS::kError;
 	}
 
@@ -254,7 +254,7 @@ VS vxSceneParser::procesScene()
 	// checking this contains a vx scene description
 	if(line!="#vxR scene")
 	{
-		std::cout << "scene parse: '" << m_fileName << "' doesn't contain vxR scene information." << std::endl;
+		std::cerr << "scene parse: '" << m_fileName << "' doesn't contain vxR scene information." << std::endl;
 		return VS::kError;
 	}
 
@@ -263,7 +263,7 @@ VS vxSceneParser::procesScene()
 	std::cout << "line: '" << line << "'" << std::endl;
 	if(line!="#format ascii 1.0"s)
 	{
-		std::cout << "scene parse: File " << m_fileName << " is not ASCII" << std::endl;
+		std::cerr << "scene parse: File " << m_fileName << " is not ASCII" << std::endl;
 		return VS::kError;
 	}
 	
@@ -281,7 +281,7 @@ VS vxSceneParser::procesScene()
 			
 			if (m_nodes.find(nodeName)!=m_nodes.end())
 			{
-				std::cout << "Node '" 
+				std::cerr << "Node '" 
 						<< nodeName 
 						<< "' not added. There is already a node"
 						<< " with that name in scene" << std::endl;
