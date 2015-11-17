@@ -24,7 +24,9 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		direct->setIntensity(node->getFloatAttribute("intensity"));
 		direct->setColor(vxColor::lookup256(node->getColorAttribute("color")));
 		direct->setOrientation(node->getVector3dAttribute("orientation"));
-		direct->setCastShadows(node->getBoolAttribute("castShadows"));
+		
+		std::string cast = node->getStringAttribute("castShadows");
+		direct->setCastShadows(cast == "true"s);
 	}
 
 	for(const auto node: nodeDB->getNodesByType("vxIBLight"))
