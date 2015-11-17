@@ -109,7 +109,7 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 		return ULONG_MAX;
 	
 	a = 0;
-	for(int i=1;i<m_xvalues.size()-1;i++)
+	for(unsigned int i=1;i<m_xvalues.size()-1;i++)
 	{
 		if( v.x() < m_xvalues[i] )
 		{
@@ -120,7 +120,7 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 	}
 
 	b = 0;
-	for(int i=1;i<m_yvalues.size()-1;i++)
+	for(unsigned int i=1;i<m_yvalues.size()-1;i++)
 	{
 		if( v.y() < m_yvalues[i] )
 		{
@@ -131,7 +131,7 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 	}
 	
 	c = 0;
-	for(int i=1;i<m_zvalues.size()-1;i++)
+	for(unsigned int i=1;i<m_zvalues.size()-1;i++)
 	{
 		if( v.z() < m_zvalues[i] )
 		{
