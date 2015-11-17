@@ -107,7 +107,7 @@ scalar vxVector2d::operator[](const unsigned int idx) const
 vxVector2d vxVector2d::asIntPosition() const
 {
 	return (vxVector2d(floor(m_x),
-								floor(m_y)));
+					   floor(m_y)));
 }
 
 
@@ -120,37 +120,37 @@ vxVector2d vxVector2d::unit() const
 {
 	scalar lng=length();
 	return (vxVector2d(m_x/lng,
-								m_y/lng));
+					   m_y/lng));
 }
 
 vxVector2d vxVector2d::inverted() const
 {
 	return (vxVector2d(-m_x,
-								-m_y));
+					   -m_y));
 }
 
 vxVector2d vxVector2d::operator+(int factor) const 
 {
 	return (vxVector2d(factor+m_x,
-								factor+m_y));
+					   factor+m_y));
 }
 
 vxVector2d vxVector2d::operator-(int factor) const 
 {
 	return (vxVector2d(m_x-factor,
-					  m_y-factor));
+					   m_y-factor));
 }
 
 vxVector2d vxVector2d::operator*(int factor) const 
 {
 	return (vxVector2d(factor*m_x,
-								factor*m_y));
+					   factor*m_y));
 }
 
 vxVector2d vxVector2d::operator/(int factor) const 
 {
 	return (vxVector2d(m_x/(scalar)factor,
-								m_y/(scalar)factor));
+					   m_y/(scalar)factor));
 }
 
 bool vxVector2d::operator==(const vxVector2d &other) const
@@ -171,13 +171,13 @@ scalar vxVector2d::angle() const
 vxVector2d vxVector2d::operator/(scalar factor) const 
 {
 	return (vxVector2d(m_x/(scalar)factor,
-					  m_y/(scalar)factor));
+					   m_y/(scalar)factor));
 }
 
 vxVector2d vxVector2d::operator/(const vxVector2d& entrada) const 
 {
 	return (vxVector2d(m_x/entrada.m_x,
-					  m_y/entrada.m_y));
+					   m_y/entrada.m_y));
 }
 
 vxVector2d vxVector2d::operator*(scalar factor) const 
@@ -188,32 +188,32 @@ vxVector2d vxVector2d::operator*(scalar factor) const
 vxVector2d vxVector2d::operator*(const vxVector2d& entrada) const 
 {
 	return (vxVector2d(entrada.m_x*m_x,
-					  entrada.m_y*m_y));
+					   entrada.m_y*m_y));
 }
 
 vxVector2d vxVector2d::operator-(scalar factor) const 
 {
 	return (vxVector2d(m_x-factor,
-								m_y-factor));
+					   m_y-factor));
 }
 
 vxVector2d vxVector2d::operator-(const vxVector2d& entrada) const 
 {
 	return (vxVector2d(m_x-entrada.m_x,
-					  m_y-entrada.m_y));
+					   m_y-entrada.m_y));
 }
 
 
 vxVector2d vxVector2d::operator+(scalar factor) const
 {
 	return (vxVector2d(factor+m_x,
-								factor+m_y));
+					   factor+m_y));
 }
 
 vxVector2d vxVector2d::operator+(const vxVector2d& other) const
 {
 	return (vxVector2d(other.m_x+m_x,
-								other.m_y+m_y));
+					   other.m_y+m_y));
 }
 
 
@@ -342,9 +342,7 @@ scalar& vxVector3d::operator[](const unsigned int idx)
 
 vxVector3d vxVector3d::inverted() const
 {
-	return (vxVector3d(-m_x,
-								-m_y,
-								-m_z));
+	return v3(-m_x,-m_y,-m_z);
 }
 
 vxVector3d::axis vxVector3d::mainAxis() const
@@ -355,7 +353,7 @@ vxVector3d::axis vxVector3d::mainAxis() const
 	{
 		return axis::kX;
 	}
-
+	
 	if(fabs(m_y)>fabs(m_x) && fabs(m_x)>fabs(m_z))
 	{
 		return axis::kY;
@@ -367,8 +365,8 @@ vxVector3d::axis vxVector3d::mainAxis() const
 scalar vxVector3d::length() const
 {
 	return sqrt( fabs(m_x*m_x)
-				+fabs(m_y*m_y)
-				+fabs(m_z*m_z));
+				 +fabs(m_y*m_y)
+				 +fabs(m_z*m_z));
 }
 
 vxVector3d vxVector3d::midPoint(const vxVector3d &other) const
@@ -378,9 +376,9 @@ vxVector3d vxVector3d::midPoint(const vxVector3d &other) const
 
 vxVector3d vxVector3d::aaVector() const
 {
-	return (vxVector3d(std::copysign(1.0,m_x),
-								std::copysign(1.0,m_y),
-								std::copysign(1.0,m_z)));
+	return v3(std::copysign(1.0,m_x),
+			  std::copysign(1.0,m_y),
+			  std::copysign(1.0,m_z));
 }
 
 
@@ -392,19 +390,19 @@ scalar vxVector3d::distance(const vxVector3d &ref) const
 
 vxVector3d vxVector3d::floorVector() const
 {
-	return (vxVector3d(floor(m_x),floor(m_y),floor(m_z)));
+	return v3(floor(m_x),floor(m_y),floor(m_z));
 }
 
 
 vxVector3d vxVector3d::ceilVector() const
 {
-	return (vxVector3d(ceil(m_x),ceil(m_y),ceil(m_z)));
+	return v3(ceil(m_x),ceil(m_y),ceil(m_z));
 }
 
 vxVector3d vxVector3d::unit() const
 {
 	const auto&& lng=length();
-	return (vxVector3d(m_x/lng, m_y/lng, m_z/lng));
+	return v3(m_x/lng, m_y/lng, m_z/lng);
 }
 
 void vxVector3d::setUnit() 
@@ -417,9 +415,7 @@ void vxVector3d::setUnit()
 
 vxVector3d vxVector3d::operator+(int factor) const
 {
-	return (vxVector3d(factor+m_x,
-								factor+m_y,
-								factor+m_z));
+	return v3(factor+m_x, factor+m_y, factor+m_z);
 }
 
 vxVector3d vxVector3d::operator-=(const vxVector3d &entrada)
@@ -427,37 +423,37 @@ vxVector3d vxVector3d::operator-=(const vxVector3d &entrada)
 	m_x-=entrada.m_x;
 	m_y-=entrada.m_y;
 	m_z-=entrada.m_z;
-
+	
 	return (*this);
 }
 
 vxVector3d vxVector3d::operator-(int factor) const 
 {
-	return (vxVector3d(m_x-factor,
-								m_y-factor,
-								m_z-factor));
+	return v3(m_x-factor,
+			  m_y-factor,
+			  m_z-factor);
 }
 
 
 vxVector3d vxVector3d::operator*(int factor) const 
 {
-	return (vxVector3d(factor*m_x,
-								factor*m_y,
-								factor*m_z));
+	return v3(factor*m_x,
+			  factor*m_y,
+			  factor*m_z);
 }
 
 vxVector3d vxVector3d::operator/(int factor) const 
 {
-	return (vxVector3d(m_x/(scalar)factor,
-						m_y/(scalar)factor,
-						m_z/(scalar)factor));
+	return v3(m_x/(scalar)factor,
+			  m_y/(scalar)factor,
+			  m_z/(scalar)factor);
 }
 
 vxVector3d vxVector3d::operator^(const vxVector3d& b) const
 {
-	return vxVector3d((m_y*b.m_z)-(m_z*b.m_y),
-					  (m_z*b.m_x)-(m_x*b.m_z),
-					  (m_x*b.m_y)-(m_y*b.m_x));
+	return v3((m_y*b.m_z)-(m_z*b.m_y),
+			  (m_z*b.m_x)-(m_x*b.m_z),
+			  (m_x*b.m_y)-(m_y*b.m_x));
 }
 
 bool vxVector3d::operator==(const vxVector3d& other) const
@@ -553,7 +549,7 @@ vxVector3d vxVector3d::rotateX(scalar ang)
 vxVector3d vxVector3d::rotateY(scalar ang)
 {
 	const auto&& angk = ang + angleXY();
-	return (vxVector3d(m_z, cos(angk), sin(angk)));
+	return v3(m_z, cos(angk), sin(angk));
 }
 
 vxVector3d vxVector3d::rotateZ(scalar ang)
@@ -566,56 +562,56 @@ vxVector3d vxVector3d::rotateZ(scalar ang)
 
 vxVector3d vxVector3d::operator/(scalar factor) const
 {
-	return (vxVector3d(m_x/(scalar)factor,
-								m_y/(scalar)factor,
-								m_z/(scalar)factor));
+	return v3(m_x/(scalar)factor,
+			  m_y/(scalar)factor,
+			  m_z/(scalar)factor);
 }
 
 vxVector3d vxVector3d::operator/(const vxVector3d &entrada) const
 {
-	return (vxVector3d(entrada.m_x/m_x,
-								entrada.m_y/m_y,
-								entrada.m_z/m_z));
+	return v3(entrada.m_x/m_x,
+			  entrada.m_y/m_y,
+			  entrada.m_z/m_z);
 }
 
 vxVector3d vxVector3d::operator*(scalar factor) const 
 {
-	return (vxVector3d(factor*m_x,
-								factor*m_y,
-								factor*m_z));
+	return v3(factor*m_x,
+			  factor*m_y,
+			  factor*m_z);
 }
 
 vxVector3d vxVector3d::operator*(const vxVector3d other) const 
 {
-	return (vxVector3d(other.m_x*m_x,
-								other.m_y*m_y,
-								other.m_z*m_z));
+	return v3(other.m_x*m_x,
+			  other.m_y*m_y,
+			  other.m_z*m_z);
 }
 
 vxVector3d vxVector3d::operator-(scalar factor) const 
 {
-	return (vxVector3d(m_x-factor,
-					  m_y-factor,
-					  m_z-factor));
+	return v3(m_x-factor,
+			  m_y-factor,
+			  m_z-factor);
 }
 
 vxVector3d vxVector3d::operator-(const vxVector3d &entrada) const 
 {
-	return (vxVector3d(m_x-entrada.m_x,
-					  m_y-entrada.m_y,
-					  m_z-entrada.m_z));
+	return v3(m_x-entrada.m_x,
+			  m_y-entrada.m_y,
+			  m_z-entrada.m_z);
 }
 
 vxVector3d vxVector3d::operator+(scalar factor) const
 {
-	return (vxVector3d(factor+m_x,factor+m_y,factor+m_z));
+	return v3(factor+m_x,factor+m_y,factor+m_z);
 }
 
 vxVector3d vxVector3d::operator+(const vxVector3d &entrada) const
 {
-	return (vxVector3d(entrada.m_x+m_x,
-								entrada.m_y+m_y,
-								entrada.m_z+m_z));
+	return v3(entrada.m_x+m_x,
+			  entrada.m_y+m_y,
+			  entrada.m_z+m_z);
 }
 
 vxVector3d vxVector3d::operator+=(const vxVector3d &entrada)
