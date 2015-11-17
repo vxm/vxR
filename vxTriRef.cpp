@@ -82,7 +82,7 @@ int vxTriRef::throwRay(const vxRay &ray, vxCollision &collide) const
 		return 0;
 	}
 
-	const scalar threshold = -0.001;
+	const scalar threshold = -0.0000001;
 	const auto& p = MU::rectAndPlane(ray,p1,p2,p3);
 	
 	auto ta = area();
