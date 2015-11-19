@@ -129,19 +129,36 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 	}
 
 	std::vector<vxCollision> cols;
+	// little penetration in box
+	auto sp = col.position() + (col.normal().inverted() / (scalar)100.0);
+
+	auto prev = m_grid.size();
 	
-	const auto&& triangles = m_grid.getList(ray, col.position() 
-												 + col.normal().inverted()/(scalar)100.0);
+	searchResult triangles;
 	
-	for(auto &&id: *triangles )
+	do
 	{
-		auto&& tri = m_triangles[id];
-		
-		if(tri.throwRay(ray,col))
+		triangles = m_grid.getList(ray, sp);
+
+		if(prev==triangles.index)
 		{
-			cols.push_back(col);
+			break;
 		}
+		
+		prev = triangles.index;
+		
+		for(auto &&id: *triangles.listRef )
+		{
+			auto&& tri = m_triangles[id];
+
+			if(tri.throwRay(ray,col))
+			{
+				cols.push_back(col);
+			}
+		}
+		
 	}
+	while(!cols.size() && m_bb->contains(sp));
 	
 	/*
 	for(auto &&tri: m_triangles )
@@ -168,13 +185,21 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 			}
 			
 		}
-		
+
 		col.setColor(vxColor::white);
+		col.setValid(true);
+		col.setUV(v2(0.5,0.5));
+		return 1;
+	}
+	else
+	{
+		col.setColor(vxColor::indexColor(triangles.index));
 		col.setValid(true);
 		col.setUV(v2(0.5,0.5));
 		
 		return 1;
 	}
+	
 #endif
 	return 0;
 }
