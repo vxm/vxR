@@ -1,7 +1,7 @@
 #include <climits>
 #include "vxGeoGrid.h"
 
-triangleIdsRef vxGeoGrid::emptyListRef = std::make_shared<std::vector<unsigned long>>();
+const searchResult vxGeoGrid::invalidResult{0ul, std::make_shared<std::vector<unsigned long>>()};
 
 vxGeoGrid::vxGeoGrid()
 {
@@ -45,6 +45,11 @@ void vxGeoGrid::close()
 	{
 		zval = m_bb->minZ() + zSlice * k++;
 	}
+}
+
+unsigned int vxGeoGrid::size() const
+{
+	return m_rx * m_ry * m_rz;
 }
 
 unsigned long vxGeoGrid::index(unsigned int a, 
@@ -165,12 +170,12 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 	{
 		if(indexIsValid(idx1))
 		{
-			if(m_members[idx1]==nullptr)
+			if(m_members[idx1].listRef ==nullptr)
 			{
-				m_members[idx1] = std::make_shared<std::vector<unsigned long>>();
+				m_members[idx1].listRef = std::make_shared<std::vector<unsigned long>>();
 			}
 
-			m_members[idx1]->push_back(triangleID);
+			m_members[idx1].listRef->push_back(triangleID);
 		}
 		
 		return;
@@ -195,12 +200,13 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 
 		if(indexIsValid(idx))
 		{
-			if(m_members[idx]==nullptr)
+			if(m_members[idx].listRef==nullptr)
 			{
-				m_members[idx] = std::make_shared<std::vector<unsigned long>>();
+				m_members[idx].listRef = std::make_shared<std::vector<unsigned long>>();
 			}
 
-			m_members[idx]->push_back(triangleID);
+			m_members[idx].index = idx;
+			m_members[idx].listRef->push_back(triangleID);
 		}
 		else
 		{
@@ -213,7 +219,7 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 
 bool vxGeoGrid::hasTriangles(const long idx) const
 {
-	return !(m_members[idx]==nullptr);
+	return m_members[idx].index!=size();
 }
 
 bool vxGeoGrid::indexIsValid(const long idx) const
@@ -221,9 +227,8 @@ bool vxGeoGrid::indexIsValid(const long idx) const
 	return !(idx<0l || idx>=numVoxels());
 }
 
-const triangleIdsRef vxGeoGrid::getList(const vxRay &ray, const v3 &sp) const
+const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 {
-	auto pIt = sp;
 	long retVal{-1l};
 
 	const auto& d = ray.direction();
@@ -235,10 +240,11 @@ const triangleIdsRef vxGeoGrid::getList(const vxRay &ray, const v3 &sp) const
 	int idX;
 	int idY;
 	int idZ;
-	
+
 	do
 	{
-		retVal = lookupVoxel(pIt, idX, idY, idZ);
+		retVal = lookupVoxel(sp, idX, idY, idZ);
+		
 		if(indexIsValid(retVal) && hasTriangles(retVal))
 		{
 			return m_members[retVal];
