@@ -86,8 +86,7 @@ v3 vxLight::getLightRay(const v3 &position) const
 scalar vxLight::lightRatio(const vxRay &ray,
 							const v3 &lightDirection) const
 {
-	scalar angl = ray.incidence(lightDirection);
-	return angl;
+	return ray.incidence(lightDirection);
 }
 
 void vxLight::setPosition(const v3 &position)
