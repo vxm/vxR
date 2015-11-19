@@ -250,10 +250,11 @@ vxColor vxDirectLight::acummulationLight(const vxRay &, const vxCollision &colli
 	// compute all sort of shadows.
 	vxColor ret{vxColor::black};
 	
-	if(f.direction().follows(m_orientation))
+	if(collision.normal().follows(m_orientation))
 	{
 		const auto&& ratio = lightRatio(f, m_orientation.inverted());
 		auto lumm = m_intensity * ratio;
+
 		//auto org = v3(0, 0, 0);
 		const vxRay ff(cPnt, m_orientation.inverted());
 		const auto&& scn = m_scene.lock();
