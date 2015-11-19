@@ -171,10 +171,11 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	vxSampler sampler(m_visSamples);
 	
 #if SINGLERAY
-	
+	(void)by;
+	(void)offset;
 	// moving to start point.
-	unsigned int itH = 328;
-	unsigned int itV = 105;
+	unsigned int itH = 344;
+	unsigned int itV = 200;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.

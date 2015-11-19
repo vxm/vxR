@@ -95,7 +95,7 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 5 0 10.5 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 5.50 1]
     filePath = "/home/john/Downloads/monkey_0.ply"
 }
 
