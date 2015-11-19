@@ -259,35 +259,39 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 		auto zVal = m_zvalues[arrayIdxZ];
 
 		v3 intersectX = MU::rectAndXPlane(d, xVal);
-		if(intersectX.y() <= yVal
-			|| intersectX.z() <= zVal)
+		if(fabs(intersectX.y()) <= fabs(yVal)
+			&& fabs(intersectX.z()) <= fabs(zVal))
 		{
-			pIt = intersectX + v3((velX ? 1 : -1)/20.0, 0.0, 0.0);
+			sp = intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
 			continue;
 		}
 
 		v3 intersectY = MU::rectAndYPlane(d, yVal);
-		if(intersectY.x() <= xVal
-			|| intersectY.z() <= zVal)
+		if(fabs(intersectY.x()) <= fabs(xVal)
+			&& fabs(intersectY.z()) <= fabs(zVal))
 		{
-			pIt = intersectY + v3(0.0, (velY ? 1 : -1)/20.0, 0.0);
+			sp = intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
 			continue;
 		}
 
 		v3 intersectZ = MU::rectAndZPlane(d, zVal);
-		if(intersectZ.x() <= xVal
-			|| intersectZ.y() <= yVal)
+		if(fabs(intersectZ.x()) <= fabs(xVal)
+			&& fabs(intersectZ.y()) <= fabs(yVal))
 		{
-			pIt = intersectZ + v3(0.0, 0.0, (velZ ? 1 : -1)/20.0);
+			sp = intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
 			continue;
 		}
+		
+		
 		{
-			std::cerr << "Not alocated ray. vxGeoGrid.cpp:284 () hitThis should not happen: " << std::endl;
+			sp += ray.direction();
+			
+			std::cerr << sp << "Not alocated ray. vxGeoGrid.cpp:284 () hitThis should not happen: " << std::endl;
 		}
 		
 	}
-	while(indexIsValid(retVal) && m_bb->contains(pIt));
+	while(indexIsValid(retVal) && m_bb->contains(sp));
 
-	return vxGeoGrid::emptyListRef;
+	return vxGeoGrid::invalidResult;
 }
 
