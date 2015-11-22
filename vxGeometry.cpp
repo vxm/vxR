@@ -77,6 +77,11 @@ void vxGeometry::addTriangle(unsigned long a, unsigned long b, unsigned long c)
 		std::cerr << "You tried to edit a geometry when is closed for edition" << std::endl;
 		return;
 	}
+	
+	if(a>50000ul)
+	{
+		return;
+	}
 
 	//TODO:push_back ?
 	m_triangles.push_back((vxTriRef(m_vertices[a],
@@ -127,15 +132,19 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 	{
 		return 0;
 	}
-
+	
+	auto&& p = ray.origin();
+	
+	
 	std::vector<vxCollision> cols;
 	// little penetration in box
-	auto sp = col.position() + (col.normal().inverted() / (scalar)100.0);
+	
+	auto sp =  col.position() 
+			+ (col.normal().inverted() / (scalar)100.0);
 
 	auto prev = m_grid.size();
-	
 	searchResult triangles;
-	
+
 	do
 	{
 		triangles = m_grid.getList(ray, sp);
@@ -147,18 +156,16 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 		
 		prev = triangles.index;
 		
-		for(auto &&id: *triangles.listRef )
+		for(auto &&id: *(triangles.listRef) )
 		{
-			auto&& tri = m_triangles[id];
-
-			if(tri.throwRay(ray,col))
+			if(m_triangles[id].throwRay(ray,col))
 			{
 				cols.push_back(col);
 			}
 		}
 		
 	}
-	while(!cols.size() && m_bb->contains(sp));
+	while(!cols.size());
 	
 	/*
 	for(auto &&tri: m_triangles )
@@ -173,13 +180,13 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 	if(cols.size())
 	{
 		//Length to origin
-		auto mind  = cols[0].position().length();
+		auto mind  = (cols[0].position()-p).length();
 		col = cols[0];
 
 		for(auto&& c:cols)
 		{
 			//Length to origin
-			if(c.position().length() < mind)
+			if((c.position()-p).length() < mind)
 			{
 				col = c;
 			}
@@ -189,14 +196,6 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 		col.setColor(vxColor::white);
 		col.setValid(true);
 		col.setUV(v2(0.5,0.5));
-		return 1;
-	}
-	else
-	{
-		col.setColor(vxColor::indexColor(triangles.index));
-		col.setValid(true);
-		col.setUV(v2(0.5,0.5));
-		
 		return 1;
 	}
 	

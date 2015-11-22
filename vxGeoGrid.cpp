@@ -61,7 +61,7 @@ unsigned long vxGeoGrid::index(unsigned int a,
 
 unsigned long vxGeoGrid::numVoxels() const
 {
-	return m_rx * m_ry * m_rz;
+	return size();
 }
 
 unsigned int vxGeoGrid::rx() const
@@ -107,11 +107,11 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 									int &b, 
 									int &c) const
 {
-	if(v.x()<m_xvalues.front() || v.y()<m_yvalues.front() || v.z()<m_zvalues.front())
+	/*if(v.x()<m_xvalues.front() || v.y()<m_yvalues.front() || v.z()<m_zvalues.front())
 		return ULONG_MAX;
 	
 	if(v.x()>m_xvalues.back() || v.y()>m_yvalues.back() || v.z()>m_zvalues.back())
-		return ULONG_MAX;
+		return ULONG_MAX;*/
 	
 	a = 0;
 	for(unsigned int i=1;i<m_xvalues.size()-1;i++)
@@ -158,7 +158,7 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 {
 	int a1,b1,c1;
 	auto idx1 = lookupVoxel(tri.p1,a1,b1,c1);
-	
+
 	int a2,b2,c2;
 	auto idx2 = lookupVoxel(tri.p2,a2,b2,c2);
 	
@@ -210,7 +210,7 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 		}
 		else
 		{
-			std::cerr << "Looking up for index invalid while adding points " 
+			std::cout << "Looking up for index invalid while adding points " 
 					  << idx 
 					  << std::endl;
 		}
@@ -219,7 +219,7 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 
 bool vxGeoGrid::hasTriangles(const long idx) const
 {
-	return m_members[idx].index!=size();
+	return !(m_members[idx].listRef==nullptr);
 }
 
 bool vxGeoGrid::indexIsValid(const long idx) const
@@ -232,7 +232,8 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 	long retVal{-1l};
 
 	const auto& d = ray.direction();
-
+	const auto& p = ray.origin();
+		
 	auto velX = d.xPositive() ? 1 : 0;
 	auto velY = d.yPositive() ? 1 : 0;
 	auto velZ = d.zPositive() ? 1 : 0;
@@ -243,27 +244,23 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 
 	do
 	{
-		retVal = lookupVoxel(sp, idX, idY, idZ);
-		
-		if(indexIsValid(retVal) && hasTriangles(retVal))
-		{
-			return m_members[retVal];
-		}
+		retVal = lookupVoxel(sp+p, idX, idY, idZ);
 
-		auto arrayIdxX = idX + velX;
-		auto arrayIdxY = idY + velY;
-		auto arrayIdxZ = idZ + velZ;
+		//std::cout << "Index found: " << retVal << std::endl;
+		if(!indexIsValid(retVal))
+		{
+			return vxGeoGrid::invalidResult;
+		}
 		
-		auto xVal = m_xvalues[arrayIdxX];
-		auto yVal = m_yvalues[arrayIdxY];
-		auto zVal = m_zvalues[arrayIdxZ];
+		auto xVal = m_xvalues[idX + velX];
+		auto yVal = m_yvalues[idY + velY];
+		auto zVal = m_zvalues[idZ + velZ];
 
 		v3 intersectX = MU::rectAndXPlane(d, xVal);
 		if(fabs(intersectX.y()) <= fabs(yVal)
 			&& fabs(intersectX.z()) <= fabs(zVal))
 		{
 			sp = intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
-			continue;
 		}
 
 		v3 intersectY = MU::rectAndYPlane(d, yVal);
@@ -271,7 +268,6 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 			&& fabs(intersectY.z()) <= fabs(zVal))
 		{
 			sp = intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
-			continue;
 		}
 
 		v3 intersectZ = MU::rectAndZPlane(d, zVal);
@@ -279,16 +275,13 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 			&& fabs(intersectZ.y()) <= fabs(yVal))
 		{
 			sp = intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
-			continue;
 		}
+
 		
-		
+		if(hasTriangles(retVal))
 		{
-			sp += ray.direction();
-			
-			std::cerr << sp << "Not alocated ray. vxGeoGrid.cpp:284 () hitThis should not happen: " << std::endl;
+			return m_members[retVal];
 		}
-		
 	}
 	while(indexIsValid(retVal) && m_bb->contains(sp));
 

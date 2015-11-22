@@ -105,57 +105,67 @@ bool vxBoundingBox::contains(const v3 &v) const
 
 int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-	auto&& d = ray.direction();
+	const auto& d = ray.direction();
+	const auto& p = ray.origin();
+	
+	auto&& minX = m_minx - p.x();
+	auto&& maxX = m_maxx - p.x();
 
-	auto x = d.xPositive() ? m_minx : m_maxx;
+	auto&& minY = m_miny - p.y();
+	auto&& maxY = m_maxy - p.y();
+
+	auto&& minZ = m_minz - p.z();
+	auto&& maxZ = m_maxz - p.z();
+	
+	auto x = d.xPositive() ? minX : maxX;
 	auto t = (x - d.x()) / -d.x();
 	auto y = t * (-d.y()) + d.y();
-	if( y<=m_maxy && y>=m_miny)
+	if( y<=maxY && y>=minY)
 	{
 		auto z = t * (-d.z()) + d.z();
-		if(z<=m_maxz && z>=m_minz)
+		if(z<=maxZ && z>=minZ)
 		{
-			collide.setPosition(x, y, z);
+			collide.setPosition(v3(x, y, z)+p);
 			collide.setNormal(d.xPositive() ? v3::constMinusX : v3::constX);
 			collide.setValid();
-			collide.setUV(v2( (5.0 *(y - m_miny)) / ( (m_maxy - m_miny)),
-							  (5.0 *(z - m_minz)) / ( (m_maxz - m_minz))));
+			collide.setUV(v2( (5.0 *(y - minY)) / ( (maxY - minY)),
+							  (5.0 *(z - minZ)) / ( (maxZ - minZ))));
 			collide.setColor(vxColor::white);
 			return 1;
 		}
 	}
 	
-	y = d.yPositive() ? m_miny : m_maxy;
+	y = d.yPositive() ? minY : maxY;
 	t = (y - d.y()) / -d.y();
 	x = t * (-d.x()) + d.x();
-	if(x<=m_maxx && x>=m_minx)
+	if(x<=maxX && x>=minX)
 	{
 		auto z = t * (-d.z()) + d.z();
-		if(z<=m_maxz && z>=m_minz)
+		if(z<=maxZ && z>=minZ)
 		{
-			collide.setPosition(x, y, z);
+			collide.setPosition(v3(x, y, z)+p);
 			collide.setNormal(d.yPositive() ? v3::constMinusY : v3::constY);
 			collide.setValid();
-			collide.setUV(v2( (5.0 *(x - m_minx)) / ((m_maxx - m_minx)),
-							  (5.0 *(z - m_minz)) / ((m_maxz - m_minz))));
+			collide.setUV(v2( (5.0 *(x - minX)) / ((maxX - minX)),
+							  (5.0 *(z - minZ)) / ((maxZ - minZ))));
 			collide.setColor(vxColor::white);
 			return 1;
 		}
 	}
 
-	auto z = d.zPositive() ? m_minz : m_maxz;
+	auto z = d.zPositive() ? minZ : maxZ;
 	t = (z - d.z()) / -d.z();
 	x = t * (-d.x()) + d.x();
-	if(x<=m_maxx && x>=m_minx)
+	if(x<=maxX && x>=minX)
 	{
 		y = t * (-d.y()) + d.y();
-		if(y<=m_maxy && y>=m_miny)
+		if(y<=maxY && y>=minY)
 		{
-			collide.setPosition(x, y, z);
+			collide.setPosition(v3(x, y, z)+p);
 			collide.setNormal(d.zPositive() ? v3::constMinusZ :  v3::constZ);
 			collide.setValid();
-			collide.setUV(v2( (5.0 *(x - m_minx)) /  (m_maxx - m_minx),
-							  (5.0 *(y - m_miny)) /  (m_maxy - m_miny)));
+			collide.setUV(v2( (5.0 *(x - minX)) /  (maxX - minX),
+							  (5.0 *(y - minY)) /  (maxY - minY)));
 			collide.setColor(vxColor::white);
 			return 1;
 		}
@@ -166,36 +176,46 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 
 bool vxBoundingBox::hasCollision(const vxRay &ray) const
 {
-	auto&& d = ray.direction();
+	const auto& d = ray.direction();
+	const auto& p = ray.origin();
+	
+	auto&& minX = m_minx - p.x();
+	auto&& maxX = m_maxx - p.x();
 
-	auto t = ((d.xPositive() ? m_minx : m_maxx) - d.x()) / -d.x();
+	auto&& minY = m_miny - p.y();
+	auto&& maxY = m_maxy - p.y();
+
+	auto&& minZ = m_minz - p.z();
+	auto&& maxZ = m_maxz - p.z();
+
+	auto t = ((d.xPositive() ? minX : maxX) - d.x()) / -d.x();
 	auto y = t * (-d.y()) + d.y();
-	if( y<=m_maxy && y>=m_miny)
+	if( y<=maxY && y>=minY)
 	{
 		auto z = t * (-d.z()) + d.z();
-		if(z<=m_maxz && z>=m_minz)
+		if(z<=maxZ && z>=minZ)
 		{
 			return true;
 		}
 	}
 	
-	t = ((d.yPositive() ? m_miny : m_maxy) - d.y()) / -d.y();
+	t = ((d.yPositive() ? minY : maxY) - d.y()) / -d.y();
 	auto x = t * (-d.x()) + d.x();
-	if(x<=m_maxx && x>=m_minx)
+	if(x<=maxX && x>=minX)
 	{
 		auto z = t * (-d.z()) + d.z();
-		if(z<=m_maxz && z>=m_minz)
+		if(z<=maxZ && z>=minZ)
 		{
 			return true;
 		}
 	}
 
-	t = ((d.zPositive() ? m_minz : m_maxz) - d.z()) / -d.z();
+	t = ((d.zPositive() ? minZ : maxZ) - d.z()) / -d.z();
 	x = t * (-d.x()) + d.x();
-	if(x<=m_maxx && x>=m_minx)
+	if(x<=maxX && x>=minX)
 	{
 		y = t * (-d.y()) + d.y();
-		if(y<=m_maxy && y>=m_miny)
+		if(y<=maxY && y>=minY)
 		{
 			return true;
 		}
