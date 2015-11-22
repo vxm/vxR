@@ -18,8 +18,8 @@ name = "renderSettings_full"
 type = "vxRenderSettings"
 active = "false"
     resolution = 1366 768
-    pixelSamples = 4
-    reflectionSamples = 2
+    pixelSamples = 2
+    reflectionSamples = 0
     numThreads = -1
 }
 
@@ -62,7 +62,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 2.5
+    focusDistance = 6.1
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -95,8 +95,8 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 5.50 1]
-    filePath = "/home/john/Downloads/monkey_0.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 5.0 -0.5 5.0 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
 }
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
@@ -144,7 +144,7 @@ active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 0.66
     color = 255 230 240
-    orientation = 5.0 -8.0 8.0
+    orientation = 5.0 -8.0 4.0
     samples = 1
     castShadows = "false"
 }
