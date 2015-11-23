@@ -59,7 +59,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		return;
 	}
 	
-	auto numVertex = std::stod(vertexAmountTok[2]);
+	auto numVertex = std::stoul(vertexAmountTok[2]);
 	std::cout << "PLY: Num vertex: " << numVertex << std::endl;
 	unsigned int nFaces{0u};
 	
