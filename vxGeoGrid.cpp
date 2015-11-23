@@ -244,39 +244,39 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 
 	do
 	{
-		retVal = lookupVoxel(sp+p, idX, idY, idZ);
+		retVal = lookupVoxel(sp, idX, idY, idZ);
 
-		//std::cout << "Index found: " << retVal << std::endl;
+		//std::cout << " - Index found: " << retVal << " - SP " << sp  << std::endl;
+
 		if(!indexIsValid(retVal))
 		{
 			return vxGeoGrid::invalidResult;
 		}
 		
-		auto xVal = m_xvalues[idX + velX];
-		auto yVal = m_yvalues[idY + velY];
-		auto zVal = m_zvalues[idZ + velZ];
+		auto xVal = m_xvalues[idX + velX] - p.x();
+		auto yVal = m_yvalues[idY + velY] - p.y();
+		auto zVal = m_zvalues[idZ + velZ] - p.z();
 
 		v3 intersectX = MU::rectAndXPlane(d, xVal);
 		if(fabs(intersectX.y()) <= fabs(yVal)
 			&& fabs(intersectX.z()) <= fabs(zVal))
 		{
-			sp = intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
+			sp = p + intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
 		}
 
 		v3 intersectY = MU::rectAndYPlane(d, yVal);
 		if(fabs(intersectY.x()) <= fabs(xVal)
 			&& fabs(intersectY.z()) <= fabs(zVal))
 		{
-			sp = intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
+			sp = p + intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
 		}
 
 		v3 intersectZ = MU::rectAndZPlane(d, zVal);
 		if(fabs(intersectZ.x()) <= fabs(xVal)
 			&& fabs(intersectZ.y()) <= fabs(yVal))
 		{
-			sp = intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
+			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
 		}
-
 		
 		if(hasTriangles(retVal))
 		{

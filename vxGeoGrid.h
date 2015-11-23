@@ -23,9 +23,9 @@ class vxGeoGrid
 {
 	
 	std::shared_ptr<vxBoundingBox> m_bb;
-	unsigned int m_rx = {5u};
-	unsigned int m_ry = {5u};
-	unsigned int m_rz = {5u};
+	unsigned int m_rx = {30u};
+	unsigned int m_ry = {30u};
+	unsigned int m_rz = {30u};
 	
 	std::vector<scalar> m_xvalues;
 	std::vector<scalar> m_yvalues;
