@@ -7,8 +7,8 @@ name = "renderSettings_low"
 type = "vxRenderSettings"
 active = "true"
     resolution = 683 384
-    pixelSamples = 1
-    reflectionSamples = 0
+    pixelSamples = 4
+    reflectionSamples = 1
     numThreads = -1
 }
 
@@ -18,8 +18,8 @@ name = "renderSettings_full"
 type = "vxRenderSettings"
 active = "false"
     resolution = 1366 768
-    pixelSamples = 2
-    reflectionSamples = 0
+    pixelSamples = 4
+    reflectionSamples = 1
     numThreads = -1
 }
 
@@ -62,7 +62,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 6.1
+    focusDistance = 4.1
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -85,7 +85,7 @@ name = "gnome"
 type = "vxGridGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    filePath = "/home/john/Downloads/napoleon.ply"
     position = 440.0 -113.0 440.0
     scaleFactor = 0.75
 }
@@ -95,7 +95,7 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 5.0 -0.5 5.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 3.0 -0.5 5.5 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
 }
 
@@ -142,7 +142,7 @@ name = "sun"
 type = "vxDirectLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.66
+    intensity = 0.76
     color = 255 230 240
     orientation = 5.0 -8.0 4.0
     samples = 1
@@ -177,7 +177,7 @@ active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     planeType = "Y"
     x = 0.0
-    y = -5.0
+    y = -0.48
     z = 0.0
     pointA = 440.0 -57.0 440.0
     pointB = 450.0 -56.0 440.0

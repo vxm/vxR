@@ -174,8 +174,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 210;
-	unsigned int itV = 149;
+	unsigned int itH = 683/2.0;  
+	unsigned int itV = 384/2.0;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
@@ -226,7 +226,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					{
 						v3&& invV = ((N * ray.direction().dot(N)* -2) 
 											 + ray.direction()) ;
-						invV+=MU::getSolidSphereRand3(0.05);
+						invV+=MU::getSolidSphereRand3(0.25);
 						const auto&& reflexRay = vxRay(collision.position()
 													   +(N/10000),
 													   invV);
