@@ -131,6 +131,11 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			m_geo->addTriangle(a,b,c);
 			m_geo->addTriangle(d,a,c);
 		}
+
+		if(lineTokens.size()>5)
+		{
+			std::cerr << "N-polygons are not added to geometry" << std::endl;
+		}
 	}
 	while(std::getline(iFile, line));
 	
