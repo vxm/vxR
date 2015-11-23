@@ -92,11 +92,11 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	if(m_type==vxPlane::type::kY)
 	{
-		const auto& p = MU::rectAndYPlane(ray.direction(), m_y);
+		const auto& p = MU::rectAndYPlane(ray.direction(), m_y-ray.origin().y());
 		if((ray.origin()-p).follows(ray.direction()))
 		{
 			collide.setNormal(v3::constY);
-			collide.setPosition(p);
+			collide.setPosition(p+ray.origin());
 			collide.setU((scalar)0.5);
 			collide.setV((scalar)0.5);
 			collide.setColor(m_color);
@@ -110,7 +110,7 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 		if((ray.origin()-p).follows(ray.direction()))
 		{
 			collide.setNormal(t.computeNormal());
-			collide.setPosition(p);
+			collide.setPosition(p+ray.origin());
 			collide.setU((scalar)0.5);
 			collide.setV((scalar)0.5);
 			collide.setColor(vxColor::white);
