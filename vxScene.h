@@ -6,6 +6,7 @@
 #include<vector>
 #include<future>
 
+#include "vxBroadPhase.h"
 #include "vxSceneParser.h"
 #include "vxRay.h"
 #include "vxPlane.h"
@@ -54,6 +55,8 @@ protected:
 	std::vector<vxGrid> m_cameras;
 	std::shared_ptr<ImageProperties> m_prop = {nullptr};
 
+	vxBroadPhase m_broadPhase;
+	
 public:
 	//TODO: private and getter setter.
 	long long dRays{0};
