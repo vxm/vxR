@@ -1,6 +1,6 @@
 #include "vxGeometry.h"
 
-#define DRAW_BB 0
+#define DRAW_BB 1
 
 using namespace vxCore;
 
