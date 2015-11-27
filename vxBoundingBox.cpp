@@ -33,6 +33,17 @@ void vxBoundingBox::extend(const v3 &limit)
 	m_maxz = std::max(limit.z(), m_maxz);
 }
 
+
+void vxBoundingBox::extend(const vxBoundingBox &box)
+{
+	m_minx = std::min(box.minX(), m_minx);
+	m_miny = std::min(box.minY(), m_miny);
+	m_minz = std::min(box.minZ(), m_minz);
+	
+	m_maxx = std::max(box.maxX(), m_maxx);
+	m_maxy = std::max(box.maxY(), m_maxy);
+	m_maxz = std::max(box.maxZ(), m_maxz);
+}
 scalar vxBoundingBox::minX() const
 {
 	return m_minx;

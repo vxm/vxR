@@ -32,6 +32,7 @@ public:
 	void close();
 	
 	void extend(const v3 &limit);
+	void extend(const vxBoundingBox &box);
 
 	scalar minX() const;
 	void setMinX(scalar minx);
