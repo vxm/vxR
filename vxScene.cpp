@@ -80,15 +80,16 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			const auto path = nodeGeo->getStringAttribute("filePath");
 			const auto pos = nodeGeo->getVector3dAttribute("position");
 			const auto sf = nodeGeo->getFloatAttribute("scaleFactor");
+			const auto transform = nodeGeo->getMatrixAttribute("transform");
 			
-			auto geo = createGeometry(path);
+			auto geo = createGeometry(path, transform);
 			auto plyReader = std::make_shared<vxPLYImporter>(geo);
 			plyReader->processPLYFile(path);
 			m_grids[0]->addGeometry(geo,
 									pos,
 									v3(resolution * sf,
-												resolution * sf,
-												resolution * sf) );
+									   resolution * sf,
+									   resolution * sf) );
 			m_grids[0]->createGround();
 			//m_grids[0]->createEdges();
 
