@@ -8,9 +8,9 @@ vxBoundingBox::vxBoundingBox()
 
 void vxBoundingBox::close()
 {
-	m_scale.set( (scalar)1.0/fabs(m_maxx - m_minx),
-				 (scalar)1.0/fabs(m_maxy - m_miny),
-				 (scalar)1.0/fabs(m_maxz - m_minz));
+//	m_scale.set( (scalar)1.0/fabs(m_maxx - m_minx),
+//				 (scalar)1.0/fabs(m_maxy - m_miny),
+//				 (scalar)1.0/fabs(m_maxz - m_minz));
 }
 
 void vxBoundingBox::extend(const v3 &limit)

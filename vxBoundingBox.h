@@ -23,7 +23,7 @@ class vxBoundingBox: public std::enable_shared_from_this<vxBoundingBox>
 	scalar m_maxy;
 	scalar m_maxz;
 
-	v3 m_scale;
+//	v3 m_scale;
 
 public:
 
