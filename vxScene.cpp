@@ -145,7 +145,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		const auto path = nodeGeo->getStringAttribute("filePath");
 		const auto transform = nodeGeo->getMatrixAttribute("transform");
 
-		auto geo = createGeometry(path);
+		auto geo = createGeometry(path, transform);
 		geo->setTransform(transform);
 
 		auto plyReader = std::make_shared<vxPLYImporter>(geo);
@@ -241,12 +241,12 @@ std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path
 	return image;
 }
 
-std::shared_ptr<vxGeometry> vxScene::createGeometry(const std::string &path)
+std::shared_ptr<vxGeometry> vxScene::createGeometry(const std::string &path, const vxMatrix &transform)
 {
 	// looking for previouly opened images.
 	for(const auto& geo: m_geometries)
 	{
-		if(geo->constructionPath()==path)
+		if(geo->constructionPath()==path && geo->transform()==transform)
 		{
 			return geo;
 		}
@@ -256,8 +256,12 @@ std::shared_ptr<vxGeometry> vxScene::createGeometry(const std::string &path)
 	//	[&path](std::shared_ptr<vxGeometry> g){ return g->constructionPath()==path;});
 	
 	auto geo = std::make_shared<vxGeometry>();
+	geo->setTransform(transform);
 	m_geometries.push_back(geo);
+	m_broadPhase.addGeometry(geo);
 	geo->setConstructionPath(path);
+	
+	
 	return geo;
 }
 
