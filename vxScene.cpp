@@ -277,14 +277,11 @@ void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 
 bool vxScene::throwRay(const vxRay &ray) const
 {
-	for(auto&& geo:m_geometries)
+	if(m_broadPhase.throwRay(ray))
 	{
-		if(geo->throwRay(ray))
-		{
-			return true;
-		}
+		return true;
 	}
-
+	
 	for(auto&& grid:m_grids)
 	{
 		if(grid->throwRay(ray))
@@ -313,18 +310,15 @@ bool vxScene::throwRay(const vxRay &ray) const
 }
 
 
-int vxScene::throwRay(const vxRay &ray,
-						vxCollision &collide) const
+int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-	for(auto&& geo:m_geometries)
+	if(m_broadPhase.throwRay(ray,collide))
 	{
-		if(geo->throwRay(ray, collide))
-		{
-			vxColor col(defaultShader()->getColor(ray,collide));
-			collide.setColor( col );
-			collide.setValid(true);
-			return 1;
-		}
+		vxColor col(defaultShader()->getColor(ray,collide));
+		collide.setColor( col );
+		collide.setValid(true);
+
+		return 1;
 	}
 	
 	for(auto&& grid:m_grids)
@@ -362,15 +356,6 @@ int vxScene::throwRay(const vxRay &ray,
 
 bool vxScene::hasCollision(const vxRay &ray) const
 {
-
-	for(auto&& geo:m_geometries)
-	{
-		if(geo->hasCollision(ray))
-		{
-			return true;
-		}
-	}
-	
 	for(auto&& grid:m_grids)
 	{
 		if(grid->hasCollision(ray))
