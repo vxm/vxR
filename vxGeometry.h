@@ -45,9 +45,16 @@ public:
 	std::string constructionPath() const;
 	void setConstructionPath(const std::string &constructionPath);
 	vxMatrix transform() const;
+	vxMatrix& transform();
+
 	void setTransform(const vxMatrix &transform);
 	void updateAccelerationStuctures();
 
+	std::shared_ptr<vxBoundingBox> boundingBox()
+	{
+		return m_bb;
+	}
+	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;

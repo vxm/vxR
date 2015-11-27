@@ -50,6 +50,16 @@ void vxGeometry::setConstructionPath(const std::string &constructionPath)
 	m_constructionPath = constructionPath;
 }
 
+vxMatrix vxGeometry::transform() const
+{
+	return m_transform;
+}
+
+vxMatrix& vxGeometry::transform()
+{
+	return m_transform;
+}
+
 void vxGeometry::setTransform(const vxMatrix &transform)
 {
 	m_transform = transform;
