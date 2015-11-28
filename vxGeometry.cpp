@@ -40,6 +40,11 @@ void vxGeometry::updateAccelerationStuctures()
 	m_grid.close();
 }
 
+std::shared_ptr<vxBoundingBox> vxGeometry::boundingBox()
+{
+	return m_bb;
+}
+
 std::string vxGeometry::constructionPath() const
 {
 	return m_constructionPath;

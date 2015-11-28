@@ -54,10 +54,7 @@ public:
 	void setTransform(const vxMatrix &transform);
 	void updateAccelerationStuctures();
 
-	std::shared_ptr<vxBoundingBox> boundingBox()
-	{
-		return m_bb;
-	}
+	std::shared_ptr<vxBoundingBox> boundingBox();
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
