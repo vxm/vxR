@@ -2,17 +2,17 @@
 
 using namespace vxCore;
 
-vxPLYImporter::vxPLYImporter(std::shared_ptr<vxGeometry> geo)
+vxPLYImporter::vxPLYImporter(vxGeometryHandle geo)
 	:m_geo(geo)
 {
 }
 
-std::shared_ptr<vxGeometry> vxPLYImporter::getGeometry() const
+vxGeometryHandle vxPLYImporter::getGeometry() const
 {
 	return m_geo;
 }
 
-void vxPLYImporter::setGeo(const std::shared_ptr<vxGeometry> &geo)
+void vxPLYImporter::setGeo(const vxGeometryHandle &geo)
 {
 	m_geo = geo;
 }
