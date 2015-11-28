@@ -356,6 +356,11 @@ int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 
 bool vxScene::hasCollision(const vxRay &ray) const
 {
+	if(m_broadPhase.hasCollision(ray))
+	{
+		return true;
+	}
+	
 	for(auto&& grid:m_grids)
 	{
 		if(grid->hasCollision(ray))
@@ -372,14 +377,6 @@ bool vxScene::hasCollision(const vxRay &ray) const
 		}
 	}
 	
-	/*for(auto&& dome:m_domes)
-	{
-		if(dome->throwRay(ray, collide))
-		{
-			return 1;
-		}
-	}*/
-
 	return false;
 }
 
