@@ -11,14 +11,14 @@ namespace vxCore {
 class vxBroadPhase
 {
 	
-	std::vector<std::shared_ptr<vxGeometry>> m_geometries;
+	std::vector<vxGeometryHandle> m_geometries;
 	
 	std::shared_ptr<vxBoundingBox> m_root;
 	
 public:
 	vxBroadPhase();
 
-	void addGeometry(std::shared_ptr<vxGeometry> geo);
+	void addGeometry(vxGeometryHandle geo);
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;

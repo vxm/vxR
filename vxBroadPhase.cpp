@@ -7,11 +7,13 @@ vxBroadPhase::vxBroadPhase()
 	m_root = std::make_shared<vxBoundingBox>();
 }
 
-void vxBroadPhase::addGeometry(std::shared_ptr<vxGeometry> geo)
+void vxBroadPhase::addGeometry(vxGeometryHandle geo)
 {
 	m_root->extend(*geo->boundingBox());
 	m_geometries.push_back(geo);
 }
+
+
 
 bool vxBroadPhase::throwRay(const vxRay &ray) const
 {

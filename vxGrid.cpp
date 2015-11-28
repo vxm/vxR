@@ -246,7 +246,7 @@ void vxGrid::createRandom(scalar ratio)
 	}
 }
 
-void vxGrid::addGeometry(const std::shared_ptr<vxGeometry> geo,
+void vxGrid::addGeometry(const vxGeometryHandle geo,
 										const v3 &offset,
 										const v3 &scaleFactor)
 {

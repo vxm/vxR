@@ -13,16 +13,16 @@ namespace vxCore {
 
 class vxPLYImporter : public vxGeometryImporter
 {
-	std::shared_ptr<vxGeometry> m_geo;
+	vxGeometryHandle m_geo;
 
 public:
 
-	vxPLYImporter(std::shared_ptr<vxGeometry> geo);
+	vxPLYImporter(vxGeometryHandle geo);
 
 	void processPLYFile(const std::string &fileName);
 	
-	std::shared_ptr<vxGeometry> getGeometry() const;
-	void setGeo(const std::shared_ptr<vxGeometry> &geo);
+	vxGeometryHandle getGeometry() const;
+	void setGeo(const vxGeometryHandle &geo);
 };
 
 }

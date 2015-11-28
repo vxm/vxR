@@ -241,7 +241,7 @@ std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path
 	return image;
 }
 
-std::shared_ptr<vxGeometry> vxScene::createGeometry(const std::string &path, const vxMatrix &transform)
+vxGeometryHandle vxScene::createGeometry(const std::string &path, const vxMatrix &transform)
 {
 	// looking for previouly opened images.
 	for(const auto& geo: m_geometries)
@@ -253,7 +253,7 @@ std::shared_ptr<vxGeometry> vxScene::createGeometry(const std::string &path, con
 	}
 	
 	//auto found = std::find_first_of(m_geometries.begin(), m_geometries.end(),
-	//	[&path](std::shared_ptr<vxGeometry> g){ return g->constructionPath()==path;});
+	//	[&path](vxGeometryHandle g){ return g->constructionPath()==path;});
 	
 	auto geo = std::make_shared<vxGeometry>();
 	geo->setTransform(transform);

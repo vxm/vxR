@@ -15,6 +15,10 @@
 
 namespace vxCore {
 
+class vxGeometry;
+
+using vxGeometryHandle = std::shared_ptr<vxGeometry>;
+
 class vxGeometry
 {
 	std::string m_constructionPath;

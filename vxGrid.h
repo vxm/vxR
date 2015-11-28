@@ -125,7 +125,7 @@ public:
 	void createSphere(scalar x, scalar y, scalar z, const scalar radio);
 	bool getRandomBoolean(scalar ratio = 1.0);
 	void createRandom(scalar ratio = 1.0);
-	void addGeometry(const std::shared_ptr<vxGeometry> geo, 
+	void addGeometry(const vxGeometryHandle geo, 
 					 const v3 &offset, 
 					 const v3 &scaleFactor);
 	void dumpFileInMemory(const std::__cxx11::string &fileName);
