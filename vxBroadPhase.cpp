@@ -13,6 +13,26 @@ void vxBroadPhase::addGeometry(vxGeometryHandle geo)
 	m_geometries.push_back(geo);
 }
 
+vxBoundingBoxHandle vxBroadPhase::closestBox(const v3 &p) const
+{
+	vxBoundingBoxHandle ret;
+	
+	scalar d =  std::numeric_limits<scalar>::max();
+	
+	for(auto geo:m_geometries)
+	{
+		auto t = geo->boundingBox()->center().distance(p);
+
+		if(t<d)
+		{
+			ret = geo->boundingBox();
+			d = t;
+		}
+	}
+	
+	return ret;
+}
+
 
 
 bool vxBroadPhase::throwRay(const vxRay &ray) const

@@ -19,6 +19,9 @@ public:
 	vxBroadPhase();
 
 	void addGeometry(vxGeometryHandle geo);
+
+
+	vxBoundingBoxHandle closestBox(const v3 &p) const;
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
