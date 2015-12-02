@@ -97,15 +97,15 @@ int executeRenderProcess(int argc, char *argv[])
 			std::string fileName = 
 					FileUtils::makeUnique(baseName);
 
-			std::cout << "Opening file: " 
+			std::cout << "Opening file: "s 
 					  << fileName 
-					  << " to write." 
+					  << " to write."s 
 					  << std::endl;
 
 			//TODO: investigate other formats and resolution limits
 			img.save(QString(fileName.c_str()),"TIFF",100);
 			
-			std::cout << "File saved : " 
+			std::cout << "\033[File saved :"s 
 						<< fileName 
 						<< std::endl;
 			
