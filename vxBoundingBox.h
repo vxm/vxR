@@ -61,6 +61,5 @@ public:
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
 };
-
 }
 #endif // VXBOUNDINGBOX_H

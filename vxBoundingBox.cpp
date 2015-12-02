@@ -122,23 +122,27 @@ bool vxBoundingBox::contains(const v3 &v) const
 			&&  v.z() <= m_maxz;
 }
 
+bool vxBoundingBox::throwRay(const vxRay &ray) const
+{
+	return hasCollision(ray);
+}
+
 int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-	const auto& d = ray.direction();
 	const auto& p = ray.origin();
-	
+
 	if(contains(p))
 	{
 		collide.setPosition(p);
 		return 1;
 	}
 	
+	const auto& d = ray.direction();
+	
 	auto&& minX = m_minx - p.x();
 	auto&& maxX = m_maxx - p.x();
-
 	auto&& minY = m_miny - p.y();
 	auto&& maxY = m_maxy - p.y();
-
 	auto&& minZ = m_minz - p.z();
 	auto&& maxZ = m_maxz - p.z();
 	
@@ -150,7 +154,13 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		auto z = t * (-d.z()) + d.z();
 		if(z<=maxZ && z>=minZ)
 		{
-			collide.setPosition(v3(x, y, z) + p);
+			auto fp = v3(x, y, z) + p;
+			//TODO:this is not required to be 3d
+			if(!(p-fp).follows(d))
+			{
+				return 0;
+			}
+			collide.setPosition(fp);
 			collide.setNormal(d.xPositive() ? v3::constMinusX : v3::constX);
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(y - minY)) / ( (maxY - minY)),
@@ -168,7 +178,13 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		auto z = t * (-d.z()) + d.z();
 		if(z<=maxZ && z>=minZ)
 		{
-			collide.setPosition(v3(x, y, z) + p);
+			auto fp = v3(x, y, z) + p;
+			//TODO:this is not required to be 3d
+			if(!(p-fp).follows(d))
+			{
+				return 0;
+			}
+			collide.setPosition(fp);
 			collide.setNormal(d.yPositive() ? v3::constMinusY : v3::constY);
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(x - minX)) / ((maxX - minX)),
@@ -186,7 +202,13 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		y = t * (-d.y()) + d.y();
 		if(y<=maxY && y>=minY)
 		{
-			collide.setPosition(v3(x, y, z) + p);
+			auto fp = v3(x, y, z) + p;
+			//TODO:this is not required to be 3d
+			if(!(p-fp).follows(d))
+			{
+				return 0;
+			}
+			collide.setPosition(fp);
 			collide.setNormal(d.zPositive() ? v3::constMinusZ :  v3::constZ);
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(x - minX)) /  (maxX - minX),
@@ -204,44 +226,66 @@ bool vxBoundingBox::hasCollision(const vxRay &ray) const
 	const auto& d = ray.direction();
 	const auto& p = ray.origin();
 	
+	if(contains(p))
+	{
+		return true;
+	}
+	
 	auto&& minX = m_minx - p.x();
 	auto&& maxX = m_maxx - p.x();
-
 	auto&& minY = m_miny - p.y();
 	auto&& maxY = m_maxy - p.y();
-
 	auto&& minZ = m_minz - p.z();
 	auto&& maxZ = m_maxz - p.z();
-
-	auto t = ((d.xPositive() ? minX : maxX) - d.x()) / -d.x();
+	
+	
+	auto x = d.xPositive() ? minX : maxX;
+	auto t = (x - d.x()) / -d.x();
 	auto y = t * (-d.y()) + d.y();
 	if( y<=maxY && y>=minY)
 	{
 		auto z = t * (-d.z()) + d.z();
 		if(z<=maxZ && z>=minZ)
 		{
+			auto fp = v3(x, y, z) + p;
+			if(!(p-fp).follows(d))
+			{
+				return false;
+			}
 			return true;
 		}
 	}
 	
-	t = ((d.yPositive() ? minY : maxY) - d.y()) / -d.y();
-	auto x = t * (-d.x()) + d.x();
+	y = d.yPositive() ? minY : maxY;
+	t = (y - d.y()) / -d.y();
+	x = t * (-d.x()) + d.x();
 	if(x<=maxX && x>=minX)
 	{
 		auto z = t * (-d.z()) + d.z();
 		if(z<=maxZ && z>=minZ)
 		{
+			auto fp = v3(x, y, z) + p;
+			if(!(p-fp).follows(d))
+			{
+				return false;
+			}
 			return true;
 		}
 	}
 
-	t = ((d.zPositive() ? minZ : maxZ) - d.z()) / -d.z();
+	auto z = d.zPositive() ? minZ : maxZ;
+	t = (z - d.z()) / -d.z();
 	x = t * (-d.x()) + d.x();
 	if(x<=maxX && x>=minX)
 	{
 		y = t * (-d.y()) + d.y();
 		if(y<=maxY && y>=minY)
 		{
+			auto fp = v3(x, y, z) + p;
+			if(!(p-fp).follows(d))
+			{
+				return false;
+			}
 			return true;
 		}
 	}
