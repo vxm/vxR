@@ -10,6 +10,11 @@
 
 namespace vxCore {
 
+ class vxBoundingBox;
+
+
+using vxBoundingBoxHandle = std::shared_ptr<vxBoundingBox>;
+
 //TODO: this class needs heavy caching on "close" method.
 class vxBoundingBox: public std::enable_shared_from_this<vxBoundingBox>
 {
