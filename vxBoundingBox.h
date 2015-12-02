@@ -34,7 +34,7 @@ public:
 	void extend(const v3 &limit);
 	void extend(const vxBoundingBox &box);
 
-	v3 center(const v3& p);
+	v3 center() const;
 	scalar minX() const;
 	void setMinX(scalar minx);
 	scalar minY() const;
