@@ -75,7 +75,8 @@ class MathUtils
 	static scalar clamp(scalar val, scalar min, scalar max);
 	static vxColor clamp(const vxColor &c1, const vxColor &min, const vxColor &max);
 	static vxColor clamp(const vxColor &c1, scalar min, scalar max);
-
+	static unsigned int clamp(unsigned int v, unsigned int min, unsigned int max);
+	
 	static scalar lerp(scalar a, scalar b, scalar r);
 	static v3 lerp(const v3 &v1, const v3 &v2, scalar r);
 	static scalar remap(scalar v, scalar max);

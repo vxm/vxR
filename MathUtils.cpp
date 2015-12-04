@@ -253,6 +253,11 @@ vxColor MathUtils::clamp(const vxColor &c1, scalar min, scalar max)
 				   clamp(c1.b(), min, max));
 }
 
+unsigned int MathUtils::clamp(unsigned int val, unsigned int min, unsigned int max)
+{
+	return std::max(std::min(max, val)), min);
+}
+
 scalar MathUtils::lerp(scalar a, scalar b, scalar r)
 {
 	return (b*r)+(a*(1.0-r));
