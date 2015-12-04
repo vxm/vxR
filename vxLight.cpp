@@ -2,12 +2,12 @@
 namespace vxCore 
 {
 
-bool vxLight::getCastShadows() const
+bool vxLight::computeShadows() const
 {
 	return m_castShadows;
 }
 
-void vxLight::setCastShadows(bool castShadows)
+void vxLight::setComputeShadows(bool castShadows)
 {
 	m_castShadows = castShadows;
 }
