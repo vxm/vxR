@@ -20,7 +20,7 @@ int vxDome::throwRay(const vxRay &ray, vxCollision &collide) const
 	auto environmentColor = m_image->compute(collide);
 	collide.setPosition(ray.origin() + ray.direction() * 50.0);
 	//TODO: this should be valid and maybe have an alpha 0.
-	collide.setValid(false);
+	//collide.setValid(false);
 	collide.setColor(environmentColor);
 	return 1;
 }
