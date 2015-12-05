@@ -1,6 +1,6 @@
 #include "vxGeometry.h"
 
-#define DRAW_BB 1
+#define DRAW_BB 0
 
 using namespace vxCore;
 
@@ -17,8 +17,7 @@ void vxGeometry::open()
 void vxGeometry::close()
 {
 	auto triangleID = 0ul;
-	m_grid.setBb(m_bb);
-	
+
 	updateAccelerationStuctures();
 	
 	for(auto &&tref:m_triangles)
@@ -36,8 +35,8 @@ void vxGeometry::close()
 
 void vxGeometry::updateAccelerationStuctures()
 {
+	m_grid.setBb(m_bb);
 	m_bb->close();
-	m_grid.close();
 }
 
 std::shared_ptr<vxBoundingBox> vxGeometry::boundingBox()
@@ -193,7 +192,13 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 
 bool vxGeometry::hasCollision(const vxRay &ray) const
 {
-	auto col = vxCollision();
-	return throwRay(ray, col) == 1;
+	vxCollision col;
+
+	if(throwRay(ray,col)==1)
+	{
+		return true;
+	}
+	
+	return false;
 }
 

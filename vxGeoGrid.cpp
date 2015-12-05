@@ -5,7 +5,6 @@ const searchResult vxGeoGrid::invalidResult{0ul, std::make_shared<std::vector<un
 
 vxGeoGrid::vxGeoGrid()
 {
-	m_members.resize(m_rx * m_ry * m_rz);
 }
 
 std::shared_ptr<vxBoundingBox> vxGeoGrid::bb() const
@@ -13,13 +12,10 @@ std::shared_ptr<vxBoundingBox> vxGeoGrid::bb() const
 	return m_bb;
 }
 
-void vxGeoGrid::setBb(const std::shared_ptr<vxBoundingBox> &bb)
+void vxGeoGrid::updateCache()
 {
-	m_bb = bb;
-}
+	m_members.resize(m_rx * m_ry * m_rz);
 
-void vxGeoGrid::close()
-{
 	m_xvalues.resize(m_rx+1);
 	
 	//Recording xlices to the grid.
@@ -45,6 +41,28 @@ void vxGeoGrid::close()
 	{
 		zval = m_bb->minZ() + zSlice * k++;
 	}
+}
+
+void vxGeoGrid::setResolution(unsigned int x,
+							  unsigned int y,
+							  unsigned int z)
+{
+	m_rx = x;
+	m_ry = y;
+	m_rz = z;
+	
+	updateCache();
+}
+
+void vxGeoGrid::setBb(const std::shared_ptr<vxBoundingBox> &bb)
+{
+	m_bb = bb;
+	
+	auto d = m_bb->diagonal();
+	
+	setResolution(MU::clamp((unsigned int)(d.x()/3.0), 4u, 50u),
+				  MU::clamp((unsigned int)(d.y()/3.0), 4u, 50u),
+				  MU::clamp((unsigned int)(d.z()/3.0), 4u, 50u));
 }
 
 unsigned int vxGeoGrid::size() const

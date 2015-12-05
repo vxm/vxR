@@ -23,9 +23,10 @@ class vxGeoGrid
 {
 	
 	std::shared_ptr<vxBoundingBox> m_bb;
-	unsigned int m_rx = {30u};
-	unsigned int m_ry = {30u};
-	unsigned int m_rz = {30u};
+	//TODO: above 11 this becomes problematic, investigate why.
+	unsigned int m_rx = {11u};
+	unsigned int m_ry = {5u};
+	unsigned int m_rz = {11u};
 	
 	std::vector<scalar> m_xvalues;
 	std::vector<scalar> m_yvalues;
@@ -35,12 +36,19 @@ public:
 	static const searchResult invalidResult;
 	
 	vxGeoGrid();
+	vxGeoGrid(unsigned int rx, unsigned int ry, unsigned int rz)
+		:m_rx(rx)
+		,m_ry(ry)
+		,m_rz(rz)
+	{}
+	
+	void updateCache();
+	void setResolution(unsigned int x, unsigned int y, unsigned int z);
 	
 	std::vector<searchResult> m_members;
 	std::shared_ptr<vxBoundingBox> bb() const;
 	void setBb(const std::shared_ptr<vxBoundingBox> &bb);
-	void close();
-
+	
 	unsigned int size() const;
 	unsigned long index(unsigned int a,
 						unsigned int b,
