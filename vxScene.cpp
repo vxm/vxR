@@ -284,40 +284,23 @@ void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 	m_prop = prop;
 }
 
+
+
 bool vxScene::throwRay(const vxRay &ray) const
 {
-	if(m_broadPhase.throwRay(ray))
-	{
-		return true;
-	}
-	
-	for(auto&& grid:m_grids)
-	{
-		if(grid->throwRay(ray))
-		{
-			return true;
-		}
-	}
-
-	for(auto&& plane:m_planes)
-	{
-		if(plane->hasCollision(ray))
-		{
-			return true;
-		}
-	}
-
-//	for(auto&& dome:m_domes)
-//	{
-//		if(dome->throwRay(ray))
-//		{
-//			return 0;
-//		}
-//	}
-	
-	return false;
+	vxCollision col;
+	return throwRay(ray, col)==1;
 }
 
+int vxScene::domeThrowRay(const vxRay &ray, vxCollision &collide) const
+{
+	if(m_domes.size())
+	{
+		m_domes[0]->throwRay(ray, collide);
+	}
+	
+	return 1;
+}
 
 int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 {
@@ -330,36 +313,6 @@ int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 		return 1;
 	}
 	
-	for(auto&& grid:m_grids)
-	{
-		if(grid->throwRay(ray, collide))
-		{
-			vxColor col(defaultShader()->getColor(ray,collide));
-			collide.setColor( col );
-			collide.setValid(true);
-			return 1;
-		}
-	}
-	
-	for(auto&& plane:m_planes)
-	{
-		if(plane->throwRay(ray, collide))
-		{
-			vxColor col(defaultShader()->getColor(ray,collide));
-			collide.setColor( col );
-			collide.setValid();
-			return 1;
-		}
-	}
-
-	for(auto&& dome:m_domes)
-	{
-		if(dome->throwRay(ray, collide))
-		{
-			return 1;
-		}
-	}
-	
 	return 0;
 }
 
@@ -368,22 +321,6 @@ bool vxScene::hasCollision(const vxRay &ray) const
 	if(m_broadPhase.hasCollision(ray))
 	{
 		return true;
-	}
-	
-	for(auto&& grid:m_grids)
-	{
-		if(grid->hasCollision(ray))
-		{
-			return true;
-		}
-	}
-	
-	for(auto&& plane:m_planes)
-	{
-		if(plane->hasCollision(ray))
-		{
-			return true;
-		}
 	}
 	
 	return false;
