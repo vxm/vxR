@@ -64,6 +64,15 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 						vAperture);
 	}
 	
+	for(const auto node: nodeDB->getNodesByType("vxPointLight"))
+	{
+		auto point = createPointLight();
+		point->setIntensity(node->getFloatAttribute("intensity"));
+		point->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+		const auto transform = node->getMatrixAttribute("transform");
+		point->setTransform(transform);
+	}
+	
 	for(const auto node: nodeDB->getNodesByType("vxGrid"))
 	{
 		const auto resolution = node->getIntAttribute("resolution");
