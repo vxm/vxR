@@ -47,6 +47,9 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		auto ambient = createAmbientLight();
 		ambient->setIntensity(node->getFloatAttribute("intensity"));
 		ambient->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+
+		const auto transform = node->getMatrixAttribute("transform");
+		ambient->setTransform(transform);
 	}
 	
 	for(const auto node: nodeDB->getNodesByType("vxCamera"))
