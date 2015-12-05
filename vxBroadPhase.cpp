@@ -1,4 +1,5 @@
 #include "vxBroadPhase.h"
+#include <limits>
 
 using namespace vxCore;
 
@@ -50,27 +51,43 @@ bool vxBroadPhase::throwRay(const vxRay &ray) const
 
 int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-//	if(!m_root->hasCollision(ray))
+//	if(!m_root->throwRay(ray,collide))
 //	{
 //		return 0;
 //	}
 	
+	auto mdis = std::numeric_limits<scalar>::max(); 
+	
+	vxCollision temp = collide;
+	int valid {0};
+	
 	for(auto&& geo:m_geometries)
 	{
-		if(geo->throwRay(ray, collide))
+		auto hitValid = geo->throwRay(ray, temp);
+		
+		if(hitValid)
 		{
-			return 1;
+			auto s = temp.position().distance(ray.origin());
+			
+			if(s < mdis)
+			{
+				mdis = s;
+				collide = temp;
+				valid = 1;
+			}
 		}
 	}
 
-	return 0;
+	return valid;
 }
 
 bool vxBroadPhase::hasCollision(const vxRay &ray) const
 {
+	vxCollision col;
 	for(auto&& geo:m_geometries)
 	{
-		if(geo->hasCollision(ray))
+		geo->throwRay(ray,col);
+		if(col.isValid())
 		{
 			return true;
 		}

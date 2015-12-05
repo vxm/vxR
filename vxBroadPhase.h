@@ -15,6 +15,8 @@ class vxBroadPhase
 	
 	std::shared_ptr<vxBoundingBox> m_root;
 	
+	vxBoundingBoxHandle cameraBB;
+	
 public:
 	vxBroadPhase();
 
