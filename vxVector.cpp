@@ -536,6 +536,11 @@ vxVector3d vxVector3d::operator=(const vxVector3d &otro)
 	return (*this);
 }
 
+vxVector3d vxVector3d::abs() const
+{
+	return vxVector3d(fabs(m_x),fabs(m_y),fabs(m_z));
+}
+
 vxVector3d vxVector3d::rotateX(scalar ang)
 {
 	setUnit();

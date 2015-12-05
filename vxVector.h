@@ -164,6 +164,7 @@ public:
 
 	vxVector3d operator=(const vxVector3d &otro);
 
+	vxVector3d abs() const;
 /*
 $rota=unit($rota);
 
