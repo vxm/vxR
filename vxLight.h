@@ -7,6 +7,7 @@
 #include "MathUtils.h"
 #include "vxScene.h"
 #include "vxBitMap2d.h"
+#include "vxMatrix.h"
 
 namespace vxCore {
 
@@ -16,6 +17,7 @@ class vxLight
 {
 protected:
 
+	vxMatrix m_transform;
 	bool m_castShadows{true};
 	//not every light needs a position
 	v3 m_position	{0.0,0.0,0.0};
@@ -59,8 +61,11 @@ public:
 
 	unsigned int samples() const;
 	void setSamples(int samples);
-	bool getCastShadows() const;
-	void setCastShadows(bool castShadows);
+	bool computeShadows() const;
+	void setComputeShadows(bool computeShadows);
+	
+	vxMatrix getTransform() const;
+	void setTransform(const vxMatrix &transform);
 };
 
 
@@ -69,7 +74,7 @@ class vxSpotLight:public vxLight
 {
 private:
 	v3 m_orientation;
-
+	
 	scalar m_maxAngle=1.3;
 	scalar m_minAngle=1;
 
@@ -88,14 +93,22 @@ private:
 
  class vxPointLight:public vxLight
  {
+ protected:
+	 v3 m_orientation;
+	 bool m_biDirectional;
 
  public:
-	vxPointLight();
-	vxPointLight(scalar instensity, const vxColor &col);
-
-	// vxLight interface
-	public:
-	v3 getLightRay(const v3 &position) const override;
+	 vxPointLight();
+	 vxPointLight(scalar instensity, const vxColor &col);
+	 
+	 vxPointLight(const v3 &orientation,
+				   bool bidirectional);
+	 
+	 vxColor acummulationLight(const vxRay &, const vxCollision &collision) const override;
+	 
+	 void set(const v3 &orientation,bool bidirectional);
+	 void setOrientation (const v3 &orientation) {m_orientation.set(orientation);}
+	 void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
  };
 
 

@@ -12,6 +12,16 @@ void vxLight::setComputeShadows(bool castShadows)
 	m_castShadows = castShadows;
 }
 
+vxMatrix vxLight::getTransform() const
+{
+	return m_transform;
+}
+
+void vxLight::setTransform(const vxMatrix &transform)
+{
+	m_transform = transform;
+}
+
 vxLight::vxLight()
 {
 }
@@ -94,20 +104,29 @@ void vxLight::setPosition(const v3 &position)
 	m_position.set(position);
 }
 
-vxPointLight::vxPointLight()
+vxDirectLight::vxDirectLight()
 	:vxLight()
 {
 }
 
-vxPointLight::vxPointLight(scalar instensity, const vxColor &col)
+vxDirectLight::vxDirectLight(scalar instensity, const vxColor &col)
 	:vxLight(instensity, col)
+{}
+
+
+vxDirectLight::vxDirectLight(const v3 &orientation, bool bidirectional) 
+	: m_orientation(orientation)
+	, m_biDirectional(bidirectional)
 {
 }
 
-v3 vxPointLight::getLightRay(const v3 &position) const
+void vxDirectLight::set(const v3 &orientation, bool bidirectional) 
 {
-	return vxLight::getLightRay(position);
+	m_orientation.set(orientation.unit());
+	m_biDirectional=bidirectional;
 }
+
+
 
 vxSpotLight::vxSpotLight()
 	:vxLight()
@@ -141,26 +160,50 @@ void vxSpotLight::setOrientation(const v3 &orientation)
 	m_orientation.set(orientation);
 }
 
-vxDirectLight::vxDirectLight()
+vxPointLight::vxPointLight()
 	:vxLight()
 {
 }
 
-vxDirectLight::vxDirectLight(scalar instensity, const vxColor &col)
+vxPointLight::vxPointLight(scalar instensity, const vxColor &col)
 	:vxLight(instensity, col)
 {}
 
 
-vxDirectLight::vxDirectLight(const v3 &orientation, bool bidirectional) 
+vxPointLight::vxPointLight(const v3 &orientation, bool biPointional) 
 	: m_orientation(orientation)
-	, m_biDirectional(bidirectional)
+	, m_biDirectional(biPointional)
 {
 }
 
-void vxDirectLight::set(const v3 &orientation, bool bidirectional) 
+void vxPointLight::set(const v3 &orientation, bool biPointional) 
 {
 	m_orientation.set(orientation.unit());
-	m_biDirectional=bidirectional;
+	m_biDirectional=biPointional;
+}
+vxColor vxPointLight::acummulationLight(const vxRay &, const vxCollision &collision) const
+{
+	const auto pp = collision.position();
+	const auto p = pp - m_transform.getOrigin();
+
+	vxRay f(p, collision.normal());
+	// compute all sort of shadows.
+	vxColor ret{vxColor::black};
+	
+	if(collision.normal().follows(p))
+	{
+		auto ratio = lightRatio(f, p.inverted());
+		auto lumm = m_intensity * ratio;
+
+		const vxRay ff(pp+collision.normal()/10000.0, p.inverted());
+		const auto&& scn = m_scene.lock();
+		if (!m_castShadows || !scn->throwRay(ff))
+		{
+			ret = color().gained(lumm);
+		}
+	}
+	
+	return ret;
 }
 
 
@@ -252,18 +295,17 @@ vxColor vxDirectLight::acummulationLight(const vxRay &, const vxCollision &colli
 	
 	if(collision.normal().follows(m_orientation))
 	{
-		const auto&& ratio = lightRatio(f, m_orientation.inverted());
+		auto ratio = lightRatio(f, m_orientation.inverted());
 		auto lumm = m_intensity * ratio;
 
-		//auto org = v3(0, 0, 0);
-		const vxRay ff(cPnt, m_orientation.inverted());
+		const vxRay ff(cPnt+collision.normal()/100000.0, m_orientation.inverted());
 		const auto&& scn = m_scene.lock();
 		if (!m_castShadows || !scn->throwRay(ff))
 		{
 			ret = color().gained(lumm);
 		}
 	}
-		
+	
 	return ret;
 }
 
@@ -279,14 +321,14 @@ vxColor vxIBLight::acummulationLight(const vxRay &, const vxCollision &collision
 	{
 		const auto&& cPnt = collision.position();
 		const auto&& r = MU::getHollowSphereRand(radius());
-		const vxRay f(cPnt, collision.normal()+r);
+		const vxRay f(cPnt, r);
 		auto lumm = m_intensity * lightRatio(f, collision.normal());
 
 		environment.setUV(MU::normalToCartesian(f.direction()));
 		auto environmentColor = m_map.compute(environment);
 		const auto &luma = environmentColor.lumma();
 		
-		if (luma>m_lowThreshold && lumm>0.001)
+		if (luma>m_lowThreshold && lumm>0.0001)
 		{
 			const auto &scn = m_scene.lock();
 			if(!scn->hasCollision(f))
