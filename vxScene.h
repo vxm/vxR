@@ -98,6 +98,8 @@ public:
 	vxGeometryHandle createGeometry(const std::__cxx11::string &path, 
 											   const vxMatrix &transform);
 
+	int domeThrowRay(const vxRay &ray, vxCollision &collide) const;
+	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
