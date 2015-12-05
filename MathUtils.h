@@ -68,7 +68,7 @@ class MathUtils
 	static v3 getSolidSphereRand3(scalar radius);
 	static v3 getHollowSphereRand(scalar radius = 1.0);
 	static v3 getSphereRand(scalar radius = 1.0);
-	static v3 getHollowHemisphereRand(scalar radius, const v3 &);
+	static v3 getHollowHemisphereRand(scalar radius, const v3 &n);
 	
 	// Ranges
 	static bool inRange(scalar r, scalar min, scalar max);

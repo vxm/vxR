@@ -210,17 +210,21 @@ v3 MathUtils::getSolidSphereRand3(scalar radius)
 	return getHollowSphereRand(getRand(radius)*getRand()*getRand());
 }
 
-
 v3 MathUtils::getSolidSphereRand(scalar radius)
 {
 	return getHollowSphereRand(getRand(radius));
 }
 					   
 v3 MathUtils::getHollowHemisphereRand(scalar radius, 
-											  const v3 &)
+											  const v3 &n)
 {
-	auto r = getHollowSphereRand(radius);
-	//TODO:implement half of sphere
+	v3 r;
+	do
+	{
+		r = getHollowSphereRand(radius);
+	}
+	while(!r.follows(n));
+	
 	return r;
 }
 
