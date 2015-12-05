@@ -122,6 +122,11 @@ bool vxBoundingBox::contains(const v3 &v) const
 			&&  v.z() <= m_maxz;
 }
 
+v3 vxBoundingBox::diagonal() const
+{
+	return v3(m_maxx-m_minx, m_maxy-m_miny, m_maxz-m_minz);
+}
+
 bool vxBoundingBox::throwRay(const vxRay &ray) const
 {
 	return hasCollision(ray);

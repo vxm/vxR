@@ -54,7 +54,7 @@ public:
 	void setMaxZ(scalar maxz);
 
 	bool contains(const v3 &v) const;
-	
+	v3 diagonal() const;
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
