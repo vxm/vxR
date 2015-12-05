@@ -26,7 +26,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		direct->setOrientation(node->getVector3dAttribute("orientation"));
 		
 		std::string cast = node->getStringAttribute("castShadows");
-		direct->setCastShadows(cast == "true"s);
+		direct->setComputeShadows(cast == "true"s);
 	}
 
 	for(const auto node: nodeDB->getNodesByType("vxIBLight"))
