@@ -16,11 +16,11 @@ void vxGeometry::open()
 
 void vxGeometry::close()
 {
-	auto triangleID = 0ul;
+	auto triangleID{0ul};
 
 	updateAccelerationStuctures();
 	
-	for(auto &&tref:m_triangles)
+	for(auto &tref:m_triangles)
 	{
 		tref.computeNormal();
 		tref.computeArea();
@@ -29,6 +29,7 @@ void vxGeometry::close()
 		triangleID++;
 	}
 	
+	std::cerr << "Num triangles added: " << triangleID << std::endl;
 	
 	m_openForEdition = false;
 }
@@ -92,11 +93,6 @@ void vxGeometry::addTriangle(unsigned long a, unsigned long b, unsigned long c)
 		return;
 	}
 	
-	if(a>50000ul)
-	{
-		return;
-	}
-
 	//TODO:push_back ?
 	m_triangles.push_back((vxTriRef(m_vertices[a],
 									m_vertices[b],
