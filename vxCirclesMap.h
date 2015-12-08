@@ -20,7 +20,7 @@ public:
 	bool m_circle1 {false};
 	bool m_circle2 {false};
 	bool m_circle3 {false};
-	bool m_margin  {true};
+	bool m_margin  {false};
 
 	scalar m_margn = 0.01;
 };
