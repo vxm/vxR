@@ -23,7 +23,7 @@ public:
 	const v3 &p1;
 	const v3 &p2;
 	const v3 &p3;
-	v3 n;
+	v3 m_n;
 	scalar ah{0.0};
 	scalar &computeArea();
 	
@@ -43,7 +43,7 @@ public:
 				  << "b: " << t.p2 << std::endl 
 				  << "c: " << t.p3 << std::endl
 				  << "area: " << t.ah << std::endl 
-				  << "normal: " << t.n << std::endl ;
+				  << "normal: " << t.m_n << std::endl ;
 	}
 };
 
