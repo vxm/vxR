@@ -12,7 +12,7 @@ class vxCollision
 {
 private:
 
-	vxPoint m_position;
+	v3 m_position;
 	v3 m_normal;
 	vxColor m_color;
 
