@@ -59,10 +59,15 @@ void vxGeoGrid::setBb(const std::shared_ptr<vxBoundingBox> &bb)
 	m_bb = bb;
 	
 	auto d = m_bb->diagonal();
-	
-	setResolution(MU::clamp((unsigned int)(d.x()/3.0), 4u, 50u),
-				  MU::clamp((unsigned int)(d.y()/3.0), 4u, 50u),
-				  MU::clamp((unsigned int)(d.z()/3.0), 4u, 50u));
+	setResolution(MU::clamp((unsigned int)(d.x()*15.0), 4u, 50u),
+				  MU::clamp((unsigned int)(d.y()*15.0), 4u, 50u),
+				  MU::clamp((unsigned int)(d.z()*15.0), 4u, 50u));
+/*
+	setResolution(1,
+				  1,
+				  1);
+
+*/
 }
 
 unsigned int vxGeoGrid::size() const
