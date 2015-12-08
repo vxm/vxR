@@ -619,7 +619,7 @@ vxVector3d vxVector3d::operator+(const vxVector3d &entrada) const
 			  entrada.m_z+m_z);
 }
 
-vxVector3d vxVector3d::operator+=(const vxVector3d &entrada)
+vxVector3d& vxVector3d::operator+=(const vxVector3d &entrada)
 {
 	m_x+=entrada.m_x;
 	m_y+=entrada.m_y;

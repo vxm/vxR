@@ -128,7 +128,7 @@ public:
 	vxVector3d unit() const;
 	void setUnit();
 	vxVector3d operator+(const vxVector3d &entrada) const;
-	vxVector3d operator+=(const vxVector3d &entrada);
+	vxVector3d& operator+=(const vxVector3d &entrada);
 	vxVector3d operator+(scalar factor) const;
 	vxVector3d operator+(int factor) const;
 
