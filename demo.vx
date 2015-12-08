@@ -3,45 +3,23 @@
 
 node
 {
-name = "renderSettings_low"
+name = "renderSettings_1low"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 683 384
-    pixelSamples = 4
-    reflectionSamples = 1
-    numThreads = -1
-}
-
-node
-{
-name = "renderSettings_full"
-type = "vxRenderSettings"
-active = "false"
-    resolution = 1366 768
-    pixelSamples = 4
-    reflectionSamples = 1
-    numThreads = -1
-}
-
-node
-{
-name = "renderSettings_1"
-type = "vxRenderSettings"
-active = "false"
-    resolution = 2732 1536
-    pixelSamples = 2
+    pixelSamples = 1
     reflectionSamples = 0
     numThreads = -1
 }
 
 node
 {
-name = "renderSettings_2"
+name = "renderSettings_2full"
 type = "vxRenderSettings"
-active = "false"
-    resolution = 4098 2304
+active = "true"
+    resolution = 1366 768
     pixelSamples = 4
-    reflectionSamples = 1
+    reflectionSamples = 2
     numThreads = -1
 }
 
@@ -50,9 +28,31 @@ node
 name = "renderSettings_3"
 type = "vxRenderSettings"
 active = "false"
+    resolution = 2732 1536
+    pixelSamples = 4
+    reflectionSamples = 2
+    numThreads = -1
+}
+
+node
+{
+name = "renderSettings_4"
+type = "vxRenderSettings"
+active = "false"
+    resolution = 4098 2304
+    pixelSamples = 8
+    reflectionSamples = 4
+    numThreads = -1
+}
+
+node
+{
+name = "renderSettings_5"
+type = "vxRenderSettings"
+active = "true"
     resolution = 5464 3072
     pixelSamples = 12
-    reflectionSamples = 2
+    reflectionSamples = 4
     numThreads = -1
 }
 
@@ -62,7 +62,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 4.1
+    focusDistance = 9.1
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -70,33 +70,21 @@ active = "true"
 
 node
 {
-name = "grid"
-type = "vxGrid"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    resolution = 220
-    position = 440.0 0.0 440.0
-    size = 220.0
-}
-
-node
-{
-name = "gnome"
-type = "vxGridGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/Downloads/napoleon.ply"
-    position = 440.0 -113.0 440.0
-    scaleFactor = 0.75
-}
-
-node
-{
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 3.0 -0.5 5.5 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.3 0.0 1]
+    filePath = "/home/john/Downloads/vmilo_0.ply"
+}
+
+
+node
+{
+name = "model_4"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 -0.3 -1.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_4.ply"
 }
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
@@ -122,17 +110,30 @@ active = "true"
 
 node
 {
+name = "point_light_1"
+type = "vxPointLight"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 15 3 1]
+    intensity = 0.50
+    color = 255 230 240
+    samples = 1
+    castShadows = "false"
+    position = -2 5 -2
+}
+
+node
+{
 name = "environment"
 type = "vxIBLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
-    intensity = 13.0
+    intensity = 14.0
     color = 255 255 255
-    samples = 60
-    radius = 0.997
+    samples = 30
+    radius = 1.0
     gain = 0.3
-    gamma = 2.4
+    gamma = 1.7
     lowThreshold = 0.03
 }
 
@@ -142,12 +143,13 @@ name = "sun"
 type = "vxDirectLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.76
+    intensity = 0.20
     color = 255 230 240
-    orientation = 5.0 -8.0 4.0
+    orientation = 12.0 -10.0 5.0
     samples = 1
-    castShadows = "false"
+    castShadows = "true"
 }
+
 
 node
 {
@@ -173,7 +175,7 @@ node
 {
 name = "floor"
 type = "vxPlane"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     planeType = "Y"
     x = 0.0
@@ -183,4 +185,26 @@ active = "true"
     pointB = 450.0 -56.0 440.0
     pointC = 440.0 -56.0 450.0
     color = 60 50 80
+}
+
+node
+{
+name = "grid"
+type = "vxGrid"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    resolution = 220
+    position = 440.0 0.0 440.0
+    size = 220.0
+}
+
+node
+{
+name = "gnome"
+type = "vxGridGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    filePath = "/home/john/Downloads/napoleon.ply"
+    position = 440.0 -113.0 440.0
+    scaleFactor = 0.75
 }
