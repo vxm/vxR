@@ -54,7 +54,6 @@ unsigned int vxRenderProcess::visSamples() const
 	return m_visSamples;
 }
 
-
 void vxRenderProcess::setVisSamples(unsigned int visSamples)
 {
 	m_visSamples = visSamples;
@@ -174,8 +173,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 683/2.0;  
-	unsigned int itV = 384/2.0;
+	unsigned int itH = 270;
+	unsigned int itV = 227;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
@@ -187,6 +186,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
 	
 	if(m_scene->throwRay(ray, collision))
+	//if(m_scene->domeThrowRay(ray, collision))
 	{
 		const auto&& baseColor = collision.color();
 		color.add(baseColor);
@@ -210,39 +210,57 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		const v2 hitCoordinates(
 					itV/(scalar)m_prop->ry(),
 					itH/(scalar)m_prop->rx());
-		
+	/*		for(auto s=0u;s<m_visSamples;s++)
+		{
+			vxCollision collision;
+			const auto ray = rCamera->ray(hitCoordinates, sampler);
+			if(m_scene->throwRay(ray, collision))
+			{
+				pixelColor+=  .3 - (collision.position().distance(ray.origin())/100.0);
+			}
+			sampler.next();
+		}
+	*/	
 		for(auto s=0u;s<m_visSamples;s++)
 		{
 			vxCollision collision;
 			vxCollision refxCollision;
 			vxColor reflection;
 			const auto ray = rCamera->ray(hitCoordinates, sampler);
-			if(m_scene->throwRay(ray, collision))
+			if(m_scene->throwRay(ray, collision) && collision.isValid())
 			{
-				if(collision.isValid())
+				const auto& n = collision.normal();
+				for(unsigned int k = 0u;k<m_reflectionSamples;k++)
 				{
-					const auto& N = collision.normal();
-					for(unsigned int k = 0u;k<m_reflectionSamples;k++)
+					v3 invV = ((n * ray.direction().dot(n) * -2.0)
+									 + ray.direction());
+					invV+=MU::getSolidSphereRand3(
+								0.75);
+					const auto &&reflexRay = vxRay(collision.position()
+												   +(n/10000),
+												   invV);
+					if(m_scene->throwRay(reflexRay, refxCollision))
 					{
-						v3&& invV = ((N * ray.direction().dot(N)* -2) 
-											 + ray.direction()) ;
-						invV+=MU::getSolidSphereRand3(0.25);
-						const auto&& reflexRay = vxRay(collision.position()
-													   +(N/10000),
-													   invV);
-						if(m_scene->throwRay(reflexRay, refxCollision))
-						{
-							reflection.mixSumm(refxCollision.color(), 
-											   (1.0/m_reflectionSamples));
-						}
+						reflection.mixSumm(refxCollision.color(), 
+										   (1.0/m_reflectionSamples));
 					}
-					pixelColor+= MU::lerp(reflection, collision.color(), 0.85);
+					else
+					{
+						m_scene->domeThrowRay(reflexRay, refxCollision);
+						
+						reflection.mixSumm(refxCollision.color(), 
+										   (1.0/m_reflectionSamples));
+					}
 				}
-				else
-				{
-					pixelColor+=collision.color();
-				}
+				pixelColor+= MU::lerp(reflection, collision.color(), 0.85);
 			}
+			else
+			{
+				m_scene->domeThrowRay(ray, collision);
+				
+				pixelColor+=collision.color();
+			}
+			
 			sampler.next();
 		}
 		

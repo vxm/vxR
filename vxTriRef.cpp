@@ -9,7 +9,7 @@ vxCore::vxTriRef::vxTriRef(const v3 &a,
 	:p1(a)
 	,p2(b)
 	,p3(c)
-	,n{v3::zero}
+	,m_n{v3::zero}
 {
 }
 
@@ -17,7 +17,7 @@ vxTriRef::vxTriRef(vxTriRef &&other)
 	:p1{std::move(other.p1)}
 	,p2{std::move(other.p2)}
 	,p3{std::move(other.p3)}
-	,n{std::move(other.n)}
+	,m_n{std::move(other.m_n)}
 	,ah{std::move(other.ah)}
 {
 }
