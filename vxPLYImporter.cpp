@@ -28,6 +28,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	std::ifstream iFile(fileName);
 	std::string line;
 
+	m_geo->clear();
 	// Not optional lines.
 	std::getline(iFile, line);
 	if(line!="ply")
@@ -110,6 +111,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		k++;
 	}
 
+	auto capturedFaces{0};
 	// reading properties.
 	do
 	{
@@ -120,6 +122,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			unsigned long b = std::stoul(lineTokens[2]);
 			unsigned long c = std::stoul(lineTokens[3]);
 			m_geo->addTriangle(a,b,c);
+			capturedFaces++;
 		}
 
 		if(lineTokens.size()==5	&& lineTokens[0]=="4"s)
@@ -130,6 +133,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			unsigned long d = std::stoul(lineTokens[4]);
 			m_geo->addTriangle(a,b,c);
 			m_geo->addTriangle(d,a,c);
+			capturedFaces+=2;
 		}
 
 		if(lineTokens.size()>5)
@@ -138,6 +142,10 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		}
 	}
 	while(std::getline(iFile, line));
+	
+	std::cerr << "Triangles captured at the end " 
+			  << capturedFaces 
+			  << std::endl;
 	
 	std::cout << "PLY: file "s 
 			  << fileName 

@@ -25,6 +25,11 @@ public:
 	vxMatrix (std::initializer_list<scalar> list);
 	~vxMatrix();
 
+	// transform operations
+	
+	//vxMatrix 
+	
+	//
 	vxStatus::code	get(scalar dest[]) const;
 	vxMatrix		transpose() const;
 	vxMatrix&		setToIdentity();

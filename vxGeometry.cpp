@@ -135,7 +135,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 	// little penetration in box
 	
 	auto sp =  col.position() 
-			+ (col.normal().inverted() / (scalar)100.0);
+			+ (col.normal().inverted() / (scalar)10000.0);
 
 	auto prev = m_grid.size();
 	searchResult triangles;
@@ -155,7 +155,10 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 		{
 			if(m_triangles[id].throwRay(ray,col))
 			{
-				cols.push_back(col);
+				if((col.position()-ray.origin()).follows(ray.origin()))
+				{
+					cols.push_back(col);
+				}
 			}
 		}
 		

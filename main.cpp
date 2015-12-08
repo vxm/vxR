@@ -132,7 +132,19 @@ int printHelp()
 
 
 int main(int argc, char *argv[])
-{
+{/*
+	std::map<std::string, int> m;
+	
+	m["a"s]=1;
+	m["c"s]=3;
+	m["b"s]=2;
+	
+	for(auto p:m)
+	{
+		std::cout << p.first << "  " << p.second << std::endl;
+	}
+	
+	return 1;*/
 	auto program{0u};
 	
 	// Depending on arguments the execution will be different.
