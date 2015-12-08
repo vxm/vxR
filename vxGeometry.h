@@ -35,6 +35,12 @@ public:
 	std::vector<vxTriRef> m_triangles;
 	std::vector<v3> m_normals;
 
+	void clear()
+	{
+		m_vertices.clear();
+		m_triangles.clear();
+		m_normals.clear();
+	}
 	void open();
 	void close();
 	
