@@ -4,6 +4,16 @@
 
 using namespace vxCore;
 
+vxColor vxGeometry::baseColor() const
+{
+	return m_baseColor;
+}
+
+void vxGeometry::setBaseColor(const vxColor &baseColor)
+{
+	m_baseColor = baseColor;
+}
+
 vxGeometry::vxGeometry()
 {
 	m_bb = std::make_shared<vxBoundingBox>();
@@ -118,6 +128,9 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 #if	DRAW_BB
 	if(m_bb->throwRay(ray, col))
 	{
+		col.setColor(m_baseColor);
+		col.setValid(true);
+
 		return 1;
 	}
 #else
@@ -130,8 +143,6 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 	
 	
 	std::vector<vxCollision> cols;
-	// little penetration in box
-	
 	auto sp =  col.position() 
 			+ (col.normal().inverted() / (scalar)10000.0);
 
@@ -149,7 +160,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 		
 		prev = triangles.index;
 		
-		for(auto &&id: *(triangles.listRef) )
+		for(const auto &id: *(triangles.listRef) )
 		{
 			if(m_triangles[id].throwRay(ray,col))
 			{
@@ -169,14 +180,14 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 		int i{0};
 		for(auto&& c:cols)
 		{
+			i++;
 			if((c.position()-p).length() < mind)
 			{
-				i++;
 				col = c;
 			}
 		}
 
-		col.setColor(vxColor::indexColor(i));
+		col.setColor(m_baseColor);
 		col.setValid(true);
 		col.setUV(v2(0.5,0.5));
 		return 1;

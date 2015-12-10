@@ -11,6 +11,7 @@
 #include "vxMatrix.h"
 #include "vxBoundingBox.h"
 #include "vxGeoGrid.h"
+#include "vxColor.h"
 #include <set>
 
 namespace vxCore {
@@ -26,6 +27,7 @@ class vxGeometry
 	std::shared_ptr<vxBoundingBox> m_bb;
 	vxGeoGrid m_grid;
 	std::atomic_bool m_openForEdition{false};
+	vxColor m_baseColor;
 	
 public:
 
@@ -66,6 +68,8 @@ public:
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
+	vxColor baseColor() const;
+	void setBaseColor(const vxColor &baseColor);
 };
 
 }
