@@ -223,7 +223,7 @@ v3 MathUtils::getHollowHemisphereRand(scalar radius,
 	{
 		r = getHollowSphereRand(radius);
 	}
-	while(!r.follows(n));
+	while(!n.follows(r));
 	
 	return r;
 }

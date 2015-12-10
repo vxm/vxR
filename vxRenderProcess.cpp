@@ -255,16 +255,16 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				//GI
 				vxColor globalIlm;
 				{
-					const auto n = 10;
+					const auto n = 8;
 					const auto colorRatio = 1.0/(scalar)n;
 					for(auto i=0u; i<n; i++)
 					{
 						const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
 						const vxRay f(collision.position()
 									  +collision.normal()/10000.0, 
-									  r);
+									  r.inverted());
 
-						auto lumm = -f.incidence(collision.normal());
+						auto lumm = f.incidence(collision.normal());
 						if(lumm<=0.05)
 							continue;
 						

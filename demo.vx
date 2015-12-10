@@ -7,7 +7,7 @@ name = "renderSettings_1low"
 type = "vxRenderSettings"
 active = "false"
     resolution = 683 384
-    pixelSamples = 
+    pixelSamples = 1
     reflectionSamples = 0
     numThreads = -1
 }
@@ -18,7 +18,7 @@ name = "renderSettings_2full"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 4
+    pixelSamples = 8
     reflectionSamples = 0
     numThreads = -1
 }
@@ -74,7 +74,7 @@ name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    filePath = "/home/john/Downloads/triceratops.ply"
     color = 172 158 154
 }
 
@@ -86,7 +86,7 @@ type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 0.01 -1.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
-    color = 220 203 201
+    color = 220 20 20
 }
 
 
