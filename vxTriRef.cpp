@@ -76,7 +76,7 @@ int vxTriRef::throwRay(const vxRay &ray, vxCollision &collide) const
 	ta-=vxTriRef(p,p2,p3).computeArea();
 	if(ta<threshold)
 		return 0;
-	
+
 	collide.setNormal(m_n);
 	collide.setPosition(p);
 

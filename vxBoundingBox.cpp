@@ -170,7 +170,6 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(y - minY)) / ( (maxY - minY)),
 							  (5.0 *(z - minZ)) / ( (maxZ - minZ))));
-			collide.setColor(vxColor::white);
 			return 1;
 		}
 	}
@@ -194,7 +193,6 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(x - minX)) / ((maxX - minX)),
 							  (5.0 *(z - minZ)) / ((maxZ - minZ))));
-			collide.setColor(vxColor::white);
 			return 1;
 		}
 	}
@@ -218,7 +216,6 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setValid();
 			collide.setUV(v2( (5.0 *(x - minX)) /  (maxX - minX),
 							  (5.0 *(y - minY)) /  (maxY - minY)));
-			collide.setColor(vxColor::white);
 			return 1;
 		}
 	}

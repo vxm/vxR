@@ -331,7 +331,13 @@ vxColor vxIBLight::acummulationLight(const vxRay &, const vxCollision &collision
 		if (luma>m_lowThreshold && lumm>0.0001)
 		{
 			const auto &scn = m_scene.lock();
-			if(!scn->hasCollision(f))
+			vxCollision col;
+			scn->throwRay(f,col);
+			if(col.isValid())
+			{
+				acumColor.mixSumm(col.color().gained(.01), colorRatio);
+			}
+			else
 			{
 				environmentColor=environmentColor*(scalar)(m_gain + pow(luma,m_gamma));
 				acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);

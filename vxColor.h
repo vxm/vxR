@@ -24,6 +24,7 @@ protected:
 public:
 
 	vxColor ();
+	vxColor (scalar other);
 	vxColor (const scalar r,
 			 const scalar g,
 			 const scalar b);

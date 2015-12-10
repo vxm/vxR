@@ -43,6 +43,13 @@ vxColor::vxColor(const v3 &other)
 	, m_b(other.z())
 {}
 
+vxColor::vxColor(scalar other) 
+	: m_r(other)
+	, m_g(other)
+	, m_b(other)
+{}
+
+
 vxColor &vxColor::operator=(const v3 &otro)
 {
 	set(otro.x(), otro.y(), otro.z());

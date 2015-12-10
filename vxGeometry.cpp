@@ -29,8 +29,6 @@ void vxGeometry::close()
 		triangleID++;
 	}
 	
-	std::cerr << "Num triangles added: " << triangleID << std::endl;
-	
 	m_openForEdition = false;
 }
 
@@ -161,7 +159,6 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 				}
 			}
 		}
-		
 	}
 	while(!cols.size());
 
@@ -169,17 +166,17 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 	{
 		auto mind  = (cols[0].position()-p).length();
 		col = cols[0];
-
+		int i{0};
 		for(auto&& c:cols)
 		{
 			if((c.position()-p).length() < mind)
 			{
+				i++;
 				col = c;
 			}
 		}
 
-		//col.setPosition(col.position()+p);
-		col.setColor(vxColor::white);
+		col.setColor(vxColor::indexColor(i));
 		col.setValid(true);
 		col.setUV(v2(0.5,0.5));
 		return 1;

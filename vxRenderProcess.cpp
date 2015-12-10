@@ -210,17 +210,6 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		const v2 hitCoordinates(
 					itV/(scalar)m_prop->ry(),
 					itH/(scalar)m_prop->rx());
-	/*		for(auto s=0u;s<m_visSamples;s++)
-		{
-			vxCollision collision;
-			const auto ray = rCamera->ray(hitCoordinates, sampler);
-			if(m_scene->throwRay(ray, collision))
-			{
-				pixelColor+=  .3 - (collision.position().distance(ray.origin())/100.0);
-			}
-			sampler.next();
-		}
-	*/	
 		for(auto s=0u;s<m_visSamples;s++)
 		{
 			vxCollision collision;
@@ -234,8 +223,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				{
 					v3 invV = ((n * ray.direction().dot(n) * -2.0)
 									 + ray.direction());
-					invV+=MU::getSolidSphereRand3(
-								0.75);
+					invV+=MU::getSolidSphereRand3(0.25);
 					const auto &&reflexRay = vxRay(collision.position()
 												   +(n/10000),
 												   invV);
@@ -247,17 +235,19 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					else
 					{
 						m_scene->domeThrowRay(reflexRay, refxCollision);
-						
-						reflection.mixSumm(refxCollision.color(), 
+						reflection.mixSumm(refxCollision.color(),
 										   (1.0/m_reflectionSamples));
 					}
 				}
-				pixelColor+= MU::lerp(reflection, collision.color(), 0.85);
+
+				//compute the shader
+				vxColor col(m_scene->defaultShader()->getColor(ray,collision));
+				collision.setColor( col );
+				pixelColor+= MU::lerp(reflection, collision.color(), 0.96);
 			}
 			else
 			{
 				m_scene->domeThrowRay(ray, collision);
-				
 				pixelColor+=collision.color();
 			}
 			

@@ -309,8 +309,6 @@ int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	if(m_broadPhase.throwRay(ray,collide))
 	{
-		vxColor col(defaultShader()->getColor(ray,collide));
-		collide.setColor( col );
 		collide.setValid(true);
 
 		return 1;
@@ -321,12 +319,8 @@ int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 
 bool vxScene::hasCollision(const vxRay &ray) const
 {
-	if(m_broadPhase.hasCollision(ray))
-	{
-		return true;
-	}
-	
-	return false;
+	vxCollision col;
+	return throwRay(ray, col)==1;
 }
 
 std::shared_ptr<vxShader> vxScene::defaultShader() const

@@ -143,10 +143,6 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	}
 	while(std::getline(iFile, line));
 	
-	std::cerr << "Triangles captured at the end " 
-			  << capturedFaces 
-			  << std::endl;
-	
 	std::cout << "PLY: file "s 
 			  << fileName 
 			  << " :: '"s

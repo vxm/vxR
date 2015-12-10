@@ -5,10 +5,10 @@ node
 {
 name = "renderSettings_1low"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 683 384
-    pixelSamples = 1
-    reflectionSamples = 0
+    pixelSamples = 4
+    reflectionSamples = 1
     numThreads = -1
 }
 
@@ -16,7 +16,7 @@ node
 {
 name = "renderSettings_2full"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 4
     reflectionSamples = 2
@@ -49,7 +49,7 @@ node
 {
 name = "renderSettings_5"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 5464 3072
     pixelSamples = 12
     reflectionSamples = 4
@@ -73,8 +73,8 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.3 0.0 1]
-    filePath = "/home/john/Downloads/vmilo_0.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
+    filePath = "/home/john/Downloads/triceratops.ply"
 }
 
 
@@ -83,7 +83,7 @@ node
 name = "model_4"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 -0.3 -1.5 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 0.01 -1.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
 }
 
@@ -114,7 +114,7 @@ name = "point_light_1"
 type = "vxPointLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 15 3 1]
-    intensity = 0.50
+    intensity = 0.0050
     color = 255 230 240
     samples = 1
     castShadows = "false"
@@ -128,22 +128,22 @@ type = "vxIBLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
-    intensity = 14.0
+    intensity = 17.00
     color = 255 255 255
-    samples = 30
+    samples = 50
     radius = 1.0
     gain = 0.3
     gamma = 1.7
-    lowThreshold = 0.03
+    lowThreshold = 0.32
 }
 
 node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.20
+    intensity = 0.80
     color = 255 230 240
     orientation = 12.0 -10.0 5.0
     samples = 1
