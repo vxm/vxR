@@ -5,10 +5,10 @@ node
 {
 name = "renderSettings_1low"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 683 384
-    pixelSamples = 4
-    reflectionSamples = 1
+    pixelSamples = 
+    reflectionSamples = 0
     numThreads = -1
 }
 
@@ -16,10 +16,10 @@ node
 {
 name = "renderSettings_2full"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
     pixelSamples = 4
-    reflectionSamples = 2
+    reflectionSamples = 0
     numThreads = -1
 }
 
@@ -73,8 +73,9 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
-    filePath = "/home/john/Downloads/triceratops.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    color = 172 158 154
 }
 
 
@@ -85,7 +86,9 @@ type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 0.01 -1.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
+    color = 220 203 201
 }
+
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
 //plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
@@ -125,12 +128,12 @@ node
 {
 name = "environment"
 type = "vxIBLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
     intensity = 17.00
     color = 255 255 255
-    samples = 50
+    samples = 13
     radius = 1.0
     gain = 0.3
     gamma = 1.7
@@ -141,11 +144,11 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.80
+    intensity = 0.40
     color = 255 230 240
-    orientation = 12.0 -10.0 5.0
+    orientation = 2.0 -10.0 15.0
     samples = 1
     castShadows = "true"
 }
