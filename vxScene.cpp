@@ -18,11 +18,14 @@ vxScene::~vxScene()
 
 void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 {
+	buildDefaultShader();
+	
 	for(const auto node: nodeDB->getNodesByType("vxDirectLight"))
 	{
 		auto direct = createDirectLight();
 		direct->setIntensity(node->getFloatAttribute("intensity"));
 		direct->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+		
 		direct->setOrientation(node->getVector3dAttribute("orientation"));
 		
 		std::string cast = node->getStringAttribute("castShadows");
@@ -152,21 +155,19 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		plane->setZ(node->getFloatAttribute("z"));
 	}
 
-	for(const auto nodeGeo: nodeDB->getNodesByType("vxGeometry"))
+	for(const auto node: nodeDB->getNodesByType("vxGeometry"))
 	{
-		const auto path = nodeGeo->getStringAttribute("filePath");
-		const auto transform = nodeGeo->getMatrixAttribute("transform");
+		const auto path = node->getStringAttribute("filePath");
+		const auto transform = node->getMatrixAttribute("transform");
 
 		auto geo = createGeometry(path, transform);
+		geo->setBaseColor(vxColor::lookup256(node->getColorAttribute("color")));
 		geo->setTransform(transform);
 
 		auto plyReader = std::make_shared<vxPLYImporter>(geo);
 		plyReader->processPLYFile(path);
 	}
 	
-	m_shader = std::make_shared<vxLambert>();
-	m_shader->setLights(&m_lights);
-	m_shader->setScene(shared_from_this());
 	
 	std::cout << " -- Finished building process scene -- " << std::endl;
 }
@@ -184,6 +185,13 @@ std::shared_ptr<vxCamera> vxScene::defaultCamera() const
 void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
 {
 	m_camera = camera;
+}
+
+void vxScene::buildDefaultShader()
+{
+	m_shader = std::make_shared<vxLambert>();
+	m_shader->setLights(&m_lights);
+	m_shader->setScene(shared_from_this());
 }
 
 std::shared_ptr<vxPointLight> vxScene::createPointLight()

@@ -488,7 +488,7 @@ bool vxVector3d::operator<(const vxVector3d& other) const
 
 bool vxVector3d::follows(const vxVector3d &direction) const
 {
-	return dot(direction)<=0.0;
+	return dot(direction)<0.0;
 }
 
 scalar vxVector3d::angle(const vxVector3d& b) const

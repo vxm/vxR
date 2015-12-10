@@ -88,6 +88,7 @@ public:
 	std::shared_ptr<vxCamera> defaultCamera() const;
 	void setCamera(const std::shared_ptr<vxCamera> &defaultCamera);
 
+	void buildDefaultShader();
 	std::shared_ptr<vxPointLight> createPointLight();
 	std::shared_ptr<vxDirectLight> createDirectLight();
 	std::shared_ptr<vxIBLight> createIBLight(const std::string path);
