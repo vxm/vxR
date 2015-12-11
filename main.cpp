@@ -52,7 +52,8 @@ int executeRenderProcess(int argc, char *argv[])
 		const auto resolution = node->getVector2dAttribute("resolution");
 		const auto samples = node->getIntAttribute("pixelSamples");
 		const auto reflectionSamples = node->getIntAttribute("reflectionSamples");
-		
+		const auto giSamples = node->getIntAttribute("giSamples");
+
 		// Img properties for render.
 		auto renderProperties = std::make_shared<ImageProperties>(resolution.x(),
 																  resolution.y());
@@ -61,6 +62,7 @@ int executeRenderProcess(int argc, char *argv[])
 		rp.setDatabase(sceneParser);
 		rp.setVisSamples(samples);
 		rp.setReflectionSamples(reflectionSamples);
+		rp.setGISamples(giSamples);
 		
 		// creates the bucket list (vector) using the img 
 		// description.

@@ -28,6 +28,16 @@ using render = vxCompute::vxRenderProcess;
 namespace vxCompute 
 {
 
+unsigned int vxRenderProcess::giSamples() const
+{
+	return m_giSamples;
+}
+
+void vxRenderProcess::setGISamples(unsigned int giSamples)
+{
+	m_giSamples = giSamples;
+}
+
 vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop, 
 								 unsigned int samples)
 	:	m_prop(prop)
@@ -222,7 +232,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				
 				//compute the shader
 				vxColor col(m_scene->defaultShader()->getColor(ray,collision));
-
+				
 				pixelColor += col;
 				
 				//Reflection
@@ -255,7 +265,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				//GI
 				vxColor globalIlm;
 				{
-					const auto n = 8;
+					const auto n = m_giSamples;
 					const auto colorRatio = 1.0/(scalar)n;
 					for(auto i=0u; i<n; i++)
 					{
@@ -263,7 +273,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						const vxRay f(collision.position()
 									  +collision.normal()/10000.0, 
 									  r.inverted());
-
+						
 						auto lumm = f.incidence(collision.normal());
 						if(lumm<=0.05)
 							continue;

@@ -35,6 +35,7 @@ private:
 	unsigned int m_visSamples{1};
 	scalar m_c_invSamples{1/(scalar)m_visSamples};
 	unsigned int m_reflectionSamples{0};
+	unsigned int m_giSamples{0};
 public:
 
 	// constructor with imageproperties propagation
@@ -66,6 +67,8 @@ public:
 	void setVisSamples(unsigned int visSamples);
 	unsigned int reflectionSamples() const;
 	void setReflectionSamples(unsigned int reflectionSamples);
+	unsigned int giSamples() const;
+	void setGISamples(unsigned int giSamples);
 };
 
 #endif // VXRENDERPROCESS_H
