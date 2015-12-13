@@ -15,7 +15,7 @@ active = "true"
 
 node
 {
-name = "renderSettings_low_full_size"
+name = "renderSettings_1low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
@@ -28,7 +28,7 @@ active = "true"
 
 node
 {
-name = "renderSettings_full"
+name = "renderSettings_2full"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
@@ -111,9 +111,9 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 -2.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
-    color = 198 198 124
+    color = 199 198 134
 }
 
 node
@@ -123,7 +123,7 @@ type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 0.01 -1.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
-    color = 220 120 120
+    color = 212 125 123
 }
 
 
