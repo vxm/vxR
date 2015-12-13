@@ -3,25 +3,38 @@
 
 node
 {
-name = "renderSettings_1low"
+name = "renderSettings_0low"
 type = "vxRenderSettings"
 active = "true"
     resolution = 683 384
-    pixelSamples = 2
-    reflectionSamples = 0
-    giSamples = 2
+    pixelSamples = 1
+    reflectionSamples = 1
+    giSamples = 5
     numThreads = -1
 }
 
 node
 {
-name = "renderSettings_2full"
+name = "renderSettings_low_full_size"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
-    pixelSamples = 8
-    reflectionSamples = 0
-    giSamples = 0
+    pixelSamples = 1
+    reflectionSamples = 1
+    giSamples = 5
+    numThreads = -1
+}
+
+
+node
+{
+name = "renderSettings_full"
+type = "vxRenderSettings"
+active = "true"
+    resolution = 1366 768
+    pixelSamples = 4
+    reflectionSamples = 2
+    giSamples = 50
     numThreads = -1
 }
 
@@ -29,11 +42,11 @@ node
 {
 name = "renderSettings_3"
 type = "vxRenderSettings"
-active = "false"
-    resolution = 2732 1536
-    pixelSamples = 4
+active = "true"
+    resolution = 1366 768
+    pixelSamples = 8
     reflectionSamples = 2
-    giSamples = 0
+    giSamples = 150
     numThreads = -1
 }
 
@@ -41,11 +54,11 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "false"
-    resolution = 4098 2304
-    pixelSamples = 8
-    reflectionSamples = 4
-    giSamples = 0
+active = "true"
+    resolution = 1366 768
+    pixelSamples = 14
+    reflectionSamples = 2
+    giSamples = 250
     numThreads = -1
 }
 
@@ -53,11 +66,11 @@ node
 {
 name = "renderSettings_5"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 5464 3072
     pixelSamples = 12
     reflectionSamples = 4
-    giSamples = 0
+    giSamples = 230
     numThreads = -1
 }
 
@@ -75,14 +88,33 @@ active = "true"
 
 node
 {
-name = "gnome_tris"
+name = "triceratops_tris"
 type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
-    color = 172 158 154
+    filePath = "/home/john/Downloads/triceratops.ply"
+    color = 138 158 144
 }
 
+node
+{
+name = "tennyson_tris"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 2.0 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    color = 118 118 144
+}
+
+node
+{
+name = "gnome_tris"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 -2.0 1]
+    filePath = "/home/john/Downloads/vmilo_0.ply"
+    color = 198 198 124
+}
 
 node
 {
@@ -91,7 +123,7 @@ type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 0.01 -1.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
-    color = 220 20 20
+    color = 220 120 120
 }
 
 
@@ -151,7 +183,7 @@ name = "sun"
 type = "vxDirectLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.40
+    intensity = 0.6
     color = 255 230 240
     orientation = 2.0 -10.0 15.0
     samples = 1
