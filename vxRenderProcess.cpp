@@ -183,8 +183,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 270;
-	unsigned int itV = 227;
+	unsigned int itH = 757;
+	unsigned int itV = 543;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
@@ -195,11 +195,10 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
 	
-	if(m_scene->throwRay(ray, collision))
-		//if(m_scene->domeThrowRay(ray, collision))
+	if(m_scene->throwRay(ray, collision) || m_scene->domeThrowRay(ray, collision))
 	{
-		const auto&& baseColor = collision.color();
-		color.add(baseColor);
+		vxColor col(m_scene->defaultShader()->getColor(ray,collision));
+		color.add(col);
 	}
 	
 	const auto id = itH  + (itV * m_prop->rx());
@@ -225,14 +224,12 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			vxCollision collision;
 			const auto ray = rCamera->ray(hitCoordinates, sampler);
 			
-			
 			if(m_scene->throwRay(ray, collision) && collision.isValid())
 			{
 				const auto& n = collision.normal();
 				
 				//compute the shader
 				vxColor col(m_scene->defaultShader()->getColor(ray,collision));
-				
 				pixelColor += col;
 				
 				//Reflection
@@ -243,7 +240,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					{
 						v3 invV = ((n * ray.direction().dot(n) * -2.0)
 								   + ray.direction());
-						invV+=MU::getSolidSphereRand3(0.85);
+						invV+=MU::getSolidSphereRand3(0.2);
 						const auto &&reflexRay = vxRay(collision.position()
 													   +(n/10000),
 													   invV);
@@ -260,6 +257,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 											   (1.0/m_reflectionSamples));
 						}
 					}
+					pixelColor+= (reflection/10.0);
 				}
 				
 				//GI
@@ -279,7 +277,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 							continue;
 						
 						vxCollision giColl;
-						m_scene->throwRay(f,giColl);
+						m_scene->throwRay(f, giColl);
 						if(giColl.isValid())
 						{
 							vxColor gi(m_scene->defaultShader()->getColor(ray,giColl));
@@ -291,10 +289,9 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 							globalIlm.mixSumm(giColl.color()*lumm, colorRatio);
 						}
 					}
+					pixelColor+= globalIlm;
 				}
 				
-				pixelColor+= reflection;
-				pixelColor+= globalIlm;
 			}
 			else
 			{
