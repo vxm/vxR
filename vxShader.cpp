@@ -16,9 +16,7 @@ vxColor vxLambert::getColor(const vxRay &ray, const vxCollision &collide) const
 	vxColor ret;
 
 	auto lumm = getLightLoop(ray, collide);
-	ret = MU::remap(m_diffuse.compute(collide), 0.0, 0.75) * lumm;
-
-//	ret = collide.normal();
+	ret = MU::remap(m_diffuse.compute(collide), 0.0, 0.85) * lumm;
 
 	return ret;
 }
