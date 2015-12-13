@@ -300,7 +300,8 @@ vxColor vxDirectLight::acummulationLight(const vxRay &, const vxCollision &colli
 
 		const vxRay ff(cPnt+collision.normal()/100000.0, m_orientation.inverted());
 		const auto&& scn = m_scene.lock();
-		if (!m_castShadows || !scn->throwRay(ff))
+		vxCollision col;
+		if (!m_castShadows || !(scn->throwRay(ff,col)==1))
 		{
 			ret = color().gained(lumm);
 		}
