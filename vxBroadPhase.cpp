@@ -61,7 +61,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	vxCollision temp = collide;
 	int valid {0};
 	
-	for(auto&& geo:m_geometries)
+	for(auto& geo:m_geometries)
 	{
 		auto hitValid = geo->throwRay(ray, temp);
 		
