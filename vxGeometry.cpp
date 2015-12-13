@@ -164,7 +164,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 		{
 			if(m_triangles[id].throwRay(ray,col))
 			{
-				if((col.position()-ray.origin()).follows(ray.origin()))
+				//if((col.position()-ray.origin()).follows(ray.origin()))
 				{
 					cols.push_back(col);
 				}
