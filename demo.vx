@@ -8,8 +8,8 @@ type = "vxRenderSettings"
 active = "true"
     resolution = 683 384
     pixelSamples = 1
-    reflectionSamples = 1
-    giSamples = 5
+    reflectionSamples = 0
+    giSamples = 0
     numThreads = -1
 }
 
@@ -17,11 +17,11 @@ node
 {
 name = "renderSettings_1low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 1
-    reflectionSamples = 1
-    giSamples = 5
+    reflectionSamples = 0
+    giSamples = 15
     numThreads = -1
 }
 
@@ -30,11 +30,11 @@ node
 {
 name = "renderSettings_2full"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 4
     reflectionSamples = 2
-    giSamples = 50
+    giSamples = 150
     numThreads = -1
 }
 
@@ -42,7 +42,7 @@ node
 {
 name = "renderSettings_3"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 8
     reflectionSamples = 2
@@ -54,7 +54,7 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 14
     reflectionSamples = 2
@@ -66,7 +66,7 @@ node
 {
 name = "renderSettings_5"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 5464 3072
     pixelSamples = 12
     reflectionSamples = 4
@@ -90,9 +90,9 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
-    filePath = "/home/john/Downloads/triceratops.ply"
+    filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
 }
 
@@ -102,7 +102,7 @@ name = "tennyson_tris"
 type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 2.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    filePath = "/home/john/Downloads/tennyson.ply"
     color = 118 118 144
 }
 
@@ -110,7 +110,7 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
     color = 199 198 134
@@ -120,7 +120,7 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 0.01 -1.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 212 125 123
@@ -138,6 +138,7 @@ active = "true"
 ///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
 ///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
 ///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
+///home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
 
 node
 {
@@ -145,7 +146,7 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+    imagePath = "/home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
 }
 
 node

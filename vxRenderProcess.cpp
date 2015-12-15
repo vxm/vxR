@@ -183,8 +183,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 757;
-	unsigned int itV = 543;
+	unsigned int itH = 476;
+	unsigned int itV = 325;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
@@ -264,7 +264,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				vxColor globalIlm;
 				{
 					const auto n = m_giSamples;
-					const auto colorRatio = 0.85/(scalar)n;
+					const auto colorRatio = 2.25/(scalar)n;
 					for(auto i=0u; i<n; i++)
 					{
 						const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
