@@ -369,5 +369,75 @@ vxColor vxAmbientLight::acummulationLight(const vxRay &, const vxCollision &) co
 	return m_color*m_intensity;
 }
 
+scalar vxAreaLight::minY() const
+{
+	return m_minY;
+}
+
+void vxAreaLight::setMinY(const scalar &minY)
+{
+	m_minY = minY;
+}
+
+scalar vxAreaLight::maxX() const
+{
+	return m_maxX;
+}
+
+void vxAreaLight::setMaxX(const scalar &maxX)
+{
+	m_maxX = maxX;
+}
+
+scalar vxAreaLight::maxY() const
+{
+	return m_maxY;
+}
+
+void vxAreaLight::setMaxY(const scalar &maxY)
+{
+	m_maxY = maxY;
+}
+
+vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collision) const
+{
+	vxColor ret{vxColor::black};
+	vxRay f(collision.position(), collision.normal());
+	const auto&& cPnt = collision.position();
+
+	for(auto x = 0u; x<m_samples; x++)
+	{
+		auto u = MU::getRand(m_maxX) + m_minX;
+		auto v = MU::getRand(m_maxY) + m_minY;
+
+		const auto&& orientation = m_transform.getOrigin() - cPnt + v3(u,v,0);
+		if(collision.normal().follows(orientation.inverted()))
+		{
+			auto ratio = lightRatio(f, orientation);
+			auto lumm = m_intensity * ratio / (scalar)m_samples;
+	
+			const vxRay ff(cPnt+collision.normal()/100000.0, orientation);
+			const auto&& scn = m_scene.lock();
+			vxCollision col;
+			if (!(scn->throwRay(ff,col)==1))
+			{
+				ret += color().gained(lumm);
+			}
+		}
+	}
+	
+	return ret;
+}
+
+scalar vxAreaLight::minX() const
+{
+	return m_minX;
+}
+
+void vxAreaLight::setMinX(const scalar &minX)
+{
+	m_minX = minX;
+}
+
 
 }

@@ -16,7 +16,7 @@ class vxScene;
 class vxLight
 {
 protected:
-
+	
 	vxMatrix m_transform;
 	bool m_castShadows{true};
 	//not every light needs a position
@@ -26,22 +26,22 @@ protected:
 	scalar m_radius			{1.0};
 	unsigned int m_samples	{1u};
 	std::weak_ptr<vxScene>	m_scene;
-
+	
 public:
-
+	
 	vxLight();
 	vxLight(scalar intensity, const vxColor &color);
 	vxLight(const v3 &position);
 	vxLight(scalar x, scalar y, scalar z );
-
+	
 	void setScene(std::weak_ptr<vxScene> scene);
 	void setPosition(const v3 &position);
 	void setPosition(scalar x, scalar y, scalar z);
-
+	
 	void set(scalar intensity, const v3 &color);
 	void setIntensity(scalar intensity);
 	void setColor(const vxColor &color);
-
+	
 	v3 position() const 
 	{
 		return m_position;
@@ -49,16 +49,16 @@ public:
 	
 	scalar intensity() const {return m_intensity;}
 	vxColor color() const {return m_color;}
-
+	
 	virtual v3 getLightRay(const v3 &position) const;
 	virtual scalar lightRatio(const vxRay &ray,
-					const v3 &lightDirection) const;
-
+							  const v3 &lightDirection) const;
+	
 	virtual vxColor acummulationLight(const vxRay &, const vxCollision &collision) const;
-
+	
 	scalar radius() const;
 	void setRadius(scalar radius);
-
+	
 	unsigned int samples() const;
 	void setSamples(int samples);
 	bool computeShadows() const;
@@ -77,39 +77,39 @@ private:
 	
 	scalar m_maxAngle=1.3;
 	scalar m_minAngle=1;
-
- public:
+	
+public:
 	vxSpotLight();
 	vxSpotLight(const v3 &position,const v3 &orientation,scalar maxAngle,scalar minAngle);
-
+	
 	void set(const v3 &position,const v3 &orientation,scalar maxAngle,scalar minAngle);
-
+	
 	void setOrientation(const v3 &orientation);
 	void setMin(scalar maxAngle) {m_maxAngle=maxAngle;}
 	void setMax(scalar minAngle) {m_minAngle=minAngle;}
+	
+};
 
- };
 
-
- class vxPointLight:public vxLight
- {
- protected:
-	 v3 m_orientation;
-	 bool m_biDirectional;
-
- public:
-	 vxPointLight();
-	 vxPointLight(scalar instensity, const vxColor &col);
-	 
-	 vxPointLight(const v3 &orientation,
-				   bool bidirectional);
-	 
-	 vxColor acummulationLight(const vxRay &, const vxCollision &collision) const override;
-	 
-	 void set(const v3 &orientation,bool bidirectional);
-	 void setOrientation (const v3 &orientation) {m_orientation.set(orientation);}
-	 void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
- };
+class vxPointLight:public vxLight
+{
+protected:
+	v3 m_orientation;
+	bool m_biDirectional;
+	
+public:
+	vxPointLight();
+	vxPointLight(scalar instensity, const vxColor &col);
+	
+	vxPointLight(const v3 &orientation,
+				 bool bidirectional);
+	
+	vxColor acummulationLight(const vxRay &, const vxCollision &collision) const override;
+	
+	void set(const v3 &orientation,bool bidirectional);
+	void setOrientation (const v3 &orientation) {m_orientation.set(orientation);}
+	void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
+};
 
 
 class vxDirectLight : public vxLight
@@ -117,7 +117,7 @@ class vxDirectLight : public vxLight
 protected:
 	v3 m_orientation;
 	bool m_biDirectional;
-
+	
 public:
 	vxDirectLight();
 	vxDirectLight(scalar instensity, const vxColor &col);
@@ -141,7 +141,7 @@ class vxIBLight:public vxLight
 	scalar m_lowThreshold{0.1};
 	
 public:
-
+	
 	vxIBLight();
 	vxIBLight(scalar instensity, const vxColor &col);
 	vxIBLight(scalar instensity, const std::string path);
@@ -150,7 +150,7 @@ public:
 	v3 getLightRay(const v3 &position) const override;
 	vxColor acummulationLight(const vxRay &, 
 							  const vxCollision &collision) const override;
-
+	
 	scalar gain() const;
 	void setGain(scalar gain);
 	scalar gamma() const;
@@ -166,10 +166,43 @@ public:
 	vxAmbientLight(scalar intensity, const vxColor &color);
 	
 	// vxLight interface
-	public:
+public:
 	v3 getLightRay(const v3 &position) const override;
 	vxColor acummulationLight(const vxRay &, const vxCollision &) const override;
 };
- 
+
+
+class vxAreaLight : public vxLight
+{
+protected:
+
+	scalar m_minX{-1.25};
+	scalar m_minY{-1.25};
+	scalar m_maxX{ 1.25};
+	scalar m_maxY{ 1.25};
+	
+	v3 m_normal;
+	
+public:
+	vxAreaLight()
+	{}
+	
+	vxColor acummulationLight(const vxRay &, const vxCollision &collision) const override;
+	
+	
+	scalar minX() const;
+	void setMinX(const scalar &minX);
+
+	scalar minY() const;
+	void setMinY(const scalar &minY);
+
+	scalar maxX() const;
+	void setMaxX(const scalar &maxX);
+
+	scalar maxY() const;
+	void setMaxY(const scalar &maxY);
+};
+
+
 }
 #endif 

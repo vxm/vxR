@@ -26,6 +26,7 @@ class vxShader;
 class vxGrid;
 class vxLight;
 class vxIBLight;
+class vxAreaLight;
 class vxPointLight;
 class vxDirectLight;
 class vxAmbientLight;
@@ -36,6 +37,7 @@ protected:
 	bool m_defaultLight = {true};
 	bool m_defaultShader = {true};
 
+	std::vector<std::shared_ptr<vxAreaLight>> m_areaLights;
 	std::vector<std::shared_ptr<vxIBLight>> m_IBLights;
 	std::vector<std::shared_ptr<vxPointLight>> m_pointLights;
 	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
@@ -89,6 +91,7 @@ public:
 	void setCamera(const std::shared_ptr<vxCamera> &defaultCamera);
 
 	void buildDefaultShader();
+	std::shared_ptr<vxAreaLight> createAreaLight();
 	std::shared_ptr<vxPointLight> createPointLight();
 	std::shared_ptr<vxDirectLight> createDirectLight();
 	std::shared_ptr<vxIBLight> createIBLight(const std::string path);

@@ -25,6 +25,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		auto direct = createDirectLight();
 		direct->setIntensity(node->getFloatAttribute("intensity"));
 		direct->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+		direct->setSamples(node->getIntAttribute("samples"));
 		
 		direct->setOrientation(node->getVector3dAttribute("orientation"));
 		
@@ -50,6 +51,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		auto ambient = createAmbientLight();
 		ambient->setIntensity(node->getFloatAttribute("intensity"));
 		ambient->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+		ambient->setSamples(node->getIntAttribute("samples"));
 
 		const auto transform = node->getMatrixAttribute("transform");
 		ambient->setTransform(transform);
@@ -75,8 +77,27 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		auto point = createPointLight();
 		point->setIntensity(node->getFloatAttribute("intensity"));
 		point->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+		point->setSamples(node->getIntAttribute("samples"));
+		
 		const auto transform = node->getMatrixAttribute("transform");
 		point->setTransform(transform);
+	}
+	
+	for(const auto node: nodeDB->getNodesByType("vxAreaLight"))
+	{
+		auto area = createAreaLight();
+		area->setIntensity(node->getFloatAttribute("intensity"));
+		area->setColor(vxColor::lookup256(node->getColorAttribute("color")));
+		area->setSamples(node->getIntAttribute("samples"));
+
+		area->setMinX(node->getFloatAttribute("minX"));
+		area->setMinY(node->getFloatAttribute("minY"));
+		
+		area->setMaxX(node->getFloatAttribute("maxX"));
+		area->setMaxY(node->getFloatAttribute("maxY"));
+
+		const auto transform = node->getMatrixAttribute("transform");
+		area->setTransform(transform);
 	}
 	
 	for(const auto node: nodeDB->getNodesByType("vxGrid"))
@@ -192,6 +213,16 @@ void vxScene::buildDefaultShader()
 	m_shader = std::make_shared<vxLambert>();
 	m_shader->setLights(&m_lights);
 	m_shader->setScene(shared_from_this());
+}
+
+std::shared_ptr<vxAreaLight> vxScene::createAreaLight()
+{
+	auto area = std::make_shared<vxAreaLight>();
+	m_areaLights.push_back(area);
+	m_lights.push_back(area);
+	area->setScene(shared_from_this());
+	return area;
+
 }
 
 std::shared_ptr<vxPointLight> vxScene::createPointLight()
