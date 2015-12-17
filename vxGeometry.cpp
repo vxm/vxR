@@ -206,6 +206,7 @@ int vxGeometry::throwRay(const vxRay &ray, vxCollision &col) const
 		}
 
 		col.setColor(m_baseColor);
+//		col.setColor(vxColor::indexColor(triangles.index));
 		col.setValid(true);
 		col.setUV(v2(0.5,0.5));
 		return 1;

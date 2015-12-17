@@ -53,12 +53,14 @@ int executeRenderProcess(int argc, char *argv[])
 		const auto samples = node->getIntAttribute("pixelSamples");
 		const auto reflectionSamples = node->getIntAttribute("reflectionSamples");
 		const auto giSamples = node->getIntAttribute("giSamples");
+		const auto giMultiplier = node->getFloatAttribute("giMultiplier");
 
 		// Img properties for render.
 		auto renderProperties = std::make_shared<ImageProperties>(resolution.x(),
 																  resolution.y());
 		// create the render process
 		render rp(renderProperties, samples);
+		rp.setGIMultiplier(giMultiplier);
 		rp.setDatabase(sceneParser);
 		rp.setVisSamples(samples);
 		rp.setReflectionSamples(reflectionSamples);

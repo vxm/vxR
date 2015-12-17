@@ -6,10 +6,11 @@ node
 name = "renderSettings_0low"
 type = "vxRenderSettings"
 active = "true"
-    resolution = 683 384
-    pixelSamples = 1
-    reflectionSamples = 0
-    giSamples = 5
+    resolution = 1366 768
+    pixelSamples = 4
+    reflectionSamples = 1
+    giSamples = 15
+    giMultiplier = 2.0
     numThreads = -1
 }
 
@@ -22,6 +23,7 @@ active = "false"
     pixelSamples = 2
     reflectionSamples = 2
     giSamples = 10
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -35,6 +37,7 @@ active = "false"
     pixelSamples = 4
     reflectionSamples = 2
     giSamples = 150
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -47,6 +50,7 @@ active = "false"
     pixelSamples = 8
     reflectionSamples = 2
     giSamples = 150
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -59,6 +63,7 @@ active = "false"
     pixelSamples = 14
     reflectionSamples = 2
     giSamples = 250
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -90,7 +95,7 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
@@ -100,8 +105,8 @@ node
 {
 name = "tennyson_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 2.0 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.2 0.04 2.0 1]
     filePath = "/home/john/Downloads/tennyson.ply"
     color = 118 118 144
 }
@@ -112,10 +117,11 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 0.04 0.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 199 199 199
 }
+
 
 node
 {
@@ -124,6 +130,17 @@ type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
+    color = 199 198 134
+}
+
+
+node
+{
+name = "mercury_tris"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
+    filePath = "/home/john/Downloads/mercury.ply"
     color = 199 198 134
 }
 
@@ -171,9 +188,9 @@ active = "true"
     color = 213 230 216
     samples = 3
     castShadows = "true"
-    minX = -3.5
+    minX = -6.5
     minY = -3.5
-    maxX = 3.5
+    maxX = 6.5
     maxY = 3.5
 }
 

@@ -38,6 +38,16 @@ void vxRenderProcess::setGISamples(unsigned int giSamples)
 	m_giSamples = giSamples;
 }
 
+scalar vxRenderProcess::giMultiplier() const
+{
+	return m_giMultiplier;
+}
+
+void vxRenderProcess::setGIMultiplier(const scalar &giMultiplier)
+{
+	m_giMultiplier = giMultiplier;
+}
+
 vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop, 
 								 unsigned int samples)
 	:	m_prop(prop)
@@ -264,7 +274,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				vxColor globalIlm;
 				{
 					const auto n = m_giSamples;
-					const auto colorRatio = 1.5/(scalar)n;
+					const auto colorRatio = m_giMultiplier/(scalar)n;
 					for(auto i=0u; i<n; i++)
 					{
 						const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
