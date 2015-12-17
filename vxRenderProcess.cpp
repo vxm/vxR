@@ -264,7 +264,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				vxColor globalIlm;
 				{
 					const auto n = m_giSamples;
-					const auto colorRatio = 0.9/(scalar)n;
+					const auto colorRatio = 1.5/(scalar)n;
 					for(auto i=0u; i<n; i++)
 					{
 						const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
