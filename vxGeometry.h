@@ -6,6 +6,7 @@
 #include <atomic>
 #include "vxVector.h"
 #include "vxRay.h"
+//#include "vxShader.h"
 #include "vxCollision.h"
 #include "vxTriRef.h"
 #include "vxMatrix.h"
@@ -17,6 +18,7 @@
 namespace vxCore {
 
 class vxGeometry;
+//class vxShader;
 
 using vxGeometryHandle = std::shared_ptr<vxGeometry>;
 
@@ -28,6 +30,7 @@ class vxGeometry
 	vxGeoGrid m_grid;
 	std::atomic_bool m_openForEdition{false};
 	vxColor m_baseColor;
+	//std::shared_ptr<vxShader> m_shader;
 	
 public:
 
@@ -37,12 +40,7 @@ public:
 	std::vector<vxTriRef> m_triangles;
 	std::vector<v3> m_normals;
 
-	void clear()
-	{
-		m_vertices.clear();
-		m_triangles.clear();
-		m_normals.clear();
-	}
+	void clear();
 	void open();
 	void close();
 	
@@ -56,6 +54,7 @@ public:
 
 	std::string constructionPath() const;
 	void setConstructionPath(const std::string &constructionPath);
+
 	vxMatrix transform() const;
 	vxMatrix& transform();
 
@@ -63,13 +62,16 @@ public:
 	void updateAccelerationStuctures();
 
 	std::shared_ptr<vxBoundingBox> boundingBox();
+
+	vxColor baseColor() const;
+	void setBaseColor(const vxColor &baseColor);
+//	std::shared_ptr<vxShader> shader() const;
+//	void setShader(const std::shared_ptr<vxShader> &shader);
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
-	vxColor baseColor() const;
-	void setBaseColor(const vxColor &baseColor);
 };
 
 }
