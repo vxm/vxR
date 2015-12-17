@@ -8,9 +8,9 @@ type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
     pixelSamples = 4
-    reflectionSamples = 1
-    giSamples = 15
-    giMultiplier = 2.0
+    reflectionSamples = 0
+    giSamples = 5
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -116,7 +116,7 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 0.04 0.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 199 199 199
@@ -127,7 +127,7 @@ node
 {
 name = "milo_tris"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
     color = 199 198 134
@@ -184,14 +184,14 @@ name = "area_light_2"
 type = "vxAreaLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 2 2 1]
-    intensity = 1.5
-    color = 213 230 216
-    samples = 3
+    intensity = 0.95
+    color = 223 220 206
+    samples = 5
     castShadows = "true"
-    minX = -6.5
-    minY = -3.5
-    maxX = 6.5
-    maxY = 3.5
+    minX = -3.5
+    minY = 0.3
+    maxX = 3.5
+    maxY = 1.0
 }
 
 
