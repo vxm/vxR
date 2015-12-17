@@ -5,10 +5,10 @@ node
 {
 name = "renderSettings_0low"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 683 384
-    pixelSamples = 2
-    reflectionSamples = 1
+    pixelSamples = 1
+    reflectionSamples = 0
     giSamples = 5
     numThreads = -1
 }
@@ -17,11 +17,11 @@ node
 {
 name = "renderSettings_1low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 2
-    reflectionSamples = 0
-    giSamples = 0
+    reflectionSamples = 2
+    giSamples = 10
     numThreads = -1
 }
 
@@ -90,7 +90,7 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
@@ -111,7 +111,7 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 199 199 199
@@ -167,7 +167,7 @@ name = "area_light_2"
 type = "vxAreaLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 2 2 1]
-    intensity = 1.0
+    intensity = 1.5
     color = 213 230 216
     samples = 3
     castShadows = "true"
