@@ -9,8 +9,8 @@ active = "true"
     resolution = 1366 768
     pixelSamples = 4
     reflectionSamples = 0
-    giSamples = 5
-    giMultiplier = 1.5
+    giSamples = 15
+    giMultiplier = 1.4
     numThreads = -1
 }
 
@@ -106,7 +106,7 @@ node
 name = "tennyson_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.2 0.04 2.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 2.0 1]
     filePath = "/home/john/Downloads/tennyson.ply"
     color = 118 118 144
 }
@@ -184,7 +184,7 @@ name = "area_light_2"
 type = "vxAreaLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 2 2 1]
-    intensity = 0.95
+    intensity = 0.80
     color = 223 220 206
     samples = 5
     castShadows = "true"
