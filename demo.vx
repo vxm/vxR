@@ -10,6 +10,7 @@ active = "true"
     pixelSamples = 1
     reflectionSamples = 0
     giSamples = 5
+    giMultiplier = 1.4
     numThreads = -1
 }
 
@@ -22,6 +23,7 @@ active = "false"
     pixelSamples = 2
     reflectionSamples = 2
     giSamples = 10
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -35,6 +37,7 @@ active = "false"
     pixelSamples = 4
     reflectionSamples = 2
     giSamples = 150
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -47,6 +50,7 @@ active = "false"
     pixelSamples = 8
     reflectionSamples = 2
     giSamples = 150
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -59,6 +63,7 @@ active = "false"
     pixelSamples = 14
     reflectionSamples = 2
     giSamples = 250
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -101,7 +106,7 @@ node
 name = "tennyson_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 2.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 2.0 1]
     filePath = "/home/john/Downloads/tennyson.ply"
     color = 118 118 144
 }
@@ -111,11 +116,12 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.04 0.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 199 199 199
 }
+
 
 node
 {
@@ -124,6 +130,17 @@ type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
+    color = 199 198 134
+}
+
+
+node
+{
+name = "mercury_tris"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
+    filePath = "/home/john/Downloads/mercury.ply"
     color = 199 198 134
 }
 
@@ -167,14 +184,14 @@ name = "area_light_2"
 type = "vxAreaLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 2 2 1]
-    intensity = 1.5
-    color = 213 230 216
-    samples = 3
+    intensity = 0.70
+    color = 223 220 206
+    samples = 5
     castShadows = "true"
     minX = -3.5
-    minY = -3.5
+    minY = 0.3
     maxX = 3.5
-    maxY = 3.5
+    maxY = 1.0
 }
 
 
@@ -278,11 +295,11 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     resolution = 220
     position = 440.0 0.0 440.0
-    size = 220.0
+    size = 1.0
 }
 
 node
@@ -291,7 +308,7 @@ name = "gnome"
 type = "vxGridGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/Downloads/napoleon.ply"
+    filePath = "/home/john/Downloads/gnome_low.ply"
     position = 440.0 -113.0 440.0
     scaleFactor = 0.75
 }

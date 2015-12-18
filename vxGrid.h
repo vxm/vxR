@@ -13,8 +13,9 @@
 #include <time.h>
 #include <iostream>
 #include <vector>
-#include "vxRay.h"
 
+#include "vxRay.h"
+#include "vxTriangleMesh.h"
 #include "MathUtils.h"
 #include "vxThreadPool.h"
 
@@ -22,18 +23,6 @@ namespace vxCore {
 
 class vxGrid;
 class vxBox;
-
-class vxOrthIter
-{
-	std::shared_ptr<vxGrid> m_grid;
-public:
-	
-	vxOrthIter(std::shared_ptr<vxGrid> grid)
-		:m_grid(grid)
-	{
-		
-	}
-};
 
 struct vx
 {
@@ -70,7 +59,7 @@ struct vx
 	}
 };
 
-class vxGrid
+class vxGrid : public vxGeometry
 {
 protected:
 
@@ -125,7 +114,7 @@ public:
 	void createSphere(scalar x, scalar y, scalar z, const scalar radio);
 	bool getRandomBoolean(scalar ratio = 1.0);
 	void createRandom(scalar ratio = 1.0);
-	void addGeometry(const vxGeometryHandle geo, 
+	void addGeometry(const vxTriangleMeshHandle geo, 
 					 const v3 &offset, 
 					 const v3 &scaleFactor);
 	void dumpFileInMemory(const std::__cxx11::string &fileName);
@@ -198,13 +187,13 @@ public:
 	bool inGrid(const v3 &pnt) const;
 	
 	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;
-	
-	//renderable interface
-	bool throwRay(const vxRay &ray) const;
-	int throwRay(const vxRay &ray, vxCollision &collide) const;
-	bool hasCollision(const vxRay &ray) const;
 	unsigned char elementColorIndex(const unsigned long x, const unsigned long y, const unsigned long z) const;
 	bool bitInBufferData(const unsigned long idx) const;
+	
+	//renderable interface
+	virtual bool throwRay(const vxRay &ray) const override;
+	virtual int throwRay(const vxRay &ray, vxCollision &collide) const override;
+	virtual bool hasCollision(const vxRay &ray) const override;
 };
 
 /*

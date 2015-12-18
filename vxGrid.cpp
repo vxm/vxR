@@ -5,6 +5,7 @@
 #include "MathUtils.h"
 #include "vxGrid.h"
 std::mutex gridMutex;
+using namespace vxCore;
 
 #define DBL_EPSILON 1e-12
 #define DRAWBBOX 0
@@ -246,7 +247,7 @@ void vxGrid::createRandom(scalar ratio)
 	}
 }
 
-void vxGrid::addGeometry(const vxGeometryHandle geo,
+void vxGrid::addGeometry(const vxTriangleMeshHandle geo,
 										const v3 &offset,
 										const v3 &scaleFactor)
 {

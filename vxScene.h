@@ -19,6 +19,7 @@
 #include "vxPLYImporter.h"
 #include "vxBitMap2d.h"
 #include "vxDome.h"
+#include "vxTriangleMesh.h"
 
 namespace vxCore {
 
@@ -42,7 +43,10 @@ protected:
 	std::vector<std::shared_ptr<vxPointLight>> m_pointLights;
 	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
 	std::vector<std::shared_ptr<vxAmbientLight>> m_ambientLights;
+	
+	
 	std::vector<vxGeometryHandle> m_geometries;
+	std::vector<std::shared_ptr<vxTriangleMesh>> m_triangleMeshes;
 	std::vector<std::shared_ptr<vxPlane>> m_planes;
 
 	std::vector<std::shared_ptr<vxLight>> m_lights;
@@ -99,7 +103,7 @@ public:
 	std::shared_ptr<vxDome> createDom(const std::string path);
 	std::shared_ptr<vxPlane> createPlane(vxPlane::type type);
 	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
-	vxGeometryHandle createGeometry(const std::__cxx11::string &path, 
+	vxTriangleMeshHandle createGeometry(const std::__cxx11::string &path, 
 											   const vxMatrix &transform);
 
 	int domeThrowRay(const vxRay &ray, vxCollision &collide) const;

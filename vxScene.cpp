@@ -32,27 +32,27 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		std::string cast = node->getStringAttribute("castShadows");
 		direct->setComputeShadows(cast == "true"s);
 	}
-
+	
 	for(const auto node: nodeDB->getNodesByType("vxIBLight"))
 	{
 		auto env = createIBLight(node->getStringAttribute("filePath"));
 		env->setIntensity(node->getFloatAttribute("intensity"));
 		env->setColor(vxColor::lookup256(node->getColorAttribute("color")));
-
+		
 		env->setSamples(node->getIntAttribute("samples"));
 		env->setRadius(node->getFloatAttribute("radius"));
 		env->setGain(node->getFloatAttribute("gain"));
 		env->setGamma(node->getFloatAttribute("gamma"));
 		env->setLowThreshold(node->getFloatAttribute("lowThreshold"));
 	}
-
+	
 	for(const auto node: nodeDB->getNodesByType("vxAmbientLight"))
 	{
 		auto ambient = createAmbientLight();
 		ambient->setIntensity(node->getFloatAttribute("intensity"));
 		ambient->setColor(vxColor::lookup256(node->getColorAttribute("color")));
 		ambient->setSamples(node->getIntAttribute("samples"));
-
+		
 		const auto transform = node->getMatrixAttribute("transform");
 		ambient->setTransform(transform);
 	}
@@ -60,16 +60,16 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	for(const auto node: nodeDB->getNodesByType("vxCamera"))
 	{
 		m_camera = std::make_shared<vxCamera>(m_prop);
-
+		
 		const auto fDistance = node->getFloatAttribute("focusDistance");
 		const auto hAperture = node->getFloatAttribute("horizontalAperture");
 		const auto vAperture = node->getFloatAttribute("verticalAperture");
-
+		
 		m_camera->set(v3::zero,
-						v3::constZ,
-						fDistance,
-						hAperture,
-						vAperture);
+					  v3::constZ,
+					  fDistance,
+					  hAperture,
+					  vAperture);
 	}
 	
 	for(const auto node: nodeDB->getNodesByType("vxPointLight"))
@@ -89,13 +89,13 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		area->setIntensity(node->getFloatAttribute("intensity"));
 		area->setColor(vxColor::lookup256(node->getColorAttribute("color")));
 		area->setSamples(node->getIntAttribute("samples"));
-
+		
 		area->setMinX(node->getFloatAttribute("minX"));
 		area->setMinY(node->getFloatAttribute("minY"));
 		
 		area->setMaxX(node->getFloatAttribute("maxX"));
 		area->setMaxY(node->getFloatAttribute("maxY"));
-
+		
 		const auto transform = node->getMatrixAttribute("transform");
 		area->setTransform(transform);
 	}
@@ -105,12 +105,15 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		const auto resolution = node->getIntAttribute("resolution");
 		const auto pos = node->getVector3dAttribute("position");
 		const auto size = node->getFloatAttribute("size");
-
+		
 		// this is a hardcode program to test the rays.
 		//TODO:get rid of this hard-coded values.
-		m_grids.push_back(std::make_shared<vxGrid>(pos, size));
-		m_grids[0]->setResolution(resolution);
-
+		
+		auto geo = std::make_shared<vxGrid>(pos, size);
+		geo->setResolution(resolution);
+		m_grids.push_back(geo);
+		m_geometries.push_back(geo);
+		
 		for(const auto nodeGeo: nodeDB->getNodesByType("vxGridGeometry"))
 		{
 			const auto path = nodeGeo->getStringAttribute("filePath");
@@ -118,24 +121,25 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			const auto sf = nodeGeo->getFloatAttribute("scaleFactor");
 			const auto transform = nodeGeo->getMatrixAttribute("transform");
 			
-			auto geo = createGeometry(path, transform);
-			auto plyReader = std::make_shared<vxPLYImporter>(geo);
-			plyReader->processPLYFile(path);
-			m_grids[0]->addGeometry(geo,
-									pos,
-									v3(resolution * sf,
-									   resolution * sf,
-									   resolution * sf) );
-			m_grids[0]->createGround();
-			//m_grids[0]->createEdges();
+			auto grid_geo = createGeometry(path, transform);
 
+			auto plyReader = std::make_shared<vxPLYImporter>(grid_geo);
+			plyReader->processPLYFile(path);
+			geo->addGeometry(grid_geo,
+							 pos,
+							 v3(resolution * sf,
+								resolution * sf,
+								resolution * sf) );
+			geo->createGround();
+			geo->createEdges();
+			
 		}
 		
-		auto na = m_grids[0]->numActiveVoxels();
-		auto totals = m_grids[0]->getNumberOfVoxels();
+		auto na = geo->numActiveVoxels();
+		auto totals = geo->getNumberOfVoxels();
 		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 	}
-
+	
 	for(const auto node: nodeDB->getNodesByType("vxDome"))
 	{
 		createDom(node->getStringAttribute("imagePath"));
@@ -166,7 +170,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		
 		//geometry color.
 		plane->setColor(vxColor::lookup256(node->getColorAttribute("color")));
-
+		
 		plane->setPointA(node->getVector3dAttribute("pointA"));
 		plane->setPointB(node->getVector3dAttribute("pointB"));
 		plane->setPointC(node->getVector3dAttribute("pointC"));
@@ -175,16 +179,16 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		plane->setY(node->getFloatAttribute("y"));
 		plane->setZ(node->getFloatAttribute("z"));
 	}
-
+	
 	for(const auto node: nodeDB->getNodesByType("vxGeometry"))
 	{
 		const auto path = node->getStringAttribute("filePath");
 		const auto transform = node->getMatrixAttribute("transform");
-
+		
 		auto geo = createGeometry(path, transform);
 		geo->setBaseColor(vxColor::lookup256(node->getColorAttribute("color")));
 		geo->setTransform(transform);
-
+		
 		auto plyReader = std::make_shared<vxPLYImporter>(geo);
 		plyReader->processPLYFile(path);
 	}
@@ -222,7 +226,7 @@ std::shared_ptr<vxAreaLight> vxScene::createAreaLight()
 	m_lights.push_back(area);
 	area->setScene(shared_from_this());
 	return area;
-
+	
 }
 
 std::shared_ptr<vxPointLight> vxScene::createPointLight()
@@ -292,10 +296,10 @@ std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path
 	return image;
 }
 
-vxGeometryHandle vxScene::createGeometry(const std::string &path, const vxMatrix &transform)
+vxTriangleMeshHandle vxScene::createGeometry(const std::string &path, const vxMatrix &transform)
 {
 	// looking for previouly opened images.
-	for(const auto& geo: m_geometries)
+	for(const auto& geo: m_triangleMeshes)
 	{
 		if(geo->constructionPath()==path && geo->transform()==transform)
 		{
@@ -306,12 +310,12 @@ vxGeometryHandle vxScene::createGeometry(const std::string &path, const vxMatrix
 	//auto found = std::find_first_of(m_geometries.begin(), m_geometries.end(),
 	//	[&path](vxGeometryHandle g){ return g->constructionPath()==path;});
 	
-	auto geo = std::make_shared<vxGeometry>();
+	auto geo = std::make_shared<vxTriangleMesh>();
 	geo->setTransform(transform);
-	m_geometries.push_back(geo);
 	m_broadPhase.addGeometry(geo);
 	geo->setConstructionPath(path);
 	
+	m_geometries.push_back(geo);
 	
 	return geo;
 }
@@ -349,7 +353,7 @@ int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 	if(m_broadPhase.throwRay(ray,collide))
 	{
 		collide.setValid(true);
-
+		
 		return 1;
 	}
 	

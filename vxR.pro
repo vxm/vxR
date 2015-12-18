@@ -71,7 +71,8 @@ SOURCES += main.cpp\
     vxBoundingBox.cpp \
     vxGeoGrid.cpp \
     vxList.cpp \
-    vxBroadPhase.cpp
+    vxBroadPhase.cpp \
+    vxTriangleMesh.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -132,7 +133,8 @@ HEADERS  += \
     vxBoundingBox.h \
     vxGeoGrid.h \
     vxList.h \
-    vxBroadPhase.h
+    vxBroadPhase.h \
+    vxTriangleMesh.h
 
 FORMS    +=
 

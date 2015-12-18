@@ -2,17 +2,17 @@
 
 using namespace vxCore;
 
-vxPLYImporter::vxPLYImporter(vxGeometryHandle geo)
+vxPLYImporter::vxPLYImporter(vxTriangleMeshHandle geo)
 	:m_geo(geo)
 {
 }
 
-vxGeometryHandle vxPLYImporter::getGeometry() const
+vxTriangleMeshHandle vxPLYImporter::getGeometry() const
 {
 	return m_geo;
 }
 
-void vxPLYImporter::setGeo(const vxGeometryHandle &geo)
+void vxPLYImporter::setGeo(const vxTriangleMeshHandle &geo)
 {
 	m_geo = geo;
 }

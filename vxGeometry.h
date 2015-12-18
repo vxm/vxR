@@ -24,42 +24,20 @@ using vxGeometryHandle = std::shared_ptr<vxGeometry>;
 
 class vxGeometry
 {
-	std::string m_constructionPath;
-	vxMatrix m_transform;
+protected:
 	std::shared_ptr<vxBoundingBox> m_bb;
-	vxGeoGrid m_grid;
-	std::atomic_bool m_openForEdition{false};
+	vxMatrix m_transform;
+	
 	vxColor m_baseColor;
 	//std::shared_ptr<vxShader> m_shader;
 	
 public:
 
 	vxGeometry();
-
-	std::vector<v3> m_vertices;
-	std::vector<vxTriRef> m_triangles;
-	std::vector<v3> m_normals;
-
-	void clear();
-	void open();
-	void close();
-	
-	void addVertexTransformed(const v3 &v3);
-	void addTriangle(unsigned long a,
-					 unsigned long b,
-					 unsigned long c);
-
-	unsigned long vertexCount() const;
-	unsigned long triangleCount() const;
-
-	std::string constructionPath() const;
-	void setConstructionPath(const std::string &constructionPath);
-
 	vxMatrix transform() const;
 	vxMatrix& transform();
 
 	void setTransform(const vxMatrix &transform);
-	void updateAccelerationStuctures();
 
 	std::shared_ptr<vxBoundingBox> boundingBox();
 
@@ -69,9 +47,9 @@ public:
 //	void setShader(const std::shared_ptr<vxShader> &shader);
 	
 	//renderable interface
-	bool throwRay(const vxRay &ray) const;
-	int throwRay(const vxRay &ray, vxCollision &collide) const;
-	bool hasCollision(const vxRay &ray) const;
+	virtual bool throwRay(const vxRay &ray) const;
+	virtual int throwRay(const vxRay &ray, vxCollision &collide) const;
+	virtual bool hasCollision(const vxRay &ray) const;
 };
 
 }
