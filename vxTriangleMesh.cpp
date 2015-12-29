@@ -1,5 +1,9 @@
 #include "vxTriangleMesh.h"
 
+using namespace vxCore;
+
+#define DRAWBBOX 0
+
 vxTriangleMesh::vxTriangleMesh()
 	:vxGeometry()
 {
@@ -103,7 +107,7 @@ bool vxTriangleMesh::throwRay(const vxRay &ray) const
 
 int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 {
-#if	DRAW_BB
+#if	DRAWBBOX
 	if(m_bb->throwRay(ray, col))
 	{
 		col.setColor(m_baseColor);
@@ -119,7 +123,6 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 	
 	auto&& p = ray.origin();
 	
-	
 	std::vector<vxCollision> cols;
 	auto sp =  col.position() 
 			+ (col.normal().inverted() / (scalar)10000.0);
@@ -130,7 +133,7 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 	do
 	{
 		triangles = m_grid.getList(ray, sp);
-
+		
 		if(prev==triangles.index)
 		{
 			break;

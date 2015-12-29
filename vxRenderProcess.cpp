@@ -183,8 +183,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 476;
-	unsigned int itV = 325;
+	unsigned int itH = 945;
+	unsigned int itV = 280;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
