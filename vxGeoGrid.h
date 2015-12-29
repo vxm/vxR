@@ -21,7 +21,6 @@ struct searchResult
 
 class vxGeoGrid
 {
-	
 	std::shared_ptr<vxBoundingBox> m_bb;
 	//TODO: above 11 this becomes problematic, investigate why.
 	unsigned int m_rx = {11u};

@@ -263,8 +263,6 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 	{
 		retVal = lookupVoxel(sp, idX, idY, idZ);
 
-		//std::cout << " - Index found: " << retVal << " - SP " << sp  << std::endl;
-
 		if(!indexIsValid(retVal))
 		{
 			return vxGeoGrid::invalidResult;
