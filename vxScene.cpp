@@ -103,16 +103,18 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	for(const auto node: nodeDB->getNodesByType("vxGrid"))
 	{
 		const auto resolution = node->getIntAttribute("resolution");
-		const auto pos = node->getVector3dAttribute("position");
+		const auto transform = node->getMatrixAttribute("transform");
+		const auto color = vxColor::lookup256(node->getColorAttribute("color"));
 		const auto size = node->getFloatAttribute("size");
 		
-		// this is a hardcode program to test the rays.
-		//TODO:get rid of this hard-coded values.
+		auto grid = std::make_shared<vxGrid>(transform.getOrigin(), size);
+		grid->setResolution(resolution);
+		grid->setTransform(transform);
 		
-		auto geo = std::make_shared<vxGrid>(pos, size);
-		geo->setResolution(resolution);
-		m_grids.push_back(geo);
-		m_geometries.push_back(geo);
+		grid->setBaseColor(color);
+		m_grids.push_back(grid);
+		m_geometries.push_back(grid);
+		m_broadPhase.addGeometry(grid);
 		
 		for(const auto nodeGeo: nodeDB->getNodesByType("vxGridGeometry"))
 		{
@@ -122,21 +124,22 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			const auto transform = nodeGeo->getMatrixAttribute("transform");
 			
 			auto grid_geo = createGeometry(path, transform);
-
+			
 			auto plyReader = std::make_shared<vxPLYImporter>(grid_geo);
 			plyReader->processPLYFile(path);
-			geo->addGeometry(grid_geo,
-							 pos,
-							 v3(resolution * sf,
-								resolution * sf,
-								resolution * sf) );
-			geo->createGround();
-			geo->createEdges();
+			grid->addGeometry(grid_geo,
+							  pos,
+							  v3(resolution * sf,
+								 resolution * sf,
+								 resolution * sf) );
 			
 		}
+
+		grid->createGround();
+		grid->createEdges();
 		
-		auto na = geo->numActiveVoxels();
-		auto totals = geo->getNumberOfVoxels();
+		auto na = grid->numActiveVoxels();
+		auto totals = grid->getNumberOfVoxels();
 		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 	}
 	
