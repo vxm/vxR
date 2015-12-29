@@ -12,7 +12,7 @@ using namespace vxCore;
 
 vxGrid::vxGrid()
 {
-	m_size=1;
+	m_size = 1.0;
 	
 	createGridData(5);
 	initialize();
@@ -22,7 +22,6 @@ vxGrid::vxGrid()
 
 vxGrid::vxGrid(const v3 &position, scalar size)
 	: m_position(position)
-	, m_boundingBox(position, size)
 {
 	setSize(size);
 	createGridData(5);
@@ -34,7 +33,6 @@ vxGrid::vxGrid(const v3 &position, scalar size)
 
 vxGrid::vxGrid(scalar x, scalar y, scalar z, scalar size)
 { 
-	m_boundingBox.set(v3(x,y,z), size);
 	m_position.set(x,y,z);
 	setSize(size);
 	
@@ -51,26 +49,17 @@ vxGrid::~vxGrid()
 
 void vxGrid::updateBB()
 {
-	m_boundingBox.set(m_position, m_size + DBL_EPSILON);
-	//TODO:missing
+	m_bb->set(m_position, m_size);
 }
 
 void vxGrid::createGridData(const unsigned long resolution)
 {
 	m_resolution = resolution;
-	m_resXres=resolution*resolution;
-	m_resXresXres=m_resXres*resolution;
-	m_data.resize(m_resXresXres);
-	m_resDivTres = m_midSize/(scalar)m_resolution;
+	m_c_resXres = resolution*resolution;
+	m_c_resXresXres = m_c_resXres*resolution;
+	m_data.resize(m_c_resXresXres);
+	m_c_resDivTres = m_c_midSize/(scalar)m_resolution;
 	setBoxSize();
-	
-	m_xmin = m_position.x() - m_midSize;
-	m_xmax = m_position.x() + m_midSize;
-	m_ymin = m_position.y() - m_midSize;
-	m_ymax = m_position.y() + m_midSize;
-	m_zmin = m_position.z() - m_midSize;
-	m_zmax = m_position.z() + m_midSize;
-	
 }
 
 void vxGrid::setResolution(unsigned long resolution)
@@ -83,8 +72,8 @@ void vxGrid::setResolution(unsigned long resolution)
 
 void vxGrid::setSize(const scalar size)
 {
-	m_size=size;
-	m_midSize = size/2.0;
+	m_size = size;
+	m_c_midSize = size/2.0;
 	setBoxSize();
 }
 
@@ -93,9 +82,10 @@ unsigned long vxGrid::size() const
 	return m_size;
 }
 
-void vxGrid::setPosition(const v3 position)
+void vxGrid::setPosition(const v3 &position)
 {
-	m_position=position;
+	m_position = position;
+	updateBB();
 }
 
 v3 vxGrid::position() const
@@ -110,10 +100,9 @@ unsigned long vxGrid::resolution() const
 
 void vxGrid::setBoxSize()
 {
-	m_boxSize = m_size/scalar(m_resolution);
-	m_midBoxSize = m_boxSize/2.0;
+	m_c_boxSize = m_size/scalar(m_resolution);
+	m_c_midBoxSize = m_c_boxSize/2.0;
 }
-
 
 void vxGrid::createDiagonals()
 {
@@ -137,16 +126,16 @@ void vxGrid::dumpFileInMemory(const std::string &fileName)
 	if(size>(std::streamsize)m_data.size())
 	{
 		std::cout << "Error, trying to dump long file to memory "
-					<< fileName << std::endl;
+				  << fileName << std::endl;
 		return;
 	}
 	
 	std::vector<char> buffer(size);
 	if (file.read((char*)&(m_data[0]), size))
 	{
-	    /* worked! */
+		/* worked! */
 	}
-
+	
 	file.close();
 }
 
@@ -159,18 +148,18 @@ void vxGrid::dumpNumericTypeInMemory()
 
 void vxGrid::createCorners()
 {
-	unsigned long resminusone=m_resolution-1;
-	activate(resminusone, resminusone, resminusone);
-	activate(resminusone, resminusone,			 0);
-	activate(resminusone,	0,			resminusone);
-	activate(resminusone,	0,					0);
-	activate(0, resminusone, resminusone);
-	activate(0, resminusone,			 0);
-	activate(0,	0,			resminusone);
-	activate(0,	0,					0);	
+	auto resMinusOne = m_resolution - 1;
+	activate(resMinusOne, resMinusOne,	resMinusOne);
+	activate(resMinusOne, resMinusOne,	0);
+	activate(resMinusOne,			0,	resMinusOne);
+	activate(resMinusOne,			0,	0);
+	activate(0,				resMinusOne,resMinusOne);
+	activate(0,				resMinusOne,0);
+	activate(0,						0,	resMinusOne);
+	activate(0,						0,	0);
 }
 
-void vxGrid::createGround(unsigned long offset)
+void vxGrid::createGround(unsigned long offset, unsigned char colorIndex)
 {
 	if(offset>=m_resolution)
 		return;
@@ -178,21 +167,25 @@ void vxGrid::createGround(unsigned long offset)
 	for (unsigned long i=0;i<m_resolution;i++)
 		for (unsigned long j=0;j<m_resolution;j++)
 		{
-			vxAt(i,offset,j).setColorIndex(21);
+			vxAt(i,offset,j).setColorIndex(colorIndex);
 		}
 }
 
-void vxGrid::createRoof(unsigned long offset)
+void vxGrid::createRoof(unsigned long offset, unsigned char colorIndex)
 {
 	if(offset>=m_resolution)
+	{
 		return;
+	}
 	
 	for (unsigned long i=0;i<m_resolution;i++)
+	{
 		for (unsigned long j=0;j<m_resolution;j++)
 		{
 			vxAt(i,(m_resolution-offset-1),j).activate();
-			vxAt(i,(m_resolution-offset-1),j).setColorIndex(10);
+			vxAt(i,(m_resolution-offset-1),j).setColorIndex(colorIndex);
 		}
+	}
 }
 
 void vxGrid::createEdges()
@@ -240,7 +233,7 @@ void vxGrid::createRandom(scalar ratio)
 {
 	for(auto&& it:m_data)
 	{
-		if(getRandomBoolean(ratio))
+		if(MU::getBoolRand(ratio))
 		{
 			it.activate();
 		}
@@ -248,8 +241,8 @@ void vxGrid::createRandom(scalar ratio)
 }
 
 void vxGrid::addGeometry(const vxTriangleMeshHandle geo,
-										const v3 &offset,
-										const v3 &scaleFactor)
+						 const v3 &offset,
+						 const v3 &scaleFactor)
 {
 	for(auto&& tri: geo->m_triangles)
 	{
@@ -316,7 +309,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo,
 
 unsigned long vxGrid::index(const unsigned long x, const unsigned long y, const unsigned long z) const
 {
-	return x+(y*m_resolution)+(z*m_resXres);
+	return x+(y*m_resolution)+(z*m_c_resXres);
 }
 
 void vxGrid::initialize(bool value)
@@ -352,7 +345,7 @@ unsigned long vxGrid::numActiveVoxels()
 
 long vxGrid::getNumberOfVoxels() const
 {
-	return m_resXresXres;
+	return m_c_resXresXres;
 }
 
 bool vxGrid::active(const unsigned long x, 
@@ -366,7 +359,7 @@ inline bool vxGrid::active(const v3 &pos) const
 {
 	if(inGrid(pos))
 	{
-		const auto&& fPos = pos - (m_position - m_midSize);
+		const auto&& fPos = pos - (m_position - m_c_midSize);
 		return getElement((unsigned long)floor(fPos.x()),
 						  (unsigned long)floor(fPos.y()),
 						  (unsigned long)floor(fPos.z()));
@@ -377,7 +370,7 @@ inline bool vxGrid::active(const v3 &pos) const
 
 inline bool vxGrid::activeInRange(const v3 &pos) const
 {
-	const auto&& fPos = pos - (m_position - m_midSize);
+	const auto&& fPos = pos - (m_position - m_c_midSize);
 	return getElement((unsigned long)floor(fPos.x()),
 					  (unsigned long)floor(fPos.y()),
 					  (unsigned long)floor(fPos.z()));
@@ -386,15 +379,15 @@ inline bool vxGrid::activeInRange(const v3 &pos) const
 
 inline bool vxGrid::active(unsigned long idx) const
 {
-	if (idx<m_resXresXres)
+	if (idx<m_c_resXresXres)
 		return vxAt(idx).active();
 	else
 		return false;
 }
 
 inline void vxGrid::activate(const unsigned long x, 
-								const unsigned long y, 
-								const unsigned long z)
+							 const unsigned long y, 
+							 const unsigned long z)
 {
 	setElement(x,y,z,true);
 }
@@ -406,11 +399,11 @@ bool vxGrid::activate(const v3 &pos)
 		return false;
 	}
 	
-	const auto&& offsetPos = pos - (m_position - m_midSize);
+	const auto&& offsetPos = pos - (m_position - m_c_midSize);
 	setElement((unsigned long)floor(offsetPos.x()),
-					(unsigned long)floor(offsetPos.y()),
-					(unsigned long)floor(offsetPos.z()), true);
-
+			   (unsigned long)floor(offsetPos.y()),
+			   (unsigned long)floor(offsetPos.z()), true);
+	
 	return true;
 }
 
@@ -421,32 +414,32 @@ inline void vxGrid::deactivate(const unsigned long x, const unsigned long y, con
 }
 
 inline bool vxGrid::getElement(const unsigned long x, 
-								const unsigned long y, 
-								const unsigned long z) const
+							   const unsigned long y, 
+							   const unsigned long z) const
 {
 	return active(index(x,y,z));
 }
 
 inline void vxGrid::setElement(const unsigned long x, 
-								const unsigned long y, 
-								const unsigned long z, 
-								bool value)
+							   const unsigned long y, 
+							   const unsigned long z, 
+							   bool value)
 {
 	vxAt(x,y,z).activate(value);
 }
 
 
 inline unsigned char vxGrid::elementColorIndex(const unsigned long x, 
-												const unsigned long y, 
-												const unsigned long z) const
+											   const unsigned long y, 
+											   const unsigned long z) const
 {
 	return (index(x,y,z))%8;
 }
 
 inline void vxGrid::setElementColorIndex(const unsigned long x, 
-											const unsigned long y, 
-											const unsigned long z, 
-											const unsigned char c)
+										 const unsigned long y, 
+										 const unsigned long z, 
+										 const unsigned char c)
 {
 	vxAt(x,y,z).setColorIndex(c);
 }
@@ -456,33 +449,68 @@ inline void vxGrid::setElement(unsigned long idx, bool value)
 	vxAt(idx).activate(value);
 }
 
+void vxGrid::getComponentsOfIndex(const unsigned long idx,
+								  unsigned long &retx, 
+								  unsigned long &rety, 
+								  unsigned long &retz) const
+{
+	retz = idx / m_c_resXres;
+	rety = (idx % m_c_resXres) / m_resolution;
+	retx = idx % m_resolution;
+}
+
+inline unsigned long vxGrid::indexAtPosition(const v3 &pos) const
+{
+	auto midSize = m_size / (scalar)2.0;
+	auto boxSize = m_size / (scalar)m_resolution;
+	auto p = ((pos - m_position + midSize)/boxSize).floorVector();
+	
+	return index((unsigned long)p.x(),(unsigned long)p.y(),(unsigned long)p.z());
+}
+
+inline v3 vxGrid::getVoxelPosition(const unsigned long iX, 
+								   const unsigned long iY, 
+								   const unsigned long iZ) const
+{
+	auto boxSize = m_size / scalar(m_resolution);
+	auto midBoxSize = boxSize/2.0;
+
+	return v3(m_bb->minX()+(iX*boxSize),
+			  m_bb->minY()+(iY*boxSize),
+			  m_bb->minZ()+(iZ*boxSize)) + (midBoxSize);
+			
+}
+
 inline v3 vxGrid::getVoxelPosition(unsigned long idx) const
 {
-	long retz = idx / m_resXres;
-	long rety = (idx%m_resXres) / m_resolution;
-	long retx = idx % m_resolution;
+	unsigned long retx;
+	unsigned long rety;
+	unsigned long retz;
+	
+	getComponentsOfIndex(idx, retx, rety, retz);
 	
 	return getVoxelPosition(retx, rety, retz);
 }
 
 inline vx& vxGrid::vxAtPosition(const v3 &position)
 {
-	const auto&& pos = (position - (m_position-m_midSize)).floorVector(); 
-	const auto&& idx = index(pos.x(),pos.y(),pos.z());
-	return vxAt(idx>=m_resXresXres ? 0:idx);
-}
-
-vx &vxGrid::vxAt(const unsigned long iX, const unsigned long iY, const unsigned long iZ)
-{
-	return vxAt(index(iX,iY,iZ));
+	const auto&& idx = indexAtPosition(position);
+	return vxAt(idx>=m_c_resXresXres ? 0 : idx);
 }
 
 inline vx vxGrid::vxAtPosition(const v3 &position) const
 {
-	const auto&& pos = (position - (m_position-m_midSize)).floorVector(); 
-	const auto&& idx = index(pos.x(),pos.y(),pos.z());
-	return vxAt(idx>=m_resXresXres ? 0:idx);
+	const auto&& idx = indexAtPosition(position);
+	return vxAt(idx>=m_c_resXresXres ? 0:idx);
 }
+
+vx &vxGrid::vxAt(const unsigned long iX, 
+				 const unsigned long iY, 
+				 const unsigned long iZ)
+{
+	return vxAt(index(iX,iY,iZ));
+}
+
 
 vx vxGrid::vxAt(const unsigned long iX, 
 				const unsigned long iY, 
@@ -491,14 +519,6 @@ vx vxGrid::vxAt(const unsigned long iX,
 	return vxAt(index(iX,iY,iZ));
 }
 
-inline unsigned long vxGrid::indexAtPosition(const v3 &position) const
-{
-	v3 pos = position - (m_position-m_midSize); 
-	unsigned long idx = floor(pos.x());
-	idx += floor(pos.y()) * m_resolution;
-	idx += floor(pos.z()) * m_resXres;
-	return idx<m_resXresXres ? idx: 0;
-}
 
 inline vx &vxGrid::vxAt(const unsigned long idx)
 {
@@ -520,16 +540,6 @@ bool vxGrid::bitInBufferData(const unsigned long idx) const
 	ch<<=sh;
 	ch>>=sh;
 	return (bool)ch;
-}
-
-inline v3 vxGrid::getVoxelPosition(const unsigned long iX, 
-										   const unsigned long iY, 
-										   const unsigned long iZ) const
-{
-	scalar x = (m_position.x() - m_midSize) + (iX * m_boxSize) + m_resDivTres;
-	scalar y = (m_position.y() - m_midSize) + (iY * m_boxSize) + m_resDivTres;
-	scalar z = (m_position.z() - m_midSize) + (iZ * m_boxSize) + m_resDivTres;
-	return v3{x,y,z};
 }
 
 void vxGrid::createSphere(const v3 &center, const scalar radio)
@@ -574,163 +584,163 @@ inline bool vxGrid::inGrid(const v3 &pnt) const
 			&& std::isgreaterequal(pnt.z(),m_zmin);
 }
 
-v3 vxGrid::nextVoxel(const vxRay &ray, v3 &exactCollision)
+Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 {
-	const auto&& modPos = ray.origin();
-
-	const auto&& minX = floor(modPos[0]);
-	const auto&& minY = floor(modPos[1]);
-	const auto&& minZ = floor(modPos[2]);
-
-	const auto&& directionX = ray.direction().x();
-	const auto&& directionY = ray.direction().y();
-	const auto&& directionZ = ray.direction().z();
-
-	const auto&& xSigned = std::signbit(directionX);
-	const auto&& ySigned = std::signbit(directionY);
-	const auto&& zSigned = std::signbit(directionZ);
-
-	const auto&& maxX = xSigned ? minX : minX+1.0;
-	const auto&& maxY = ySigned ? minY : minY+1.0;
-	const auto&& maxZ = zSigned ? minZ : minZ+1.0;
-
-	const auto&& xCollision = MU::rayAndXPlane(ray, maxX);
-	const auto&& yCollision = MU::rayAndYPlane(ray, maxY);
-	const auto&& zCollision = MU::rayAndZPlane(ray, maxZ);
-
-	if( MU::inRange(xCollision.z(), minZ, minZ+1.0)
-		&& MU::inRange(xCollision.y(), minY, minY+1.0))
-	{
-		exactCollision = xCollision;
-		return xCollision.floorVector()+v3(xSigned ? -.5 : .5, .5,.5);
-	}
-
-	if( MU::inRange( yCollision.z(), minZ, minZ+1.0))
-	{
-		exactCollision = yCollision;
-		return yCollision.floorVector()+v3(.5,ySigned ? -.5 : .5,.5);
-	}
-
-	exactCollision = zCollision;
-	return zCollision.floorVector()+v3(.5,.5,zSigned ? -.5 : .5);
-}
-
-
-unsigned int vxGrid::getNearestCollision(const vxRay &ray, vxCollision &collide) const
-{
-	bool found{false};
+	Voxel retVal;
+	retVal.size = ((scalar)m_size/(scalar)m_resolution);
 	
-	if(inGrid(ray.origin()))
-	{
-		//collide.setPosition(ray.origin());
-	}
-	else if (!m_boundingBox.throwRay(ray, collide))
-	{
-		return 0;
-	}
+	const auto& d = ray.direction();
+	const auto& p = ray.origin();
 	
-	const auto &rd = ray.direction();
+	auto velX = d.xPositive() ? 1 : 0;
+	auto velY = d.yPositive() ? 1 : 0;
+	auto velZ = d.zPositive() ? 1 : 0;
 	
-	vxRay r{collide.position(), rd};
-	v3 vx;
-	v3 exactCollision{0.0,0.0,0.0};
+	unsigned long retx;
+	unsigned long rety;
+	unsigned long retz;
+	
+	bool inside = true;
 	do
 	{
-		const auto&& min = r.origin().floorVector();
-		const auto&& maxX = rd.xPositive() ? min.x()+1.0 : min.x();
-		const auto&& xCollision = MU::rayAndXPlane(r, maxX);
-	
-		if( MU::inRange(xCollision.z(), min.z(), min.z()+1.0)
-			&& MU::inRange(xCollision.y(), min.y(), min.y()+1.0))
+		retVal.index = indexAtPosition(sp);
+		retVal.data = vxAt(retVal.index);
+		
+		if(retVal.data.active())
 		{
-			exactCollision = xCollision;
-			vx = exactCollision.floorVector()
-					+v3(rd.xPositive() ?  0.5 : -0.5, 0.5,0.5);
+			retVal.position = getVoxelPosition(retVal.index);
+			
+			return retVal;
 		}
 		
-		else 
+		if(retVal.index >= m_c_resXresXres)
 		{
-			const auto&& maxY = rd.yPositive() ? min.y()+1.0 : min.y();
-			const auto&& yCollision = MU::rayAndYPlane(r, maxY);
-			if( MU::inRange( yCollision.z(), min.z(), min.z()+1.0))
-			{
-				exactCollision = yCollision;
-				vx = exactCollision.floorVector()
-					+v3(0.5, rd.yPositive() ? 0.5 : -0.5,0.5);
-			}
-			else
-			{
-				const auto&& maxZ = rd.zPositive() ? min.z()+1.0 : min.z();
-				const auto&& zCollision = MU::rayAndZPlane(r, maxZ);
-				exactCollision = zCollision;
-				vx = exactCollision.floorVector()
-					+v3(0.5, 0.5, rd.zPositive() ? 0.5 : -0.5);
-			}
+			return retVal;
 		}
 		
-		vx+=ray.origin();
+		auto boxSize = m_size/(scalar)m_resolution;
 		
-		if(active(vx))
+		getComponentsOfIndex(retVal.index, retx, rety, retz);
+		
+		auto xVal = m_bb->minX() + (retx + velX) * boxSize - p.x();
+		auto yVal = m_bb->minY() + (rety + velY) * boxSize - p.y();
+		auto zVal = m_bb->minZ() + (retz + velZ) * boxSize - p.z();
+		
+		v3 intersectX = MU::rectAndXPlane(d, xVal);
+		if(fabs(intersectX.y()) <= fabs(yVal)
+				&& fabs(intersectX.z()) <= fabs(zVal))
 		{
-			found = true;
-			break;
+			sp = p + intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
+			continue;
 		}
-		r.setOrigin(exactCollision + r.direction()/(scalar)10000.0);
+		
+		v3 intersectY = MU::rectAndYPlane(d, yVal);
+		if(fabs(intersectY.x()) <= fabs(xVal)
+				&& fabs(intersectY.z()) <= fabs(zVal))
+		{
+			sp = p + intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
+			continue;
+		}
+		
+		v3 intersectZ = MU::rectAndZPlane(d, zVal);
+		if(fabs(intersectZ.x()) <= fabs(xVal)
+				&& fabs(intersectZ.y()) <= fabs(yVal))
+		{
+			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
+			continue;
+		}
+		
 	}
-	while(inGrid(vx));
+	while(!retVal.data.active() 
+		  && (inside = m_bb->contains(sp)));
 
-	collide.setPosition(found ? vx : std::move(collide.position()));
-	collide.setValid(found);
-	return found ? 1 : 0;
+	retVal.data.deactivate();
+	retVal.index = m_c_resXresXres;
+	
+	return retVal;
 }
 
 bool vxGrid::throwRay(const vxRay &ray) const
 { 
 #if DRAWBBOX
-	return m_boundingBox.throwRay(ray);
+	return m_bb->throwRay(ray);
 #else
 	vxCollision col;
-	getNearestCollision(ray,col);
-	return col.isValid();
+	return throwRay(ray,col) == 1;
 #endif
 }
 
-int vxGrid::throwRay(const vxRay &ray, vxCollision &collide) const
+int vxGrid::throwRay(const vxRay &ray, vxCollision &col) const
 { 
 #if DRAWBBOX
-	if(m_boundingBox.throwRay(ray, collide))
+	if(m_bb->throwRay(ray, col))
 	{
-		collide.setColor(vxColor::white);
+		col.setColor(m_baseColor);
+		col.setValid(true);
+		
+		return 1;
 	}
-	
-	return collide.isValid();
 #else
-
-	if (getNearestCollision(ray, collide))
+	
+	vxCollision tmp;
+	if(!m_bb->throwRay(ray, tmp))
 	{
-		const auto& pos = collide.position();
-		const auto&& iap = indexAtPosition(pos);
-		const auto&& c = vxColor::indexColor(vxAt(iap).colorIndex());
-		collide.setColor(c);
-		auto box = vxThreadPool::threadBox(std::this_thread::get_id());
-		box.set(pos);
-		return box.throwRay(ray,collide);
+		return 0;
 	}
 	
-	collide.setValid(false);
-	return 0;
+	auto&& p = ray.origin();
+	
+	auto sp =  tmp.position()
+			+ (tmp.normal().inverted() / (scalar)10000.0);
+	
+	auto prev = m_c_resXresXres;
+	vxBoundingBox box;
+	
+	//Should this be cached?
+	Voxel voxel;
+	do
+	{
+		voxel = nextVoxel(ray, sp);
+		
+		if(prev==voxel.index
+				|| voxel.x >= m_resolution
+				|| voxel.y >= m_resolution
+				|| voxel.z >= m_resolution)
+		{
+			break;
+		}
+		
+		prev = voxel.index;
+		
+		if(voxel.data.active())
+		{
+			box.set(voxel.position, voxel.size);
+			box.throwRay(ray,col);
+			
+			const auto& c = vxColor::indexColor(voxel.data.colorIndex());
+			//const auto& c = vxColor::indexColor(voxel.data.active()+2);
+			
+			col.setColor(c);
+			return 1;
+		}
+	}
+	while(!voxel.data.active());
+	
 #endif
+	
+	col.setValid(false);
+	return 0;
 }
 
 bool vxGrid::hasCollision(const vxRay &ray) const
 {
 #if DRAWBBOX
-	return m_boundingBox.hasCollision(ray);
+	return m_bb->hasCollision(ray);
 #else
 	auto found = false;
 	const auto&& v{ray.direction().unit()};
 	v3 next{ray.origin()+v};
-
+	
 	while(inGrid(next))
 	{
 		if(active(next))

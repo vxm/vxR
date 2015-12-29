@@ -59,26 +59,42 @@ struct vx
 	}
 };
 
+///
+/// \brief The Voxel class
+///
+class Voxel
+{
+public:
+	unsigned long long index{0ull};
+	
+	unsigned long x{0ul};
+	unsigned long y{0ul};
+	unsigned long z{0ul};
+	
+	vx data;
+	v3 position;
+	scalar size;
+};
+
+
 class vxGrid : public vxGeometry
 {
 protected:
+	std::vector<vx>	m_data;
 
 	v3 m_position;
 	scalar m_size				= {5.0};
 	unsigned long m_resolution	= {5u};
-	scalar m_invRes				= {1/(scalar)5.0};
 
-	std::vector<vx>	m_data;
-	vxBox m_boundingBox;
-
-	scalar m_resDivTres	= {m_size/(scalar)3.0};
-	scalar m_midSize	= {m_size/(scalar)2.0};
+	scalar m_c_invRes				= {1/(scalar)5.0};
+	scalar m_c_resDivTres	= {m_size/(scalar)3.0};
+	scalar m_c_midSize	= {m_size/(scalar)2.0};
 
 	// cache objects
-	scalar m_boxSize			= {1.0};
-	scalar m_midBoxSize			= {.5};	
-	unsigned long m_resXres		= {25};
-	unsigned long m_resXresXres	= {125};
+	scalar m_c_boxSize			= {1.0};
+	scalar m_c_midBoxSize			= {.5};	
+	unsigned long m_c_resXres		= {25};
+	unsigned long m_c_resXresXres	= {125};
 	scalar m_xmin		= {0.0};
 	scalar m_xmax		= {0.0};
 	scalar m_ymin		= {0.0};
@@ -99,15 +115,15 @@ public:
 	void setResolution(unsigned long resolution);
 	void setSize(const scalar size);
 	unsigned long size() const;
-	void setPosition(const v3 position);
+	void setPosition(const v3 &position);
 	v3 position() const;
 	unsigned long resolution() const;
 	void setBoxSize();
 	void updateBB();
 	void createDiagonals();
 	void createCorners();
-	void createRoof(unsigned long offset = 0);
-	void createGround(unsigned long offset = 0);
+	void createRoof(unsigned long offset = 0, unsigned char colorIndex = 21);
+	void createGround(unsigned long offset = 0, unsigned char colorIndex = 21);
 	void createEdges();
 	void fill();
 	void createSphere(const v3 &center, const scalar radio);
@@ -125,7 +141,7 @@ public:
 								const unsigned long y, 
 								const unsigned long z) const;
 	
-	static v3 nextVoxel(const vxRay &ray, v3 &exactCollision);
+	Voxel nextVoxel(const vxRay &ray, v3 &sp) const;
 	//sets every single vxl to 0.
 	void initialize(bool value = false);
 	//returns number of active voxels
@@ -171,7 +187,7 @@ public:
 								const unsigned long iY, 
 								const unsigned long iZ) const;
 	v3 getVoxelPosition(unsigned long idx) const;
-	inline unsigned long indexAtPosition(const v3 &position) const;
+	inline unsigned long indexAtPosition(const v3 &pos) const;
 	inline vx& vxAt(const unsigned long idx);
 	inline vx vxAt(const unsigned long idx) const;
 	inline vx& vxAtPosition(const v3 &position);
@@ -186,14 +202,14 @@ public:
 	bool inGrid(const v3 &pnt, scalar tolerance) const;
 	bool inGrid(const v3 &pnt) const;
 	
-	unsigned int getNearestCollision(const vxRay &ray, vxCollision &collide) const;
 	unsigned char elementColorIndex(const unsigned long x, const unsigned long y, const unsigned long z) const;
 	bool bitInBufferData(const unsigned long idx) const;
 	
 	//renderable interface
 	virtual bool throwRay(const vxRay &ray) const override;
-	virtual int throwRay(const vxRay &ray, vxCollision &collide) const override;
+	virtual int throwRay(const vxRay &ray, vxCollision &col) const override;
 	virtual bool hasCollision(const vxRay &ray) const override;
+	void getComponentsOfIndex(const unsigned long idx, unsigned long &retx, unsigned long &rety, unsigned long &retz) const;
 };
 
 /*

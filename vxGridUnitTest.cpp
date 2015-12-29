@@ -8,9 +8,10 @@ using namespace std::string_literals;
 
 v3 vxGridUnitTest::testNextVoxel(v3 org, v3 dir)
 {
+	vxGrid grid;
 	const vxRay z{org, dir};
 	v3 exactIntersection;
-	auto nv = vxGrid::nextVoxel(z, exactIntersection);
+	auto nv = grid.nextVoxel(z, exactIntersection);
 	
 	//if(verbose())
 	{
@@ -20,10 +21,10 @@ v3 vxGridUnitTest::testNextVoxel(v3 org, v3 dir)
 				  << z.direction() 
 				  << std::endl;
 		
-		std::cout << "Centered at " << nv << std::endl;
+		std::cout << "Centered at " << nv.position << std::endl;
 	}
 	
-	return nv;
+	return nv.position;
 }
 
 int vxGridUnitTest::testFunction_nextVoxel()
