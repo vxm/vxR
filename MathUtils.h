@@ -61,11 +61,11 @@ class MathUtils
 										 const v3 &p);
 	
 	//Random
-	static scalar getRand(scalar range);
-	static scalar getBoolRand();
-	static v3 getSolidSphereRand(scalar radius);
-	static v3 getSolidSphereRand2(scalar radius);
-	static v3 getSolidSphereRand3(scalar radius);
+	static scalar getRand(scalar range = 1.0);
+	static scalar getBoolRand(scalar ratio = 1.0);
+	static v3 getSolidSphereRand(scalar radius = 1.0);
+	static v3 getSolidSphereRand2(scalar radius = 1.0);
+	static v3 getSolidSphereRand3(scalar radius = 1.0);
 	static v3 getHollowSphereRand(scalar radius = 1.0);
 	static v3 getSphereRand(scalar radius = 1.0);
 	static v3 getHollowHemisphereRand(scalar radius, const v3 &n);

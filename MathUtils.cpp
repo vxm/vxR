@@ -178,14 +178,14 @@ v3 MathUtils::rayAndZPlane(const vxRay &ray, scalar z)
 	return rectAndZPlane(ray.direction(),z);
 }
 						
-scalar MathUtils::getRand(scalar range = 1.0)
+scalar MathUtils::getRand(scalar range)
 {
 	return range*(rand()/(scalar)RAND_MAX);
 }
 
-scalar MathUtils::getBoolRand()
+scalar MathUtils::getBoolRand(scalar ratio)
 {
-	return getRand(1.0)<.5;
+	return getRand(ratio)<(ratio/2.0);
 }
 
 v3 MathUtils::getHollowSphereRand(scalar radius)
