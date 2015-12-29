@@ -6,6 +6,38 @@ vxBoundingBox::vxBoundingBox()
 {
 }
 
+void vxBoundingBox::set(v3 position, scalar size)
+{
+	m_minx = position.x() - (size / 2.0);
+	m_miny = position.y() - (size / 2.0);
+	m_minz = position.z() - (size / 2.0);
+
+	m_maxx = position.x() + (size / 2.0);
+	m_maxy = position.y() + (size / 2.0);
+	m_maxz = position.z() + (size / 2.0);
+
+	m_init = true;
+}
+
+void vxBoundingBox::set(scalar mnx, scalar mny, scalar mnz, 
+						scalar mxx, scalar mxy, scalar mxz)
+{
+	m_minx = mnx;
+	m_miny = mny;
+	m_minz = mnz;
+
+	m_maxx = mxx;
+	m_maxy = mxy;
+	m_maxz = mxz;
+
+	m_init = true;
+}
+
+void vxBoundingBox::markAsInitialized()
+{
+	m_init = true;
+}
+
 void vxBoundingBox::close()
 {
 //	m_scale.set( (scalar)1.0/fabs(m_maxx - m_minx),
@@ -20,7 +52,7 @@ void vxBoundingBox::extend(const v3 &limit)
 		m_maxx = m_minx = limit.x();
 		m_maxy = m_miny = limit.y();
 		m_maxz = m_minz = limit.z();
-		m_init = true;
+		markAsInitialized();
 		return;
 	}
 	

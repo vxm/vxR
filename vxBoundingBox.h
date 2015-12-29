@@ -33,7 +33,11 @@ class vxBoundingBox: public std::enable_shared_from_this<vxBoundingBox>
 public:
 
 	vxBoundingBox();
-
+	void set(v3 position, scalar size);
+	void set(scalar mnx,scalar mny,scalar mnz,
+			 scalar mxx,scalar mxy,scalar mxz);
+	
+	void markAsInitialized();
 	void close();
 	
 	void extend(const v3 &limit);
