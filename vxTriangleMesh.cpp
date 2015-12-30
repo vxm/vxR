@@ -67,8 +67,9 @@ void vxTriangleMesh::addVertexTransformed(const v3 &v3)
 		return;
 	}
 	
-	const auto &orig = m_transform.getOrigin();
-	const auto &newPoint = v3+orig;
+	const auto &&orig = m_transform.getOrigin();
+	const auto &&scale = m_transform.getScale();
+	const auto &newPoint = (v3*scale)+orig;
 	m_bb->extend(newPoint);
 	//TODO:push_back ?
 	m_vertices.push_back(newPoint);
