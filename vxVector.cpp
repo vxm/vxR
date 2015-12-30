@@ -418,7 +418,7 @@ vxVector3d vxVector3d::operator+(int factor) const
 	return v3(factor+m_x, factor+m_y, factor+m_z);
 }
 
-vxVector3d vxVector3d::operator-=(const vxVector3d &entrada)
+vxVector3d& vxVector3d::operator-=(const vxVector3d &entrada)
 {
 	m_x-=entrada.m_x;
 	m_y-=entrada.m_y;
@@ -427,26 +427,13 @@ vxVector3d vxVector3d::operator-=(const vxVector3d &entrada)
 	return (*this);
 }
 
-vxVector3d vxVector3d::operator-(int factor) const 
+vxVector3d& vxVector3d::operator*=(const vxVector3d &entrada)
 {
-	return v3(m_x-factor,
-			  m_y-factor,
-			  m_z-factor);
-}
-
-
-vxVector3d vxVector3d::operator*(int factor) const 
-{
-	return v3(factor*m_x,
-			  factor*m_y,
-			  factor*m_z);
-}
-
-vxVector3d vxVector3d::operator/(int factor) const 
-{
-	return v3(m_x/(scalar)factor,
-			  m_y/(scalar)factor,
-			  m_z/(scalar)factor);
+	m_x*=entrada.m_x;
+	m_y*=entrada.m_y;
+	m_z*=entrada.m_z;
+	
+	return (*this);
 }
 
 vxVector3d vxVector3d::operator^(const vxVector3d& b) const

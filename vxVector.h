@@ -133,17 +133,15 @@ public:
 	vxVector3d operator+(int factor) const;
 
 	vxVector3d operator-(const vxVector3d &entrada) const;
-	vxVector3d operator-=(const vxVector3d &entrada);
-	
 	vxVector3d operator-(scalar factor) const;
-	vxVector3d operator-(int factor) const;
+	vxVector3d& operator-=(const vxVector3d &entrada);
+	
 	vxVector3d operator*(const vxVector3d other) const;
 	vxVector3d operator*(scalar factor) const;
-	vxVector3d operator*(int factor) const;
+	vxVector3d& operator*=(const vxVector3d &entrada);
 
 	vxVector3d operator/(const vxVector3d &entrada) const;
 	vxVector3d operator/(scalar factor) const;
-	vxVector3d operator/(int factor) const;
 	vxVector3d operator^(const vxVector3d &b) const;
 
 	// comparision
