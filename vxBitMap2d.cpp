@@ -3,11 +3,31 @@
 
 using namespace vxCore;
 
-vxBitMap2d::vxBitMap2d(const std::string path)
-	:m_path(path)
+scalar vxBitMap2d::gain() const
 {
-	//TODO:Constructor very populated.
-	//TODO:stolen QImage object, replace with non QT functions. Please soon.
+    return m_gain;
+}
+
+void vxBitMap2d::setGain(const scalar &gain)
+{
+    m_gain = gain;
+}
+
+scalar vxBitMap2d::gamma() const
+{
+    return m_gamma;
+}
+
+void vxBitMap2d::setGamma(const scalar &gamma)
+{
+    m_gamma = gamma;
+}
+
+vxBitMap2d::vxBitMap2d(const std::string path)
+    :m_path(path)
+{
+    //TODO:Constructor very populated.
+    //TODO:stolen QImage object, replace with non QT functions. Please soon.
 	loadImage();
 }
 
