@@ -231,6 +231,11 @@ v3 vxMatrix::getOrigin() const
 	return v3(m_matrix[12],m_matrix[13],m_matrix[14]);
 }
 
+v3 vxMatrix::getScale() const
+{
+	return v3(m_matrix[0],m_matrix[5],m_matrix[10]);
+}
+
 scalar &vxMatrix::operator()(unsigned int row, unsigned int col)
 {
 	return (m_matrix[4*row+col]);

@@ -59,6 +59,7 @@ public:
 	static const vxMatrix identity;
 	
 	v3 getOrigin() const;
+	v3 getScale() const;
 	
 	//vxMatrix		operator* (scalar, const vxMatrix& right);
 	//std::ostream &		operator<< (std::ostream &os, const vxMatrix&m);
