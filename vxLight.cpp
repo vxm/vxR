@@ -188,7 +188,7 @@ vxColor vxPointLight::acummulationLight(const vxRay &, const vxCollision &collis
 
 	vxRay f(p, collision.normal());
 	// compute all sort of shadows.
-	vxColor ret{vxColor::black};
+	vxColor ret{vxColor::zero};
 	
 	if(collision.normal().follows(p))
 	{
@@ -285,13 +285,14 @@ vxColor vxLight::acummulationLight(const vxRay &, const vxCollision &collision) 
 }
 
 
-vxColor vxDirectLight::acummulationLight(const vxRay &, const vxCollision &collision) const
+vxColor vxDirectLight::acummulationLight(const vxRay &, 
+										 const vxCollision &collision) const
 {
 	const auto&& cPnt = collision.position();
 
 	vxRay f(cPnt, collision.normal());
 	// compute all sort of shadows.
-	vxColor ret{vxColor::black};
+	vxColor ret{vxColor::zero};
 	
 	if(collision.normal().follows(m_orientation))
 	{
@@ -401,7 +402,7 @@ void vxAreaLight::setMaxY(const scalar &maxY)
 
 vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collision) const
 {
-	vxColor ret{vxColor::black};
+	vxColor ret{vxColor::zero};
 	vxRay f(collision.position(), collision.normal());
 	const auto&& cPnt = collision.position();
 
