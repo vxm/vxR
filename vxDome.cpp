@@ -9,6 +9,26 @@ vxDome::vxDome(std::shared_ptr<vxBitMap2d> env)
 {
 }
 
+scalar vxDome::gain() const
+{
+	return m_image->gain();
+}
+
+void vxDome::setGain(const scalar &gain)
+{
+	m_image->setGain(gain);
+}
+
+scalar vxDome::gamma() const
+{
+	return m_image->gamma();
+}
+
+void vxDome::setGamma(const scalar &gamma)
+{
+	m_image->setGamma(gamma);
+}
+
 bool vxDome::throwRay(const vxRay &) const
 {
 	return true;

@@ -21,6 +21,10 @@ public:
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &) const;
 
+	scalar gain() const;
+	void setGain(const scalar &gain);
+	scalar gamma() const;
+	void setGamma(const scalar &gamma);
 };
 
 #endif // VXDOM_H
