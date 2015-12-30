@@ -576,12 +576,7 @@ inline bool vxGrid::inGrid(const v3 &pnt, scalar tol) const
 
 inline bool vxGrid::inGrid(const v3 &pnt) const
 {
-	return std::islessequal(pnt.x(),m_xmax)
-			&& std::isgreaterequal(pnt.x(),m_xmin)
-			&& std::islessequal(pnt.y(),m_ymax)
-			&& std::isgreaterequal(pnt.y(),m_ymin)
-			&& std::islessequal(pnt.z(),m_zmax)
-			&& std::isgreaterequal(pnt.z(),m_zmin);
+	return m_bb->contains(pnt);
 }
 
 Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
