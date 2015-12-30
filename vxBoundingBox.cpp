@@ -200,8 +200,8 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setPosition(fp);
 			collide.setNormal(d.xPositive() ? v3::constMinusX : v3::constX);
 			collide.setValid();
-			collide.setUV(v2( (5.0 *(y - minY)) / ( (maxY - minY)),
-							  (5.0 *(z - minZ)) / ( (maxZ - minZ))));
+			collide.setUV(v2( ((y - minY)) / ( (maxY - minY)),
+							  ((z - minZ)) / ( (maxZ - minZ))));
 			return 1;
 		}
 	}
@@ -223,8 +223,8 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setPosition(fp);
 			collide.setNormal(d.yPositive() ? v3::constMinusY : v3::constY);
 			collide.setValid();
-			collide.setUV(v2( (5.0 *(x - minX)) / ((maxX - minX)),
-							  (5.0 *(z - minZ)) / ((maxZ - minZ))));
+			collide.setUV(v2( ((x - minX)) / ((maxX - minX)),
+							  ((z - minZ)) / ((maxZ - minZ))));
 			return 1;
 		}
 	}
@@ -246,8 +246,8 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setPosition(fp);
 			collide.setNormal(d.zPositive() ? v3::constMinusZ :  v3::constZ);
 			collide.setValid();
-			collide.setUV(v2( (5.0 *(x - minX)) /  (maxX - minX),
-							  (5.0 *(y - minY)) /  (maxY - minY)));
+			collide.setUV(v2( ((x - minX)) /  (maxX - minX),
+							  ((y - minY)) /  (maxY - minY)));
 			return 1;
 		}
 	}
