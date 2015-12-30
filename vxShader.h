@@ -28,6 +28,9 @@ public:
 	vxShader();
 	using lightsRef = std::shared_ptr<std::vector<vxLight>>;
 	virtual vxColor getColor(const vxRay &ray, const vxCollision &collide) const = 0;
+
+	virtual vxColor getIlluminatedColor(const vxRay &ray, const vxCollision &collide) const = 0;
+
 	virtual v3 getVector(const vxCollision &collide) const = 0;
 	virtual vxColor getLightLoop(const vxRay &ray, const vxCollision &collision) const;
 	void setScene(std::weak_ptr<vxScene> scene);
@@ -48,9 +51,10 @@ class vxLambert:public vxShader
 		}
 		
 	// vxShader interface
-	virtual vxColor getColor(const vxRay &ray, const vxCollision &collide) const override;
+	virtual vxColor getColor(const vxRay &, const vxCollision &collide) const override;
 	virtual v3 getVector(const vxCollision &collide) const override;
-	
+		
+	virtual vxColor getIlluminatedColor(const vxRay &ray, const vxCollision &collide) const override;
 };
 
 }
