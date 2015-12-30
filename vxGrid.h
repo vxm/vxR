@@ -120,21 +120,37 @@ public:
 	unsigned long resolution() const;
 	void setBoxSize();
 	void updateBB();
-	void createDiagonals();
-	void createCorners();
-	void createRoof(unsigned long offset = 0, unsigned char colorIndex = 21);
-	void createGround(unsigned long offset = 0, unsigned char colorIndex = 21);
-	void createEdges();
-	void fill();
-	void createSphere(const v3 &center, const scalar radio);
-	void createSphere(scalar x, scalar y, scalar z, const scalar radio);
+	void createDiagonals(unsigned char colorIndex = 11);
+	void createCorners(unsigned char colorIndex);
+	void createRoof(unsigned long offset = 0, unsigned char colorIndex = 11);
+	void createGround(unsigned long offset = 0, unsigned char colorIndex = 11);
+	void createEdges(unsigned char colorIndex = 12);
+	void fill(unsigned char colorIndex = 5);
+	void createSphere(const v3 &center, 
+					  const scalar radio,
+					  unsigned char colorIndex = 11);
+	
+	void createSphere(scalar x,
+					  scalar y,
+					  scalar z,
+					  const scalar radio,
+					  unsigned char colorIndex = 11);
+	
 	bool getRandomBoolean(scalar ratio = 1.0);
-	void createRandom(scalar ratio = 1.0);
-	void addGeometry(const vxTriangleMeshHandle geo, 
-					 const v3 &offset, 
-					 const v3 &scaleFactor);
+	void createRandom(scalar ratio = 1.0, scalar y_threshold=-10000.0);
+	void addGeometry(const vxTriangleMeshHandle geo);
 	void dumpFileInMemory(const std::__cxx11::string &fileName);
 	void dumpNumericTypeInMemory();
+	
+	void playGameOfLife()
+	{
+/*
+	Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+	Any live cell with two or three live neighbours lives on to the next generation.
+	Any live cell with more than three live neighbours dies, as if by over-population.
+	Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+*/
+	}
 
 // OPERATION WITH GRID
 	inline unsigned long index(const unsigned long x, 
