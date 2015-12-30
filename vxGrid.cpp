@@ -182,45 +182,44 @@ void vxGrid::createRoof(unsigned long offset, unsigned char colorIndex)
 	{
 		for (unsigned long j=0;j<m_resolution;j++)
 		{
-			vxAt(i,(m_resolution-offset-1),j).activate();
 			vxAt(i,(m_resolution-offset-1),j).setColorIndex(colorIndex);
 		}
 	}
 }
 
-void vxGrid::createEdges()
+void vxGrid::createEdges(unsigned char colorIndex)
 {
 	unsigned long resminusone=m_resolution-1;
 	for (unsigned long i=0;i<m_resolution;i++)
 	{
-		activate(i,0,0);
-		activate(i,resminusone,resminusone);
-		activate(i,0,resminusone);
-		activate(i,resminusone,0);
+		vxAt(i,0,0).setColorIndex(colorIndex);
+		vxAt(i,resminusone,resminusone).setColorIndex(colorIndex);
+		vxAt(i,0,resminusone).setColorIndex(colorIndex);
+		vxAt(i,resminusone,0).setColorIndex(colorIndex);
 		
-		activate(0,i,0);
-		activate(resminusone,i,resminusone);
-		activate(0,i,resminusone);
-		activate(resminusone,i,0);
+		vxAt(0,i,0).setColorIndex(colorIndex);
+		vxAt(resminusone,i,resminusone).setColorIndex(colorIndex);
+		vxAt(0,i,resminusone).setColorIndex(colorIndex);
+		vxAt(resminusone,i,0).setColorIndex(colorIndex);
 		
-		activate(0,0,i);
-		activate(resminusone,resminusone,i);
-		activate(resminusone,0,i);
-		activate(0,resminusone,i);
+		vxAt(0,0,i).setColorIndex(colorIndex);
+		vxAt(resminusone,resminusone,i).setColorIndex(colorIndex);
+		vxAt(resminusone,0,i).setColorIndex(colorIndex);
+		vxAt(0,resminusone,i).setColorIndex(colorIndex);
 	}
 }
 
-void vxGrid::fill()
+void vxGrid::fill(unsigned char colorIndex)
 {
 	for(unsigned long i=0;i<m_data.size();i++)
 	{
-		vxAt(i).activate();
+		vxAt(i).setColorIndex(colorIndex);
 	}	
 }
 
-void vxGrid::createSphere(scalar x, scalar y, scalar z, const scalar radio)
+void vxGrid::createSphere(scalar x, scalar y, scalar z, const scalar radio, unsigned char colorIndex)
 {
-	createSphere(v3{(scalar)x,(scalar)y,(scalar)z}, radio);
+	createSphere(v3{(scalar)x,(scalar)y,(scalar)z}, radio, colorIndex);
 }
 
 bool vxGrid::getRandomBoolean(scalar ratio)
@@ -229,25 +228,26 @@ bool vxGrid::getRandomBoolean(scalar ratio)
 	return num>.5;
 }
 
-void vxGrid::createRandom(scalar ratio)
+void vxGrid::createRandom(scalar ratio, scalar y_threshold)
 {
-	for(auto&& it:m_data)
+	int i=0;
+	for(auto& it:m_data)
 	{
-		if(MU::getBoolRand(ratio))
+		if(MU::getBoolRand(ratio) && getVoxelPosition(i).y()>y_threshold)
 		{
-			it.activate();
+			it.setColorIndex((unsigned int)MU::getRand(24));
 		}
+		
+		i++;
 	}
 }
 
-void vxGrid::addGeometry(const vxTriangleMeshHandle geo,
-						 const v3 &offset,
-						 const v3 &scaleFactor)
+void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 {
 	for(auto&& tri: geo->m_triangles)
 	{
 		{
-			const auto&& p{(tri.p1*scaleFactor)+offset};
+			const auto& p{tri.p1};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -255,7 +255,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo,
 			}
 		}
 		{
-			const auto&& p{(tri.p2*scaleFactor)+offset};
+			const auto& p{tri.p2};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -263,7 +263,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo,
 			}
 		}
 		{
-			const auto&& p{(tri.p3*scaleFactor)+offset};
+			const auto& p{tri.p3};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
