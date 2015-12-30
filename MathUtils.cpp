@@ -185,7 +185,7 @@ scalar MathUtils::getRand(scalar range)
 
 scalar MathUtils::getBoolRand(scalar ratio)
 {
-	return getRand(ratio)<(ratio/2.0);
+	return getRand(ratio + 1.0) > 1.0;
 }
 
 v3 MathUtils::getHollowSphereRand(scalar radius)
