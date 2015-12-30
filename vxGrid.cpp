@@ -732,22 +732,8 @@ bool vxGrid::hasCollision(const vxRay &ray) const
 #if DRAWBBOX
 	return m_bb->hasCollision(ray);
 #else
-	auto found = false;
-	const auto&& v{ray.direction().unit()};
-	v3 next{ray.origin()+v};
-	
-	while(inGrid(next))
-	{
-		if(active(next))
-		{
-			found = true;
-			break;
-		}
-		
-		next+=v;
-	}
-	
-	return found;
+	vxCollision col;
+	return throwRay(ray,col)==1;
 #endif
 }
 
