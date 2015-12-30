@@ -219,6 +219,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		const v2 hitCoordinates(
 					itV/(scalar)m_prop->ry(),
 					itH/(scalar)m_prop->rx());
+		
 		for(auto s=0u;s<m_visSamples;s++)
 		{
 			vxCollision collision;
@@ -229,7 +230,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				const auto& n = collision.normal();
 				
 				//compute the shader
-				vxColor col(m_scene->defaultShader()->getColor(ray,collision));
+				vxColor col(m_scene->defaultShader()->getIlluminatedColor(ray,collision));
 				pixelColor += col;
 				
 				//Reflection
@@ -263,8 +264,9 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 				//GI
 				vxColor globalIlm;
 				{
+					vxColor baseColor = m_scene->defaultShader()->getColor(ray,collision);
 					const auto n = m_giSamples;
-					const auto colorRatio = 1.5/(scalar)n;
+					const auto colorRatio = 1.0/(scalar)n;
 					for(auto i=0u; i<n; i++)
 					{
 						const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
@@ -272,22 +274,25 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 									  +collision.normal()/10000.0, 
 									  r.inverted());
 						
-						auto lumm = f.incidence(collision.normal());
-						if(lumm<=0.05)
-							continue;
+						auto rayIncidence = f.incidence(collision.normal());
 						
 						vxCollision giColl;
 						m_scene->throwRay(f, giColl);
+						
 						if(giColl.isValid())
 						{
-							vxColor gi(m_scene->defaultShader()->getColor(ray,giColl));
-							globalIlm.mixSumm(gi*lumm, colorRatio);
+							vxColor gi(m_scene->defaultShader()->getIlluminatedColor(ray,giColl));
+							globalIlm.mixSumm(baseColor * gi * rayIncidence, colorRatio);
 						}
 						else
 						{
-							m_scene->domeThrowRay(f, giColl);
-							globalIlm.mixSumm(giColl.color()*lumm, colorRatio);
+							vxCollision domm;
+							
+							m_scene->domeThrowRay(f, domm);
+							domm.setColor(domm.color() * 1.2);
+							globalIlm.mixSumm((baseColor * domm.color()) * rayIncidence, colorRatio);
 						}
+						
 					}
 					pixelColor+= globalIlm;
 				}
