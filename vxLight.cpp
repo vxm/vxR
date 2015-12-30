@@ -428,6 +428,7 @@ vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collisi
 	}
 	
 	return ret;
+	
 }
 
 scalar vxAreaLight::minX() const

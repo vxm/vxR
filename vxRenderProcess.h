@@ -28,6 +28,7 @@ private:
 	std::atomic_bool m_finished;
 	unsigned int m_nThreads;
 	
+	scalar m_giMultiplier{1.0};
 	std::atomic<scalar> m_progress{0.0};
 	ImageData m_imageData;
 	vxContactBuffer m_contactBuffer;
@@ -69,6 +70,8 @@ public:
 	void setReflectionSamples(unsigned int reflectionSamples);
 	unsigned int giSamples() const;
 	void setGISamples(unsigned int giSamples);
+	scalar giMultiplier() const;
+	void setGIMultiplier(const scalar &giMultiplier);
 };
 
 #endif // VXRENDERPROCESS_H
