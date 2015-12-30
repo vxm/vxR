@@ -275,7 +275,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p1, tri.p2, (i+1)/(scalar)interp);
-			const auto&& p{(a*scaleFactor)+offset};
+			const auto& p{a};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -286,7 +286,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p1, tri.p3, (i+1)/(scalar)interp);
-			const auto&& p{(a*scaleFactor)+offset};
+			const auto& p{a};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -297,7 +297,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p2, tri.p3, (i+1)/(scalar)interp);
-			const auto&& p{(a*scaleFactor)+offset};
+			const auto& p{a};
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
