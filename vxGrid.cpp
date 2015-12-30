@@ -542,7 +542,9 @@ bool vxGrid::bitInBufferData(const unsigned long idx) const
 	return (bool)ch;
 }
 
-void vxGrid::createSphere(const v3 &center, const scalar radio)
+void vxGrid::createSphere(const v3 &center, 
+						  const scalar radio, 
+						  unsigned char colorIndex)
 {
 	unsigned long x, y, z;
 	
@@ -555,9 +557,7 @@ void vxGrid::createSphere(const v3 &center, const scalar radio)
 				auto& voxel = vxAt(x, y, z);
 				if(center.distance(getVoxelPosition(x, y, z))<radio)
 				{
-					voxel.setColorIndex((unsigned char)
-										MU::getRand(24));
-					voxel.activate();
+					voxel.setColorIndex(colorIndex);
 				}
 			}
 		}
