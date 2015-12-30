@@ -104,15 +104,15 @@ void vxGrid::setBoxSize()
 	m_c_midBoxSize = m_c_boxSize/2.0;
 }
 
-void vxGrid::createDiagonals()
+void vxGrid::createDiagonals(unsigned char colorIndex)
 {
-	unsigned long resminusone=m_resolution-1;
+	unsigned long rMO=m_resolution-1;
 	for (unsigned long i=0;i<m_resolution;i++)
 	{
-		activate(i,i,i);
-		activate(resminusone-i,resminusone-i,i);
-		activate(i,resminusone-i,resminusone-i);
-		activate(resminusone-i,i,resminusone-i);
+		vxAt(i,i,i).setColorIndex(colorIndex);
+		vxAt(rMO-i,rMO-i,i).setColorIndex(colorIndex);
+		vxAt(i,rMO-i,rMO-i).setColorIndex(colorIndex);
+		vxAt(rMO-i,i,rMO-i).setColorIndex(colorIndex);
 	}
 }
 
@@ -146,17 +146,17 @@ void vxGrid::dumpNumericTypeInMemory()
 	new (p) numType(std::numeric_limits<numType>::max());
 }
 
-void vxGrid::createCorners()
+void vxGrid::createCorners(unsigned char colorIndex)
 {
-	auto resMinusOne = m_resolution - 1;
-	activate(resMinusOne, resMinusOne,	resMinusOne);
-	activate(resMinusOne, resMinusOne,	0);
-	activate(resMinusOne,			0,	resMinusOne);
-	activate(resMinusOne,			0,	0);
-	activate(0,				resMinusOne,resMinusOne);
-	activate(0,				resMinusOne,0);
-	activate(0,						0,	resMinusOne);
-	activate(0,						0,	0);
+	auto rMO = m_resolution - 1;
+	vxAt(rMO, rMO, rMO).setColorIndex(colorIndex);
+	vxAt(rMO, rMO, 0).setColorIndex(colorIndex);
+	vxAt(rMO, 0, rMO).setColorIndex(colorIndex);
+	vxAt(rMO, 0, 0).setColorIndex(colorIndex);
+	vxAt(0, rMO, rMO).setColorIndex(colorIndex);
+	vxAt(0, rMO, 0).setColorIndex(colorIndex);
+	vxAt(0, 0, rMO).setColorIndex(colorIndex);
+	vxAt(0, 0, 0).setColorIndex(colorIndex);
 }
 
 void vxGrid::createGround(unsigned long offset, unsigned char colorIndex)
