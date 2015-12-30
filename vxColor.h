@@ -48,7 +48,7 @@ public:
 								const int b);
 	static vxColor lookup256(const vxColor &col);
 
-	static vxColor indexColor(const int idx);
+	static vxColor indexColor(const unsigned int idx);
 	
 	void set(scalar r, scalar g, scalar b, scalar a);
 	void set(scalar r, scalar g, scalar b);
@@ -116,6 +116,8 @@ public:
 	vxColor& operator-=(unsigned int factor);
 	
 	void toRGBA8888(unsigned char *tbuff) const;
+
+	static vxColor zero;
 	
 	static vxColor blue;
 	static vxColor bluishGreen;

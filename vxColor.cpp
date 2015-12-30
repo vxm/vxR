@@ -80,7 +80,7 @@ vxColor vxColor::lookup256(const vxColor &col)
 	return std::move(MU::remap(col/(scalar)255.0, mnc, mxc));
 }
 
-vxColor vxColor::indexColor(const int idx)
+vxColor vxColor::indexColor(const unsigned int idx)
 {
 	switch(idx%25)
 	{
@@ -139,7 +139,7 @@ vxColor vxColor::indexColor(const int idx)
 		return greenishYellow;
 	break;
 	case 18:
-		return black;
+		return yellowishGreen;
 	break;
 	case 19:
 		return purplishBlue;
@@ -157,7 +157,7 @@ vxColor vxColor::indexColor(const int idx)
 		return yellowishOrange;
 	break;
 	case 24:
-		return yellowishGreen;
+		return black;
 	break;
 	default:
 		return red;
@@ -526,6 +526,8 @@ void vxColor::toRGBA8888(unsigned char *tbuff) const
 	*tbuff += (unsigned char)char(MU::remap(1.0,255.0));
 	
 }
+
+vxColor vxColor::zero {(scalar)0.0, (scalar)0.0, (scalar)0.0};
 
 vxColor vxColor::blue			(vxColor::lookup256(92, 138, 202));
 vxColor vxColor::bluishGreen	(vxColor::lookup256(24, 162, 121));
