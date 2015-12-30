@@ -119,24 +119,20 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		for(const auto nodeGeo: nodeDB->getNodesByType("vxGridGeometry"))
 		{
 			const auto path = nodeGeo->getStringAttribute("filePath");
-			const auto pos = nodeGeo->getVector3dAttribute("position");
-			const auto sf = nodeGeo->getFloatAttribute("scaleFactor");
 			const auto transform = nodeGeo->getMatrixAttribute("transform");
 			
-			auto grid_geo = createGeometry(path, transform);
+			auto grid_geo = std::make_shared<vxTriangleMesh>();
+			grid_geo->setTransform(transform);
+			grid_geo->setConstructionPath(path);
 			
 			auto plyReader = std::make_shared<vxPLYImporter>(grid_geo);
 			plyReader->processPLYFile(path);
-			grid->addGeometry(grid_geo,
-							  pos,
-							  v3(resolution * sf,
-								 resolution * sf,
-								 resolution * sf) );
-			
+			grid->addGeometry(grid_geo);
 		}
 
-		grid->createGround();
-		grid->createEdges();
+		grid->createGround(0, 4);
+		grid->createEdges(12);
+		grid->createRandom(.01,1.0);
 		
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();
@@ -145,7 +141,9 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	
 	for(const auto node: nodeDB->getNodesByType("vxDome"))
 	{
-		createDom(node->getStringAttribute("imagePath"));
+		auto dome = createDom(node->getStringAttribute("imagePath"));
+		dome->setGain(node->getFloatAttribute("gain"));
+		dome->setGamma(node->getFloatAttribute("gamma"));
 	}
 	
 	for(const auto node: nodeDB->getNodesByType("vxPlane"))
