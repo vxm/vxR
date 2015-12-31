@@ -72,7 +72,8 @@ SOURCES += main.cpp\
     vxGeoGrid.cpp \
     vxList.cpp \
     vxBroadPhase.cpp \
-    vxTriangleMesh.cpp
+    vxTriangleMesh.cpp \
+    vxClock.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -134,7 +135,8 @@ HEADERS  += \
     vxGeoGrid.h \
     vxList.h \
     vxBroadPhase.h \
-    vxTriangleMesh.h
+    vxTriangleMesh.h \
+    vxClock.h
 
 FORMS    +=
 
