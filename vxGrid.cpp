@@ -235,7 +235,7 @@ void vxGrid::createRandom(scalar ratio, scalar y_threshold)
 	{
 		if(MU::getBoolRand(ratio) && getVoxelPosition(i).y()>y_threshold)
 		{
-			it.setColorIndex((unsigned int)MU::getRand(24));
+			it.setColorIndex((unsigned int)MU::getRand(25.0));
 		}
 		
 		i++;
@@ -461,9 +461,7 @@ void vxGrid::getComponentsOfIndex(const unsigned long idx,
 
 inline unsigned long vxGrid::indexAtPosition(const v3 &pos) const
 {
-	auto midSize = m_size / (scalar)2.0;
-	auto boxSize = m_size / (scalar)m_resolution;
-	auto p = ((pos - m_position + midSize)/boxSize).floorVector();
+	auto p = ((pos - m_position + m_c_midSize)/m_c_boxSize).floorVector();
 	
 	return index((unsigned long)p.x(),(unsigned long)p.y(),(unsigned long)p.z());
 }
