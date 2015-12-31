@@ -564,12 +564,7 @@ void vxGrid::createSphere(const v3 &center,
 
 inline bool vxGrid::inGrid(const v3 &pnt, scalar tol) const
 {
-	return std::islessequal(pnt.x(),m_xmax+tol)
-			&& std::isgreaterequal(pnt.x(),m_xmin-tol)
-			&& std::islessequal(pnt.y(),m_ymax+tol)
-			&& std::isgreaterequal(pnt.y(),m_ymin-tol)
-			&& std::islessequal(pnt.z(),m_zmax+tol)
-			&& std::isgreaterequal(pnt.z(),m_zmin-tol);
+	return bb->contains(pnt, tol);
 }
 
 inline bool vxGrid::inGrid(const v3 &pnt) const

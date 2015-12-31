@@ -154,6 +154,16 @@ bool vxBoundingBox::contains(const v3 &v) const
 			&&  v.z() <= m_maxz;
 }
 
+bool vxBoundingBox::contains(const v3 &v, scalar tolerance) const
+{
+	return v.x() >= (m_minx + tolerance)
+			&&  v.y() >= (m_miny + tolerance)
+			&&  v.z() >= (m_minz + tolerance)
+			&&  v.x() <= (m_maxx - tolerance)
+			&&  v.y() <= (m_maxy - tolerance)
+			&&  v.z() <= (m_maxz - tolerance);
+}
+
 v3 vxBoundingBox::diagonal() const
 {
 	return v3(m_maxx-m_minx, m_maxy-m_miny, m_maxz-m_minz);

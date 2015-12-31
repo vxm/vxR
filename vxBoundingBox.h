@@ -58,6 +58,7 @@ public:
 	void setMaxZ(scalar maxz);
 
 	bool contains(const v3 &v) const;
+	bool contains(const v3 &v, scalar tolerance) const;
 	v3 diagonal() const;
 	
 	//renderable interface
