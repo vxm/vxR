@@ -59,7 +59,7 @@ protected:
 
 	std::vector<std::shared_ptr<vxGrid>> m_grids;
 	std::vector<vxGrid> m_cameras;
-	std::shared_ptr<ImageProperties> m_prop = {nullptr};
+	std::shared_ptr<ImageProperties> m_properties = {nullptr};
 
 	vxBroadPhase m_broadPhase;
 	
@@ -112,6 +112,8 @@ public:
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
+	std::shared_ptr<ImageProperties> properties() const;
+	void setProperties(const std::shared_ptr<ImageProperties> &properties);
 };
 
 }

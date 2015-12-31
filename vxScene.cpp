@@ -9,8 +9,18 @@ namespace vxCore{
 class vxScene;
 
 
+std::shared_ptr<ImageProperties> vxScene::properties() const
+{
+	return m_properties;
+}
+
+void vxScene::setProperties(const std::shared_ptr<ImageProperties> &properties)
+{
+	m_properties = properties;
+}
+
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
-	: m_prop(prop)
+	: m_properties(prop)
 {}
 
 vxScene::~vxScene()
@@ -59,7 +69,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	
 	for(const auto node: nodeDB->getNodesByType("vxCamera"))
 	{
-		m_camera = std::make_shared<vxCamera>(m_prop);
+		m_camera = std::make_shared<vxCamera>(m_properties);
 		
 		const auto fDistance = node->getFloatAttribute("focusDistance");
 		const auto hAperture = node->getFloatAttribute("horizontalAperture");
@@ -130,9 +140,9 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			grid->addGeometry(grid_geo);
 		}
 
-		grid->createGround(0, 4);
-		grid->createEdges(12);
-		grid->createRandom(.01,1.0);
+		grid->createGround(0, (unsigned char)4u);
+		grid->createEdges((unsigned char)12u);
+		grid->createRandom(.02,1.0);
 		
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();
@@ -323,12 +333,12 @@ vxTriangleMeshHandle vxScene::createGeometry(const std::string &path, const vxMa
 
 std::shared_ptr<ImageProperties> vxScene::imageProperties() const
 {
-	return m_prop;
+	return m_properties;
 }
 
 void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 {
-	m_prop = prop;
+	m_properties = prop;
 }
 
 

@@ -23,7 +23,7 @@ using namespace vxCore;
 class vxRenderProcess : public vxProcess
 {
 private:
-	std::shared_ptr<const ImageProperties> m_prop;
+	std::shared_ptr<const ImageProperties> m_properties;
 	std::shared_ptr<vxScene> m_scene;
 	std::atomic_bool m_finished;
 	unsigned int m_nThreads;
@@ -33,12 +33,12 @@ private:
 	ImageData m_imageData;
 	vxContactBuffer m_contactBuffer;
 	
-	unsigned int m_visSamples{1};
-	scalar m_c_invSamples{1/(scalar)m_visSamples};
+	unsigned int m_samples{1};
+	scalar m_c_invSamples{1/(scalar)m_samples};
 	unsigned int m_reflectionSamples{0};
 	unsigned int m_giSamples{0};
 public:
-
+	
 	// constructor with imageproperties propagation
 	vxRenderProcess(std::shared_ptr<ImageProperties> &prop,
 					unsigned int samples);
@@ -72,6 +72,10 @@ public:
 	void setGISamples(unsigned int giSamples);
 	scalar giMultiplier() const;
 	void setGIMultiplier(const scalar &giMultiplier);
+	unsigned int samples() const;
+	void setSamples(unsigned int samples);
+	std::shared_ptr<const ImageProperties> properties() const;
+	void setProperties(const std::shared_ptr<const ImageProperties> &properties);
 };
 
 #endif // VXRENDERPROCESS_H

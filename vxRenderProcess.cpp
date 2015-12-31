@@ -28,6 +28,37 @@ using render = vxCompute::vxRenderProcess;
 namespace vxCompute 
 {
 
+vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop, 
+								 unsigned int samples)
+	:	m_properties(prop)
+	,	m_imageData(prop)
+	,	m_contactBuffer(prop->numPixels())
+	,	m_samples{samples}
+{
+	setNMaxThreads(100);
+}
+
+unsigned int vxRenderProcess::samples() const
+{
+	return m_samples;
+}
+
+void vxRenderProcess::setSamples(unsigned int samples)
+{
+	m_samples = samples;
+}
+
+std::shared_ptr<const ImageProperties> vxRenderProcess::properties() const
+{
+	return m_properties;
+}
+
+void vxRenderProcess::setProperties(const std::shared_ptr<const ImageProperties> &properties)
+{
+	m_properties = properties;
+}
+
+
 unsigned int vxRenderProcess::giSamples() const
 {
 	return m_giSamples;
@@ -48,17 +79,6 @@ void vxRenderProcess::setGIMultiplier(const scalar &giMultiplier)
 	m_giMultiplier = giMultiplier;
 }
 
-vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop, 
-								 unsigned int samples)
-	:	m_prop(prop)
-	,	m_imageData(prop)
-	,	m_contactBuffer(prop->numPixels())
-	,	m_visSamples{samples}
-{
-	m_scene = std::make_shared<vxScene>(prop);
-	setNMaxThreads(100);
-}
-
 unsigned int vxRenderProcess::nMaxThreads() const
 {
 	return m_nThreads;
@@ -71,13 +91,13 @@ void vxRenderProcess::setNMaxThreads(unsigned int nMaxThreads)
 
 unsigned int vxRenderProcess::visSamples() const
 {
-	return m_visSamples;
+	return m_samples;
 }
 
 void vxRenderProcess::setVisSamples(unsigned int visSamples)
 {
-	m_visSamples = visSamples;
-	m_c_invSamples = 1.0/(scalar)m_visSamples;
+	m_samples = visSamples;
+	m_c_invSamples = 1.0/(scalar)m_samples;
 }
 
 unsigned int vxRenderProcess::reflectionSamples() const
@@ -97,7 +117,7 @@ vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> scn)
 	
 	if(m_scene!=nullptr)
 	{
-		/*st = */m_scene->build(scn);
+		/*st = m_scene->build(scn)*/;
 	}
 	
 	return st;
@@ -128,7 +148,7 @@ vxStatus::code vxRenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
 	m_finished = false;
-	m_contactBuffer.reserve(m_prop->numPixels());
+	m_contactBuffer.reserve(m_properties->numPixels());
 	
 #if USE_THREADS
 	const auto& minUpdateInterval = 1; //seconds
@@ -180,21 +200,21 @@ vxStatus::code vxRenderProcess::execute()
 
 scalar vxRenderProcess::progress() const
 {
-	return  100.0 * m_progress.load() / (m_prop->ry()*m_nThreads);
+	return  100.0 * m_progress.load() / (m_properties->ry()*m_nThreads);
 }
 
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
 	const auto&& rCamera = scene()->defaultCamera();
-	vxSampler sampler(m_visSamples);
+	vxSampler sampler(m_samples);
 	
 #if SINGLERAY
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 945;
-	unsigned int itV = 280;
+	unsigned int itH = 706;
+	unsigned int itV = 514;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
@@ -223,14 +243,14 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	unsigned int itV {0u};
 	
 	// on eachpixel.
-	while(!(itV>=(m_prop->ry())))
+	while(!(itV>=(m_properties->ry())))
 	{
 		vxColor pixelColor;
 		const v2 hitCoordinates(
-					itV/(scalar)m_prop->ry(),
-					itH/(scalar)m_prop->rx());
+					itV/(scalar)m_properties->ry(),
+					itH/(scalar)m_properties->rx());
 		
-		for(auto s=0u;s<m_visSamples;s++)
+		for(auto s=0u;s<m_samples;s++)
 		{
 			vxCollision collision;
 			const auto ray = rCamera->ray(hitCoordinates, sampler);
@@ -320,14 +340,14 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		sampler.resetIterator();
 		pixelColor*=m_c_invSamples;
 		
-		const auto id = itH  + (itV * m_prop->rx());
+		const auto id = itH  + (itV * m_properties->rx());
 		m_contactBuffer.pixel(id) = pixelColor;
 		
 		itH+=by;
-		if(itH >= m_prop->rx())
+		if(itH >= m_properties->rx())
 		{
 			itV+=1;
-			itH %= m_prop->rx();
+			itH %= m_properties->rx();
 			
 			m_progress.store(m_progress.load() + 1);
 		}
@@ -375,12 +395,12 @@ vxRenderProcess::generateImage()
 
 std::shared_ptr<const ImageProperties> vxRenderProcess::imageProperties() const
 {
-	return m_prop;
+	return m_properties;
 }
 
 void vxRenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> imageProperties)
 {
-	m_prop = imageProperties;
+	m_properties = imageProperties;
 }
 
 std::shared_ptr<vxScene> vxRenderProcess::scene() const
