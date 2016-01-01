@@ -206,7 +206,7 @@ scalar vxRenderProcess::progress() const
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
-	const auto&& rCamera = scene()->defaultCamera();
+	const auto&& rCamera = scene()->camera();
 	vxSampler sampler(m_samples);
 	
 #if SINGLERAY
@@ -319,7 +319,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 							vxCollision domm;
 							
 							m_scene->domeThrowRay(f, domm);
-							domm.setColor(domm.color() * 1.2);
+							domm.setColor(domm.color() * 2.2);
 							globalIlm.mixSumm((baseColor * domm.color()) * rayIncidence, colorRatio);
 						}
 						

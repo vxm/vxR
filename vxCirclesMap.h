@@ -31,7 +31,7 @@ public:
 	bool m_circle3 {false};
 	bool m_margin  {true};
 
-	scalar m_margn = 0.03;
+	scalar m_margn = 0.05;
 
 	vxColor m_marginColor = vxColor::black;
 };

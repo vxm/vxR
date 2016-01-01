@@ -91,7 +91,7 @@ public:
 	std::shared_ptr<vxShader> defaultShader() const;
 	void setShader(std::shared_ptr<vxShader> defaultShader);
 	
-	std::shared_ptr<vxCamera> defaultCamera() const;
+	std::shared_ptr<vxCamera> camera() const;
 	void setCamera(const std::shared_ptr<vxCamera> &defaultCamera);
 
 	void buildDefaultShader();

@@ -71,6 +71,7 @@ int executeRenderProcess(int argc, char *argv[])
 		else
 		{
 			m_scene->setProperties(renderProperties);
+			m_scene->camera()->setProperties(renderProperties);
 		}
 		
 		rp.setScene(m_scene);

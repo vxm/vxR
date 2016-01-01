@@ -34,7 +34,7 @@ private:
 	scalar m_rx;
 	scalar m_ry;
 
-	std::shared_ptr<const ImageProperties> m_prop;
+	std::shared_ptr<const ImageProperties> m_properties;
 
 public:
 	
@@ -68,6 +68,8 @@ public:
 	void setHorizontalAperture(scalar horizontalAperture);
 	scalar verticalAperture() const;
 	void setVerticalAperture(scalar verticalAperture);
+	std::shared_ptr<const ImageProperties> properties() const;
+	void setProperties(const std::shared_ptr<const ImageProperties> &properties);
 };
 
 }

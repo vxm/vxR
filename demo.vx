@@ -5,11 +5,11 @@ node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "true"
-    resolution = 500 280
+active = "false"
+    resolution = 456 244
     pixelSamples = 1
-    reflectionSamples = 0
-    giSamples = 0
+    reflectionSamples = 1
+    giSamples = 3
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -18,11 +18,11 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1000 560
     pixelSamples = 1
-    reflectionSamples = 0
-    giSamples = 10
+    reflectionSamples = 1
+    giSamples = 5
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -31,11 +31,11 @@ node
 {
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
-active = "true"
-    resolution = 4000 2240
-    pixelSamples = 1
-    reflectionSamples = 0
-    giSamples = 5
+active = "false"
+    resolution = 2500 1520
+    pixelSamples = 2
+    reflectionSamples = 1
+    giSamples = 10
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -44,10 +44,10 @@ node
 {
 name = "renderSettings_3"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 4000 2240
     pixelSamples = 4
-    reflectionSamples = 0
+    reflectionSamples = 1
     giSamples = 20
     giMultiplier = 1.5
     numThreads = -1
@@ -57,11 +57,11 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 5464 3072
-    pixelSamples = 14
+    pixelSamples = 4
     reflectionSamples = 2
-    giSamples = 250
+    giSamples = 25
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -72,7 +72,7 @@ name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
 active = "false"
     resolution = 5464 3072
-    pixelSamples = 12
+    pixelSamples = 8
     reflectionSamples = 4
     giSamples = 230
     numThreads = -1
@@ -105,7 +105,18 @@ node
 name = "tennyson_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 1.5 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 -2.5 1]
+    filePath = "/home/john/Downloads/tennyson.ply"
+    color = 118 118 144
+}
+
+
+node
+{
+name = "tennyson_tris"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 -2.5 1]
     filePath = "/home/john/Downloads/tennyson.ply"
     color = 118 118 144
 }
@@ -115,10 +126,10 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -1.14 0.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
-    color = 199 199 199
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.5 -0.7 -1.4 1]
+    filePath = "/home/john/Downloads/malote_1.ply"
+    color = 99 99 99
 }
 
 
@@ -183,11 +194,11 @@ node
 {
 name = "area_light_2"
 type = "vxAreaLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 2 2 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 3 2 1]
     intensity = 0.96
     color = 223 220 196
-    samples = 9
+    samples = 3
     castShadows = "true"
     minX = -3.5
     minY = 0.3
@@ -201,15 +212,15 @@ node
 name = "area_light_1"
 type = "vxAreaLight"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 2 -2 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
     intensity = 0.92
-    color = 196 220 223
-    samples = 5
+    color = 196 210 213
+    samples = 3
     castShadows = "true"
-    minX = -3.5
+    minX = -4.5
     minY = 0.3
-    maxX = 3.5
-    maxY = 1.5
+    maxX = 4.5
+    maxY = 2.5
 }
 
 
@@ -246,7 +257,7 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 0.7
     color = 255 230 240
@@ -261,7 +272,7 @@ name = "amblight"
 type = "vxAmbientLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    radius = .1
+    radius = .3
     intensity = 0.925
     color = 255 255 255
     samples = 1
@@ -298,25 +309,34 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0.65 0 1]
-    resolution = 215
-    size = 2.4
+    resolution = 125
+    size = 2.65
     color = 212 212 212
 }
 
 node
 {
-name = "milovx"
+name = "milo_vx"
 type = "vxGridGeometry"
 active = "true"
-    transform = [0.65 0 0 0 0 0.65 0 0 0 0 0.65 0 0 -0.52 0.6 1]
+    transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 -0.5 -0.63 0.6 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
 }
 
 node
 {
-name = "tricevx"
+name = "triceratops_vx"
 type = "vxGridGeometry"
 active = "true"
-    transform = [0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 -0.52 -.6 1]
+    transform = [0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 -0.63 -.6 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
+}
+
+node
+{
+name = "tennyson_vx"
+type = "vxGridGeometry"
+active = "true"
+    transform = [0.8 0 0 0 0 0.8 0 0 0 0 0.8 0 1 -0.63 0.6 1]
+    filePath = "/home/john/Downloads/malote_1.ply"
 }

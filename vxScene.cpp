@@ -9,16 +9,6 @@ namespace vxCore{
 class vxScene;
 
 
-std::shared_ptr<ImageProperties> vxScene::properties() const
-{
-	return m_properties;
-}
-
-void vxScene::setProperties(const std::shared_ptr<ImageProperties> &properties)
-{
-	m_properties = properties;
-}
-
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_properties(prop)
 {}
@@ -139,7 +129,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 			plyReader->processPLYFile(path);
 			grid->addGeometry(grid_geo);
 		}
-
+		
 		grid->createGround(0, (unsigned char)4u);
 		grid->createEdges((unsigned char)12u);
 		grid->createRandom(.02,1.0);
@@ -211,11 +201,6 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 void vxScene::setShader(std::shared_ptr<vxShader> shader)
 {
 	m_shader = shader;
-}
-
-std::shared_ptr<vxCamera> vxScene::defaultCamera() const
-{
-	return m_camera;
 }
 
 void vxScene::setCamera(const std::shared_ptr<vxCamera> &camera)
@@ -339,6 +324,21 @@ std::shared_ptr<ImageProperties> vxScene::imageProperties() const
 void vxScene::setImageProperties(const std::shared_ptr<ImageProperties> &prop)
 {
 	m_properties = prop;
+}
+
+std::shared_ptr<ImageProperties> vxScene::properties() const
+{
+	return m_properties;
+}
+
+void vxScene::setProperties(const std::shared_ptr<ImageProperties> &properties)
+{
+	m_properties = properties;
+}
+
+std::shared_ptr<vxCamera> vxScene::camera() const
+{
+	return m_camera;
 }
 
 

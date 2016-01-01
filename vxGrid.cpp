@@ -470,12 +470,9 @@ inline v3 vxGrid::getVoxelPosition(const unsigned long iX,
 								   const unsigned long iY, 
 								   const unsigned long iZ) const
 {
-	auto boxSize = m_size / scalar(m_resolution);
-	auto midBoxSize = boxSize/2.0;
-
-	return v3(m_bb->minX()+(iX*boxSize),
-			  m_bb->minY()+(iY*boxSize),
-			  m_bb->minZ()+(iZ*boxSize)) + (midBoxSize);
+	return v3(m_bb->minX()+(iX*m_c_boxSize),
+			  m_bb->minY()+(iY*m_c_boxSize),
+			  m_bb->minZ()+(iZ*m_c_boxSize)) + (m_c_midBoxSize);
 			
 }
 
@@ -564,7 +561,7 @@ void vxGrid::createSphere(const v3 &center,
 
 inline bool vxGrid::inGrid(const v3 &pnt, scalar tol) const
 {
-	return bb->contains(pnt, tol);
+	return m_bb->contains(pnt, tol);
 }
 
 inline bool vxGrid::inGrid(const v3 &pnt) const
@@ -597,7 +594,6 @@ Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 		if(retVal.data.active())
 		{
 			retVal.position = getVoxelPosition(retVal.index);
-			
 			return retVal;
 		}
 		
