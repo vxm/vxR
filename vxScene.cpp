@@ -341,7 +341,13 @@ std::shared_ptr<vxCamera> vxScene::camera() const
 	return m_camera;
 }
 
+std::shared_ptr<vxDome> vxScene::dome() const
+{
+	if(m_domes.size())
+		return m_domes[0];
 
+	return std::shared_ptr<vxDome>();
+}
 
 bool vxScene::throwRay(const vxRay &ray) const
 {

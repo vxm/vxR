@@ -93,6 +93,9 @@ public:
 	
 	std::shared_ptr<vxCamera> camera() const;
 	void setCamera(const std::shared_ptr<vxCamera> &defaultCamera);
+	std::shared_ptr<ImageProperties> properties() const;
+	void setProperties(const std::shared_ptr<ImageProperties> &properties);
+	std::shared_ptr<vxDome> dome() const;
 
 	void buildDefaultShader();
 	std::shared_ptr<vxAreaLight> createAreaLight();
@@ -112,8 +115,6 @@ public:
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
-	std::shared_ptr<ImageProperties> properties() const;
-	void setProperties(const std::shared_ptr<ImageProperties> &properties);
 };
 
 }

@@ -242,6 +242,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	unsigned int itH {offset};
 	unsigned int itV {0u};
 	
+	auto dome = m_scene->dome();
+	
 	// on eachpixel.
 	while(!(itV>=(m_properties->ry())))
 	{
@@ -316,11 +318,15 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						}
 						else
 						{
-							vxCollision domm;
+							vxCollision dommCol;
 							
-							m_scene->domeThrowRay(f, domm);
-							domm.setColor(domm.color() * 2.2);
-							globalIlm.mixSumm((baseColor * domm.color()) * rayIncidence, colorRatio);
+							dome->throwRay(f, dommCol);
+							dommCol.setColor(dommCol.color());
+							
+							auto domeColor = dommCol.color();
+							domeColor.applyCurve(dome->gamma(), 
+												 dome->gain());
+							globalIlm.mixSumm((baseColor * domeColor) * rayIncidence, colorRatio);
 						}
 						
 					}
