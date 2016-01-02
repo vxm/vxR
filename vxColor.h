@@ -70,6 +70,7 @@ public:
 	scalar b() const {return m_b;}
 	scalar a() const {return m_a;}
 
+	void applyCurve(scalar gamma, scalar gain);
 	scalar lumma() const;
 	void add(const vxColor &other);
 	void blend(const vxColor &other);

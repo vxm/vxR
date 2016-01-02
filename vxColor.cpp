@@ -212,6 +212,13 @@ void vxColor::get(scalar &ri, scalar &gi, scalar &bi, scalar &ai) const
 	ai=m_a;
 }
 
+void vxColor::applyCurve(scalar gamma, scalar gain)
+{
+	m_r = pow(m_r + gain, gamma) - gain;
+	m_g = pow(m_g + gain, gamma) - gain;
+	m_b = pow(m_b + gain, gamma) - gain;
+}
+
 vxColor vxColor::gained(scalar gain) const 
 {
 	return std::move(vxColor{m_r*gain,
