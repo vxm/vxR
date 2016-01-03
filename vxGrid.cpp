@@ -572,7 +572,7 @@ inline bool vxGrid::inGrid(const v3 &pnt) const
 Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 {
 	Voxel retVal;
-	retVal.size = ((scalar)m_size/(scalar)m_resolution);
+	retVal.size = m_c_boxSize;
 	
 	const auto& d = ray.direction();
 	const auto& p = ray.origin();
@@ -606,13 +606,11 @@ Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 			return retVal;
 		}
 		
-		auto boxSize = m_size/(scalar)m_resolution;
-		
 		getComponentsOfIndex(retVal.index, retx, rety, retz);
 		
-		scalar xVal = m_bb->minX() + (retx + velX) * boxSize - p.x();
-		scalar yVal = m_bb->minY() + (rety + velY) * boxSize - p.y();
-		scalar zVal = m_bb->minZ() + (retz + velZ) * boxSize - p.z();
+		scalar xVal = m_bb->minX() + (retx + velX) * m_c_boxSize - p.x();
+		scalar yVal = m_bb->minY() + (rety + velY) * m_c_boxSize - p.y();
+		scalar zVal = m_bb->minZ() + (retz + velZ) * m_c_boxSize - p.z();
 		
 		v3&& intersectX = MU::rectAndXPlane(d, xVal);
 		if(fabs(intersectX.y()) <= fabs(yVal)
