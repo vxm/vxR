@@ -577,10 +577,14 @@ Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 	const auto& d = ray.direction();
 	const auto& p = ray.origin();
 	
-	auto velX = d.xPositive() ? 1 : 0;
-	auto velY = d.yPositive() ? 1 : 0;
-	auto velZ = d.zPositive() ? 1 : 0;
+	scalar velX = d.xPositive() ? 1.0 : 0.0;
+	scalar velY = d.yPositive() ? 1.0 : 0.0;
+	scalar velZ = d.zPositive() ? 1.0 : 0.0;
 	
+	auto&& xProgress = p + v3((velX ? m_c_midBoxSize : -m_c_midBoxSize), 0.0, 0.0);
+	auto&& yProgress = p + v3(0.0, (velY ? m_c_midBoxSize : -m_c_midBoxSize), 0.0);
+	auto&& zProgress = p + v3(0.0, 0.0, (velZ ? m_c_midBoxSize : -m_c_midBoxSize));
+
 	unsigned long retx;
 	unsigned long rety;
 	unsigned long retz;
@@ -606,31 +610,31 @@ Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 		
 		getComponentsOfIndex(retVal.index, retx, rety, retz);
 		
-		auto xVal = m_bb->minX() + (retx + velX) * boxSize - p.x();
-		auto yVal = m_bb->minY() + (rety + velY) * boxSize - p.y();
-		auto zVal = m_bb->minZ() + (retz + velZ) * boxSize - p.z();
+		scalar xVal = m_bb->minX() + (retx + velX) * boxSize - p.x();
+		scalar yVal = m_bb->minY() + (rety + velY) * boxSize - p.y();
+		scalar zVal = m_bb->minZ() + (retz + velZ) * boxSize - p.z();
 		
-		v3 intersectX = MU::rectAndXPlane(d, xVal);
+		v3&& intersectX = MU::rectAndXPlane(d, xVal);
 		if(fabs(intersectX.y()) <= fabs(yVal)
 				&& fabs(intersectX.z()) <= fabs(zVal))
 		{
-			sp = p + intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
+			sp = intersectX + xProgress;
 			continue;
 		}
 		
-		v3 intersectY = MU::rectAndYPlane(d, yVal);
+		v3&& intersectY = MU::rectAndYPlane(d, yVal);
 		if(fabs(intersectY.x()) <= fabs(xVal)
 				&& fabs(intersectY.z()) <= fabs(zVal))
 		{
-			sp = p + intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
+			sp = intersectY + yProgress;
 			continue;
 		}
 		
-		v3 intersectZ = MU::rectAndZPlane(d, zVal);
+		v3&& intersectZ = MU::rectAndZPlane(d, zVal);
 		if(fabs(intersectZ.x()) <= fabs(xVal)
 				&& fabs(intersectZ.y()) <= fabs(yVal))
 		{
-			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
+			sp = intersectZ + zProgress;
 			continue;
 		}
 		
