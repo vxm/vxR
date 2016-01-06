@@ -1,5 +1,7 @@
 #include "FileUtils.h"
 
+using namespace vxCore;
+
 FileUtils::FileUtils()
 {
 }
@@ -41,7 +43,7 @@ bool FileUtils::fileExists(const std::string &filePath)
 	return std::ifstream(filePath).good();
 }
 
-std::string FileUtils::makeUnique(const std::string &fileName)
+std::string FileUtils::makeUnique(const std::string &fileName, scalar suffix)
 {
 	std::string unique = fileName;
 	auto desc = FileUtils::splitFileName(fileName);
@@ -49,9 +51,14 @@ std::string FileUtils::makeUnique(const std::string &fileName)
 	{
 		std::stringstream ss;
 		desc.number++;
-		ss << desc.name << ".";
-		ss << std::setfill('0') << std::setw(7) << desc.number;
-		ss << "." << desc.ext;
+		ss << desc.name << "."
+		 << std::setfill('0') 
+		 << std::setw(7) 
+		 << desc.number
+		 << "."
+		 << suffix
+		 << "."
+		 << desc.ext;
 		unique = ss.str();
 	}
 	

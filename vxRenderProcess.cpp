@@ -174,7 +174,7 @@ vxStatus::code vxRenderProcess::execute()
 		}
 		
 		std::this_thread::sleep_for(std::chrono::seconds((int)customUpdateInterval));
-		std::cout << "(" << customUpdateInterval
+		std::cout << "\t\t(" << customUpdateInterval
 				  << ") progress update: " 
 				  << std::setprecision(2) 
 				  << dProgress << "%"<< std::endl;
@@ -324,8 +324,10 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 							dommCol.setColor(dommCol.color());
 							
 							auto domeColor = dommCol.color();
-							domeColor.applyCurve(dome->gamma(), 
+							
+							domeColor.applyCurve(dome->gamma(),
 												 dome->gain());
+							
 							globalIlm.mixSumm((baseColor * domeColor) * rayIncidence, colorRatio);
 						}
 						

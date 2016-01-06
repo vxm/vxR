@@ -146,6 +146,106 @@ void vxGrid::dumpNumericTypeInMemory()
 	new (p) numType(std::numeric_limits<numType>::max());
 }
 
+void vxGrid::markCellAsDead(vx &cell)
+{
+	cell.activateBit(7);
+}
+
+void vxGrid::markCellForGenesis(vx &cell)
+{
+	cell.activateBit(6);
+}
+
+unsigned int vxGrid::neighboursAlive(unsigned long long idx)
+{
+	unsigned long retx;
+	unsigned long rety;
+	unsigned long retz;
+	
+	getComponentsOfIndex(idx, retx, rety, retz);
+	
+	unsigned int ret{0u};
+	for(unsigned long x = 0; x<3; ++x)
+		for(unsigned long y = 0; y<3; ++y)
+			for(unsigned long z = 0; z<3; ++z)
+			{
+				unsigned int nx = retx + x - 1ul;
+				unsigned int ny = rety + y - 1ul;
+				unsigned int nz = retz + z - 1ul;
+				
+				if(nx>=m_resolution
+						|| ny>=m_resolution
+						|| nz>=m_resolution)
+				{
+					continue;
+				}
+				
+				if((retx + x)==0
+						|| (rety + y)==0
+						|| (retz + z)==0)
+				{
+					continue;
+				}
+				
+				auto ind = index(nx, ny, nz);
+				ret += vxAt(ind).active() ? 1u : 0u;
+			}
+	
+	return ret-1;
+}
+
+unsigned long long vxGrid::playGameOfLife()
+{
+	unsigned long long idx{0ull};
+	unsigned long long newLife{0ul};
+	
+	for(auto& d:m_data)
+	{
+		auto pop = neighboursAlive(idx);
+		
+		if(d.active())
+		{
+			if(pop<2 || pop>5)
+			{
+				markCellAsDead(d);
+			}
+		}
+		else
+		{
+			if(pop>3 && pop<7)
+			{
+				markCellForGenesis(d);
+				newLife++;
+			}
+		}
+		idx++;
+	}
+	return newLife;
+}
+
+unsigned long long vxGrid::killTheDead()
+{
+	unsigned long long deadCells{0ull};
+	for(auto& d:m_data)
+	{
+		if(d.activeBit(7))
+		{
+			d.c = '\0';
+			deadCells++;
+		}
+		
+		if(d.activeBit(6))
+		{
+			d.activate();
+		}
+		
+	}
+	
+	return deadCells;
+}
+
+
+
 void vxGrid::createCorners(unsigned char colorIndex)
 {
 	auto rMO = m_resolution - 1;
@@ -473,7 +573,7 @@ inline v3 vxGrid::getVoxelPosition(const unsigned long iX,
 	return v3(m_bb->minX()+(iX*m_c_boxSize),
 			  m_bb->minY()+(iY*m_c_boxSize),
 			  m_bb->minZ()+(iZ*m_c_boxSize)) + (m_c_midBoxSize);
-			
+	
 }
 
 inline v3 vxGrid::getVoxelPosition(unsigned long idx) const
@@ -584,7 +684,7 @@ Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 	auto&& xProgress = p + v3((velX ? m_c_midBoxSize : -m_c_midBoxSize), 0.0, 0.0);
 	auto&& yProgress = p + v3(0.0, (velY ? m_c_midBoxSize : -m_c_midBoxSize), 0.0);
 	auto&& zProgress = p + v3(0.0, 0.0, (velZ ? m_c_midBoxSize : -m_c_midBoxSize));
-
+	
 	unsigned long retx;
 	unsigned long rety;
 	unsigned long retz;
@@ -639,7 +739,7 @@ Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 	}
 	while(!retVal.data.active() 
 		  && (inside = m_bb->contains(sp)));
-
+	
 	retVal.data.deactivate();
 	retVal.index = m_c_resXresXres;
 	

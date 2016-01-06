@@ -9,6 +9,11 @@ namespace vxCore{
 class vxScene;
 
 
+std::vector<std::shared_ptr<vxGrid> >& vxScene::grids()
+{
+	return m_grids;
+}
+
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_properties(prop)
 {}
@@ -132,7 +137,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		
 		grid->createGround(0, (unsigned char)4u);
 		grid->createEdges((unsigned char)12u);
-		grid->createRandom(.02,1.0);
+		//grid->createRandom(.05);
 		
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();
@@ -194,6 +199,12 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		plyReader->processPLYFile(path);
 	}
 	
+	for(const auto node: nodeDB->getNodesByType("vxClock"))
+	{
+		vxClock::setStart( node->getFloatAttribute("start"));
+		vxClock::setEnd( node->getFloatAttribute("end"));
+		vxClock::setStep( node->getFloatAttribute("step"));
+	}
 	
 	std::cout << " -- Finished building process scene -- " << std::endl;
 }
