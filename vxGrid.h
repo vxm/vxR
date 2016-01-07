@@ -39,7 +39,7 @@ struct vx
 	///Returns true if any bit is active
 	inline bool active() const
 	{
-		return activeBit(0);
+		return (bool)c;
 	}
 
 	///
@@ -143,24 +143,34 @@ struct vx
 
 	inline void activate()
 	{
-		activateBit(0);
+		activateBit(7);
 	}
 	
 	inline void deactivate()
 	{
-		deactivateBit(0);
+		deactivateBit(7);
+		deactivateBit(6);
+		deactivateBit(5);
+		deactivateBit(4);
+
+		activateBit(0);
+		activateBit(1);
+		activateBit(2);
 	}
 
-	inline unsigned char colorIndex() const
+	inline unsigned char byte() const
 	{
 		return c;
 	}
 
-	inline void setColorIndex(const unsigned char ci)
+	inline void setByte(const unsigned char ci)
 	{
-		c=ci|0b00000001;
+		c = ci;
+		activate();
 	}
 };
+
+static_assert(sizeof(vx)==1, "vx size is wrong");
 
 ///
 /// \brief The Voxel class
@@ -317,7 +327,7 @@ public:
 	v3 getVoxelPosition(const unsigned long iX, 
 								const unsigned long iY, 
 								const unsigned long iZ) const;
-	v3 getVoxelPosition(unsigned long idx) const;
+	v3 getVoxelPosition(unsigned long long idx) const;
 	inline unsigned long indexAtPosition(const v3 &pos) const;
 	inline vx& vxAt(const unsigned long idx);
 	inline vx vxAt(const unsigned long idx) const;
@@ -340,7 +350,10 @@ public:
 	virtual bool throwRay(const vxRay &ray) const override;
 	virtual int throwRay(const vxRay &ray, vxCollision &col) const override;
 	virtual bool hasCollision(const vxRay &ray) const override;
-	void getComponentsOfIndex(const unsigned long idx, unsigned long &retx, unsigned long &rety, unsigned long &retz) const;
+	void getComponentsOfIndex(const unsigned long long idx, 
+							  long &retx, 
+							  long &rety, 
+							  long &retz) const;
 };
 
 /*
