@@ -53,7 +53,7 @@ int executeRenderProcess(int argc, char *argv[])
 	for(auto&& node: sceneParser->getNodesByType("vxRenderSettings"))
 	{
 		for(scalar t = 0.0;
-			t <= 100.0;
+			t <= 300.0;
 			t+=1.0)
 		{
 			std::cout << "\tStarting frame " << t << std::endl;
