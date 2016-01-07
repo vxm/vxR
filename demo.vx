@@ -5,11 +5,11 @@ node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "false"
-    resolution = 456 244
+active = "true"
+    resolution = 1366 768
     pixelSamples = 1
-    reflectionSamples = 1
-    giSamples = 3
+    reflectionSamples = 0
+    giSamples = 20
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -18,11 +18,11 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "false"
-    resolution = 1000 560
-    pixelSamples = 1
-    reflectionSamples = 1
-    giSamples = 5
+active = "true"
+    resolution = 2732 1536
+    pixelSamples = 4
+    reflectionSamples = 0
+    giSamples = 120
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -31,11 +31,11 @@ node
 {
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
-active = "false"
-    resolution = 2500 1520
-    pixelSamples = 2
-    reflectionSamples = 1
-    giSamples = 10
+active = "true"
+    resolution = 4098 2304
+    pixelSamples = 4
+    reflectionSamples = 2
+    giSamples = 120
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -45,10 +45,10 @@ node
 name = "renderSettings_3"
 type = "vxRenderSettings"
 active = "false"
-    resolution = 4000 2240
-    pixelSamples = 4
+    resolution = 4098 2304
+    pixelSamples = 8
     reflectionSamples = 1
-    giSamples = 20
+    giSamples = 120
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -57,11 +57,11 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 5464 3072
     pixelSamples = 4
-    reflectionSamples = 2
-    giSamples = 25
+    reflectionSamples = 0
+    giSamples = 120
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -70,7 +70,7 @@ node
 {
 name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 5464 3072
     pixelSamples = 8
     reflectionSamples = 4
@@ -84,7 +84,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 2.7
+    focusDistance = 2.4
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -94,9 +94,9 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -2.14 0.0 1]
-    filePath = "/home/john/Downloads/triceratops_1.ply"
+active = "true"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 2.0 -0.70 3.0 1]
+    filePath = "/home/mario/Downloads/triceratops_1.ply"
     color = 138 158 144
 }
 
@@ -116,8 +116,8 @@ node
 name = "tennyson_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 -2.5 1]
-    filePath = "/home/john/Downloads/tennyson.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 -0.74 -1.0 1]
+    filePath = "/home/mario/Downloads/tennyson.ply"
     color = 118 118 144
 }
 
@@ -127,8 +127,8 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.5 -0.7 -1.4 1]
-    filePath = "/home/john/Downloads/malote_1.ply"
+    transform = [1.2 0 0 0 0 1.2 0 0 0 0 1.2 0 0.2 -0.7 -1.6 1]
+    filePath = "/home/mario/Downloads/malote_1.ply"
     color = 99 99 99
 }
 
@@ -137,21 +137,30 @@ node
 {
 name = "milo_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.2 -0.54 -1.5 1]
-    filePath = "/home/john/Downloads/vmilo_0.ply"
+active = "true"
+    transform = [0.8 0 0 0 0 0.8 0 0 0 0 0.8 0 -1.2 -0.74 1.5 1]
+    filePath = "/home/mario/Downloads/vmilo_0.ply"
     color = 199 198 134
 }
 
+node
+{
+name = "ninph_tris"
+type = "vxGeometry"
+active = "false"
+    transform = [0.8 0 0 0 0 0.8 0 0 0 0 0.8 0 2.3 -0.7 -0.1 1]
+    filePath = "/home/mario/Downloads/ninph_3.ply"
+    color = 22 22 22
+}
 
 node
 {
 name = "mercury_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
-    filePath = "/home/john/Downloads/mercury.ply"
-    color = 199 198 134
+    transform = [2.2 0 0 0 0 2.2 0 0 0 0 2.2 0 1.6 -0.7 -0.9 1]
+    filePath = "/home/mario/Downloads/mercury.ply"
+    color = 139 158 134
 }
 
 node
@@ -160,23 +169,23 @@ name = "model_4"
 type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.72 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_4.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
 }
 
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/lucyTop_1.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/statue_and_dog_1.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/dragon_1.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/vmilo_0.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/lucyTop_1.ply");
 
-///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
-///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
-///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
-///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
-///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
-///home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
+///home/mario/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg
+///home/mario/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
+///home/mario/code/vxR/Milkyway/Milkyway_BG.jpg
+///home/mario/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
+///home/mario/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
 
 node
 {
@@ -184,8 +193,8 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
-    gain = 0.3
+    imagePath = "/home/mario/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
+    gain = 1.0
     gamma = 2.2
 }
 
@@ -195,10 +204,10 @@ node
 name = "area_light_2"
 type = "vxAreaLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 3 2 1]
-    intensity = 0.96
-    color = 223 220 196
-    samples = 3
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 5 2 1]
+    intensity = 0.56
+    color = 79 59 45
+    samples = 10
     castShadows = "true"
     minX = -3.5
     minY = 0.3
@@ -211,11 +220,11 @@ node
 {
 name = "area_light_1"
 type = "vxAreaLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
-    intensity = 0.92
-    color = 196 210 213
-    samples = 3
+    intensity = 0.32
+    color = 251 235 212
+    samples = 10
     castShadows = "true"
     minX = -4.5
     minY = 0.3
@@ -243,7 +252,7 @@ name = "environment"
 type = "vxIBLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+    filePath = "/home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
     intensity = 17.00
     color = 255 255 255
     samples = 13
@@ -309,8 +318,8 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0.65 0 1]
-    resolution = 125
-    size = 2.65
+    resolution = 2220
+    size = 2.62
     color = 212 212 212
 }
 
@@ -319,8 +328,8 @@ node
 name = "milo_vx"
 type = "vxGridGeometry"
 active = "true"
-    transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 -0.5 -0.63 0.6 1]
-    filePath = "/home/john/Downloads/vmilo_0.ply"
+    transform = [0.75 0 0 0 0 0.75 0 0 0 0 0.75 0 -0.5 -0.65 0.6 1]
+    filePath = "/home/mario/Downloads/vmilo_0.ply"
 }
 
 node
@@ -329,7 +338,7 @@ name = "triceratops_vx"
 type = "vxGridGeometry"
 active = "true"
     transform = [0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 -0.63 -.6 1]
-    filePath = "/home/john/Downloads/triceratops_1.ply"
+    filePath = "/home/mario/Downloads/triceratops_1.ply"
 }
 
 node
@@ -337,6 +346,6 @@ node
 name = "tennyson_vx"
 type = "vxGridGeometry"
 active = "true"
-    transform = [0.8 0 0 0 0 0.8 0 0 0 0 0.8 0 1 -0.63 0.6 1]
-    filePath = "/home/john/Downloads/malote_1.ply"
+    transform = [0.8 0 0 0 0 0.8 0 0 0 0 0.8 0 0.25 -0.63 0.6 1]
+    filePath = "/home/mario/Downloads/malote_1.ply"
 }
