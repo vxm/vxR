@@ -48,7 +48,7 @@ public:
 								const int b);
 	static vxColor lookup256(const vxColor &col);
 
-	static vxColor indexColor(const unsigned int idx);
+	static vxColor indexColor(const unsigned char idx);
 	
 	void set(scalar r, scalar g, scalar b, scalar a);
 	void set(scalar r, scalar g, scalar b);

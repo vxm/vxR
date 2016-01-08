@@ -196,7 +196,7 @@ unsigned long long vxGrid::playGameOfLife()
 		
 		if(d.activeBit(7))
 		{
-			if(pop<4 || pop>8)
+			if(pop<5 || pop>5)
 			{
 				markCellAsDead(d);
 			}
@@ -816,10 +816,17 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &col) const
 			box.set(voxel.position, voxel.size);
 			box.throwRay(ray,col);
 			
-			const auto& c = vxColor::indexColor(voxel.data.byte());
-			//const auto& c = vxColor::indexColor(voxel.data.active()+2);
+			auto& data = voxel.data;
+			if(data.activeBit(7))
+			{
+				col.setColor(vxColor(0.8,0.8,0.2));
+			}
+			else
+			{
+				const auto& c = vxColor::indexColor(data.byte());
+				col.setColor(c * ((scalar)data.byte()/(scalar)16.0));
+			}
 			
-			col.setColor(c);
 			return 1;
 		}
 	}

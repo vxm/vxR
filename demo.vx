@@ -15,7 +15,7 @@ node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 607 341
     pixelSamples = 1
     reflectionSamples = 0
@@ -28,7 +28,7 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 1
     reflectionSamples = 0

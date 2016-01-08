@@ -56,7 +56,9 @@ std::string FileUtils::makeUnique(const std::string &fileName, scalar suffix)
 		 << std::setw(7) 
 		 << desc.number
 		 << "."
-		 << suffix
+		 << std::setfill('0') 
+		 << std::setw(4) 
+		 << (unsigned int)suffix
 		 << "."
 		 << desc.ext;
 		unique = ss.str();
