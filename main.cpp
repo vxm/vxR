@@ -122,7 +122,7 @@ int executeRenderProcess(int argc, char *argv[])
 							QImage::Format_RGBA8888);
 				
 				std::string fileName = 
-						FileUtils::makeUnique(baseName, 0);
+						FileUtils::makeUnique(baseName, 0.0);
 				
 				std::cout << "Opening file: "s 
 						  << fileName 
@@ -140,7 +140,7 @@ int executeRenderProcess(int argc, char *argv[])
 						  << TimeUtils::decorateTime(start,2) << std::endl;
 			}
 			
-			std::cout << "\tEnded frame " << 0.0 << std::endl;
+			std::cout << "\tEnded frame " << std::endl;
 		}
 	}
 	//return a.exec();
