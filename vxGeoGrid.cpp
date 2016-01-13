@@ -40,7 +40,12 @@ void vxGeoGrid::updateCache()
 	{
 		zval = m_bb->minZ() + m_zSlice * k++;
 	}
+	
+	m_c_xBoxSize = m_bb->xLength() / (scalar)(m_xvalues.size() - 1);
+	m_c_yBoxSize = m_bb->yLength() / (scalar)(m_yvalues.size() - 1);
+	m_c_zBoxSize = m_bb->zLength() / (scalar)(m_zvalues.size() - 1);
 }
+
 
 void vxGeoGrid::setResolution(unsigned int x,
 							  unsigned int y,
@@ -169,38 +174,23 @@ unsigned long vxGeoGrid::linearLookupVoxel(const v3 &v,
 												int& b, 
 												int& c) const
 {
-	const auto xv = m_xvalues.size() - 1;
-	const auto xl = m_bb->xLength();
-	const scalar boxSize = xl / (scalar)xv;
 	
-	int aa =  (v.x() - m_bb->minX()) / boxSize;
-	if(aa==xv)
+	a = (v.x() - m_bb->minX()) / m_c_xBoxSize;
+	if(a==m_xvalues.size()-1)
 	{
-		aa--;
+		a--;
 	}
 	
-	a = aa;
-	
-	b = 0;
-	for(unsigned int i=1;i<m_yvalues.size()-1;i++)
+	b = (v.y() - m_bb->minY()) / m_c_yBoxSize;
+	if(b==m_yvalues.size()-1)
 	{
-		if( v.y() < m_yvalues[i] )
-		{
-			break;
-		}
-
-		b++;
+		b--;
 	}
 	
-	c = 0;
-	for(unsigned int i=1;i<m_zvalues.size()-1;i++)
+	c = (v.z() - m_bb->minZ()) / m_c_zBoxSize;
+	if(c==m_zvalues.size()-1)
 	{
-		if( v.z() < m_zvalues[i] )
-		{
-			break;
-		}
-
-		c++;
+		c--;
 	}
 	
 	if(a<0 || b<0 || c<0)

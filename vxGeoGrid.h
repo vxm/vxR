@@ -30,10 +30,16 @@ class vxGeoGrid
 	scalar m_xSlice;
 	scalar m_ySlice;
 	scalar m_zSlice;
+
+	scalar m_c_xBoxSize;
+	scalar m_c_yBoxSize;
+	scalar m_c_zBoxSize;
 	
 	std::vector<scalar> m_xvalues;
 	std::vector<scalar> m_yvalues;
 	std::vector<scalar> m_zvalues;
+
+
 	
 public:
 	static const searchResult invalidResult;
