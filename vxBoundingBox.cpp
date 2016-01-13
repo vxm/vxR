@@ -77,6 +77,21 @@ void vxBoundingBox::extend(const vxBoundingBox &box)
 	m_maxz = std::max(box.maxZ(), m_maxz);
 }
 
+scalar vxBoundingBox::xLength() const
+{
+	return m_maxx - m_minx;
+}
+
+scalar vxBoundingBox::yLength() const
+{
+	return m_maxy - m_miny;
+}
+
+scalar vxBoundingBox::zLength() const
+{
+	return m_maxz - m_minz;
+}
+
 v3 vxBoundingBox::center() const
 {
 	return v3(m_minx+m_maxx/2.0,

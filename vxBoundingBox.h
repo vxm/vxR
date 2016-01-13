@@ -43,6 +43,10 @@ public:
 	void extend(const v3 &limit);
 	void extend(const vxBoundingBox &box);
 
+	scalar xLength() const;
+	scalar yLength() const;
+	scalar zLength() const;
+	
 	v3 center() const;
 	scalar minX() const;
 	void setMinX(scalar minx);

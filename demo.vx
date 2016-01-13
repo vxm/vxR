@@ -3,13 +3,23 @@
 
 node
 {
+name = "time"
+type = "vxClock"
+active = "true"
+    start = 1.0
+    end = 300.0
+    step = 1.0
+}
+
+node
+{
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "false"
-    resolution = 456 244
+active = "true"
+    resolution = 607 341
     pixelSamples = 1
-    reflectionSamples = 1
-    giSamples = 3
+    reflectionSamples = 0
+    giSamples = 0
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -19,10 +29,10 @@ node
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "false"
-    resolution = 1000 560
-    pixelSamples = 1
-    reflectionSamples = 1
-    giSamples = 5
+    resolution = 1366 768
+    pixelSamples = 4
+    reflectionSamples = 0
+    giSamples = 40
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -32,10 +42,10 @@ node
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
 active = "false"
-    resolution = 2500 1520
-    pixelSamples = 2
-    reflectionSamples = 1
-    giSamples = 10
+    resolution = 8196 4608
+    pixelSamples = 4
+    reflectionSamples = 0
+    giSamples = 120
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -84,7 +94,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 2.7
+    focusDistance = 2.4
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -121,14 +131,23 @@ active = "false"
     color = 118 118 144
 }
 
+node
+{
+name = "malote_tris"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.5 -0.7 -1.4 1]
+    filePath = "/home/john/Downloads/malote_1.ply"
+    color = 99 99 99
+}
 
 node
 {
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.5 -0.7 -1.4 1]
-    filePath = "/home/john/Downloads/malote_1.ply"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 0.0 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
     color = 99 99 99
 }
 
@@ -142,7 +161,6 @@ active = "false"
     filePath = "/home/john/Downloads/vmilo_0.ply"
     color = 199 198 134
 }
-
 
 node
 {
@@ -161,7 +179,7 @@ type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.72 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
-    color = 125 125 125
+    color = 55 55 55
 }
 
 
@@ -184,9 +202,9 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
-    gain = 0.3
-    gamma = 2.2
+    imagePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+    gain = 1.0
+    gamma = 2.1
 }
 
 
@@ -194,11 +212,11 @@ node
 {
 name = "area_light_2"
 type = "vxAreaLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 3 2 1]
-    intensity = 0.96
-    color = 223 220 196
-    samples = 3
+    intensity = 0.56
+    color = 223 215 106
+    samples = 10
     castShadows = "true"
     minX = -3.5
     minY = 0.3
@@ -213,9 +231,9 @@ name = "area_light_1"
 type = "vxAreaLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
-    intensity = 0.92
-    color = 196 210 213
-    samples = 3
+    intensity = 0.62
+    color = 166 170 223
+    samples = 10
     castShadows = "true"
     minX = -4.5
     minY = 0.3
@@ -261,7 +279,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 0.7
     color = 255 230 240
-    orientation = 2.0 -10.0 5.0
+    orientation = 4.0 -7.0 -5.0
     samples = 1
     castShadows = "true"
 }
@@ -272,8 +290,8 @@ name = "amblight"
 type = "vxAmbientLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    radius = .3
-    intensity = 0.925
+    radius = 0.04
+    intensity = 0.0925
     color = 255 255 255
     samples = 1
 }
@@ -307,10 +325,10 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0.65 0 1]
-    resolution = 125
-    size = 2.65
+    resolution = 50
+    size = 2.35
     color = 212 212 212
 }
 
@@ -318,17 +336,17 @@ node
 {
 name = "milo_vx"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 -0.5 -0.63 0.6 1]
-    filePath = "/home/john/Downloads/vmilo_0.ply"
+    filePath = "/home/john/Downloads/tennyson.ply"
 }
 
 node
 {
 name = "triceratops_vx"
 type = "vxGridGeometry"
-active = "true"
-    transform = [0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 -0.63 -.6 1]
+active = "false"
+    transform = [0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 -0.3 -0.63 -.6 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
 }
 
@@ -336,7 +354,16 @@ node
 {
 name = "tennyson_vx"
 type = "vxGridGeometry"
-active = "true"
-    transform = [0.8 0 0 0 0 0.8 0 0 0 0 0.8 0 1 -0.63 0.6 1]
+active = "false"
+    transform = [1.2 0 0 0 0 1.2 0 0 0 0 1.2 0 0.5 -0.63 0.6 1]
     filePath = "/home/john/Downloads/malote_1.ply"
+}
+
+node
+{
+name = "gnome_vx"
+type = "vxGridGeometry"
+active = "false"
+    transform = [1.5 0 0 0 0 1.5 0 0 0 0 1.5 0 0.0 -0.63 0.0 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
 }

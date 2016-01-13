@@ -109,10 +109,10 @@ void vxGrid::createDiagonals(unsigned char colorIndex)
 	unsigned long rMO=m_resolution-1;
 	for (unsigned long i=0;i<m_resolution;i++)
 	{
-		vxAt(i,i,i).setColorIndex(colorIndex);
-		vxAt(rMO-i,rMO-i,i).setColorIndex(colorIndex);
-		vxAt(i,rMO-i,rMO-i).setColorIndex(colorIndex);
-		vxAt(rMO-i,i,rMO-i).setColorIndex(colorIndex);
+		vxAt(i,i,i).setByte(colorIndex);
+		vxAt(rMO-i,rMO-i,i).setByte(colorIndex);
+		vxAt(i,rMO-i,rMO-i).setByte(colorIndex);
+		vxAt(rMO-i,i,rMO-i).setByte(colorIndex);
 	}
 }
 
@@ -146,17 +146,130 @@ void vxGrid::dumpNumericTypeInMemory()
 	new (p) numType(std::numeric_limits<numType>::max());
 }
 
+///////////////////////////////////
+///////////////////////////////////
+
+unsigned int vxGrid::neighboursAlive(unsigned long long idx)
+{
+	long retx;
+	long rety;
+	long retz;
+	
+	getComponentsOfIndex(idx, retx, rety, retz);
+	
+	unsigned int ret{0u};
+	
+	for(auto x = retx - 1l; x < retx+2; ++x)
+		for(auto y = rety - 1l; y < rety+2; ++y)
+			for(auto z = retz - 1l; z < retz+2; ++z)
+			{
+				if(retx==x && rety==y && retz==z)
+				{
+					continue;
+				}
+				
+				if(x >= m_resolution
+					|| y >= m_resolution
+					|| z >= m_resolution
+					|| x<0
+					|| y<0 
+					|| z<0)
+				{
+					continue;
+				}
+				
+				auto ind = index(x, y, z);
+				ret += vxAt(ind).active() ? 1u : 0u;
+			}
+	
+	return ret;
+}
+
+unsigned long long vxGrid::playGameOfLife()
+{
+	unsigned long long idx{0ull};
+	unsigned long long newLife{0ul};
+	
+	for(auto& d:m_data)
+	{
+		auto pop = neighboursAlive(idx);
+		
+		if(d.activeBit(7))
+		{
+			if(pop<5 || pop>5)
+			{
+				markCellAsDead(d);
+			}
+			
+		}
+		else
+		{
+			if(pop>3 && pop<5)
+			{
+				markCellForGenesis(d);
+				newLife++;
+			}
+		}
+		idx++;
+	}
+	return newLife;
+}
+
+void vxGrid::markCellAsDead(vx &cell)
+{
+	cell.c = 0b0000'0000;
+	cell.activateBit(4);
+}
+
+void vxGrid::markCellForGenesis(vx &cell)
+{
+	cell.c = 0b0000'0000;
+	cell.activateBit(6);
+}
+
+unsigned long long vxGrid::killTheDead()
+{
+	unsigned long long deadCells{0ull};
+	for(auto& d:m_data)
+	{
+		unsigned char tm = d.c;
+		if(d.activeBit(4))
+		{
+			d.deactivate();
+			deadCells++;
+			continue;
+		}
+		
+		if(d.activeBit(6))
+		{
+			d.activate();
+			continue;
+		}
+		
+		if(!d.activeBit(7))
+		{
+			tm>>=1;
+		}
+		
+		d.c = tm;
+	}
+	
+	return deadCells;
+}
+
+
+
 void vxGrid::createCorners(unsigned char colorIndex)
 {
 	auto rMO = m_resolution - 1;
-	vxAt(rMO, rMO, rMO).setColorIndex(colorIndex);
-	vxAt(rMO, rMO, 0).setColorIndex(colorIndex);
-	vxAt(rMO, 0, rMO).setColorIndex(colorIndex);
-	vxAt(rMO, 0, 0).setColorIndex(colorIndex);
-	vxAt(0, rMO, rMO).setColorIndex(colorIndex);
-	vxAt(0, rMO, 0).setColorIndex(colorIndex);
-	vxAt(0, 0, rMO).setColorIndex(colorIndex);
-	vxAt(0, 0, 0).setColorIndex(colorIndex);
+	vxAt(rMO, rMO, rMO).setByte(colorIndex);
+	vxAt(rMO, rMO, 0).setByte(colorIndex);
+	vxAt(rMO, 0, rMO).setByte(colorIndex);
+	vxAt(rMO, 0, 0).setByte(colorIndex);
+	vxAt(0, rMO, rMO).setByte(colorIndex);
+	vxAt(0, rMO, 0).setByte(colorIndex);
+	vxAt(0, 0, rMO).setByte(colorIndex);
+	vxAt(0, 0, 0).setByte(colorIndex);
 }
 
 void vxGrid::createGround(unsigned long offset, unsigned char colorIndex)
@@ -167,7 +280,7 @@ void vxGrid::createGround(unsigned long offset, unsigned char colorIndex)
 	for (unsigned long i=0;i<m_resolution;i++)
 		for (unsigned long j=0;j<m_resolution;j++)
 		{
-			vxAt(i,offset,j).setColorIndex(colorIndex);
+			vxAt(i,offset,j).setByte(colorIndex);
 		}
 }
 
@@ -182,7 +295,7 @@ void vxGrid::createRoof(unsigned long offset, unsigned char colorIndex)
 	{
 		for (unsigned long j=0;j<m_resolution;j++)
 		{
-			vxAt(i,(m_resolution-offset-1),j).setColorIndex(colorIndex);
+			vxAt(i,(m_resolution-offset-1),j).setByte(colorIndex);
 		}
 	}
 }
@@ -192,20 +305,20 @@ void vxGrid::createEdges(unsigned char colorIndex)
 	unsigned long resminusone=m_resolution-1;
 	for (unsigned long i=0;i<m_resolution;i++)
 	{
-		vxAt(i,0,0).setColorIndex(colorIndex);
-		vxAt(i,resminusone,resminusone).setColorIndex(colorIndex);
-		vxAt(i,0,resminusone).setColorIndex(colorIndex);
-		vxAt(i,resminusone,0).setColorIndex(colorIndex);
+		vxAt(i,0,0).setByte(colorIndex);
+		vxAt(i,resminusone,resminusone).setByte(colorIndex);
+		vxAt(i,0,resminusone).setByte(colorIndex);
+		vxAt(i,resminusone,0).setByte(colorIndex);
 		
-		vxAt(0,i,0).setColorIndex(colorIndex);
-		vxAt(resminusone,i,resminusone).setColorIndex(colorIndex);
-		vxAt(0,i,resminusone).setColorIndex(colorIndex);
-		vxAt(resminusone,i,0).setColorIndex(colorIndex);
+		vxAt(0,i,0).setByte(colorIndex);
+		vxAt(resminusone,i,resminusone).setByte(colorIndex);
+		vxAt(0,i,resminusone).setByte(colorIndex);
+		vxAt(resminusone,i,0).setByte(colorIndex);
 		
-		vxAt(0,0,i).setColorIndex(colorIndex);
-		vxAt(resminusone,resminusone,i).setColorIndex(colorIndex);
-		vxAt(resminusone,0,i).setColorIndex(colorIndex);
-		vxAt(0,resminusone,i).setColorIndex(colorIndex);
+		vxAt(0,0,i).setByte(colorIndex);
+		vxAt(resminusone,resminusone,i).setByte(colorIndex);
+		vxAt(resminusone,0,i).setByte(colorIndex);
+		vxAt(0,resminusone,i).setByte(colorIndex);
 	}
 }
 
@@ -213,7 +326,7 @@ void vxGrid::fill(unsigned char colorIndex)
 {
 	for(unsigned long i=0;i<m_data.size();i++)
 	{
-		vxAt(i).setColorIndex(colorIndex);
+		vxAt(i).setByte(colorIndex);
 	}	
 }
 
@@ -235,7 +348,7 @@ void vxGrid::createRandom(scalar ratio, scalar y_threshold)
 	{
 		if(MU::getBoolRand(ratio) && getVoxelPosition(i).y()>y_threshold)
 		{
-			it.setColorIndex((unsigned int)MU::getRand(25.0));
+			it.setByte((unsigned int)MU::getRand(25.0));
 		}
 		
 		i++;
@@ -251,7 +364,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
-				v.setColorIndex(v.colorIndex()+1);
+				v.setByte(v.byte()+1);
 			}
 		}
 		{
@@ -259,7 +372,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
-				v.setColorIndex(v.colorIndex()+1);
+				v.setByte(v.byte()+1);
 			}
 		}
 		{
@@ -267,7 +380,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
-				v.setColorIndex(v.colorIndex()+1);
+				v.setByte(v.byte()+1);
 			}
 		}
 		
@@ -279,7 +392,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
-				v.setColorIndex(v.colorIndex()+1);
+				v.setByte(v.byte()+1);
 			}
 		}
 		
@@ -290,7 +403,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
-				v.setColorIndex(v.colorIndex()+1);
+				v.setByte(v.byte()+1);
 			}
 		}
 		
@@ -301,7 +414,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
-				v.setColorIndex(v.colorIndex()+1);
+				v.setByte(v.byte()+1);
 			}
 		}
 	}
@@ -441,7 +554,7 @@ inline void vxGrid::setElementColorIndex(const unsigned long x,
 										 const unsigned long z, 
 										 const unsigned char c)
 {
-	vxAt(x,y,z).setColorIndex(c);
+	vxAt(x,y,z).setByte(c);
 }
 
 inline void vxGrid::setElement(unsigned long idx, bool value)
@@ -449,10 +562,10 @@ inline void vxGrid::setElement(unsigned long idx, bool value)
 	vxAt(idx).activate(value);
 }
 
-void vxGrid::getComponentsOfIndex(const unsigned long idx,
-								  unsigned long &retx, 
-								  unsigned long &rety, 
-								  unsigned long &retz) const
+void vxGrid::getComponentsOfIndex(const unsigned long long idx,
+								  long &retx, 
+								  long &rety, 
+								  long &retz) const
 {
 	retz = idx / m_c_resXres;
 	rety = (idx % m_c_resXres) / m_resolution;
@@ -473,14 +586,14 @@ inline v3 vxGrid::getVoxelPosition(const unsigned long iX,
 	return v3(m_bb->minX()+(iX*m_c_boxSize),
 			  m_bb->minY()+(iY*m_c_boxSize),
 			  m_bb->minZ()+(iZ*m_c_boxSize)) + (m_c_midBoxSize);
-			
+	
 }
 
-inline v3 vxGrid::getVoxelPosition(unsigned long idx) const
+inline v3 vxGrid::getVoxelPosition(unsigned long long idx) const
 {
-	unsigned long retx;
-	unsigned long rety;
-	unsigned long retz;
+	long retx;
+	long rety;
+	long retz;
 	
 	getComponentsOfIndex(idx, retx, rety, retz);
 	
@@ -552,7 +665,7 @@ void vxGrid::createSphere(const v3 &center,
 				auto& voxel = vxAt(x, y, z);
 				if(center.distance(getVoxelPosition(x, y, z))<radio)
 				{
-					voxel.setColorIndex(colorIndex);
+					voxel.setByte(colorIndex);
 				}
 			}
 		}
@@ -584,10 +697,10 @@ Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 	auto&& xProgress = p + v3((velX ? m_c_midBoxSize : -m_c_midBoxSize), 0.0, 0.0);
 	auto&& yProgress = p + v3(0.0, (velY ? m_c_midBoxSize : -m_c_midBoxSize), 0.0);
 	auto&& zProgress = p + v3(0.0, 0.0, (velZ ? m_c_midBoxSize : -m_c_midBoxSize));
-
-	unsigned long retx;
-	unsigned long rety;
-	unsigned long retz;
+	
+	long retx;
+	long rety;
+	long retz;
 	
 	bool inside = true;
 	do
@@ -639,7 +752,7 @@ Voxel vxGrid::nextVoxel(const vxRay &ray, v3 &sp) const
 	}
 	while(!retVal.data.active() 
 		  && (inside = m_bb->contains(sp)));
-
+	
 	retVal.data.deactivate();
 	retVal.index = m_c_resXresXres;
 	
@@ -702,11 +815,7 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &col) const
 		{
 			box.set(voxel.position, voxel.size);
 			box.throwRay(ray,col);
-			
-			const auto& c = vxColor::indexColor(voxel.data.colorIndex());
-			//const auto& c = vxColor::indexColor(voxel.data.active()+2);
-			
-			col.setColor(c);
+			col.setColor(vxColor::indexColor(voxel.data.byte()));
 			return 1;
 		}
 	}
