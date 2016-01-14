@@ -77,7 +77,8 @@ struct vx
 			return c&0b1000'0000;
 		break;
 		}
-	}
+    return false;
+    }
 	
 	inline void activateBit(unsigned int bit)
 	{

@@ -168,9 +168,9 @@ unsigned int vxGrid::neighboursAlive(unsigned long long idx)
 					continue;
 				}
 				
-				if(x >= m_resolution
-					|| y >= m_resolution
-					|| z >= m_resolution
+				if(x >= (signed long)m_resolution
+					|| y >= (signed long)m_resolution
+					|| z >= (signed long)m_resolution
 					|| x<0
 					|| y<0 
 					|| z<0)
@@ -204,7 +204,7 @@ unsigned long long vxGrid::playGameOfLife()
 		}
 		else
 		{
-			if(pop>3 && pop<5)
+			if(pop>3 && pop<5 && (MU::getBoolRand(0.55)))
 			{
 				markCellForGenesis(d);
 				newLife++;
@@ -819,12 +819,13 @@ int vxGrid::throwRay(const vxRay &ray, vxCollision &col) const
 			auto& data = voxel.data;
 			if(data.activeBit(7))
 			{
-				col.setColor(vxColor(0.8,0.8,0.2));
+				col.setColor(vxColor(0.6,0.6,0.2));
 			}
 			else
 			{
-				const auto& c = vxColor::indexColor(data.byte());
-				col.setColor(c * ((scalar)data.byte()/(scalar)16.0));
+                unsigned char chr = data.byte();
+				const auto& c = vxColor::indexColor(chr);
+				col.setColor(c * ((scalar)chr/(scalar)7.0));
 			}
 			
 			return 1;

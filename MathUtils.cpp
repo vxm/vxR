@@ -180,7 +180,7 @@ v3 MathUtils::rayAndZPlane(const vxRay &ray, scalar z)
 						
 scalar MathUtils::getRand(scalar range)
 {
-	return range*(rand()/(scalar)RAND_MAX);
+	return range*((scalar)rand()/(scalar)RAND_MAX);
 }
 
 scalar MathUtils::getBoolRand(scalar ratio)

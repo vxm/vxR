@@ -57,9 +57,7 @@ int executeRenderProcess(int argc, char *argv[])
 			t+=1.0)
 		{
 			std::cout << "\tStarting frame " << t << std::endl;
-			
-			
-			
+
 			const auto resolution = node->getVector2dAttribute("resolution");
 			const auto samples = node->getIntAttribute("pixelSamples");
 			const auto reflectionSamples = node->getIntAttribute("reflectionSamples");
@@ -82,17 +80,22 @@ int executeRenderProcess(int argc, char *argv[])
 				m_scene->setProperties(renderProperties);
 				m_scene->camera()->setProperties(renderProperties);
 
-				std::cout << "\t\tRender process: " << TimeUtils::decorateTime(start,2) << std::endl;
+				std::cout << "\t\tStarting game of life: " << TimeUtils::decorateTime(start,2) << std::endl;
 				{
 					for(auto grid:m_scene->grids())
 					{
+                        std::cout << "\tStarting game of life: " << TimeUtils::decorateTime(start,2) << std::endl;
+                        
 						auto newCells = grid->playGameOfLife();
-						auto deadCells = grid->killTheDead();
+                        std::cout << "\tKilling the dead: " << TimeUtils::decorateTime(start,2) << std::endl;
+
+                        auto deadCells = grid->killTheDead();
 						std::cout << "\tGame round done, born: " 
 								  << newCells
 								  << "\tkilled: " 
-								  << deadCells 
-								  << std::endl;
+								  << deadCells
+                                  << TimeUtils::decorateTime(start,2)
+                                  << std::endl;
 					}
 				}
 			}

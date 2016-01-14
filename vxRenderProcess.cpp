@@ -111,7 +111,7 @@ void vxRenderProcess::setReflectionSamples(unsigned int reflectionSamples)
 }
 
 
-vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> scn)
+vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> )
 {
 	vxStatus st;
 	

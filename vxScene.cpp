@@ -137,7 +137,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		
 		grid->createGround(0, (unsigned char)4u);
 		grid->createEdges((unsigned char)12u);
-		grid->createRandom(.004,0.85);
+		grid->createRandom(.010,1.05);
 		
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();
