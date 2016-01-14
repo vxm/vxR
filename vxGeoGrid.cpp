@@ -176,19 +176,19 @@ unsigned long vxGeoGrid::linearLookupVoxel(const v3 &v,
 {
 	
 	a = (v.x() - m_bb->minX()) / m_c_xBoxSize;
-	if(a==m_xvalues.size()-1)
+	if(a==m_rx)
 	{
 		a--;
 	}
 	
 	b = (v.y() - m_bb->minY()) / m_c_yBoxSize;
-	if(b==m_yvalues.size()-1)
+	if(b==m_ry)
 	{
 		b--;
 	}
 	
 	c = (v.z() - m_bb->minZ()) / m_c_zBoxSize;
-	if(c==m_zvalues.size()-1)
+	if(c==m_rz)
 	{
 		c--;
 	}
@@ -243,7 +243,7 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 		for(auto y = bMin; y<= bMax; y++)
 			for(auto z = cMin; z<= cMax; z++)
 	{
-		auto idx = index(x,y,z);
+		const auto idx = index(x,y,z);
 
 		if(indexIsValid(idx))
 		{
