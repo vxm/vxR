@@ -6,6 +6,11 @@ vxBoundingBox::vxBoundingBox()
 {
 }
 
+void vxBoundingBox::clear()
+{
+	m_init = false;
+}
+
 void vxBoundingBox::set(v3 position, scalar size)
 {
 	m_minx = position.x() - (size / 2.0);
@@ -192,7 +197,6 @@ bool vxBoundingBox::throwRay(const vxRay &ray) const
 int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	const auto& p = ray.origin();
-
 	if(contains(p))
 	{
 		collide.setPosition(p);
@@ -216,7 +220,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		auto z = t * (-d.z()) + d.z();
 		if(z<=maxZ && z>=minZ)
 		{
-			auto fp = v3(x, y, z) + p;
+			auto fp = p + v3(x, y, z);
 			//TODO:this is not required to be 3d
 			if(!(p-fp).follows(d))
 			{
@@ -225,8 +229,8 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setPosition(fp);
 			collide.setNormal(d.xPositive() ? v3::constMinusX : v3::constX);
 			collide.setValid();
-			collide.setUV(v2( ((y - minY)) / ( (maxY - minY)),
-							  ((z - minZ)) / ( (maxZ - minZ))));
+			collide.setUV(v2( ((y - minY)) / yLength(),
+							  ((z - minZ)) / zLength()));
 			return 1;
 		}
 	}
@@ -239,7 +243,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		auto z = t * (-d.z()) + d.z();
 		if(z<=maxZ && z>=minZ)
 		{
-			auto fp = v3(x, y, z) + p;
+			auto fp = p + v3(x, y, z);
 			//TODO:this is not required to be 3d
 			if(!(p-fp).follows(d))
 			{
@@ -248,8 +252,8 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setPosition(fp);
 			collide.setNormal(d.yPositive() ? v3::constMinusY : v3::constY);
 			collide.setValid();
-			collide.setUV(v2( ((x - minX)) / ((maxX - minX)),
-							  ((z - minZ)) / ((maxZ - minZ))));
+			collide.setUV(v2( ((x - minX)) / xLength(),
+							  ((z - minZ)) / zLength()));
 			return 1;
 		}
 	}
@@ -262,7 +266,7 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 		y = t * (-d.y()) + d.y();
 		if(y<=maxY && y>=minY)
 		{
-			auto fp = v3(x, y, z) + p;
+			auto fp = p + v3(x, y, z);
 			//TODO:this is not required to be 3d
 			if(!(p-fp).follows(d))
 			{
@@ -271,8 +275,8 @@ int vxBoundingBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			collide.setPosition(fp);
 			collide.setNormal(d.zPositive() ? v3::constMinusZ :  v3::constZ);
 			collide.setValid();
-			collide.setUV(v2( ((x - minX)) /  (maxX - minX),
-							  ((y - minY)) /  (maxY - minY)));
+			collide.setUV(v2( ((x - minX)) /  xLength(),
+							  ((y - minY)) /  yLength()));
 			return 1;
 		}
 	}
