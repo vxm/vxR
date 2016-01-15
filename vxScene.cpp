@@ -8,18 +8,20 @@
 namespace vxCore{
 class vxScene;
 
+vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
+	: m_properties(prop)
+{
+	m_broadPhase = std::make_shared<vxBroadPhase>();
+}
+
+vxScene::~vxScene()
+{
+}
 
 std::vector<std::shared_ptr<vxGrid> >& vxScene::grids()
 {
 	return m_grids;
 }
-
-vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
-	: m_properties(prop)
-{}
-
-vxScene::~vxScene()
-{}
 
 void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 {
@@ -119,7 +121,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		grid->setBaseColor(color);
 		m_grids.push_back(grid);
 		m_geometries.push_back(grid);
-		m_broadPhase.addGeometry(grid);
+		m_broadPhase->addGeometry(grid);
 		
 		for(const auto nodeGeo: nodeDB->getNodesByType("vxGridGeometry"))
 		{
@@ -139,7 +141,6 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		//grid->createEdges((unsigned char)12u);
 		//grid->createRandom(.004,0.85);
 		grid->dumpFileInMemory("/home/john/code/build-vxR-Desktop-Release/vxR");
-		
 		
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();
@@ -208,7 +209,18 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		vxClock::setStep( node->getFloatAttribute("step"));
 	}
 	
+	updateCache();
+	//Update caches
 	std::cout << " -- Finished building process scene -- " << std::endl;
+}
+
+void vxScene::updateCache()
+{
+	std::cout << " -- Start caching -- " << std::endl;
+
+	m_broadPhase->updateCache();
+
+	std::cout << " -- End cache computation -- " << std::endl;
 }
 
 void vxScene::setShader(std::shared_ptr<vxShader> shader)
@@ -307,7 +319,7 @@ std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path
 
 vxTriangleMeshHandle vxScene::createGeometry(const std::string &path, const vxMatrix &transform)
 {
-	// looking for previouly opened images.
+	// looking for previouly processed meshes.
 	for(const auto& geo: m_triangleMeshes)
 	{
 		if(geo->constructionPath()==path && geo->transform()==transform)
@@ -321,8 +333,8 @@ vxTriangleMeshHandle vxScene::createGeometry(const std::string &path, const vxMa
 	
 	auto geo = std::make_shared<vxTriangleMesh>();
 	geo->setTransform(transform);
-	m_broadPhase.addGeometry(geo);
 	geo->setConstructionPath(path);
+	m_broadPhase->addGeometry(geo);
 	
 	m_geometries.push_back(geo);
 	
@@ -380,7 +392,7 @@ int vxScene::domeThrowRay(const vxRay &ray, vxCollision &collide) const
 
 int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 {
-	if(m_broadPhase.throwRay(ray,collide))
+	if(m_broadPhase->throwRay(ray,collide))
 	{
 		collide.setValid(true);
 		

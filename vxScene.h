@@ -63,17 +63,16 @@ protected:
 	std::vector<vxCamera> m_cameras;
 	std::shared_ptr<ImageProperties> m_properties = {nullptr};
 
-	vxBroadPhase m_broadPhase;
-	
-public:
+	vxBroadPhaseHandler m_broadPhase;
 	//TODO: private and getter setter.
 	long long dRays{0};
-
-	vxScene(std::shared_ptr<ImageProperties> imageProperties);
 	
+public:
+	vxScene(std::shared_ptr<ImageProperties> imageProperties);
 	~vxScene();
 
 	void build(std::shared_ptr<vxSceneParser> nodeDB);
+	void updateCache();
 
 	std::shared_ptr<vxCamera>
 		createCamera(const vxMatrix &,
