@@ -30,9 +30,9 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "false"
     resolution = 1366 768
-    pixelSamples = 4
+    pixelSamples = 1
     reflectionSamples = 0
-    giSamples = 40
+    giSamples = 10
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -42,10 +42,10 @@ node
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
 active = "false"
-    resolution = 8196 4608
-    pixelSamples = 4
+    resolution = 12294 6912
+    pixelSamples = 1
     reflectionSamples = 0
-    giSamples = 120
+    giSamples = 10
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -105,7 +105,7 @@ node
 name = "triceratops_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -2.14 0.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.10 0.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
 }
@@ -148,7 +148,7 @@ type = "vxGeometry"
 active = "true"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 0.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
-    color = 99 99 99
+    color = 249 249 249
 }
 
 
@@ -176,10 +176,10 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.72 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
-    color = 55 55 55
+    color = 125 125 125
 }
 
 
@@ -195,6 +195,7 @@ active = "true"
 ///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
 ///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
 ///home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
+///home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg
 
 node
 {
@@ -202,9 +203,9 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+    imagePath = "/home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg"
     gain = 1.0
-    gamma = 2.1
+    gamma = 3.1
 }
 
 
@@ -275,10 +276,10 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.7
-    color = 255 230 240
+    intensity = 0.67
+    color = 245 235 210
     orientation = 6.0 -7.0 2.0
     samples = 1
     castShadows = "true"
