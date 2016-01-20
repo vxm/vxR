@@ -43,9 +43,9 @@ name = "renderSettings_2_full"
 type = "vxRenderSettings"
 active = "false"
     resolution = 12294 6912
-    pixelSamples = 1
+    pixelSamples = 2
     reflectionSamples = 0
-    giSamples = 10
+    giSamples = 100
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -151,7 +151,6 @@ active = "true"
     color = 249 249 249
 }
 
-
 node
 {
 name = "milo_tris"
@@ -201,7 +200,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imagePath = "/home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg"
     gain = 1.0
@@ -213,8 +212,8 @@ node
 {
 name = "area_light_2"
 type = "vxAreaLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 3 2 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 6 2 1]
     intensity = 0.56
     color = 223 215 106
     samples = 10
