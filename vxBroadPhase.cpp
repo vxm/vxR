@@ -1,5 +1,6 @@
 #include "vxBroadPhase.h"
 #include <limits>
+#include <algorithm>
 
 #define DRAWBBOX 1
 
@@ -71,12 +72,19 @@ void vxBroadPhase::updateCache()
 		++i;
 	}
 	
+	//TODO: resize to unique values.
+	/*
+	m_xvalues.resize(dngs);
+	std::unique(m_xvalues.begin(), m_xvalues.end());
+	m_yvalues.resize(dngs);
+	m_zvalues.resize(dngs);
+	*/
+	
 	for(auto geo:m_geometries)
 	{
 		locateAndRegister(geo);
 	}
 	
-	m_rz = m_ry = m_rx = dngs-1;
 }
 
 unsigned long vxBroadPhase::index(unsigned int a, unsigned int b, unsigned int c) const
