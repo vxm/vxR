@@ -190,7 +190,7 @@ public:
 };
 
 
-class vxGrid : public vxGeometry
+class vxGrid final : public vxGeometry
 {
 protected:
 	std::vector<vx>	m_data;

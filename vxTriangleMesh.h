@@ -6,7 +6,7 @@
 namespace vxCore {
 
 
-class vxTriangleMesh:public vxGeometry
+class vxTriangleMesh final : public vxGeometry
 {
 	std::string m_constructionPath;
 	std::atomic_bool m_openForEdition{false};
