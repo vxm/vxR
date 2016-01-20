@@ -73,7 +73,8 @@ SOURCES += main.cpp\
     vxList.cpp \
     vxBroadPhase.cpp \
     vxTriangleMesh.cpp \
-    vxClock.cpp
+    vxClock.cpp \
+    VectorUtils.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -136,7 +137,8 @@ HEADERS  += \
     vxList.h \
     vxBroadPhase.h \
     vxTriangleMesh.h \
-    vxClock.h
+    vxClock.h \
+    VectorUtils.h
 
 FORMS    +=
 
