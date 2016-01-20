@@ -4,15 +4,19 @@
 #include "vxCollision.h"
 #include "vxVector.h"
 #include "vxGeometry.h"
+#include "VectorUtils.h"
 
 namespace vxCore {
+
+using geometryHandleArray = std::vector<vxGeometryHandle>; 
+using geometryHandleArrayRef = std::shared_ptr<geometryHandleArray>;
 
 
 /// name to be changed
 struct bpSearchResult
 {
 	unsigned long index;
-	vxGeometryHandle geoRef;
+	geometryHandleArrayRef geoRefs;
 };
 
 class vxBroadPhase
@@ -46,6 +50,7 @@ public:
 	
 	
 public:
+	
 	///////////////////////////////////////////
 	///// new grid interface.
 	///////////////////////////////////////////
@@ -62,7 +67,7 @@ public:
 	std::vector<scalar> m_zvalues;
 
 	std::vector<bpSearchResult> m_members;
-	
+
 	void updateCache();
 	unsigned long index(unsigned int a,
 						unsigned int b,

@@ -2,7 +2,7 @@
 #include <limits>
 #include <algorithm>
 
-#define DRAWBBOX 1
+#define DRAWBBOX 0
 
 using namespace vxCore;
 
@@ -44,22 +44,20 @@ void vxBroadPhase::updateCache()
 	m_yvalues.resize(dngs);
 	m_zvalues.resize(dngs);
 
-	//run through geometries
+	m_bb->clear();
+	
 	unsigned int i=0;
 	unsigned int ii=1;
 	
-	m_c_size = m_rx * m_ry * m_rz;
-	
-	m_bb->clear();
-	m_members.resize(m_c_size);
-
+	///Run through geometries and slice the 
+	///broad phase
 	for(auto geo:m_geometries)
 	{
 		auto bb = geo->boundingBox();
 		
 		m_xvalues[i]= bb->minX();
 		m_xvalues[ii]= bb->maxX();
-		
+
 		m_yvalues[i]= bb->minY();
 		m_yvalues[ii]= bb->maxY();
 		
@@ -72,13 +70,12 @@ void vxBroadPhase::updateCache()
 		++i;
 	}
 	
-	//TODO: resize to unique values.
-	/*
-	m_xvalues.resize(dngs);
-	std::unique(m_xvalues.begin(), m_xvalues.end());
-	m_yvalues.resize(dngs);
-	m_zvalues.resize(dngs);
-	*/
+	m_rx = VU::sortAndUnique(m_xvalues);
+	m_ry = VU::sortAndUnique(m_yvalues);
+	m_rz = VU::sortAndUnique(m_zvalues);
+	
+	m_c_size = m_rx * m_ry * m_rz;
+	m_members.resize(m_c_size);
 	
 	for(auto geo:m_geometries)
 	{
@@ -143,21 +140,46 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 	auto bb = geo->boundingBox();
 	auto cnt = bb->center();
 	
-	int a,b,c;
-	auto idx = lookupVoxel(cnt, a, b, c);
+	int a1,b1,c1;
+	auto idx1 = lookupVoxel(bb->min() + ((bb->min() - cnt) / 10000.0), a1, b1, c1);
 	
-	if(indexIsValid(idx))
+	int a2,b2,c2;
+	auto idx2 = lookupVoxel(bb->max() + ((bb->max() - cnt) / 10000.0), a2, b2, c2);
+
+#ifdef _DEBUG_
+	if(!indexIsValid(idx1) || !indexIsValid(idx2))
 	{
-		if(m_members[idx].geoRef == nullptr)
+		std::cerr << "Adding gmetry to an invalid " 
+				  << std::endl;
+	}
+#endif
+	
+	if(idx1==idx2)
+	{
+		if(m_members[idx1].geoRefs == nullptr)
 		{
-			m_members[idx].geoRef = geo;
-			m_members[idx].index = idx;
+			m_members[idx1].geoRefs = std::make_shared<geometryHandleArray>();
 		}
-		else
+		
+		m_members[idx1].index = idx1;
+		m_members[idx1].geoRefs->emplace_back(geo);
+		return;
+	}
+	
+	for(auto x=a1;x<=a2;x++)
+		for(auto y=b1;y<=b2;y++)
+			for(auto z=c1;z<=c2;z++)
+	{
+		auto idx = index(x,y,z);
+		
+		if(m_members[idx].geoRefs == nullptr)
 		{
-			std::cerr << "Adding geometry to a occupied voxel (unhandled)" 
-					  << std::endl;
+			m_members[idx].geoRefs = std::make_shared<geometryHandleArray>();
 		}
+		
+		//this index could be very redundant. //TODO:check
+		m_members[idx].index = idx1;
+		m_members[idx].geoRefs->emplace_back(geo);
 	}
 }
 
@@ -182,7 +204,7 @@ bool vxBroadPhase::throwRay(const vxRay &ray) const
 int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 #if	DRAWBBOX
-	if(bb->throwRay(ray, collide))
+	if(m_bb->throwRay(ray, collide))
 	{
 		collide.setColor(m_color);
 		collide.setValid(true);
@@ -201,9 +223,9 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	auto sp =  collide.position() 
 			+ (collide.normal().inverted() / (scalar)10000.0);
 
-	auto prev = size();
+	auto prev = m_c_size;
+	
 	bpSearchResult bbxs;
-
 	do
 	{
 		bbxs = getList(ray, sp);
@@ -215,11 +237,11 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		prev = bbxs.index;
 		
-		for(const auto &id: *(bbxs.listRef) )
+		for(const auto &geo: *(bbxs.geoRefs) )
 		{
-			if(m_triangles[id].throwRay(ray,collide))
+			if(geo->throwRay(ray,collide))
 			{
-				if(!ray.direction().follows((collide.position()-ray.origin()).unit()))
+				//if(!ray.direction().follows((collide.position()-ray.origin()).unit()))
 				{
 					cols.emplace_back(collide);
 				}
@@ -243,7 +265,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			}
 		}
 
-		collide.setColor(m_baseColor);
+		//collide.setColor(m_baseColor);
 		collide.setValid(true);
 		collide.setUV(v2(0.5,0.5));
 		return 1;
@@ -251,36 +273,6 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	
 #endif
 	return 0;
-	
-	/*
-//	if(!m_root->throwRay(ray,collide))
-//	{
-//		return 0;
-//	}
-	
-	auto mdis = std::numeric_limits<scalar>::max(); 
-	
-	vxCollision temp = collide;
-	int valid {0};
-	
-	for(auto& geo:m_geometries)
-	{
-		auto hitValid = geo->throwRay(ray, temp);
-		
-		if(hitValid)
-		{
-			auto s = temp.position().distance(ray.origin());
-			
-			if(s < mdis)
-			{
-				mdis = s;
-				collide = temp;
-				valid = 1;
-			}
-		}
-	}
-
-	return valid;*/
 }
 
 bool vxBroadPhase::hasCollision(const vxRay &ray) const
