@@ -71,8 +71,8 @@ void vxTriangleMesh::addVertexTransformed(const v3 &v3)
 	const auto &&scale = m_transform.getScale();
 	const auto &newPoint = (v3*scale)+orig;
 	m_bb->extend(newPoint);
-	//TODO:push_back ?
-	m_vertices.push_back(newPoint);
+	//TODO:emplace_back ?
+	m_vertices.emplace_back(newPoint);
 }
 
 void vxTriangleMesh::addTriangle(unsigned long a, unsigned long b, unsigned long c)
@@ -83,8 +83,8 @@ void vxTriangleMesh::addTriangle(unsigned long a, unsigned long b, unsigned long
 		return;
 	}
 	
-	//TODO:push_back ?
-	m_triangles.push_back((vxTriRef(m_vertices[a],
+	//TODO:emplace_back ?
+	m_triangles.emplace_back((vxTriRef(m_vertices[a],
 									m_vertices[b],
 									m_vertices[c])));
 }
@@ -148,7 +148,7 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 			{
 				if(!ray.direction().follows((col.position()-ray.origin()).unit()))
 				{
-					cols.push_back(col);
+					cols.emplace_back(col);
 				}
 			}
 		}

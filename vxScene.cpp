@@ -119,8 +119,8 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		grid->setTransform(transform);
 		
 		grid->setBaseColor(color);
-		m_grids.push_back(grid);
-		m_geometries.push_back(grid);
+		m_grids.emplace_back(grid);
+		m_geometries.emplace_back(grid);
 		m_broadPhase->addGeometry(grid);
 		
 		for(const auto nodeGeo: nodeDB->getNodesByType("vxGridGeometry"))
@@ -243,8 +243,8 @@ void vxScene::buildDefaultShader()
 std::shared_ptr<vxAreaLight> vxScene::createAreaLight()
 {
 	auto area = std::make_shared<vxAreaLight>();
-	m_areaLights.push_back(area);
-	m_lights.push_back(area);
+	m_areaLights.emplace_back(area);
+	m_lights.emplace_back(area);
 	area->setScene(shared_from_this());
 	return area;
 	
@@ -253,8 +253,8 @@ std::shared_ptr<vxAreaLight> vxScene::createAreaLight()
 std::shared_ptr<vxPointLight> vxScene::createPointLight()
 {
 	auto pl1 = std::make_shared<vxPointLight>(1.0, vxColor::white);
-	m_pointLights.push_back(pl1);
-	m_lights.push_back(pl1);
+	m_pointLights.emplace_back(pl1);
+	m_lights.emplace_back(pl1);
 	pl1->setScene(shared_from_this());
 	return pl1;
 }
@@ -262,8 +262,8 @@ std::shared_ptr<vxPointLight> vxScene::createPointLight()
 std::shared_ptr<vxIBLight> vxScene::createIBLight(const std::string path)
 {
 	auto ibl1 = std::make_shared<vxIBLight>(1.0, path);
-	m_IBLights.push_back(ibl1);
-	m_lights.push_back(ibl1);
+	m_IBLights.emplace_back(ibl1);
+	m_lights.emplace_back(ibl1);
 	ibl1->setScene(shared_from_this());
 	return ibl1;
 }
@@ -271,8 +271,8 @@ std::shared_ptr<vxIBLight> vxScene::createIBLight(const std::string path)
 std::shared_ptr<vxDirectLight> vxScene::createDirectLight()
 {
 	auto dl1 = std::make_shared<vxDirectLight>(1.0, vxColor::white);
-	m_directLights.push_back(dl1);
-	m_lights.push_back(dl1);
+	m_directLights.emplace_back(dl1);
+	m_lights.emplace_back(dl1);
 	dl1->setScene(shared_from_this());
 	return dl1;
 }
@@ -280,8 +280,8 @@ std::shared_ptr<vxDirectLight> vxScene::createDirectLight()
 std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
 {
 	auto al1 = std::make_shared<vxAmbientLight>(1.0, vxColor::white);
-	m_ambientLights.push_back(al1);
-	m_lights.push_back(al1);
+	m_ambientLights.emplace_back(al1);
+	m_lights.emplace_back(al1);
 	al1->setScene(shared_from_this());
 	return al1;
 }
@@ -290,14 +290,14 @@ std::shared_ptr<vxDome> vxScene::createDom(const std::__cxx11::string path)
 {
 	auto image = createImage(path);
 	auto dom = std::make_shared<vxDome>(image);
-	m_domes.push_back(dom);
+	m_domes.emplace_back(dom);
 	return dom;
 }
 
 std::shared_ptr<vxPlane> vxScene::createPlane(vxPlane::type type)
 {
 	auto plane = std::make_shared<vxPlane>(type);
-	m_planes.push_back(plane);
+	m_planes.emplace_back(plane);
 	return plane;
 }
 
@@ -313,7 +313,7 @@ std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path
 	}
 	
 	auto image = std::make_shared<vxBitMap2d>(path);
-	m_bitMaps.push_back(image);
+	m_bitMaps.emplace_back(image);
 	return image;
 }
 
@@ -336,7 +336,7 @@ vxTriangleMeshHandle vxScene::createGeometry(const std::string &path, const vxMa
 	geo->setConstructionPath(path);
 	m_broadPhase->addGeometry(geo);
 	
-	m_geometries.push_back(geo);
+	m_geometries.emplace_back(geo);
 	
 	return geo;
 }

@@ -160,7 +160,7 @@ vxStatus::code vxRenderProcess::execute()
 	{
 		auto&& th = std::thread([this,i]{this->render(m_nThreads,i);});
 		vxThreadPool::threadInfo(std::this_thread::get_id());
-		threads.push_back(std::move(th));
+		threads.emplace_back(std::move(th));
 	}
 	
 	scalar accelerationRatio{1.0};

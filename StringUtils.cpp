@@ -47,7 +47,7 @@ std::vector<std::string>
 	sregex_token_iterator reg_end;
 	for (; it != reg_end; ++it) 
 	{
-		 ret.push_back(it->str());
+		 ret.emplace_back(it->str());
 	}
 	
 	return ret;

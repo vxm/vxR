@@ -12,7 +12,7 @@ vxBroadPhase::vxBroadPhase()
 
 void vxBroadPhase::addGeometry(vxGeometryHandle geo)
 {
-	m_geometries.push_back(geo);
+	m_geometries.emplace_back(geo);
 }
 
 vxBoundingBoxHandle vxBroadPhase::closestBox(const v3 &p) const
@@ -213,7 +213,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			{
 				if(!ray.direction().follows((collide.position()-ray.origin()).unit()))
 				{
-					cols.push_back(collide);
+					cols.emplace_back(collide);
 				}
 			}
 		}

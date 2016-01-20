@@ -71,7 +71,7 @@ void vxNode::addAttribute(const Attribute &attr)
 		}
 	}
 	
-	m_attributes.push_back(attr);
+	m_attributes.emplace_back(attr);
 }
 
 // It will retrieve the matching vector3d attribute and will cast

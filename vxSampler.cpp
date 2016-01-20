@@ -35,7 +35,7 @@ void vxSampler::populateFreeSamples()
 	
 	for(int i=0;i<50;i++)
 	{
-		uniformScatterFree.push_back(v2(
+		uniformScatterFree.emplace_back(v2(
 										 MU::getRand(1.0),
 										 MU::getRand(1.0)));
 	}

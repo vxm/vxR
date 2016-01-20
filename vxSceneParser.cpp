@@ -320,7 +320,7 @@ std::vector<std::shared_ptr<vxNode> > vxSceneParser::getNodesByType(const std::_
 		const auto& node = nodePair.second;
 		if(node->type()==type)
 		{
-			ret.push_back(nodePair.second);
+			ret.emplace_back(nodePair.second);
 		}
 	}
 	

@@ -223,8 +223,9 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 			{
 				m_members[idx1].listRef = std::make_shared<std::vector<unsigned long>>();
 			}
-
-			m_members[idx1].listRef->push_back(triangleID);
+			
+			m_members[idx1].listRef->emplace_back(triangleID);
+		}
 		}
 		
 		return;

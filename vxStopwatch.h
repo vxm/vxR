@@ -28,7 +28,7 @@ class vxStopwatch
 		
 		void addMem()
 		{
-			m_memory.push_back(elapsedTime());
+			m_memory.emplace_back(elapsedTime());
 		}
 		
 		void resetMemory()
