@@ -97,6 +97,16 @@ scalar vxBoundingBox::zLength() const
 	return m_maxz - m_minz;
 }
 
+v3 vxBoundingBox::max() const
+{
+	return v3(m_maxx,m_maxy,m_maxz);
+}
+
+v3 vxBoundingBox::min() const
+{
+	return v3(m_minx,m_miny,m_minz);
+}
+
 v3 vxBoundingBox::center() const
 {
 	return v3(m_minx+m_maxx/2.0,

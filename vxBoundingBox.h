@@ -47,6 +47,9 @@ public:
 	scalar xLength() const;
 	scalar yLength() const;
 	scalar zLength() const;
+
+	v3 max() const;
+	v3 min() const;
 	
 	v3 center() const;
 	scalar minX() const;
