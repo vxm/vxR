@@ -25,7 +25,7 @@ vxBoundingBoxHandle vxBroadPhase::closestBox(const v3 &p) const
 	for(auto geo:m_geometries)
 	{
 		auto t = geo->boundingBox()->center().distance(p);
-
+		
 		if(t<d)
 		{
 			ret = geo->boundingBox();
@@ -39,11 +39,11 @@ vxBoundingBoxHandle vxBroadPhase::closestBox(const v3 &p) const
 void vxBroadPhase::updateCache()
 {
 	const auto dngs = m_geometries.size() * 2;
-
+	
 	m_xvalues.resize(dngs);
 	m_yvalues.resize(dngs);
 	m_zvalues.resize(dngs);
-
+	
 	m_bb->clear();
 	
 	unsigned int i=0;
@@ -57,7 +57,7 @@ void vxBroadPhase::updateCache()
 		
 		m_xvalues[i]= bb->minX();
 		m_xvalues[ii]= bb->maxX();
-
+		
 		m_yvalues[i]= bb->minY();
 		m_yvalues[ii]= bb->maxY();
 		
@@ -101,10 +101,10 @@ unsigned long vxBroadPhase::lookupVoxel(const v3 &v,
 		{
 			break;
 		}
-
+		
 		a++;
 	}
-
+	
 	b = 0;
 	for(unsigned int i=1;i<m_yvalues.size()-1;i++)
 	{
@@ -112,7 +112,7 @@ unsigned long vxBroadPhase::lookupVoxel(const v3 &v,
 		{
 			break;
 		}
-
+		
 		b++;
 	}
 	
@@ -123,7 +123,7 @@ unsigned long vxBroadPhase::lookupVoxel(const v3 &v,
 		{
 			break;
 		}
-
+		
 		c++;
 	}
 	
@@ -145,7 +145,7 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 	
 	int a2,b2,c2;
 	auto idx2 = lookupVoxel(bb->max() + ((bb->max() - cnt) / 10000.0), a2, b2, c2);
-
+	
 #ifdef _DEBUG_
 	if(!indexIsValid(idx1) || !indexIsValid(idx2))
 	{
@@ -169,18 +169,77 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 	for(auto x=a1;x<=a2;x++)
 		for(auto y=b1;y<=b2;y++)
 			for(auto z=c1;z<=c2;z++)
+			{
+				auto idx = index(x,y,z);
+				
+				if(m_members[idx].geoRefs == nullptr)
+				{
+					m_members[idx].geoRefs = std::make_shared<geometryHandleArray>();
+				}
+				
+				//this index could be very redundant. //TODO:check
+				m_members[idx].index = idx1;
+				m_members[idx].geoRefs->emplace_back(geo);
+			}
+}
+
+const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
+{
+	long retVal{-1l};
+	
+	const auto& d = ray.direction();
+	const auto& p = ray.origin();
+	
+	auto velX = d.xPositive() ? 1 : 0;
+	auto velY = d.yPositive() ? 1 : 0;
+	auto velZ = d.zPositive() ? 1 : 0;
+	
+	int idX;
+	int idY;
+	int idZ;
+	
+	do
 	{
-		auto idx = index(x,y,z);
+		retVal = lookupVoxel(sp, idX, idY, idZ);
 		
-		if(m_members[idx].geoRefs == nullptr)
+		if(!indexIsValid(retVal))
 		{
-			m_members[idx].geoRefs = std::make_shared<geometryHandleArray>();
+			return bpSearchResult{m_c_size};
 		}
 		
-		//this index could be very redundant. //TODO:check
-		m_members[idx].index = idx1;
-		m_members[idx].geoRefs->emplace_back(geo);
+		auto xVal = m_xvalues[idX + velX] - p.x();
+		auto yVal = m_yvalues[idY + velY] - p.y();
+		auto zVal = m_zvalues[idZ + velZ] - p.z();
+		
+		v3 intersectX = MU::rectAndXPlane(d, xVal);
+		if(fabs(intersectX.y()) <= fabs(yVal)
+				&& fabs(intersectX.z()) <= fabs(zVal))
+		{
+			sp = p + intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
+		}
+		
+		v3 intersectY = MU::rectAndYPlane(d, yVal);
+		if(fabs(intersectY.x()) <= fabs(xVal)
+				&& fabs(intersectY.z()) <= fabs(zVal))
+		{
+			sp = p + intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
+		}
+		
+		v3 intersectZ = MU::rectAndZPlane(d, zVal);
+		if(fabs(intersectZ.x()) <= fabs(xVal)
+				&& fabs(intersectZ.y()) <= fabs(yVal))
+		{
+			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
+		}
+		
+		if(m_members[retVal].index!=m_c_size)
+		{
+			return m_members[retVal];
+		}
 	}
+	while(indexIsValid(retVal) && m_bb->contains(sp));
+	
+	return bpSearchResult{m_c_size};
 }
 
 bool vxBroadPhase::indexIsValid(const long idx) const
@@ -208,21 +267,16 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	{
 		collide.setColor(m_color);
 		collide.setValid(true);
-
+		
 		return 1;
 	}
 #else
-	if(!m_bb->throwRay(ray, collide))
-	{
-		return 0;
-	}
-	
 	auto&& p = ray.origin();
 	
 	std::vector<vxCollision> cols;
 	auto sp =  collide.position() 
 			+ (collide.normal().inverted() / (scalar)10000.0);
-
+	
 	auto prev = m_c_size;
 	
 	bpSearchResult bbxs;
@@ -230,7 +284,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	{
 		bbxs = getList(ray, sp);
 		
-		if(prev==bbxs.index)
+		if(prev==bbxs.index || bbxs.index == m_c_size)
 		{
 			break;
 		}
@@ -241,15 +295,12 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		{
 			if(geo->throwRay(ray,collide))
 			{
-				//if(!ray.direction().follows((collide.position()-ray.origin()).unit()))
-				{
-					cols.emplace_back(collide);
-				}
+				cols.emplace_back(collide);
 			}
 		}
 	}
 	while(!cols.size());
-
+	
 	if(cols.size())
 	{
 		auto mind  = (cols[0].position()-p).length();
@@ -264,7 +315,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 				collide = c;
 			}
 		}
-
+		
 		//collide.setColor(m_baseColor);
 		collide.setValid(true);
 		collide.setUV(v2(0.5,0.5));
