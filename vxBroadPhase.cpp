@@ -270,10 +270,8 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		return 1;
 	}
-#else
-	auto&& p = ray.origin();
-	
-	std::vector<vxCollision> cols;
+#else	
+	std::vector<std::pair<vxCollision, vxGeometryHandle>> cols;
 	auto sp =  collide.position() 
 			+ (collide.normal().inverted() / (scalar)10000.0);
 	
@@ -295,7 +293,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		{
 			if(geo->throwRay(ray,collide))
 			{
-				cols.emplace_back(collide);
+				cols.emplace_back(collide, geo);
 			}
 		}
 	}
@@ -303,20 +301,20 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	
 	if(cols.size())
 	{
-		auto mind  = (cols[0].position()-p).length();
-		collide = cols[0];
+		auto mind  = (cols[0].first.position()-ray.origin()).length();
+		collide = cols[0].first;
 		int i{0};
 		for(auto&& c:cols)
 		{
 			i++;
-			auto ds = (c.position()-p).length();
+			auto ds = (c.first.position()-ray.origin()).length();
 			if( ds < mind )
 			{
-				collide = c;
+				collide = c.first;
+				collide.setColor(c.second->baseColor());
 			}
 		}
 		
-		//collide.setColor(m_baseColor);
 		collide.setValid(true);
 		collide.setUV(v2(0.5,0.5));
 		return 1;
