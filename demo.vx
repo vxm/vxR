@@ -19,7 +19,7 @@ active = "true"
     resolution = 607 341
     pixelSamples = 1
     reflectionSamples = 0
-    giSamples = 10
+    giSamples = 5
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -28,11 +28,11 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
-    pixelSamples = 1
+    pixelSamples = 2
     reflectionSamples = 0
-    giSamples = 10
+    giSamples = 180
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -175,8 +175,8 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.72 0.0 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
 }
@@ -200,9 +200,9 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg"
+    imagePath = "/home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
     gain = 1.0
     gamma = 3.1
 }
@@ -212,7 +212,7 @@ node
 {
 name = "area_light_2"
 type = "vxAreaLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 6 2 1]
     intensity = 0.56
     color = 223 215 106
@@ -262,7 +262,7 @@ type = "vxIBLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
-    intensity = 17.00
+    intensity = 12.00
     color = 255 255 255
     samples = 13
     radius = 1.0
@@ -275,9 +275,9 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.67
+    intensity = 0.17
     color = 245 235 210
     orientation = 6.0 -7.0 2.0
     samples = 1
