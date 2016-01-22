@@ -34,8 +34,10 @@ public:
 	scalar y() const;
 	
 	v2& xy();
+
 	void setSamples(unsigned int samples);
 	void resetIterator();
+
 	bool random() const;
 	void setRandom(bool random);
 };

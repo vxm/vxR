@@ -318,18 +318,21 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						}
 						else
 						{
-							vxCollision dommCol;
-							
-							dome->throwRay(f, dommCol);
-							dommCol.setColor(dommCol.color());
-							
-							auto domeColor = dommCol.color();
-							
-							domeColor.applyCurve(dome->gamma(),
-												 dome->gain());
-							
-							globalIlm.mixSumm((baseColor * domeColor) * rayIncidence, colorRatio);
-						}
+                            if(dome!=nullptr)
+                            {
+                                vxCollision dommCol;
+                                
+                                dome->throwRay(f, dommCol);
+                                dommCol.setColor(dommCol.color());
+                                
+                                auto domeColor = dommCol.color();
+                                
+                                domeColor.applyCurve(dome->gamma(),
+                                                     dome->gain());
+                                
+                                globalIlm.mixSumm((baseColor * domeColor) * rayIncidence, colorRatio);
+                            }
+                        }
 						
 					}
 					pixelColor+= globalIlm;
