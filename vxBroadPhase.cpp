@@ -185,7 +185,7 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 
 const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
 {
-	long retVal{-1l};
+	long retVal{m_c_size};
 	
 	const auto& d = ray.direction();
 	const auto& p = ray.origin();
