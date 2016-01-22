@@ -168,9 +168,9 @@ unsigned int vxGrid::neighboursAlive(unsigned long long idx)
 					continue;
 				}
 				
-				if(x >= m_resolution
-					|| y >= m_resolution
-					|| z >= m_resolution
+				if(x >= (long)m_resolution
+					|| y >= (long)m_resolution
+					|| z >= (long)m_resolution
 					|| x<0
 					|| y<0 
 					|| z<0)
