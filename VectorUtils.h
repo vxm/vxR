@@ -22,13 +22,12 @@ public:
 	VectorUtils();
 
 	//TODO::template the vector element type.
-	static unsigned int sortAndUnique(std::vector<scalar> &v)
+	static unsigned int sortAndUnique(std::vector<scalar> &vec)
 	{
-		std::sort(v.begin(), v.end());
-		auto last = std::unique(v.begin(), v.end());
-		v.erase(last, v.end());
-		
-		return v.size();
+		std::sort(vec.begin(), vec.end());
+		auto last = std::unique(vec.begin(), vec.end());
+		vec.erase(last, vec.end());
+		return vec.size();
 	}
 	
 };
