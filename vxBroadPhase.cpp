@@ -287,9 +287,13 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		prev = bbxs.index;
 		
-		for(const auto &geo: *(bbxs.geoRefs) )
+		for(const auto &geo: *(bbxs.geoRefs))
 		{
-			if(geo->throwRay(ray,collide))
+			auto exs = cols.end() == std::find_if(cols.begin(),cols.end(),
+					[geo](const collision_geometryH& r)
+									{return r.second.get()==geo.get();});
+
+			if(exs && geo->throwRay(ray,collide))
 			{
 				cols.emplace_back(collide, geo);
 			}
