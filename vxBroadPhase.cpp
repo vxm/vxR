@@ -249,12 +249,10 @@ bool vxBroadPhase::indexIsValid(const long idx) const
 
 bool vxBroadPhase::throwRay(const vxRay &ray) const
 {
-	for(auto&& geo:m_geometries)
+	vxCollision col;
+	if(throwRay(ray,col))
 	{
-		if(geo->throwRay(ray))
-		{
-			return true;
-		}
+		return true;
 	}
 	
 	return false;
@@ -270,13 +268,13 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		return 1;
 	}
-#else	
-	std::vector<std::pair<vxCollision, vxGeometryHandle>> cols;
+#else
+	using collision_geometryH = std::pair<vxCollision, vxGeometryHandle>;
+	std::vector<collision_geometryH> cols;
 	auto sp =  collide.position() 
 			+ (collide.normal().inverted() / (scalar)10000.0);
 	
 	auto prev = m_c_size;
-	
 	bpSearchResult bbxs;
 	do
 	{
@@ -327,13 +325,9 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 bool vxBroadPhase::hasCollision(const vxRay &ray) const
 {
 	vxCollision col;
-	for(auto&& geo:m_geometries)
+	if(throwRay(ray,col))
 	{
-		geo->throwRay(ray,col);
-		if(col.isValid())
-		{
-			return true;
-		}
+		return true;
 	}
 	
 	return false;
