@@ -31,8 +31,8 @@ type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
     pixelSamples = 4
-    reflectionSamples = 2
-    giSamples = 30
+    reflectionSamples = 1
+    giSamples = 20
     giMultiplier = 1.8
     numThreads = -1
 }
@@ -43,9 +43,9 @@ name = "renderSettings_2_full"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 4
-    reflectionSamples = 2
-    giSamples = 150
+    pixelSamples = 8
+    reflectionSamples = 1
+    giSamples = 10
     giMultiplier = 1.8
     numThreads = -1
 }
@@ -56,9 +56,9 @@ name = "renderSettings_3"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 4
-    reflectionSamples = 0
-    giSamples = 20
+    pixelSamples = 12
+    reflectionSamples = 1
+    giSamples = 5
     giMultiplier = 1.8
     numThreads = -1
 }
@@ -70,7 +70,7 @@ type = "vxRenderSettings"
 active = "true"
     resolution = 5464 3072
     pixelSamples = 4
-    reflectionSamples = 0
+    reflectionSamples = 1
     giSamples = 25
     giMultiplier = 1.5
     numThreads = -1
@@ -82,9 +82,9 @@ name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
 active = "false"
     resolution = 5464 3072
-    pixelSamples = 4
-    reflectionSamples = 0
-    giSamples = 25
+    pixelSamples = 8
+    reflectionSamples = 1
+    giSamples = 15
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -137,7 +137,7 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.0 -0.7 -0.80 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.0 -0.7 -0.60 1]
     filePath = "/home/mario/Downloads/gnome_low.ply"
     color = 199 199 199
 }
@@ -148,7 +148,7 @@ node
 name = "gnome_tris_1"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.0 -0.7 0.7 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.0 -0.7 0.9 1]
     filePath = "/home/mario/Downloads/gnome_low.ply"
     color = 199 199 199
 }
@@ -362,7 +362,7 @@ node
 name = "milo_vx"
 type = "vxGridGeometry"
 active = "false"
-    transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 -0.1 -0.63 0.6 1]
+    transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 0.1 -0.63 0.6 1]
     filePath = "/home/mario/Downloads/tennyson.ply"
 }
 
