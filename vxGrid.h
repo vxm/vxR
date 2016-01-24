@@ -33,31 +33,144 @@ struct vx
 		active ? activate() : deactivate();
 	}
 
+	///
+	/// \brief active
+	/// \return 
+	///Returns true if any bit is active
 	inline bool active() const
 	{
 		return (bool)c;
 	}
 
+	///
+	/// \brief activeBit
+	/// \param bit
+	/// \return 
+	///Returns true if the bit occupying the parameter
+	///position is 1 otherwise false.
+	inline bool activeBit(unsigned int bit) const
+	{
+		switch(bit)
+		{
+		case 0:
+			return c&0b0000'0001;
+		break;
+		case 1:
+			return c&0b0000'0010;
+		break;
+		case 2:
+			return c&0b0000'0100;
+		break;
+		case 3:
+			return c&0b0000'1000;
+		break;
+		case 4:
+			return c&0b0001'0000;
+		break;
+		case 5:
+			return c&0b0010'0000;
+		break;
+		case 6:
+			return c&0b0100'0000;
+		break;
+		case 7:
+			return c&0b1000'0000;
+		break;
+		}
+	}
+	
+	inline void activateBit(unsigned int bit)
+	{
+		switch(bit)
+		{
+		case 0:
+			c|=0b0000'0001;
+		break;
+		case 1:
+			c|=0b0000'0010;
+		break;
+		case 2:
+			c|=0b0000'0100;
+		break;
+		case 3:
+			c|=0b0000'1000;
+		break;
+		case 4:
+			c|=0b0001'0000;
+		break;
+		case 5:
+			c|=0b0010'0000;
+		break;
+		case 6:
+			c|=0b0100'0000;
+		break;
+		case 7:
+			c|=0b1000'0000;
+		break;
+		}
+	}
+	
+	inline void deactivateBit(unsigned int bit)
+	{
+		switch(bit)
+		{
+		case 0:
+			c&=~0b0000'0001;
+		break;
+		case 1:
+			c&=~0b0000'0010;
+		break;
+		case 2:
+			c&=~0b0000'0100;
+		break;
+		case 3:
+			c&=~0b0000'1000;
+		break;
+		case 4:
+			c&=~0b0001'0000;
+		break;
+		case 5:
+			c&=~0b0010'0000;
+		break;
+		case 6:
+			c&=~0b0100'0000;
+		break;
+		case 7:
+			c&=~0b1000'0000;
+		break;
+		}
+	}
+
 	inline void activate()
 	{
-		c|=0b0000'0001;
+		activateBit(7);
 	}
 	
 	inline void deactivate()
 	{
-		c&=0b0000'0000;
+		deactivateBit(7);
+		deactivateBit(6);
+		deactivateBit(5);
+		deactivateBit(4);
+
+		activateBit(0);
+		activateBit(1);
+		activateBit(2);
 	}
 
-	inline unsigned char colorIndex() const
+	inline unsigned char byte() const
 	{
 		return c;
 	}
 
-	inline void setColorIndex(const unsigned char ci)
+	inline void setByte(const unsigned char ci)
 	{
-		c=ci|0b00000001;
+		c = ci;
+		activate();
 	}
 };
+
+static_assert(sizeof(vx)==1, "vx size is wrong");
 
 ///
 /// \brief The Voxel class
@@ -142,16 +255,28 @@ public:
 	void dumpFileInMemory(const std::__cxx11::string &fileName);
 	void dumpNumericTypeInMemory();
 	
-	void playGameOfLife()
-	{
-/*
-	Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-	Any live cell with two or three live neighbours lives on to the next generation.
-	Any live cell with more than three live neighbours dies, as if by over-population.
-	Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-*/
-	}
+	
+	//////////////////////////////////////////////////The game of life//////////
+	
+	void markCellAsDead(vx& cell);
+	void markCellForGenesis(vx& cell);
+	
+	unsigned int neighboursAlive(unsigned long long idx);
+	
+	///
+	/// \brief playGameOfLife
+	///	Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+	///	Any live cell with two or three live neighbours lives on to the next generation.
+	///	Any live cell with more than three live neighbours dies, as if by over-population.
+	///	Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+	unsigned long long playGameOfLife();
 
+	unsigned long long killTheDead();
+	
+	//////////////////////////////////////////////////The game of life//////////
+	////////////////////////////////////////////////// END /////////////////////
+	
+	
 // OPERATION WITH GRID
 	inline unsigned long index(const unsigned long x, 
 								const unsigned long y, 
@@ -202,7 +327,7 @@ public:
 	v3 getVoxelPosition(const unsigned long iX, 
 								const unsigned long iY, 
 								const unsigned long iZ) const;
-	v3 getVoxelPosition(unsigned long idx) const;
+	v3 getVoxelPosition(unsigned long long idx) const;
 	inline unsigned long indexAtPosition(const v3 &pos) const;
 	inline vx& vxAt(const unsigned long idx);
 	inline vx vxAt(const unsigned long idx) const;
@@ -225,7 +350,10 @@ public:
 	virtual bool throwRay(const vxRay &ray) const override;
 	virtual int throwRay(const vxRay &ray, vxCollision &col) const override;
 	virtual bool hasCollision(const vxRay &ray) const override;
-	void getComponentsOfIndex(const unsigned long idx, unsigned long &retx, unsigned long &rety, unsigned long &retz) const;
+	void getComponentsOfIndex(const unsigned long long idx, 
+							  long &retx, 
+							  long &rety, 
+							  long &retz) const;
 };
 
 /*

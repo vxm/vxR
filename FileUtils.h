@@ -10,7 +10,11 @@
 #include <iomanip>
 #include <regex>
 
+#include "vxVector.h"
 #include "vxmanager.h"
+
+namespace vxCore {
+
 
 class FileUtils : public vxManager
 {
@@ -28,9 +32,10 @@ class FileUtils : public vxManager
 	
 	static bool fileExists(const std::string &filePath);
 	
-	static std::string makeUnique(const std::string &fileName);
+	static std::string makeUnique(const std::string &fileName, scalar suffix=0.0);
 	
 	
 };
 
+}
 #endif // FileUtils_H

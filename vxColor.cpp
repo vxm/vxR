@@ -80,7 +80,7 @@ vxColor vxColor::lookup256(const vxColor &col)
 	return std::move(MU::remap(col/(scalar)255.0, mnc, mxc));
 }
 
-vxColor vxColor::indexColor(const unsigned int idx)
+vxColor vxColor::indexColor(const unsigned char idx)
 {
 	switch(idx%25)
 	{

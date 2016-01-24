@@ -6,6 +6,7 @@
 #include<vector>
 #include<future>
 
+#include "vxClock.h"
 #include "vxBroadPhase.h"
 #include "vxSceneParser.h"
 #include "vxRay.h"
@@ -58,7 +59,8 @@ protected:
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
 
 	std::vector<std::shared_ptr<vxGrid>> m_grids;
-	std::vector<vxGrid> m_cameras;
+	
+	std::vector<vxCamera> m_cameras;
 	std::shared_ptr<ImageProperties> m_properties = {nullptr};
 
 	vxBroadPhase m_broadPhase;
@@ -115,6 +117,7 @@ public:
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
+	std::vector<std::shared_ptr<vxGrid> > &grids();
 };
 
 }

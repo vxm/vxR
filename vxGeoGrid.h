@@ -27,9 +27,19 @@ class vxGeoGrid
 	unsigned int m_ry = {5u};
 	unsigned int m_rz = {11u};
 	
+	scalar m_xSlice;
+	scalar m_ySlice;
+	scalar m_zSlice;
+
+	scalar m_c_xBoxSize;
+	scalar m_c_yBoxSize;
+	scalar m_c_zBoxSize;
+	
 	std::vector<scalar> m_xvalues;
 	std::vector<scalar> m_yvalues;
 	std::vector<scalar> m_zvalues;
+
+
 	
 public:
 	static const searchResult invalidResult;
@@ -64,6 +74,7 @@ public:
 	unsigned int rz() const;
 	void setRz(unsigned int rz);
 
+	unsigned long linearLookupVoxel(const v3 &v, int &a, int &b, int &c) const;
 	unsigned long lookupVoxel(const v3 &v, int &a, int &b, int &c) const;
 	void locateAndRegister(const vxTriRef &tri, unsigned long triangleID);
 	

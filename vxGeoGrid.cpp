@@ -15,33 +15,37 @@ std::shared_ptr<vxBoundingBox> vxGeoGrid::bb() const
 void vxGeoGrid::updateCache()
 {
 	m_members.resize(m_rx * m_ry * m_rz);
-
 	m_xvalues.resize(m_rx+1);
 	
 	//Recording xlices to the grid.
-	auto xSlice = fabs(m_bb->maxX() - m_bb->minX())/(scalar)(m_rx);
+	m_xSlice = fabs(m_bb->maxX() - m_bb->minX())/(scalar)(m_rx);
 	auto k=0u;
-	for(auto&& xval:m_xvalues)
+	for(auto& xval:m_xvalues)
 	{
-		xval = m_bb->minX() + xSlice * k++;
+		xval = m_bb->minX() + m_xSlice * k++;
 	}
 
 	m_yvalues.resize(m_ry+1);
-	auto ySlice = fabs(m_bb->maxY() - m_bb->minY())/(scalar)(m_ry);
+	m_ySlice = fabs(m_bb->maxY() - m_bb->minY())/(scalar)(m_ry);
 	k=0u;
-	for(auto&& yval:m_yvalues)
+	for(auto& yval:m_yvalues)
 	{
-		yval = m_bb->minY() + ySlice * k++;
+		yval = m_bb->minY() + m_ySlice * k++;
 	}
 
 	m_zvalues.resize(m_rz+1);
-	auto zSlice = fabs(m_bb->maxZ() - m_bb->minZ())/(scalar)(m_rz);
+	m_zSlice = fabs(m_bb->maxZ() - m_bb->minZ())/(scalar)(m_rz);
 	k=0u;
-	for(auto&& zval:m_zvalues)
+	for(auto& zval:m_zvalues)
 	{
-		zval = m_bb->minZ() + zSlice * k++;
+		zval = m_bb->minZ() + m_zSlice * k++;
 	}
+	
+	m_c_xBoxSize = m_bb->xLength() / (scalar)(m_xvalues.size() - 1);
+	m_c_yBoxSize = m_bb->yLength() / (scalar)(m_yvalues.size() - 1);
+	m_c_zBoxSize = m_bb->zLength() / (scalar)(m_zvalues.size() - 1);
 }
+
 
 void vxGeoGrid::setResolution(unsigned int x,
 							  unsigned int y,
@@ -124,12 +128,6 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 									int &b, 
 									int &c) const
 {
-	/*if(v.x()<m_xvalues.front() || v.y()<m_yvalues.front() || v.z()<m_zvalues.front())
-		return ULONG_MAX;
-	
-	if(v.x()>m_xvalues.back() || v.y()>m_yvalues.back() || v.z()>m_zvalues.back())
-		return ULONG_MAX;*/
-	
 	a = 0;
 	for(unsigned int i=1;i<m_xvalues.size()-1;i++)
 	{
@@ -171,16 +169,50 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 	return index(a,b,c);
 }
 
+unsigned long vxGeoGrid::linearLookupVoxel(const v3 &v, 
+												int& a, 
+												int& b, 
+												int& c) const
+{
+	
+	a = (v.x() - m_bb->minX()) / m_c_xBoxSize;
+	if(a==m_rx)
+	{
+		a--;
+	}
+	
+	b = (v.y() - m_bb->minY()) / m_c_yBoxSize;
+	if(b==m_ry)
+	{
+		b--;
+	}
+	
+	c = (v.z() - m_bb->minZ()) / m_c_zBoxSize;
+	if(c==m_rz)
+	{
+		c--;
+	}
+	
+	if(a<0 || b<0 || c<0)
+	{
+		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
+	}
+	
+	return index(a,b,c);
+}
+
+
+
 void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 {
 	int a1,b1,c1;
-	auto idx1 = lookupVoxel(tri.p1,a1,b1,c1);
+	auto idx1 = linearLookupVoxel(tri.p1,a1,b1,c1);
 
 	int a2,b2,c2;
-	auto idx2 = lookupVoxel(tri.p2,a2,b2,c2);
+	auto idx2 = linearLookupVoxel(tri.p2,a2,b2,c2);
 	
 	int a3,b3,c3;
-	auto idx3 = lookupVoxel(tri.p3,a3,b3,c3);
+	auto idx3 = linearLookupVoxel(tri.p3,a3,b3,c3);
 	
 	// like the most of the cases.
 	if(idx1==idx2 && idx2==idx3)
@@ -198,8 +230,6 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 		return;
 	}
 	
-	//std::set<unsigned long> indices{idx1,idx2,idx3};
-
 	auto aMin = std::min(a3,std::min(a1,a2));
 	auto bMin = std::min(b3,std::min(b1,b2));
 	auto cMin = std::min(c3,std::min(c1,c2));
@@ -213,7 +243,7 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 		for(auto y = bMin; y<= bMax; y++)
 			for(auto z = cMin; z<= cMax; z++)
 	{
-		auto idx = index(x,y,z);
+		const auto idx = index(x,y,z);
 
 		if(indexIsValid(idx))
 		{
@@ -228,7 +258,13 @@ void vxGeoGrid::locateAndRegister(const vxTriRef &tri, unsigned long triangleID)
 		else
 		{
 			std::cout << "Looking up for index invalid while adding points " 
-					  << idx 
+					  << idx
+					  << "\t x: "
+					  << x 
+					  << "\t y: "
+					  << y 
+					  << "\t z: "
+					  << z 
 					  << std::endl;
 		}
 	}
@@ -261,7 +297,7 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 
 	do
 	{
-		retVal = lookupVoxel(sp, idX, idY, idZ);
+		retVal = linearLookupVoxel(sp, idX, idY, idZ);
 
 		if(!indexIsValid(retVal))
 		{
