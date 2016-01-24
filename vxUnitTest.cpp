@@ -5,12 +5,12 @@ using namespace vxCore;
 
 bool vxUnitTest::verbose()
 {
-    return m_verbose;
+	return m_verbose;
 }
 
 void vxUnitTest::setVerbose(bool verbose)
 {
-    m_verbose = verbose;
+	m_verbose = verbose;
 }
 vxUnitTest::vxUnitTest()
 {

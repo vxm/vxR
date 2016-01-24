@@ -274,10 +274,10 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		{
 			vxCollision collision;
 			const auto ray = rCamera->ray(hitCoordinates, sampler);
-
+			
 			//compute the shader
 			pixelColor += computeLight(ray,collision);
-
+			
 			if(collision.isValid())
 			{
 				//Reflection
@@ -315,13 +315,13 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						{
 							const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
 							const vxRay giRay(collision.position()
-										  +collision.normal()/10000.0, 
-										  r.inverted());
+											  +collision.normal()/10000.0, 
+											  r.inverted());
 							
 							auto rayIncidence = giRay.incidence(collision.normal());
 							
 							vxCollision giColl;
-	
+							
 							m_scene->throwRay(giRay, giColl);
 							if(giColl.isValid())
 							{
@@ -335,7 +335,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 									dome->throwRay(giRay, giColl);
 									auto domeColor = giColl.color();
 									domeColor.applyCurve(dome->gamma(), dome->gain());
-	
+									
 									globalIlm.mixSumm((baseColor * domeColor) * rayIncidence, colorRatio);
 								}
 							}

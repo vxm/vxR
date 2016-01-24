@@ -269,11 +269,11 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		return 1;
 	}
 #else
-
-//	if(!m_root->throwRay(ray,collide))
-//	{
-//		return 0;
-//	}
+	
+	//	if(!m_root->throwRay(ray,collide))
+	//	{
+	//		return 0;
+	//	}
 	
 	auto mdis = std::numeric_limits<scalar>::max(); 
 	
@@ -296,14 +296,14 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			}
 		}
 	}
-
+	
 	return valid;
 	/*
 	using collision_geometryH = std::pair<vxCollision, vxGeometryHandle>;
 	std::vector<collision_geometryH> cols;
 	auto sp =  collide.position() 
 			+ (collide.normal().inverted() / (scalar)10000.0);
-	
+			
 	auto prev = m_c_size;
 	bpSearchResult bbxs;
 	do
@@ -322,7 +322,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			auto exs = cols.end() == std::find_if(cols.begin(),cols.end(),
 					[geo](const collision_geometryH& r)
 									{return r.second.get()==geo.get();});
-
+									
 			if(exs && geo->throwRay(ray,collide))
 			{
 				cols.emplace_back(collide, geo);

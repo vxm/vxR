@@ -421,8 +421,8 @@ vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collisi
 	const auto&& cPnt = collision.position();
 
 	const auto littleNormal = collision.normal()/100000.0;
-    	const auto finalIntensity = m_intensity / (scalar)m_samples;
-         
+		const auto finalIntensity = m_intensity / (scalar)m_samples;
+		 
 	for(auto x = 0u; x<m_samples; x++)
 	{
 		auto u = MU::getRand(m_maxX) + m_minX;
@@ -436,7 +436,7 @@ vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collisi
 			vxCollision col;
 			if (!(scn->throwRay(ff,col)==1))
 			{
-               		        auto ratio = lightRatio(f, orientation);
+			   				auto ratio = lightRatio(f, orientation);
 				ret += color().gained(finalIntensity * (ratio * ratio * ratio));
 			}
 		}
