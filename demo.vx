@@ -32,7 +32,7 @@ active = "true"
     resolution = 1366 768
     pixelSamples = 2
     reflectionSamples = 0
-    giSamples = 180
+    giSamples = 20
     giMultiplier = 1.5
     numThreads = -1
 }
