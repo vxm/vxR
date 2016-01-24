@@ -20,7 +20,7 @@ active = "true"
     pixelSamples = 1
     reflectionSamples = 0
     giSamples = 5
-    giMultiplier = 1.5
+    giMultiplier = 1.0
     numThreads = -1
 }
 
@@ -28,7 +28,7 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 2
     reflectionSamples = 0
@@ -275,7 +275,7 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 0.17
     color = 245 235 210

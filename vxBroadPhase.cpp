@@ -269,6 +269,36 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		return 1;
 	}
 #else
+
+//	if(!m_root->throwRay(ray,collide))
+//	{
+//		return 0;
+//	}
+	
+	auto mdis = std::numeric_limits<scalar>::max(); 
+	
+	vxCollision temp = collide;
+	int valid {0};
+	
+	for(auto&& geo:m_geometries)
+	{
+		auto hitValid = geo->throwRay(ray, temp);
+		
+		if(hitValid)
+		{
+			auto s = temp.position().distance(ray.origin());
+			
+			if(s < mdis)
+			{
+				mdis = s;
+				collide = temp;
+				valid = 1;
+			}
+		}
+	}
+
+	return valid;
+	/*
 	using collision_geometryH = std::pair<vxCollision, vxGeometryHandle>;
 	std::vector<collision_geometryH> cols;
 	auto sp =  collide.position() 
@@ -321,7 +351,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		collide.setUV(v2(0.5,0.5));
 		return 1;
 	}
-	
+	*/
 #endif
 	return 0;
 }
