@@ -73,6 +73,20 @@ void vxBoundingBox::extend(const v3 &limit)
 
 void vxBoundingBox::extend(const vxBoundingBox &box)
 {
+	if(!m_init)
+	{
+		m_minx = box.m_minx;
+		m_miny = box.m_miny;
+		m_minz = box.m_minz;
+		
+		m_maxx = box.m_maxx;
+		m_maxy = box.m_maxy;
+		m_maxz = box.m_maxz;
+		
+		markAsInitialized();
+		return;
+	}
+	
 	m_minx = std::min(box.minX(), m_minx);
 	m_miny = std::min(box.minY(), m_miny);
 	m_minz = std::min(box.minZ(), m_minz);

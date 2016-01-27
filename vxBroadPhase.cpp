@@ -55,29 +55,58 @@ void vxBroadPhase::updateCache()
 	{
 		auto bb = geo->boundingBox();
 		
-		m_xvalues[i]= bb->minX();
+		m_xvalues[i] = bb->minX();
 		m_xvalues[ii]= bb->maxX();
 		
-		m_yvalues[i]= bb->minY();
+		m_yvalues[i] = bb->minY();
 		m_yvalues[ii]= bb->maxY();
 		
-		m_zvalues[i]= bb->minZ();
+		m_zvalues[i] = bb->minZ();
 		m_zvalues[ii]= bb->maxZ();
 		
 		m_bb->extend(*bb);
 		
-		++ii;
-		++i;
+		ii+=2;
+		i+=2;
 	}
 	
-	m_rx = VU::sortAndUnique(m_xvalues);
-	m_ry = VU::sortAndUnique(m_yvalues);
-	m_rz = VU::sortAndUnique(m_zvalues);
+	//TODO:this sort could be less naive as I am 
+	//inserting min and max, min and max...
+	m_rx = VU::sortAndUnique(m_xvalues) - 1;
+	m_ry = VU::sortAndUnique(m_yvalues) - 1;
+	m_rz = VU::sortAndUnique(m_zvalues) - 1;
+	
+#ifdef _DEBUG
+	std::cout << "Resolution: " << m_rx << " " << m_ry << " " << m_rz << std::endl;
+	
+	std::cout << "X: ";
+	for(auto x:m_xvalues)
+	{
+		std::cout << ", " << x;
+	}
+	std::cout << std::endl;
+	
+	
+	std::cout << "Y: ";
+	for(auto y:m_yvalues)
+	{
+		std::cout << ", " << y;
+	}
+	std::cout << std::endl;
+	
+	
+	std::cout << "Z: ";
+	for(auto z:m_zvalues)
+	{
+		std::cout << ", " << z;
+	}
+	std::cout << std::endl;
+#endif
 	
 	m_c_size = m_rx * m_ry * m_rz;
 	m_members.resize(m_c_size);
 	
-	for(auto geo:m_geometries)
+	for(auto& geo:m_geometries)
 	{
 		locateAndRegister(geo);
 	}
@@ -89,6 +118,7 @@ unsigned long vxBroadPhase::index(unsigned int a, unsigned int b, unsigned int c
 	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
 }
 
+//TODO:Binary search
 unsigned long vxBroadPhase::lookupVoxel(const v3 &v, 
 										int &a, 
 										int &b, 
@@ -258,6 +288,7 @@ bool vxBroadPhase::throwRay(const vxRay &ray) const
 	return false;
 }
 
+#define NAIVE_BB_METHOD 0
 int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 #if	DRAWBBOX
@@ -269,12 +300,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		return 1;
 	}
 #else
-
-//	if(!m_root->throwRay(ray,collide))
-//	{
-//		return 0;
-//	}
-	
+#if NAIVE_BB_METHOD
 	auto mdis = std::numeric_limits<scalar>::max(); 
 	
 	vxCollision temp = collide;
@@ -296,23 +322,30 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			}
 		}
 	}
-
+	
 	return valid;
-	/*
+#else
+	if(!m_bb->throwRay(ray, collide))
+	{
+		collide.setValid(false);
+		return 0;
+	}
+
 	using collision_geometryH = std::pair<vxCollision, vxGeometryHandle>;
 	std::vector<collision_geometryH> cols;
 	auto sp =  collide.position() 
 			+ (collide.normal().inverted() / (scalar)10000.0);
-	
+			
 	auto prev = m_c_size;
 	bpSearchResult bbxs;
 	do
 	{
 		bbxs = getList(ray, sp);
 		
-		if(prev==bbxs.index || bbxs.index == m_c_size)
+		if(bbxs.geoRefs==nullptr || prev==bbxs.index || bbxs.index == m_c_size)
 		{
-			break;
+			collide.setValid(false);
+			return 0;
 		}
 		
 		prev = bbxs.index;
@@ -322,7 +355,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			auto exs = cols.end() == std::find_if(cols.begin(),cols.end(),
 					[geo](const collision_geometryH& r)
 									{return r.second.get()==geo.get();});
-
+									
 			if(exs && geo->throwRay(ray,collide))
 			{
 				cols.emplace_back(collide, geo);
@@ -351,7 +384,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		collide.setUV(v2(0.5,0.5));
 		return 1;
 	}
-	*/
+#endif
 #endif
 	return 0;
 }

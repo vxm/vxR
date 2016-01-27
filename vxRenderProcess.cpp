@@ -213,15 +213,15 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 706;
-	unsigned int itV = 514;
+	unsigned int itH = 263;
+	unsigned int itV = 78;
 	vxColor color;
 	
 	//TODO: return this to smart pointer.
 	vxCollision collision;
 	const v2 hitCoordinates(
-				itV/(scalar)m_prop->ry(),
-				itH/(scalar)m_prop->rx());
+				itV/(scalar)m_properties->ry(),
+				itH/(scalar)m_properties->rx());
 	
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
 	
@@ -231,7 +231,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		color.add(col);
 	}
 	
-	const auto id = itH  + (itV * m_prop->rx());
+	const auto id = itH  + (itV * m_properties->rx());
 	//TODO:check ranges here, it might fail.
 	m_contactBuffer.pixel(id) = vxColor::white;
 	
