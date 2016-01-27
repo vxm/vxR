@@ -19,8 +19,8 @@ active = "true"
     resolution = 607 341
     pixelSamples = 1
     reflectionSamples = 0
-    giSamples = 5
-    giMultiplier = 1.5
+    giSamples = 10
+    giMultiplier = 1.0
     numThreads = -1
 }
 
@@ -28,11 +28,11 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 2
-    reflectionSamples = 0
-    giSamples = 20
+    reflectionSamples = 1
+    giSamples = 5
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -42,10 +42,10 @@ node
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
 active = "false"
-    resolution = 12294 6912
-    pixelSamples = 2
-    reflectionSamples = 0
-    giSamples = 100
+    resolution = 1366 768
+    pixelSamples = 4
+    reflectionSamples = 1
+    giSamples = 10
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -145,8 +145,18 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "true"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 0.0 1]
+active = "false"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 -1.5 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    color = 249 249 249
+}
+
+node
+{
+name = "gnome_tris_1"
+type = "vxGeometry"
+active = "false"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 1.5 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 249 249 249
 }
@@ -175,12 +185,71 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
 }
 
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+
+node
+{
+name = "cube_0"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+node
+{
+name = "cube_1"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 -2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+node
+{
+name = "cube_2"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 -2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+node
+{
+name = "cube_3"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 2.5 0.0 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+node
+{
+name = "cube_4"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -2.5 0.0 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
 //plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
@@ -275,7 +344,7 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 0.17
     color = 245 235 210
