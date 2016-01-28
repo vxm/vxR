@@ -57,7 +57,8 @@ public:
 	bool			isEquivalent (const vxMatrix&, scalar =1.0e-10) const;
 	bool			isSingular() const;
 	static const vxMatrix identity;
-	
+
+	void setOrigin(const v3& orig) const;
 	v3 getOrigin() const;
 	v3 getScale() const;
 	

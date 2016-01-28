@@ -226,6 +226,13 @@ bool vxMatrix::isSingular() const
 	return true;
 }
 
+void vxMatrix::setOrigin(const v3 &orig) const
+{
+	m_matrix[12] = orig.x();
+	m_matrix[13] = orig.y();
+	m_matrix[14] = orig.z();
+}
+
 v3 vxMatrix::getOrigin() const
 {
 	return v3(m_matrix[12],m_matrix[13],m_matrix[14]);
