@@ -322,10 +322,10 @@ vxTriangleMeshHandle vxScene::createGeometry(const std::string &path, const vxMa
 	// looking for previouly processed meshes.
 	for(const auto& geo: m_triangleMeshes)
 	{
-		/*if(geo->constructionPath()==path && geo->transform()==transform)
+		if(geo->constructionPath()==path && geo->transform()==transform)
 		{
 			return geo;
-		}*/
+		}
 	}
 	
 	//auto found = std::find_first_of(m_geometries.begin(), m_geometries.end(),
