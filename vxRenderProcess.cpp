@@ -255,12 +255,12 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	unsigned int itH {offset};
 	unsigned int itV {0u};
 	
-	auto dome = m_scene->dome();
+	const auto dome = m_scene->dome();
 	
 	// on eachpixel.
 	while(!(itV>=(m_properties->ry())))
 	{
-		vxColor pixelColor;
+		auto pixelColor{vxColor::zero};
 		const v2 hitCoordinates(
 					itV/(scalar)m_properties->ry(),
 					itH/(scalar)m_properties->rx());
@@ -270,92 +270,75 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			vxCollision collision;
 			const auto ray = rCamera->ray(hitCoordinates, sampler);
 			
-			if(m_scene->throwRay(ray, collision) && collision.isValid())
+			//compute the shader
+			pixelColor += computeLight(ray,collision);
+			
+			if(collision.isValid())
 			{
-				const auto& n = collision.normal();
-				
-				//compute the shader
-				vxColor col(m_scene->defaultShader()->getIlluminatedColor(ray,collision));
-				pixelColor += col;
-				
 				//Reflection
-				vxColor reflection;
+				if(m_reflectionSamples!=0)
 				{
-					vxCollision refxCollision;
-					for(unsigned int k = 0u;k<m_reflectionSamples;k++)
+					auto reflection{vxColor::zero};
 					{
-						v3 invV = ((n * ray.direction().dot(n) * -2.0)
-								   + ray.direction());
-						invV+=MU::getSolidSphereRand3(0.2);
-						const auto &&reflexRay = vxRay(collision.position()
-													   +(n/10000),
-													   invV);
-						if(m_scene->throwRay(reflexRay, refxCollision))
+						const auto& n = collision.normal();
+						vxCollision refxCollision;
+						for(unsigned int k = 0u;k<m_reflectionSamples;k++)
 						{
-							vxColor col(m_scene->defaultShader()->getColor(ray,refxCollision));
-							reflection.mixSumm(col, 
-											   (1.0/m_reflectionSamples));
+							v3 invV = ((n * ray.direction().dot(n) * -2.0)
+									   + ray.direction());
+							invV+=MU::getSolidSphereRand3(0.1);
+							const auto &&reflexRay = vxRay(collision.position()
+														   +(n/10000),
+														   invV);
+							reflection = computeLight(reflexRay, refxCollision);
 						}
-						else
-						{
-							m_scene->domeThrowRay(reflexRay, refxCollision);
-							reflection.mixSumm(refxCollision.color(),
-											   (1.0/m_reflectionSamples));
-						}
+						
+						reflection*=(1.0/m_reflectionSamples);
+						pixelColor+= (reflection/5.0);
 					}
-					pixelColor+= (reflection/10.0);
 				}
 				
 				//GI
-				vxColor globalIlm;
+				if(m_giSamples!=0)
 				{
-					vxColor baseColor = m_scene->defaultShader()->getColor(ray,collision);
-					const auto n = m_giSamples;
-					const auto colorRatio = m_giMultiplier/(scalar)n;
-					for(auto i=0u; i<n; i++)
+					vxColor globalIlm;
 					{
-						const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
-						const vxRay f(collision.position()
-									  +collision.normal()/10000.0, 
-									  r.inverted());
-						
-						auto rayIncidence = f.incidence(collision.normal());
-						
-						vxCollision giColl;
-						m_scene->throwRay(f, giColl);
-						
-						if(giColl.isValid())
+						vxColor baseColor = m_scene->defaultShader()->getColor(ray,collision);
+						const auto n = m_giSamples;
+						const auto colorRatio = m_giMultiplier/(scalar)n;
+						for(auto i=0u; i<n; i++)
 						{
-							vxColor gi(m_scene->defaultShader()->getIlluminatedColor(ray,giColl));
-							globalIlm.mixSumm(baseColor * gi * rayIncidence, colorRatio);
-						}
-						else
-						{
-							if(dome!=nullptr)
+							const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
+							const vxRay giRay(collision.position()
+											  +collision.normal()/10000.0, 
+											  r.inverted());
+							
+							auto rayIncidence = giRay.incidence(collision.normal());
+							
+							vxCollision giColl;
+							
+							m_scene->throwRay(giRay, giColl);
+							if(giColl.isValid())
 							{
-								vxCollision dommCol;
-								
-								dome->throwRay(f, dommCol);
-								dommCol.setColor(dommCol.color());
-								
-								auto domeColor = dommCol.color();
-								
-								domeColor.applyCurve(dome->gamma(),
-													 dome->gain());
-								
-								globalIlm.mixSumm((baseColor * domeColor) * rayIncidence, colorRatio);
+								vxColor gi(m_scene->defaultShader()->getIlluminatedColor(ray,giColl));
+								globalIlm.mixSumm(baseColor * gi * rayIncidence, colorRatio);
 							}
+							else
+							{
+								if(dome!=nullptr)
+								{
+									dome->throwRay(giRay, giColl);
+									auto domeColor = giColl.color();
+									domeColor.applyCurve(dome->gamma(), dome->gain());
+									
+									globalIlm.mixSumm((baseColor * domeColor) * rayIncidence, colorRatio);
+								}
+							}
+							
 						}
-						
+						pixelColor+= globalIlm;
 					}
-					pixelColor+= globalIlm;
 				}
-				
-			}
-			else
-			{
-				m_scene->domeThrowRay(ray, collision);
-				pixelColor+=collision.color();
 			}
 			
 			sampler.next();

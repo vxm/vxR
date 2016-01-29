@@ -9,7 +9,7 @@
 namespace vxCore {
 
 //TODO: add literal for scalar 0.0r
-using scalar = double;
+using scalar = float;
 
 class vxVector2d
 {

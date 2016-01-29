@@ -15,9 +15,9 @@ node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 607 341
-    pixelSamples = 1
+    pixelSamples = 4
     reflectionSamples = 0
     giSamples = 10
     giMultiplier = 1.0
@@ -28,11 +28,11 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
-    pixelSamples = 2
-    reflectionSamples = 1
-    giSamples = 5
+    pixelSamples = 1
+    reflectionSamples = 0
+    giSamples = 0
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -94,12 +94,48 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 2.4
+    focusDistance = 1.4
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
 }
 
+
+
+node
+{
+name = "temple_1"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
+    filePath = "/home/john/Downloads/temple.ply"
+    color = 138 158 144
+}
+
+
+node
+{
+name = "temple_2"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
+    filePath = "/home/john/Downloads/temple_1.ply"
+    color = 138 158 144
+}
+
+node
+{
+name = "temple_3"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
+    filePath = "/home/john/Downloads/temple_2.ply"
+    color = 138 158 144
+}
+
+
+///////////////////////////////////////////
+///////////////////////////////////////////
 node
 {
 name = "triceratops_tris"
@@ -200,7 +236,7 @@ node
 {
 name = "cube_0"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
@@ -210,7 +246,7 @@ node
 {
 name = "cube_1"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 -2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
@@ -220,8 +256,8 @@ node
 {
 name = "cube_2"
 type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 -2.5 1]
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 2.5 2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
 }
@@ -230,26 +266,59 @@ node
 {
 name = "cube_3"
 type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 2.5 0.0 1]
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 2.5 -2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
 }
 
-
-////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////
 
 node
 {
 name = "cube_4"
 type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -2.5 0.0 1]
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
 }
+
+
+node
+{
+name = "cube_5"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 -2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+
+node
+{
+name = "cube_6"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+
+node
+{
+name = "cube_7"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 -2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
 //plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
@@ -344,9 +413,9 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.17
+    intensity = 0.87
     color = 245 235 210
     orientation = 6.0 -7.0 2.0
     samples = 1

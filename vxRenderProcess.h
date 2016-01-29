@@ -76,6 +76,7 @@ public:
 	void setSamples(unsigned int samples);
 	std::shared_ptr<const ImageProperties> properties() const;
 	void setProperties(const std::shared_ptr<const ImageProperties> &properties);
+	vxColor computeLight(const vxRay &ray, vxCollision &col);
 };
 
 #endif // VXRENDERPROCESS_H
