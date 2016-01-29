@@ -203,6 +203,24 @@ scalar vxRenderProcess::progress() const
 	return  100.0 * m_progress.load() / (m_properties->ry()*m_nThreads);
 }
 
+vxColor vxRenderProcess::computeLight(const vxRay &ray, vxCollision &col)
+{
+	auto retColor{vxColor::zero};
+	m_scene->throwRay(ray, col);
+	
+	if(col.isValid())
+	{
+		retColor = m_scene->defaultShader()->getIlluminatedColor(ray,col);
+	}
+	else
+	{
+		m_scene->domeThrowRay(ray, col);
+		retColor = col.color();
+	}
+	
+	return retColor;
+}
+
 vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
@@ -213,9 +231,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 263;
-	unsigned int itV = 78;
-	vxColor color;
+	unsigned int itH = 474;
+	unsigned int itV = 523;
 	
 	//TODO: return this to smart pointer.
 	vxCollision collision;
@@ -225,11 +242,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
 	
-	if(m_scene->throwRay(ray, collision) || m_scene->domeThrowRay(ray, collision))
-	{
-		vxColor col(m_scene->defaultShader()->getColor(ray,collision));
-		color.add(col);
-	}
+	auto&& color = computeLight(ray, collision);
 	
 	const auto id = itH  + (itV * m_properties->rx());
 	//TODO:check ranges here, it might fail.

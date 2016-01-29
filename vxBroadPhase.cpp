@@ -185,14 +185,24 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 {
 	auto bb = geo->boundingBox();
 	auto cnt = bb->center();
-	
 	int a1,b1,c1;
-	auto idx1 = lookupVoxel(bb->min() + ((bb->min() - cnt) / 10000.0), a1, b1, c1);
-	
+	auto idx1 = lookupVoxel(bb->center(), a1, b1, c1);
 	int a2,b2,c2;
-	auto idx2 = lookupVoxel(bb->max() + ((bb->max() - cnt) / 10000.0), a2, b2, c2);
+	auto idx2 = lookupVoxel(bb->center(), a2, b2, c2);
+
+#ifdef _DEBUG
+	std::cout << std::endl << std::endl << std::endl;
+	std::cout << "bb->min() " << bb->min() << std::endl;
 	
-#ifdef _DEBUG_
+	std::cout << "a1 " << a1 << std::endl;
+	std::cout << "b1 " << b1 << std::endl;
+	std::cout << "c1 " << c1 << std::endl;
+	
+	std::cout << "bb->max() " << bb->max() << std::endl;
+	std::cout << "a2 " << a1 << std::endl;
+	std::cout << "b2 " << b1 << std::endl;
+	std::cout << "c2 " << c1 << std::endl;
+	
 	if(!indexIsValid(idx1) || !indexIsValid(idx2))
 	{
 		std::cerr << "Adding gmetry to an invalid " 
@@ -207,16 +217,26 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 			m_members[idx1].geoRefs = std::make_shared<geometryHandleArray>();
 		}
 		
-		m_members[idx1].index = idx1;
 		m_members[idx1].geoRefs->emplace_back(geo);
 		return;
 	}
 	
-	for(auto x=a1;x<=a2;x++)
-		for(auto y=b1;y<=b2;y++)
-			for(auto z=c1;z<=c2;z++)
+	for(auto x=a1;x<a2;x++)
+	{
+		std::cout << "x: " << x << std::endl;
+		for(auto y=b1;y<b2;y++)
+		{
+			std::cout << "\ty: " << y << std::endl;
+			
+			for(auto z=c1;z<c2;z++)
 			{
+				std::cout << "\t\tz: " << z << std::endl;
+
 				auto idx = index(x,y,z);
+				if(idx==1)
+				{
+					std::cerr << "not possible" << std::endl;
+				}
 				
 				if(m_members[idx].geoRefs == nullptr)
 				{
@@ -224,9 +244,10 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 				}
 				
 				//this index could be very redundant. //TODO:check
-				m_members[idx].index = idx1;
-				m_members[idx].geoRefs->emplace_back(geo);
+				m_members[idx].geoRefs->push_back(geo);
 			}
+		}
+	}
 }
 
 const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
@@ -304,7 +325,7 @@ bool vxBroadPhase::throwRay(const vxRay &ray) const
 	return false;
 }
 
-#define NAIVE_BB_METHOD 0
+#define NAIVE_BB_METHOD 1
 int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 #if	DRAWBBOX
@@ -366,16 +387,16 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		prev = bbxs.index;
 		
+		std::set<vxGeometryHandle> viewedGeos;
+		int sz=0;
 		for(const auto &geo: *(bbxs.geoRefs))
 		{
-			auto exs = cols.end() == std::find_if(cols.begin(),cols.end(),
-					[geo](const collision_geometryH& r)
-									{return r.second.get()==geo.get();});
-									
-			if(exs && geo->throwRay(ray,collide))
+			if(viewedGeos.size()==sz && geo->throwRay(ray,collide))
 			{
 				cols.emplace_back(collide, geo);
 			}
+			viewedGeos.insert(geo);
+			sz = viewedGeos.size();
 		}
 	}
 	while(!cols.size());
