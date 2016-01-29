@@ -15,12 +15,12 @@ node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 607 341
-    pixelSamples = 1
-    reflectionSamples = 2
-    giSamples = 50
-    giMultiplier = 1.8
+    pixelSamples = 4
+    reflectionSamples = 0
+    giSamples = 10
+    giMultiplier = 1.0
     numThreads = -1
 }
 
@@ -30,10 +30,10 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 4
-    reflectionSamples = 1
-    giSamples = 20
-    giMultiplier = 1.8
+    pixelSamples = 1
+    reflectionSamples = 0
+    giSamples = 0
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -41,12 +41,12 @@ node
 {
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
-    pixelSamples = 8
+    pixelSamples = 4
     reflectionSamples = 1
     giSamples = 10
-    giMultiplier = 1.8
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -54,12 +54,12 @@ node
 {
 name = "renderSettings_3"
 type = "vxRenderSettings"
-active = "true"
-    resolution = 1366 768
-    pixelSamples = 12
+active = "false"
+    resolution = 4000 2240
+    pixelSamples = 4
     reflectionSamples = 1
-    giSamples = 5
-    giMultiplier = 1.8
+    giSamples = 20
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -67,10 +67,10 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 5464 3072
     pixelSamples = 4
-    reflectionSamples = 1
+    reflectionSamples = 2
     giSamples = 25
     giMultiplier = 1.5
     numThreads = -1
@@ -83,9 +83,8 @@ type = "vxRenderSettings"
 active = "false"
     resolution = 5464 3072
     pixelSamples = 8
-    reflectionSamples = 1
-    giSamples = 15
-    giMultiplier = 1.5
+    reflectionSamples = 4
+    giSamples = 230
     numThreads = -1
 }
 
@@ -95,19 +94,55 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 4.1
+    focusDistance = 1.4
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
 }
 
+
+
+node
+{
+name = "temple_1"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
+    filePath = "/home/john/Downloads/temple.ply"
+    color = 138 158 144
+}
+
+
+node
+{
+name = "temple_2"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
+    filePath = "/home/john/Downloads/temple_1.ply"
+    color = 138 158 144
+}
+
+node
+{
+name = "temple_3"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
+    filePath = "/home/john/Downloads/temple_2.ply"
+    color = 138 158 144
+}
+
+
+///////////////////////////////////////////
+///////////////////////////////////////////
 node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "true"
-    transform = [1.7 0 0 0 0 1.7 0 0 0 0 1.7 0 3.5 -0.74 2.5 1]
-    filePath = "/home/mario/Downloads/triceratops_1.ply"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.10 0.0 1]
+    filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
 }
 
@@ -115,12 +150,22 @@ node
 {
 name = "tennyson_tris"
 type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 -0.70 0.2 1]
-    filePath = "/home/mario/Downloads/tennyson.ply"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 -2.5 1]
+    filePath = "/home/john/Downloads/tennyson.ply"
     color = 118 118 144
 }
 
+
+node
+{
+name = "tennyson_tris"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 -2.5 1]
+    filePath = "/home/john/Downloads/tennyson.ply"
+    color = 118 118 144
+}
 
 node
 {
@@ -128,7 +173,7 @@ name = "malote_tris"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.5 -0.7 -1.4 1]
-    filePath = "/home/mario/Downloads/malote_1.ply"
+    filePath = "/home/john/Downloads/malote_1.ply"
     color = 99 99 99
 }
 
@@ -136,42 +181,30 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.0 -0.7 -0.60 1]
-    filePath = "/home/mario/Downloads/gnome_low.ply"
-    color = 199 199 199
+active = "false"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 -1.5 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    color = 249 249 249
 }
-
 
 node
 {
 name = "gnome_tris_1"
 type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.0 -0.7 0.9 1]
-    filePath = "/home/mario/Downloads/gnome_low.ply"
-    color = 199 199 199
-}
-
-node
-{
-name = "crux_tris"
-type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.7 0.0 1]
-    filePath = "/home/mario/Downloads/crux1.ply"
-    color = 250 250 250
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 1.5 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    color = 249 249 249
 }
-
 
 node
 {
 name = "milo_tris"
 type = "vxGeometry"
-active = "true"
-    transform = [0.8 0 0 0 0 0.8 0 0 0 0 0.8 0 1.2 -0.68 -1.6 1]
-    filePath = "/home/mario/Downloads/vmilo_0.ply"
-    color = 139 138 134
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.2 -0.54 -1.5 1]
+    filePath = "/home/john/Downloads/vmilo_0.ply"
+    color = 199 198 134
 }
 
 node
@@ -179,44 +212,127 @@ node
 name = "mercury_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1.52 0 0 0 0 1.52 0 0 0 0 1.52 0 0.2 -0.70 -0.2 1]
-    filePath = "/home/mario/Downloads/mercury.ply"
-    color = 149 155 134
-}
-
-node
-{
-name = "ninph_tris"
-type = "vxGeometry"
-active = "false"
-    transform = [1.52 0 0 0 0 1.52 0 0 0 0 1.52 0 2.2 -0.70 -0.2 1]
-    filePath = "/home/mario/Downloads/ninph_2.ply"
-    color = 149 155 124
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
+    filePath = "/home/john/Downloads/mercury.ply"
+    color = 199 198 134
 }
 
 node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.70 0.0 1]
-    filePath = "/home/mario/Downloads/broad_phase_model_4.ply"
-    color = 155 155 155
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.65 0.0 1]
+    filePath = "/home/john/Downloads/broad_phase_model_4.ply"
+    color = 125 125 125
+}
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+
+node
+{
+name = "cube_0"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+node
+{
+name = "cube_1"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 -2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+node
+{
+name = "cube_2"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 2.5 2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+node
+{
+name = "cube_3"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 2.5 -2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
 }
 
 
-//plyReader->processPLYFile("../vxR/juan_0.ply");
-//plyReader->processPLYFile("/home/mario/Downloads/statue_and_dog_1.ply");
-//plyReader->processPLYFile("/home/mario/Downloads/dragon_1.ply");
-//plyReader->processPLYFile("/home/mario/Downloads/vmilo_0.ply");
-//plyReader->processPLYFile("/home/mario/Downloads/lucyTop_1.ply");
+node
+{
+name = "cube_4"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
 
-///home/mario/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
-///home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg
-///home/mario/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
-///home/mario/code/vxR/Milkyway/Milkyway_BG.jpg
-///home/mario/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
-///home/mario/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
+
+node
+{
+name = "cube_5"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 -2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+
+node
+{
+name = "cube_6"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+
+node
+{
+name = "cube_7"
+type = "vxGeometry"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 -2.5 1]
+    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    color = 125 125 125
+}
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+//plyReader->processPLYFile("../vxR/juan_0.ply");
+//plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
+//plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
+//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
+//plyReader->processPLYFile("/home/john/Downloads/lucyTop_1.ply");
+
+///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
+///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
+///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
+///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
+///home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
+///home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg
 
 node
 {
@@ -224,9 +340,9 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/mario/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
-    gain = 0.9
-    gamma = 4.5
+    imagePath = "/home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
+    gain = 1.0
+    gamma = 3.1
 }
 
 
@@ -235,15 +351,15 @@ node
 name = "area_light_2"
 type = "vxAreaLight"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 3 -0.7 1]
-    intensity = 0.65
-    color = 224 223 217
-    samples = 13
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 6 2 1]
+    intensity = 0.56
+    color = 223 215 106
+    samples = 10
     castShadows = "true"
-    minX = -0.5
-    minY = -0.5
-    maxX = 0.5
-    maxY = 0.5
+    minX = -3.5
+    minY = 0.3
+    maxX = 3.5
+    maxY = 1.0
 }
 
 
@@ -252,32 +368,29 @@ node
 name = "area_light_1"
 type = "vxAreaLight"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -10 10.5 -15 1]
-    intensity = 0.25
-    color = 250 230 123
-    samples = 8
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
+    intensity = 0.62
+    color = 166 170 223
+    samples = 10
     castShadows = "true"
     minX = -4.5
-    minY = -4.5
+    minY = 0.3
     maxX = 4.5
-    maxY = 4.5
+    maxY = 2.5
 }
 
 
 node
 {
-name = "area_light_0"
-type = "vxAreaLight"
+name = "point_light_1"
+type = "vxPointLight"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 10 0.5 -15 1]
-    intensity = 0.45
-    color = 200 210 250
-    samples = 8
-    castShadows = "true"
-    minX = -4.5
-    minY = -4.5
-    maxX = 4.5
-    maxY = 4.5
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 15 3 1]
+    intensity = 0.50
+    color = 255 230 240
+    samples = 1
+    castShadows = "false"
+    position = -2 5 -2
 }
 
 node
@@ -286,8 +399,8 @@ name = "environment"
 type = "vxIBLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
-    intensity = 17.00
+    filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+    intensity = 12.00
     color = 255 255 255
     samples = 13
     radius = 1.0
@@ -300,10 +413,10 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.7
-    color = 255 230 240
+    intensity = 0.87
+    color = 245 235 210
     orientation = 6.0 -7.0 2.0
     samples = 1
     castShadows = "true"
@@ -362,8 +475,8 @@ node
 name = "milo_vx"
 type = "vxGridGeometry"
 active = "false"
-    transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 0.1 -0.63 0.6 1]
-    filePath = "/home/mario/Downloads/tennyson.ply"
+    transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 -0.5 -0.63 0.6 1]
+    filePath = "/home/john/Downloads/tennyson.ply"
 }
 
 node
@@ -371,8 +484,8 @@ node
 name = "triceratops_vx"
 type = "vxGridGeometry"
 active = "false"
-    transform = [0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 -0.0 -0.63 -.6 1]
-    filePath = "/home/mario/Downloads/triceratops_1.ply"
+    transform = [0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 -0.3 -0.63 -.6 1]
+    filePath = "/home/john/Downloads/triceratops_1.ply"
 }
 
 node
@@ -381,7 +494,7 @@ name = "tennyson_vx"
 type = "vxGridGeometry"
 active = "false"
     transform = [1.2 0 0 0 0 1.2 0 0 0 0 1.2 0 0.5 -0.63 0.6 1]
-    filePath = "/home/mario/Downloads/malote_1.ply"
+    filePath = "/home/john/Downloads/malote_1.ply"
 }
 
 node
@@ -390,5 +503,5 @@ name = "gnome_vx"
 type = "vxGridGeometry"
 active = "false"
     transform = [1.5 0 0 0 0 1.5 0 0 0 0 1.5 0 0.0 -0.63 0.0 1]
-    filePath = "/home/mario/Downloads/gnome_low.ply"
+    filePath = "/home/john/Downloads/gnome_low.ply"
 }
