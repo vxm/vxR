@@ -106,10 +106,26 @@ void vxBroadPhase::updateCache()
 	m_c_size = m_rx * m_ry * m_rz;
 	m_members.resize(m_c_size);
 	
+	auto idx{0ul};
+	for(auto &l:m_members)
+	{
+		l.index=idx++;
+	}
+	
 	for(auto& geo:m_geometries)
 	{
 		locateAndRegister(geo);
 	}
+	
+#if _DEBUG
+
+	for(auto&l:m_members)
+	{
+		std::cout << "Index: " << l.index << std::endl;
+		std::cout << "\tGeos: " << (l.geoRefs==nullptr ? 0 : l.geoRefs->size()) << std::endl;
+	}
+	
+#endif
 	
 }
 
