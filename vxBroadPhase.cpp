@@ -299,7 +299,7 @@ const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
 			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
 		}
 		
-		if(m_members[retVal].index!=m_c_size)
+		if(m_members[retVal].geoRefs!=nullptr)
 		{
 			return m_members[retVal];
 		}
