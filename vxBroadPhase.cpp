@@ -325,7 +325,7 @@ bool vxBroadPhase::throwRay(const vxRay &ray) const
 	return false;
 }
 
-#define NAIVE_BB_METHOD 1
+#define NAIVE_BB_METHOD 0
 int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 #if	DRAWBBOX

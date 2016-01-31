@@ -231,8 +231,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 474;
-	unsigned int itV = 523;
+	unsigned int itH = 550;
+	unsigned int itV = 461;
 	
 	//TODO: return this to smart pointer.
 	vxCollision collision;
