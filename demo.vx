@@ -15,12 +15,12 @@ node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 607 341
     pixelSamples = 4
     reflectionSamples = 0
     giSamples = 10
-    giMultiplier = 1.0
+    giMultiplier = 1.5
     numThreads = -1
 }
 
@@ -28,11 +28,11 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
-    pixelSamples = 1
+    pixelSamples = 4
     reflectionSamples = 0
-    giSamples = 0
+    giSamples = 10
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -45,7 +45,7 @@ active = "false"
     resolution = 1366 768
     pixelSamples = 4
     reflectionSamples = 1
-    giSamples = 10
+    giSamples = 50
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -56,9 +56,9 @@ name = "renderSettings_3"
 type = "vxRenderSettings"
 active = "false"
     resolution = 4000 2240
-    pixelSamples = 4
+    pixelSamples = 8
     reflectionSamples = 1
-    giSamples = 20
+    giSamples = 50
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -94,7 +94,7 @@ name = "persp"
 type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    focusDistance = 1.4
+    focusDistance = 4.0
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -106,9 +106,9 @@ node
 {
 name = "temple_1"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
-    filePath = "/home/john/Downloads/temple.ply"
+    filePath = "/home/john/Downloads/temple1.ply"
     color = 138 158 144
 }
 
@@ -119,7 +119,7 @@ name = "temple_2"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
-    filePath = "/home/john/Downloads/temple_1.ply"
+    filePath = "/home/john/Downloads/temple2.ply"
     color = 138 158 144
 }
 
@@ -129,7 +129,7 @@ name = "temple_3"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
-    filePath = "/home/john/Downloads/temple_2.ply"
+    filePath = "/home/john/Downloads/temple3.ply"
     color = 138 158 144
 }
 
@@ -181,8 +181,8 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 -1.5 1]
+active = "true"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 0.2 -1.5 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 249 249 249
 }
@@ -191,8 +191,8 @@ node
 {
 name = "gnome_tris_1"
 type = "vxGeometry"
-active = "false"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.7 1.5 1]
+active = "true"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 0.3 1.5 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 249 249 249
 }
@@ -221,8 +221,8 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.65 0.0 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
 }
@@ -413,7 +413,7 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 0.87
     color = 245 235 210
