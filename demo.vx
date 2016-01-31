@@ -106,7 +106,7 @@ node
 {
 name = "temple_1"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     filePath = "/home/john/Downloads/temple.ply"
     color = 138 158 144
@@ -236,7 +236,7 @@ node
 {
 name = "cube_0"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
@@ -246,7 +246,7 @@ node
 {
 name = "cube_1"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 -2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
@@ -256,7 +256,7 @@ node
 {
 name = "cube_2"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 2.5 2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
@@ -266,7 +266,7 @@ node
 {
 name = "cube_3"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 2.5 -2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
@@ -277,7 +277,7 @@ node
 {
 name = "cube_4"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
@@ -288,7 +288,7 @@ node
 {
 name = "cube_5"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 -2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
@@ -299,22 +299,22 @@ node
 {
 name = "cube_6"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
 }
 
-
 node
 {
 name = "cube_7"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 -2.5 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 6.0 -2.5 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 125
 }
+
 
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
