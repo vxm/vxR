@@ -5,29 +5,29 @@ using namespace vxCore;
 
 scalar vxBitMap2d::gain() const
 {
-    return m_gain;
+	return m_gain;
 }
 
 void vxBitMap2d::setGain(const scalar &gain)
 {
-    m_gain = gain;
+	m_gain = gain;
 }
 
 scalar vxBitMap2d::gamma() const
 {
-    return m_gamma;
+	return m_gamma;
 }
 
 void vxBitMap2d::setGamma(const scalar &gamma)
 {
-    m_gamma = gamma;
+	m_gamma = gamma;
 }
 
 vxBitMap2d::vxBitMap2d(const std::string path)
-    :m_path(path)
+	:m_path(path)
 {
-    //TODO:Constructor very populated.
-    //TODO:stolen QImage object, replace with non QT functions. Please soon.
+	//TODO:Constructor very populated.
+	//TODO:stolen QImage object, replace with non QT functions. Please soon.
 	loadImage();
 }
 

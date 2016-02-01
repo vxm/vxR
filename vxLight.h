@@ -8,6 +8,7 @@
 #include "vxScene.h"
 #include "vxBitMap2d.h"
 #include "vxMatrix.h"
+#include "vxSampler.h"
 
 namespace vxCore {
 
@@ -181,11 +182,12 @@ protected:
 	scalar m_maxX{ 1.25};
 	scalar m_maxY{ 1.25};
 	
-	v3 m_normal;
+	v3 m_normal{0.0, -1.0, 0.0};
+	
+	vxSampler m_sampler;
 	
 public:
-	vxAreaLight()
-	{}
+	vxAreaLight();
 	
 	vxColor acummulationLight(const vxRay &, const vxCollision &collision) const override;
 	
@@ -201,6 +203,8 @@ public:
 
 	scalar maxY() const;
 	void setMaxY(const scalar &maxY);
+	v3 normal() const;
+	void setNormal(const v3 &normal);
 };
 
 

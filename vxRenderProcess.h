@@ -47,22 +47,22 @@ public:
 	virtual vxStatus::code postProcess(vxProcess* p=nullptr) override;
 	virtual vxStatus::code execute() override;
 	virtual vxStatus::code preConditions() override;
-
+	
 	vxStatus::code render(unsigned int by = 1u, unsigned int offset = 0u);
-
+	
 	//void createBucketList(unsigned int samples);
 	const unsigned char *generateImage();
-
+	
 	vxStatus setDatabase(std::shared_ptr<vxSceneParser> scn);
 	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties);
 	std::shared_ptr<const ImageProperties> imageProperties() const;
-
+	
 	void setScene(const std::shared_ptr<vxScene> &scene);
 	std::shared_ptr<vxScene> scene() const;
 	
 	void setNMaxThreads(unsigned int nMaxThreads);
 	unsigned int nMaxThreads() const;
-
+	
 	scalar progress() const;
 	unsigned int visSamples() const;
 	void setVisSamples(unsigned int visSamples);

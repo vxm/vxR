@@ -400,29 +400,44 @@ void vxAreaLight::setMaxY(const scalar &maxY)
 	m_maxY = maxY;
 }
 
+v3 vxAreaLight::normal() const
+{
+	return m_normal;
+}
+
+void vxAreaLight::setNormal(const v3 &normal)
+{
+	m_normal = normal;
+}
+
+vxAreaLight::vxAreaLight()
+	: m_sampler(8)
+{}
+
 vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collision) const
 {
 	vxColor ret{vxColor::zero};
 	vxRay f(collision.position(), collision.normal());
 	const auto&& cPnt = collision.position();
 
+	const auto littleNormal = collision.normal()/100000.0;
+		const auto finalIntensity = m_intensity / (scalar)m_samples;
+		 
 	for(auto x = 0u; x<m_samples; x++)
 	{
 		auto u = MU::getRand(m_maxX) + m_minX;
 		auto v = MU::getRand(m_maxY) + m_minY;
 
-		const auto&& orientation = m_transform.getOrigin() - cPnt + v3(u,v,0);
+		const auto&& orientation = m_transform.getOrigin() - cPnt + v3(u, 0.0 ,v);
 		if(collision.normal().follows(orientation.inverted()))
 		{
-			auto ratio = lightRatio(f, orientation);
-			auto lumm = m_intensity * ratio / (scalar)m_samples;
-	
-			const vxRay ff(cPnt+collision.normal()/100000.0, orientation);
+			const vxRay ff(cPnt+littleNormal, orientation);
 			const auto&& scn = m_scene.lock();
 			vxCollision col;
 			if (!(scn->throwRay(ff,col)==1))
 			{
-				ret += color().gained(lumm);
+			   				auto ratio = lightRatio(f, orientation);
+				ret += color().gained(finalIntensity * (ratio * ratio * ratio));
 			}
 		}
 	}
