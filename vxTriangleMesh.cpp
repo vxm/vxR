@@ -117,16 +117,12 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 		return 1;
 	}
 #else
-
-	//auto ps = col.position();
-	
+	/*
 	if(!m_bb->throwRay(ray, col))
 	{
 		return 0;
 	}
-	
-//	std::cout << " - BroadPhase pos\t\t: " << ps << std::endl;
-//	std::cout << " - Geometry   pos\t\t: " << col.position() << std::endl << std::endl;
+	*/
 	
 	auto&& p = ray.origin();
 	

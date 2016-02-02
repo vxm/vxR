@@ -5,7 +5,7 @@ node
 {
 name = "time"
 type = "vxClock"
-active = "true"
+active = "false"
     start = 1.0
     end = 300.0
     step = 1.0
@@ -211,7 +211,7 @@ node
 {
 name = "mercury_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
     filePath = "/home/john/Downloads/mercury.ply"
     color = 199 198 134
@@ -221,7 +221,7 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
@@ -247,7 +247,7 @@ node
 name = "cube_1"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 1.5 0.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 3.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 1
 }
@@ -256,7 +256,7 @@ node
 {
 name = "cube_2"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 5.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 1 125
@@ -266,7 +266,7 @@ node
 {
 name = "cube_3"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 5.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 1 125 125
@@ -277,7 +277,7 @@ node
 {
 name = "cube_4"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 1 1
@@ -288,7 +288,7 @@ node
 {
 name = "cube_5"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 1 125 1
@@ -299,7 +299,7 @@ node
 {
 name = "cube_6"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 1 255 125
@@ -309,7 +309,7 @@ node
 {
 name = "cube_7"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 6.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 255 1 125
@@ -419,7 +419,7 @@ active = "true"
     color = 245 235 210
     orientation = 6.0 -7.0 2.0
     samples = 1
-    castShadows = "true"
+    castShadows = "false"
 }
 
 node

@@ -160,12 +160,12 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 		
 		c++;
 	}
-	
+#if _DEBUG	
 	if(a<0 || b<0 || c<0)
 	{
 		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
 	}
-	
+#endif	
 	return index(a,b,c);
 }
 
@@ -193,10 +193,12 @@ unsigned long vxGeoGrid::linearLookupVoxel(const v3 &v,
 		c--;
 	}
 	
+#if _DEBUG
 	if(a<0 || b<0 || c<0)
 	{
 		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
 	}
+#endif
 	
 	return index(a,b,c);
 }
