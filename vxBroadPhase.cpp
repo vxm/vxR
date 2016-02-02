@@ -225,20 +225,11 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 	
 	for(auto x=a1;x<=a2;x++)
 	{
-		std::cout << "x: " << x << std::endl;
 		for(auto y=b1;y<=b2;y++)
 		{
-			std::cout << "\ty: " << y << std::endl;
-			
 			for(auto z=c1;z<=c2;z++)
 			{
-				std::cout << "\t\tz: " << z << std::endl;
-
 				auto idx = index(x,y,z);
-/*				if(idx==1)
-				{
-					std::cerr << "not possible" << std::endl;
-				}*/
 				
 				if(m_members[idx].geoRefs == nullptr)
 				{
