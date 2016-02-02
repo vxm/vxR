@@ -379,6 +379,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		int sz=0;
 		for(const auto &geo: *(bbxs.geoRefs))
 		{
+			collide.setPosition(sp);
 			if(viewedGeos.size()==sz && geo->throwRay(ray,collide))
 			{
 				cols.emplace_back(collide, geo);
