@@ -262,9 +262,9 @@ const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
 	{
 		retVal = lookupVoxel(sp, idX, idY, idZ);
 		
-		if(!indexIsValid(retVal))
+		if(m_members[retVal].geoRefs!=nullptr)
 		{
-			return bpSearchResult{m_c_size};
+			return m_members[retVal];
 		}
 		
 		auto xVal = m_xvalues[idX + velX] - p.x();
@@ -290,11 +290,6 @@ const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
 				&& fabs(intersectZ.y()) <= fabs(yVal))
 		{
 			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
-		}
-		
-		if(m_members[retVal].geoRefs!=nullptr)
-		{
-			return m_members[retVal];
 		}
 	}
 	while(indexIsValid(retVal) && m_bb->contains(sp));
