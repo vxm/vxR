@@ -111,7 +111,7 @@ void vxRenderProcess::setReflectionSamples(unsigned int reflectionSamples)
 }
 
 
-vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> scn)
+vxStatus vxRenderProcess::setDatabase(std::shared_ptr<vxSceneParser> )
 {
 	vxStatus st;
 	
@@ -158,7 +158,7 @@ vxStatus::code vxRenderProcess::execute()
 	std::vector<std::thread> threads;
 	for(unsigned int i=0;i<m_nThreads; i++)
 	{
-		auto&& th = std::thread([this,i]{this->render(m_nThreads,i);});
+		auto&& th = std::thread([this,i]{(this->render(m_nThreads,i));});
 		vxThreadPool::threadInfo(std::this_thread::get_id());
 		threads.emplace_back(std::move(th));
 	}
@@ -231,8 +231,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 682;
-	unsigned int itV = 524;
+	unsigned int itH = 445;
+	unsigned int itV = 570;
 	
 	//TODO: return this to smart pointer.
 	vxCollision collision;

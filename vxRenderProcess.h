@@ -53,7 +53,7 @@ public:
 	//void createBucketList(unsigned int samples);
 	const unsigned char *generateImage();
 	
-	vxStatus setDatabase(std::shared_ptr<vxSceneParser> scn);
+	vxStatus setDatabase(std::shared_ptr<vxSceneParser>);
 	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties);
 	std::shared_ptr<const ImageProperties> imageProperties() const;
 	
