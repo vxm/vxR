@@ -118,7 +118,7 @@ void vxBroadPhase::updateCache()
 	}
 	
 #if _DEBUG
-
+	
 	for(auto&l:m_members)
 	{
 		std::cout << "Index: " << l.index << std::endl;
@@ -172,7 +172,7 @@ unsigned long vxBroadPhase::lookupVoxel(const v3 &v,
 		
 		c++;
 	}
-
+	
 #if _DEBUG
 	if(a<0 || b<0 || c<0)
 	{
@@ -191,7 +191,7 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 	auto idx1 = lookupVoxel(bb->min()+0.001, a1, b1, c1);
 	int a2,b2,c2;
 	auto idx2 = lookupVoxel(bb->max()-0.001, a2, b2, c2);
-
+	
 #ifdef _DEBUG
 	std::cout << std::endl << std::endl << std::endl;
 	std::cout << "bb->min() " << bb->min() << std::endl;
@@ -357,15 +357,15 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		collide.setValid(false);
 		return 0;
 	}
-
-	using collision_geometryH = std::pair<vxCollision, vxGeometryHandle>;
+	
 	std::vector<collision_geometryH> cols;
 	auto sp =  collide.position() 
 			+ (collide.normal().inverted() / (scalar)10000.0);
-			
+	
 	auto prev = m_c_size;
 	bpSearchResult bbxs;
 	bool skip = false;
+	std::set<vxGeometryHandle> viewedGeos;
 	do
 	{
 		bbxs = getList(ray, sp, skip);
@@ -378,18 +378,17 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		prev = bbxs.index;
 		
-		
 		if(bbxs.geoRefs==nullptr)
 		{
 			collide.setValid(false);
 			return 0;
 		}
 		
-		std::set<vxGeometryHandle> viewedGeos;
 		for(const auto &geo: *(bbxs.geoRefs))
 		{
 			collide.setPosition(sp);
-			if(geo->throwRay(ray,collide))
+			
+			if(viewedGeos.insert(geo).second && geo->throwRay(ray,collide))
 			{
 				cols.emplace_back(collide, geo);
 			}

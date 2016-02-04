@@ -24,6 +24,7 @@ class vxBroadPhase
 	std::vector<vxGeometryHandle> m_geometries;
 	vxBoundingBoxHandle m_bb;
 	vxBoundingBoxHandle m_cameraBB;
+	using collision_geometryH = std::pair<vxCollision, vxGeometryHandle>;
 	
 public:
 
