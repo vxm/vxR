@@ -243,7 +243,7 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 	}
 }
 
-const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
+const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp, bool skip) const
 {
 	long retVal{m_c_size};
 	
@@ -254,22 +254,22 @@ const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
 	auto velY = d.yPositive() ? 1 : 0;
 	auto velZ = d.zPositive() ? 1 : 0;
 	
-	int idX;
-	int idY;
-	int idZ;
+	int x;
+	int y;
+	int z;
 	
 	do
 	{
-		retVal = lookupVoxel(sp, idX, idY, idZ);
+		retVal = lookupVoxel(sp, x, y, z);
 		
-		if(m_members[retVal].geoRefs!=nullptr)
+		if(!skip && m_members[retVal].geoRefs!=nullptr)
 		{
 			return m_members[retVal];
 		}
 		
-		auto xVal = m_xvalues[idX + velX] - p.x();
-		auto yVal = m_yvalues[idY + velY] - p.y();
-		auto zVal = m_zvalues[idZ + velZ] - p.z();
+		auto xVal = m_xvalues[x + velX] - p.x();
+		auto yVal = m_yvalues[y + velY] - p.y();
+		auto zVal = m_zvalues[z + velZ] - p.z();
 		
 		v3 intersectX = MU::rectAndXPlane(d, xVal);
 		if(fabs(intersectX.y()) <= fabs(yVal)
@@ -291,6 +291,8 @@ const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp) const
 		{
 			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
 		}
+		
+		skip = false;
 	}
 	while(indexIsValid(retVal) && m_bb->contains(sp));
 	
@@ -363,11 +365,12 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			
 	auto prev = m_c_size;
 	bpSearchResult bbxs;
+	bool skip = false;
 	do
 	{
-		bbxs = getList(ray, sp);
+		bbxs = getList(ray, sp, skip);
 		
-		if(bbxs.geoRefs==nullptr || prev==bbxs.index || bbxs.index == m_c_size)
+		if(bbxs.index==prev)
 		{
 			collide.setValid(false);
 			return 0;
@@ -375,18 +378,24 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		prev = bbxs.index;
 		
+		
+		if(bbxs.geoRefs==nullptr)
+		{
+			collide.setValid(false);
+			return 0;
+		}
+		
 		std::set<vxGeometryHandle> viewedGeos;
-		int sz=0;
 		for(const auto &geo: *(bbxs.geoRefs))
 		{
 			collide.setPosition(sp);
-			if(viewedGeos.size()==sz && geo->throwRay(ray,collide))
+			if(geo->throwRay(ray,collide))
 			{
 				cols.emplace_back(collide, geo);
 			}
-			viewedGeos.insert(geo);
-			sz = viewedGeos.size();
 		}
+		
+		skip=true;
 	}
 	while(!cols.size());
 	

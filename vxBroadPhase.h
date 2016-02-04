@@ -84,7 +84,7 @@ public:
 
 	unsigned long lookupVoxel(const v3 &v, int &a, int &b, int &c) const;
 	void locateAndRegister(vxGeometryHandle geo);
-	const bpSearchResult getList(const vxRay &ray, v3 &sp) const;
+	const bpSearchResult getList(const vxRay &ray, v3 &sp, bool skip) const;
 	bool indexIsValid(const long idx) const;
 	bool hasTriangles(const long idx) const;
 };
