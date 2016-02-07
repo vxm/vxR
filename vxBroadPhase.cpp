@@ -408,7 +408,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			if(viewedGeos.insert(geo).second)
 				geo->throwRay(ray,collide);
 			
-			if(viewedGeos.insert(geo).second && geo->throwRay(ray,collide))
+			if(collide.isValid())
 			{
 				cols.emplace_back(collide, geo);
 			}
