@@ -58,7 +58,7 @@ int executeRenderProcess(int argc, char *argv[])
 			const auto reflectionSamples = node->getIntAttribute("reflectionSamples");
 			const auto giSamples = node->getIntAttribute("giSamples");
 			const auto giMultiplier = node->getFloatAttribute("giMultiplier");
-			const auto numThreads = node->getIntAttribute("numThreads");
+//			const auto numThreads = node->getIntAttribute("numThreads");
 			
 			// Img properties for render.
 			auto renderProperties = std::make_shared<ImageProperties>(resolution.x(),
