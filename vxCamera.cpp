@@ -100,7 +100,7 @@ vxRay vxCamera::ray(const v2 &coord, vxSampler &sampler) const
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
 
 	//TODO:read from scene
-	ret.setOrigin(v3(-12.0, 3.0, -12.0));
+	ret.setOrigin(v3(-4.0, 1.2, -4.0));
 	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
 	ret.direction().setUnit();
 	return ret;

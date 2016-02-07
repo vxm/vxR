@@ -140,7 +140,6 @@ HEADERS  += \
     vxClock.h \
     VectorUtils.h
 
-FORMS    +=
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
 

@@ -5,7 +5,7 @@
 #include <future>
 
 #include "vxRenderProcess.h"
-#include "vxCamera.h"
+#include "vxCamera.h"`
 #include "vxGrid.h"
 #include "vxPixel.h"
 #include "ImageProperties.h"
@@ -231,8 +231,8 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 445;
-	unsigned int itV = 570;
+	unsigned int itH = 636;
+	unsigned int itV = 550;
 	
 	//TODO: return this to smart pointer.
 	vxCollision collision;
