@@ -119,10 +119,14 @@ void vxBroadPhase::updateCache()
 	
 #if _DEBUG
 	
-	for(auto&l:m_members)
+	for(auto& l:m_members)
 	{
 		std::cout << "Index: " << l.index << std::endl;
-		std::cout << "\tGeos: " << (l.geoRefs==nullptr ? 0 : l.geoRefs->size()) << std::endl;
+		if(l.geoRefs!=nullptr)
+			for(auto& g: *l.geoRefs)
+		{
+			std::cout << "\tgeo color: " << g->baseColor() << std::endl;
+		}
 	}
 	
 #endif
