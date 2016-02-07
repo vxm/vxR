@@ -380,6 +380,8 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			return 0;
 		}
 		
+		//std::cout << ": " << bbxs.index << std::endl;
+		
 		prev = bbxs.index;
 		
 		if(bbxs.geoRefs==nullptr)
@@ -388,15 +390,30 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			return 0;
 		}
 		
-		for(const auto &geo: *(bbxs.geoRefs))
+		auto&& geos = *bbxs.geoRefs;
+		
+		if(geos.size()==2)
 		{
+		//	std::cout << "Two collisions" << std::endl;
+		}
+		
+		for(const auto &geo: geos)
+		{
+			if(geos.size()==2)
+			{
+			//	std::cout << "\t\t "  << geo->baseColor() << std::endl;
+			}
+			
 			collide.setPosition(sp);
+			if(viewedGeos.insert(geo).second)
+				geo->throwRay(ray,collide);
 			
 			if(viewedGeos.insert(geo).second && geo->throwRay(ray,collide))
 			{
 				cols.emplace_back(collide, geo);
 			}
 		}
+		
 		
 		skip=true;
 	}

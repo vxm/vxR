@@ -127,8 +127,8 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 	auto&& p = ray.origin();
 	
 	std::vector<vxCollision> cols;
-	auto sp =  col.position() 
-			+ (col.normal().inverted() / (scalar)10000.0);
+	auto sp =  col.position();
+//			+ (col.normal().inverted() / (scalar)10000.0);
 
 	auto prev = m_grid.size();
 	searchResult triangles;
@@ -179,6 +179,7 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 	}
 	
 #endif
+	col.setValid(false);
 	return 0;
 }
 
