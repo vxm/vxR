@@ -300,7 +300,7 @@ const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp, bool skip) 
 	}
 	while(indexIsValid(retVal) && m_bb->contains(sp));
 	
-	return bpSearchResult{m_c_size};
+	return bpSearchResult{m_c_size, nullptr};
 }
 
 bool vxBroadPhase::indexIsValid(const long idx) const
