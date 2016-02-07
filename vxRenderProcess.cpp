@@ -5,7 +5,7 @@
 #include <future>
 
 #include "vxRenderProcess.h"
-#include "vxCamera.h"`
+#include "vxCamera.h"
 #include "vxGrid.h"
 #include "vxPixel.h"
 #include "ImageProperties.h"
