@@ -392,18 +392,8 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		auto&& geos = *bbxs.geoRefs;
 		
-		if(geos.size()==2)
-		{
-		//	std::cout << "Two collisions" << std::endl;
-		}
-		
 		for(const auto &geo: geos)
 		{
-			if(geos.size()==2)
-			{
-			//	std::cout << "\t\t "  << geo->baseColor() << std::endl;
-			}
-			
 			collide.setPosition(sp);
 			if(viewedGeos.insert(geo).second)
 				geo->throwRay(ray,collide);
