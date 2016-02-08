@@ -1,6 +1,18 @@
 #include "vxCollision.h"
 namespace vxCore{
 
+vxCollision::vxCollision()
+{
+}
+
+vxCollision::vxCollision(const v3 &p, const v3 &n, const vxColor &c, const v2 &uv)
+	: m_position(p)
+	, m_normal{n}
+	, m_color{c}
+	, m_uv{uv}
+{
+}
+
 void vxCollision::reset()
 {
 	setValid(false);
