@@ -181,7 +181,7 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 0.3 -1.5 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 249 249 249
@@ -232,7 +232,7 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
@@ -430,7 +430,7 @@ active = "true"
     color = 245 235 210
     orientation = 6.0 -7.0 2.0
     samples = 1
-    castShadows = "true"
+    castShadows = "false"
 }
 
 node
