@@ -10,7 +10,7 @@ StringUtils::StringUtils()
 unsigned int StringUtils::indentation(const std::string &line)
 {
 	auto n = 0u;
-
+	
 	for(const auto c:line)
 	{
 		auto notFound{true};

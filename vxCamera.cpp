@@ -100,7 +100,7 @@ vxRay vxCamera::ray(const v2 &coord, vxSampler &sampler) const
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
 
 	//TODO:read from scene
-	ret.setOrigin(v3(-4.0, 1.2, -4.0));
+	ret.setOrigin(v3(-4.0, 0.2, -4.0));
 	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
 	ret.direction().setUnit();
 	return ret;
@@ -108,6 +108,7 @@ vxRay vxCamera::ray(const v2 &coord, vxSampler &sampler) const
 
 vxRay vxCamera::givemeRandRay(const v2 &coord)
 {
+	
 	scalar compX = m_hApTan * (( coord.x() * 2.0) -1.0 ) 
 			- 1.0/(scalar)(2.0 * m_properties->rx()) 
 			+ ((rand()/(scalar)RAND_MAX))/(scalar)(m_properties->rx());

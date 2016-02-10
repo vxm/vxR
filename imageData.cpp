@@ -57,7 +57,8 @@ unsigned char* ImageData::initialise()
 	
 	// hardcode buffer type!!
 	unsigned char *buff = m_pc.get();
-	unsigned char *tmpp = buff;	
+	unsigned char *tmpp = buff;
+	
 	for(;tmpp<buff+numElements;tmpp++)
 	{
 		*tmpp = 0b00000000;
