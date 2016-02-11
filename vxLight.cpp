@@ -195,7 +195,7 @@ vxColor vxPointLight::acummulationLight(const vxRay &, const vxCollision &collis
 		auto ratio = lightRatio(f, p.inverted());
 		auto lumm = m_intensity * ratio;
 
-		const vxRay ff(pp+collision.normal()/10000.0, p.inverted());
+		const vxRay ff(pp+collision.normal().tiny(), p.inverted());
 		const auto&& scn = m_scene.lock();
 		//if (!m_castShadows || !scn->throwRay(ff))
 		{
@@ -299,7 +299,7 @@ vxColor vxDirectLight::acummulationLight(const vxRay &,
 		auto ratio = lightRatio(f, m_orientation.inverted());
 		auto lumm = m_intensity * ratio;
 
-		const vxRay ff(cPnt+collision.normal()/100000.0, m_orientation.inverted());
+		const vxRay ff(cPnt+collision.normal().tiny(), m_orientation.inverted());
 		const auto&& scn = m_scene.lock();
 		vxCollision col;
 		if (!m_castShadows || !(scn->throwRay(ff,col)==1))
@@ -420,7 +420,7 @@ vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collisi
 	vxRay f(collision.position(), collision.normal());
 	const auto&& cPnt = collision.position();
 
-	const auto littleNormal = collision.normal()/100000.0;
+	const auto littleNormal = collision.normal().tiny();
 		const auto finalIntensity = m_intensity / (scalar)m_samples;
 		 
 	for(auto x = 0u; x<m_samples; x++)

@@ -94,7 +94,6 @@ public:
 	vxVector3d (scalar x, scalar y, scalar z);
 	~vxVector3d(){}
 	
-
 	void set(scalar x, scalar y, scalar z);
 	void set(const vxVector3d &other);
 
@@ -102,7 +101,8 @@ public:
 	void setY(scalar y);
 	void setZ(scalar z);
 
-	vxVector3d get() const;
+	vxVector3d tiny() const;
+	
 	
 	void get(scalar &x, scalar &y, scalar &z) const;
 

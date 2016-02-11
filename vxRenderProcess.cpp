@@ -287,9 +287,10 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 							v3 invV = ((n * ray.direction().dot(n) * -2.0)
 									   + ray.direction());
 							invV+=MU::getSolidSphereRand3(0.1);
-							const auto &&reflexRay = vxRay(collision.position()
-														   +(n/10000),
-														   invV);
+							
+							const auto &&reflexRay= 
+									vxRay(collision.position() + n.tiny(), invV);
+							
 							reflection = computeLight(reflexRay, refxCollision);
 						}
 						
@@ -310,7 +311,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						{
 							const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
 							const vxRay giRay(collision.position()
-											  +collision.normal()/10000.0, 
+											  +collision.normal().tiny(), 
 											  r.inverted());
 							
 							auto rayIncidence = giRay.incidence(collision.normal());

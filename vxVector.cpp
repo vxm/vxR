@@ -270,9 +270,11 @@ void vxVector3d::setZ(scalar z)
 	m_z=z;
 }
 
-vxVector3d vxVector3d::get() const
+vxVector3d vxVector3d::tiny() const
 {
-	return *this;
+	return {m_x / 10000.0,
+			m_y / 10000.0,
+			m_z / 10000.0};
 }
 
 void vxVector3d::get(scalar &x, scalar &y, scalar &z) const 
