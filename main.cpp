@@ -214,8 +214,8 @@ int main(int argc, char *argv[])
 		executeRenderProcess(argc, argv);
 		break;
 	}
-	
-	return 1;
+	*/
+	return 0;
 }
 
 

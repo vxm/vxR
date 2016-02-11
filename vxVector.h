@@ -9,9 +9,9 @@
 namespace vxCore {
 
 //TODO: add literal for scalar 0.0r
-using scalar = double;
+using scalar = float;
 
-class vxVector2d
+class alignas(sizeof(scalar)*2) vxVector2d
 {
 private:
 	scalar m_x {0.0};
@@ -41,16 +41,12 @@ public:
 	vxVector2d unit() const;
 	vxVector2d operator+(const vxVector2d& other) const;
 	vxVector2d operator+(scalar factor) const;
-	vxVector2d operator+(int factor) const;
 	vxVector2d operator-(const vxVector2d& entrada) const;
 	vxVector2d operator-(scalar factor) const;
-	vxVector2d operator-(int factor) const;
 	vxVector2d operator*(const vxVector2d& entrada) const;
 	vxVector2d operator*(scalar factor) const;
-	vxVector2d operator*(int factor) const;
 	vxVector2d operator/(const vxVector2d& entrada) const;
 	vxVector2d operator/(scalar factor) const;
-	vxVector2d operator/(int factor) const;
 	static vxVector2d zero;
 
 	bool operator==(const vxVector2d &other) const;
@@ -73,7 +69,7 @@ public:
 
 class vxColor;
 
-class vxVector3d
+class alignas(sizeof(scalar)*4) vxVector3d
 {
 
 protected:
@@ -81,7 +77,7 @@ protected:
 	scalar m_y {0.0};
 	scalar m_z {0.0};
 
-	//std::valarray<scalar> m_v{0.0,3};
+	scalar m_w {0.0};
 	
 public:
 	
@@ -130,7 +126,6 @@ public:
 	vxVector3d operator+(const vxVector3d &entrada) const;
 	vxVector3d& operator+=(const vxVector3d &entrada);
 	vxVector3d operator+(scalar factor) const;
-	vxVector3d operator+(int factor) const;
 
 	vxVector3d operator-(const vxVector3d &entrada) const;
 	vxVector3d operator-(scalar factor) const;
