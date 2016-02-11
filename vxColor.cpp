@@ -318,7 +318,6 @@ vxColor &vxColor::operator+=(scalar factor)
 	return *this;
 }
 
-
 vxColor &vxColor::operator-=(const vxColor &entrada)
 {
 	m_r -= entrada.m_r;
