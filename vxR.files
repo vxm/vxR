@@ -18,8 +18,8 @@ StringUtils.cpp
 StringUtils.h
 TimeUtils.cpp
 TimeUtils.h
-ui_vxrendermain.h
-ui_vxrmainui.h
+VectorUtils.cpp
+VectorUtils.h
 vxBitMap2d.cpp
 vxBitMap2d.h
 vxBoundingBox.cpp
@@ -28,12 +28,16 @@ vxBox.cpp
 vxBox.h
 vxBoxCreator.cpp
 vxBoxCreator.h
+vxBroadPhase.cpp
+vxBroadPhase.h
 vxBucketList.cpp
 vxBucketList.h
 vxCamera.cpp
 vxCamera.h
 vxCirclesMap.cpp
 vxCirclesMap.h
+vxClock.cpp
+vxClock.h
 vxCollision.cpp
 vxCollision.h
 vxColor.cpp
@@ -42,6 +46,8 @@ vxContactBuffer.cpp
 vxContactBuffer.h
 vxDome.cpp
 vxDome.h
+vxGeoGrid.cpp
+vxGeoGrid.h
 vxGeometry.cpp
 vxGeometry.h
 vxGeometryImporter.cpp
@@ -56,6 +62,8 @@ vxLegoBlock.cpp
 vxLegoBlock.h
 vxLight.cpp
 vxLight.h
+vxList.cpp
+vxList.h
 vxmanager.cpp
 vxmanager.h
 vxMap.cpp
@@ -106,6 +114,8 @@ vxStopwatch.cpp
 vxStopwatch.h
 vxThreadPool.cpp
 vxThreadPool.h
+vxTriangleMesh.cpp
+vxTriangleMesh.h
 vxTriRef.cpp
 vxTriRef.h
 vxUnitTest.cpp
