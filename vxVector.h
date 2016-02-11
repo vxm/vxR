@@ -9,9 +9,9 @@
 namespace vxCore {
 
 //TODO: add literal for scalar 0.0r
-using scalar = double;
+using scalar = float;
 
-class vxVector2d
+class alignas(sizeof(scalar)*2) vxVector2d
 {
 private:
 	scalar m_x {0.0};
@@ -73,7 +73,7 @@ public:
 
 class vxColor;
 
-class vxVector3d
+class alignas(sizeof(scalar)*4) vxVector3d
 {
 
 protected:
