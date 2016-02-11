@@ -247,7 +247,10 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 	}
 }
 
-const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp, bool skip) const
+const bpSearchResult 
+vxBroadPhase::getList(const vxRay &ray, 
+					  v3 &sp,
+					  v3 &fp) const
 {
 	long retVal{m_c_size};
 	
@@ -264,12 +267,9 @@ const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp, bool skip) 
 	
 	do
 	{
-		retVal = lookupVoxel(sp, x, y, z);
-		
-		if(!skip && m_members[retVal].geoRefs!=nullptr)
-		{
-			return m_members[retVal];
-		}
+		retVal = lookupVoxel(fp, x, y, z);
+
+		sp = fp;
 		
 		auto xVal = m_xvalues[x + velX] - p.x();
 		auto yVal = m_yvalues[y + velY] - p.y();
@@ -279,26 +279,29 @@ const bpSearchResult vxBroadPhase::getList(const vxRay &ray, v3 &sp, bool skip) 
 		if(fabs(intersectX.y()) <= fabs(yVal)
 				&& fabs(intersectX.z()) <= fabs(zVal))
 		{
-			sp = p + intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
+			fp = p + intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
 		}
 		
 		v3 intersectY = MU::rectAndYPlane(d, yVal);
 		if(fabs(intersectY.x()) <= fabs(xVal)
 				&& fabs(intersectY.z()) <= fabs(zVal))
 		{
-			sp = p + intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
+			fp = p + intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
 		}
 		
 		v3 intersectZ = MU::rectAndZPlane(d, zVal);
 		if(fabs(intersectZ.x()) <= fabs(xVal)
 				&& fabs(intersectZ.y()) <= fabs(yVal))
 		{
-			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
+			fp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
 		}
 		
-		skip = false;
+		if(m_members[retVal].geoRefs!=nullptr)
+		{
+			return m_members[retVal];
+		}
 	}
-	while(indexIsValid(retVal) && m_bb->contains(sp));
+	while(indexIsValid(retVal) && m_bb->contains(fp));
 	
 	return bpSearchResult{m_c_size, nullptr};
 }
@@ -363,38 +366,30 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	}
 	
 	std::vector<collision_geometryH> cols;
-	auto sp =  collide.position() 
-			+ (collide.normal().inverted() / (scalar)10000.0);
+	auto sp =  collide.position() + collide.normal().inverted().tiny();
 	
 	auto prev = m_c_size;
 	bpSearchResult bbxs;
-	bool skip = false;
 	std::set<vxGeometryHandle> viewedGeos;
 	do
 	{
-		bbxs = getList(ray, sp, skip);
+		v3 fp{sp};
+		bbxs = getList(ray, sp, fp);
 		
-		if(bbxs.index==prev)
+		if(bbxs.index==prev || bbxs.geoRefs==nullptr)
 		{
 			collide.setValid(false);
 			return 0;
 		}
-		
-		//std::cout << ": " << bbxs.index << std::endl;
 		
 		prev = bbxs.index;
-		
-		if(bbxs.geoRefs==nullptr)
-		{
-			collide.setValid(false);
-			return 0;
-		}
 		
 		auto&& geos = *bbxs.geoRefs;
 		
 		for(const auto &geo: geos)
 		{
 			collide.setPosition(sp);
+			
 			if(viewedGeos.insert(geo).second)
 			{
 				geo->throwRay(ray,collide);
@@ -406,7 +401,6 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			}
 		}
 		
-		skip=true;
 	}
 	while(!cols.size());
 	
