@@ -83,7 +83,7 @@ public:
 	unsigned int rz() const;
 	void setRz(unsigned int rz);
 
-	unsigned long lookupVoxel(const v3 &v, int &a, int &b, int &c) const;
+	unsigned long lookupVoxel(const v3 &&v, int &a, int &b, int &c) const;
 	void locateAndRegister(vxGeometryHandle geo);
 	const bpSearchResult getList(const vxRay &ray, v3 &sp, bool skip) const;
 	bool indexIsValid(const long idx) const;
