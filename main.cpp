@@ -16,6 +16,7 @@
 #include "vxGridUnitTest.h"
 #include "vxSceneParser.h"
 #include "vxClock.h"
+#include "vxNonSequentalPool.h"
 
 static const std::string baseName("image.0000001.tif");
 using namespace std::string_literals;
@@ -159,6 +160,12 @@ int printHelp()
 	
 	return 0;
 }
+
+void index(unsigned int idx)
+{
+	std::cout << "index: " << idx << " [p]: " << (idx>>abs(idx>>2)) << std::endl;
+}
+
 
 int main(int argc, char *argv[])
 {
