@@ -74,7 +74,8 @@ SOURCES += main.cpp\
     vxBroadPhase.cpp \
     vxTriangleMesh.cpp \
     vxClock.cpp \
-    VectorUtils.cpp
+    VectorUtils.cpp \
+    vxNonSequentalPool.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -138,7 +139,8 @@ HEADERS  += \
     vxBroadPhase.h \
     vxTriangleMesh.h \
     vxClock.h \
-    VectorUtils.h
+    VectorUtils.h \
+    vxNonSequentalPool.h
 
 FORMS    +=
 

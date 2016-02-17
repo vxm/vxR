@@ -174,7 +174,7 @@ static_assert(sizeof(vx)==1, "vx size is wrong");
 
 ///
 /// \brief The Voxel class
-///
+/// This is a temporary interchange struct
 class Voxel
 {
 public:
