@@ -129,30 +129,6 @@ vxVector2d vxVector2d::inverted() const
 					   -m_y));
 }
 
-vxVector2d vxVector2d::operator+(int factor) const 
-{
-	return (vxVector2d(factor+m_x,
-					   factor+m_y));
-}
-
-vxVector2d vxVector2d::operator-(int factor) const 
-{
-	return (vxVector2d(m_x-factor,
-					   m_y-factor));
-}
-
-vxVector2d vxVector2d::operator*(int factor) const 
-{
-	return (vxVector2d(factor*m_x,
-					   factor*m_y));
-}
-
-vxVector2d vxVector2d::operator/(int factor) const 
-{
-	return (vxVector2d(m_x/(scalar)factor,
-					   m_y/(scalar)factor));
-}
-
 bool vxVector2d::operator==(const vxVector2d &other) const
 {
 	return other.m_x == m_x && other.m_y == m_y; 
@@ -174,10 +150,10 @@ vxVector2d vxVector2d::operator/(scalar factor) const
 					   m_y/(scalar)factor));
 }
 
-vxVector2d vxVector2d::operator/(const vxVector2d& entrada) const 
+vxVector2d vxVector2d::operator/(const vxVector2d& other) const 
 {
-	return (vxVector2d(m_x/entrada.m_x,
-					   m_y/entrada.m_y));
+	return (vxVector2d(m_x/other.m_x,
+					   m_y/other.m_y));
 }
 
 vxVector2d vxVector2d::operator*(scalar factor) const 
@@ -185,10 +161,10 @@ vxVector2d vxVector2d::operator*(scalar factor) const
 	return (vxVector2d(factor*m_x,factor*m_y));
 }
 
-vxVector2d vxVector2d::operator*(const vxVector2d& entrada) const 
+vxVector2d vxVector2d::operator*(const vxVector2d& other) const 
 {
-	return (vxVector2d(entrada.m_x*m_x,
-					   entrada.m_y*m_y));
+	return (vxVector2d(other.m_x*m_x,
+					   other.m_y*m_y));
 }
 
 vxVector2d vxVector2d::operator-(scalar factor) const 
@@ -197,10 +173,10 @@ vxVector2d vxVector2d::operator-(scalar factor) const
 					   m_y-factor));
 }
 
-vxVector2d vxVector2d::operator-(const vxVector2d& entrada) const 
+vxVector2d vxVector2d::operator-(const vxVector2d& other) const 
 {
-	return (vxVector2d(m_x-entrada.m_x,
-					   m_y-entrada.m_y));
+	return (vxVector2d(m_x-other.m_x,
+					   m_y-other.m_y));
 }
 
 
@@ -415,25 +391,20 @@ void vxVector3d::setUnit()
 	m_z/=lng;
 }
 
-vxVector3d vxVector3d::operator+(int factor) const
+vxVector3d& vxVector3d::operator-=(const vxVector3d &other)
 {
-	return v3(factor+m_x, factor+m_y, factor+m_z);
-}
-
-vxVector3d& vxVector3d::operator-=(const vxVector3d &entrada)
-{
-	m_x-=entrada.m_x;
-	m_y-=entrada.m_y;
-	m_z-=entrada.m_z;
+	m_x-=other.m_x;
+	m_y-=other.m_y;
+	m_z-=other.m_z;
 	
 	return (*this);
 }
 
-vxVector3d& vxVector3d::operator*=(const vxVector3d &entrada)
+vxVector3d& vxVector3d::operator*=(const vxVector3d &other)
 {
-	m_x*=entrada.m_x;
-	m_y*=entrada.m_y;
-	m_z*=entrada.m_z;
+	m_x*=other.m_x;
+	m_y*=other.m_y;
+	m_z*=other.m_z;
 	
 	return (*this);
 }
@@ -561,11 +532,11 @@ vxVector3d vxVector3d::operator/(scalar factor) const
 			  m_z/(scalar)factor);
 }
 
-vxVector3d vxVector3d::operator/(const vxVector3d &entrada) const
+vxVector3d vxVector3d::operator/(const vxVector3d &other) const
 {
-	return v3(entrada.m_x/m_x,
-			  entrada.m_y/m_y,
-			  entrada.m_z/m_z);
+	return v3(other.m_x/m_x,
+			  other.m_y/m_y,
+			  other.m_z/m_z);
 }
 
 vxVector3d vxVector3d::operator*(scalar factor) const 
@@ -589,11 +560,11 @@ vxVector3d vxVector3d::operator-(scalar factor) const
 			  m_z-factor);
 }
 
-vxVector3d vxVector3d::operator-(const vxVector3d &entrada) const 
+vxVector3d vxVector3d::operator-(const vxVector3d &other) const 
 {
-	return v3(m_x-entrada.m_x,
-			  m_y-entrada.m_y,
-			  m_z-entrada.m_z);
+	return v3(m_x-other.m_x,
+			  m_y-other.m_y,
+			  m_z-other.m_z);
 }
 
 vxVector3d vxVector3d::operator+(scalar factor) const
@@ -601,18 +572,18 @@ vxVector3d vxVector3d::operator+(scalar factor) const
 	return v3(factor+m_x,factor+m_y,factor+m_z);
 }
 
-vxVector3d vxVector3d::operator+(const vxVector3d &entrada) const
+vxVector3d vxVector3d::operator+(const vxVector3d &other) const
 {
-	return v3(entrada.m_x+m_x,
-			  entrada.m_y+m_y,
-			  entrada.m_z+m_z);
+	return v3(other.m_x+m_x,
+			  other.m_y+m_y,
+			  other.m_z+m_z);
 }
 
-vxVector3d& vxVector3d::operator+=(const vxVector3d &entrada)
+vxVector3d& vxVector3d::operator+=(const vxVector3d &other)
 {
-	m_x+=entrada.m_x;
-	m_y+=entrada.m_y;
-	m_z+=entrada.m_z;
+	m_x+=other.m_x;
+	m_y+=other.m_y;
+	m_z+=other.m_z;
 	return (*this);
 }
 

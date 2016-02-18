@@ -139,7 +139,7 @@ unsigned long vxBroadPhase::index(unsigned int a, unsigned int b, unsigned int c
 }
 
 //TODO:Binary search
-unsigned long vxBroadPhase::lookupVoxel(const v3 &v, 
+unsigned long vxBroadPhase::lookupVoxel(const v3& v, 
 										int &a, 
 										int &b, 
 										int &c) const

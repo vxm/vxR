@@ -74,7 +74,8 @@ SOURCES += main.cpp\
     vxBroadPhase.cpp \
     vxTriangleMesh.cpp \
     vxClock.cpp \
-    VectorUtils.cpp
+    VectorUtils.cpp \
+    vxNonSequentalPool.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -138,7 +139,8 @@ HEADERS  += \
     vxBroadPhase.h \
     vxTriangleMesh.h \
     vxClock.h \
-    VectorUtils.h
+    VectorUtils.h \
+    vxNonSequentalPool.h
 
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
@@ -150,4 +152,4 @@ OTHER_FILES += \
     
 CONFIG += c++14
 
-QMAKE_CXXFLAGS += -Wpedantic -O3
+QMAKE_CXXFLAGS += -Wpedantic -O3 -fopenmp 

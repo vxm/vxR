@@ -286,16 +286,23 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						{
 							v3 invV = ((n * ray.direction().dot(n) * -2.0)
 									   + ray.direction());
+<<<<<<< HEAD
 							invV+=MU::getSolidSphereRand3(0.1);
 							
 							const auto &&reflexRay= 
 									vxRay(collision.position() + n.tiny(), invV);
 							
+=======
+							invV+=MU::getSolidSphereRand3(0.5);
+							const auto &&reflexRay = vxRay(collision.position()
+														   +(n/10000),
+														   invV);
+>>>>>>> master
 							reflection = computeLight(reflexRay, refxCollision);
 						}
 						
-						reflection*=(1.0/m_reflectionSamples);
-						pixelColor+= (reflection/5.0);
+						reflection*=(1.f/(float)m_reflectionSamples);
+						pixelColor+= (reflection/5.f);
 					}
 				}
 				

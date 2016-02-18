@@ -428,7 +428,7 @@ vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collisi
 		auto u = MU::getRand(m_maxX) + m_minX;
 		auto v = MU::getRand(m_maxY) + m_minY;
 
-		const auto&& orientation = m_transform.getOrigin() - cPnt + v3(u, 0.0 ,v);
+		const auto&& orientation = m_transform.getOrigin() - cPnt + v3(0.0, u ,v);
 		if(collision.normal().follows(orientation.inverted()))
 		{
 			const vxRay ff(cPnt+littleNormal, orientation);

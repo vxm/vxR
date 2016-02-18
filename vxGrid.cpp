@@ -422,7 +422,7 @@ void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 
 unsigned long vxGrid::index(const unsigned long x, const unsigned long y, const unsigned long z) const
 {
-	return x+(y*m_resolution)+(z*m_c_resXres);
+	return (x+(y*m_resolution)+(z*m_c_resXres));
 }
 
 void vxGrid::initialize(bool value)
