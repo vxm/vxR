@@ -105,7 +105,7 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			x = std::stod(vts[0]);
 			y = std::stod(vts[1]);
 			z = std::stod(vts[2]);
-			m_geo->addVertexTransformed(v3{x,y,z});
+			m_geo->addVertexTransformed(v3s{x,y,z});
 		}
 		
 		k++;

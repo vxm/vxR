@@ -59,7 +59,7 @@ void vxTriangleMesh::setConstructionPath(const std::string &constructionPath)
 }
 
 
-void vxTriangleMesh::addVertexTransformed(const v3 &v3)
+void vxTriangleMesh::addVertexTransformed(const v3s &v3)
 {
 	if(!m_openForEdition)
 	{
@@ -174,7 +174,7 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 
 		col.setColor(m_baseColor);
 		col.setValid(true);
-		col.setUV(v2(0.5,0.5));
+		col.setUV(v2s(0.5,0.5));
 		return 1;
 	}
 	

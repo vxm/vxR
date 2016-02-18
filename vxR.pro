@@ -142,7 +142,6 @@ HEADERS  += \
     VectorUtils.h \
     vxNonSequentalPool.h
 
-FORMS    +=
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
 
@@ -153,4 +152,4 @@ OTHER_FILES += \
     
 CONFIG += c++14
 
-QMAKE_CXXFLAGS += -Wpedantic -O3 -fopenmp 
+QMAKE_CXXFLAGS += -O3 -fopenmp

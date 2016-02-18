@@ -43,8 +43,8 @@ vxCamera::vxCamera(std::shared_ptr<const ImageProperties> prop)
 	m_ry = (scalar)m_properties->ry();
 }
 
-vxCamera::vxCamera(const v3 &position, 
-					const v3 &orientation, 
+vxCamera::vxCamera(const v3s &position, 
+					const v3s &orientation, 
 					scalar focusD, 
 					scalar apertureH, 
 					scalar apertureV)
@@ -86,7 +86,7 @@ void vxCamera::set(const v3& position,
 	m_vApTan = tan(-m_verticalAperture/2.0);
 }
 
-vxRay vxCamera::ray(const v2 &coord, vxSampler &sampler) const
+vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
 {
 	const auto& s = sampler.xy();
 	scalar compX = m_hApTan * (( coord[0] * 2.0)-1.0)
@@ -100,13 +100,13 @@ vxRay vxCamera::ray(const v2 &coord, vxSampler &sampler) const
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
 
 	//TODO:read from scene
-	ret.setOrigin(v3(-12.0, 3.0, -12.0));
+	ret.setOrigin(v3s(-4.0, 0.2, -4.0));
 	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
 	ret.direction().setUnit();
 	return ret;
 }
 
-vxRay vxCamera::givemeRandRay(const v2 &coord)
+vxRay vxCamera::givemeRandRay(const v2s &coord)
 {
 	scalar compX = m_hApTan * (( coord.x() * 2.0) -1.0 ) 
 			- 1.0/(scalar)(2.0 * m_properties->rx()) 
@@ -133,12 +133,12 @@ vxRay vxCamera::givemeNextRay(const vxContactBuffer &imagen, scalar ang)
 	return ret;
 }
 
-vxRay vxCamera::givemeRandomRay(const v2 &coord)
+vxRay vxCamera::givemeRandomRay(const v2s &coord)
 {
 	scalar yrv,xrv;
 	xrv=((rand()/scalar(RAND_MAX)))/m_properties->rx();
 	yrv=((rand()/scalar(RAND_MAX)))/m_properties->ry();
-	return v3{m_hApTan * (((coord.y()+yrv)*2.0)-1.0) ,
+	return v3s{m_hApTan * (((coord.y()+yrv)*2.0)-1.0) ,
 						m_vApTan * (((coord.x()+xrv)*2.0)-1.0), 
 						m_focusDistance};
 }

@@ -14,12 +14,12 @@ void vxLegoBlockInGrid::setSize(scalar value)
 {
 	m_size = value;
 }
-v3 vxLegoBlockInGrid::position() const
+v3s vxLegoBlockInGrid::position() const
 {
 	return m_pos;
 }
 
-void vxLegoBlockInGrid::setPosition(const v3 &value)
+void vxLegoBlockInGrid::setPosition(const v3s &value)
 {
 	m_pos = value;
 }

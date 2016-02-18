@@ -3,12 +3,12 @@
 using namespace vxCore;
 
 
-v3 vxBox::position() const
+v3s vxBox::position() const
 {
 	return m_position;
 }
 
-void vxBox::setPosition(const v3 &position)
+void vxBox::setPosition(const v3s &position)
 {
 	m_position = position;
 }
@@ -23,12 +23,12 @@ void vxBox::setSize(scalar size)
 	m_size = size;
 }
 
-void vxBox::set(const v3 &pos)
+void vxBox::set(const v3s &pos)
 {
 	m_position = pos;
 }
 
-void vxBox::set(const v3 &pos, scalar size)
+void vxBox::set(const v3s &pos, scalar size)
 {
 	m_position = pos;
 	m_size = size;
@@ -92,9 +92,9 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			&& hitX.y()<=max.y() && hitX.y()>=min.y())
 	{
 		collide.setValid(true);
-		collide.setNormal(aMax ? v3::constX : v3::constMinusX);
+		collide.setNormal(aMax ? v3s::constX : v3s::constMinusX);
 		collide.setPosition(hitX + ray.origin());
-		collide.setUV(v2{(mSize + hitX.z() - p.z())/m_size,
+		collide.setUV(v2s{(mSize + hitX.z() - p.z())/m_size,
 								 (mSize + hitX.y() - p.y())/m_size});
 		return 1;
 	}
@@ -105,9 +105,9 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			&& hitZ.y()<=max.y() && hitZ.y()>=min.y())
 	{
 		collide.setValid(true);
-		collide.setNormal(bMax ? v3::constZ : v3::constMinusZ);
+		collide.setNormal(bMax ? v3s::constZ : v3s::constMinusZ);
 		collide.setPosition(hitZ + ray.origin());
-		collide.setUV(v2{(mSize + hitZ.x() - p.x())/m_size,
+		collide.setUV(v2s{(mSize + hitZ.x() - p.x())/m_size,
 								 (mSize + hitZ.y() - p.y())/m_size});
 		return 1;
 	}
@@ -118,9 +118,9 @@ int vxBox::throwRay(const vxRay &ray, vxCollision &collide) const
 			&& hitY.z()<=max.z() && hitY.z()>=min.z())
 	{
 		collide.setValid(true);
-		collide.setNormal(cMax ? v3::constY : v3::constMinusY);
+		collide.setNormal(cMax ? v3s::constY : v3s::constMinusY);
 		collide.setPosition(hitY + ray.origin());
-		collide.setUV(v2{(mSize + hitY.x() - p.x())/m_size,
+		collide.setUV(v2s{(mSize + hitY.x() - p.x())/m_size,
 								 (mSize + hitY.z() - p.z())/m_size});
 		return 1;
 	}

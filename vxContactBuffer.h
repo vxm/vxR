@@ -22,7 +22,7 @@ namespace vxCore {
 class Hit
 {
 public:
-	Hit(const vxColor &px, const v2 &coord)
+	Hit(const vxColor &px, const v2s &coord)
 		:m_color(px)
 		,m_xyCoef(coord)
 	{}
@@ -31,7 +31,7 @@ public:
 	{}
 	
 	vxColor m_color;
-	v2 m_xyCoef;
+	v2s m_xyCoef;
 };
 
 //static std::mutex m_mutex;
@@ -74,7 +74,7 @@ public:
 		return m_k;
 	}
 
-	void append(const vxColor &px, const v2 &coord)
+	void append(const vxColor &px, const v2s &coord)
 	{
 		Hit t(px,coord);
 		m_pxs[m_k]=t;

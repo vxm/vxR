@@ -34,24 +34,24 @@ public:
 
 	vxBoundingBox();
 	void clear();
-	void set(v3 position, scalar size);
+	void set(v3s position, scalar size);
 	void set(scalar mnx,scalar mny,scalar mnz,
 			 scalar mxx,scalar mxy,scalar mxz);
 	
 	void markAsInitialized();
 	void close();
 	
-	void extend(const v3 &limit);
+	void extend(const v3s &limit);
 	void extend(const vxBoundingBox &box);
 
 	scalar xLength() const;
 	scalar yLength() const;
 	scalar zLength() const;
 
-	v3 max() const;
-	v3 min() const;
+	v3s max() const;
+	v3s min() const;
 	
-	v3 center() const;
+	v3s center() const;
 	scalar minX() const;
 	void setMinX(scalar minx);
 	scalar minY() const;
@@ -65,9 +65,9 @@ public:
 	scalar maxZ() const;
 	void setMaxZ(scalar maxz);
 
-	bool contains(const v3 &v) const;
-	bool contains(const v3 &v, scalar tolerance) const;
-	v3 diagonal() const;
+	bool contains(const v3s &v) const;
+	bool contains(const v3s &v, scalar tolerance) const;
+	v3s diagonal() const;
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;

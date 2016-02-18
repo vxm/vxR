@@ -74,11 +74,11 @@ public:
 	unsigned int rz() const;
 	void setRz(unsigned int rz);
 
-	unsigned long linearLookupVoxel(const v3 &v, int &a, int &b, int &c) const;
-	unsigned long lookupVoxel(const v3 &v, int &a, int &b, int &c) const;
+	unsigned long linearLookupVoxel(const v3s &v, int &a, int &b, int &c) const;
+	unsigned long lookupVoxel(const v3s &v, int &a, int &b, int &c) const;
 	void locateAndRegister(const vxTriRef &tri, unsigned long triangleID);
 	
-	const searchResult getList(const vxRay &ray, v3 &sp) const;
+	const searchResult getList(const vxRay &ray, v3s &sp) const;
 	bool indexIsValid(const long idx) const;
 	bool hasTriangles(const long idx) const;
 };

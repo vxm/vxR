@@ -17,13 +17,13 @@ int MUUnitTest::testFunction_Intersection()
 
 	// TEST 6 //Ray and plane from 3 points
 	{
-		const auto a{v3(1.0, 2.0, 1.0)};
-		const auto b{v3(4.0, 2.0, 1.0)};
-		const auto c{v3(9.0, 5.0, 6.0)};
+		const auto a{v3s(1.0, 2.0, 1.0)};
+		const auto b{v3s(4.0, 2.0, 1.0)};
+		const auto c{v3s(9.0, 5.0, 6.0)};
 		
-		const vxRay ray(v3(10,10,10), v3(9,8,9));
+		const vxRay ray(v3s(10,10,10), v3s(9,8,9));
 		
-		const v3 r = MU::rectAndPlane(ray, a, b, c);
+		const v3s r = MU::rectAndPlane(ray, a, b, c);
 
 		std::cout << "A (" << a << "), B (" << b << "), C (" << c <<") : "s
 					 << " ray (" 
@@ -37,7 +37,7 @@ int MUUnitTest::testFunction_Intersection()
 		 * intersection plane ([1.0, 2.0, 3.0],[4.0, 2.0, 1.0],[4.0, 5.0, 6.0]) line([10,10,10],[-10,-10,-10])
 		 *	6 -15 9
 		*/
-		auto f = [r]{return r == v3(7, 10, -13.0);};
+		auto f = [r]{return r == v3s(7, 10, -13.0);};
 		st.examine(f, " result must be (7, 10, -13.0)"s);
 	}
 	
@@ -56,9 +56,9 @@ int MUUnitTest::testFunction_VectorBasics()
 
 	// TEST 5 //Cross product
 	{
-		const v3 a{v3(5.0, 3.0, 5.0)};
-		const v3 b{v3(6.0, 1.0, 4.0)};
-		const v3 n = a^b;
+		const v3s a{v3s(5.0, 3.0, 5.0)};
+		const v3s b{v3s(6.0, 1.0, 4.0)};
+		const v3s n = a^b;
 	
 		std::cout << "A (" << a << "), B (" << b <<") cross is: "s
 					 << n
@@ -70,7 +70,7 @@ int MUUnitTest::testFunction_VectorBasics()
 		 *	n =
 		 *		7   10  -13
 		*/
-		auto f = [n]{return n == v3(7, 10, -13.0);};
+		auto f = [n]{return n == v3s(7, 10, -13.0);};
 		st.examine(f, " result must be (7, 10, -13.0)"s);
 	}
 	
@@ -90,8 +90,8 @@ int MUUnitTest::testFunction_rectAndXPlane()
 
 	// TEST 1
 	{
-		const v3 origin{v3(4.5, 4.5, 4.5)};
-		const v3 direction{v3(1.0, 0.0, 0.0)};
+		const v3s origin{v3s(4.5, 4.5, 4.5)};
+		const v3s direction{v3s(1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
 		auto intersection = MU::rayAndXPlane(ray, 13.0);
 		
@@ -99,14 +99,14 @@ int MUUnitTest::testFunction_rectAndXPlane()
 					 << intersection 
 					 << std::endl;
 		
-		auto f = [intersection]{return intersection == v3(13, 4.5, 4.5);};
+		auto f = [intersection]{return intersection == v3s(13, 4.5, 4.5);};
 		st.examine(f, " 4.5 in all axys, direction is x=1, plane 3"s);
 	}
 	
 	// TEST 2
 	{
-		const v3 origin{v3(-30, 5.0, 5.0)};
-		const v3 direction{v3(1.0, 0.0, 0.0)};
+		const v3s origin{v3s(-30, 5.0, 5.0)};
+		const v3s direction{v3s(1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
 		auto intersection = MU::rayAndXPlane(ray, -20.0);
 		
@@ -114,14 +114,14 @@ int MUUnitTest::testFunction_rectAndXPlane()
 					 << intersection 
 					 << std::endl;
 		
-		auto f = [intersection]{return intersection == v3(-20, 5.0, 5.0);};
+		auto f = [intersection]{return intersection == v3s(-20, 5.0, 5.0);};
 		st.examine(f, " 4.5 in all axys, direction is x=1, plane 3"s);
 	}
 
 	// TEST 3
 	{
-		const v3 origin{v3(-30, -5.0, -5.0)};
-		const v3 direction{v3(-1.0, 0.0, 0.0)};
+		const v3s origin{v3s(-30, -5.0, -5.0)};
+		const v3s direction{v3s(-1.0, 0.0, 0.0)};
 		const auto& ray = vxRay{origin,direction};
 		auto intersection = MU::rayAndXPlane(ray, -200.0);
 		
@@ -129,14 +129,14 @@ int MUUnitTest::testFunction_rectAndXPlane()
 					 << intersection 
 					 << std::endl;
 
-		auto f = [intersection]{return intersection == v3(-200, -5.0, -5.0);};
+		auto f = [intersection]{return intersection == v3s(-200, -5.0, -5.0);};
 		st.examine(f, " 4.5 in all axys, direction is x=1, plane 3"s);
 	}
 	
 	// TEST 4
 	{
-		const v3 origin{v3(5.0, 5.0, 5.0)};
-		const v3 direction{v3(10.0, 1.0, 1.0)};
+		const v3s origin{v3s(5.0, 5.0, 5.0)};
+		const v3s direction{v3s(10.0, 1.0, 1.0)};
 		const auto& ray = vxRay{origin,direction};
 		auto intersection = MU::rayAndXPlane(ray, 40.0);
 
@@ -144,7 +144,7 @@ int MUUnitTest::testFunction_rectAndXPlane()
 					 << intersection 
 					 << std::endl;
 		
-		auto f = [intersection]{return intersection == v3(-200, -5.0, -5.0);};
+		auto f = [intersection]{return intersection == v3s(-200, -5.0, -5.0);};
 		st.examine(f, " 4.5 in all axys, direction is x=1, plane 3"s);
 	}
 	

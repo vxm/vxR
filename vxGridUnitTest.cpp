@@ -6,11 +6,11 @@ using namespace vxCore;
 using namespace std::string_literals;
 
 
-v3 vxGridUnitTest::testNextVoxel(v3 org, v3 dir)
+v3s vxGridUnitTest::testNextVoxel(v3s org, v3s dir)
 {
 	vxGrid grid;
 	const vxRay z{org, dir};
-	v3 exactIntersection;
+	v3s exactIntersection;
 	auto nv = grid.nextVoxel(z, exactIntersection);
 	
 	//if(verbose())
@@ -33,80 +33,80 @@ int vxGridUnitTest::testFunction_nextVoxel()
 	vxStatus st;
 
 	{// 
-		const v3 origin{v3(1.2, -1.5, -1.95)};
-		const v3 direction{v3(0.1, -0.1, -0.1)};
+		const v3s origin{v3s(1.2, -1.5, -1.95)};
+		const v3s direction{v3s(0.1, -0.1, -0.1)};
 		auto nv = testNextVoxel(origin, direction);
 
-		auto f = [nv]{return nv == v3(0.57735, -0.57735, -0.57735);};
+		auto f = [nv]{return nv == v3s(0.57735, -0.57735, -0.57735);};
 		st.examine(f, "mid voxel, Y-"s);
 	}
 
 	{// 
-		const v3 origin{v3(1.1, 0.5, -1.95)};
-		const v3 direction{v3(0.1, -0.4, -1.0)};
+		const v3s origin{v3s(1.1, 0.5, -1.95)};
+		const v3s direction{v3s(0.1, -0.4, -1.0)};
 		auto nv = testNextVoxel(origin, direction);
 
-		auto f = [nv]{return nv == v3(4.5, 4.5, 3.5);};
+		auto f = [nv]{return nv == v3s(4.5, 4.5, 3.5);};
 		st.examine(f, "mid voxel, Y-"s);
 	}
 	
 	{// 
-		const v3 origin{v3(4.5, 4.5, 4.5)};
-		const v3 direction{v3(0.0, 0.0, -1.0)};
+		const v3s origin{v3s(4.5, 4.5, 4.5)};
+		const v3s direction{v3s(0.0, 0.0, -1.0)};
 		auto nv = testNextVoxel(origin, direction);
 
-		auto f = [nv]{return nv == v3(4.5, 4.5, 3.5);};
+		auto f = [nv]{return nv == v3s(4.5, 4.5, 3.5);};
 		st.examine(f, "mid voxel, Y-"s);
 	}
 
 	{
-		const v3 origin{v3(.5,.5,.5)};
+		const v3s origin{v3s(.5,.5,.5)};
 		
 		{// +Z
-			const v3 direction{v3(0.0,0.0,1.0)};
+			const v3s direction{v3s(0.0,0.0,1.0)};
 			auto nv = testNextVoxel(origin, direction);
 		
-			auto f = [nv]{return nv == v3(0.5, 0.5, 1.5);};
+			auto f = [nv]{return nv == v3s(0.5, 0.5, 1.5);};
 			st.examine(f, "mid voxel, Z+"s);
 		}
 	
 		{// -Z
-			const v3 direction{v3(0.0,0.0,-1.0)};
+			const v3s direction{v3s(0.0,0.0,-1.0)};
 			auto nv = testNextVoxel(origin, direction);
 		
-			auto f = [nv]{return nv == v3(0.5, 0.5, -0.5);};
+			auto f = [nv]{return nv == v3s(0.5, 0.5, -0.5);};
 			st.examine(f, "mid voxel, Z-"s);
 		}
 	
 		{// +X
-			const v3 direction{v3(1.0,0.0,0.0)};
+			const v3s direction{v3s(1.0,0.0,0.0)};
 			auto nv = testNextVoxel(origin, direction);
 	
-			auto f = [nv]{return nv == v3(1.5, 0.5, 0.5);};
+			auto f = [nv]{return nv == v3s(1.5, 0.5, 0.5);};
 			st.examine(f, "mid voxel, X+"s);
 		}
 		
 		{// -X
-			const v3 direction{v3(-1.0,0.0,0.0)};
+			const v3s direction{v3s(-1.0,0.0,0.0)};
 			auto nv = testNextVoxel(origin, direction);
 	
-			auto f = [nv]{return nv == v3(-0.5, 0.5, 0.5);};
+			auto f = [nv]{return nv == v3s(-0.5, 0.5, 0.5);};
 			st.examine(f, "mid voxel, X-"s);
 		}
 	
 		{// +Y
-			const v3 direction{v3(0.0,1.0,0.0)};
+			const v3s direction{v3s(0.0,1.0,0.0)};
 			auto nv = testNextVoxel(origin, direction);
 	
-			auto f = [nv]{return nv == v3(0.5, 1.5, 0.5);};
+			auto f = [nv]{return nv == v3s(0.5, 1.5, 0.5);};
 			st.examine(f, "mid voxel, Y+"s);
 		}
 		
 		{// -Y
-			const v3 direction{v3(0.0,-1.0,0.0)};
+			const v3s direction{v3s(0.0,-1.0,0.0)};
 			auto nv = testNextVoxel(origin, direction);
 	
-			auto f = [nv]{return nv == v3(0.5, -0.5, 0.5);};
+			auto f = [nv]{return nv == v3s(0.5, -0.5, 0.5);};
 			st.examine(f, "mid voxel, Y-"s);
 		}
 	}

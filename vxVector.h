@@ -9,9 +9,9 @@
 namespace vxCore {
 
 //TODO: add literal for scalar 0.0r
-using scalar = float;
+using scalar = double;
 
-class alignas(sizeof(scalar)*2) vxVector2d
+class v2s
 {
 private:
 	scalar m_x {0.0};
@@ -19,48 +19,48 @@ private:
 
 public:
 
-	vxVector2d ();
-	vxVector2d (scalar x, scalar y);
-	vxVector2d (const vxVector2d& other);
-	vxVector2d (vxVector2d&& other);
-	vxVector2d& operator=(const vxVector2d& other);
+	v2s ();
+	v2s (scalar x, scalar y);
+	v2s (const v2s& other);
+	v2s (v2s&& other);
+	v2s& operator=(const v2s& other);
 	
 	void set(scalar x, scalar y);
-	void set(const vxVector2d &enter);
+	void set(const v2s &enter);
 	void setX(const scalar x);
 	void setY(const scalar y);
-	vxVector2d get() const;
+	v2s get() const;
 	void get(scalar &xi, scalar &yi) const;
 	scalar x() const;
 	scalar y() const;
 	scalar& operator[](const unsigned int);
 	scalar operator[](const unsigned int) const;
-	vxVector2d asIntPosition() const;
+	v2s asIntPosition() const;
 	scalar length() const;
-	vxVector2d inverted() const;
-	vxVector2d unit() const;
-	vxVector2d operator+(const vxVector2d& other) const;
-	vxVector2d operator+(scalar factor) const;
-	vxVector2d operator-(const vxVector2d& entrada) const;
-	vxVector2d operator-(scalar factor) const;
-	vxVector2d operator*(const vxVector2d& entrada) const;
-	vxVector2d operator*(scalar factor) const;
-	vxVector2d operator/(const vxVector2d& entrada) const;
-	vxVector2d operator/(scalar factor) const;
-	static vxVector2d zero;
+	v2s inverted() const;
+	v2s unit() const;
+	v2s operator+(const v2s& other) const;
+	v2s operator+(scalar factor) const;
+	v2s operator+(int factor) const;
+	v2s operator-(const v2s& other) const;
+	v2s operator-(scalar factor) const;
+	v2s operator-(int factor) const;
+	v2s operator*(const v2s& other) const;
+	v2s operator*(scalar factor) const;
+	v2s operator*(int factor) const;
+	v2s operator/(const v2s& other) const;
+	v2s operator/(scalar factor) const;
+	v2s operator/(int factor) const;
+	static v2s zero;
 
-	bool operator==(const vxVector2d &other) const;
-	
-	bool operator!=(const vxVector2d &other) const
-	{
-		return other.m_x != m_x || other.m_y != m_y;
-	}
+	bool operator==(const v2s &other) const;
+	bool operator!=(const v2s &other) const;
 	
 	
-	scalar angle(const vxVector2d &other) const;
+	scalar angle(const v2s &other) const;
 	scalar angle() const;
 	
-	friend std::ostream& operator<<(std::ostream &os, const vxVector2d& v)
+	friend std::ostream& operator<<(std::ostream &os, const v2s& v)
 	{
 		return os << v.m_x << " " << v.m_y;
 	}
@@ -69,95 +69,196 @@ public:
 
 class vxColor;
 
-class alignas(sizeof(scalar)*4) vxVector3d
+class v3s
 {
 
 protected:
 	scalar m_x {0.0};
 	scalar m_y {0.0};
 	scalar m_z {0.0};
-
+//TODO::question this
 	scalar m_w {0.0};
-	
+
 public:
 	
 	enum class axis{kX, kY, kZ};
 
-	vxVector3d ();
-	vxVector3d (const vxVector3d&& other);
-	vxVector3d (const vxVector3d& other);
+	v3s ();
+	v3s (const v3s&& other);
+	v3s (const v3s& other);
 	
-	vxVector3d (scalar x, scalar y, scalar z);
-	~vxVector3d(){}
+	v3s (scalar x, scalar y, scalar z);
+	~v3s(){}
 	
-
 	void set(scalar x, scalar y, scalar z);
-	void set(const vxVector3d &other);
+	void set(const v3s &other);
 
 	void setX(scalar x);
 	void setY(scalar y);
 	void setZ(scalar z);
 
-	vxVector3d get() const;
-	
+	///
+	/// \brief tiny
+	/// \return 
+	///Returns a tiny version of this vecctor.
+	v3s tiny() const;
+	///
+	/// \brief sqrDistance
+	/// \param other
+	/// \return 
+	///Returns the distance to the other vector 
+	/// skiping the square, this is to compare distances
+	scalar sqrDistance(const v3s &other) const;
+	///
+	/// \brief get
+	/// \param x
+	/// \param y
+	/// \param z
+	///obtains by reference the components of the vector
 	void get(scalar &x, scalar &y, scalar &z) const;
 
+	///
+	/// \brief x
+	/// \return 
+	///returns the x component
 	scalar x() const;
+	///
+	/// \brief y
+	/// \return 
+	///returns the y component
 	scalar y() const;
+	///
+	/// \brief z
+	/// \return 
+	///returns the z component
 	scalar z() const;
 
+	///
+	/// \brief operator []
+	/// \return 
+	///returns a reference to the index value, x y or z
 	scalar& operator[](const unsigned int);
+	///
+	/// \brief operator []
+	/// \return 
+	///returns a copy to the value
 	scalar operator[](const unsigned int) const;
-
-	scalar dot(const vxVector3d &v) const;
-	vxVector3d cross(const vxVector3d& v) const;
-	vxVector3d inverted() const;
+	///
+	/// \brief dot
+	/// \param v
+	/// \return 
+	///returns the dot product with the other vector.
+	scalar dot(const v3s &v) const;
+	///
+	/// \brief cross
+	/// \param v
+	/// \return 
+	///computes the cross vector of both vectors, this and v.
+	v3s cross(const v3s& v) const;
+	///
+	/// \brief inverted
+	/// \return 
+	///returns an inverted copy of this vector.
+	v3s inverted() const;
+	///
+	/// \brief mainAxis
+	/// \return 
+	///return the axis with the longer value.
 	axis mainAxis() const;
+	///
+	/// \brief length
+	/// \return 
+	///computes the length of this vector to position 0
 	scalar length() const;
-	scalar distance(const vxVector3d &ref) const;
-	
-	vxVector3d midPoint(const vxVector3d &other) const;
-	vxVector3d aaVector() const;
-	vxVector3d floorVector() const;
-	vxVector3d ceilVector() const;
+	///
+	/// \brief distance
+	/// \param ref
+	/// \return 
+	///computes the distance to the other vector.
+	scalar distance(const v3s &ref) const;
+	///
+	/// \brief midPoint
+	/// \param other
+	/// \return 
+	///returns the position between this vector an the other.
+	v3s midPoint(const v3s &other) const;
+	///
+	/// \brief aaVector
+	/// \return 
+	///returns an axis aligned copy of this vector.
+	v3s aaVector() const;
+	///
+	/// \brief floorVector
+	/// \return 
+	///returns a vector copy of this after having floored all his components
+	v3s floorVector() const;
+	///
+	/// \brief ceilVector
+	/// \return 
+	///returns a vector copy of this after having ceiled all his components
+	v3s ceilVector() const;
 	//TODO:fix clash with math ceil
-	vxVector3d unit() const;
+	v3s unit() const;
+	///
+	/// \brief setUnit
+	///makes this vector to have a lenght of 1.
 	void setUnit();
-	vxVector3d operator+(const vxVector3d &entrada) const;
-	vxVector3d& operator+=(const vxVector3d &entrada);
-	vxVector3d operator+(scalar factor) const;
+	///
+	/// \brief operator +
+	/// \param other
+	/// \return 
+	///adds other vector to this one.
+	v3s operator+(const v3s &other) const;
+	v3s& operator+=(const v3s &other);
+	v3s operator+(scalar factor) const;
+	v3s operator+(int factor) const;
 
-	vxVector3d operator-(const vxVector3d &entrada) const;
-	vxVector3d operator-(scalar factor) const;
-	vxVector3d& operator-=(const vxVector3d &entrada);
+	v3s operator-(const v3s &other) const;
+	v3s operator-(scalar factor) const;
+	v3s& operator-=(const v3s &other);
 	
-	vxVector3d operator*(const vxVector3d other) const;
-	vxVector3d operator*(scalar factor) const;
-	vxVector3d& operator*=(const vxVector3d &entrada);
+	v3s operator*(const v3s other) const;
+	v3s operator*(scalar factor) const;
+	v3s& operator*=(const v3s &other);
 
-	vxVector3d operator/(const vxVector3d &entrada) const;
-	vxVector3d operator/(scalar factor) const;
-	vxVector3d operator^(const vxVector3d &b) const;
+	v3s operator/(const v3s &other) const;
+	v3s operator/(scalar factor) const;
+	///
+	/// \brief operator ^
+	/// \param b
+	/// \return 
+	///same as cross function
+	v3s operator^(const v3s &b) const;
 
 	// comparision
-	bool operator==(const vxVector3d &other) const;
-	bool operator!=(const vxVector3d &other) const;
-	bool operator>(const vxVector3d &other) const;
-	bool operator<(const vxVector3d &other) const;
-
-	bool follows(const vxVector3d &direction) const;
-	scalar angle(const vxVector3d &b) const;
-	scalar angleXY(const vxVector3d &other) const;
-	scalar angleYZ(const vxVector3d &other) const;
-	scalar angleZX(const vxVector3d &other) const;
+	bool operator==(const v3s &other) const;
+	bool operator!=(const v3s &other) const;
+	bool operator>(const v3s &other) const;
+	bool operator<(const v3s &other) const;
+	///
+	/// \brief follows
+	/// \param direction
+	/// \return 
+	///returns true or false if other vector follows this one 
+	bool follows(const v3s &direction) const;
+	///
+	/// \brief angle
+	/// \param b
+	/// \return 
+	///computes the angle between this vector and the other one
+	/// with pivot in 0
+	scalar angle(const v3s &b) const;
+	scalar angleXY(const v3s &other) const;
+	scalar angleYZ(const v3s &other) const;
+	scalar angleZX(const v3s &other) const;
 
 	scalar angleXY() const;
 	scalar angleYZ() const;
 	scalar angleZX() const;
 
-	vxVector3d operator=(const vxVector3d &otro);
+	v3s operator=(const v3s &otro);
 
-	vxVector3d abs() const;
+	v3s abs() const;
 /*
 $rota=unit($rota);
 
@@ -167,48 +268,45 @@ $angk+=$ang;
 return <<sin($angk)*mag($rota),$rota.y,cos($angk)*mag($rota)>>;
 */
 	//TODO: revisit these active = "false"e rotations
-	vxVector3d rotateX(scalar ang);
+	v3s rotateX(scalar ang);
 
 	//TODO: revisit these active = "false"e rotations
-	vxVector3d rotateY(scalar ang);
+	v3s rotateY(scalar ang);
 
 	//TODO: revisit these three rotations
-	vxVector3d rotateZ(scalar ang);
+	v3s rotateZ(scalar ang);
 
-	vxVector2d vectorXY() const;
-	vxVector2d vectorYZ() const;
-	vxVector2d vectorZX() const;
+	v2s vectorXY() const;
+	v2s vectorYZ() const;
+	v2s vectorZX() const;
 	
 	bool xPositive() const;
 	bool yPositive() const;
 	bool zPositive() const;
 	
-	static vxVector3d constX;
-	static vxVector3d constY;
-	static vxVector3d constZ;
-	static vxVector3d constXY;
-	static vxVector3d constXZ;
-	static vxVector3d constYZ;
-	static vxVector3d constXYZ;
+	static v3s constX;
+	static v3s constY;
+	static v3s constZ;
+	static v3s constXY;
+	static v3s constXZ;
+	static v3s constYZ;
+	static v3s constXYZ;
 	
-	static vxVector3d constMinusX;
-	static vxVector3d constMinusY;
-	static vxVector3d constMinusZ;
-	static vxVector3d constMinusXY;
-	static vxVector3d constMinusXZ;
-	static vxVector3d constMinusYZ;
-	static vxVector3d constMinusXYZ;
-	static vxVector3d zero;
+	static v3s constMinusX;
+	static v3s constMinusY;
+	static v3s constMinusZ;
+	static v3s constMinusXY;
+	static v3s constMinusXZ;
+	static v3s constMinusYZ;
+	static v3s constMinusXYZ;
+	static v3s zero;
 	
-	friend std::ostream& operator<<(std::ostream &os, const vxVector3d& v)
+	friend std::ostream& operator<<(std::ostream &os, const v3s& v)
 	{
 		return os << v.m_x << " " << v.m_y << " " << v.m_z;
 	}
 };
 
-
-using v2 = vxVector2d;
-using v3 = vxVector3d;
 
 }
 #endif

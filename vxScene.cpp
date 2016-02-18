@@ -72,8 +72,8 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		const auto hAperture = node->getFloatAttribute("horizontalAperture");
 		const auto vAperture = node->getFloatAttribute("verticalAperture");
 		
-		m_camera->set(v3::zero,
-					  v3::constZ,
+		m_camera->set(v3s::zero,
+					  v3s::constZ,
 					  fDistance,
 					  hAperture,
 					  vAperture);

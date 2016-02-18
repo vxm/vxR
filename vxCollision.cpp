@@ -5,7 +5,7 @@ vxCollision::vxCollision()
 {
 }
 
-vxCollision::vxCollision(const v3 &p, const v3 &n, const vxColor &c, const v2 &uv)
+vxCollision::vxCollision(const v3s &p, const v3s &n, const vxColor &c, const v2s &uv)
 	: m_position(p)
 	, m_normal{n}
 	, m_color{c}
@@ -37,7 +37,7 @@ void vxCollision::setPosition(scalar x, scalar y, scalar z)
 	m_position.set(x,y,z);
 }
 
-v3 vxCollision::position() const
+v3s vxCollision::position() const
 {
 	return m_position;
 }
@@ -52,17 +52,17 @@ vxColor vxCollision::color() const
 	return m_color;
 }
 
-void vxCollision::setNormal(const v3 &val)
+void vxCollision::setNormal(const v3s &val)
 {
 	m_normal = val;
 }
 
-v3 vxCollision::normal() const
+v3s vxCollision::normal() const
 {
 	return m_normal;
 }
 
-void vxCollision::setUV(const v2&& uvVec)
+void vxCollision::setUV(const v2s&& uvVec)
 {
 	m_uv = uvVec; 
 }
@@ -87,7 +87,7 @@ scalar vxCollision::v() const
 	return m_uv.y();
 }
 
-v2 vxCollision::uv() const
+v2s vxCollision::uv() const
 {
 	return m_uv;
 }
@@ -97,12 +97,12 @@ void vxCollision::setColor(const vxColor &val)
 	m_color = val;
 }
 
-void vxCollision::setColor(const v3 &val)
+void vxCollision::setColor(const v3s &val)
 {
 	m_color = val;
 }
 
-void vxCollision::setPosition(const v3 &val)
+void vxCollision::setPosition(const v3s &val)
 {
 	m_position = val;
 }
