@@ -3,13 +3,13 @@
 
 using namespace vxCore;
 
-vxCore::vxTriRef::vxTriRef(const v3 &a, 
-						   const v3 &b, 
-						   const v3 &c)
+vxCore::vxTriRef::vxTriRef(const v3s &a, 
+						   const v3s &b, 
+						   const v3s &c)
 	:p1(a)
 	,p2(b)
 	,p3(c)
-	,m_n{v3::zero}
+	,m_n{v3s::zero}
 {
 }
 
@@ -36,13 +36,13 @@ scalar vxTriRef::area() const
 	return ah;
 }
 
-v3& vxTriRef::computeNormal() 
+v3s& vxTriRef::computeNormal() 
 {
 	m_n = (p2-p1).cross(p3-p1).unit();
 	return m_n;
 }
 
-v3 vxTriRef::normal() const
+v3s vxTriRef::normal() const
 {
 	return m_n;
 }

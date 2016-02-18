@@ -87,7 +87,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 					<< base_match[7];
 
 		strValue >> intValue1 >> intValue2;
-		ret.second.setVector2d(std::make_shared<v2>(intValue1, 
+		ret.second.setVector2d(std::make_shared<v2s>(intValue1, 
 															intValue2));
 #if COUT_PARSING
 		auto capt = ret.second.asVector2d();
@@ -111,7 +111,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 					<< base_match[9];
 
 		strValue >> intValue1 >> intValue2 >> intValue3;
-		ret.second.setVector3d(std::make_shared<v3>(intValue1, intValue2, intValue3));
+		ret.second.setVector3d(std::make_shared<v3s>(intValue1, intValue2, intValue3));
 #if COUT_PARSING
 		auto capt = ret.second.asVector3d();
 		std::cout << " v3 (" << ret.first 
@@ -129,7 +129,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 		auto floatValue1 = std::stod(base_match[5]);
 		auto floatValue2 = std::stod(base_match[7]);
 		
-		ret.second.setVector2d(std::make_shared<v2>(floatValue1, floatValue2));
+		ret.second.setVector2d(std::make_shared<v2s>(floatValue1, floatValue2));
 #if COUT_PARSING
 		auto capt = ret.second.asVector3d();
 		std::cout << " v2 (" << ret.first 
@@ -147,7 +147,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 		auto floatValue2 = std::stod(base_match[7]);
 		auto floatValue3 = std::stod(base_match[9]);
 
-		ret.second.setVector3d(std::make_shared<v3>(floatValue1, floatValue2, floatValue3));
+		ret.second.setVector3d(std::make_shared<v3s>(floatValue1, floatValue2, floatValue3));
 
 #if COUT_PARSING
 		auto capt = ret.second.asVector3d();

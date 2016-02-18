@@ -14,9 +14,9 @@ class vxPlane
 	scalar m_z {0.0};
 	scalar m_d {0.0};
 	
-	v3 m_pointA;
-	v3 m_pointB;
-	v3 m_pointC;
+	v3s m_pointA;
+	v3s m_pointB;
+	v3s m_pointC;
 	
 	vxColor m_color{vxColor::white};
 	
@@ -74,12 +74,12 @@ class vxPlane
 	
 	vxColor color() const;
 	void setColor(const vxColor &color);
-	v3 pointA() const;
-	void setPointA(const v3 &pointA);
-	v3 pointB() const;
-	void setPointB(const v3 &pointB);
-	v3 pointC() const;
-	void setPointC(const v3 &pointC);
+	v3s pointA() const;
+	void setPointA(const v3s &pointA);
+	v3s pointB() const;
+	void setPointB(const v3s &pointB);
+	v3s pointC() const;
+	void setPointC(const v3s &pointC);
 };
 
 }

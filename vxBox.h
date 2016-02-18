@@ -17,26 +17,26 @@ class vxBox
 {
 private:
 
-	v3 m_position;
+	v3s m_position;
 	scalar m_size{1.0};
 
 public:
 	vxBox()
 	{};
 
-	vxBox(const v3 &pos, scalar size)
+	vxBox(const v3s &pos, scalar size)
 		: m_position(pos)
 		, m_size(size)
 	{};
 
-	vxBox(const v3 &pos)
+	vxBox(const v3s &pos)
 		: m_position(pos)
 	{};
 	
-	void set(const v3 &pos);
-	void set(const v3 &pos, scalar size);
+	void set(const v3s &pos);
+	void set(const v3s &pos, scalar size);
 
-	bool contains(const v3 &v) const
+	bool contains(const v3s &v) const
 	{
 		auto min = m_position - (m_size/(scalar)2.0);
 		auto max = m_position + (m_size/(scalar)2.0);
@@ -48,8 +48,8 @@ public:
 				&&  v.z() <= max.z();
 	}
 	
-	v3 position() const;
-	void setPosition(const v3 &position);
+	v3s position() const;
+	void setPosition(const v3s &position);
 	scalar size() const;
 	void setSize(scalar size);
 

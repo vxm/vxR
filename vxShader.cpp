@@ -28,10 +28,10 @@ vxColor vxLambert::getColor(const vxRay &, const vxCollision &collide) const
 	return ret;
 }
 
-v3 vxLambert::getVector(const vxCollision &collide) const
+v3s vxLambert::getVector(const vxCollision &collide) const
 {
 	const auto& c = m_diffuse.compute(collide);
-	return v3(c.r(), c.g(), c.b());
+	return v3s(c.r(), c.g(), c.b());
 }
 
 

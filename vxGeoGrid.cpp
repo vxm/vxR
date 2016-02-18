@@ -123,7 +123,7 @@ void vxGeoGrid::setRz(unsigned int rz)
 /// \param c
 /// \return 
 /// Very inneficient to lookup in arrays.
-unsigned long vxGeoGrid::lookupVoxel(const v3 &v, 
+unsigned long vxGeoGrid::lookupVoxel(const v3s &v, 
 									 int &a, 
 									 int &b, 
 									 int &c) const
@@ -169,7 +169,7 @@ unsigned long vxGeoGrid::lookupVoxel(const v3 &v,
 	return index(a,b,c);
 }
 
-unsigned long vxGeoGrid::linearLookupVoxel(const v3 &v, 
+unsigned long vxGeoGrid::linearLookupVoxel(const v3s &v, 
 										   int& a, 
 										   int& b, 
 										   int& c) const
@@ -287,7 +287,7 @@ bool vxGeoGrid::indexIsValid(const long idx) const
 	return !(idx<0l || idx>=numVoxels());
 }
 
-const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
+const searchResult vxGeoGrid::getList(const vxRay &ray, v3s &sp) const
 {
 	long retVal{-1l};
 	
@@ -315,25 +315,25 @@ const searchResult vxGeoGrid::getList(const vxRay &ray, v3 &sp) const
 		auto yVal = m_yvalues[idY + velY] - p.y();
 		auto zVal = m_zvalues[idZ + velZ] - p.z();
 		
-		v3 intersectX = MU::rectAndXPlane(d, xVal);
+		v3s intersectX = MU::rectAndXPlane(d, xVal);
 		if(fabs(intersectX.y()) <= fabs(yVal)
 				&& fabs(intersectX.z()) <= fabs(zVal))
 		{
-			sp = p + intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
+			sp = p + intersectX + v3s((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
 		}
 		
-		v3 intersectY = MU::rectAndYPlane(d, yVal);
+		v3s intersectY = MU::rectAndYPlane(d, yVal);
 		if(fabs(intersectY.x()) <= fabs(xVal)
 				&& fabs(intersectY.z()) <= fabs(zVal))
 		{
-			sp = p + intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
+			sp = p + intersectY + v3s(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
 		}
 		
-		v3 intersectZ = MU::rectAndZPlane(d, zVal);
+		v3s intersectZ = MU::rectAndZPlane(d, zVal);
 		if(fabs(intersectZ.x()) <= fabs(xVal)
 				&& fabs(intersectZ.y()) <= fabs(yVal))
 		{
-			sp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
+			sp = p + intersectZ + v3s(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
 		}
 		
 		if(hasTriangles(retVal))

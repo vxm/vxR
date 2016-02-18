@@ -39,7 +39,7 @@ public:
 	///adds a geometry handle to be viewed by broadphase
 	void addGeometry(vxGeometryHandle geo);
 	
-	vxBoundingBoxHandle closestBox(const v3 &p) const;
+	vxBoundingBoxHandle closestBox(const v3s &p) const;
 	
 	
 	vxColor m_color{vxColor::white};
@@ -83,12 +83,12 @@ public:
 	unsigned int rz() const;
 	void setRz(unsigned int rz);
 	
-	unsigned long lookupVoxel(const v3 &v, int &a, int &b, int &c) const;
+	unsigned long lookupVoxel(const v3s &v, int &a, int &b, int &c) const;
 	void locateAndRegister(vxGeometryHandle geo);
 	
 	const bpSearchResult getList(const vxRay &ray, 
-								 v3 &sp, 
-								 v3 &fp) const;
+								 v3s &sp, 
+								 v3s &fp) const;
 	
 	bool indexIsValid(const long idx) const;
 };

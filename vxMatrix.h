@@ -58,9 +58,9 @@ public:
 	bool			isSingular() const;
 	static const vxMatrix identity;
 
-	void setOrigin(const v3& orig) const;
-	v3 getOrigin() const;
-	v3 getScale() const;
+	void setOrigin(const v3s& orig) const;
+	v3s getOrigin() const;
+	v3s getScale() const;
 	
 	//vxMatrix		operator* (scalar, const vxMatrix& right);
 	//std::ostream &		operator<< (std::ostream &os, const vxMatrix&m);

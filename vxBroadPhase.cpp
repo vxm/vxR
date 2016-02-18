@@ -16,7 +16,7 @@ void vxBroadPhase::addGeometry(vxGeometryHandle geo)
 	m_geometries.emplace_back(geo);
 }
 
-vxBoundingBoxHandle vxBroadPhase::closestBox(const v3 &p) const
+vxBoundingBoxHandle vxBroadPhase::closestBox(const v3s &p) const
 {
 	vxBoundingBoxHandle ret;
 	
@@ -139,7 +139,7 @@ unsigned long vxBroadPhase::index(unsigned int a, unsigned int b, unsigned int c
 }
 
 //TODO:Binary search
-unsigned long vxBroadPhase::lookupVoxel(const v3& v, 
+unsigned long vxBroadPhase::lookupVoxel(const v3s &v, 
 										int &a, 
 										int &b, 
 										int &c) const
@@ -227,8 +227,8 @@ void vxBroadPhase::locateAndRegister(vxGeometryHandle geo)
 
 const bpSearchResult 
 vxBroadPhase::getList(const vxRay &ray, 
-					  v3 &sp,
-					  v3 &fp) const
+					  v3s &sp,
+					  v3s &fp) const
 {
 	long retVal{m_c_size};
 	
@@ -257,21 +257,21 @@ vxBroadPhase::getList(const vxRay &ray,
 		if(fabs(intersectX.y()) <= fabs(yVal)
 				&& fabs(intersectX.z()) <= fabs(zVal))
 		{
-			fp = p + intersectX + v3((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
+			fp = p + intersectX + v3s((velX ? 1.0 : -1.0)/100.0, 0.0, 0.0);
 		}
 		
-		v3 intersectY = MU::rectAndYPlane(d, yVal);
+		v3s intersectY = MU::rectAndYPlane(d, yVal);
 		if(fabs(intersectY.x()) <= fabs(xVal)
 				&& fabs(intersectY.z()) <= fabs(zVal))
 		{
-			fp = p + intersectY + v3(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
+			fp = p + intersectY + v3s(0.0, (velY ? 1.0 : -1.0)/100.0, 0.0);
 		}
 		
-		v3 intersectZ = MU::rectAndZPlane(d, zVal);
+		v3s intersectZ = MU::rectAndZPlane(d, zVal);
 		if(fabs(intersectZ.x()) <= fabs(xVal)
 				&& fabs(intersectZ.y()) <= fabs(yVal))
 		{
-			fp = p + intersectZ + v3(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
+			fp = p + intersectZ + v3s(0.0, 0.0, (velZ ? 1.0 : -1.0)/100.0);
 		}
 		
 		if(m_members[retVal].geoRefs!=nullptr)
@@ -351,7 +351,8 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	std::set<vxGeometryHandle> viewedGeos;
 	do
 	{
-		v3 fp{sp};
+		v3s fp{sp};
+		
 		bbxs = getList(ray, sp, fp);
 		
 		if(bbxs.index==prev || bbxs.geoRefs==nullptr)
@@ -377,6 +378,8 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 			{
 				cols.emplace_back(collide, geo);
 			}
+			
+			
 		}
 		
 	}
@@ -399,7 +402,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		}
 		
 		collide.setValid(true);
-		collide.setUV(v2(0.5,0.5));
+		collide.setUV(v2s(0.5,0.5));
 		return 1;
 	}
 #endif

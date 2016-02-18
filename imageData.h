@@ -20,7 +20,7 @@ public:
 	std::unique_ptr <double[]>			m_pd = nullptr;
 	std::unique_ptr <float[]>			m_pf = nullptr;
 
-	unsigned char *get(const v2 &coords) const;
+	unsigned char *get(const v2s &coords) const;
 
 	unsigned char *initialise();
 	

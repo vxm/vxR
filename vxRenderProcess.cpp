@@ -261,7 +261,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	while(!(itV>=(m_properties->ry())))
 	{
 		auto pixelColor{vxColor::zero};
-		const v2 hitCoordinates(
+		const v2s hitCoordinates(
 					itV/(scalar)m_properties->ry(),
 					itH/(scalar)m_properties->rx());
 		
@@ -284,7 +284,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						vxCollision refxCollision;
 						for(unsigned int k = 0u;k<m_reflectionSamples;k++)
 						{
-							v3 invV = ((n * ray.direction().dot(n) * -2.0)
+							v3s invV = ((n * ray.direction().dot(n) * -2.0)
 									   + ray.direction());
 <<<<<<< HEAD
 							invV+=MU::getSolidSphereRand3(0.1);

@@ -82,8 +82,8 @@ public:
 
 	vxColor getColorAttribute(const std::string attrName);
 	float getFloatAttribute(const std::__cxx11::string attrName);
-	v3 getVector3dAttribute(const std::__cxx11::string attrName);
-	v2 getVector2dAttribute(const std::__cxx11::string attrName);
+	v3s getVector3dAttribute(const std::__cxx11::string attrName);
+	v2s getVector2dAttribute(const std::__cxx11::string attrName);
 	int getIntAttribute(const std::__cxx11::string attrName);
 	std::string getStringAttribute(const std::__cxx11::string attrName);
 	bool getBoolAttribute(const std::__cxx11::string attrName);

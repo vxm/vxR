@@ -67,7 +67,7 @@ bool vxBitMap2d::loadImage()
 
 vxColor vxBitMap2d::compute(const vxCollision &collision) const
 {
-	auto remap = v2{ 1.0-collision.v(), collision.u()}; 
+	auto remap = v2s{ 1.0-collision.v(), collision.u()}; 
 	unsigned char *px = m_data.get(remap);
 	
 	int b = (unsigned char)(*px);

@@ -37,7 +37,7 @@ vxColor::vxColor(const vxColor &other)
 	, m_b(other.m_b)
 {}
 
-vxColor::vxColor(const v3 &other) 
+vxColor::vxColor(const v3s &other) 
 	: m_r(other.x())
 	, m_g(other.y())
 	, m_b(other.z())
@@ -50,7 +50,7 @@ vxColor::vxColor(scalar other)
 {}
 
 
-vxColor &vxColor::operator=(const v3 &otro)
+vxColor &vxColor::operator=(const v3s &otro)
 {
 	set(otro.x(), otro.y(), otro.z());
 	return *this;

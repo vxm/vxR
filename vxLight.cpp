@@ -32,7 +32,7 @@ vxLight::vxLight(scalar intensity, const vxColor &color)
 {
 }
 
-vxLight::vxLight(const v3 &position) 
+vxLight::vxLight(const v3s &position) 
 	:m_position(position)
 {
 }
@@ -72,7 +72,7 @@ void vxLight::setPosition(scalar x, scalar y, scalar z)
 	m_position.set(x,y,z);
 }
 
-void vxLight::set(scalar intensity, const v3 &color) 
+void vxLight::set(scalar intensity, const v3s &color) 
 {
 	m_intensity = intensity;
 	m_color = color;
@@ -88,18 +88,18 @@ void vxLight::setColor(const vxColor &color)
 	m_color = color;
 }
 
-v3 vxLight::getLightRay(const v3 &position) const
+v3s vxLight::getLightRay(const v3s &position) const
 {
 	return m_position-position;
 }
 
 scalar vxLight::lightRatio(const vxRay &ray,
-							const v3 &lightDirection) const
+							const v3s &lightDirection) const
 {
 	return ray.incidence(lightDirection);
 }
 
-void vxLight::setPosition(const v3 &position)
+void vxLight::setPosition(const v3s &position)
 {
 	m_position.set(position);
 }
@@ -114,13 +114,13 @@ vxDirectLight::vxDirectLight(scalar instensity, const vxColor &col)
 {}
 
 
-vxDirectLight::vxDirectLight(const v3 &orientation, bool bidirectional) 
+vxDirectLight::vxDirectLight(const v3s &orientation, bool bidirectional) 
 	: m_orientation(orientation)
 	, m_biDirectional(bidirectional)
 {
 }
 
-void vxDirectLight::set(const v3 &orientation, bool bidirectional) 
+void vxDirectLight::set(const v3s &orientation, bool bidirectional) 
 {
 	m_orientation.set(orientation.unit());
 	m_biDirectional=bidirectional;
@@ -133,8 +133,8 @@ vxSpotLight::vxSpotLight()
 {
 }
 
-vxSpotLight::vxSpotLight(const v3 &position, 
-						 const v3 &orientation, 
+vxSpotLight::vxSpotLight(const v3s &position, 
+						 const v3s &orientation, 
 						 scalar maxAngle, 
 						 scalar minAngle)
 	: vxLight(position)
@@ -144,8 +144,8 @@ vxSpotLight::vxSpotLight(const v3 &position,
 {
 }
 
-void vxSpotLight::set(const v3 &position, 
-					  const v3 &orientation, 
+void vxSpotLight::set(const v3s &position, 
+					  const v3s &orientation, 
 					  scalar maxAngle, 
 					  scalar minAngle) 
 {
@@ -155,7 +155,7 @@ void vxSpotLight::set(const v3 &position,
 	m_minAngle=minAngle;
 }
 
-void vxSpotLight::setOrientation(const v3 &orientation) 
+void vxSpotLight::setOrientation(const v3s &orientation) 
 {
 	m_orientation.set(orientation);
 }
@@ -170,13 +170,13 @@ vxPointLight::vxPointLight(scalar instensity, const vxColor &col)
 {}
 
 
-vxPointLight::vxPointLight(const v3 &orientation, bool biPointional) 
+vxPointLight::vxPointLight(const v3s &orientation, bool biPointional) 
 	: m_orientation(orientation)
 	, m_biDirectional(biPointional)
 {
 }
 
-void vxPointLight::set(const v3 &orientation, bool biPointional) 
+void vxPointLight::set(const v3s &orientation, bool biPointional) 
 {
 	m_orientation.set(orientation.unit());
 	m_biDirectional=biPointional;
@@ -255,7 +255,7 @@ vxIBLight::vxIBLight(scalar instensity, const std::string path)
 }
 
 
-v3 vxIBLight::getLightRay(const v3 &position) const
+v3s vxIBLight::getLightRay(const v3s &position) const
 {
 	return (m_position-position);
 }
@@ -360,7 +360,7 @@ vxAmbientLight::vxAmbientLight(scalar intensity, const vxColor &color)
 {
 }
 
-v3 vxAmbientLight::getLightRay(const v3 &position) const
+v3s vxAmbientLight::getLightRay(const v3s &position) const
 {
 	return position.inverted();
 }
@@ -400,12 +400,12 @@ void vxAreaLight::setMaxY(const scalar &maxY)
 	m_maxY = maxY;
 }
 
-v3 vxAreaLight::normal() const
+v3s vxAreaLight::normal() const
 {
 	return m_normal;
 }
 
-void vxAreaLight::setNormal(const v3 &normal)
+void vxAreaLight::setNormal(const v3s &normal)
 {
 	m_normal = normal;
 }
@@ -428,7 +428,7 @@ vxColor vxAreaLight::acummulationLight(const vxRay &, const vxCollision &collisi
 		auto u = MU::getRand(m_maxX) + m_minX;
 		auto v = MU::getRand(m_maxY) + m_minY;
 
-		const auto&& orientation = m_transform.getOrigin() - cPnt + v3(0.0, u ,v);
+		const auto&& orientation = m_transform.getOrigin() - cPnt + v3s(u, 0.0 ,v);
 		if(collision.normal().follows(orientation.inverted()))
 		{
 			const vxRay ff(cPnt+littleNormal, orientation);

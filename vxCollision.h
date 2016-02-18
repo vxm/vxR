@@ -12,10 +12,10 @@ class vxCollision
 {
 private:
 
-	v3 m_position;
-	v3 m_normal;
+	v3s m_position;
+	v3s m_normal;
 	vxColor m_color;
-	v2 m_uv;
+	v2s m_uv;
 
 	bool m_valid {false};
 
@@ -23,10 +23,10 @@ public:
 
 	vxCollision();
 	
-	vxCollision(const v3 &p,
-				const v3 &n = {0,0,0},
+	vxCollision(const v3s &p,
+				const v3s &n = {0,0,0},
 				const vxColor &c = {0,0,0},
-				const v2 &uv = {.5,.5});
+				const v2s &uv = {.5,.5});
 
 	///
 	/// \brief reset
@@ -46,7 +46,7 @@ public:
 	/// \brief setPosition
 	/// \param val
 	///
-	void setPosition(const v3 &val);
+	void setPosition(const v3s &val);
 	///
 	/// \brief setPosition
 	/// \param x
@@ -58,12 +58,12 @@ public:
 	/// \brief position
 	/// \return 
 	///
-	v3 position() const;
+	v3s position() const;
 	///
 	/// \brief setColor
 	/// \param val
 	///
-	void setColor(const v3 &val);
+	void setColor(const v3s &val);
 	///
 	/// \brief setColor
 	/// \param val
@@ -84,17 +84,17 @@ public:
 	/// \brief setNormal
 	/// \param val
 	///
-	void setNormal(const v3 &val);
+	void setNormal(const v3s &val);
 	///
 	/// \brief normal
 	/// \return 
 	///
-	v3 normal() const;
+	v3s normal() const;
 	///
 	/// \brief setUV
 	/// \param uvVec
 	///
-	void setUV(const v2 &&uvVec);
+	void setUV(const v2s &&uvVec);
 	///
 	/// \brief setU
 	/// \param u
@@ -119,7 +119,7 @@ public:
 	/// \brief uv
 	/// \return 
 	///
-	v2 uv() const;
+	v2s uv() const;
 
 	//TODO:complete this.
 	friend std::ostream& operator<<(std::ostream &os, const vxCollision& v)

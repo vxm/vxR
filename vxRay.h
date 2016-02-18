@@ -8,24 +8,24 @@ namespace vxCore{
 class vxRay
 {
 private:
-	v3 m_direction{1.0,0.0,0.0};
-	v3 m_origin{0.0,0.0,0.0};
+	v3s m_direction{1.0,0.0,0.0};
+	v3s m_origin{0.0,0.0,0.0};
 
 public:
 	vxRay();
-	vxRay(const v3& direction);
-	vxRay(const v3& origin, const v3& direction);
+	vxRay(const v3s& direction);
+	vxRay(const v3s& origin, const v3s& direction);
 	vxRay(scalar x, scalar y, scalar z);
 	vxRay(const vxRay&& ray);
 	vxRay(const vxRay& ray);
 	~vxRay(){}
 
-	v3 origin() const;
-	void setOrigin(const v3 &origin);
+	v3s origin() const;
+	void setOrigin(const v3s &origin);
 
-	v3 direction() const;
-	v3& direction();
-	void setDirection(const v3 &direction);
+	v3s direction() const;
+	v3s& direction();
+	void setDirection(const v3s &direction);
 
 	///
 	/// \brief incidence
@@ -33,8 +33,18 @@ public:
 	/// \return 
 	///from -1 to +1, it is an angle ratio between 
 	/// vectors
-	scalar incidence(const v3 &normal) const;
+	scalar incidence(const v3s &normal) const;
 
+	scalar distance(const v3s &final)
+	{
+		return m_origin.distance(final);
+	}
+	
+	bool compareDistance(const v3s &a,const v3s &b)
+	{
+		return m_origin.sqrDistance(a)<m_origin.sqrDistance(b);
+	}
+	
 	///
 	/// \brief operator <<
 	/// \param os

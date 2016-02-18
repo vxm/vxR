@@ -152,4 +152,4 @@ OTHER_FILES += \
     
 CONFIG += c++14
 
-QMAKE_CXXFLAGS += -Wpedantic -O3 -fopenmp 
+QMAKE_CXXFLAGS += -O3 -fopenmp
