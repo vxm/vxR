@@ -80,9 +80,9 @@ protected:
 	scalar m_x {0.0};
 	scalar m_y {0.0};
 	scalar m_z {0.0};
+//TODO::question this
+	scalar m_w {0.0};
 
-	//std::valarray<scalar> m_v{0.0,3};
-	
 public:
 	
 	enum class axis{kX, kY, kZ};

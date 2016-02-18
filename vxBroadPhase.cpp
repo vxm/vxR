@@ -124,9 +124,9 @@ void vxBroadPhase::updateCache()
 		std::cout << "Index: " << l.index << std::endl;
 		if(l.geoRefs!=nullptr)
 			for(auto& g: *l.geoRefs)
-		{
-			std::cout << "\tgeo color: " << g->baseColor() << std::endl;
-		}
+			{
+				std::cout << "\tgeo color: " << g->baseColor() << std::endl;
+			}
 	}
 	
 #endif
@@ -144,38 +144,16 @@ unsigned long vxBroadPhase::lookupVoxel(const v3 &v,
 										int &b, 
 										int &c) const
 {
-	a = 0;
-	for(unsigned int i=1;i<m_xvalues.size()-1;i++)
-	{
-		if( v.x() < m_xvalues[i] )
-		{
-			break;
-		}
-		
-		a++;
-	}
+	const auto f = [](scalar lhs, scalar rhs){ return lhs <= rhs;};
 	
-	b = 0;
-	for(unsigned int i=1;i<m_yvalues.size()-1;i++)
-	{
-		if( v.y() < m_yvalues[i] )
-		{
-			break;
-		}
-		
-		b++;
-	}
+	auto it = std::lower_bound(m_xvalues.begin(), m_xvalues.end() - 1u, v.x(), f);
+	a = it <= m_xvalues.begin() ? 0u : it - m_xvalues.begin() - 1u;
+
+	it = std::lower_bound(m_yvalues.begin(), m_yvalues.end() - 1u, v.y(), f);
+	b = it <= m_yvalues.begin() ? 0u : it - m_yvalues.begin() - 1u;
 	
-	c = 0;
-	for(unsigned int i=1;i<m_zvalues.size()-1;i++)
-	{
-		if( v.z() < m_zvalues[i] )
-		{
-			break;
-		}
-		
-		c++;
-	}
+	it = std::lower_bound(m_zvalues.begin(), m_zvalues.end() - 1u, v.z(), f);
+	c = it <= m_zvalues.begin() ? 0u : it - m_zvalues.begin() - 1u;
 	
 #if _DEBUG
 	if(a<0 || b<0 || c<0)
@@ -268,7 +246,7 @@ vxBroadPhase::getList(const vxRay &ray,
 	do
 	{
 		retVal = lookupVoxel(fp, x, y, z);
-
+		
 		sp = fp;
 		
 		auto xVal = m_xvalues[x + velX] - p.x();
