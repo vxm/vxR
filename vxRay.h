@@ -35,15 +35,21 @@ public:
 	/// vectors
 	scalar incidence(const v3s &normal) const;
 
-	scalar distance(const v3s &final)
-	{
-		return m_origin.distance(final);
-	}
+	///
+	/// \brief distance
+	/// \param final
+	/// \return 
+	///Computes the distance to the final vector 
+	/// from the origin.
+	scalar distance(const v3s &final);
 	
-	bool compareDistance(const v3s &a,const v3s &b)
-	{
-		return m_origin.sqrDistance(a)<m_origin.sqrDistance(b);
-	}
+	///
+	/// \brief compareDistance
+	/// \param a
+	/// \param b
+	/// \return 
+	///Compares distance from origin to these.
+	bool compareDistance(const v3s &a,const v3s &b);
 	
 	///
 	/// \brief operator <<

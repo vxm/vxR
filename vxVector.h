@@ -96,6 +96,18 @@ public:
 	void setX(scalar x);
 	void setY(scalar y);
 	void setZ(scalar z);
+	
+	///
+	/// \brief compareDistance
+	/// \param a
+	/// \param b
+	/// \return 
+	/// 
+	bool compareDistance(const v3s &a,const v3s &b)
+	{
+		return sqrDistance(a)<sqrDistance(b);
+	}
+	
 
 	///
 	/// \brief tiny
