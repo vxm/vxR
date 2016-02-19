@@ -253,7 +253,7 @@ vxBroadPhase::getList(const vxRay &ray,
 		auto yVal = m_yvalues[y + velY] - p.y();
 		auto zVal = m_zvalues[z + velZ] - p.z();
 		
-		v3 intersectX = MU::rectAndXPlane(d, xVal);
+		v3s intersectX = MU::rectAndXPlane(d, xVal);
 		if(fabs(intersectX.y()) <= fabs(yVal)
 				&& fabs(intersectX.z()) <= fabs(zVal))
 		{

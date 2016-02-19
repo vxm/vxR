@@ -61,8 +61,8 @@ vxCamera::vxCamera(const v3s &position,
 	srand(time(NULL));
 }
 
-void vxCamera::set(const v3& position, 
-					const v3& orientation, 
+void vxCamera::set(const v3s& position, 
+					const v3s& orientation, 
 					scalar focusD, 
 					scalar apertureH, 
 					scalar apertureV) 
