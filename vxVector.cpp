@@ -275,11 +275,16 @@ void v3s::setZ(scalar z)
 	m_z=z;
 }
 
+bool v3s::isCloser(const v3s &a, const v3s &b) const
+{
+	return sqrDistance(a)<sqrDistance(b);
+}
+
 v3s v3s::tiny() const
 {
 	return {m_x / 10000.0,
-			m_y / 10000.0,
-			m_z / 10000.0};
+				m_y / 10000.0,
+				m_z / 10000.0};
 }
 
 scalar v3s::sqrDistance(const v3s &other) const

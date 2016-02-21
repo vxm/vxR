@@ -98,17 +98,12 @@ public:
 	void setZ(scalar z);
 	
 	///
-	/// \brief compareDistance
+	/// \brief isCloser
 	/// \param a
 	/// \param b
 	/// \return 
 	/// 
-	bool compareDistance(const v3s &a,const v3s &b)
-	{
-		return sqrDistance(a)<sqrDistance(b);
-	}
-	
-
+	bool isCloser(const v3s &a, const v3s &b) const;
 	///
 	/// \brief tiny
 	/// \return 

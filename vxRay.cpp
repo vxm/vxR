@@ -64,3 +64,13 @@ scalar vxRay::incidence(const v3s &normal) const
 	return cos(m_direction.angle(normal));
 }
 
+scalar vxRay::distance(const v3s &final)
+{
+	return m_origin.distance(final);
+}
+
+bool vxRay::isCloser(const v3s &a, const v3s &b) const
+{
+	return m_origin.isCloser(a, b);
+}
+

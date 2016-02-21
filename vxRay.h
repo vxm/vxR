@@ -44,12 +44,12 @@ public:
 	scalar distance(const v3s &final);
 	
 	///
-	/// \brief compareDistance
+	/// \brief isCloser
 	/// \param a
 	/// \param b
 	/// \return 
 	///Compares distance from origin to these.
-	bool compareDistance(const v3s &a,const v3s &b);
+	bool isCloser(const v3s &a, const v3s &b) const;
 	
 	///
 	/// \brief operator <<
