@@ -14,6 +14,10 @@
 #include "vxThreadPool.h"
 
 #define SINGLERAY 0
+#if SINGLERAY
+#define PIXEL_X 615
+#define PIXEL_Y 379
+#endif
 
 #ifdef _DEBUG
 #define USE_THREADS 0
@@ -231,12 +235,12 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	(void)by;
 	(void)offset;
 	// moving to start point.
-	unsigned int itH = 636;
-	unsigned int itV = 550;
+	unsigned int itH = PIXEL_X;
+	unsigned int itV = PIXEL_Y;
 	
 	//TODO: return this to smart pointer.
 	vxCollision collision;
-	const v2 hitCoordinates(
+	const v2s hitCoordinates(
 				itV/(scalar)m_properties->ry(),
 				itH/(scalar)m_properties->rx());
 	
