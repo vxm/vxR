@@ -277,7 +277,8 @@ void v3s::setZ(scalar z)
 
 bool v3s::isCloser(const v3s &a, const v3s &b) const
 {
-	return sqrDistance(a)<sqrDistance(b);
+	//TODO:sqrDistance
+	return distance(a)<distance(b);
 }
 
 v3s v3s::tiny() const
@@ -287,9 +288,11 @@ v3s v3s::tiny() const
 				m_z / 10000.0};
 }
 
-scalar v3s::sqrDistance(const v3s &other) const
+scalar v3s::sqrDistance(const v3s &in) const
 {
-	return (other.m_x * other.m_y * other.m_z) - (m_x * m_y * m_z);
+	return (in.m_x-m_x) 
+			* (in.m_y-m_y) 
+			* (in.m_z-m_z);
 }
 
 void v3s::get(scalar &x, scalar &y, scalar &z) const 
