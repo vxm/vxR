@@ -337,6 +337,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	
 	return valid;
 #else
+	
 	if(!m_bb->throwRay(ray, collide))
 	{
 		collide.setValid(false);
@@ -344,11 +345,16 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	}
 	
 	std::vector<collision_geometryH> cols;
-	auto sp =  collide.position() + collide.normal().inverted().tiny();
+	cols.reserve(10u);
+	auto sp = collide.position() + collide.normal().inverted().tiny();
 	
-	auto prev = m_c_size;
+	auto prev{m_c_size};
 	bpSearchResult bbxs;
+	
 	std::set<vxGeometryHandle> viewedGeos;
+	vxCollision tmpCol;
+	
+	bool theresHit = false;
 	do
 	{
 		v3s fp{sp};
@@ -363,44 +369,43 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		prev = bbxs.index;
 		
-		auto&& geos = *bbxs.geoRefs;
-		
-		for(const auto &geo: geos)
+		for(const auto &geo: *bbxs.geoRefs)
 		{
-			collide.setPosition(sp);
+			tmpCol.setPosition(sp);
 			
 			if(viewedGeos.insert(geo).second)
 			{
-				geo->throwRay(ray,collide);
+				geo->throwRay(ray,tmpCol);
 			}
 			
-			if(collide.isValid())
+			if(tmpCol.isValid())
 			{
-				cols.emplace_back(collide, geo);
+				cols.emplace_back(tmpCol, geo);
 			}
-			
-			
 		}
 		
+		int i=0;
+		while(!theresHit && i<cols.size())
+		{
+			theresHit |= ray.isCloser(fp,cols[i].first.position());
+			i++;
+		}
 	}
-	while(!cols.size());
+	while(!theresHit);
 	
 	if(cols.size())
 	{
 		auto mind  = (cols[0].first.position()-ray.origin()).length();
 		collide = cols[0].first;
-		int i{0};
 		for(auto&& c:cols)
 		{
-			i++;
 			auto ds = (c.first.position()-ray.origin()).length();
 			if( ds < mind )
 			{
 				collide = c.first;
-				collide.setColor(c.second->baseColor());
 			}
 		}
-		
+
 		collide.setValid(true);
 		collide.setUV(v2s(0.5,0.5));
 		return 1;
