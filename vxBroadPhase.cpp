@@ -144,15 +144,15 @@ unsigned long vxBroadPhase::lookupVoxel(const v3s &v,
 										int &b, 
 										int &c) const
 {
-	const auto f = [](scalar lhs, scalar rhs){ return lhs <= rhs;};
+	const auto less_or_equal = [](scalar lhs, scalar rhs){ return lhs <= rhs;};
 	
-	auto it = std::lower_bound(m_xvalues.begin(), m_xvalues.end() - 1u, v.x(), f);
+	auto it = std::lower_bound(m_xvalues.begin(), m_xvalues.end() - 1u, v.x(), less_or_equal);
 	a = it <= m_xvalues.begin() ? 0u : it - m_xvalues.begin() - 1u;
 
-	it = std::lower_bound(m_yvalues.begin(), m_yvalues.end() - 1u, v.y(), f);
+	it = std::lower_bound(m_yvalues.begin(), m_yvalues.end() - 1u, v.y(), less_or_equal);
 	b = it <= m_yvalues.begin() ? 0u : it - m_yvalues.begin() - 1u;
 	
-	it = std::lower_bound(m_zvalues.begin(), m_zvalues.end() - 1u, v.z(), f);
+	it = std::lower_bound(m_zvalues.begin(), m_zvalues.end() - 1u, v.z(), less_or_equal);
 	c = it <= m_zvalues.begin() ? 0u : it - m_zvalues.begin() - 1u;
 	
 #if _DEBUG
