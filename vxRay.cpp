@@ -64,7 +64,7 @@ scalar vxRay::incidence(const v3s &normal) const
 	return cos(m_direction.angle(normal));
 }
 
-scalar vxRay::distance(const v3s &final)
+scalar vxRay::distance(const v3s &final) const
 {
 	return m_origin.distance(final);
 }

@@ -41,7 +41,7 @@ public:
 	/// \return 
 	///Computes the distance to the final vector 
 	/// from the origin.
-	scalar distance(const v3s &final);
+	scalar distance(const v3s &final) const;
 	
 	///
 	/// \brief isCloser
