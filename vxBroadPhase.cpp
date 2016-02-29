@@ -138,7 +138,6 @@ unsigned long vxBroadPhase::index(unsigned int a, unsigned int b, unsigned int c
 	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
 }
 
-//TODO:Binary search
 unsigned long vxBroadPhase::lookupVoxel(const v3s &v, 
 										int &a, 
 										int &b, 

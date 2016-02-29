@@ -1,5 +1,6 @@
 #include <climits>
 #include "vxGeoGrid.h"
+#include <algorithm>
 
 const searchResult vxGeoGrid::invalidResult{0ul, std::make_shared<std::vector<unsigned long>>()};
 
@@ -115,57 +116,29 @@ void vxGeoGrid::setRz(unsigned int rz)
 	m_rz = rz;
 }
 
-///
-/// \brief vxGeoGrid::lookupVoxel
-/// \param v
-/// \param a
-/// \param b
-/// \param c
-/// \return 
-/// Very inneficient to lookup in arrays.
 unsigned long vxGeoGrid::lookupVoxel(const v3s &v, 
-									 int &a, 
-									 int &b, 
-									 int &c) const
+										int &a, 
+										int &b, 
+										int &c) const
 {
-	a = 0;
-	for(unsigned int i=1;i<m_xvalues.size()-1;i++)
-	{
-		if( v.x() < m_xvalues[i] )
-		{
-			break;
-		}
-		
-		a++;
-	}
+	const auto less_or_equal = [](scalar lhs, scalar rhs){ return lhs <= rhs;};
 	
-	b = 0;
-	for(unsigned int i=1;i<m_yvalues.size()-1;i++)
-	{
-		if( v.y() < m_yvalues[i] )
-		{
-			break;
-		}
-		
-		b++;
-	}
+	auto it = std::lower_bound(m_xvalues.begin(), m_xvalues.end() - 1u, v.x(), less_or_equal);
+	a = it <= m_xvalues.begin() ? 0u : it - m_xvalues.begin() - 1u;
+
+	it = std::lower_bound(m_yvalues.begin(), m_yvalues.end() - 1u, v.y(), less_or_equal);
+	b = it <= m_yvalues.begin() ? 0u : it - m_yvalues.begin() - 1u;
 	
-	c = 0;
-	for(unsigned int i=1;i<m_zvalues.size()-1;i++)
-	{
-		if( v.z() < m_zvalues[i] )
-		{
-			break;
-		}
-		
-		c++;
-	}
-#if _DEBUG	
+	it = std::lower_bound(m_zvalues.begin(), m_zvalues.end() - 1u, v.z(), less_or_equal);
+	c = it <= m_zvalues.begin() ? 0u : it - m_zvalues.begin() - 1u;
+	
+#if _DEBUG
 	if(a<0 || b<0 || c<0)
 	{
 		std::cerr << "index out of bounds in GeoGrid " << __LINE__ << std::endl;
 	}
-#endif	
+#endif
+	
 	return index(a,b,c);
 }
 
