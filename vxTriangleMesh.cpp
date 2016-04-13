@@ -25,14 +25,14 @@ void vxTriangleMesh::open()
 void vxTriangleMesh::close()
 {
 	auto triangleID{0ul};
-
+	
 	updateAccelerationStuctures();
 	
 	for(auto &tref:m_triangles)
 	{
 		tref.computeNormal();
 		tref.computeArea();
-
+		
 		m_grid.locateAndRegister(tref, triangleID);
 		triangleID++;
 	}
@@ -84,8 +84,8 @@ void vxTriangleMesh::addTriangle(unsigned long a, unsigned long b, unsigned long
 	
 	//TODO:emplace_back ?
 	m_triangles.emplace_back((vxTriRef(m_vertices[a],
-									m_vertices[b],
-									m_vertices[c])));
+									   m_vertices[b],
+									   m_vertices[c])));
 }
 
 unsigned long vxTriangleMesh::vertexCount() const
@@ -112,26 +112,26 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 	{
 		col.setColor(m_baseColor);
 		col.setValid(true);
-
+		
 		return 1;
 	}
 #else
 	/*
+	*/
 	if(!m_bb->throwRay(ray, col))
 	{
 		return 0;
 	}
-	*/
 	
 	auto&& p = ray.origin();
 	
 	std::vector<vxCollision> cols;
 	auto sp =  col.position();
 //			+ (col.normal().inverted() / (scalar)10000.0);
-
+	
 	auto prev = m_grid.size();
 	searchResult triangles;
-
+	
 	do
 	{
 		triangles = m_grid.getList(ray, sp);
@@ -155,7 +155,7 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 		}
 	}
 	while(!cols.size());
-
+	
 	if(cols.size())
 	{
 		auto mind  = (cols[0].position()-p).length();
@@ -170,7 +170,7 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 				col = c;
 			}
 		}
-
+		
 		col.setColor(m_baseColor);
 		col.setValid(true);
 		col.setUV(v2s(0.5,0.5));
@@ -185,7 +185,7 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 bool vxTriangleMesh::hasCollision(const vxRay &ray) const
 {
 	vxCollision col;
-
+	
 	if(throwRay(ray,col)==1)
 	{
 		return true;

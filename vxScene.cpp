@@ -399,6 +399,7 @@ int vxScene::throwRay(const vxRay &ray, vxCollision &collide) const
 		return 1;
 	}
 	
+	collide.setValid(false);
 	return 0;
 }
 

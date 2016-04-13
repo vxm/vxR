@@ -417,31 +417,35 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		}
 		
 		int i=0;
-		while(!theresHit && i<cols.size())
+		while(!thersHit && i<cols.size())
 		{
-			theresHit |= ray.isCloser(fp,cols[i].first.position());
+			if(ray.isCloser(fp,cols[i].first.position()))
+			{
+				thersHit=true;
+			}
 			i++;
 		}
 	}
-	while(!theresHit);
+	while(!thersHit);
 	
 	if(cols.size())
 	{
 		auto mind  = (cols[0].first.position()-ray.origin()).length();
 		collide = cols[0].first;
-		for(auto&& c:cols)
+		for(auto& c:cols)
 		{
-			auto ds = (c.first.position()-ray.origin()).length();
-			if( ds < mind )
+			if( ray.distance( c.first.position()) < mind )
 			{
 				collide = c.first;
 			}
 		}
-
+		
+		collide.setColor(vxColor::indexColor(cols.size()));
 		collide.setValid(true);
 		collide.setUV(v2s(0.5,0.5));
 		return 1;
 	}
+	collide.setValid(false);
 #endif
 #endif
 	return 0;

@@ -13,6 +13,7 @@ class vxTriangleMesh final : public vxGeometry
 	vxGeoGrid m_grid;
 
 public:
+
 	vxTriangleMesh();
 	
 	std::vector<v3s> m_vertices;
@@ -20,7 +21,7 @@ public:
 	std::vector<v3s> m_normals;
 	
 	void updateAccelerationStuctures();
-
+	
 	void clear();
 	void open();
 	void close();

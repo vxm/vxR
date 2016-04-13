@@ -142,14 +142,14 @@ HEADERS  += \
     VectorUtils.h \
     vxNonSequentalPool.h
 
-
-CONFIG(debug, release|debug):DEFINES += _DEBUG
-
 OTHER_FILES += \
     todo.txt \
     demo.vx \
     juan_0.ply
+
+CONFIG(debug, release|debug):DEFINES += _DEBUG
     
 CONFIG += c++14
 
-QMAKE_CXXFLAGS += -O1 -fopenmp
+QMAKE_CXXFLAGS += -O1
+# -fopenmp

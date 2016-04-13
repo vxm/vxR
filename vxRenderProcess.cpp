@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 615
-#define PIXEL_Y 379
+#define PIXEL_X 442
+#define PIXEL_Y 442
 #endif
 
 #ifdef _DEBUG
@@ -246,7 +246,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
 	
-	auto&& color = computeLight(ray, collision);
+	computeLight(ray, collision);
 	
 	const auto id = itH  + (itV * m_properties->rx());
 	//TODO:check ranges here, it might fail.
