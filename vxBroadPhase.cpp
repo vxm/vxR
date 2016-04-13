@@ -244,9 +244,7 @@ vxBroadPhase::getList(const vxRay &ray,
 	
 	do
 	{
-		retVal = lookupVoxel(fp, x, y, z);
-		
-		sp = fp;
+		retVal = lookupVoxel(sp, x, y, z);
 		
 		auto xVal = m_xvalues[x + velX] - p.x();
 		auto yVal = m_yvalues[y + velY] - p.y();
@@ -277,8 +275,10 @@ vxBroadPhase::getList(const vxRay &ray,
 		{
 			return m_members[retVal];
 		}
+		
+		sp = fp;
 	}
-	while(indexIsValid(retVal) && m_bb->contains(fp));
+	while(indexIsValid(retVal) && m_bb->contains(sp));
 	
 	return bpSearchResult{m_c_size, nullptr};
 }
@@ -299,7 +299,7 @@ bool vxBroadPhase::throwRay(const vxRay &ray) const
 	return false;
 }
 
-#define NAIVE_BB_METHOD 0
+#define NAIVE_BB_METHOD 1
 int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 #if	DRAWBBOX
@@ -312,6 +312,26 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	}
 #else
 #if NAIVE_BB_METHOD
+	
+	if(!m_bb->throwRay(ray, collide))
+	{
+		collide.setValid(false);
+		return 0;
+	}
+
+/*	// draw a margin
+	if(collide.u()<.001
+			|| collide.u()>.999
+			|| collide.v()<.001
+			|| collide.v()>.999)
+	{
+		collide.setColor(vxColor::white);
+		collide.setValid(true);
+		collide.setUV(v2s(0.5,0.5));
+		return 1;
+	}
+*/
+	
 	auto mdis = std::numeric_limits<scalar>::max(); 
 	
 	vxCollision temp = collide;
@@ -342,6 +362,18 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		collide.setValid(false);
 		return 0;
 	}
+
+	// draw a margin
+	if(collide.u()<.001
+			|| collide.u()>.999
+			|| collide.v()<.001
+			|| collide.v()>.999)
+	{
+		collide.setColor(vxColor::white);
+		collide.setValid(true);
+		collide.setUV(v2s(0.5,0.5));
+		return 1;
+	}
 	
 	std::vector<collision_geometryH> cols;
 	cols.reserve(10u);
@@ -351,12 +383,13 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 	bpSearchResult bbxs;
 	
 	std::set<vxGeometryHandle> viewedGeos;
-	vxCollision tmpCol;
+	vxCollision tmpCol{collide};
 	
-	bool theresHit = false;
+	bool thersHit = false;
+	
 	do
 	{
-		v3s fp{sp};
+		auto fp = sp;
 		
 		bbxs = getList(ray, sp, fp);
 		
@@ -368,7 +401,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 		
 		prev = bbxs.index;
 		
-		for(const auto &geo: *bbxs.geoRefs)
+		for(auto geo: *bbxs.geoRefs)
 		{
 			tmpCol.setPosition(sp);
 			

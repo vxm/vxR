@@ -156,7 +156,6 @@ active = "false"
     color = 118 118 144
 }
 
-
 node
 {
 name = "tennyson_tris"
@@ -181,8 +180,8 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 0.3 -1.5 1]
+active = "true"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.75 0.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 249 249 249
 }
@@ -191,7 +190,7 @@ node
 {
 name = "gnome_tris_1"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.2 0.2 1]
     filePath = "/home/john/Downloads/cruceta.ply"
     color = 249 249 150
@@ -202,7 +201,7 @@ node
 {
 name = "cruceta_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     filePath = "/home/john/Downloads/cruceta.ply"
     color = 249 150 249
@@ -395,7 +394,7 @@ node
 {
 name = "point_light_1"
 type = "vxPointLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 15 3 1]
     intensity = 0.50
     color = 255 230 240
