@@ -55,8 +55,8 @@ vxCamera::vxCamera(const v3s &position,
 	m_horizontalAperture = apertureH;
 	m_verticalAperture = apertureV;
 	
-	m_hApTan = tan(-m_horizontalAperture/2.0);
-	m_vApTan = tan(-m_verticalAperture/2.0);
+	m_hApTan = tan(-m_horizontalAperture/(scalar)2.0);
+	m_vApTan = tan(-m_verticalAperture/(scalar)2.0);
 
 	srand(time(NULL));
 }
@@ -82,8 +82,8 @@ void vxCamera::set(const v3s& position,
 		m_verticalAperture = apertureV;
 	}
 	
-	m_hApTan = tan(-m_horizontalAperture/2.0);
-	m_vApTan = tan(-m_verticalAperture/2.0);
+	m_hApTan = tan(-m_horizontalAperture/(scalar)2.0);
+	m_vApTan = tan(-m_verticalAperture/(scalar)2.0);
 }
 
 vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
@@ -125,8 +125,8 @@ vxRay vxCamera::givemeNextRay(const vxContactBuffer &imagen, scalar ang)
 {
 	vxRay ret;
 	auto&& direction = ret.direction();
-	direction.set(tan(m_verticalAperture/2.0) * ((imagen.getScanYd()*2)-1),
-				  tan(m_horizontalAperture/2.0)*(( imagen.getScanXd() *2)-1),
+	direction.set(tan(m_verticalAperture/(scalar)2.0) * ((imagen.getScanYd()*2)-1),
+				  tan(m_horizontalAperture/(scalar)2.0)*(( imagen.getScanXd() *2)-1),
 				  m_focusDistance);
 	direction.setUnit();
 	direction=direction.rotateY(ang);
@@ -138,8 +138,8 @@ vxRay vxCamera::givemeRandomRay(const v2s &coord)
 	scalar yrv,xrv;
 	xrv=((rand()/scalar(RAND_MAX)))/m_properties->rx();
 	yrv=((rand()/scalar(RAND_MAX)))/m_properties->ry();
-	return v3s{m_hApTan * (((coord.y()+yrv)*2.0)-1.0) ,
-						m_vApTan * (((coord.x()+xrv)*2.0)-1.0), 
+	return v3s{m_hApTan * (((coord.y()+yrv)*(scalar)2.0)-(scalar)1.0) ,
+						m_vApTan * (((coord.x()+xrv)*(scalar)2.0)-(scalar)1.0), 
 						m_focusDistance};
 }
 

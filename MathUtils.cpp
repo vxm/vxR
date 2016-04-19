@@ -35,16 +35,16 @@ constexpr scalar MathUtils::ratio(int a, int b)
 v2s MathUtils::normalToCartesian(const v3s& normal)
 {
 	auto normalized = normal.unit();
-	auto x = (PI + atan2(normalized.z(), normalized.x()))/(2.0*PI);
-	auto y = ((PI/(scalar)2.0) + asin( normalized.y())) / PI;
+	auto x = (scalar)(PI + atan2(normalized.z(), normalized.x()))/((scalar)2.0*PI);
+	auto y = (scalar)((PI/(scalar)2.0) + asin( normalized.y())) / PI;
 	return v2s {x, y};
 }
 
 v3s MathUtils::cartesianToNormal(const v2s& coords)
 {
-	auto x = cos(coords.x()) * cos(coords.y());
-	auto y = cos(coords.x()) * sin(coords.y());
-	auto z = sin(coords.x());
+	scalar x = (scalar)cos(coords.x()) * cos(coords.y());
+	scalar y = (scalar)cos(coords.x()) * sin(coords.y());
+	scalar z = (scalar)sin(coords.x());
 
 	return v3s{x,y,z}.unit();
 }
@@ -194,8 +194,8 @@ v3s MathUtils::getHollowSphereRand(scalar radius)
 	auto u = getRand();
 	auto v = getRand();
 	
-	auto a = (2.0 * PI * u );
-	auto b = acos( (2.0 * v) - 1.0);
+	auto a = (scalar)(2.0 * PI * u );
+	auto b = (scalar)acos( (2.0 * v) - 1.0);
 
 	return cartesianToNormal(v2s{a,b}) * radius;
 }
