@@ -10,19 +10,36 @@
 
 namespace vxCore {
 
-
+///
+/// \brief The vxPLYImporter class
+///This class reads a PLY file, builds and returns if queried 
+/// a geometry which he owns if now passed in constructor.
 class vxPLYImporter : public vxGeometryImporter
 {
 	vxTriangleMeshHandle m_geo;
 
 public:
-
+	///
+	/// \brief vxPLYImporter
+	/// \param geo
+	///
 	vxPLYImporter(vxTriangleMeshHandle geo);
-
-	void processPLYFile(const std::string &fileName);
 	
+	///
+	/// \brief processPLYFile
+	/// \param fileName
+	///
+	void processPLYFile(const std::string &fileName);
+	///
+	/// \brief getGeometry
+	/// \return 
+	///
 	vxTriangleMeshHandle getGeometry() const;
-	void setGeo(const vxTriangleMeshHandle &geo);
+	///
+	/// \brief setGeometry
+	/// \param geo
+	///
+	void setGeometry(const vxTriangleMeshHandle &geo);
 };
 
 }

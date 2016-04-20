@@ -6,6 +6,7 @@
 #include "vxScene.h"
 
 namespace vxCore{
+
 class vxScene;
 
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)

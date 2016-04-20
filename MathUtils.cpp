@@ -88,7 +88,7 @@ v3s MathUtils::rectAndPlane(const vxRay& ray,
 
 v3s MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &tri)
 {
-	const auto &n = tri.computeNormal();
+	const auto &n = tri.computeNormals();
 	const auto &p1 = ray.origin();
 	const auto &c = ray.direction();
 	if(n.dot(c)==0.0)

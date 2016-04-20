@@ -88,14 +88,12 @@ void vxCamera::set(const v3s& position,
 
 vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
 {
-	const auto& s = sampler.xy();
-	scalar compX = m_hApTan * (( coord[0] * 2.0)-1.0)
-					- 1.0/(scalar)(2.0 * m_rx)
-					+ (s.x()+MU::getRand(0.05))/m_rx;
+	const auto& s = sampler.xy(1.5);
+	const auto compX = m_hApTan * ((coord.x() * 2.0)-1.0) 
+							- s.x()/(scalar)(2.0 * m_rx);
 
-	scalar compY = m_vApTan * (( coord[1] * 2.0)-1.0)
-					- 1.0/(scalar)(2.0 * m_ry)
-					+ (s.y()+MU::getRand(0.05))/m_ry;
+	const auto compY = m_vApTan * ((coord.y() * 2.0)-1.0)
+							- s.y()/(scalar)(2.0 * m_ry);
 
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
 

@@ -109,7 +109,7 @@ int vxPlane::throwRay(const vxRay &ray, vxCollision &collide) const
 		const auto& p = MU::rectAndPlane(ray,t);
 		if((ray.origin()-p).follows(ray.direction()))
 		{
-			collide.setNormal(t.computeNormal());
+			collide.setNormal(t.computeNormals());
 			collide.setPosition(p+ray.origin());
 			collide.setU((scalar)0.5);
 			collide.setV((scalar)0.5);
