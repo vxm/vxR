@@ -14,7 +14,6 @@ void vxTriangleMesh::clear()
 {
 	m_vertices.clear();
 	m_triangles.clear();
-	m_normals.clear();
 }
 
 void vxTriangleMesh::open()
@@ -25,14 +24,11 @@ void vxTriangleMesh::open()
 void vxTriangleMesh::close()
 {
 	auto triangleID{0ul};
-	
+
 	updateAccelerationStuctures();
 	
 	for(auto &tref:m_triangles)
 	{
-		tref.computeNormal();
-		tref.computeArea();
-		
 		m_grid.locateAndRegister(tref, triangleID);
 		triangleID++;
 	}
@@ -74,18 +70,16 @@ void vxTriangleMesh::addVertexTransformed(const v3s &v3)
 	m_vertices.emplace_back(newPoint);
 }
 
-void vxTriangleMesh::addTriangle(unsigned long a, unsigned long b, unsigned long c)
+vxTriRef& vxTriangleMesh::addTriangle(unsigned long a, unsigned long b, unsigned long c)
 {
 	if(!m_openForEdition)
 	{
-		std::cerr << "You tried to edit a geometry when is closed for edition" << std::endl;
-		return;
+		std::cerr << "You are editing a geometry when is closed for edition" << std::endl;
 	}
 	
 	//TODO:emplace_back ?
-	m_triangles.emplace_back((vxTriRef(m_vertices[a],
-									   m_vertices[b],
-									   m_vertices[c])));
+	m_triangles.emplace_back(m_vertices[a],	m_vertices[b], m_vertices[c]);
+	return m_triangles.back();
 }
 
 unsigned long vxTriangleMesh::vertexCount() const
@@ -170,8 +164,9 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 				col = c;
 			}
 		}
+
 		
-		col.setColor(m_baseColor);
+		//col.setColor(m_baseColor);
 		col.setValid(true);
 		col.setUV(v2s(0.5,0.5));
 		return 1;
