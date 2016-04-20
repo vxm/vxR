@@ -151,5 +151,13 @@ CONFIG(debug, release|debug):DEFINES += _DEBUG
     
 CONFIG += c++14
 
-QMAKE_CXXFLAGS += -O1
-# -fopenmp
+@
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
+
+QMAKE_LFLAGS_RELEASE += -O1
+@
+
+QMAKE_CXXFLAGS += -fopenmp
+
+#
