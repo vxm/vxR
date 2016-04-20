@@ -64,7 +64,6 @@ public:
 	{
 		return os << v.m_x << " " << v.m_y;
 	}
-	
 };
 
 class vxColor;
@@ -77,24 +76,64 @@ protected:
 	scalar m_y {0.0};
 	scalar m_z {0.0};
 //TODO::question this
+	//TODO: do all todos :)
 	scalar m_w {0.0};
 
 public:
-	
+	///
+	/// \brief The axis enum
+	/// Identifies all different axis.
 	enum class axis{kX, kY, kZ};
-
+	
+	///
+	/// \brief v3s
+	///Default constructor.
 	v3s ();
+	///
+	/// \brief v3s
+	/// \param other
+	///Move constructor
 	v3s (const v3s&& other);
+	///
+	/// \brief v3s
+	/// \param other
+	///Copy constructor.
 	v3s (const v3s& other);
-	
+	///
+	/// \brief v3s
+	/// \param x
+	/// \param y
+	/// \param z
+	///Components constructor.
 	v3s (scalar x, scalar y, scalar z);
+	/// empty destructor
 	~v3s(){}
-	
+	///
+	/// \brief set
+	/// \param x
+	/// \param y
+	/// \param z
+	///replaces xyz with the new values.
 	void set(scalar x, scalar y, scalar z);
+	///
+	/// \brief set
+	/// \param other
+	/// Replaces the values with the new vector values
 	void set(const v3s &other);
-
+	///
+	/// \brief setX
+	/// \param x
+	/// Sets the component X
 	void setX(scalar x);
+	///
+	/// \brief setY
+	/// \param y
+	/// Sets the component Y
 	void setY(scalar y);
+	///
+	/// \brief setZ
+	/// \param z
+	/// Sets the component Z
 	void setZ(scalar z);
 	
 	///
@@ -123,7 +162,6 @@ public:
 	/// \param z
 	///obtains by reference the components of the vector
 	void get(scalar &x, scalar &y, scalar &z) const;
-
 	///
 	/// \brief x
 	/// \return 
@@ -139,7 +177,6 @@ public:
 	/// \return 
 	///returns the z component
 	scalar z() const;
-
 	///
 	/// \brief operator []
 	/// \return 
@@ -216,20 +253,82 @@ public:
 	/// \return 
 	///adds other vector to this one.
 	v3s operator+(const v3s &other) const;
+	///
+	/// \brief operator +=
+	/// \param other
+	/// \return 
+	/// Add the vector in place
 	v3s& operator+=(const v3s &other);
+	///
+	/// \brief operator +
+	/// \param factor
+	/// \return 
+	/// Adds the factor and returns a new vector.
 	v3s operator+(scalar factor) const;
-	v3s operator+(int factor) const;
-
+	///
+	/// \brief operator -
+	/// \param other
+	/// \return 
+	/// Vector substraction with other vector.
 	v3s operator-(const v3s &other) const;
+	///
+	/// \brief operator -
+	/// \param factor
+	/// \return 
+	///substracts in place each component with 
+	/// that factor.
 	v3s operator-(scalar factor) const;
+	///
+	/// \brief operator -=
+	/// \param other
+	/// \return 
+	/// substracts in place 
 	v3s& operator-=(const v3s &other);
-	
+	///
+	/// \brief operator -=
+	/// \param f
+	/// \return 
+	///
+	v3s &operator -=(const scalar f);
+	///
+	/// \brief operator *
+	/// \param other
+	/// \return 
+	///multiplies each component with each
+	/// component of the other vector.
 	v3s operator*(const v3s other) const;
+	///
+	/// \brief operator *
+	/// \param factor
+	/// \return 
+	/// Multiplies each component with the factor
+	/// and returns the result.
 	v3s operator*(scalar factor) const;
+	///
+	/// \brief operator *=
+	/// \param other
+	/// \return 
+	///Multiply implace with the other vector.
 	v3s& operator*=(const v3s &other);
-
+	///
+	/// \brief operator /
+	/// \param other
+	/// \return 
+	/// Divides with other vector
 	v3s operator/(const v3s &other) const;
+	///
+	/// \brief operator /
+	/// \param factor
+	/// \return 
+	/// Divides each component with factor.
 	v3s operator/(scalar factor) const;
+	///
+	/// \brief operator /=
+	/// \param f
+	/// \return 
+	///divides itself with the factor
+	v3s &operator/=(const scalar f);
+	
 	///
 	/// \brief operator ^
 	/// \param b

@@ -409,9 +409,13 @@ void v3s::setUnit()
 	m_z/=lng;
 }
 
-v3s v3s::operator+(int factor) const
+v3s& v3s::operator-=(const scalar f)
 {
-	return v3s(factor+m_x, factor+m_y, factor+m_z);
+	m_x-=f;
+	m_y-=f;
+	m_z-=f;
+	
+	return (*this);
 }
 
 v3s& v3s::operator-=(const v3s &other)
@@ -552,7 +556,16 @@ v3s v3s::operator/(scalar factor) const
 {
 	return v3s(m_x/(scalar)factor,
 			  m_y/(scalar)factor,
-			  m_z/(scalar)factor);
+			   m_z/(scalar)factor);
+}
+
+v3s &v3s::operator/=(const scalar f)
+{
+	m_x/= f;
+	m_y/= f;
+	m_z/= f;
+	
+	return (*this);
 }
 
 v3s v3s::operator/(const v3s &other) const
