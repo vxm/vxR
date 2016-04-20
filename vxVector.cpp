@@ -129,30 +129,6 @@ v2s v2s::inverted() const
 					   -m_y));
 }
 
-v2s v2s::operator+(int factor) const 
-{
-	return (v2s(factor+m_x,
-					   factor+m_y));
-}
-
-v2s v2s::operator-(int factor) const 
-{
-	return (v2s(m_x-factor,
-					   m_y-factor));
-}
-
-v2s v2s::operator*(int factor) const 
-{
-	return (v2s(factor*m_x,
-					   factor*m_y));
-}
-
-v2s v2s::operator/(int factor) const 
-{
-	return (v2s(m_x/(scalar)factor,
-					   m_y/(scalar)factor));
-}
-
 bool v2s::operator==(const v2s &other) const
 {
 	return other.m_x == m_x && other.m_y == m_y; 
