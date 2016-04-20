@@ -2,6 +2,10 @@
 
 using namespace vxCore;
 
+vxSampler::~vxSampler()
+{
+}
+
 static std::vector<v2s> uniformScatter1
 {
 	v2s(0.5, 0.5)
@@ -28,6 +32,15 @@ static std::vector<v2s> uniformScatter4
 	v2s(0.75, 0.25),
 };
 
+static std::vector<v2s> uniformScatter5
+{
+	v2s(0.5, 0.5),
+	v2s(0.25, 0.25),
+	v2s(0.75, 0.75),
+	v2s(0.25, 0.75),
+	v2s(0.75, 0.25),
+};
+
 void vxSampler::populateFreeSamples()
 {
 	if(uniformScatterFree.size())
@@ -45,10 +58,6 @@ vxSampler::vxSampler(unsigned int nSamples)
 {
 	setSamples(nSamples);
 	populateFreeSamples();
-}
-
-vxSampler::~vxSampler()
-{
 }
 
 void vxSampler::next()
@@ -76,27 +85,31 @@ scalar vxSampler::y() const
 	return MU::getRand(1.0);
 }
 
-v2s &vxSampler::xy()
+v2s vxSampler::xy(const scalar jitter)
 {
 	m_k>=m_nSamples ? m_k=0 : m_k++;
+	
+	v2s ret;
 	switch(m_nSamples)
 	{
 	case 1:
-		return uniformScatter1[m_k];
+		ret = uniformScatter1[m_k] + MU::getRand(jitter);
 		break;
 	case 2:
-		return uniformScatter2[m_k];
+		ret = uniformScatter2[m_k] + MU::getRand(jitter);
 		break;
 	case 3:
-		return uniformScatter3[m_k];
+		ret = uniformScatter3[m_k] + MU::getRand(jitter);
 		break;
 	case 4:
-		return uniformScatter4[m_k];
+		ret = uniformScatter4[m_k] + MU::getRand(jitter);
 		break;
 	default:
-		return uniformScatterFree[m_k];
+		ret.set(MU::getRand(1.0+jitter),MU::getRand(1.0+jitter));
 		break;
 	}
+	
+	return ret;
 }
 
 void vxSampler::setSamples(unsigned int samples)

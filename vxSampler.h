@@ -33,7 +33,7 @@ public:
 	scalar x() const;
 	scalar y() const;
 	
-	v2s& xy();
+	v2s xy(const scalar jitter = 0.0);
 
 	void setSamples(unsigned int samples);
 	void resetIterator();
