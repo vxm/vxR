@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 442
-#define PIXEL_Y 442
+#define PIXEL_X 667
+#define PIXEL_Y 284
 #endif
 
 #ifdef _DEBUG
@@ -272,7 +272,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 		for(auto s=0u;s<m_samples;s++)
 		{
 			vxCollision collision;
-			const auto ray = rCamera->ray(hitCoordinates, sampler);
+			auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			
 			//compute the shader
 			pixelColor += computeLight(ray,collision);
