@@ -197,7 +197,7 @@ vxColor vxPointLight::acummulationLight(const vxRay &, const vxCollision &collis
 
 		const vxRay ff(pp+collision.normal().tiny(), p.inverted());
 		const auto&& scn = m_scene.lock();
-		//if (!m_castShadows || !scn->throwRay(ff))
+		if (!m_castShadows || !scn->throwRay(ff))
 		{
 			ret = color().gained(lumm);
 		}
