@@ -115,11 +115,11 @@ v3s MathUtils::closestPointInLine(const v3s &p1,
 										 const v3s &p2,
 										 const v3s &p)
 {
-	const auto v = p2 - p1;
-	const auto w = p - p1;
-	const auto c1 = w.dot(v);
-	const auto c2 = v.dot(v);
-
+	auto&& v = p2 - p1;
+	auto&& w = p - p1;
+	auto c1 = w.dot(v);
+	auto c2 = v.dot(v);
+	
 	return p1 + v * (c1 / c2);
 }
 
