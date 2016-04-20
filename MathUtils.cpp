@@ -123,6 +123,14 @@ v3s MathUtils::closestPointInLine(const v3s &p1,
 	return p1 + v * (c1 / c2);
 }
 
+scalar MathUtils::distanceToLine(const v3s &p1,
+										const v3s &p2,
+										const v3s &p)
+{
+	const auto pb = MU::closestPointInLine(p1,p2,p);
+	return p.distance(pb);
+}
+
 v3s MathUtils::rectAndXPlane(const v3s& ray, scalar x)
 {
 	// parametric ecuation of the linconst v3s &&ray, - ray.x()) / -ray.x();

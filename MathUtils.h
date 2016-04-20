@@ -49,7 +49,7 @@ class MathUtils
 										const v3s& c);
 	
 	static v3s rectAndPlane(const vxRay& ray, vxTriRef& t);
-
+	
 	//Geometry
 	static scalar area(const v3s &p1,
 					   const v3s &p2,
@@ -57,6 +57,9 @@ class MathUtils
 	
 	//Distances
 	static v3s closestPointInLine(const v3s &p1,
+										 const v3s &p2,
+										 const v3s &p);
+	static scalar distanceToLine(const v3s &p1,
 										 const v3s &p2,
 										 const v3s &p);
 	
