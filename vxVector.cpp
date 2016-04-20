@@ -259,9 +259,9 @@ bool v3s::isCloser(const v3s &a, const v3s &b) const
 
 v3s v3s::tiny() const
 {
-	return {m_x / 10000.0,
-				m_y / 10000.0,
-				m_z / 10000.0};
+	return {m_x / (scalar)10000.0,
+				m_y / (scalar)10000.0,
+				m_z / (scalar)10000.0};
 }
 
 scalar v3s::sqrDistance(const v3s &in) const
