@@ -1,10 +1,11 @@
 #ifndef VXDOME_H
 #define VXDOME_H
 
-#include "MathUtils.h"
 #include "vxBitMap2d.h"
 #include "vxRay.h"
 #include "vxCollision.h"
+namespace vxCore {
+
 
 class vxDome
 {
@@ -27,4 +28,5 @@ public:
 	void setGamma(const scalar &gamma);
 };
 
+}
 #endif // VXDOM_H

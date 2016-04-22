@@ -1,5 +1,7 @@
 #include "vxLegoBlock.h"
 
+using namespace vxCore;
+
 vxLegoBlock::vxLegoBlock()
 {
 }

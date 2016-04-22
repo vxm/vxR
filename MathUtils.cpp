@@ -1,13 +1,43 @@
 #include "MathUtils.h"
 #include "vxVector.h"
+#include "vxRay.h"
+#include "vxPlane.h"
+#include "vxCollision.h"
+#include "vxTriRef.h"
 
 using namespace vxCore;
 
 const scalar MathUtils::C{299'792'458.0};
-const scalar MathUtils::PI{3.141'592'653'589'793'238'462'\
-643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816};
+const scalar MathUtils::PI{3.141'592'653'589'793'238'462'643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816};
 const scalar MathUtils::HALF_PI{PI/(scalar)2.0};
 
+//////////////////////////////////////
+///////////////  RANDOM CACHES ///////
+unsigned long MathUtils::m_k = 0u;
+constexpr const auto cached_random = 12000u;
+
+void MathUtils::fillRand()
+{
+	rand_scalar.reserve(cached_random);
+	rand_v2s.reserve(cached_random);
+	rand_v3s.reserve(cached_random);
+	for(auto i=0u;i<cached_random;i++)
+	{
+		rand_scalar.push_back((rand()/(scalar)RAND_MAX));
+		rand_v2s.emplace_back((rand()/(scalar)RAND_MAX),
+							  (rand()/(scalar)RAND_MAX));
+		rand_v3s.emplace_back((rand()/(scalar)RAND_MAX),
+							  (rand()/(scalar)RAND_MAX),
+							  (rand()/(scalar)RAND_MAX));
+	}
+}
+///////////////  RANDOM CACHES ///////
+//////////////////////////////////////
+
+
+///
+/// \brief MathUtils::MathUtils
+///
 MathUtils::MathUtils()
 {
 }
@@ -185,10 +215,11 @@ v3s MathUtils::rayAndZPlane(const vxRay &ray, scalar z)
 {
 	return rectAndZPlane(ray.direction(),z);
 }
-						
+
 scalar MathUtils::getRand(scalar range)
 {
-	return range*(rand()/(scalar)RAND_MAX);
+	return range * rand_scalar[(m_k++) % cached_random];
+	//return range * (rand()/(scalar)RAND_MAX);
 }
 
 scalar MathUtils::getBoolRand(scalar ratio)

@@ -1,4 +1,7 @@
 #include "vxDome.h"
+#include "MathUtils.h"
+
+using namespace vxCore;
 
 vxDome::vxDome()
 {

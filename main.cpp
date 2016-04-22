@@ -169,6 +169,7 @@ void index(unsigned int idx)
 
 int main(int argc, char *argv[])
 {
+	MU::fillRand();
 	auto program{0u};
 	
 	// Depending on arguments the execution will be different.

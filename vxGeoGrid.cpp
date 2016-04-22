@@ -2,6 +2,8 @@
 #include "vxGeoGrid.h"
 #include <algorithm>
 
+using namespace vxCore;
+
 const searchResult vxGeoGrid::invalidResult{0ul, std::make_shared<std::vector<unsigned long>>()};
 
 vxGeoGrid::vxGeoGrid()

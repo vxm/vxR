@@ -5,7 +5,6 @@
 #include <vector>
 #include "vxBoundingBox.h"
 
-
 namespace vxCore {
 
 using triangleIds = std::vector<unsigned long>; 

@@ -1,5 +1,7 @@
 #include "vxGlobal.h"
 
+using namespace vxCore;
+
 vxGlobal::vxGlobal()
 {
 }

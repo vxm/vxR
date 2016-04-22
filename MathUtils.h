@@ -2,20 +2,22 @@
 #define MATHUTILS_H
 
 #include<cmath>
-
-#include "vxVector.h"
-#include "vxRay.h"
+#include<vector>
 #include "vxPlane.h"
-#include "vxCollision.h"
-#include "vxTriRef.h"
 
-using namespace vxCore;
+namespace vxCore
+{
+
+static std::vector<scalar> rand_scalar;
+static std::vector<v2s> rand_v2s;
+static std::vector<v3s> rand_v3s;
 
 class MathUtils
 {
 	public:
 		MathUtils();
 
+	
 	// Rationals
 	constexpr static scalar ratio(scalar a, scalar b);
 	constexpr static scalar ratio(scalar a, int b);
@@ -64,6 +66,8 @@ class MathUtils
 										 const v3s &p);
 	
 	//Random
+	static void fillRand();
+	static unsigned long m_k;
 	static scalar getRand(scalar range = 1.0);
 	static scalar getBoolRand(scalar ratio = 1.0);
 	static v3s getSolidSphereRand(scalar radius = 1.0);
@@ -91,7 +95,6 @@ class MathUtils
 	static scalar scaleTo01(const scalar min, const scalar max, const scalar value);
 };
 
-
 /*
  * 	v3 x(1,5,1);
 	auto d = 4.45;
@@ -103,5 +106,5 @@ class MathUtils
 */
 
 using MU = MathUtils;
-
+}
 #endif // MATHUTILS_H
