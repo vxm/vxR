@@ -91,14 +91,15 @@ vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
 	const auto& s = sampler.xy(1.5);
 	const auto compX = m_hApTan * ((coord.x() * 2.0)-1.0) 
 							- s.x()/(scalar)(2.0 * m_rx);
-
+	
 	const auto compY = m_vApTan * ((coord.y() * 2.0)-1.0)
 							- s.y()/(scalar)(2.0 * m_ry);
-
+	
 	auto&& ret = vxRay{compY, compX, m_focusDistance};
-
+	
 	//TODO:read from scene
-	ret.setOrigin(v3s(-4.0, 0.2, -4.0));
+	ret.setOrigin(v3s(-3.0, 0.2, -3.0));
+	ret.origin().rotateX( -2.0 * (MU::PI/8.0) );
 	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
 	ret.direction().setUnit();
 	return ret;
