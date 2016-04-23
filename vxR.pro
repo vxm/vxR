@@ -153,8 +153,9 @@ CONFIG += c++14
 
 @
 QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -O3
-
+QMAKE_CXXFLAGS_RELEASE += -Ofast -fomit-frame-pointer -ffast-math -march=native \
+-mtune=native -flto -msse -mrecip -mfpmath=sse -msse2 -mssse3 -lSDL \
+-lpthread -lstdc++
 QMAKE_LFLAGS_RELEASE += -O1
 @
 
