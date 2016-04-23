@@ -19,7 +19,7 @@ active = "false"
     resolution = 607 341
     pixelSamples = 1
     reflectionSamples = 0
-    giSamples = 1
+    giSamples = 0
     giMultiplier = 1.0
     numThreads = -1
 }
@@ -30,8 +30,8 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 50
-    reflectionSamples = 1
+    pixelSamples = 100
+    reflectionSamples = 0
     giSamples = 1
     giMultiplier = 1.5
     numThreads = -1
@@ -351,7 +351,7 @@ name = "dome"
 type = "vxDome"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
+    imagePath = "/home/john/code/vxR/Milkyway/Milkyway_BG.jpg"
     gain = 1.0
     gamma = 3.1
 }
@@ -363,14 +363,14 @@ name = "area_light_2"
 type = "vxAreaLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 6 2 1]
-    intensity = 0.96
+    intensity = 1.28
     color = 218 215 216
     samples = 1
     castShadows = "false"
     minX = -12.5
     minY = 0.3
     maxX = 12.5
-    maxY = 1.0
+    maxY = 2.3
 }
 
 
@@ -378,11 +378,11 @@ node
 {
 name = "area_light_1"
 type = "vxAreaLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
     intensity = 0.62
-    color = 166 170 223
-    samples = 10
+    color = 266 170 123
+    samples = 1
     castShadows = "true"
     minX = -4.5
     minY = 0.3
@@ -396,9 +396,23 @@ node
 name = "point_light_1"
 type = "vxPointLight"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -7 9 5 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9 12 5 1]
     intensity = 0.70
     color = 255 230 240
+    samples = 1
+    castShadows = "true"
+    position = -2 5 -2
+}
+
+
+node
+{
+name = "point_light_2"
+type = "vxPointLight"
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 9 11 3 1]
+    intensity = 0.50
+    color = 235 243 246
     samples = 1
     castShadows = "true"
     position = -2 5 -2

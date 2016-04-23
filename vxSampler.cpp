@@ -13,8 +13,8 @@ static std::vector<v2s> uniformScatter1
 
 static std::vector<v2s> uniformScatter2
 {
-	v2s(0.25, 0.75),
-	v2s(0.75, 0.25),
+	v2s(0.30, 0.70),
+	v2s(0.70, 0.30),
 };
 
 static std::vector<v2s> uniformScatter3
