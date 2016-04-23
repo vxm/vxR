@@ -93,13 +93,13 @@ int vxTriRef::throwRay(const vxRay &ray, vxCollision &collide) const
 	auto t = MU::distanceToLine(p1,p2,p) / m_c_h1;
 	auto s = MU::distanceToLine(p2,p3,p) / m_c_h2;
 	
-	if(t<.05 || s<.05 || t>.95 || s>.95)
+	if(t<.01 || s<.01 || t>.9 || s>.9)
 	{
-		collide.setColor(vxColor(0.1));
+		collide.setColor(vxColor(0.01));
 	}
 	else
 	{
-		collide.setColor(vxColor(0.6));
+		collide.setColor(vxColor(0.4));
 	}
 	
 	return 1;
