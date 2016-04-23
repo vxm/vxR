@@ -111,8 +111,9 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		k++;
 	}
 	
-//	std::vector<std::vector<v3s>> normals(m_geo->vertexCount());
-//	TriIndices indices;
+	std::vector<std::vector<v3s>> normals(m_geo->vertexCount());
+	TriIndices indices;
+	
 	auto capturedFaces{0};
 	// reading properties.
 	do
@@ -124,15 +125,15 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			unsigned long b = std::stoul(lineTokens[2]);
 			unsigned long c = std::stoul(lineTokens[3]);
 			
-//			indices.emplace_back(std::array<unsigned long,3>{a,b,c});
+			indices.emplace_back(std::array<unsigned long,3>{a,b,c});
 			
 			auto& newTri = m_geo->addTriangle(a,b,c);
 			newTri.computeArea();
 			newTri.computeNormals();
 			
-//			normals[a].emplace_back(newTri.normal());
-//			normals[b].emplace_back(newTri.normal());
-//			normals[c].emplace_back(newTri.normal());
+			normals[a].emplace_back(newTri.normal());
+			normals[b].emplace_back(newTri.normal());
+			normals[c].emplace_back(newTri.normal());
 			
 			capturedFaces++;
 		}
@@ -145,24 +146,24 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			unsigned long d = std::stoul(lineTokens[4]);
 			
 			auto& newTriA = m_geo->addTriangle(a,b,c);
-//			indices.emplace_back(std::array<unsigned long,3>{a,b,c});
+			indices.emplace_back(std::array<unsigned long,3>{a,b,c});
 			newTriA.computeArea();
 			newTriA.computeNormals();
-//			normals[a].emplace_back(newTriA.normal());
-//			normals[b].emplace_back(newTriA.normal());
-//			normals[c].emplace_back(newTriA.normal());
+			normals[a].emplace_back(newTriA.normal());
+			normals[b].emplace_back(newTriA.normal());
+			normals[c].emplace_back(newTriA.normal());
 			
 			auto& newTriB = m_geo->addTriangle(d,a,c);
-//			indices.emplace_back(std::array<unsigned long,3>{d,a,c});
+			indices.emplace_back(std::array<unsigned long,3>{d,a,c});
 			newTriB.computeArea();
 			newTriB.computeNormals();
-//			normals[d].emplace_back(newTriB.normal());
-//			normals[a].emplace_back(newTriB.normal());
-//			normals[c].emplace_back(newTriB.normal());
+			normals[d].emplace_back(newTriB.normal());
+			normals[a].emplace_back(newTriB.normal());
+			normals[c].emplace_back(newTriB.normal());
 			
 			capturedFaces+=2;
 		}
-		/*
+		
 		for(auto& n:normals)
 		{
 			if(!n.size())
@@ -177,14 +178,14 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			avg/=(scalar)sz;
 			n.resize(1);
 			n[0] = avg;
-		}*/
+		}
 		
 		//!Averaging normals, could be part of other process.
-		/*for(int i=0;i<indices.size();i++)
+		for(int i=0;i<indices.size();i++)
 		{
 			indices[i];
 			normals[i];
-		}*/
+		}
 
 		if(lineTokens.size()>5)
 		{
