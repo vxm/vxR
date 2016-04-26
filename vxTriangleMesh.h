@@ -20,6 +20,9 @@ public:
 	vxTriangleMesh();
 	
 	std::vector<v3s> m_vertices;
+	std::vector<v3s> m_vertexNormals;
+	std::vector<v2s> m_uvs;
+	
 	std::vector<vxTriRef> m_triangles;
 	
 	void updateAccelerationStuctures();
@@ -29,10 +32,25 @@ public:
 	void close();
 	
 	void addVertexTransformed(const v3s &v3s);
+	void addVertexNormalTransformed(const v3s &normal);
+	void addUV(const v2s &uv);
+
 	vxTriRef& addTriangle(unsigned long a,
 					 unsigned long b,
 					 unsigned long c);
+	
+	std::vector<v3s>& vertices();
+	std::vector<v3s> vertices() const;
+	void setVertices(const std::vector<v3s> &vertices);
+	
+	std::vector<v3s>& vertexNormals();
+	std::vector<v3s> vertexNormals() const;
+	void setVertexNormals(const std::vector<v3s> &vertexNormals);
 
+	std::vector<v2s>& uvs();
+	std::vector<v2s> uvs() const;
+	void setUvs(const std::vector<v2s> &uvs);
+	
 	unsigned long vertexCount() const;
 	unsigned long triangleCount() const;
 

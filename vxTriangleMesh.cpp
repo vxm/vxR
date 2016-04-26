@@ -9,6 +9,51 @@ vxTriangleMesh::vxTriangleMesh()
 {
 }
 
+std::vector<v2s>& vxTriangleMesh::uvs()
+{
+	return m_uvs;
+}
+
+std::vector<v2s> vxTriangleMesh::uvs() const
+{
+	return m_uvs;
+}
+
+void vxTriangleMesh::setUvs(const std::vector<v2s> &uvs)
+{
+	m_uvs = uvs;
+}
+
+std::vector<v3s>& vxTriangleMesh::vertexNormals()
+{
+	return m_vertexNormals;
+}
+
+std::vector<v3s> vxTriangleMesh::vertexNormals() const
+{
+	return m_vertexNormals;
+}
+
+void vxTriangleMesh::setVertexNormals(const std::vector<v3s> &vertexNormals)
+{
+	m_vertexNormals = vertexNormals;
+}
+
+std::vector<v3s> vxTriangleMesh::vertices() const
+{
+	return m_vertices;
+}
+
+std::vector<v3s>& vxTriangleMesh::vertices()
+{
+	return m_vertices;
+}
+
+void vxTriangleMesh::setVertices(const std::vector<v3s> &vertices)
+{
+	m_vertices = vertices;
+}
+
 
 void vxTriangleMesh::clear()
 {
@@ -53,7 +98,6 @@ void vxTriangleMesh::setConstructionPath(const std::string &constructionPath)
 	m_constructionPath = constructionPath;
 }
 
-
 void vxTriangleMesh::addVertexTransformed(const v3s &v3)
 {
 	if(!m_openForEdition)
@@ -66,9 +110,28 @@ void vxTriangleMesh::addVertexTransformed(const v3s &v3)
 	const auto &&scale = m_transform.getScale();
 	const auto &newPoint = (v3*scale)+orig;
 	m_bb->extend(newPoint);
-	//TODO:emplace_back ?
 	m_vertices.emplace_back(newPoint);
 }
+
+void vxTriangleMesh::addVertexNormalTransformed(const v3s &normal)
+{
+	if(!m_openForEdition)
+	{
+		std::cerr << "You tried to edit a geometry when is closed for edition" << std::endl;
+		return;
+	}
+	
+	//TODO: get rotation matrix and transform normal.
+	
+	//TODO:emplace_back ?
+	m_vertexNormals.emplace_back(normal);
+}
+
+void vxTriangleMesh::addUV(const v2s &uv)
+{
+	m_uvs.emplace_back(uv);
+}
+
 
 vxTriRef& vxTriangleMesh::addTriangle(unsigned long a, unsigned long b, unsigned long c)
 {
