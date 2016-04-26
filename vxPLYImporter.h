@@ -11,6 +11,11 @@
 namespace vxCore {
 
 ///
+/// \brief The vertexProperty struct
+/// Defines a descriptor for vertex data.
+using vertexProperty = std::pair<std::string, std::string>;
+
+///
 /// \brief The vxPLYImporter class
 ///This class reads a PLY file, builds and returns if queried 
 /// a geometry which he owns if now passed in constructor.
