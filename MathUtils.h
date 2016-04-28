@@ -56,6 +56,17 @@ class MathUtils
 	static scalar area(const v3s &p1,
 					   const v3s &p2,
 					   const v3s &p3);
+	///
+	/// \brief normal
+	/// \param p1
+	/// \param p2
+	/// \param p3
+	/// \return 
+	///computes the normal perpendicular
+	/// to the plane containing these points.
+	static v3s normal(const v3s &p1,
+					  const v3s &p2,
+					  const v3s &p3);
 	
 	//Distances
 	static v3s closestPointInLine(const v3s &p1,

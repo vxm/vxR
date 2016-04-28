@@ -105,7 +105,7 @@ v3s MathUtils::rectAndPlane(const vxRay& ray,
 									const v3s& b,
 									const v3s& c)
 {
-	const auto n = (b-a).cross(c-a);
+	const auto n = MU::normal(a,b,c);
 	const auto &p1 = ray.origin();
 	if(n.dot(ray.direction())==0.0)
 	{
@@ -118,7 +118,7 @@ v3s MathUtils::rectAndPlane(const vxRay& ray,
 
 v3s MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &tri)
 {
-	const auto &n = tri.computeNormals();
+	const auto &n = tri.normal();
 	const auto &p1 = ray.origin();
 	const auto &c = ray.direction();
 	if(n.dot(c)==0.0)
@@ -141,9 +141,14 @@ scalar MathUtils::area(const v3s &p1,
 	return (b * h) / 2.0;
 }
 
+v3s MathUtils::normal(const v3s &p1, const v3s &p2, const v3s &p3)
+{
+	return (p2-p1).cross(p3-p1).unit();
+}
+
 v3s MathUtils::closestPointInLine(const v3s &p1,
-										 const v3s &p2,
-										 const v3s &p)
+								  const v3s &p2,
+								  const v3s &p)
 {
 	auto&& v = p2 - p1;
 	auto&& w = p - p1;
