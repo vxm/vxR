@@ -88,7 +88,7 @@ void vxCamera::set(const v3s& position,
 
 vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
 {
-	const auto& s = sampler.xy(1.5);
+	auto&& s = sampler.xy(0.5);
 	const auto compX = m_hApTan * ((coord.x() * 2.0)-1.0) 
 							- s.x()/(scalar)(2.0 * m_rx);
 	
