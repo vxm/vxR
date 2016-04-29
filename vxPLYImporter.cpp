@@ -159,6 +159,12 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 		k++;
 	}
 	
+	std::cout << "Internal Geo counts " << std::endl;
+	
+	std::cout << "Geo vertices " << m_geo->vertexCount() << std::endl;
+	std::cout << "Geo normals " << m_geo->vertexNormalsCount() << std::endl;
+	std::cout << "Geo uvs " << m_geo->uvsCount() << std::endl;
+	
 	std::vector<std::vector<v3s>> normals(m_geo->vertexCount());
 	TriIndices indices;
 	
@@ -177,7 +183,6 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			
 			auto& newTri = m_geo->addTriangle(a,b,c);
 			newTri.computeArea();
-			newTri.computeNormals();
 			
 			normals[a].emplace_back(newTri.normal());
 			normals[b].emplace_back(newTri.normal());
@@ -196,7 +201,6 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			auto& newTriA = m_geo->addTriangle(a,b,c);
 			indices.emplace_back(std::array<unsigned long,3>{a,b,c});
 			newTriA.computeArea();
-			newTriA.computeNormals();
 			normals[a].emplace_back(newTriA.normal());
 			normals[b].emplace_back(newTriA.normal());
 			normals[c].emplace_back(newTriA.normal());
@@ -204,7 +208,6 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 			auto& newTriB = m_geo->addTriangle(d,a,c);
 			indices.emplace_back(std::array<unsigned long,3>{d,a,c});
 			newTriB.computeArea();
-			newTriB.computeNormals();
 			normals[d].emplace_back(newTriB.normal());
 			normals[a].emplace_back(newTriB.normal());
 			normals[c].emplace_back(newTriB.normal());
