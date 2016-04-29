@@ -62,7 +62,7 @@ v3s vxCollision::normal() const
 	return m_normal;
 }
 
-void vxCollision::setUV(const v2s&& uvVec)
+void vxCollision::setUV(const v2s& uvVec)
 {
 	m_uv = uvVec; 
 }

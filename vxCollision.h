@@ -94,7 +94,7 @@ public:
 	/// \brief setUV
 	/// \param uvVec
 	///
-	void setUV(const v2s &&uvVec);
+	void setUV(const v2s &uvVec);
 	///
 	/// \brief setU
 	/// \param u

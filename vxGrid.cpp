@@ -357,7 +357,7 @@ void vxGrid::createRandom(scalar ratio, scalar y_threshold)
 
 void vxGrid::addGeometry(const vxTriangleMeshHandle geo)
 {
-	for(auto&& tri: geo->m_triangles)
+	for(auto&& tri: geo->triangles())
 	{
 		{
 			const auto& p{tri.p1};
