@@ -1,12 +1,18 @@
 #include "vxTriangleMesh.h"
+#define DRAWBBOX 0
 
 using namespace vxCore;
 
-#define DRAWBBOX 0
+const v2s vxTriangleMesh::defaultUV = {0.5,0.5};
 
 vxTriangleMesh::vxTriangleMesh()
 	:vxGeometry()
 {
+}
+
+std::vector<vxTriRef>& vxTriangleMesh::triangles()
+{
+	return m_triangles;
 }
 
 std::vector<v2s>& vxTriangleMesh::uvs()
@@ -129,19 +135,33 @@ void vxTriangleMesh::addVertexNormalTransformed(const v3s &normal)
 
 void vxTriangleMesh::addUV(const v2s &uv)
 {
-	m_uvs.emplace_back(uv);
+	if(!m_openForEdition)
+	{
+		std::cerr << "You tried to edit a geometry when is closed for edition" << std::endl;
+		return;
+	}
+	
+	m_uvs.push_back(uv);
 }
 
 
-vxTriRef& vxTriangleMesh::addTriangle(unsigned long a, unsigned long b, unsigned long c)
+vxTriRef& vxTriangleMesh::addTriangle(unsigned long a, 
+									  unsigned long b, 
+									  unsigned long c)
 {
 	if(!m_openForEdition)
 	{
 		std::cerr << "You are editing a geometry when is closed for edition" << std::endl;
 	}
+		
+	auto&& uvRefA = m_uvs.size() ? m_uvs[a] : defaultUV;
+	auto&& uvRefB = m_uvs.size() ? m_uvs[b] : defaultUV;
+	auto&& uvRefC = m_uvs.size() ? m_uvs[c] : defaultUV;
 	
 	//TODO:emplace_back ?
-	m_triangles.emplace_back(m_vertices[a],	m_vertices[b], m_vertices[c]);
+	m_triangles.emplace_back(m_vertices[a],	m_vertices[b], m_vertices[c],
+							 m_vertexNormals[a], m_vertexNormals[b], m_vertexNormals[c],
+							 uvRefA, uvRefB, uvRefC);
 	return m_triangles.back();
 }
 
@@ -153,6 +173,16 @@ unsigned long vxTriangleMesh::vertexCount() const
 unsigned long vxTriangleMesh::triangleCount() const
 {
 	return m_triangles.size();
+}
+
+unsigned long vxTriangleMesh::vertexNormalsCount() const
+{
+	return m_vertexNormals.size();
+}
+
+unsigned long vxTriangleMesh::uvsCount() const
+{
+	return m_uvs.size();
 }
 
 
@@ -227,11 +257,9 @@ int vxTriangleMesh::throwRay(const vxRay &ray, vxCollision &col) const
 				col = c;
 			}
 		}
-
 		
 		//col.setColor(m_baseColor);
 		col.setValid(true);
-		col.setUV(v2s(0.5,0.5));
 		return 1;
 	}
 	

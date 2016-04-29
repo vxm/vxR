@@ -160,6 +160,7 @@ vxStatus::code vxRenderProcess::execute()
 	
 	std::cout << "Using " << m_nThreads << " threads" << std::endl;
 	std::vector<std::thread> threads;
+
 	for(unsigned int i=0;i<m_nThreads; i++)
 	{
 		auto&& th = std::thread([this,i]{(this->render(m_nThreads,i));});
@@ -290,7 +291,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						{
 							v3s invV = ((n * ray.direction().dot(n) * -2.0)
 									   + ray.direction());
-							invV+=MU::getSolidSphereRand3(0.2);
+							invV+=MU::getSolidSphereRand3(1.5);
 							
 							const auto &&reflexRay= 
 									vxRay(collision.position() + n.tiny(), invV);
@@ -299,7 +300,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						}
 						
 						reflection*=(1.f/(float)m_reflectionSamples);
-						pixelColor+= (reflection/5.f);
+						pixelColor+= (reflection/2.5);
 					}
 				}
 				

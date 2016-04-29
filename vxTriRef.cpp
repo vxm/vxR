@@ -5,10 +5,22 @@ using namespace vxCore;
 
 vxCore::vxTriRef::vxTriRef(const v3s &a, 
 						   const v3s &b, 
-						   const v3s &c)
+						   const v3s &c,
+						   const v3s &in1, 
+						   const v3s &in2, 
+						   const v3s &in3,
+						   const v2s &iuv1, 
+						   const v2s &iuv2, 
+						   const v2s &iuv3)
 	:p1(a)
 	,p2(b)
 	,p3(c)
+	,n1(in1)
+	,n2(in2)
+	,n3(in3)
+	,uv1(iuv1)
+	,uv2(iuv2)
+	,uv3(iuv3)
 {
 }
 
@@ -19,6 +31,9 @@ vxTriRef::vxTriRef(vxTriRef &&other)
 	,n1{std::move(other.n1)}
 	,n2{std::move(other.n2)}
 	,n3{std::move(other.n3)}
+	,uv1{std::move(other.uv1)}
+	,uv2{std::move(other.uv2)}
+	,uv3{std::move(other.uv3)}
 	,ah{std::move(other.ah)}
 	,m_c_h1{std::move(other.m_c_h1)}
 	,m_c_h2{std::move(other.m_c_h2)}
@@ -43,16 +58,6 @@ scalar &vxTriRef::area()
 	return ah;
 }
 
-v3s vxTriRef::computeNormals() 
-{
-	auto&& c1 = p2-p1;
-	auto&& c2 = p3-p1;
-	n1 = c1.cross(c2).unit();
-	n2 = n1;
-	n3 = n1;
-	return n1;
-}
-
 v3s vxTriRef::normal() const
 {
 	return n1;
@@ -69,38 +74,34 @@ int vxTriRef::throwRay(const vxRay &ray, vxCollision &collide) const
 	{
 		return 0;
 	}
-
+	
 	const scalar threshold = -0.0000001;
 	const auto& p = MU::rectAndPlane(ray,p1,p2,p3);
 	
 	auto ta = area();
 	
-	ta-=MU::area(p1,p2,p);
+	ta-= MU::area(p1,p2,p);
 	if(ta<threshold)
 		return 0;
 	
-	ta-=vxTriRef(p1,p,p3).computeArea();
+	ta-= MU::area(p1,p,p3);
 	if(ta<threshold)
 		return 0;
 	
-	ta-=vxTriRef(p,p2,p3).computeArea();
+	ta-= MU::area(p,p2,p3);
 	if(ta<threshold)
 		return 0;
 	
-	collide.setNormal(n1);
 	collide.setPosition(p);
 	
 	auto t = MU::distanceToLine(p1,p2,p) / m_c_h1;
 	auto s = MU::distanceToLine(p2,p3,p) / m_c_h2;
+	auto u = 1.0 - s - t;
 	
-	if(t<.01 || s<.01 || t>.9 || s>.9)
-	{
-		collide.setColor(vxColor(0.01));
-	}
-	else
-	{
-		collide.setColor(vxColor(0.4));
-	}
+	collide.setNormal(n1 * s + n2 * u + n3 * t);
+	
+	auto interUV = uv1 * s + uv2 * u + uv3 * t;
+	collide.setUV( interUV );
 	
 	return 1;
 }
@@ -118,15 +119,15 @@ bool vxTriRef::hasCollision(const vxRay &ray) const
 	auto ta = area();
 	//TODO:this needs a optimization.
 	
-	ta-=MU::area(p1,p2,p);
+	ta-= MU::area(p1,p2,p);
 	if(ta<threshold)
 		return false;
 	
-	ta-=vxTriRef(p1,p,p3).computeArea();
+	ta-= MU::area(p1,p,p3);
 	if(ta<threshold)
 		return false;
 
-	ta-=vxTriRef(p,p2,p3).computeArea();
+	ta-= MU::area(p,p2,p3);
 	if(ta<threshold)
 		return false;
 
