@@ -22,19 +22,13 @@ v3s v3s::constMinusXYZ{-1.0, -1.0, -1.0};
 v3s v3s::zero{0.0, 0.0, 0.0};
 v2s v2s::zero{0.0, 0.0};
 
-v2s::v2s() 
+v2s::v2s()
 {}
 
 v2s::v2s(scalar x, scalar y) 
 	: m_x(x)
 	, m_y(y)
 {}
-
-v2s::v2s(v2s &&other)
-	:m_x{std::move(other.m_x)}
-	,m_y{std::move(other.m_y)}
-{
-}
 
 v2s::v2s(const v2s &other)
 	:m_x(other.m_x)
@@ -106,8 +100,7 @@ scalar v2s::operator[](const unsigned int idx) const
 
 v2s v2s::asIntPosition() const
 {
-	return (v2s(floor(m_x),
-					   floor(m_y)));
+	return {floor(m_x), floor(m_y)};
 }
 
 
@@ -119,14 +112,12 @@ scalar v2s::length() const
 v2s v2s::unit() const 
 {
 	scalar lng=length();
-	return (v2s(m_x/lng,
-					   m_y/lng));
+	return {m_x/lng, m_y/lng};
 }
 
 v2s v2s::inverted() const
 {
-	return (v2s(-m_x,
-					   -m_y));
+	return {-m_x, -m_y};
 }
 
 bool v2s::operator==(const v2s &other) const
@@ -149,52 +140,55 @@ scalar v2s::angle() const
 	return atan2(m_y,m_x);
 }
 
-v2s v2s::operator/(scalar factor) const 
+scalar v2s::sqrDistance(const v2s &other) const
 {
-	return (v2s(m_x/(scalar)factor,
-					   m_y/(scalar)factor));
+	return (other.m_x-m_x) * (other.m_y-m_y);
+}
+
+scalar v2s::distance(const v2s &other) const
+{
+	return sqrt(sqrDistance(other));
+}
+
+v2s v2s::operator/(const scalar factor) const 
+{
+	return {m_x/(scalar)factor, m_y/(scalar)factor};
 }
 
 v2s v2s::operator/(const v2s& other) const 
 {
-	return (v2s(m_x/other.m_x,
-					   m_y/other.m_y));
+	return (v2s(m_x/other.m_x, m_y/other.m_y));
 }
 
-v2s v2s::operator*(scalar factor) const 
+v2s v2s::operator*(const scalar factor) const 
 {
-	return (v2s(factor*m_x,factor*m_y));
+	return {factor*m_x,factor*m_y};
 }
 
 v2s v2s::operator*(const v2s& other) const 
 {
-	return (v2s(other.m_x*m_x,
-					   other.m_y*m_y));
+	return {other.m_x*m_x, other.m_y*m_y};
 }
 
-v2s v2s::operator-(scalar factor) const 
+v2s v2s::operator-(const scalar factor) const 
 {
-	return (v2s(m_x-factor,
-					   m_y-factor));
+	return {m_x-factor, m_y-factor};
 }
 
 v2s v2s::operator-(const v2s& other) const 
 {
-	return (v2s(m_x-other.m_x,
-					   m_y-other.m_y));
+	return {m_x-other.m_x, m_y-other.m_y};
 }
 
 
-v2s v2s::operator+(scalar factor) const
+v2s v2s::operator+(const scalar factor) const
 {
-	return (v2s(factor+m_x,
-					   factor+m_y));
+	return {factor+m_x, factor+m_y};
 }
 
 v2s v2s::operator+(const v2s& other) const
 {
-	return (v2s(other.m_x+m_x,
-					   other.m_y+m_y));
+	return {other.m_x+m_x, other.m_y+m_y};
 }
 
 

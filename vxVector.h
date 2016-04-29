@@ -10,6 +10,7 @@ namespace vxCore {
 
 //TODO: add literal for scalar 0.0r
 using scalar = double;
+class vxColor;
 
 class v2s
 {
@@ -18,55 +19,223 @@ private:
 	scalar m_y {0.0};
 
 public:
-
-	v2s ();
-	v2s (scalar x, scalar y);
-	v2s (const v2s& other);
-	v2s (v2s&& other);
-	v2s& operator=(const v2s& other);
 	
-	void set(scalar x, scalar y);
-	void set(const v2s &enter);
-	void setX(const scalar x);
-	void setY(const scalar y);
-	v2s get() const;
-	void get(scalar &xi, scalar &yi) const;
-	scalar x() const;
-	scalar y() const;
-	scalar& operator[](const unsigned int);
-	scalar operator[](const unsigned int) const;
-	v2s asIntPosition() const;
-	scalar length() const;
-	v2s inverted() const;
-	v2s unit() const;
-	v2s operator+(const v2s& other) const;
-	v2s operator+(scalar factor) const;
-	v2s operator+(int factor) const;
-	v2s operator-(const v2s& other) const;
-	v2s operator-(scalar factor) const;
-	v2s operator-(int factor) const;
-	v2s operator*(const v2s& other) const;
-	v2s operator*(scalar factor) const;
-	v2s operator*(int factor) const;
-	v2s operator/(const v2s& other) const;
-	v2s operator/(scalar factor) const;
-	v2s operator/(int factor) const;
 	static v2s zero;
-
+	
+	///
+	/// \brief v2s
+	///
+	v2s ();
+	///
+	/// \brief v2s
+	/// \param x
+	/// \param y
+	///
+	v2s (scalar x, scalar y);
+	///
+	/// \brief v2s
+	/// \param other
+	///
+	v2s (const v2s& other);
+	///
+	/// \brief operator =
+	/// \param other
+	/// \return 
+	///
+	v2s& operator=(const v2s& other);
+	///
+	/// \brief set
+	/// \param x
+	/// \param y
+	///
+	void set(scalar x, scalar y);
+	///
+	/// \brief set
+	/// \param enter
+	///
+	void set(const v2s &enter);
+	///
+	/// \brief setX
+	/// \param x
+	///
+	void setX(const scalar x);
+	///
+	/// \brief setY
+	/// \param y
+	///
+	void setY(const scalar y);
+	///
+	/// \brief get
+	/// \return 
+	///
+	v2s get() const;
+	///
+	/// \brief get
+	/// \param xi
+	/// \param yi
+	///
+	void get(scalar &xi, scalar &yi) const;
+	///
+	/// \brief x
+	/// \return 
+	///
+	scalar x() const;
+	///
+	/// \brief y
+	/// \return 
+	///
+	scalar y() const;
+	///
+	/// \brief operator []
+	/// \return 
+	///
+	scalar& operator[](const unsigned int);
+	///
+	/// \brief operator []
+	/// \return 
+	///
+	scalar operator[](const unsigned int) const;
+	///
+	/// \brief asIntPosition
+	/// \return 
+	///
+	v2s asIntPosition() const;
+	///
+	/// \brief length
+	/// \return 
+	///
+	scalar length() const;
+	///
+	/// \brief inverted
+	/// \return 
+	///
+	v2s inverted() const;
+	///
+	/// \brief unit
+	/// \return 
+	///
+	v2s unit() const;
+	///
+	/// \brief operator +
+	/// \param other
+	/// \return 
+	///
+	v2s operator+(const v2s& other) const;
+	///
+	/// \brief operator +
+	/// \param factor
+	/// \return 
+	///
+	v2s operator+(const scalar factor) const;
+	///
+	/// \brief operator +
+	/// \param factor
+	/// \return 
+	///
+	v2s operator+(const int factor) const;
+	///
+	/// \brief operator -
+	/// \param other
+	/// \return 
+	///
+	v2s operator-(const v2s& other) const;
+	///
+	/// \brief operator -
+	/// \param factor
+	/// \return 
+	///
+	v2s operator-(const scalar factor) const;
+	///
+	/// \brief operator -
+	/// \param factor
+	/// \return 
+	///
+	v2s operator-(const int factor) const;
+	///
+	/// \brief operator *
+	/// \param other
+	/// \return 
+	///
+	v2s operator*(const v2s& other) const;
+	///
+	/// \brief operator *
+	/// \param factor
+	/// \return 
+	///
+	v2s operator*(const scalar factor) const;
+	///
+	/// \brief operator *
+	/// \param factor
+	/// \return 
+	///
+	v2s operator*(const int factor) const;
+	///
+	/// \brief operator /
+	/// \param other
+	/// \return 
+	///
+	v2s operator/(const v2s& other) const;
+	///
+	/// \brief operator /
+	/// \param factor
+	/// \return 
+	///
+	v2s operator/(const scalar factor) const;
+	///
+	/// \brief operator /
+	/// \param factor
+	/// \return 
+	///
+	v2s operator/(const int factor) const;
+	///
+	/// \brief operator ==
+	/// \param other
+	/// \return 
+	///
 	bool operator==(const v2s &other) const;
+	///
+	/// \brief operator !=
+	/// \param other
+	/// \return 
+	///
 	bool operator!=(const v2s &other) const;
-	
-	
+	///
+	/// \brief angle
+	/// \param other
+	/// \return 
+	///
 	scalar angle(const v2s &other) const;
+	///
+	/// \brief angle
+	/// \return 
+	///
 	scalar angle() const;
-	
+	///
+	/// \brief sqrDistance
+	/// \param other
+	/// \return 
+	///Returns the distance to the other vector 
+	/// skiping the square, this is to compare distances
+	scalar sqrDistance(const v2s &other) const;
+	///
+	/// \brief distance
+	/// \param other
+	/// \return 
+	///
+	scalar distance(const v2s &other) const;
+
+	///
+	/// \brief operator <<
+	/// \param os
+	/// \param v
+	/// \return 
+	///
 	friend std::ostream& operator<<(std::ostream &os, const v2s& v)
 	{
 		return os << v.m_x << " " << v.m_y;
 	}
 };
 
-class vxColor;
 
 class v3s
 {
@@ -354,16 +523,49 @@ public:
 	///computes the angle between this vector and the other one
 	/// with pivot in 0
 	scalar angle(const v3s &b) const;
+	///
+	/// \brief angleXY
+	/// \param other
+	/// \return 
+	///
 	scalar angleXY(const v3s &other) const;
+	///
+	/// \brief angleYZ
+	/// \param other
+	/// \return 
+	///
 	scalar angleYZ(const v3s &other) const;
+	///
+	/// \brief angleZX
+	/// \param other
+	/// \return 
+	///
 	scalar angleZX(const v3s &other) const;
-
+	///
+	/// \brief angleXY
+	/// \return 
+	///
 	scalar angleXY() const;
+	///
+	/// \brief angleYZ
+	/// \return 
+	///
 	scalar angleYZ() const;
+	///
+	/// \brief angleZX
+	/// \return 
+	///
 	scalar angleZX() const;
-
+	///
+	/// \brief operator =
+	/// \param otro
+	/// \return 
+	///
 	v3s operator=(const v3s &otro);
-
+	///
+	/// \brief abs
+	/// \return 
+	///
 	v3s abs() const;
 /*
 $rota=unit($rota);
