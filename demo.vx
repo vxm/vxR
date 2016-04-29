@@ -17,7 +17,7 @@ name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "false"
     resolution = 607 341
-    pixelSamples = 1
+    pixelSamples = 200
     reflectionSamples = 0
     giSamples = 0
     giMultiplier = 1.0
@@ -30,10 +30,10 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 100
-    reflectionSamples = 0
+    pixelSamples = 150
+    reflectionSamples = 1
     giSamples = 1
-    giMultiplier = 1.5
+    giMultiplier = 0.2
     numThreads = -1
 }
 
@@ -46,7 +46,7 @@ active = "false"
     pixelSamples = 4
     reflectionSamples = 1
     giSamples = 10
-    giMultiplier = 1.5
+    giMultiplier = 0.7
     numThreads = -1
 }
 
@@ -56,7 +56,7 @@ name = "renderSettings_3"
 type = "vxRenderSettings"
 active = "false"
     resolution = 4000 2240
-    pixelSamples = 1
+    pixelSamples = 300
     reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.5
@@ -181,7 +181,7 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.70 0.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 249 249 249
@@ -344,14 +344,73 @@ active = "false"
 ///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
 ///home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
 ///home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg
+///home/john/code/vxR/MonValley_Lookout/MonValley_A_LookoutPoint_8k.jpg
+///home/john/code/vxR/Mono_Lake_C/Mono_Lake_C_HiRes.jpg
+///home/john/code/vxR/Alexs_Apartment/Alexs_Apt_8k.jpg
+///home/john/code/vxR/Ueno-Shrine/03-Ueno-Shrine_8k.jpg
+///home/john/code/vxR/Frozen_Waterfall/Frozen_Waterfall_HiRes_TMap.jpg
+///home/john/code/vxR/Hamarikyu_Bridge_B/14-Hamarikyu_Bridge_B_8k.jpg
+///home/john/code/vxR/Serpentine_Valley/Serpentine_Valley_8k.jpg
+///home/john/code/vxR/Chelsea_Stairs/Chelsea_Stairs_8k.jpg
+///home/john/code/vxR/Summi_Pool/Summi_Pool_8k.jpg
+///home/john/code/vxR/Old_Industrial_Hall/fin4_Bg.jpg
+///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
+///home/john/code/vxR/Ditch_River/DSC_9738.jpg
+///home/john/code/vxR/Ditch_River/DSC_0326.jpg
+///home/john/code/vxR/Bryant_Park/Bryant_Park_8k.jpg
+///home/john/code/vxR/Walk_Of_Fame/Mans_Outside_8k_TMap.jpg
+///home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
+///home/john/code/vxR/Shiodome_Stairs/10-Shiodome_Stairs_8k.jpg
+///home/john/code/vxR/Playa_Sunrise/Playa_Sunrise_8k.jpg
+///home/john/code/vxR/MonValley_DirtRoad/MonValley_G_DirtRoad_8k.jpg
+///home/john/code/vxR/Chiricahua_NarrowPath/NarrowPath_8k.jpg
+///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/john/code/vxR/Ice_Lake/Ice_Lake_HiRes_TMap.jpg
+///home/john/code/vxR/Stadium_Center/Stadium_Center_8k.jpg
+///home/john/code/vxR/Mono_Lake_B/Mono_Lake_B_HiRes_TMap.jpg
+///home/john/code/vxR/Factory_Catwalk/Factory_Catwalk_Bg.jpg
+///home/john/code/vxR/Theatre_Seating/Theatre-Side_8k_TMap.jpg
+///home/john/code/vxR/Winter_Forest/WinterForest_8k.jpg
+///home/john/code/vxR/Power_Plant/rad06_Bg.jpg
+///home/john/code/vxR/Chiricahua_Plaza/GravelPlaza_8k.jpg
+///home/john/code/vxR/Circus_Backstage/Circus_Backstage_8k.jpg
+///home/john/code/vxR/PaperMill_Ruins_E/PaperMill_E_8k.jpg
+///home/john/code/vxR/Tokyo_BigSight/Tokyo_BigSight_8k.jpg
+///home/john/code/vxR/Malibu_Overlook/Malibu_Overlook_8k.jpg
+///home/john/code/vxR/Sierra_Madre_B/Sierra_Madre_B_HiRes_TMap.jpg
+///home/john/code/vxR/UV-Testgrid/testgrid.jpg
+///home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg
+///home/john/code/vxR/Zion_Sunsetpeek/Zion_7_Sunsetpeek_8k_Bg.jpg
+///home/john/code/vxR/Helipad_Afternoon/LA_Downtown_Afternoon_Fishing_B_8k.jpg
+///home/john/code/vxR/Popcorn_Lobby/Lobby-Center_8k_TMap.jpg
+///home/john/code/vxR/waterfall/waterfall_Bg.jpg
+///home/john/code/vxR/Newport_Loft/Newport_Loft_8k.jpg
+///home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg
+///home/john/code/vxR/Arches_E_PineTree/Arches_E_PineTree_8k.jpg
+///home/john/code/vxR/Hollywood_Sign/HWSign3-Fence_TMap.jpg
+///home/john/code/vxR/Desert_Highway/Road_to_MonumentValley_8k.jpg
+///home/john/code/vxR/Theatre_Center/Theatre-Center_8k_TMap.jpg
+///home/john/code/vxR/snow_machine/test8_Bg.jpg
+///home/john/code/vxR/PaperMill_Ruins_A/PaperMill_A_8k.jpg
+///home/john/code/vxR/Tropical_Beach/Tropical_Beach_8k.jpg
+///home/john/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg
+///home/john/code/vxR/Barcelona_Rooftops/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg
+///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg
+///home/john/code/vxR/Wooden_Door/WoodenDoor_6k_Tmap.jpg
+///home/john/code/vxR/Ridgecrest_Road/Ridgecrest_Road_4k_Bg.jpg
+///home/john/code/vxR/Helipad_GoldenHour/LA_Downtown_Helipad_GoldenHour_8k.jpg
+///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
+///home/john/code/vxR/Subway_Lights/20_Subway_Lights_8k.jpg
+///home/john/code/vxR/GrandCanyon_C_YumaPoint/GCanyon_C_YumaPoint_8k.jpg
+
 
 node
 {
 name = "dome"
 type = "vxDome"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Milkyway/Milkyway_BG.jpg"
+    imagePath = "/home/john/code/vxR/Chiricahua_Plaza/GravelPlaza_8k.jpg"
     gain = 1.0
     gamma = 3.1
 }
@@ -362,9 +421,9 @@ node
 name = "area_light_2"
 type = "vxAreaLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2 6 2 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4 6 2 1]
     intensity = 1.28
-    color = 218 215 216
+    color = 238 216 126
     samples = 1
     castShadows = "false"
     minX = -12.5
@@ -380,7 +439,7 @@ name = "area_light_1"
 type = "vxAreaLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
-    intensity = 0.62
+    intensity = 0.22
     color = 266 170 123
     samples = 1
     castShadows = "true"
@@ -488,9 +547,9 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0.65 0 1]
-    resolution = 50
+active = "true"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0 0.65 0 1]
+    resolution = 350
     size = 2.35
     color = 212 212 212
 }
@@ -526,7 +585,7 @@ node
 {
 name = "gnome_vx"
 type = "vxGridGeometry"
-active = "false"
-    transform = [1.5 0 0 0 0 1.5 0 0 0 0 1.5 0 0.0 -0.63 0.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+active = "true"
+    transform = [2.1 0 0 0 0 2.1 0 0 0 0 2.1 0 0.0 -0.63 0.0 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
 }
