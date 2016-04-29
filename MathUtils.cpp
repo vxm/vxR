@@ -221,13 +221,23 @@ v3s MathUtils::rayAndZPlane(const vxRay &ray, scalar z)
 	return rectAndZPlane(ray.direction(),z);
 }
 
-scalar MathUtils::getRand(scalar range)
+scalar MathUtils::getRand(const scalar range)
 {
 	return range * rand_scalar[(m_k++) % cached_random];
 	//return range * (rand()/(scalar)RAND_MAX);
 }
 
-scalar MathUtils::getBoolRand(scalar ratio)
+v2s MathUtils::getRand2d(const scalar range)
+{
+	return rand_v2s[(m_k++) % cached_random] * range;
+}
+
+v3s MathUtils::getRand3d(const scalar range)
+{
+	return rand_v3s[(m_k++) % cached_random] * range;
+}
+
+scalar MathUtils::getBoolRand(const scalar ratio)
 {
 	return getRand(ratio + 1.0) > 1.0;
 }

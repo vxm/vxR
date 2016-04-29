@@ -79,8 +79,10 @@ class MathUtils
 	//Random
 	static void fillRand();
 	static unsigned long m_k;
-	static scalar getRand(scalar range = 1.0);
-	static scalar getBoolRand(scalar ratio = 1.0);
+	static scalar getRand(const scalar range = 1.0);
+	static v2s getRand2d(const scalar range);
+	static v3s getRand3d(const scalar range);
+	static scalar getBoolRand(const scalar ratio = 1.0);
 	static v3s getSolidSphereRand(scalar radius = 1.0);
 	static v3s getSolidSphereRand2(scalar radius = 1.0);
 	static v3s getSolidSphereRand3(scalar radius = 1.0);
