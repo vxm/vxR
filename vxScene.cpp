@@ -86,6 +86,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		point->setIntensity(node->getFloatAttribute("intensity"));
 		point->setColor(vxColor::lookup256(node->getColorAttribute("color")));
 		point->setSamples(node->getIntAttribute("samples"));
+		point->setComputeShadows(node->getBoolAttribute("castShadows"));
 		
 		const auto transform = node->getMatrixAttribute("transform");
 		point->setTransform(transform);
