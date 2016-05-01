@@ -161,10 +161,6 @@ void vxPLYImporter::processPLYFile(const std::string &fileName)
 	
 	std::cout << "Internal Geo counts " << std::endl;
 	
-	std::cout << "Geo vertices " << m_geo->vertexCount() << std::endl;
-	std::cout << "Geo normals " << m_geo->vertexNormalsCount() << std::endl;
-	std::cout << "Geo uvs " << m_geo->uvsCount() << std::endl;
-	
 	std::vector<std::vector<v3s>> normals(m_geo->vertexCount());
 	TriIndices indices;
 	
