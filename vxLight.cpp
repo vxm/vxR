@@ -88,6 +88,11 @@ void vxLight::setColor(const vxColor &color)
 	m_color = color;
 }
 
+v3s vxLight::position() const 
+{
+	return m_position;
+}
+
 v3s vxLight::getLightRay(const v3s &position) const
 {
 	return m_position-position;

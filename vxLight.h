@@ -42,12 +42,12 @@ public:
 	void set(scalar intensity, const v3s &color);
 	void setIntensity(scalar intensity);
 	void setColor(const vxColor &color);
-	
-	v3s position() const 
-	{
-		return m_position;
-	}
-	
+	///
+	/// \brief position
+	/// \return 
+	///
+	v3s position() const;
+
 	scalar intensity() const {return m_intensity;}
 	vxColor color() const {return m_color;}
 	
