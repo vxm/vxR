@@ -35,6 +35,16 @@ void vxCamera::setProperties(const std::shared_ptr<const ImageProperties> &prope
 	m_ry = (scalar)m_properties->ry();
 }
 
+Matrix44 vxCamera::transform() const
+{
+	return m_transform;
+}
+
+void vxCamera::setTransform(const Matrix44 &transform)
+{
+	m_transform = transform;
+}
+
 vxCamera::vxCamera(std::shared_ptr<const ImageProperties> prop) 
 	: m_properties{prop}
 {
@@ -44,10 +54,10 @@ vxCamera::vxCamera(std::shared_ptr<const ImageProperties> prop)
 }
 
 vxCamera::vxCamera(const v3s &position, 
-					const v3s &orientation, 
-					scalar focusD, 
-					scalar apertureH, 
-					scalar apertureV)
+				   const v3s &orientation, 
+				   scalar focusD, 
+				   scalar apertureH, 
+				   scalar apertureV)
 {
 	m_orientation = orientation;
 	m_position = position;
@@ -57,15 +67,15 @@ vxCamera::vxCamera(const v3s &position,
 	
 	m_hApTan = tan(-m_horizontalAperture/(scalar)2.0);
 	m_vApTan = tan(-m_verticalAperture/(scalar)2.0);
-
+	
 	srand(time(NULL));
 }
 
 void vxCamera::set(const v3s& position, 
-					const v3s& orientation, 
-					scalar focusD, 
-					scalar apertureH, 
-					scalar apertureV) 
+				   const v3s& orientation, 
+				   scalar focusD, 
+				   scalar apertureH, 
+				   scalar apertureV) 
 {
 	m_orientation=orientation;
 	m_position=position;
@@ -88,19 +98,20 @@ void vxCamera::set(const v3s& position,
 
 vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
 {
-	auto&& s = sampler.xy(0.5);
-	const auto compX = m_hApTan * ((coord.x() * 2.0)-1.0) 
-							- s.x()/(scalar)(2.0 * m_rx);
+	auto xFactor = coord.x() * 2.0 -1.0;
+	auto yFactor = coord.y() * 2.0 -1.0;
+	//std::cout << "Pixel factor " << xFactor << " " << yFactor << std::endl;
 	
-	const auto compY = m_vApTan * ((coord.y() * 2.0)-1.0)
-							- s.y()/(scalar)(2.0 * m_ry);
+	auto&& s = sampler.xy(2.5);
+	const auto compX = m_hApTan * xFactor - s.x()/(scalar)(2.0 * m_rx);
+	const auto compY = m_vApTan * yFactor - s.y()/(scalar)(2.0 * m_ry);
 	
-	auto&& ret = vxRay{compY, compX, m_focusDistance};
+	auto&& ret = vxRay{{compY, compX, m_focusDistance}};
 	
-	//TODO: rotate origin and then place the origin of the ray
-	// in position
-	//TODO:read from scene
-	ret.setOrigin(v3s(-3.7, 0.2, -3.7));
+	//TODO: rotate origin and then place the origin of the ray in position
+	//TODO:read from scene.
+	ret.setOrigin(m_transform.getOrigin());
+	
 	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
 	ret.direction().setUnit();
 	
@@ -112,11 +123,11 @@ vxRay vxCamera::givemeRandRay(const v2s &coord)
 	scalar compX = m_hApTan * (( coord.x() * 2.0) -1.0 ) 
 			- 1.0/(scalar)(2.0 * m_properties->rx()) 
 			+ ((rand()/(scalar)RAND_MAX))/(scalar)(m_properties->rx());
-
+	
 	scalar compY = m_vApTan * (( coord.y() * 2.0) -1.0 ) 
 			- 1.0/(scalar)(2.0 * m_properties->ry()) 
 			+ ((rand()/(scalar)RAND_MAX))/(scalar)(m_properties->ry());
-
+	
 	auto ret = vxRay( compY, compX, m_focusDistance );
 	ret.direction().rotateY(0.333);
 	return ret;
@@ -140,8 +151,8 @@ vxRay vxCamera::givemeRandomRay(const v2s &coord)
 	xrv=((rand()/scalar(RAND_MAX)))/m_properties->rx();
 	yrv=((rand()/scalar(RAND_MAX)))/m_properties->ry();
 	return v3s{m_hApTan * (((coord.y()+yrv)*(scalar)2.0)-(scalar)1.0) ,
-						m_vApTan * (((coord.x()+xrv)*(scalar)2.0)-(scalar)1.0), 
-						m_focusDistance};
+				m_vApTan * (((coord.x()+xrv)*(scalar)2.0)-(scalar)1.0), 
+				m_focusDistance};
 }
 
 std::shared_ptr<const ImageProperties> vxCamera::prop() const

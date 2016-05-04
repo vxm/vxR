@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "Matrix44.h"
 #include "vxVector.h"
 #include "vxRay.h"
 #include "ImageProperties.h"
@@ -36,6 +37,7 @@ private:
 
 	std::shared_ptr<const ImageProperties> m_properties;
 
+	Matrix44 m_transform;
 public:
 	///
 	/// \brief vxCamera
@@ -139,6 +141,16 @@ public:
 	/// \param properties
 	///
 	void setProperties(const std::shared_ptr<const ImageProperties> &properties);
+	///
+	/// \brief transform
+	/// \return 
+	///
+	Matrix44 transform() const;
+	///
+	/// \brief setTransform
+	/// \param transform
+	///
+	void setTransform(const Matrix44 &transform);
 };
 
 }
