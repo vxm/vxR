@@ -27,156 +27,60 @@ class vxBox;
 struct vx
 {
 	unsigned char c{0b0000'0000};
-
-	inline void activate(bool active)
-	{
-		active ? activate() : deactivate();
-	}
-
+	///
+	/// \brief activate
+	/// \param active
+	///
+	inline void activate(bool active);
+	/// 
 	///
 	/// \brief active
 	/// \return 
 	///Returns true if any bit is active
-	inline bool active() const
-	{
-		return (bool)c;
-	}
-
+	inline bool active() const;
 	///
 	/// \brief activeBit
 	/// \param bit
 	/// \return 
 	///Returns true if the bit occupying the parameter
 	///position is 1 otherwise false.
-	inline bool activeBit(unsigned int bit) const
-	{
-		switch(bit)
-		{
-		case 0:
-			return c&0b0000'0001;
-		break;
-		case 1:
-			return c&0b0000'0010;
-		break;
-		case 2:
-			return c&0b0000'0100;
-		break;
-		case 3:
-			return c&0b0000'1000;
-		break;
-		case 4:
-			return c&0b0001'0000;
-		break;
-		case 5:
-			return c&0b0010'0000;
-		break;
-		case 6:
-			return c&0b0100'0000;
-		break;
-		case 7:
-			return c&0b1000'0000;
-		break;
-		}
-
-		return c&0b0000'0000;
-	}
-	
-	inline void activateBit(unsigned int bit)
-	{
-		switch(bit)
-		{
-		case 0:
-			c|=0b0000'0001;
-		break;
-		case 1:
-			c|=0b0000'0010;
-		break;
-		case 2:
-			c|=0b0000'0100;
-		break;
-		case 3:
-			c|=0b0000'1000;
-		break;
-		case 4:
-			c|=0b0001'0000;
-		break;
-		case 5:
-			c|=0b0010'0000;
-		break;
-		case 6:
-			c|=0b0100'0000;
-		break;
-		case 7:
-			c|=0b1000'0000;
-		break;
-		}
-	}
-	
-	inline void deactivateBit(unsigned int bit)
-	{
-		switch(bit)
-		{
-		case 0:
-			c&=~0b0000'0001;
-		break;
-		case 1:
-			c&=~0b0000'0010;
-		break;
-		case 2:
-			c&=~0b0000'0100;
-		break;
-		case 3:
-			c&=~0b0000'1000;
-		break;
-		case 4:
-			c&=~0b0001'0000;
-		break;
-		case 5:
-			c&=~0b0010'0000;
-		break;
-		case 6:
-			c&=~0b0100'0000;
-		break;
-		case 7:
-			c&=~0b1000'0000;
-		break;
-		}
-	}
-
-	inline void activate()
-	{
-		activateBit(7);
-	}
-	
-	inline void deactivate()
-	{
-		deactivateBit(7);
-		deactivateBit(6);
-		deactivateBit(5);
-		deactivateBit(4);
-
-		activateBit(0);
-		activateBit(1);
-		activateBit(2);
-	}
-
-	inline unsigned char byte() const
-	{
-		return c;
-	}
-
-	inline void setByte(const unsigned char ci)
-	{
-		c = ci;
-		activate();
-	}
+	inline bool activeBit(unsigned int bit) const;
+	///
+	/// \brief activateBit
+	/// \param bit
+	///
+	inline void activateBit(unsigned int bit);
+	///
+	/// \brief deactivateBit
+	/// \param bit
+	///
+	inline void deactivateBit(unsigned int bit);
+	///
+	/// \brief activate
+	///
+	inline void activate();
+	///
+	/// \brief deactivate
+	///
+	inline void deactivate();
+	///
+	/// \brief byte
+	/// \return 
+	///
+	inline unsigned char byte() const;
+	///
+	/// \brief setByte
+	/// \param ci
+	///
+	inline void setByte(const unsigned char ci);
 };
 
 static_assert(sizeof(vx)==1, "vx size is wrong");
 
 ///
 /// \brief The Voxel class
-/// This is a temporary interchange struct
+/// This is a temporary interchange struct data 
+/// it is not meant to be stored in the grid data.
 class Voxel
 {
 public:
@@ -191,7 +95,9 @@ public:
 	scalar size;
 };
 
-
+///
+/// \brief The vxGrid class
+/// Represents a geometry defined by grid of active voxels 
 class vxGrid final : public vxGeometry
 {
 protected:
@@ -205,7 +111,7 @@ protected:
 	scalar m_c_resDivTres	= {m_size/(scalar)3.0};
 	scalar m_c_midSize	= {m_size/(scalar)2.0};
 
-	// cache objects
+	/// cache objects
 	scalar m_c_boxSize			= {1.0};
 	scalar m_c_midBoxSize			= {.5};	
 	unsigned long m_c_resXres		= {25};
@@ -218,51 +124,166 @@ protected:
 	scalar m_zmax		= {0.0};
 
 public:
-
+	///
+	/// \brief vxGrid
+	///
 	vxGrid();
+	///
+	/// \brief vxGrid
+	/// \param position
+	/// \param size
+	///
 	vxGrid(const v3s &position, scalar size);
+	///
+	/// \brief vxGrid
+	/// \param x
+	/// \param y
+	/// \param z
+	/// \param size
+	///
 	vxGrid(scalar x, scalar y,  scalar z,  scalar size);
+	
 	~vxGrid();
 
 // GETTER AND SETTERS
-	
+	///
+	/// \brief createGridData
+	/// \param resolution
+	///
 	void createGridData(const unsigned long resolution);
+	///
+	/// \brief setResolution
+	/// \param resolution
+	///
 	void setResolution(unsigned long resolution);
+	///
+	/// \brief setSize
+	/// \param size
+	///
 	void setSize(const scalar size);
+	///
+	/// \brief size
+	/// \return 
+	///
 	unsigned long size() const;
+	///
+	/// \brief setPosition
+	/// \param position
+	///
 	void setPosition(const v3s &position);
+	///
+	/// \brief position
+	/// \return 
+	///
 	v3s position() const;
+	///
+	/// \brief resolution
+	/// \return 
+	///
 	unsigned long resolution() const;
+	///
+	/// \brief setBoxSize
+	///
 	void setBoxSize();
+	///
+	/// \brief updateBB
+	///
 	void updateBB();
+	///
+	/// \brief createDiagonals
+	/// \param colorIndex
+	///
 	void createDiagonals(unsigned char colorIndex = 11);
+	///
+	/// \brief createCorners
+	/// \param colorIndex
+	///
 	void createCorners(unsigned char colorIndex);
+	///
+	/// \brief createRoof
+	/// \param offset
+	/// \param colorIndex
+	///
 	void createRoof(unsigned long offset = 0, unsigned char colorIndex = 11);
+	///
+	/// \brief createGround
+	/// \param offset
+	/// \param colorIndex
+	///
 	void createGround(unsigned long offset = 0, unsigned char colorIndex = 11);
+	///
+	/// \brief createEdges
+	/// \param colorIndex
+	///
 	void createEdges(unsigned char colorIndex = 12);
+	///
+	/// \brief fill
+	/// \param colorIndex
+	///
 	void fill(unsigned char colorIndex = 5);
+	///
+	/// \brief createSphere
+	/// \param center
+	/// \param radio
+	/// \param colorIndex
+	///
 	void createSphere(const v3s &center, 
 					  const scalar radio,
 					  unsigned char colorIndex = 11);
-	
+	///
+	/// \brief createSphere
+	/// \param x
+	/// \param y
+	/// \param z
+	/// \param radio
+	/// \param colorIndex
+	///
 	void createSphere(scalar x,
 					  scalar y,
 					  scalar z,
 					  const scalar radio,
 					  unsigned char colorIndex = 11);
-	
+	///
+	/// \brief getRandomBoolean
+	/// \param ratio
+	/// \return 
+	///
 	bool getRandomBoolean(scalar ratio = 1.0);
+	///
+	/// \brief createRandom
+	/// \param ratio
+	/// \param y_threshold
+	///
 	void createRandom(scalar ratio = 1.0, scalar y_threshold=-10000.0);
+	///
+	/// \brief addGeometry
+	/// \param geo
+	///
 	void addGeometry(const vxTriangleMeshHandle geo);
+	///
+	/// \brief dumpFileInMemory
+	/// \param fileName
+	///
 	void dumpFileInMemory(const std::__cxx11::string &fileName);
+	///
+	/// \brief dumpNumericTypeInMemory
+	///
 	void dumpNumericTypeInMemory();
 	
 	
 	//////////////////////////////////////////////////The game of life//////////
-	
+	///
 	void markCellAsDead(vx& cell);
+	///
+	/// \brief markCellForGenesis
+	/// \param cell
+	///
 	void markCellForGenesis(vx& cell);
-	
+	///
+	/// \brief neighboursAlive
+	/// \param idx
+	/// \return 
+	///
 	unsigned int neighboursAlive(unsigned long long idx);
 	
 	///
@@ -272,7 +293,10 @@ public:
 	///	Any live cell with more than three live neighbours dies, as if by over-population.
 	///	Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 	unsigned long long playGameOfLife();
-
+	///
+	/// \brief killTheDead
+	/// \return 
+	///
 	unsigned long long killTheDead();
 	
 	//////////////////////////////////////////////////The game of life//////////
@@ -280,82 +304,238 @@ public:
 	
 	
 // OPERATION WITH GRID
+	///
+	/// \brief index
+	/// \param x
+	/// \param y
+	/// \param z
+	/// \return 
+	///
 	inline unsigned long index(const unsigned long x, 
 								const unsigned long y, 
 								const unsigned long z) const;
-	
+	///
+	/// \brief nextVoxel
+	/// \param ray
+	/// \param sp
+	/// \return 
+	///
 	Voxel nextVoxel(const vxRay &ray, v3s &sp) const;
-	//sets every single vxl to 0.
+	///
+	/// \brief initialize
+	/// \param value
+	///sets every single vxl to 0.
 	void initialize(bool value = false);
-	//returns number of active voxels
+	///
+	/// \brief numActiveVoxels
+	/// \return 
+	///returns number of active voxels
 	unsigned long numActiveVoxels();
+	///
+	/// \brief getNumberOfVoxels
+	/// \return 
+	/// returns true if voxel at x y z is active
 	long getNumberOfVoxels() const;
-	// returns true if voxel at x y z is active
+	///
+	/// \brief active
+	/// \param pos
+	/// \return 
+	/// returns true if voxel at index is active
+	///
 	inline bool active(const v3s& pos) const;
-	// returns true if voxel at index is active
+	///
+	/// \brief active
+	/// \param idx
+	/// \return 
+	///
 	inline bool active(unsigned long idx) const;
+	///
+	////// \brief active
+	////// \param x
+	////// \param y
+	////// \param z
+	////// \return 
 	// returns true if voxel at index is active
 	inline bool active(const unsigned long x, 
 					   const unsigned long y, 
 					   const unsigned long z) const;
-	// sets active voxel at coordinates x y z
+	///
+	/// \brief activate
+	/// \param x
+	/// \param y
+	/// \param z
+	/// sets active voxel at coordinates x y z
 	void activate(const unsigned long x, 
 				  const unsigned long y, 
 				  const unsigned long z);
-	// sets active voxel at world space position
-	// returns true if could find a voxel.
+	///
+	/// \brief activate
+	/// \param pos
+	/// \return 
+	/// sets active voxel at world space position
+	/// returns true if could find a voxel.
 	bool activate(const v3s &pos);
+	///
+	/// \brief activeInRange
+	/// \param pos
+	/// \return 
+	///
 	bool activeInRange(const v3s &pos) const;
-
-	// sets unactive vxl at coordinates x y z
+	///
+	/// \brief deactivate
+	/// \param x
+	/// \param y
+	/// \param z
+	/// sets unactive vxl at coordinates x y z
 	void deactivate(const unsigned long x, 
 					const unsigned long y, 
 					const unsigned long z);
-
-	// returns true if element at local coords 
-	// is true
+	///
+	/// \brief getElement
+	/// \param x
+	/// \param y
+	/// \param z
+	/// \return 
+	/// returns true if element at local coords 
+	/// is true
 	inline bool getElement(const unsigned long x, 
 						   const unsigned long y, 
 						   const unsigned long z) const;
-	
+	///
+	/// \brief setElementColorIndex
+	/// \param x
+	/// \param y
+	/// \param z
+	/// \param c
+	///
 	void setElementColorIndex(const unsigned long x, const unsigned long y, const unsigned long z, const unsigned char c);
-	// changes the value of the element at local
-	// coords x y z to be same as parameter value
+	///
+	/// \brief setElement
+	/// \param x
+	/// \param y
+	/// \param z
+	/// \param value
+	/// changes the value of the element at local
+	/// coords x y z to be same as parameter value
 	inline void setElement(const unsigned long x, 
 						   const unsigned long y, 
 						   const unsigned long z, 
 							bool value);
+	///
+	/// \brief setElement
+	/// \param idx
+	/// \param value
+	///
 	inline void setElement(unsigned long idx, bool value);
+	///
+	/// \brief getVoxelPosition
+	/// \param iX
+	/// \param iY
+	/// \param iZ
+	/// \return 
+	///
 	v3s getVoxelPosition(const unsigned long iX, 
 								const unsigned long iY, 
 								const unsigned long iZ) const;
+	///
+	/// \brief getVoxelPosition
+	/// \param idx
+	/// \return 
+	///
 	v3s getVoxelPosition(unsigned long long idx) const;
+	///
+	/// \brief indexAtPosition
+	/// \param pos
+	/// \return 
+	///
 	inline unsigned long indexAtPosition(const v3s &pos) const;
+	///
+	/// \brief vxAt
+	/// \param idx
+	/// \return 
+	///
 	inline vx& vxAt(const unsigned long idx);
+	///
+	/// \brief vxAt
+	/// \param idx
+	/// \return 
+	///
 	inline vx vxAt(const unsigned long idx) const;
+	///
+	/// \brief vxAtPosition
+	/// \param position
+	/// \return 
+	///
 	inline vx& vxAtPosition(const v3s &position);
+	///
+	/// \brief vxAt
+	/// \param iX
+	/// \param iY
+	/// \param iZ
+	/// \return 
+	///
 	inline vx& vxAt(const unsigned long iX, 
 					const unsigned long iY, 
 					const unsigned long iZ);
+	///
+	/// \brief vxAtPosition
+	/// \param position
+	/// \return 
+	///
 	vx vxAtPosition(const v3s &position) const;
+	///
+	/// \brief vxAt
+	/// \param iX
+	/// \param iY
+	/// \param iZ
+	/// \return 
+	///
 	vx vxAt(const unsigned long iX, 
 			const unsigned long iY, 
 			const unsigned long iZ) const;
-
+	///
+	/// \brief inGrid
+	/// \param pnt
+	/// \param tolerance
+	/// \return 
+	///
 	bool inGrid(const v3s &pnt, scalar tolerance) const;
+	///
+	/// \brief inGrid
+	/// \param pnt
+	/// \return 
+	///
 	bool inGrid(const v3s &pnt) const;
-	
+	///
+	/// \brief elementColorIndex
+	/// \param x
+	/// \param y
+	/// \param z
+	/// \return 
+	///
 	unsigned char elementColorIndex(const unsigned long x, const unsigned long y, const unsigned long z) const;
+	///
+	/// \brief bitInBufferData
+	/// \param idx
+	/// \return 
+	///
 	bool bitInBufferData(const unsigned long idx) const;
+	///
+	/// \brief getComponentsOfIndex
+	/// \param idx
+	/// \param retx
+	/// \param rety
+	/// \param retz
+	///
+	void getComponentsOfIndex(const unsigned long long idx, 
+							  long &retx, 
+							  long &rety, 
+							  long &retz) const;
 	
 	//renderable interface
 	virtual bool throwRay(const vxRay &ray) const override;
 	virtual int throwRay(const vxRay &ray, vxCollision &col) const override;
 	virtual bool hasCollision(const vxRay &ray) const override;
-	void getComponentsOfIndex(const unsigned long long idx, 
-							  long &retx, 
-							  long &rety, 
-							  long &retz) const;
 };
 
 /*

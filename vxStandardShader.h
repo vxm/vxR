@@ -3,7 +3,8 @@
 #include "vxShader.h"
 #include "vxMap.h"
 
-using namespace vxCore;
+namespace vxCore
+{
 
 class vxStandardShader : public vxShader
 {
@@ -21,4 +22,5 @@ class vxStandardShader : public vxShader
 		bool hasDiffuseMap() const;
 };
 
+}
 #endif // VXSTANDARDSHADER_H

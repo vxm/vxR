@@ -847,3 +847,136 @@ std::cout << "maxY " << m_ymax << std::endl;
 std::cout << "maxZ " << m_zmax << std::endl;
 */
 
+
+void vx::activate(bool active)
+{
+	active ? activate() : deactivate();
+}
+
+bool vx::active() const
+{
+	return (bool)c;
+}
+
+bool vx::activeBit(unsigned int bit) const
+{
+	switch(bit)
+	{
+	case 0:
+		return c&0b0000'0001;
+				break;
+	case 1:
+		return c&0b0000'0010;
+				break;
+	case 2:
+		return c&0b0000'0100;
+				break;
+	case 3:
+		return c&0b0000'1000;
+				break;
+	case 4:
+		return c&0b0001'0000;
+				break;
+	case 5:
+		return c&0b0010'0000;
+				break;
+	case 6:
+		return c&0b0100'0000;
+				break;
+	case 7:
+		return c&0b1000'0000;
+				break;
+	}
+	
+	return c&0b0000'0000;
+}
+
+void vx::activateBit(unsigned int bit)
+{
+	switch(bit)
+	{
+	case 0:
+		c|=0b0000'0001;
+				break;
+	case 1:
+		c|=0b0000'0010;
+				break;
+	case 2:
+		c|=0b0000'0100;
+				break;
+	case 3:
+		c|=0b0000'1000;
+				break;
+	case 4:
+		c|=0b0001'0000;
+				break;
+	case 5:
+		c|=0b0010'0000;
+				break;
+	case 6:
+		c|=0b0100'0000;
+				break;
+	case 7:
+		c|=0b1000'0000;
+				break;
+	}
+}
+
+void vx::deactivateBit(unsigned int bit)
+{
+	switch(bit)
+	{
+	case 0:
+		c&=~0b0000'0001;
+				break;
+	case 1:
+		c&=~0b0000'0010;
+				break;
+	case 2:
+		c&=~0b0000'0100;
+				break;
+	case 3:
+		c&=~0b0000'1000;
+				break;
+	case 4:
+		c&=~0b0001'0000;
+				break;
+	case 5:
+		c&=~0b0010'0000;
+				break;
+	case 6:
+		c&=~0b0100'0000;
+				break;
+	case 7:
+		c&=~0b1000'0000;
+				break;
+	}
+}
+
+void vx::activate()
+{
+	activateBit(7);
+}
+
+void vx::deactivate()
+{
+	deactivateBit(7);
+	deactivateBit(6);
+	deactivateBit(5);
+	deactivateBit(4);
+	
+	activateBit(0);
+	activateBit(1);
+	activateBit(2);
+}
+
+unsigned char vx::byte() const
+{
+	return c;
+}
+
+void vx::setByte(const unsigned char ci)
+{
+	c = ci;
+	activate();
+}

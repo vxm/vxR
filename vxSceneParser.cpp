@@ -163,7 +163,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 	if (std::regex_match(txt, base_match, var_brakets))
 	{
 		ret.first = base_match[1].str();
-
+		
 		scalar m[16];
 		auto matValues = base_match[5].str().substr(1,base_match[5].str().size()-2);
 		std::stringstream strValue(matValues);

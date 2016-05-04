@@ -7,10 +7,10 @@
 #include "vxColor.h"
 #include "vxValue.h"
 
-static unsigned long nNodes{0};
-
 namespace vxCore
 {
+
+static unsigned long nNodes{0};
 
 using namespace std::string_literals;
 //Attribute should have default values.

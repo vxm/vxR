@@ -1,5 +1,7 @@
 #include "vxStandardShader.h"
 
+using namespace vxCore;
+
 vxStandardShader::vxStandardShader()
 {
 }

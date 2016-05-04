@@ -22,7 +22,11 @@ public:
 	static std::map<std::thread::id, uniqueInfo> threads;
 
 	vxThreadPool();
-
+	///
+	/// \brief threadInfo
+	/// \param id
+	/// \return 
+	///
 	static uniqueInfo threadInfo(std::thread::id id)
 	{
 		if(threads.find(id)==std::end(threads))
@@ -34,7 +38,11 @@ public:
 		return threads[id];
 	}
 	
-	
+	///
+	/// \brief threadBox
+	/// \param id
+	/// \return 
+	///
 	static vxBox& threadBox(std::thread::id id)
 	{
 		return threads[id].box;
