@@ -21,7 +21,7 @@ class vxNode
 	bool m_active{true};
 	std::string m_name;
 	std::string m_type;
-	vxMatrix transform{vxMatrix::identity};
+	Matrix44 transform{Matrix44::identity44};
 	
 	std::vector<Attribute> m_attributes;
 	int id{0};
@@ -96,7 +96,7 @@ public:
 	void setAttributes(const std::vector<Attribute> &attributes);
 	bool active() const;
 	void setActive(bool active);
-	vxMatrix getMatrixAttribute(const std::__cxx11::string attrName);
+	Matrix44 getMatrixAttribute(const std::__cxx11::string attrName);
 };
 
 class nodeMap:public std::map<std::string, std::shared_ptr<vxNode>>

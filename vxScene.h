@@ -11,7 +11,7 @@
 #include "vxSceneParser.h"
 #include "vxRay.h"
 #include "vxPlane.h"
-#include "vxMatrix.h"
+#include "Matrix44.h"
 #include "vxLight.h"
 #include "vxGrid.h"
 #include "vxCamera.h"
@@ -75,7 +75,7 @@ public:
 	void updateCache();
 
 	std::shared_ptr<vxCamera>
-		createCamera(const vxMatrix &,
+		createCamera(const Matrix44 &,
 					scalar hAperture = 0.0,
 					scalar vAperture = 0.0);
 
@@ -108,7 +108,7 @@ public:
 	std::shared_ptr<vxPlane> createPlane(vxPlane::type type);
 	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
 	vxTriangleMeshHandle createGeometry(const std::__cxx11::string &path, 
-											   const vxMatrix &transform);
+											   const Matrix44 &transform);
 
 	int domeThrowRay(const vxRay &ray, vxCollision &collide) const;
 	

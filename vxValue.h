@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "vxVector.h"
-#include "vxMatrix.h"
+#include "Matrix44.h"
 
 namespace vxCore {
 
@@ -64,7 +64,7 @@ public:
 		double d;
 		long double ld;
 		std::string str;
-		std::shared_ptr<vxMatrix> mat;
+		std::shared_ptr<Matrix44> mat;
 		std::shared_ptr<v3s> v3d;
 		std::shared_ptr<v2s> v2d;
 	
@@ -457,7 +457,7 @@ public:
 		value.v3d = v3d;
 	}
 	
-	vxValue(std::shared_ptr<vxMatrix> m44)
+	vxValue(std::shared_ptr<Matrix44> m44)
 		: valueType{vxValueType::kMatrix44} 
 	{
 		value.mat = m44 ;
@@ -547,7 +547,7 @@ public:
 		value.str = other;
 	}
 	
-	void setMatrix44(std::shared_ptr<vxMatrix> other)
+	void setMatrix44(std::shared_ptr<Matrix44> other)
 	{
 		valueType = vxValueType::kMatrix44;
 		value.mat = other;
@@ -623,7 +623,7 @@ public:
 		return value.str;
 	}
 	
-	std::shared_ptr<vxMatrix> asMatrix44() const
+	std::shared_ptr<Matrix44> asMatrix44() const
 	{
 		return value.mat;
 	}

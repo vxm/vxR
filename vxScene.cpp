@@ -319,7 +319,7 @@ std::shared_ptr<vxBitMap2d> vxScene::createImage(const std::__cxx11::string path
 	return image;
 }
 
-vxTriangleMeshHandle vxScene::createGeometry(const std::string &path, const vxMatrix &transform)
+vxTriangleMeshHandle vxScene::createGeometry(const std::string &path, const Matrix44 &transform)
 {
 	// looking for previouly processed meshes.
 	for(const auto& geo: m_triangleMeshes)

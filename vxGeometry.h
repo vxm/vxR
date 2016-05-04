@@ -9,7 +9,7 @@
 //#include "vxShader.h"
 #include "vxCollision.h"
 #include "vxTriRef.h"
-#include "vxMatrix.h"
+#include "Matrix44.h"
 #include "vxBoundingBox.h"
 #include "vxGeoGrid.h"
 #include "vxColor.h"
@@ -26,7 +26,7 @@ class vxGeometry
 {
 protected:
 	std::shared_ptr<vxBoundingBox> m_bb;
-	vxMatrix m_transform;
+	Matrix44 m_transform;
 	
 	vxColor m_baseColor;
 	//std::shared_ptr<vxShader> m_shader;
@@ -34,10 +34,10 @@ protected:
 public:
 
 	vxGeometry();
-	vxMatrix transform() const;
-	vxMatrix& transform();
+	Matrix44 transform() const;
+	Matrix44& transform();
 
-	void setTransform(const vxMatrix &transform);
+	void setTransform(const Matrix44 &transform);
 
 	std::shared_ptr<vxBoundingBox> boundingBox();
 

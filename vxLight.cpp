@@ -12,12 +12,12 @@ void vxLight::setComputeShadows(bool castShadows)
 	m_castShadows = castShadows;
 }
 
-vxMatrix vxLight::getTransform() const
+Matrix44 vxLight::getTransform() const
 {
 	return m_transform;
 }
 
-void vxLight::setTransform(const vxMatrix &transform)
+void vxLight::setTransform(const Matrix44 &transform)
 {
 	m_transform = transform;
 }

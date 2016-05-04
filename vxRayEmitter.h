@@ -1,6 +1,8 @@
 #ifndef VXRAYEMITTER_H
 #define VXRAYEMITTER_H
 
+namespace vxCore {
+
 // common interface for classes want
 class vxRayEmitter
 {
@@ -10,4 +12,5 @@ class vxRayEmitter
 
 };
 
+}
 #endif // VXRAYEMITTER_H

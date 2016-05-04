@@ -26,7 +26,6 @@ SOURCES += main.cpp\
     vxBucketList.cpp \
     vxStatus.cpp \
     ImageProperties.cpp \
-    vxMatrix.cpp \
     vxPixel.cpp \
     vxProcess.cpp \
     vxRayEmitter.cpp \
@@ -75,7 +74,10 @@ SOURCES += main.cpp\
     vxTriangleMesh.cpp \
     vxClock.cpp \
     VectorUtils.cpp \
-    vxNonSequentalPool.cpp
+    vxNonSequentalPool.cpp \
+    Matrix33.cpp \
+    Matrix44.cpp \
+    vxQuaternion.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -91,7 +93,6 @@ HEADERS  += \
     vxBucketList.h \
     vxStatus.h \
     ImageProperties.h \
-    vxMatrix.h \
     vxPixel.h \
     vxProcess.h \
     vxRayEmitter.h \
@@ -140,7 +141,10 @@ HEADERS  += \
     vxTriangleMesh.h \
     vxClock.h \
     VectorUtils.h \
-    vxNonSequentalPool.h
+    vxNonSequentalPool.h \
+    Matrix33.h \
+    Matrix44.h \
+    vxQuaternion.h
 
 OTHER_FILES += \
     todo.txt \

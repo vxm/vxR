@@ -5,7 +5,7 @@
 
 #include "FileUtils.h"
 #include "StringUtils.h"
-#include "vxMatrix.h"
+#include "Matrix44.h"
 #include "vxStatus.h"
 #include "vxValue.h"
 #include "vxNode.h"

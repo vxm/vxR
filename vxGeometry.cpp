@@ -34,17 +34,17 @@ std::shared_ptr<vxBoundingBox> vxGeometry::boundingBox()
 	return m_bb;
 }
 
-vxMatrix vxGeometry::transform() const
+Matrix44 vxGeometry::transform() const
 {
 	return m_transform;
 }
 
-vxMatrix& vxGeometry::transform()
+Matrix44& vxGeometry::transform()
 {
 	return m_transform;
 }
 
-void vxGeometry::setTransform(const vxMatrix &transform)
+void vxGeometry::setTransform(const Matrix44 &transform)
 {
 	m_transform = transform;
 }

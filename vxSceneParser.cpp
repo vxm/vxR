@@ -172,7 +172,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 			strValue >> m[i];
 		}
 		
-		ret.second.setMatrix44(std::make_shared<vxMatrix>(m));
+		ret.second.setMatrix44(std::make_shared<Matrix44>(m));
 		
 #if COUT_PARSING
 		std::cout << " matrix (" << ret.first << ")=";

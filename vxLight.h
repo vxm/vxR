@@ -7,7 +7,7 @@
 #include "MathUtils.h"
 #include "vxScene.h"
 #include "vxBitMap2d.h"
-#include "vxMatrix.h"
+#include "Matrix44.h"
 #include "vxSampler.h"
 
 namespace vxCore {
@@ -18,7 +18,7 @@ class vxLight
 {
 protected:
 	
-	vxMatrix m_transform;
+	Matrix44 m_transform;
 	bool m_castShadows{true};
 	//not every light needs a position
 	v3s m_position	{0.0,0.0,0.0};
@@ -65,8 +65,8 @@ public:
 	bool computeShadows() const;
 	void setComputeShadows(bool computeShadows);
 	
-	vxMatrix getTransform() const;
-	void setTransform(const vxMatrix &transform);
+	Matrix44 getTransform() const;
+	void setTransform(const Matrix44 &transform);
 };
 
 
