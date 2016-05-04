@@ -6,7 +6,7 @@
 using namespace vxCore;
 
 
-const Matrix33 Matrix33::identity{  1.0, 0.0, 0.0, 
+const Matrix33 Matrix33::identity33{  1.0, 0.0, 0.0, 
 									0.0, 1.0, 0.0, 
 									0.0, 0.0, 1.0};
 
@@ -15,12 +15,12 @@ Matrix33::Matrix33()
 
 Matrix33::Matrix33(const Matrix33 &src)
 {
-	memcpy(m_matrix, src.m_matrix, 16 * sizeof(scalar));
+	memcpy(m_matrix, src.m_matrix, 9 * sizeof(scalar));
 }
 
 Matrix33::Matrix33(const m33data m)
 {
-	memcpy(m_matrix, m, 16 * sizeof(scalar));
+	memcpy(m_matrix, m, 9 * sizeof(scalar));
 }
 
 Matrix33::Matrix33 (std::initializer_list<scalar> list)
@@ -41,44 +41,19 @@ Matrix33::~Matrix33()
 
 vxStatus::code Matrix33::get(scalar dest[]) const
 {
-	memcpy(dest, m_matrix, 16 * sizeof(scalar));
+	memcpy(dest, m_matrix, 9 * sizeof(scalar));
 	return vxStatus::code::kSuccess;
 }
 
 Matrix33 Matrix33::transpose() const
 {
-	std::swap(m_matrix[1],	m_matrix[4]);
-	std::swap(m_matrix[2],	m_matrix[8]);
-	std::swap(m_matrix[3],	m_matrix[12]);
-	std::swap(m_matrix[6],	m_matrix[9]);
-	std::swap(m_matrix[7],	m_matrix[13]);
-	std::swap(m_matrix[11],	m_matrix[15]);
-
+	
 	return *this;
 }
 
 Matrix33& Matrix33::setToIdentity()
 {
-	m_matrix[0] = 1.0;
-	m_matrix[1] = 0.0;
-	m_matrix[2] = 0.0;
-	m_matrix[3] = 0.0;
-	
-	m_matrix[4] = 0.0;
-	m_matrix[5] = 1.0;
-	m_matrix[6] = 0.0;
-	m_matrix[7] = 0.0;
-	
-	m_matrix[8] = 0.0;
-	m_matrix[9] = 0.0;
-	m_matrix[10] = 1.0;
-	m_matrix[11] = 0.0;
-	
-	m_matrix[12] = 0.0;
-	m_matrix[13] = 0.0;
-	m_matrix[14] = 0.0;
-	m_matrix[15] = 1.0;
-	
+	*this = Matrix33::identity33;
 	return *this;
 }
 
@@ -166,19 +141,19 @@ const scalar *Matrix33::operator[](unsigned int row) const
 
 bool Matrix33::operator==(const Matrix33 &other) const
 {
-	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(scalar));
+	auto r = memcmp(m_matrix, other.m_matrix, 9 * sizeof(scalar));
 	return r==0;
 }
 
 bool Matrix33::operator!=(const Matrix33 &other) const
 {
-	auto r = memcmp(m_matrix, other.m_matrix, 16 * sizeof(scalar));
+	auto r = memcmp(m_matrix, other.m_matrix, 9 * sizeof(scalar));
 	return r!=0;
 }
 
 Matrix33 &Matrix33::operator=(const Matrix33 &other)
 {
-	memcpy(m_matrix, other.m_matrix, 16 * sizeof(scalar));
+	memcpy(m_matrix, other.m_matrix, 9 * sizeof(scalar));
 	return *this;
 }
 

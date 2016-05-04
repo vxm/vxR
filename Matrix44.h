@@ -1,83 +1,212 @@
 #ifndef MATRIX44_H
 #define MATRIX44_H
 #include <cstring>
+#include <array>
 #include "vxStatus.h"
 #include "vxVector.h"
 #include <initializer_list>
 
 namespace vxCore {
 
+//using mdata = std::array<scalar,16>;
 using mdata = scalar[16];
 
 class Matrix44
 {
-	mutable mdata m_matrix{ 1.0, 0.0, 0.0, 0.0, 
-							0.0, 1.0, 0.0, 0.0, 
-							0.0, 0.0, 1.0, 0.0, 
-							0.0, 0.0, 0.0, 1.0};
+	mutable mdata m_matrix = {  1.0, 0.0, 0.0, 0.0, 
+								0.0, 1.0, 0.0, 0.0, 
+								0.0, 0.0, 1.0, 0.0, 
+								0.0, 0.0, 0.0, 1.0};
 
 public:
 	static const Matrix44 identity44;
-	
-	Matrix44()
-	{}
-	Matrix44 (const Matrix44 &src)
-	{
-		memcpy(m_matrix, src.m_matrix, 16 * sizeof(scalar));
-	}
-	Matrix44 (const scalar m[16])
-	{
-		memcpy(m_matrix, m, 16 * sizeof(scalar));
-	}
-	Matrix44 (std::initializer_list<scalar> list)
-	{
-		auto i=0;
-		for(auto&& d:list)
-		{
-			m_matrix[i] = d;
-			++i;
-		}
-	}
+	///
+	/// \brief Matrix44
+	///
+	Matrix44();
+	///
+	/// \brief Matrix44
+	/// \param src
+	///
+	Matrix44 (const Matrix44 &src);
+	///
+	/// \brief Matrix44
+	/// \param m
+	///
+	Matrix44 (const scalar m[16]);
+	///
+	/// \brief Matrix44
+	/// \param list
+	///
+	Matrix44 (std::initializer_list<scalar> list);
+	/// destructor
 	~Matrix44();
 
 	// transform operations
 	
 	//Matrix44 
 	
-	//
+	///
+	/// \brief get
+	/// \param dest
+	/// \return 
+	///
 	vxStatus::code	get(scalar dest[]) const;
-	Matrix44		transpose() const;
-	Matrix44&		setToIdentity();
-	Matrix44&		setToProduct(const Matrix44&, const Matrix44&);
-	Matrix44&		operator+= (const Matrix44& right);
-	Matrix44		operator+ (const Matrix44& right) const;
-	Matrix44&		operator-= (const Matrix44& right);
-	Matrix44		operator- (const Matrix44& right) const;
-	Matrix44&		operator*= (const Matrix44& right);
-	Matrix44		operator* (const Matrix44& right) const;
-	Matrix44&		operator*= (scalar);
-	Matrix44		operator* (scalar) const;
-	bool			operator== (const Matrix44& other) const;
-	bool			operator!= (const Matrix44& other) const;
-	Matrix44&		operator= (const Matrix44 &m);
-	const scalar *	operator[] (unsigned int row) const;
-	scalar &		operator() (unsigned int row, unsigned int col);
-	scalar			operator() (unsigned int row, unsigned int col) const;
-	scalar *		operator[] (unsigned int row);
-	Matrix44		inverse() const;
-	Matrix44		adjoint() const;
-	Matrix44		homogenize() const;
-	scalar			det4x4() const;
-	scalar			det3x3() const;
-	bool			isEquivalent (const Matrix44&, scalar =1.0e-10) const;
-	bool			isSingular() const;
-
+	///
+	/// \brief transpose
+	/// \return 
+	///
+	Matrix44 transpose() const;
+	///
+	/// \brief setToIdentity
+	/// \return 
+	///
+	Matrix44& setToIdentity();
+	///
+	/// \brief setToProduct
+	/// \return 
+	///
+	Matrix44& setToProduct(const Matrix44&, const Matrix44&);
+	///
+	/// \brief operator +=
+	/// \param right
+	/// \return 
+	///
+	Matrix44& operator+= (const Matrix44& right);
+	///
+	/// \brief operator +
+	/// \param right
+	/// \return 
+	///
+	Matrix44 operator+ (const Matrix44& right) const;
+	///
+	/// \brief operator -=
+	/// \param right
+	/// \return 
+	///
+	Matrix44& operator-= (const Matrix44& right);
+	///
+	/// \brief operator -
+	/// \param right
+	/// \return 
+	///
+	Matrix44 operator- (const Matrix44& right) const;
+	///
+	/// \brief operator *=
+	/// \param right
+	/// \return 
+	///
+	Matrix44& operator*= (const Matrix44& right);
+	///
+	/// \brief operator *
+	/// \param right
+	/// \return 
+	///
+	Matrix44 operator* (const Matrix44& right) const;
+	///
+	/// \brief operator *=
+	/// \return 
+	///
+	Matrix44& operator*= (scalar);
+	///
+	/// \brief operator *
+	/// \return 
+	///
+	Matrix44 operator* (scalar) const;
+	///
+	/// \brief operator ==
+	/// \param other
+	/// \return 
+	///
+	bool operator== (const Matrix44& other) const;
+	///
+	/// \brief operator !=
+	/// \param other
+	/// \return 
+	///
+	bool operator!= (const Matrix44& other) const;
+	///
+	/// \brief operator =
+	/// \param m
+	/// \return 
+	///
+	Matrix44& operator= (const Matrix44 &m);
+	///
+	/// \brief operator []
+	/// \param row
+	/// \return 
+	///
+	const scalar *operator[] (unsigned int row) const;
+	///
+	/// \brief operator ()
+	/// \param row
+	/// \param col
+	/// \return 
+	///
+	scalar & operator() (unsigned int row, unsigned int col);
+	///
+	/// \brief operator ()
+	/// \param row
+	/// \param col
+	/// \return 
+	///
+	scalar 	operator() (unsigned int row, unsigned int col) const;
+	///
+	/// \brief operator []
+	/// \param row
+	/// \return 
+	///
+	scalar * operator[] (unsigned int row);
+	///
+	/// \brief inverse
+	/// \return 
+	///
+	Matrix44 inverse() const;
+	///
+	/// \brief adjoint
+	/// \return 
+	///
+	Matrix44 adjoint() const;
+	///
+	/// \brief homogenize
+	/// \return 
+	///
+	Matrix44 homogenize() const;
+	///
+	/// \brief det4x4
+	/// \return 
+	///
+	scalar det4x4() const;
+	///
+	/// \brief det3x3
+	/// \return 
+	///
+	scalar det3x3() const;
+	///
+	/// \brief isEquivalent
+	/// \return 
+	///
+	bool isEquivalent (const Matrix44&, scalar =1.0e-10) const;
+	///
+	/// \brief isSingular
+	/// \return 
+	///
+	bool isSingular() const;
+	///
+	/// \brief setOrigin
+	/// \param orig
+	///
 	void setOrigin(const v3s& orig) const;
+	///
+	/// \brief getOrigin
+	/// \return 
+	///
 	v3s getOrigin() const;
+	///
+	/// \brief getScale
+	/// \return 
+	///
 	v3s getScale() const;
-	
-	//Matrix44		operator* (scalar, const Matrix44& right);
-	//std::ostream &		operator<< (std::ostream &os, const Matrix44&m);
 };
 
 }

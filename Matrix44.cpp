@@ -6,18 +6,33 @@
 using namespace vxCore;
 
 
-const Matrix44 Matrix44::identity44{  1.0, 0.0, 0.0, 0.0, 
-									0.0, 1.0, 0.0, 0.0, 
-									0.0, 0.0, 1.0, 0.0, 
+const Matrix44 Matrix44::identity44{1.0, 0.0, 0.0, 0.0,
+									0.0, 1.0, 0.0, 0.0,
+									0.0, 0.0, 1.0, 0.0,
 									0.0, 0.0, 0.0, 1.0};
 
+Matrix44::Matrix44()
+{}
 
+Matrix44::Matrix44(const Matrix44 &src)
+{
+	memcpy(m_matrix, src.m_matrix, 16 * sizeof(scalar));
+}
 
+Matrix44::Matrix44(const scalar m[])
+{
+	memcpy(m_matrix, m, 16 * sizeof(scalar));
+}
 
-
-
-
-
+Matrix44::Matrix44(std::initializer_list<scalar> list)
+{
+	auto i=0;
+	for(auto&& d:list)
+	{
+		m_matrix[i] = d;
+		++i;
+	}
+}
 
 Matrix44::~Matrix44()
 {
