@@ -72,12 +72,15 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		const auto fDistance = node->getFloatAttribute("focusDistance");
 		const auto hAperture = node->getFloatAttribute("horizontalAperture");
 		const auto vAperture = node->getFloatAttribute("verticalAperture");
+		const auto transform = node->getMatrixAttribute("transform");
 		
 		m_camera->set(v3s::zero,
 					  v3s::constZ,
 					  fDistance,
 					  hAperture,
 					  vAperture);
+		
+		m_camera->setTransform(transform);
 	}
 	
 	for(const auto node: nodeDB->getNodesByType("vxPointLight"))

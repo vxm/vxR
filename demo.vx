@@ -30,10 +30,10 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 150
-    reflectionSamples = 1
-    giSamples = 1
-    giMultiplier = 0.2
+    pixelSamples = 2
+    reflectionSamples = 0
+    giSamples = 0
+    giMultiplier = 1.4
     numThreads = -1
 }
 
@@ -93,7 +93,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4 .2 -4 1]
     focusDistance = 3.0
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -181,9 +181,9 @@ node
 {
 name = "gnome_tris"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.70 0.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    filePath = "/home/john/Downloads/gnome_mid.ply"
     color = 249 249 249
 }
 
@@ -408,7 +408,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imagePath = "/home/john/code/vxR/Chiricahua_Plaza/GravelPlaza_8k.jpg"
     gain = 1.0
@@ -420,7 +420,7 @@ node
 {
 name = "area_light_2"
 type = "vxAreaLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4 6 2 1]
     intensity = 1.28
     color = 238 216 126
@@ -437,7 +437,7 @@ node
 {
 name = "area_light_1"
 type = "vxAreaLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
     intensity = 0.22
     color = 266 170 123
@@ -454,12 +454,12 @@ node
 {
 name = "point_light_1"
 type = "vxPointLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9 12 5 1]
     intensity = 0.70
     color = 255 230 240
     samples = 1
-    castShadows = "true"
+    castShadows = "false"
     position = -2 5 -2
 }
 
@@ -468,12 +468,12 @@ node
 {
 name = "point_light_2"
 type = "vxPointLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 9 11 3 1]
     intensity = 0.50
     color = 235 243 246
     samples = 1
-    castShadows = "true"
+    castShadows = "false"
     position = -2 5 -2
 }
 
@@ -547,7 +547,7 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "true"
+active = "false"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0 0.65 0 1]
     resolution = 350
     size = 2.35
