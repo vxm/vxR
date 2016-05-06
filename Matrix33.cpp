@@ -38,11 +38,71 @@ Matrix33::~Matrix33()
 	// array will be destructed by itself
 }
 
-
-vxStatus::code Matrix33::get(scalar dest[]) const
+void Matrix33::resetScale()
 {
-	memcpy(dest, m_matrix, 9 * sizeof(scalar));
-	return vxStatus::code::kSuccess;
+	auto lx = v3s(m_matrix[0],m_matrix[1],m_matrix[2]).length();
+	auto ly = v3s(m_matrix[3],m_matrix[4],m_matrix[5]).length();
+	auto lz = v3s(m_matrix[6],m_matrix[7],m_matrix[8]).length();
+	
+	m_matrix[0]/=lx;
+	m_matrix[1]/=lx;
+	m_matrix[2]/=lx;
+	
+	m_matrix[3]/=ly;
+	m_matrix[4]/=ly;
+	m_matrix[5]/=ly;
+	
+	m_matrix[6]/=lz;
+	m_matrix[7]/=lz;
+	m_matrix[8]/=lz;
+}
+
+Quaternion Matrix33::getQuaternion() const
+{
+	Matrix33 cp(*this);
+	cp.resetScale();
+	
+	scalar temp[4];
+	scalar trace = cp.get(0,0) + cp.get(1,1) + cp.get(2,2);
+	
+	if (trace > 0.0) 
+	{
+		scalar s = sqrt(trace + 1.0);
+		temp[3]=(s * 0.5);
+		s = 0.5 / s;
+		
+		temp[0]=((cp.get(2,1) - cp.get(1,2)) * s);
+		temp[1]=((cp.get(0,2) - cp.get(2,0)) * s);
+		temp[2]=((cp.get(1,0) - cp.get(0,1)) * s);
+	} 
+	else 
+	{
+		int i = cp.get(0,0) < cp.get(1,1) ? 
+					(cp.get(1,1) < cp.get(2,2) ? 2 : 1) :
+					(cp.get(0,0) < cp.get(2,2) ? 2 : 0); 
+		int j = (i + 1) % 3;  
+		int k = (i + 2) % 3;
+		
+		scalar s = sqrt(cp.get(i,i) - cp.get(j,j) - cp.get(k,k) + 1.0);
+		temp[i] = s * 0.5;
+		s = 0.5 / s;
+		
+		temp[3] = (cp.get(k,j) - cp.get(j,k)) * s;
+		temp[j] = (cp.get(j,i) + cp.get(i,j)) * s;
+		temp[k] = (cp.get(k,i) + cp.get(i,k)) * s;
+	}
+	
+	return {temp[0],temp[1],temp[2],temp[3]};
+}
+
+scalar Matrix33::get(unsigned int i, unsigned int j) const
+{
+	return m_matrix[i*4+j];
+}
+
+scalar &Matrix33::get(unsigned int i, unsigned int j)
+{
+	return m_matrix[i*4+j];
 }
 
 Matrix33 Matrix33::transpose() const
@@ -93,31 +153,19 @@ Matrix33& Matrix33::operator*=(const Matrix33 &)
 	return *this;
 }
 
+v3s Matrix33::operator*(const v3s &v) const
+{
+	return {v3s(&m_matrix[0]).dot(v), 
+			v3s(&m_matrix[3]).dot(v), 
+			v3s(&m_matrix[6]).dot(v)};
+}
+
 Matrix33 Matrix33::operator*(const Matrix33 &right) const
 {
 	const Matrix33 &a=right.m_matrix;
 	const Matrix33 &b=m_matrix;
 	
-	Matrix33 m;//{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-	m(0,0) = a(0,0)*b(0,0) + a(0,1)*b(1,0) + a(0,2)*b(2,0) + a(0,3)*b(3,0);
-	m(1,0) = a(1,0)*b(0,0) + a(1,1)*b(1,0) + a(1,2)*b(2,0) + a(1,3)*b(3,0);
-	m(2,0) = a(2,0)*b(0,0) + a(2,1)*b(1,0) + a(2,2)*b(2,0) + a(2,3)*b(3,0);
-	m(3,0) = a(3,0)*b(0,0) + a(3,1)*b(1,0) + a(3,2)*b(2,0) + a(3,3)*b(3,0);
-
-	m(0,1) = a(0,0)*b(0,1) + a(0,1)*b(1,1) + a(0,2)*b(2,1) + a(0,3)*b(3,1);
-	m(1,1) = a(1,0)*b(0,1) + a(1,1)*b(1,1) + a(1,2)*b(2,1) + a(1,3)*b(3,1);
-	m(2,1) = a(2,0)*b(0,1) + a(2,1)*b(1,1) + a(2,2)*b(2,1) + a(2,3)*b(3,1);
-	m(3,1) = a(3,0)*b(0,1) + a(3,1)*b(1,1) + a(3,2)*b(2,1) + a(3,3)*b(3,1);
-	
-	m(0,2) = a(0,0)*b(0,2) + a(0,1)*b(1,2) + a(0,2)*b(2,2) + a(0,3)*b(3,2);
-	m(1,2) = a(1,0)*b(0,2) + a(1,1)*b(1,2) + a(1,2)*b(2,2) + a(1,3)*b(3,2);
-	m(2,2) = a(2,0)*b(0,2) + a(2,1)*b(1,2) + a(2,2)*b(2,2) + a(2,3)*b(3,2);
-	m(3,2) = a(3,0)*b(0,2) + a(3,1)*b(1,2) + a(3,2)*b(2,2) + a(3,3)*b(3,2);
-	
-	m(0,3) = a(0,3)*b(0,3) + a(0,1)*b(1,3) + a(0,2)*b(2,3) + a(0,3)*b(3,3);
-	m(1,3) = a(1,3)*b(0,3) + a(1,1)*b(1,3) + a(1,2)*b(2,3) + a(1,3)*b(3,3);
-	m(2,3) = a(2,3)*b(0,3) + a(2,1)*b(1,3) + a(2,2)*b(2,3) + a(2,3)*b(3,3);
-	m(3,3) = a(3,3)*b(0,3) + a(3,1)*b(1,3) + a(3,2)*b(2,3) + a(3,3)*b(3,3);
+	Matrix33 m;
 	
 	return *this;
 }

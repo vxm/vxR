@@ -195,6 +195,13 @@ v2s v2s::operator+(const v2s& other) const
 v3s::v3s()
 {}
 
+v3s::v3s(scalar vals[])
+{
+	m_x=vals[0];
+	m_y=vals[1];
+	m_z=vals[2];
+}
+
 
 v3s::v3s(const v3s &other)
 	:m_x{other.m_x}
@@ -366,9 +373,9 @@ v3s v3s::midPoint(const v3s &other) const
 
 v3s v3s::aaVector() const
 {
-	return v3s(std::copysign(1.0,m_x),
-			  std::copysign(1.0,m_y),
-			  std::copysign(1.0,m_z));
+	return {std::copysign(1.0,m_x),
+			std::copysign(1.0,m_y),
+			std::copysign(1.0,m_z)};
 }
 
 
@@ -380,13 +387,13 @@ scalar v3s::distance(const v3s &ref) const
 
 v3s v3s::floorVector() const
 {
-	return v3s(floor(m_x),floor(m_y),floor(m_z));
+	return {floor(m_x),floor(m_y),floor(m_z)};
 }
 
 
 v3s v3s::ceilVector() const
 {
-	return v3s(ceil(m_x),ceil(m_y),ceil(m_z));
+	return {ceil(m_x),ceil(m_y),ceil(m_z)};
 }
 
 v3s v3s::unit() const
@@ -432,9 +439,18 @@ v3s& v3s::operator*=(const v3s &other)
 
 v3s v3s::operator^(const v3s& b) const
 {
-	return v3s((m_y*b.m_z)-(m_z*b.m_y),
-			  (m_z*b.m_x)-(m_x*b.m_z),
-			  (m_x*b.m_y)-(m_y*b.m_x));
+	return {(m_y*b.m_z)-(m_z*b.m_y),
+			(m_z*b.m_x)-(m_x*b.m_z),
+			(m_x*b.m_y)-(m_y*b.m_x)};
+}
+
+v3s v3s::rotate(const v3s &axis, const scalar angle)
+{
+	auto o = axis * axis.dot(*this);
+	auto x = *this - o;
+	auto y = axis.cross( *this );
+	
+	return o + x * cos(angle) + y * sin(angle);
 }
 
 bool v3s::operator==(const v3s& other) const

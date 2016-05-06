@@ -77,7 +77,7 @@ SOURCES += main.cpp\
     vxNonSequentalPool.cpp \
     Matrix33.cpp \
     Matrix44.cpp \
-    quaternion.cpp
+    Quaternion.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -144,7 +144,7 @@ HEADERS  += \
     vxNonSequentalPool.h \
     Matrix33.h \
     Matrix44.h \
-    quaternion.h
+    Quaternion.h
 
 OTHER_FILES += \
     todo.txt \

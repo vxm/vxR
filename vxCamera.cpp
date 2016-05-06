@@ -112,7 +112,9 @@ vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
 	//TODO:read from scene.
 	ret.setOrigin(m_transform.getOrigin());
 	
-	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
+	//ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
+	ret.direction() = ret.direction().rotate({0.8, 0.5, 0.0}, 0.5);
+	
 	ret.direction().setUnit();
 	
 	return ret;

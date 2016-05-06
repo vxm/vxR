@@ -32,8 +32,8 @@ active = "true"
     resolution = 1366 768
     pixelSamples = 2
     reflectionSamples = 0
-    giSamples = 0
-    giMultiplier = 1.4
+    giSamples = 1
+    giMultiplier = 1.0
     numThreads = -1
 }
 
@@ -93,7 +93,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4 .2 -4 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.2 2.1 -4.5 1]
     focusDistance = 3.0
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -233,7 +233,7 @@ node
 name = "model_4"
 type = "vxGeometry"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.7 0.0 1]
+    transform = [.1 0 0 0 0 .1 0 0 0 0 .1 0 0.0 -0.7 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
 }
@@ -408,7 +408,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imagePath = "/home/john/code/vxR/Chiricahua_Plaza/GravelPlaza_8k.jpg"
     gain = 1.0
@@ -454,7 +454,7 @@ node
 {
 name = "point_light_1"
 type = "vxPointLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9 12 5 1]
     intensity = 0.70
     color = 255 230 240
@@ -468,7 +468,7 @@ node
 {
 name = "point_light_2"
 type = "vxPointLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 9 11 3 1]
     intensity = 0.50
     color = 235 243 246

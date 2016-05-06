@@ -260,6 +260,11 @@ public:
 	v3s ();
 	///
 	/// \brief v3s
+	/// \param vals
+	///Constructs from a pointer
+	explicit v3s(scalar vals[3]);
+	///
+	/// \brief v3s
 	/// \param other
 	///Move constructor
 	v3s (const v3s&& other);
@@ -504,6 +509,14 @@ public:
 	/// \return 
 	///same as cross function
 	v3s operator^(const v3s &b) const;
+	///
+	/// \brief rotate
+	/// \param axis
+	/// \param angle
+	/// \return 
+	/// returns a copy of this vector rotated over axis
+	/// with the angle
+	v3s rotate(const v3s &axis, const scalar angle);
 
 	// comparision
 	bool operator==(const v3s &other) const;

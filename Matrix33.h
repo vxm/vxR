@@ -5,6 +5,7 @@
 #include "vxStatus.h"
 #include "vxVector.h"
 #include <initializer_list>
+#include "Quaternion.h"
 
 namespace vxCore {
 
@@ -40,11 +41,29 @@ public:
 	/// destructor
 	~Matrix33();
 	///
+	/// \brief resetScale
+	///Resets the scale of the three axis in this matrix.
+	void resetScale();
+	///
+	/// \brief getQuaternion
+	/// \return 
+	///This will create a matrix, remove scale on the copy
+	/// and extract a quaternion which is the value returned
+	Quaternion getQuaternion() const;
+	///
 	/// \brief get
-	/// \param dest
+	/// \param i
+	/// \param j
 	/// \return 
 	///
-	vxStatus::code	get(scalar dest[]) const;
+	scalar get(unsigned int i, unsigned int j) const;
+	///
+	/// \brief get
+	/// \param i
+	/// \param j
+	/// \return 
+	///
+	scalar& get(unsigned int i, unsigned int j);
 	///
 	/// \brief transpose
 	/// \return 
@@ -96,6 +115,12 @@ public:
 	/// \return 
 	///
 	Matrix33 operator* (const Matrix33& right) const;
+	///
+	/// \brief operator *
+	/// \param other
+	/// \return 
+	///
+	v3s operator*(const v3s &v) const;
 	///
 	/// \brief operator *=
 	/// \return 
