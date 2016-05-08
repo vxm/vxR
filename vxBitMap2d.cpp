@@ -67,22 +67,12 @@ bool vxBitMap2d::loadImage()
 
 vxColor vxBitMap2d::compute(const vxCollision &collision) const
 {
-	auto remap = v2s{ 1.0-collision.v(), collision.u()}; 
-	unsigned char *px = m_data.get(remap);
+	auto px = m_data.get({ 1.0-collision.v(), collision.u()});
 	
-	int b = (unsigned char)(*px);
-	px++;
-	
-	int g = (unsigned char)(*px);
-	px++;
-	
-	int r = (unsigned char)(*px);
-	
-	vxColor outColor(0.5*(r/255.0),
-					 0.5*(g/255.0),
-					 0.5*(b/255.0));
-
-	return outColor;
+	return {0.5*(px[2]/255.0),
+			0.5*(px[1]/255.0),
+			0.5*(px[0]/255.0),
+			0.5*(px[3]/255.0)};
 }
 std::string vxBitMap2d::path() const
 {

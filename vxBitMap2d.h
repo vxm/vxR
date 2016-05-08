@@ -18,14 +18,50 @@ class vxBitMap2d : public vxMap2d
 
 public:
 	vxBitMap2d(const std::string path);
-	virtual vxColor compute(const vxCollision &collision) const;
+	///
+	/// \brief compute
+	/// \param collision
+	/// \return 
+	///
+	virtual vxColor compute(const vxCollision &collision) const override;
+	///
+	/// \brief m_prop
+	///
 	std::shared_ptr<ImageProperties> m_prop;
+	///
+	/// \brief loadImage
+	/// \return 
+	///
 	bool loadImage();
+	///
+	/// \brief path
+	/// \return 
+	///
 	std::string path() const;
+	///
+	/// \brief setPath
+	/// \param path
+	///
 	void setPath(const std::string &path);
+	///
+	/// \brief gain
+	/// \return 
+	///
 	scalar gain() const;
+	///
+	/// \brief setGain
+	/// \param gain
+	///
 	void setGain(const scalar &gain);
+	///
+	/// \brief gamma
+	/// \return 
+	///
 	scalar gamma() const;
+	///
+	/// \brief setGamma
+	/// \param gamma
+	///
 	void setGamma(const scalar &gamma);
 };
 
