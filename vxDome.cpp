@@ -3,6 +3,16 @@
 
 using namespace vxCore;
 
+scalar vxDome::radius() const
+{
+	return m_radius;
+}
+
+void vxDome::setRadius(const scalar &radius)
+{
+	m_radius = radius;
+}
+
 vxDome::vxDome()
 {
 }
@@ -41,7 +51,7 @@ int vxDome::throwRay(const vxRay &ray, vxCollision &collide) const
 {
 	collide.setUV(MU::normalToCartesian(ray.direction()));
 	auto environmentColor = m_image->compute(collide);
-	collide.setPosition(ray.origin() + ray.direction() * 50.0);
+	collide.setPosition(ray.origin() + ray.direction() * m_radius);
 	//TODO: this should be valid and maybe have an alpha 0.
 	//collide.setValid(false);
 	
