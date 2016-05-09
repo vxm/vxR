@@ -12,41 +12,35 @@ scalar mnc = 10.0/256.0;
 vxColor::vxColor()
 {}
 
-vxColor::vxColor(const scalar r, 
-				 const scalar g, 
-				 const scalar b, 
-				 const scalar a) 
-	: m_r(r)
-	, m_g(g)
-	, m_b(b)
-	, m_a(a)
-{}
-
-
 vxColor::vxColor(const scalar r,
 				 const scalar g,
-				 const scalar b)
+				 const scalar b,
+				 const scalar alpha)
 	: m_r(r)
 	, m_g(g)
 	, m_b(b)
+	, m_a(alpha)
 {}
 
 vxColor::vxColor(const vxColor &other)
 	: m_r(other.m_r)
 	, m_g(other.m_g)
 	, m_b(other.m_b)
+	, m_a(other.m_a)
 {}
 
 vxColor::vxColor(const v3s &other) 
 	: m_r(other.x())
 	, m_g(other.y())
 	, m_b(other.z())
+	, m_a(1.0)
 {}
 
 vxColor::vxColor(scalar other) 
 	: m_r(other)
 	, m_g(other)
 	, m_b(other)
+	, m_a(1.0)
 {}
 
 
@@ -61,18 +55,23 @@ vxColor vxColor::lookup(const vxColor &col)
 	return MU::remap(col, mnc, mxc);
 }
 
-vxColor vxColor::lookup(const scalar r, const scalar g, const scalar b)
+vxColor vxColor::lookup(const scalar r, 
+						const scalar g, 
+						const scalar b,
+						const scalar a)
 {
-	return std::move(vxColor( MU::remap(r, mnc, mxc),
-					MU::remap(g, mnc, mxc),
-					MU::remap(b, mnc, mxc)));
+	return {MU::remap(r, mnc, mxc),
+			MU::remap(g, mnc, mxc),
+			MU::remap(b, mnc, mxc),
+			MU::remap(a, mnc, mxc)};
 }
 
-vxColor vxColor::lookup256(const int r, const int g, const int b)
+vxColor vxColor::lookup256(const int r, const int g, const int b, const int a)
 {
-	return std::move(vxColor( MU::remap(r/255.0, mnc, mxc),
-								MU::remap(g/255.0, mnc, mxc),
-								MU::remap(b/255.0, mnc, mxc)));
+	return {MU::remap(r/255.0, mnc, mxc),
+			MU::remap(g/255.0, mnc, mxc),
+			MU::remap(b/255.0, mnc, mxc),
+			MU::remap(a/255.0, mnc, mxc)};
 }
 
 vxColor vxColor::lookup256(const vxColor &col)
@@ -221,9 +220,10 @@ void vxColor::applyCurve(scalar gamma, scalar gain)
 
 vxColor vxColor::gained(scalar gain) const 
 {
-	return std::move(vxColor{m_r*gain,
-							 m_g*gain,
-							 m_b*gain});
+	return {m_r*gain,
+			m_g*gain,
+			m_b*gain,
+			m_a*gain};
 }
 
 
@@ -253,6 +253,7 @@ void vxColor::add(const vxColor &other)
 	m_r += other.m_r;
 	m_g += other.m_g;
 	m_b += other.m_b;
+	m_a += other.m_a;
 }
 
 
@@ -261,6 +262,7 @@ void vxColor::blend(const vxColor &other)
 	m_r = (m_r + other.m_r) / 2.0;
 	m_g = (m_g + other.m_g) / 2.0;
 	m_b = (m_b + other.m_b) / 2.0;
+	m_a = (m_a + other.m_a) / 2.0;
 }
 
 void vxColor::setToGamma(scalar gamma, scalar offset)
@@ -268,6 +270,7 @@ void vxColor::setToGamma(scalar gamma, scalar offset)
 	m_r=pow(m_r+offset, gamma)-offset;
 	m_g=pow(m_g+offset, gamma)-offset;
 	m_b=pow(m_b+offset, gamma)-offset;
+	m_a=pow(m_a+offset, gamma)-offset;
 }
 
 void vxColor::gain(scalar gain)
@@ -275,6 +278,7 @@ void vxColor::gain(scalar gain)
 	m_r+=gain;
 	m_g+=gain;
 	m_b+=gain;
+	m_a+=gain;
 }
 
 vxColor vxColor::dimm(scalar factor) const
@@ -287,6 +291,7 @@ vxColor &vxColor::operator*=(const vxColor &entrada)
 	m_r *= entrada.m_r;
 	m_g *= entrada.m_g;
 	m_b *= entrada.m_b;
+	m_a *= entrada.m_a;
 
 	return *this;
 }
@@ -296,6 +301,7 @@ vxColor &vxColor::operator*=(scalar factor)
 	m_r *= factor;
 	m_g *= factor;
 	m_b *= factor;
+	m_a *= factor;
 
 	return *this;
 }
@@ -305,6 +311,7 @@ vxColor &vxColor::operator+=(const vxColor &entrada)
 	m_r += entrada.m_r;
 	m_g += entrada.m_g;
 	m_b += entrada.m_b;
+	m_a += entrada.m_a;
 
 	return *this;
 }
@@ -314,7 +321,8 @@ vxColor &vxColor::operator+=(scalar factor)
 	m_r += factor;
 	m_g += factor;
 	m_b += factor;
-
+	m_a += factor;
+	
 	return *this;
 }
 
@@ -323,6 +331,7 @@ vxColor &vxColor::operator-=(const vxColor &entrada)
 	m_r -= entrada.m_r;
 	m_g -= entrada.m_g;
 	m_b -= entrada.m_b;
+	m_a -= entrada.m_a;
 
 	return *this;
 }
@@ -332,116 +341,109 @@ vxColor &vxColor::operator-=(scalar factor)
 	m_r -= factor;
 	m_g -= factor;
 	m_b -= factor;
-
+	m_a -= factor;
+	
 	return *this;
 }
 
 vxColor vxColor::operator/(scalar factor) const 
 {
-	return std::move(vxColor(m_r/(scalar)factor,
-				   m_g/(scalar)factor,
-				   m_b/(scalar)factor,
-				   m_a/(scalar)factor));
+	return {m_r/(scalar)factor,
+			m_g/(scalar)factor,
+			m_b/(scalar)factor,
+			m_a/(scalar)factor};
 }
 
 vxColor vxColor::operator/(const vxColor &entrada) const 
 {
-	return std::move(vxColor(entrada.m_r/m_r,
-				   entrada.m_g/m_g,
-				   entrada.m_b/m_b,
-				   entrada.m_a/m_a));
+	return {entrada.m_r/m_r,
+			entrada.m_g/m_g,
+			entrada.m_b/m_b,
+			entrada.m_a/m_a};
 }
 
 vxColor vxColor::operator*(const vxColor &entrada) const 
 {
-	return std::move(vxColor(entrada.m_r*m_r,
-					entrada.m_g*m_g,
-					entrada.m_b*m_b,
-					entrada.m_a*m_a));
+	return {entrada.m_r*m_r,
+			entrada.m_g*m_g,
+			entrada.m_b*m_b,
+			entrada.m_a*m_a};
 }
 
 vxColor vxColor::operator*(const scalar factor) const 
 {
-	return std::move(vxColor(factor*m_r,
-					factor*m_g,
-					factor*m_b,
-					factor*m_a));
+	return {factor*m_r,
+			factor*m_g,
+			factor*m_b,
+			factor*m_a};
 }
 
 vxColor vxColor::operator-(scalar factor) const 
 {
-	return std::move(vxColor(m_r-factor,
-							 m_g-factor,
-							 m_b-factor,
-							 m_a-factor));
+	return {m_r-factor,
+			m_g-factor,
+			m_b-factor,
+			m_a-factor};
 }
 
 vxColor vxColor::operator-(const vxColor &entrada) const 
 {
-	return std::move(vxColor(m_r-entrada.m_r,
-							 m_g-entrada.m_g,
-							 m_b-entrada.m_b,
-							 m_a-entrada.m_a));
+	return {m_r-entrada.m_r,
+			m_g-entrada.m_g,
+			m_b-entrada.m_b,
+			m_a-entrada.m_a};
 }
 
 vxColor vxColor::operator+(scalar factor) const 
 {
-	return std::move(vxColor(factor+m_r,
-							 factor+m_g,
-							 factor+m_b,
-							 factor+m_a));
+	return {factor+m_r,
+			factor+m_g,
+			factor+m_b,
+			factor+m_a};
 }
 
 vxColor vxColor::operator+(const vxColor &other) const
 {
-	return std::move(vxColor(other.m_r+m_r, 
-							 other.m_g+m_g, 
-							 other.m_b+m_b, 
-							 other.m_a+m_a));
+	return {other.m_r+m_r, 
+			other.m_g+m_g, 
+			other.m_b+m_b, 
+			other.m_a+m_a};
 }
 
-void vxColor::toRGBA8888(unsigned char *tbuff) const
+void vxColor::toRGBA8888(unsigned char tbuff[4]) const
 {
-	*tbuff += (unsigned char)char(MU::remap(m_r,255.0));
-	tbuff++;
-	
-	*tbuff += (unsigned char)char(MU::remap(m_g,255.0));
-	tbuff++;
-	
-	*tbuff += (unsigned char)char(MU::remap(m_b,255.0));
-	tbuff++;
-
-	char al = 255;
-	*tbuff = al;
-	
+	tbuff[0] = (unsigned char)char(MU::remap(m_r,255.0));
+	tbuff[1] = (unsigned char)char(MU::remap(m_g,255.0));
+	tbuff[2] = (unsigned char)char(MU::remap(m_b,255.0));
+	tbuff[3] = (unsigned char)char(MU::remap(m_a,255.0));
 }
 
-vxColor vxColor::zero {(scalar)0.0, (scalar)0.0, (scalar)0.0};
+vxColor vxColor::zero {(scalar)0.0, (scalar)0.0, (scalar)0.0, (scalar)1.0};
 
-vxColor vxColor::blue			(vxColor::lookup256(92, 138, 202));
-vxColor vxColor::bluishGreen	(vxColor::lookup256(24, 162, 121));
-vxColor vxColor::bluegreen		(vxColor::lookup256(95, 164, 190));
-vxColor vxColor::bluishPurple	(vxColor::lookup256(92, 102, 177));
-vxColor vxColor::greenishYellow	(vxColor::lookup256(235, 233, 0));
-vxColor vxColor::green			(vxColor::lookup256(0, 163, 71));
-vxColor vxColor::greenishBlue	(vxColor::lookup256(110, 175, 199));
-vxColor vxColor::orangePink		(vxColor::lookup256(240, 204, 162));
-vxColor vxColor::orange			(vxColor::lookup256(228, 184, 29));
-vxColor vxColor::pink			(vxColor::lookup256(245, 220, 208));
-vxColor vxColor::reddishOrange	(vxColor::lookup256(216, 119, 51));
-vxColor vxColor::red			(vxColor::lookup256(191, 27, 75));
-vxColor vxColor::reddishPurple	(vxColor::lookup256(196, 64, 143));
-vxColor vxColor::redPurple		(vxColor::lookup256(175, 35, 132));
-vxColor vxColor::purple			(vxColor::lookup256(246, 85, 158));
-vxColor vxColor::purplishBlue	(vxColor::lookup256(88,  121, 191));
-vxColor vxColor::purplishPink	(vxColor::lookup256(243, 208, 219));
-vxColor vxColor::purplishRed	(vxColor::lookup256(209, 65, 136));
-vxColor vxColor::white			(vxColor::lookup256(255, 255, 255));
-vxColor vxColor::yellowGreen	(vxColor::lookup256(185, 214, 4));
-vxColor vxColor::yellowishOrange(vxColor::lookup256(231, 224, 0));
-vxColor vxColor::yellow			(vxColor::lookup256(234, 231, 94));
-vxColor vxColor::yellowishGreen	(vxColor::lookup256(170, 209, 60));
-vxColor vxColor::black			{mnc, mnc, mnc};
-vxColor vxColor::grey			{(mnc+mxc)/2.0, (mnc+mxc)/2.0, (mnc+mxc)/2.0};
+vxColor vxColor::blue			(vxColor::lookup256(92, 138, 202, 255));
+vxColor vxColor::bluishGreen	(vxColor::lookup256(24, 162, 121, 255));
+vxColor vxColor::bluegreen		(vxColor::lookup256(95, 164, 190, 255));
+vxColor vxColor::bluishPurple	(vxColor::lookup256(92, 102, 177, 255));
+vxColor vxColor::greenishYellow	(vxColor::lookup256(235, 233, 0, 255));
+vxColor vxColor::green			(vxColor::lookup256(0, 163, 71, 255));
+vxColor vxColor::greenishBlue	(vxColor::lookup256(110, 175, 199, 255));
+vxColor vxColor::orangePink		(vxColor::lookup256(240, 204, 162, 255));
+vxColor vxColor::orange			(vxColor::lookup256(228, 184, 29, 255));
+vxColor vxColor::pink			(vxColor::lookup256(245, 220, 208, 255));
+vxColor vxColor::reddishOrange	(vxColor::lookup256(216, 119, 51, 255));
+vxColor vxColor::red			(vxColor::lookup256(191, 27, 75, 255));
+vxColor vxColor::reddishPurple	(vxColor::lookup256(196, 64, 143, 255));
+vxColor vxColor::redPurple		(vxColor::lookup256(175, 35, 132, 255));
+vxColor vxColor::purple			(vxColor::lookup256(246, 85, 158, 255));
+vxColor vxColor::purplishBlue	(vxColor::lookup256(88,  121, 191, 255));
+vxColor vxColor::purplishPink	(vxColor::lookup256(243, 208, 219, 255));
+vxColor vxColor::purplishRed	(vxColor::lookup256(209, 65, 136, 255));
+vxColor vxColor::white			(vxColor::lookup256(255, 255, 255, 255));
+vxColor vxColor::yellowGreen	(vxColor::lookup256(185, 214, 4, 255));
+vxColor vxColor::yellowishOrange(vxColor::lookup256(231, 224, 0, 255));
+vxColor vxColor::yellow			(vxColor::lookup256(234, 231, 94, 255));
+vxColor vxColor::yellowishGreen	(vxColor::lookup256(170, 209, 60, 255));
+vxColor vxColor::black			{mnc, mnc, mnc, 1.0};
+vxColor vxColor::grey			{(mnc+mxc)/2.0, (mnc+mxc)/2.0, (mnc+mxc)/2.0, 1.0};
 
 

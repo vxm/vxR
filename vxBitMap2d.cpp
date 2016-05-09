@@ -69,10 +69,10 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 {
 	auto px = m_data.get({ 1.0-collision.v(), collision.u()});
 	
-	return {0.5*(px[2]/255.0),
-			0.5*(px[1]/255.0),
-			0.5*(px[0]/255.0),
-			0.5*(px[3]/255.0)};
+	return {px[2]/255.0,
+			px[1]/255.0,
+			px[0]/255.0,
+			px[3]/255.0};
 }
 std::string vxBitMap2d::path() const
 {

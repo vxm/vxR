@@ -56,6 +56,7 @@ int vxDome::throwRay(const vxRay &ray, vxCollision &collide) const
 	//collide.setValid(false);
 	
 	collide.setColor(environmentColor);
+	collide.setAlphaValue(1.0);
 	return 1;
 }
 

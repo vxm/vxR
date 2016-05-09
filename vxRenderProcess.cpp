@@ -300,7 +300,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						}
 						
 						reflection*=(1.f/(float)m_reflectionSamples);
-						pixelColor+= (reflection/2.5);
+						pixelColor+= (reflection/5.5);
 					}
 				}
 				

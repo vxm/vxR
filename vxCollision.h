@@ -25,9 +25,13 @@ public:
 	
 	vxCollision(const v3s &p,
 				const v3s &n = {0,0,0},
-				const vxColor &c = {0,0,0},
+				const vxColor &c = {0,0,0,1},
 				const v2s &uv = {.5,.5});
-
+	///
+	/// \brief setAlphaValue
+	/// \param a
+	/// Sets the alpha value in the color value.
+	void setAlphaValue(const scalar a);
 	///
 	/// \brief reset
 	///

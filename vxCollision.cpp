@@ -13,6 +13,11 @@ vxCollision::vxCollision(const v3s &p, const v3s &n, const vxColor &c, const v2s
 {
 }
 
+void vxCollision::setAlphaValue(const scalar a)
+{
+	m_color.setA(a);
+}
+
 void vxCollision::reset()
 {
 	setValid(false);
