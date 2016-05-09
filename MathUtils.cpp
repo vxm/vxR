@@ -5,6 +5,8 @@
 #include "vxCollision.h"
 #include "vxTriRef.h"
 
+#define USE_STORE_RAND 0
+
 using namespace vxCore;
 
 const scalar MathUtils::C{299'792'458.0};
@@ -18,6 +20,7 @@ constexpr const auto cached_random = 12000u;
 
 void MathUtils::fillRand()
 {
+#if USE_STORE_RAND
 	rand_scalar.reserve(cached_random);
 	rand_v2s.reserve(cached_random);
 	rand_v3s.reserve(cached_random);
@@ -30,6 +33,7 @@ void MathUtils::fillRand()
 							  (rand()/(scalar)RAND_MAX),
 							  (rand()/(scalar)RAND_MAX));
 	}
+#endif
 }
 ///////////////  RANDOM CACHES ///////
 //////////////////////////////////////
@@ -223,8 +227,11 @@ v3s MathUtils::rayAndZPlane(const vxRay &ray, scalar z)
 
 scalar MathUtils::getRand(const scalar range)
 {
+#if USE_STORE_RAND
 	return range * rand_scalar[(m_k++) % cached_random];
-	//return range * (rand()/(scalar)RAND_MAX);
+#else
+	return range * (rand()/(scalar)RAND_MAX);
+#endif
 }
 
 v2s MathUtils::getRand2d(const scalar range)
