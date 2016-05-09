@@ -306,16 +306,18 @@ scalar MathUtils::clamp(scalar val, scalar min, scalar max)
 
 vxColor MathUtils::clamp(const vxColor &c1, const vxColor &min, const vxColor &max)
 {
-	return vxColor(clamp(c1.r(), min.r(), max.r()),
-				   clamp(c1.g(), min.g(), max.g()),
-				   clamp(c1.b(), min.b(), max.b()));
+	return {clamp(c1.r(), min.r(), max.r()),
+			clamp(c1.g(), min.g(), max.g()),
+			clamp(c1.b(), min.b(), max.b()),
+			clamp(c1.alpha(), min.alpha(), max.alpha())};
 }
 
 vxColor MathUtils::clamp(const vxColor &c1, scalar min, scalar max)
 {
-	return vxColor(clamp(c1.r(), min, max),
-				   clamp(c1.g(), min, max),
-				   clamp(c1.b(), min, max));
+	return {clamp(c1.r(), min, max),
+		   clamp(c1.g(), min, max),
+		   clamp(c1.b(), min, max),
+		   clamp(c1.alpha(), min, max)};
 }
 
 unsigned int MathUtils::clamp(unsigned int val, unsigned int min, unsigned int max)
@@ -335,16 +337,18 @@ scalar MathUtils::remap(scalar v, scalar max)
 
 vxColor MathUtils::remap(const vxColor &col, scalar min, scalar max)
 {
-	return std::move(vxColor((remap(col.r(),min,max)),
-							   (remap(col.g(),min,max)),
-							   (remap(col.b(),min,max))));
+	return {remap(col.r(),min,max),
+			remap(col.g(),min,max),
+			remap(col.b(),min,max),
+			remap(col.alpha(),min,max)};
 }
 
 vxColor MathUtils::lerp(const vxColor &c1, const vxColor &c2, scalar r)
 {	
-	return std::move(vxColor(	(lerp(c1.r(), c2.r(), r)),
-								(lerp(c1.g(), c2.g(), r)),
-								(lerp(c1.b(), c2.b(), r))));
+	return {lerp(c1.r(), c2.r(), r),
+			lerp(c1.g(), c2.g(), r),
+			lerp(c1.b(), c2.b(), r),
+			lerp(c1.b(), c2.b(), r)};
 }
 
 						
