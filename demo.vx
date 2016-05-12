@@ -3,31 +3,6 @@
 
 node
 {
-name = "shader_1"
-type = "vxShader"
-active = "true"
-    diffuseColor = 238 216 126
-    diffuseCoeficent = 1.0
-    giSamples = 0
-    giCoeficent = 1.0
-    giColorMultiplier = 238 216 126
-    reflectionSamples = 0
-    reflectionRadius = 1.0
-    reflectionCoefficent = 0.5
-    reflectionColorMultiplier = 238 216 126
-    refractionSamples = 0
-    refractionRadius = 1.0
-    refractionCoefficent = 0.5
-    refractionColorMultiplier = 238 216 126
-    sscSamples = 0
-    sscRadius = 1.0
-    sscCoefficent = 0.5
-    sscColorMultiplier = 238 216 126
-}
-
-
-node
-{
 name = "time"
 type = "vxClock"
 active = "false"

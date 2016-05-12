@@ -9,6 +9,16 @@ namespace vxCore{
 
 class vxScene;
 
+std::vector<std::shared_ptr<vxShader> > vxScene::shaders() const
+{
+	return m_shaders;
+}
+
+void vxScene::setShaders(const std::vector<std::shared_ptr<vxShader> > &shaders)
+{
+	m_shaders = shaders;
+}
+
 vxScene::vxScene(std::shared_ptr<ImageProperties> prop)
 	: m_properties(prop)
 {
@@ -69,6 +79,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	{
 		m_camera = std::make_shared<vxCamera>(m_properties);
 		
+		const auto pRadius = node->getFloatAttribute("pixelRadius");
 		const auto fDistance = node->getFloatAttribute("focusDistance");
 		const auto hAperture = node->getFloatAttribute("horizontalAperture");
 		const auto vAperture = node->getFloatAttribute("verticalAperture");
@@ -80,6 +91,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 					  hAperture,
 					  vAperture);
 		
+		m_camera->setPixelRadius(pRadius);
 		m_camera->setTransform(transform);
 	}
 	
@@ -214,6 +226,29 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		vxClock::setStep( node->getFloatAttribute("step"));
 	}
 	
+	for(const auto node: nodeDB->getNodesByType("vxShader"))
+	{
+		auto shader = createShader();
+		
+		shader->setDiffuseColor(vxColor::lookup256(node->getColorAttribute("diffuseColor")));
+		shader->setDiffuseCoeficent(node->getFloatAttribute("diffuseCoeficent"));
+		shader->setGiSamples(node->getIntAttribute("giSamples"));
+		shader->setGiCoeficent(node->getFloatAttribute("giCoeficent"));
+		shader->setGiColorMultiplier(vxColor::lookup256(node->getColorAttribute("giColorMultiplier")));
+		shader->setReflectionSamples(node->getIntAttribute("reflectionSamples"));
+		shader->setReflectionRadius(node->getFloatAttribute("reflectionRadius"));
+		shader->setReflectionCoefficent(node->getFloatAttribute("reflectionCoefficent"));
+		shader->setReflectionColorMultiplier(vxColor::lookup256(node->getColorAttribute("reflectionColorMultiplier")));
+		shader->setRefractionSamples(node->getIntAttribute("refractionSamples"));
+		shader->setRefractionRadius(node->getFloatAttribute("refractionRadius"));
+		shader->setRefractionCoefficent(node->getFloatAttribute("refractionCoefficent"));
+		shader->setRefractionColorMultiplier(vxColor::lookup256(node->getColorAttribute("refractionColorMultiplier")));
+		shader->setSscSamples(node->getIntAttribute("sscSamples"));
+		shader->setSscRadius(node->getFloatAttribute("sscRadius"));
+		shader->setSscCoefficent(node->getFloatAttribute("sscCoefficent"));
+		shader->setSscColorMultiplier(vxColor::lookup256(node->getColorAttribute("sscColorMultiplier")));
+	}
+	
 	updateCache();
 	//Update caches
 	std::cout << " -- Finished building process scene -- " << std::endl;
@@ -222,10 +257,18 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 void vxScene::updateCache()
 {
 	std::cout << " -- Start caching -- " << std::endl;
-
+	
 	m_broadPhase->updateCache();
-
+	
 	std::cout << " -- End cache computation -- " << std::endl;
+}
+
+std::shared_ptr<vxShader> vxScene::createShader()
+{
+	auto lambert = std::make_shared<vxLambert>();
+	m_shaders.emplace_back(lambert);
+	lambert->setScene(shared_from_this());
+	return lambert;
 }
 
 void vxScene::setShader(std::shared_ptr<vxShader> shader)
@@ -375,7 +418,7 @@ std::shared_ptr<vxDome> vxScene::dome() const
 {
 	if(m_domes.size())
 		return m_domes[0];
-
+	
 	return std::shared_ptr<vxDome>();
 }
 

@@ -38,7 +38,8 @@ class vxScene: public std::enable_shared_from_this<vxScene>
 protected:
 	bool m_defaultLight = {true};
 	bool m_defaultShader = {true};
-
+	
+	std::vector<std::shared_ptr<vxShader>> m_shaders;
 	std::vector<std::shared_ptr<vxAreaLight>> m_areaLights;
 	std::vector<std::shared_ptr<vxIBLight>> m_IBLights;
 	std::vector<std::shared_ptr<vxPointLight>> m_pointLights;
@@ -68,55 +69,165 @@ protected:
 	long long dRays{0};
 	
 public:
+	///
+	/// \brief vxScene
+	/// \param imageProperties
+	///
 	vxScene(std::shared_ptr<ImageProperties> imageProperties);
 	~vxScene();
 
+	///
+	/// \brief build
+	/// \param nodeDB
+	///
 	void build(std::shared_ptr<vxSceneParser> nodeDB);
+	///
+	/// \brief updateCache
+	///
 	void updateCache();
-
-	std::shared_ptr<vxCamera>
-		createCamera(const Matrix44 &,
-					scalar hAperture = 0.0,
-					scalar vAperture = 0.0);
-
-	std::shared_ptr<vxGrid> createGrid();
+	///
+	/// \brief createShader
+	/// \return 
+	///
+	std::shared_ptr<vxShader> createShader();
+	///
+	/// \brief imageProperties
+	/// \return 
+	///
 	std::shared_ptr<vxCore::ImageProperties> imageProperties() const;
-	
+	///
+	/// \brief setImageProperties
+	/// \param imageProperties
+	///
 	void setImageProperties(const std::shared_ptr<vxCore::ImageProperties> &imageProperties);
-
-	
-	
+	///
+	/// \brief defaultLight
+	/// \return 
+	///
 	std::shared_ptr<vxLight> defaultLight() const;
+	///
+	/// \brief setLight
+	/// \param defaultLight
+	///
 	void setLight(const std::shared_ptr<vxLight> &defaultLight);
-	
+	///
+	/// \brief defaultShader
+	/// \return 
+	///
 	std::shared_ptr<vxShader> defaultShader() const;
+	///
+	/// \brief setShader
+	/// \param defaultShader
+	///
 	void setShader(std::shared_ptr<vxShader> defaultShader);
-	
+	///
+	/// \brief camera
+	/// \return 
+	///
 	std::shared_ptr<vxCamera> camera() const;
+	///
+	/// \brief setCamera
+	/// \param defaultCamera
+	///
 	void setCamera(const std::shared_ptr<vxCamera> &defaultCamera);
+	///
+	/// \brief properties
+	/// \return 
+	///
 	std::shared_ptr<ImageProperties> properties() const;
+	///
+	/// \brief setProperties
+	/// \param properties
+	///
 	void setProperties(const std::shared_ptr<ImageProperties> &properties);
+	///
+	/// \brief dome
+	/// \return 
+	///
 	std::shared_ptr<vxDome> dome() const;
-
+	///
+	/// \brief buildDefaultShader
+	///
 	void buildDefaultShader();
+	///
+	/// \brief createAreaLight
+	/// \return 
+	///
 	std::shared_ptr<vxAreaLight> createAreaLight();
+	///
+	/// \brief createPointLight
+	/// \return 
+	///
 	std::shared_ptr<vxPointLight> createPointLight();
+	///
+	/// \brief createDirectLight
+	/// \return 
+	///
 	std::shared_ptr<vxDirectLight> createDirectLight();
+	///
+	/// \brief createIBLight
+	/// \param path
+	/// \return 
+	///
 	std::shared_ptr<vxIBLight> createIBLight(const std::string path);
+	///
+	/// \brief createAmbientLight
+	/// \return 
+	///
 	std::shared_ptr<vxAmbientLight> createAmbientLight();
+	///
+	/// \brief createDom
+	/// \param path
+	/// \return 
+	///
 	std::shared_ptr<vxDome> createDom(const std::string path);
+	///
+	/// \brief createPlane
+	/// \param type
+	/// \return 
+	///
 	std::shared_ptr<vxPlane> createPlane(vxPlane::type type);
+	///
+	/// \brief createImage
+	/// \param path
+	/// \return 
+	///
 	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
+	///
+	/// \brief createGeometry
+	/// \param path
+	/// \param transform
+	/// \return 
+	///
 	vxTriangleMeshHandle createGeometry(const std::__cxx11::string &path, 
 											   const Matrix44 &transform);
-
+	///
+	/// \brief grids
+	/// \return 
+	///
+	std::vector<std::shared_ptr<vxGrid> > &grids();
+	///
+	/// \brief shaders
+	/// \return 
+	///
+	std::vector<std::shared_ptr<vxShader> > shaders() const;
+	///
+	/// \brief setShaders
+	/// \param shaders
+	///
+	void setShaders(const std::vector<std::shared_ptr<vxShader> > &shaders);
+	///
+	/// \brief domeThrowRay
+	/// \param ray
+	/// \param collide
+	/// \return 
+	///
 	int domeThrowRay(const vxRay &ray, vxCollision &collide) const;
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &ray) const;
-	std::vector<std::shared_ptr<vxGrid> > &grids();
 };
 
 }
