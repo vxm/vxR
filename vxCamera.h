@@ -31,6 +31,7 @@ private:
 	
 	scalar m_hApTan = tan(-m_horizontalAperture/2.0);
 	scalar m_vApTan = tan(-m_verticalAperture/2.0);
+	scalar m_pixelRadius{1.0};
 
 	scalar m_rx;
 	scalar m_ry;
@@ -151,6 +152,16 @@ public:
 	/// \param transform
 	///
 	void setTransform(const Matrix44 &transform);
+	///
+	/// \brief pixelRadius
+	/// \return 
+	/// 
+	scalar pixelRadius() const;
+	///
+	/// \brief setPixelRadius
+	/// \param pixelRadius
+	///
+	void setPixelRadius(const scalar &pixelRadius);
 };
 
 }

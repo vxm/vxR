@@ -45,6 +45,16 @@ void vxCamera::setTransform(const Matrix44 &transform)
 	m_transform = transform;
 }
 
+scalar vxCamera::pixelRadius() const
+{
+	return m_pixelRadius;
+}
+
+void vxCamera::setPixelRadius(const scalar &pixelRadius)
+{
+	m_pixelRadius = pixelRadius;
+}
+
 vxCamera::vxCamera(std::shared_ptr<const ImageProperties> prop) 
 	: m_properties{prop}
 {
@@ -102,7 +112,8 @@ vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
 	auto yFactor = coord.y() * 2.0 -1.0;
 	//std::cout << "Pixel factor " << xFactor << " " << yFactor << std::endl;
 	
-	auto&& s = sampler.xy(2.5);
+	auto&& s = sampler.xy(m_pixelRadius);
+	
 	const auto compX = m_hApTan * xFactor - s.x()/(scalar)(2.0 * m_rx);
 	const auto compY = m_vApTan * yFactor - s.y()/(scalar)(2.0 * m_ry);
 	
@@ -112,8 +123,8 @@ vxRay vxCamera::ray(const v2s &coord, vxSampler &sampler) const
 	//TODO:read from scene.
 	ret.setOrigin(m_transform.getOrigin());
 	
-	//ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
-	ret.direction() = ret.direction().rotate({0.8, 0.5, 0.0}, 0.5);
+	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
+	//ret.direction() = ret.direction().rotate({0.8, 0.5, 0.0}, 0.5);
 	
 	ret.direction().setUnit();
 	
