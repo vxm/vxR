@@ -291,27 +291,24 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						{
 							v3s invV = ((n * ray.direction().dot(n) * -2.0)
 									   + ray.direction());
-							invV+=MU::getSolidSphereRand3(1.5);
 							
-							const auto &&reflexRay= 
+							invV+=MU::getSolidSphereRand3(1.0);
+							
+							const auto &&reflexRay =
 									vxRay(collision.position() + n.tiny(), invV);
 							
 							reflection = computeLight(reflexRay, refxCollision);
 						}
 						
-						reflection*=(1.f/(float)m_reflectionSamples);
-						pixelColor+= (reflection/5.5);
+						reflection*=(0.5f/(float)m_reflectionSamples);
+						pixelColor+= (reflection);
 					}
-				}
 				
-				//GI
-				if(m_giSamples!=0)
-				{
 					vxColor globalIlm;
 					{
 						vxColor baseColor = m_scene->defaultShader()->getColor(ray,collision);
-						const auto n = m_giSamples;
-						const auto colorRatio = m_giMultiplier/(scalar)n;
+						const auto n = m_reflectionSamples;
+						const auto colorRatio = m_giMultiplier*.5/(scalar)n;
 						for(auto i=0u; i<n; i++)
 						{
 							const auto&& r = MU::getHollowHemisphereRand(1.0, collision.normal());
@@ -397,7 +394,7 @@ vxRenderProcess::generateImage()
 	
 	for(auto&& px:m_contactBuffer.m_pxs)
 	{
-		px.m_color.setToGamma(2.2);
+		px.m_color.setToGamma(1.0);
 		px.m_color.toRGBA8888(pixel);
 		k++;
 		pixel+=4;
