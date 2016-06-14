@@ -18,7 +18,7 @@
 #include "ImageProperties.h"
 #include "vxShader.h"
 #include "vxPLYImporter.h"
-#include "vxBitMap2d.h"
+#include "vxImage.h"
 #include "vxDome.h"
 #include "vxTriangleMesh.h"
 
@@ -38,6 +38,9 @@ class vxScene: public std::enable_shared_from_this<vxScene>
 protected:
 	bool m_defaultLight = {true};
 	bool m_defaultShader = {true};
+	
+	std::shared_ptr<vxSceneParser> m_nodeDB;
+	
 	
 	std::vector<std::shared_ptr<vxShader>> m_shaders;
 	std::vector<std::shared_ptr<vxAreaLight>> m_areaLights;
@@ -180,7 +183,7 @@ public:
 	/// \param path
 	/// \return 
 	///
-	std::shared_ptr<vxDome> createDom(const std::string path);
+	vxDomeHandle createDome(const std::string &imageName);
 	///
 	/// \brief createPlane
 	/// \param type
@@ -225,6 +228,12 @@ public:
 	/// \return 
 	///
 	int domeThrowRay(const vxRay &ray, vxCollision &collide) const;
+	///
+	/// \brief getImage
+	/// \param node
+	/// \return 
+	///
+	vxImageHandle getImage(vxNodeHandle node);
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;

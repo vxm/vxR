@@ -71,18 +71,24 @@ public:
 
 	decltype(auto) getLine(std::ifstream &f, std::string &line) const;
 
-	std::pair<std::__cxx11::string, vxValue> parseAttribute(const std::string &txt);
+	std::pair<std::string, vxValue> parseAttribute(const std::string &txt);
 
 	vxStatus parseNodeBody(std::ifstream &inFile, 
-							  std::shared_ptr<vxNode> node);
+							  vxNodeHandle node);
 
 	VS procesScene();
 
-	void printSceneInfo();
+	void printDatabaseInfo();
 
 	void clear();
 	
-	std::vector<std::shared_ptr<vxNode>> getNodesByType(const std::string &type);
+	std::vector<vxNodeHandle> getNodesByType(const std::string &type);
+	///
+	/// \brief getNodeByName
+	/// \param name
+	/// \return 
+	///gets a node of any type with that name
+	vxNodeHandle getNodeByName(const std::string &name);
 };
 
 }

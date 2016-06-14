@@ -1,4 +1,4 @@
-#include "vxramp.h"
+#include "vxRamp.h"
 using namespace vxCore;
 
 vxRamp::vxRamp()

@@ -190,7 +190,7 @@ Attribute vxSceneParser::parseAttribute(const std::string &txt)
 
 
 vxStatus vxSceneParser::parseNodeBody(std::ifstream &inFile, 
-										 std::shared_ptr<vxNode> node)
+										 vxNodeHandle node)
 {
 	// Condition to finish node reading.
 	const std::regex rel("(\\})");
@@ -299,7 +299,7 @@ VS vxSceneParser::procesScene()
 	return VS::kSuccess;
 }
 
-void vxSceneParser::printSceneInfo()
+void vxSceneParser::printDatabaseInfo()
 {
 	for(const auto& node: m_nodes)
 	{
@@ -312,16 +312,30 @@ void vxSceneParser::clear()
 	m_nodes.clear();
 }
 
-std::vector<std::shared_ptr<vxNode> > vxSceneParser::getNodesByType(const std::__cxx11::string &type)
+std::vector<vxNodeHandle > vxSceneParser::getNodesByType(const std::string &type)
 {
-	std::vector<std::shared_ptr<vxNode>> ret;
-	for(const auto nodePair: m_nodes)
+	std::vector<vxNodeHandle> ret;
+	for(const auto& nodePair: m_nodes)
 	{
 		const auto& node = nodePair.second;
 		if(node->type()==type)
 		{
 			ret.emplace_back(nodePair.second);
 		}
+	}
+	
+	return ret;
+}
+
+vxNodeHandle vxSceneParser::getNodeByName(const std::string &name)
+{
+	vxNodeHandle ret;
+	
+	auto found = m_nodes.find(name);
+	
+	if (found != m_nodes.end())
+	{
+		ret = found.second;
 	}
 	
 	return ret;
