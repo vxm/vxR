@@ -34,7 +34,6 @@ SOURCES += main.cpp\
     vxrMainUi.cpp \
     vxGrid.cpp \
     vxSampler.cpp \
-    vxmanager.cpp \
     vxPlane.cpp \
     vxPoint.cpp \
     vxCollision.cpp \
@@ -50,7 +49,7 @@ SOURCES += main.cpp\
     vxramp.cpp \
     renderPresset.cpp \
     vxPLYImporter.cpp \
-    vxBitMap2d.cpp \
+    vxImage.cpp \
     imageData.cpp \
     vxLegoBlock.cpp \
     sseUtils.cpp \
@@ -77,7 +76,8 @@ SOURCES += main.cpp\
     vxNonSequentalPool.cpp \
     Matrix33.cpp \
     Matrix44.cpp \
-    Quaternion.cpp
+    Quaternion.cpp \
+    vxManager.cpp
 
 HEADERS  += \
     vxVector.h \
@@ -114,10 +114,9 @@ HEADERS  += \
     vxMap.h \
     vxMap2d.h \
     vxCirclesMap.h \
-    vxramp.h \
     renderPresset.h \
     vxPLYImporter.h \
-    vxBitMap2d.h \
+    vxImage.h \
     imageData.h \
     vxLegoBlock.h \
     sseUtils.h \
@@ -144,7 +143,8 @@ HEADERS  += \
     vxNonSequentalPool.h \
     Matrix33.h \
     Matrix44.h \
-    Quaternion.h
+    Quaternion.h \
+    vxRamp.h
 
 OTHER_FILES += \
     todo.txt \
