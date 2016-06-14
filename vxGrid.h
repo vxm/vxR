@@ -264,7 +264,7 @@ public:
 	/// \brief dumpFileInMemory
 	/// \param fileName
 	///
-	void dumpFileInMemory(const std::__cxx11::string &fileName);
+	void dumpFileInMemory(const std::string &fileName);
 	///
 	/// \brief dumpNumericTypeInMemory
 	///

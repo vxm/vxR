@@ -1,5 +1,7 @@
 #ifndef IMAGEPROPERTIES_H
 #define IMAGEPROPERTIES_H
+#include <memory>
+
 #include "vxVector.h"
 
 namespace vxCore {
@@ -56,6 +58,7 @@ public:
 	scalar aspectRatio() const;
 };
 
+using ImagePropertiesHandle = std::shared_ptr<ImageProperties>;
 
 }
 #endif // IMAGEPROPERTIES_H

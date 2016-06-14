@@ -1,37 +1,44 @@
-#include "vxBitMap2d.h"
+#include "vxImage.h"
 #include <QImage>
 
 using namespace vxCore;
 
-scalar vxBitMap2d::gain() const
+scalar vxImage::gain() const
 {
 	return m_gain;
 }
 
-void vxBitMap2d::setGain(const scalar &gain)
+void vxImage::setGain(const scalar &gain)
 {
 	m_gain = gain;
 }
 
-scalar vxBitMap2d::gamma() const
+scalar vxImage::gamma() const
 {
 	return m_gamma;
 }
 
-void vxBitMap2d::setGamma(const scalar &gamma)
+void vxImage::setGamma(const scalar &gamma)
 {
 	m_gamma = gamma;
 }
 
-vxBitMap2d::vxBitMap2d(const std::string path)
+bool vxImage::operator==(const vxImage &other) const
+{
+	return m_path==other.path() 
+			&& m_gain == other.m_gain
+			&& m_gamma == other.m_gamma;
+}
+
+vxImage::vxImage(const std::string path)
 	:m_path(path)
 {
 	//TODO:Constructor very populated.
 	//TODO:stolen QImage object, replace with non QT functions. Please soon.
-	loadImage();
+	load();
 }
 
-bool vxBitMap2d::loadImage()
+bool vxImage::load()
 {
 	if (!m_path.length())
 	{
@@ -65,7 +72,7 @@ bool vxBitMap2d::loadImage()
 	return true;
 }
 
-vxColor vxBitMap2d::compute(const vxCollision &collision) const
+vxColor vxImage::compute(const vxCollision &collision) const
 {
 	auto px = m_data.get({ 1.0-collision.v(), collision.u()});
 	
@@ -74,12 +81,12 @@ vxColor vxBitMap2d::compute(const vxCollision &collision) const
 			px[0]/255.0,
 			px[3]/255.0};
 }
-std::string vxBitMap2d::path() const
+std::string vxImage::path() const
 {
 	return m_path;
 }
 
-void vxBitMap2d::setPath(const std::string &path)
+void vxImage::setPath(const std::string &path)
 {
 	m_path = path;
 }

@@ -3,6 +3,15 @@
 
 using namespace vxCore;
 
+vxDome::vxDome()
+{
+}
+
+vxDome::vxDome(vxImageHandle env)
+	: m_image(env)
+{
+}
+
 scalar vxDome::radius() const
 {
 	return m_radius;
@@ -11,15 +20,6 @@ scalar vxDome::radius() const
 void vxDome::setRadius(const scalar &radius)
 {
 	m_radius = radius;
-}
-
-vxDome::vxDome()
-{
-}
-
-vxDome::vxDome(std::shared_ptr<vxBitMap2d> env)
-	: m_image(env)
-{
 }
 
 scalar vxDome::gain() const

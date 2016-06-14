@@ -54,12 +54,12 @@ int executeRenderProcess(int argc, char *argv[])
 	for(auto&& node: sceneParser->getNodesByType("vxRenderSettings"))
 	{
 		{
-			const auto resolution = node->getVector2dAttribute("resolution");
-			const auto samples = node->getIntAttribute("pixelSamples");
-			const auto reflectionSamples = node->getIntAttribute("reflectionSamples");
-			const auto giSamples = node->getIntAttribute("giSamples");
-			const auto giMultiplier = node->getFloatAttribute("giMultiplier");
-//			const auto numThreads = node->getIntAttribute("numThreads");
+			const auto resolution = node->getVector2d("resolution");
+			const auto samples = node->getInt("pixelSamples");
+			const auto reflectionSamples = node->getInt("reflectionSamples");
+			const auto giSamples = node->getInt("giSamples");
+			const auto giMultiplier = node->getFloat("giMultiplier");
+//			const auto numThreads = node->getInt("numThreads");
 			
 			// Img properties for render.
 			auto renderProperties = std::make_shared<ImageProperties>(resolution.x(),

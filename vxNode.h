@@ -80,13 +80,14 @@ public:
 		return os;
 	}
 
-	vxColor getColorAttribute(const std::string attrName);
-	float getFloatAttribute(const std::__cxx11::string attrName);
-	v3s getVector3dAttribute(const std::__cxx11::string attrName);
-	v2s getVector2dAttribute(const std::__cxx11::string attrName);
-	int getIntAttribute(const std::__cxx11::string attrName);
-	std::string getStringAttribute(const std::__cxx11::string attrName);
-	bool getBoolAttribute(const std::__cxx11::string attrName);
+	vxColor getColor(const std::string attrName);
+	float getFloat(const std::string attrName);
+	v3s getVector3d(const std::string attrName);
+	v2s getVector2d(const std::string attrName);
+	int getInt(const std::string attrName);
+	std::string getString(const std::string attrName);
+	bool getBool(const std::string attrName);
+	Matrix44 getMatrix(const std::string attrName);
 
 	std::string name() const;
 	void setName(const std::string &name);
@@ -96,16 +97,11 @@ public:
 	void setAttributes(const std::vector<Attribute> &attributes);
 	bool active() const;
 	void setActive(bool active);
-	Matrix44 getMatrixAttribute(const std::__cxx11::string attrName);
 };
 
-class nodeMap:public std::map<std::string, std::shared_ptr<vxNode>>
-{
-public:
-	nodeMap()
-	{}
-	
-};
+using vxNodeHandle = std::shared_ptr<vxNode>;
+
+using nodeMap = std::map<std::string, vxNodeHandle>;
 
 }
 #endif // VXNODE_H

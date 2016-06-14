@@ -93,7 +93,7 @@ public:
 	bool indexIsValid(const long idx) const;
 };
 
-using vxBroadPhaseHandler = std::shared_ptr<vxBroadPhase>;
+using vxBroadPhaseHandle = std::shared_ptr<vxBroadPhase>;
 
 }
 #endif // VXBROADPHASE_H

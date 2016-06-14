@@ -1,5 +1,5 @@
-#ifndef VXBITMAP2D_H
-#define VXBITMAP2D_H
+#ifndef vxImage_H
+#define vxImage_H
 #include "vxVector.h"
 #include "vxMap2d.h"
 #include "ImageProperties.h"
@@ -9,15 +9,17 @@
 namespace vxCore
 {
 
-class vxBitMap2d : public vxMap2d
+class vxImage : public vxMap2d
 {
 	ImageData m_data;
 	std::string m_path;
+	
 	scalar m_gain{0.0};
 	scalar m_gamma{1.0};
 
 public:
-	vxBitMap2d(const std::string path);
+	
+	vxImage(const std::string path);
 	///
 	/// \brief compute
 	/// \param collision
@@ -27,12 +29,12 @@ public:
 	///
 	/// \brief m_prop
 	///
-	std::shared_ptr<ImageProperties> m_prop;
+	ImagePropertiesHandle m_prop;
 	///
 	/// \brief loadImage
 	/// \return 
 	///
-	bool loadImage();
+	bool load();
 	///
 	/// \brief path
 	/// \return 
@@ -63,9 +65,16 @@ public:
 	/// \param gamma
 	///
 	void setGamma(const scalar &gamma);
+	///
+	/// \brief operator ==
+	/// \param other
+	/// \return 
+	/// Compares the input attributes
+	bool operator==(const vxImage& other) const;
 };
 
+using vxImageHandle = std::shared_ptr<vxImage>;
 
 }
 
-#endif // VXBITMAP2D_H
+#endif // vxImage_H

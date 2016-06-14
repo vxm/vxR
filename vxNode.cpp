@@ -76,7 +76,7 @@ void vxNode::addAttribute(const Attribute &attr)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-vxColor vxNode::getColorAttribute(const std::__cxx11::string attrName)
+vxColor vxNode::getColor(const std::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -92,7 +92,7 @@ vxColor vxNode::getColorAttribute(const std::__cxx11::string attrName)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-v3s vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
+v3s vxNode::getVector3d(const std::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -108,7 +108,7 @@ v3s vxNode::getVector3dAttribute(const std::__cxx11::string attrName)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-v2s vxNode::getVector2dAttribute(const std::__cxx11::string attrName)
+v2s vxNode::getVector2d(const std::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -124,7 +124,7 @@ v2s vxNode::getVector2dAttribute(const std::__cxx11::string attrName)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-float vxNode::getFloatAttribute(const std::__cxx11::string attrName)
+float vxNode::getFloat(const std::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -141,7 +141,7 @@ float vxNode::getFloatAttribute(const std::__cxx11::string attrName)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-int vxNode::getIntAttribute(const std::__cxx11::string attrName)
+int vxNode::getInt(const std::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -158,7 +158,7 @@ int vxNode::getIntAttribute(const std::__cxx11::string attrName)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-std::__cxx11::string vxNode::getStringAttribute(const std::__cxx11::string attrName)
+std::string vxNode::getString(const std::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -176,7 +176,7 @@ std::__cxx11::string vxNode::getStringAttribute(const std::__cxx11::string attrN
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-bool vxNode::getBoolAttribute(const std::__cxx11::string attrName)
+bool vxNode::getBool(const std::string attrName)
 {
 	for(const auto nodeAttr: m_attributes)
 	{
@@ -193,7 +193,7 @@ bool vxNode::getBoolAttribute(const std::__cxx11::string attrName)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-Matrix44 vxNode::getMatrixAttribute(const std::__cxx11::string attrName)
+Matrix44 vxNode::getMatrix(const std::string attrName)
 {
 	//TODO: I see lambdas to specify the function to convert the data type 
 	// and return the default of the value in case it didnt find the attr.

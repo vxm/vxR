@@ -1,7 +1,7 @@
 #ifndef VXDOME_H
 #define VXDOME_H
 
-#include "vxBitMap2d.h"
+#include "vxImage.h"
 #include "vxRay.h"
 #include "vxCollision.h"
 namespace vxCore {
@@ -10,7 +10,7 @@ namespace vxCore {
 class vxDome
 {
 	// Light domm
-	std::shared_ptr<vxBitMap2d> m_image;
+	vxImageHandle m_image;
 
 	scalar m_radius{62.8};
 	
@@ -23,7 +23,7 @@ public:
 	/// \brief vxDome
 	/// \param env
 	///
-	vxDome(std::shared_ptr<vxBitMap2d> env);
+	vxDome(vxImageHandle env);
 	///
 	/// \brief gain
 	/// \return 
@@ -60,6 +60,8 @@ public:
 	int throwRay(const vxRay &ray, vxCollision &collide) const;
 	bool hasCollision(const vxRay &) const;
 };
+
+using vxDomeHandle = std::shared_ptr<vxDome>;
 
 }
 #endif // VXDOM_H

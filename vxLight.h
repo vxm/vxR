@@ -6,7 +6,7 @@
 #include "vxCollision.h"
 #include "MathUtils.h"
 #include "vxScene.h"
-#include "vxBitMap2d.h"
+#include "vxImage.h"
 #include "Matrix44.h"
 #include "vxSampler.h"
 
@@ -136,7 +136,7 @@ public:
 
 class vxIBLight:public vxLight
 {
-	vxBitMap2d m_map;
+	vxImage m_map;
 	scalar m_gain{0.5};
 	scalar m_gamma{2.0};
 	scalar m_lowThreshold{0.1};

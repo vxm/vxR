@@ -14,7 +14,7 @@ public:
 	/// \brief ImageData
 	/// \param prop
 	///
-	ImageData(std::shared_ptr<ImageProperties> &prop);
+	ImageData(ImagePropertiesHandle &prop);
 	///
 	/// \brief ImageData
 	///
@@ -23,11 +23,11 @@ public:
 	/// \brief setProperties
 	/// \param prop
 	///
-	void setProperties(std::shared_ptr<ImageProperties> &prop);
+	void setProperties(ImagePropertiesHandle &prop);
 	///
 	/// \brief m_prop
 	///
-	std::shared_ptr<ImageProperties> m_prop;
+	ImagePropertiesHandle m_prop;
 	
 	std::unique_ptr <unsigned char[]>	m_pc = nullptr;
 	std::unique_ptr <double[]>			m_pd = nullptr;

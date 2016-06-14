@@ -2,7 +2,7 @@
 
 using namespace vxCore;
 
-ImageData::ImageData(std::shared_ptr<ImageProperties> &prop)
+ImageData::ImageData(ImagePropertiesHandle &prop)
 {
 	m_prop = prop;
 }
@@ -12,7 +12,7 @@ ImageData::ImageData()
 	
 }
 
-void ImageData::setProperties(std::shared_ptr<ImageProperties> &prop)
+void ImageData::setProperties(ImagePropertiesHandle &prop)
 {
 	m_prop = prop;
 }

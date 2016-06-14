@@ -3,6 +3,16 @@
 
 node
 {
+name = "image_1"
+type = "vxImage"
+active = "true"
+    imagePath = "/home/john/code/vxR/Helipad_GoldenHour/LA_Downtown_Helipad_GoldenHour_8k.jpg"
+    gain = 1.0
+    gamma = 2.2
+}
+
+node
+{
 name = "shader_1"
 type = "vxShader"
 active = "true"
@@ -42,7 +52,7 @@ name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "false"
     resolution = 607 341
-    pixelSamples = 200
+    pixelSamples = 1
     reflectionSamples = 0
     giSamples = 0
     giMultiplier = 1.0
@@ -56,7 +66,7 @@ type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
     pixelSamples = 2
-    reflectionSamples = 0
+    reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.0
     numThreads = -1
@@ -118,11 +128,12 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.2 2.1 -4.5 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.2 0.8 -4.5 1]
     focusDistance = 3.0
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
+    pixelRadius = 2.8
 }
 
 
@@ -165,8 +176,8 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.70 0.0 1]
+active = "true"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 4.0 -0.70 1.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
 }
@@ -207,7 +218,7 @@ node
 name = "gnome_tris"
 type = "vxGeometry"
 active = "true"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.70 0.0 1]
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.70 1.2 1]
     filePath = "/home/john/Downloads/gnome_mid.ply"
     color = 249 249 249
 }
@@ -258,7 +269,7 @@ node
 name = "model_4"
 type = "vxGeometry"
 active = "true"
-    transform = [.1 0 0 0 0 .1 0 0 0 0 .1 0 0.0 -0.7 0.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.7 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
 }
@@ -435,9 +446,9 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Chiricahua_Plaza/GravelPlaza_8k.jpg"
+    imagePath = "/home/john/code/vxR/Helipad_GoldenHour/LA_Downtown_Helipad_GoldenHour_8k.jpg"
     gain = 1.0
-    gamma = 3.1
+    gamma = 2.2
 }
 
 
@@ -522,13 +533,13 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.87
-    color = 245 235 210
-    orientation = 6.0 -7.0 2.0
+    intensity = 0.97
+    color = 245 215 60
+    orientation = 2.0 -7.0 -12.0
     samples = 1
-    castShadows = "false"
+    castShadows = "true"
 }
 
 node
@@ -574,7 +585,7 @@ name = "grid"
 type = "vxGrid"
 active = "false"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0 0.65 0 1]
-    resolution = 350
+    resolution = 260
     size = 2.35
     color = 212 212 212
 }
@@ -611,6 +622,6 @@ node
 name = "gnome_vx"
 type = "vxGridGeometry"
 active = "true"
-    transform = [2.1 0 0 0 0 2.1 0 0 0 0 2.1 0 0.0 -0.63 0.0 1]
+    transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 0.0 -0.55 0.0 1]
     filePath = "/home/john/Downloads/gnome_mid.ply"
 }
