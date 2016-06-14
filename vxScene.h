@@ -53,8 +53,8 @@ protected:
 
 	std::vector<std::shared_ptr<vxLight>> m_lights;
 
-	std::vector<std::shared_ptr<vxBitMap2d>> m_bitMaps;
-	std::vector<std::shared_ptr<vxDome>> m_domes;
+	std::vector<vxImageHandle> m_bitMaps;
+	std::vector<vxDomeHandle> m_domes;
 
 	std::shared_ptr<vxShader> m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
@@ -62,9 +62,9 @@ protected:
 	std::vector<std::shared_ptr<vxGrid>> m_grids;
 	
 	std::vector<vxCamera> m_cameras;
-	std::shared_ptr<ImageProperties> m_properties = {nullptr};
+	ImagePropertiesHandle m_properties = {nullptr};
 
-	vxBroadPhaseHandler m_broadPhase;
+	vxBroadPhaseHandle m_broadPhase;
 	//TODO: private and getter setter.
 	long long dRays{0};
 	
@@ -73,7 +73,7 @@ public:
 	/// \brief vxScene
 	/// \param imageProperties
 	///
-	vxScene(std::shared_ptr<ImageProperties> imageProperties);
+	vxScene(ImagePropertiesHandle imageProperties);
 	~vxScene();
 
 	///
@@ -134,17 +134,17 @@ public:
 	/// \brief properties
 	/// \return 
 	///
-	std::shared_ptr<ImageProperties> properties() const;
+	ImagePropertiesHandle properties() const;
 	///
 	/// \brief setProperties
 	/// \param properties
 	///
-	void setProperties(const std::shared_ptr<ImageProperties> &properties);
+	void setProperties(const ImagePropertiesHandle &properties);
 	///
 	/// \brief dome
 	/// \return 
 	///
-	std::shared_ptr<vxDome> dome() const;
+	vxDomeHandle dome() const;
 	///
 	/// \brief buildDefaultShader
 	///
@@ -192,14 +192,16 @@ public:
 	/// \param path
 	/// \return 
 	///
-	std::shared_ptr<vxBitMap2d> createImage(const std::string path);
+	vxImageHandle createImage(const std::string &path,
+											const scalar gain,
+										    const scalar gamma);
 	///
 	/// \brief createGeometry
 	/// \param path
 	/// \param transform
 	/// \return 
 	///
-	vxTriangleMeshHandle createGeometry(const std::__cxx11::string &path, 
+	vxTriangleMeshHandle createGeometry(const std::string &path, 
 											   const Matrix44 &transform);
 	///
 	/// \brief grids

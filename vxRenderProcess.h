@@ -40,7 +40,7 @@ private:
 public:
 	
 	// constructor with imageproperties propagation
-	vxRenderProcess(std::shared_ptr<ImageProperties> &prop,
+	vxRenderProcess(ImagePropertiesHandle &prop,
 					unsigned int samples);
 	
 	virtual vxStatus::code preProcess(vxProcess* p=nullptr) override;

@@ -32,7 +32,7 @@ using render = vxCompute::vxRenderProcess;
 namespace vxCompute 
 {
 
-vxRenderProcess::vxRenderProcess(std::shared_ptr<ImageProperties> &prop, 
+vxRenderProcess::vxRenderProcess(ImagePropertiesHandle &prop, 
 								 unsigned int samples)
 	:	m_properties(prop)
 	,	m_imageData(prop)
@@ -292,7 +292,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 							v3s invV = ((n * ray.direction().dot(n) * -2.0)
 									   + ray.direction());
 							
-							invV+=MU::getSolidSphereRand3(1.0);
+							invV+=MU::getSolidSphereRand3(0.2);
 							
 							const auto &&reflexRay =
 									vxRay(collision.position() + n.tiny(), invV);
