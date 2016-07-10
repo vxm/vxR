@@ -335,7 +335,7 @@ vxNodeHandle vxSceneParser::getNodeByName(const std::string &name)
 	
 	if (found != m_nodes.end())
 	{
-		ret = found.second;
+		ret = found->second;
 	}
 	
 	return ret;
