@@ -351,6 +351,14 @@ std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
 vxDomeHandle vxScene::createDome(const std::string &imageName)
 {
 	auto imageNode = m_nodeDB->getNodeByName(imageName);
+
+	if(!imageNode)
+	{
+		std::cerr << "image node name " 
+				  << imageName 
+				  << " does not exist in database." 
+				  << std::endl;
+ 	}
 	
 	auto image = getImage(imageNode);
 	auto dome = std::make_shared<vxDome>(image);
