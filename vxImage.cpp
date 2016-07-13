@@ -40,7 +40,7 @@ vxImage::vxImage(const std::string path)
 
 bool vxImage::load()
 {
-	if (!m_path.length())
+	if (m_path.empty())
 	{
 		return false;
 	}

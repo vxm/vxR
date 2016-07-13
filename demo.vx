@@ -176,7 +176,7 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 4.0 -0.70 1.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
@@ -446,9 +446,8 @@ name = "dome"
 type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imagePath = "/home/john/code/vxR/Helipad_GoldenHour/LA_Downtown_Helipad_GoldenHour_8k.jpg"
-    gain = 1.0
-    gamma = 2.2
+    imageNode = "image_1"
+    radius = 1000.0
 }
 
 

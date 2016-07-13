@@ -1,5 +1,6 @@
 #include<memory>
 
+#include<cassert>
 #include<thread>
 #include<future>
 
@@ -35,10 +36,23 @@ std::vector<std::shared_ptr<vxGrid> >& vxScene::grids()
 }
 
 void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
+
 {
 	m_nodeDB = nodeDB;
 	
 	buildDefaultShader();
+	
+	for(const auto node: nodeDB->getNodesByType("vxImage"))
+	{
+		auto&& gain = node->getFloat("gain");
+		auto&& gamma = node->getFloat("gamma");
+		
+		auto img = createImage(node->getString("imagePath"), 
+							   gain, 
+							   gamma);
+		
+		img->load();
+	}
 	
 	for(const auto node: nodeDB->getNodesByType("vxDirectLight"))
 	{
@@ -168,9 +182,8 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	
 	for(const auto node: nodeDB->getNodesByType("vxDome"))
 	{
-		auto dome = createDome(node->getString("imagePath"));
-		dome->setGain(node->getFloat("gain"));
-		dome->setGamma(node->getFloat("gamma"));
+		auto dome = createDome(node->getString("imageNode"));
+		dome->setRadius(node->getFloat("radius"));
 	}
 	
 	for(const auto node: nodeDB->getNodesByType("vxPlane"))
@@ -249,18 +262,6 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		shader->setSscRadius(node->getFloat("sscRadius"));
 		shader->setSscCoefficent(node->getFloat("sscCoefficent"));
 		shader->setSscColorMultiplier(vxColor::lookup256(node->getColor("sscColorMultiplier")));
-	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxImage"))
-	{
-		auto&& gain = node->getFloat("gain");
-		auto&& gamma = node->getFloat("gamma");
-	
-		auto img = createImage(node->getString("imagePath"), 
-							   gain, 
-							   gamma);
-		
-		img->load();
 	}
 	
 	updateCache();
@@ -348,19 +349,21 @@ std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
 	return al1;
 }
 
-vxDomeHandle vxScene::createDome(const std::string &imageName)
+vxDomeHandle vxScene::createDome(const std::string &imagePath)
 {
-	auto imageNode = m_nodeDB->getNodeByName(imageName);
-
+	auto imageNode = m_nodeDB->getNodeByName(imagePath);
+	
 	if(!imageNode)
 	{
 		std::cerr << "image node name " 
-				  << imageName 
+				  << imagePath 
 				  << " does not exist in database." 
 				  << std::endl;
- 	}
+		assert(true);
+	}
 	
 	auto image = getImage(imageNode);
+	
 	auto dome = std::make_shared<vxDome>(image);
 	m_domes.emplace_back(dome);
 	return dome;
@@ -385,25 +388,40 @@ vxImageHandle vxScene::getImage(vxNodeHandle node)
 				  << std::endl;
 	}
 	
+	auto&& path = node->getString("imagePath");
+	auto gain = node->getFloat("gain");
+	auto gamma = node->getFloat("gamma");
+	
 	for(const auto& img: m_bitMaps)
 	{
-		if(img->path() == node->getString("path")
-				&& img->gain() == node->getFloat("gain")
-				&& img->gamma() == node->getFloat("gamma"))
+		if(img->path() == path
+				&& img->gain() == gain
+				&& img->gamma() == gamma)
 		{
 			ret = img;
 		}
+	}
+	
+	if(!ret)
+	{
+		std::cerr << "Image with path " 
+				  << path 
+				  << " gain " 
+				  << gain 
+				  << " and gamma " 
+				  << gamma 
+				  << " could not be found" 
+				  << std::endl;
 	}
 	
 	return ret;
 }
 
 vxImageHandle vxScene::createImage(const std::string &path,
-												 const scalar gain,
-												 const scalar gamma)
+								   const scalar gain,
+								   const scalar gamma)
 {
 	// looking for previouly opened images.
-	
 	
 	auto image = std::make_shared<vxImage>(path);
 	image->setGamma(gamma);

@@ -11,6 +11,7 @@ void vxNode::setActive(bool active)
 {
 	m_active = active;
 }
+
 vxNode::vxNode()
 {
 	id = nNodes++;
