@@ -1,3 +1,4 @@
+
 #include<memory>
 
 #include<cassert>
@@ -10,16 +11,6 @@ namespace vxCore{
 
 class vxScene;
 
-std::vector<std::shared_ptr<vxShader> > vxScene::shaders() const
-{
-	return m_shaders;
-}
-
-void vxScene::setShaders(const std::vector<std::shared_ptr<vxShader> > &shaders)
-{
-	m_shaders = shaders;
-}
-
 vxScene::vxScene(ImagePropertiesHandle prop)
 	: m_properties(prop)
 {
@@ -30,19 +21,50 @@ vxScene::~vxScene()
 {
 }
 
-std::vector<std::shared_ptr<vxGrid> >& vxScene::grids()
-{
-	return m_grids;
-}
-
 void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
-
 {
 	m_nodeDB = nodeDB;
 	
 	buildDefaultShader();
 	
-	for(const auto node: nodeDB->getNodesByType("vxImage"))
+	buildImages();
+	
+	buildCameras();
+	
+	buildGrids();
+	
+	buildPlanes();
+	
+	buildGeometries();
+	
+	buildClocks();
+	
+	buildShaders();
+	
+	
+	updateCache();
+	//Update caches
+	std::cout << " -- Finished building process scene -- " << std::endl;
+}
+
+std::vector<std::shared_ptr<vxShader> > vxScene::shaders() const
+{
+	return m_shaders;
+}
+
+void vxScene::setShaders(const std::vector<std::shared_ptr<vxShader> > &shaders)
+{
+	m_shaders = shaders;
+}
+
+std::vector<std::shared_ptr<vxGrid> >& vxScene::grids()
+{
+	return m_grids;
+}
+
+void vxScene::buildImages()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxImage"))
 	{
 		auto&& gain = node->getFloat("gain");
 		auto&& gamma = node->getFloat("gamma");
@@ -53,8 +75,11 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		
 		img->load();
 	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxDirectLight"))
+}
+
+void vxScene::buildLights()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxDirectLight"))
 	{
 		auto direct = createDirectLight();
 		direct->setIntensity(node->getFloat("intensity"));
@@ -67,7 +92,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		direct->setComputeShadows(cast == "true"s);
 	}
 	
-	for(const auto node: nodeDB->getNodesByType("vxIBLight"))
+	for(const auto node: m_nodeDB->getNodesByType("vxIBLight"))
 	{
 		auto env = createIBLight(node->getString("filePath"));
 		env->setIntensity(node->getFloat("intensity"));
@@ -80,7 +105,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		env->setLowThreshold(node->getFloat("lowThreshold"));
 	}
 	
-	for(const auto node: nodeDB->getNodesByType("vxAmbientLight"))
+	for(const auto node: m_nodeDB->getNodesByType("vxAmbientLight"))
 	{
 		auto ambient = createAmbientLight();
 		ambient->setIntensity(node->getFloat("intensity"));
@@ -91,7 +116,39 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		ambient->setTransform(transform);
 	}
 	
-	for(const auto node: nodeDB->getNodesByType("vxCamera"))
+	for(const auto node: m_nodeDB->getNodesByType("vxPointLight"))
+	{
+		auto point = createPointLight();
+		point->setIntensity(node->getFloat("intensity"));
+		point->setColor(vxColor::lookup256(node->getColor("color")));
+		point->setSamples(node->getInt("samples"));
+		point->setComputeShadows(node->getBool("castShadows"));
+		
+		const auto transform = node->getMatrix("transform");
+		point->setTransform(transform);
+	}
+	
+	for(const auto node: m_nodeDB->getNodesByType("vxAreaLight"))
+	{
+		auto area = createAreaLight();
+		area->setIntensity(node->getFloat("intensity"));
+		area->setColor(vxColor::lookup256(node->getColor("color")));
+		area->setSamples(node->getInt("samples"));
+		
+		area->setMinX(node->getFloat("minX"));
+		area->setMinY(node->getFloat("minY"));
+		
+		area->setMaxX(node->getFloat("maxX"));
+		area->setMaxY(node->getFloat("maxY"));
+		
+		const auto transform = node->getMatrix("transform");
+		area->setTransform(transform);
+	}
+}
+
+void vxScene::buildCameras()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxCamera"))
 	{
 		m_camera = std::make_shared<vxCamera>(m_properties);
 		
@@ -110,37 +167,12 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		m_camera->setPixelRadius(pRadius);
 		m_camera->setTransform(transform);
 	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxPointLight"))
-	{
-		auto point = createPointLight();
-		point->setIntensity(node->getFloat("intensity"));
-		point->setColor(vxColor::lookup256(node->getColor("color")));
-		point->setSamples(node->getInt("samples"));
-		point->setComputeShadows(node->getBool("castShadows"));
-		
-		const auto transform = node->getMatrix("transform");
-		point->setTransform(transform);
-	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxAreaLight"))
-	{
-		auto area = createAreaLight();
-		area->setIntensity(node->getFloat("intensity"));
-		area->setColor(vxColor::lookup256(node->getColor("color")));
-		area->setSamples(node->getInt("samples"));
-		
-		area->setMinX(node->getFloat("minX"));
-		area->setMinY(node->getFloat("minY"));
-		
-		area->setMaxX(node->getFloat("maxX"));
-		area->setMaxY(node->getFloat("maxY"));
-		
-		const auto transform = node->getMatrix("transform");
-		area->setTransform(transform);
-	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxGrid"))
+}
+
+
+void vxScene::buildGrids()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxGrid"))
 	{
 		const auto resolution = node->getInt("resolution");
 		const auto transform = node->getMatrix("transform");
@@ -156,7 +188,7 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		m_geometries.emplace_back(grid);
 		m_broadPhase->addGeometry(grid);
 		
-		for(const auto nodeGeo: nodeDB->getNodesByType("vxGridGeometry"))
+		for(const auto nodeGeo: m_nodeDB->getNodesByType("vxGridGeometry"))
 		{
 			const auto path = nodeGeo->getString("filePath");
 			const auto transform = nodeGeo->getMatrix("transform");
@@ -180,13 +212,20 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
 	}
 	
-	for(const auto node: nodeDB->getNodesByType("vxDome"))
+}
+
+void vxScene::buildDomes()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxDome"))
 	{
 		auto dome = createDome(node->getString("imageNode"));
 		dome->setRadius(node->getFloat("radius"));
 	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxPlane"))
+}
+
+void vxScene::buildPlanes()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxPlane"))
 	{
 		const auto planeTypeName = node->getString("planeType");
 		vxPlane::type planeType = vxPlane::type::kFree;
@@ -220,8 +259,11 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		plane->setY(node->getFloat("y"));
 		plane->setZ(node->getFloat("z"));
 	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxGeometry"))
+}
+
+void vxScene::buildGeometries()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxGeometry"))
 	{
 		const auto path = node->getString("filePath");
 		const auto transform = node->getMatrix("transform");
@@ -233,15 +275,21 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		auto plyReader = std::make_shared<vxPLYImporter>(geo);
 		plyReader->processPLYFile(path);
 	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxClock"))
+}
+
+void vxScene::buildClocks()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxClock"))
 	{
 		vxClock::setStart( node->getFloat("start"));
 		vxClock::setEnd( node->getFloat("end"));
 		vxClock::setStep( node->getFloat("step"));
 	}
-	
-	for(const auto node: nodeDB->getNodesByType("vxShader"))
+}
+
+void vxScene::buildShaders()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxShader"))
 	{
 		auto shader = createShader();
 		
@@ -263,10 +311,6 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 		shader->setSscCoefficent(node->getFloat("sscCoefficent"));
 		shader->setSscColorMultiplier(vxColor::lookup256(node->getColor("sscColorMultiplier")));
 	}
-	
-	updateCache();
-	//Update caches
-	std::cout << " -- Finished building process scene -- " << std::endl;
 }
 
 void vxScene::updateCache()

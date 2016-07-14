@@ -53,20 +53,20 @@ protected:
 	std::vector<vxGeometryHandle> m_geometries;
 	std::vector<std::shared_ptr<vxTriangleMesh>> m_triangleMeshes;
 	std::vector<std::shared_ptr<vxPlane>> m_planes;
-
+	
 	std::vector<std::shared_ptr<vxLight>> m_lights;
-
+	
 	std::vector<vxImageHandle> m_bitMaps;
 	std::vector<vxDomeHandle> m_domes;
-
+	
 	std::shared_ptr<vxShader> m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
-
+	
 	std::vector<std::shared_ptr<vxGrid>> m_grids;
 	
 	std::vector<vxCamera> m_cameras;
 	ImagePropertiesHandle m_properties = {nullptr};
-
+	
 	vxBroadPhaseHandle m_broadPhase;
 	//TODO: private and getter setter.
 	long long dRays{0};
@@ -78,15 +78,53 @@ public:
 	///
 	vxScene(ImagePropertiesHandle imageProperties);
 	~vxScene();
-
+	
 	///
 	/// \brief build
 	/// \param nodeDB
-	///
+	/// It will register the database and call every build 
+	/// process for each of specific types.
 	void build(std::shared_ptr<vxSceneParser> nodeDB);
 	///
-	/// \brief updateCache
+	/// \brief buildShaders
 	///
+	void buildShaders();
+	///
+	/// \brief buildClocks
+	///
+	void buildClocks();
+	///
+	/// \brief buildGeometries
+	///
+	void buildGeometries();
+	///
+	/// \brief buildPlanes
+	///
+	void buildPlanes();
+	///
+	/// \brief buildDomes
+	///
+	void buildDomes();
+	///
+	/// \brief buildGrids
+	///
+	void buildGrids();
+	///
+	/// \brief buildCameras
+	///
+	void buildCameras();
+	///
+	/// \brief buildLights
+	///
+	void buildLights();
+	///
+	/// \brief buildImages
+	///
+	void buildImages();
+	///
+	/// \brief updateCache
+	/// After all builds this process will ensure the scene is ready 
+	/// and optimized for render.
 	void updateCache();
 	///
 	/// \brief createShader
@@ -196,8 +234,8 @@ public:
 	/// \return 
 	///
 	vxImageHandle createImage(const std::string &path,
-											const scalar gain,
-										    const scalar gamma);
+							  const scalar gain,
+							  const scalar gamma);
 	///
 	/// \brief createGeometry
 	/// \param path
@@ -205,7 +243,7 @@ public:
 	/// \return 
 	///
 	vxTriangleMeshHandle createGeometry(const std::string &path, 
-											   const Matrix44 &transform);
+										const Matrix44 &transform);
 	///
 	/// \brief grids
 	/// \return 
@@ -234,6 +272,7 @@ public:
 	/// \return 
 	///
 	vxImageHandle getImage(vxNodeHandle node);
+	
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;
