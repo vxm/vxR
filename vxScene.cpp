@@ -27,6 +27,8 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	
 	buildDefaultShader();
 	
+	buildClocks();
+	
 	buildImages();
 	
 	buildCameras();
@@ -37,13 +39,15 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	
 	buildGeometries();
 	
-	buildClocks();
+	buildDomes();
 	
 	buildShaders();
 	
+	buildLights();
 	
-	updateCache();
 	//Update caches
+	updateCache();
+	
 	std::cout << " -- Finished building process scene -- " << std::endl;
 }
 
@@ -83,12 +87,12 @@ void vxScene::buildLights()
 	{
 		auto direct = createDirectLight();
 		direct->setIntensity(node->getFloat("intensity"));
-		direct->setColor(vxColor::lookup256(node->getColor("color")));
-		direct->setSamples(node->getInt("samples"));
+		direct->setColor(vxColor::lookup256(node->getColor("color"s)));
+		direct->setSamples(node->getInt("samples"s));
 		
-		direct->setOrientation(node->getVector3d("orientation"));
+		direct->setOrientation(node->getVector3d("orientation"s));
 		
-		std::string cast = node->getString("castShadows");
+		std::string cast = node->getString("castShadows"s);
 		direct->setComputeShadows(cast == "true"s);
 	}
 	
