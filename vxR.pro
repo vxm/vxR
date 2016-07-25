@@ -166,6 +166,6 @@ QMAKE_CXXFLAGS_RELEASE += -Ofast -fomit-frame-pointer \
 QMAKE_LFLAGS_RELEASE += -O1
 @
 
-QMAKE_CXXFLAGS += -fopenmp
+QMAKE_CXXFLAGS += -fopenmp -fopenacc
 
 #
