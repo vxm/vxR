@@ -23,7 +23,7 @@ public:
 	
 	static vxGlobal *getInstance();
 
-	//static std::shared_ptr<vxShader> getLambert();
+	//static vxShaderHandle getLambert();
 };
 
 }

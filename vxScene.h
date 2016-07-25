@@ -41,14 +41,12 @@ protected:
 	
 	std::shared_ptr<vxSceneParser> m_nodeDB;
 	
-	
-	std::vector<std::shared_ptr<vxShader>> m_shaders;
-	std::vector<std::shared_ptr<vxAreaLight>> m_areaLights;
-	std::vector<std::shared_ptr<vxIBLight>> m_IBLights;
-	std::vector<std::shared_ptr<vxPointLight>> m_pointLights;
-	std::vector<std::shared_ptr<vxDirectLight>> m_directLights;
-	std::vector<std::shared_ptr<vxAmbientLight>> m_ambientLights;
-	
+	std::vector<vxShaderHandle> m_shaders;
+	std::vector<vxAreaLightHandle> m_areaLights;
+	std::vector<vxIBLightHandle> m_IBLights;
+	std::vector<vxPointLightHandle> m_pointLights;
+	std::vector<vxDirectLightHandle> m_directLights;
+	std::vector<vxAmbientLightHandle> m_ambientLights;
 	
 	std::vector<vxGeometryHandle> m_geometries;
 	std::vector<std::shared_ptr<vxTriangleMesh>> m_triangleMeshes;
@@ -59,7 +57,7 @@ protected:
 	std::vector<vxImageHandle> m_bitMaps;
 	std::vector<vxDomeHandle> m_domes;
 	
-	std::shared_ptr<vxShader> m_shader = {nullptr};
+	vxShaderHandle m_shader = {nullptr};
 	std::shared_ptr<vxCamera> m_camera = {nullptr};
 	
 	std::vector<std::shared_ptr<vxGrid>> m_grids;
@@ -130,7 +128,7 @@ public:
 	/// \brief createShader
 	/// \return 
 	///
-	std::shared_ptr<vxShader> createShader();
+	vxShaderHandle createShader(const std::__cxx11::string &name);
 	///
 	/// \brief imageProperties
 	/// \return 
@@ -155,12 +153,12 @@ public:
 	/// \brief defaultShader
 	/// \return 
 	///
-	std::shared_ptr<vxShader> defaultShader() const;
+	vxShaderHandle defaultShader() const;
 	///
 	/// \brief setShader
 	/// \param defaultShader
 	///
-	void setShader(std::shared_ptr<vxShader> defaultShader);
+	void setShader(vxShaderHandle defaultShader);
 	///
 	/// \brief camera
 	/// \return 
@@ -194,28 +192,28 @@ public:
 	/// \brief createAreaLight
 	/// \return 
 	///
-	std::shared_ptr<vxAreaLight> createAreaLight();
+	vxAreaLightHandle createAreaLight();
 	///
 	/// \brief createPointLight
 	/// \return 
 	///
-	std::shared_ptr<vxPointLight> createPointLight();
+	vxPointLightHandle createPointLight();
 	///
 	/// \brief createDirectLight
 	/// \return 
 	///
-	std::shared_ptr<vxDirectLight> createDirectLight();
+	vxDirectLightHandle createDirectLight();
 	///
 	/// \brief createIBLight
 	/// \param path
 	/// \return 
 	///
-	std::shared_ptr<vxIBLight> createIBLight(const std::string path);
+	vxIBLightHandle createIBLight(const std::string path);
 	///
 	/// \brief createAmbientLight
 	/// \return 
 	///
-	std::shared_ptr<vxAmbientLight> createAmbientLight();
+	vxAmbientLightHandle createAmbientLight();
 	///
 	/// \brief createDom
 	/// \param path
@@ -253,12 +251,12 @@ public:
 	/// \brief shaders
 	/// \return 
 	///
-	std::vector<std::shared_ptr<vxShader> > shaders() const;
+	std::vector<vxShaderHandle > shaders() const;
 	///
 	/// \brief setShaders
 	/// \param shaders
 	///
-	void setShaders(const std::vector<std::shared_ptr<vxShader> > &shaders);
+	void setShaders(const std::vector<vxShaderHandle > &shaders);
 	///
 	/// \brief domeThrowRay
 	/// \param ray
@@ -272,7 +270,12 @@ public:
 	/// \return 
 	///
 	vxImageHandle getImage(vxNodeHandle node);
-	
+	///
+	/// \brief getShader
+	/// \param node
+	/// \return 
+	///
+	vxShaderHandle getShader(vxNodeHandle node);
 	
 	//renderable interface
 	bool throwRay(const vxRay &ray) const;

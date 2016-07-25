@@ -10,7 +10,6 @@
 #include "vxCollision.h"
 #include "vxLight.h"
 #include "vxCirclesMap.h"
-#include "vxScene.h"
 
 namespace vxCore {
 
@@ -300,6 +299,8 @@ public:
 	///
 	virtual vxColor getIlluminatedColor(const vxRay &ray, const vxCollision &collide) const override;
 };
+
+using vxShaderHandle = std::shared_ptr<vxShader>;
 
 }
 #endif

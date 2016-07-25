@@ -460,6 +460,14 @@ std::shared_ptr<vxPlane> vxScene::createPlane(vxPlane::type type)
 	return plane;
 }
 
+
+vxShaderHandle vxScene::getShader(vxNodeHandle node)
+{
+	vxShaderHandle ret;
+	
+	return ret;
+}
+
 vxImageHandle vxScene::getImage(vxNodeHandle node)
 {
 	vxImageHandle ret;
@@ -607,7 +615,7 @@ bool vxScene::hasCollision(const vxRay &ray) const
 	return throwRay(ray, col)==1;
 }
 
-std::shared_ptr<vxShader> vxScene::defaultShader() const
+vxShaderHandle vxScene::defaultShader() const
 {
 	return m_shader;
 }
