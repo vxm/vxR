@@ -221,6 +221,7 @@ active = "true"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.70 1.2 1]
     filePath = "/home/john/Downloads/gnome_mid.ply"
     color = 249 249 249
+    shader = "shader_1"
 }
 
 node
@@ -231,6 +232,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.2 0.2 1]
     filePath = "/home/john/Downloads/cruceta.ply"
     color = 249 249 150
+    shader = "shader_1"
 }
 
 
@@ -242,6 +244,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     filePath = "/home/john/Downloads/cruceta.ply"
     color = 249 150 249
+    shader = "shader_1"
 }
 
 node
@@ -252,6 +255,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.2 -0.54 -1.5 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
     color = 199 198 134
+    shader = "shader_1"
 }
 
 node
@@ -262,6 +266,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
     filePath = "/home/john/Downloads/mercury.ply"
     color = 199 198 134
+    shader = "shader_1"
 }
 
 node
@@ -272,6 +277,7 @@ active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.7 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 125 125 125
+    shader = "shader_1"
 }
 
 ////////////////////////////////////////////////////////
@@ -287,6 +293,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 1.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 1 1 125
+    shader = "shader_1"
 }
 
 node
@@ -297,6 +304,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 3.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 125 1
+    shader = "shader_1"
 }
 
 node
@@ -307,6 +315,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 5.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 1 125
+    shader = "shader_1"
 }
 
 node
@@ -317,6 +326,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 5.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 1 125 125
+    shader = "shader_1"
 }
 
 
@@ -328,6 +338,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 125 1 1
+    shader = "shader_1"
 }
 
 
@@ -339,6 +350,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 1 125 1
+    shader = "shader_1"
 }
 
 
@@ -350,6 +362,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 1 255 125
+    shader = "shader_1"
 }
 
 node
@@ -360,6 +373,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 6.0 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_0.ply"
     color = 255 1 125
+    shader = "shader_1"
 }
 
 
@@ -587,6 +601,7 @@ active = "false"
     resolution = 260
     size = 2.35
     color = 212 212 212
+    shader = "shader_1"
 }
 
 node
