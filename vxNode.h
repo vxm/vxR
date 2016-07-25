@@ -18,6 +18,7 @@ using Attribute = std::pair<std::string, vxValue>;
 
 class vxNode
 {
+	
 	bool m_active{true};
 	std::string m_name;
 	std::string m_type;
@@ -27,6 +28,8 @@ class vxNode
 	int id{0};
 
 public:
+	
+	void* m_object{nullptr};
 
 	vxNode();
 	~vxNode()
