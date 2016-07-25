@@ -18,7 +18,7 @@
 namespace vxCore {
 
 class vxGeometry;
-//class vxShader;
+class vxShader;
 
 using vxGeometryHandle = std::shared_ptr<vxGeometry>;
 
@@ -29,7 +29,7 @@ protected:
 	Matrix44 m_transform;
 	
 	vxColor m_baseColor;
-	//std::shared_ptr<vxShader> m_shader;
+	vxShader* m_shader;
 	
 public:
 
@@ -43,13 +43,15 @@ public:
 
 	vxColor baseColor() const;
 	void setBaseColor(const vxColor &baseColor);
-//	std::shared_ptr<vxShader> shader() const;
-//	void setShader(const std::shared_ptr<vxShader> &shader);
+//	vxShaderHandle shader() const;
+//	void setShader(const vxShaderHandle &shader);
 	
 	//renderable interface
 	virtual bool throwRay(const vxRay &ray) const;
 	virtual int throwRay(const vxRay &ray, vxCollision &collide) const;
 	virtual bool hasCollision(const vxRay &ray) const;
+	vxShader *shader() const;
+	void setShader(vxShader *shader);
 };
 
 }

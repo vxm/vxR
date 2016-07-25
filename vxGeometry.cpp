@@ -13,16 +13,16 @@ void vxGeometry::setBaseColor(const vxColor &baseColor)
 {
 	m_baseColor = baseColor;
 }
-/*
-std::shared_ptr<vxShader> vxGeometry::shader() const
+
+vxShader *vxGeometry::shader() const
 {
 	return m_shader;
 }
 
-void vxGeometry::setShader(const std::shared_ptr<vxShader> &shader)
+void vxGeometry::setShader(vxShader *shader)
 {
 	m_shader = shader;
-}*/
+}
 
 vxGeometry::vxGeometry()
 {
