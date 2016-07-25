@@ -37,11 +37,11 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	
 	buildPlanes();
 	
+	buildShaders();
+	
 	buildGeometries();
 	
 	buildDomes();
-	
-	buildShaders();
 	
 	buildLights();
 	
@@ -51,12 +51,12 @@ void vxScene::build(std::shared_ptr<vxSceneParser> nodeDB)
 	std::cout << " -- Finished building process scene -- " << std::endl;
 }
 
-std::vector<std::shared_ptr<vxShader> > vxScene::shaders() const
+std::vector<vxShaderHandle > vxScene::shaders() const
 {
 	return m_shaders;
 }
 
-void vxScene::setShaders(const std::vector<std::shared_ptr<vxShader> > &shaders)
+void vxScene::setShaders(const std::vector<vxShaderHandle > &shaders)
 {
 	m_shaders = shaders;
 }
@@ -78,6 +78,8 @@ void vxScene::buildImages()
 							   gamma);
 		
 		img->load();
+		
+		node->m_object = img.get();
 	}
 }
 
@@ -92,8 +94,10 @@ void vxScene::buildLights()
 		
 		direct->setOrientation(node->getVector3d("orientation"s));
 		
-		std::string cast = node->getString("castShadows"s);
+		std::string&& cast = node->getString("castShadows"s);
 		direct->setComputeShadows(cast == "true"s);
+
+		node->m_object = direct.get();
 	}
 	
 	for(const auto node: m_nodeDB->getNodesByType("vxIBLight"))
@@ -107,6 +111,8 @@ void vxScene::buildLights()
 		env->setGain(node->getFloat("gain"));
 		env->setGamma(node->getFloat("gamma"));
 		env->setLowThreshold(node->getFloat("lowThreshold"));
+
+		node->m_object = env.get();
 	}
 	
 	for(const auto node: m_nodeDB->getNodesByType("vxAmbientLight"))
@@ -118,6 +124,8 @@ void vxScene::buildLights()
 		
 		const auto transform = node->getMatrix("transform");
 		ambient->setTransform(transform);
+
+		node->m_object = ambient.get();	
 	}
 	
 	for(const auto node: m_nodeDB->getNodesByType("vxPointLight"))
@@ -130,6 +138,7 @@ void vxScene::buildLights()
 		
 		const auto transform = node->getMatrix("transform");
 		point->setTransform(transform);
+		node->m_object = point.get();
 	}
 	
 	for(const auto node: m_nodeDB->getNodesByType("vxAreaLight"))
@@ -147,6 +156,8 @@ void vxScene::buildLights()
 		
 		const auto transform = node->getMatrix("transform");
 		area->setTransform(transform);
+
+		node->m_object = area.get();
 	}
 }
 
@@ -170,6 +181,7 @@ void vxScene::buildCameras()
 		
 		m_camera->setPixelRadius(pRadius);
 		m_camera->setTransform(transform);
+		node->m_object = m_camera.get();
 	}
 }
 
@@ -214,6 +226,7 @@ void vxScene::buildGrids()
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();
 		std::cout << "Number of active voxels " << na << " of " << totals << std::endl;
+		node->m_object = grid.get();
 	}
 	
 }
@@ -224,6 +237,7 @@ void vxScene::buildDomes()
 	{
 		auto dome = createDome(node->getString("imageNode"));
 		dome->setRadius(node->getFloat("radius"));
+		node->m_object = dome.get();
 	}
 }
 
@@ -262,6 +276,7 @@ void vxScene::buildPlanes()
 		plane->setX(node->getFloat("x"));
 		plane->setY(node->getFloat("y"));
 		plane->setZ(node->getFloat("z"));
+		node->m_object = plane.get();
 	}
 }
 
@@ -269,15 +284,34 @@ void vxScene::buildGeometries()
 {
 	for(const auto node: m_nodeDB->getNodesByType("vxGeometry"))
 	{
+		
 		const auto path = node->getString("filePath");
 		const auto transform = node->getMatrix("transform");
 		
 		auto geo = createGeometry(path, transform);
 		geo->setBaseColor(vxColor::lookup256(node->getColor("color")));
+		
+		auto&& shaderNodeName = node->getString("shader");
+		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
+		if(!shaderNode)
+		{
+			std::cerr << "shader node name " 
+					  << shaderNodeName 
+					  << " does not exist in database." 
+					  << std::endl;
+			assert(true);
+		}
+		
+		
+		//geo->setShader();
+		
+		
 		geo->setTransform(transform);
 		
 		auto plyReader = std::make_shared<vxPLYImporter>(geo);
 		plyReader->processPLYFile(path);
+		
+		node->m_object = geo.get();
 	}
 }
 
@@ -295,7 +329,7 @@ void vxScene::buildShaders()
 {
 	for(const auto node: m_nodeDB->getNodesByType("vxShader"))
 	{
-		auto shader = createShader();
+		auto shader = createShader(node->name());
 		
 		shader->setDiffuseColor(vxColor::lookup256(node->getColor("diffuseColor")));
 		shader->setDiffuseCoeficent(node->getFloat("diffuseCoeficent"));
@@ -314,6 +348,8 @@ void vxScene::buildShaders()
 		shader->setSscRadius(node->getFloat("sscRadius"));
 		shader->setSscCoefficent(node->getFloat("sscCoefficent"));
 		shader->setSscColorMultiplier(vxColor::lookup256(node->getColor("sscColorMultiplier")));
+		
+		node->m_object = shader.get();
 	}
 }
 
@@ -326,7 +362,7 @@ void vxScene::updateCache()
 	std::cout << " -- End cache computation -- " << std::endl;
 }
 
-std::shared_ptr<vxShader> vxScene::createShader()
+vxShaderHandle vxScene::createShader(const std::string &name)
 {
 	auto lambert = std::make_shared<vxLambert>();
 	m_shaders.emplace_back(lambert);
@@ -334,7 +370,7 @@ std::shared_ptr<vxShader> vxScene::createShader()
 	return lambert;
 }
 
-void vxScene::setShader(std::shared_ptr<vxShader> shader)
+void vxScene::setShader(vxShaderHandle shader)
 {
 	m_shader = shader;
 }
@@ -351,7 +387,7 @@ void vxScene::buildDefaultShader()
 	m_shader->setScene(shared_from_this());
 }
 
-std::shared_ptr<vxAreaLight> vxScene::createAreaLight()
+vxAreaLightHandle vxScene::createAreaLight()
 {
 	auto area = std::make_shared<vxAreaLight>();
 	m_areaLights.emplace_back(area);
@@ -361,7 +397,7 @@ std::shared_ptr<vxAreaLight> vxScene::createAreaLight()
 	
 }
 
-std::shared_ptr<vxPointLight> vxScene::createPointLight()
+vxPointLightHandle vxScene::createPointLight()
 {
 	auto pl1 = std::make_shared<vxPointLight>(1.0, vxColor::white);
 	m_pointLights.emplace_back(pl1);
@@ -370,7 +406,7 @@ std::shared_ptr<vxPointLight> vxScene::createPointLight()
 	return pl1;
 }
 
-std::shared_ptr<vxIBLight> vxScene::createIBLight(const std::string path)
+vxIBLightHandle vxScene::createIBLight(const std::string path)
 {
 	auto ibl1 = std::make_shared<vxIBLight>(1.0, path);
 	m_IBLights.emplace_back(ibl1);
@@ -379,7 +415,7 @@ std::shared_ptr<vxIBLight> vxScene::createIBLight(const std::string path)
 	return ibl1;
 }
 
-std::shared_ptr<vxDirectLight> vxScene::createDirectLight()
+vxDirectLightHandle vxScene::createDirectLight()
 {
 	auto dl1 = std::make_shared<vxDirectLight>(1.0, vxColor::white);
 	m_directLights.emplace_back(dl1);
@@ -388,7 +424,7 @@ std::shared_ptr<vxDirectLight> vxScene::createDirectLight()
 	return dl1;
 }
 
-std::shared_ptr<vxAmbientLight> vxScene::createAmbientLight()
+vxAmbientLightHandle vxScene::createAmbientLight()
 {
 	auto al1 = std::make_shared<vxAmbientLight>(1.0, vxColor::white);
 	m_ambientLights.emplace_back(al1);
