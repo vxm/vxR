@@ -1,4 +1,6 @@
 #include "vxLight.h"
+#include "vxScene.h"
+
 namespace vxCore 
 {
 

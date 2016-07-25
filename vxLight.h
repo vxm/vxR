@@ -5,7 +5,6 @@
 #include "vxVector.h"
 #include "vxCollision.h"
 #include "MathUtils.h"
-#include "vxScene.h"
 #include "vxImage.h"
 #include "Matrix44.h"
 #include "vxSampler.h"
