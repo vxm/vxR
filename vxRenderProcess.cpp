@@ -289,7 +289,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						v3s invV = ((n * ray.direction().dot(n) * -2.0)
 									+ ray.direction());
 						
-						invV+=MU::getSolidSphereRand3(0.2);
+						invV+=MU::getSolidSphereRand3(3.141592);
 						
 						const auto &&reflexRay =
 								vxRay(collision.position() + n.tiny(), invV);
@@ -297,7 +297,7 @@ vxStatus::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						reflection = computeLight(reflexRay, refxCollision);
 					}
 					
-					reflection*=(0.5f/(float)m_reflectionSamples);
+					reflection*=(0.2f/(float)m_reflectionSamples);
 					firstHitColor+= (reflection);
 				}
 				
