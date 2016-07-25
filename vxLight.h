@@ -206,6 +206,10 @@ public:
 	void setNormal(const v3s &normal);
 };
 
-
+using vxAreaLightHandle = std::shared_ptr<vxAreaLight>;
+using vxIBLightHandle = std::shared_ptr<vxIBLight>;
+using vxPointLightHandle = std::shared_ptr<vxPointLight>;
+using vxDirectLightHandle = std::shared_ptr<vxDirectLight>;
+using vxAmbientLightHandle = std::shared_ptr<vxAmbientLight>;
 }
 #endif 
