@@ -7,6 +7,7 @@
 
 namespace vxCore {
 
+class vxGeometry;
 
 class vxCollision
 {
@@ -21,6 +22,8 @@ private:
 
 public:
 
+	vxGeometry* m_geo{nullptr};
+	
 	vxCollision();
 	
 	vxCollision(const v3s &p,

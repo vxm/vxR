@@ -350,6 +350,7 @@ int vxBroadPhase::throwRay(const vxRay &ray, vxCollision &collide) const
 				mdis = s;
 				collide = temp;
 				valid = 1;
+				collide.m_geo = geo.get();
 			}
 		}
 	}
