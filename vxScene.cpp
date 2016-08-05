@@ -367,6 +367,7 @@ vxShaderHandle vxScene::createShader(const std::string &name)
 	auto lambert = std::make_shared<vxLambert>();
 	m_shaders.emplace_back(lambert);
 	lambert->setScene(shared_from_this());
+	lambert->setLights(&m_lights);
 	return lambert;
 }
 
