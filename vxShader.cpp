@@ -197,7 +197,7 @@ vxColor vxLambert::getColor(const vxRay &, const vxCollision &collide) const
 {
 	vxColor ret;
 	
-	auto&& color = m_diffuse.compute(collide);
+	auto&& color = m_diffuse.compute(collide)*m_diffuseColor;
 	ret = MU::remap(color, 0.0, 0.85);
 
 	return ret;
