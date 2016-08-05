@@ -215,7 +215,17 @@ vxColor vxRenderProcess::computeLight(const vxRay &ray, vxCollision &col)
 	
 	if(col.isValid())
 	{
-		retColor = m_scene->defaultShader()->getIlluminatedColor(ray,col);
+		vxShader* sh{nullptr};
+		if(col.m_geo!=nullptr)
+		{
+			sh = col.m_geo->shader();
+		}
+		else
+		{
+			sh = m_scene->defaultShader().get();
+		}
+		
+		retColor = sh->getIlluminatedColor(ray,col);
 	}
 	else
 	{
