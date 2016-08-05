@@ -302,9 +302,7 @@ void vxScene::buildGeometries()
 			assert(true);
 		}
 		
-		
-		//geo->setShader();
-		
+		geo->setShader((vxShader*)shaderNode->m_object);
 		
 		geo->setTransform(transform);
 		
