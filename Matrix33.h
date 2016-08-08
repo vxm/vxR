@@ -2,8 +2,8 @@
 #define MATRIX33_H
 
 
-#include "vxStatus.h"
-#include "vxVector.h"
+#include "Status.h"
+#include "Vector.h"
 #include <initializer_list>
 #include "Quaternion.h"
 

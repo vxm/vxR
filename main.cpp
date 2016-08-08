@@ -4,19 +4,19 @@
 #include <QImage>
 
 #include "FileUtils.h"
-#include "vxRenderProcess.h"
+#include "RenderProcess.h"
 #include "ImageProperties.h"
-#include "vxRenderMain.h"
+#include "RenderMain.h"
 #include "renderPresset.h"
 #include "TimeUtils.h"
 #include "MathUtils.h"
 #include "MathUtilsUnitTest.h"
-#include "vxVector.h"
-#include "vxGrid.h"
-#include "vxGridUnitTest.h"
-#include "vxSceneParser.h"
-#include "vxClock.h"
-#include "vxNonSequentalPool.h"
+#include "Vector.h"
+#include "Grid.h"
+#include "GridUnitTest.h"
+#include "SceneParser.h"
+#include "Clock.h"
+#include "NonSequentalPool.h"
 
 static const std::string baseName("image.0000001.tif");
 using namespace std::string_literals;
@@ -47,9 +47,9 @@ int executeRenderProcess(int argc, char *argv[])
 	std::cout << "\t Captured scene file argument: " << scenePath << std::endl;
 	
 	//TODO:find a home for this next two lines of code.
-	auto sceneParser = std::make_shared<vxSceneParser>(scenePath);
+	auto sceneParser = std::make_shared<SceneParser>(scenePath);
 	sceneParser->procesScene();
-	std::shared_ptr<vxScene> m_scene;
+	std::shared_ptr<Scene> m_scene;
 	
 	for(auto&& node: sceneParser->getNodesByType("vxRenderSettings"))
 	{
@@ -68,7 +68,7 @@ int executeRenderProcess(int argc, char *argv[])
 			
 			if(m_scene==nullptr)
 			{
-				m_scene = std::make_shared<vxScene>(renderProperties);
+				m_scene = std::make_shared<Scene>(renderProperties);
 				m_scene->build(sceneParser);
 			}
 			else
@@ -97,7 +97,7 @@ int executeRenderProcess(int argc, char *argv[])
 			
 			
 			// executes the render.
-			if(rp.execute()==vxStatus::code::kError)
+			if(rp.execute()==Status::code::kError)
 			{
 				return 1;
 			}
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
 		printHelp();
 		break;
 	case 2:
-		vxGridUnitTest::testGrid();
+		GridUnitTest::testGrid();
 		MUUnitTest::testMU();
 		break;
 	default:

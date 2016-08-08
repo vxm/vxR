@@ -1,9 +1,9 @@
 #include "MathUtils.h"
-#include "vxVector.h"
-#include "vxRay.h"
-#include "vxPlane.h"
-#include "vxCollision.h"
-#include "vxTriRef.h"
+#include "Vector.h"
+#include "Ray.h"
+#include "Plane.h"
+#include "Collision.h"
+#include "TriRef.h"
 
 #define USE_STORE_RAND 0
 
@@ -84,17 +84,17 @@ v3s MathUtils::cartesianToNormal(const v2s& coords)
 }
 
 v3s MathUtils::rectAndPlane(const v3s& ray, 
-									const vxPlane &plane)
+									const Plane &plane)
 {
 	switch(plane.m_type)
 	{
-	case vxPlane::type::kZ :
+	case Plane::type::kZ :
 		return rectAndZPlane(std::move(ray), plane.z());
 		break;
-	case vxPlane::type::kX :
+	case Plane::type::kX :
 		return rectAndXPlane(std::move(ray), plane.x());
 		break;
-	case vxPlane::type::kY :
+	case Plane::type::kY :
 		return rectAndYPlane(std::move(ray), plane.y());
 		break;
 	default:
@@ -104,7 +104,7 @@ v3s MathUtils::rectAndPlane(const v3s& ray,
 	return v3s::zero;
 }
 
-v3s MathUtils::rectAndPlane(const vxRay& ray,
+v3s MathUtils::rectAndPlane(const Ray& ray,
 									const v3s& a,
 									const v3s& b,
 									const v3s& c)
@@ -120,7 +120,7 @@ v3s MathUtils::rectAndPlane(const vxRay& ray,
 	return (ray.direction() * u) + ray.origin();
 }
 
-v3s MathUtils::rectAndPlane(const vxRay &ray, vxTriRef &tri)
+v3s MathUtils::rectAndPlane(const Ray &ray, TriRef &tri)
 {
 	const auto &n = tri.normal();
 	const auto &p1 = ray.origin();
@@ -210,17 +210,17 @@ v3s MathUtils::rectAndZPlane(const v3s& ray, scalar z)
 	return v3s{x,y,z};
 }
 
-v3s MathUtils::rayAndXPlane(const vxRay &ray, scalar x)
+v3s MathUtils::rayAndXPlane(const Ray &ray, scalar x)
 {
 	return rectAndXPlane(ray.direction(),x);
 }
 
-v3s MathUtils::rayAndYPlane(const vxRay &ray, scalar y)
+v3s MathUtils::rayAndYPlane(const Ray &ray, scalar y)
 {
 	return rectAndYPlane(ray.direction(),y);
 }
 
-v3s MathUtils::rayAndZPlane(const vxRay &ray, scalar z)
+v3s MathUtils::rayAndZPlane(const Ray &ray, scalar z)
 {
 	return rectAndZPlane(ray.direction(),z);
 }
@@ -304,7 +304,7 @@ scalar MathUtils::clamp(scalar val, scalar min, scalar max)
 	return std::max(std::min(max, val), min);
 }
 
-vxColor MathUtils::clamp(const vxColor &c1, const vxColor &min, const vxColor &max)
+Color MathUtils::clamp(const Color &c1, const Color &min, const Color &max)
 {
 	return {clamp(c1.r(), min.r(), max.r()),
 			clamp(c1.g(), min.g(), max.g()),
@@ -312,7 +312,7 @@ vxColor MathUtils::clamp(const vxColor &c1, const vxColor &min, const vxColor &m
 			clamp(c1.alpha(), min.alpha(), max.alpha())};
 }
 
-vxColor MathUtils::clamp(const vxColor &c1, scalar min, scalar max)
+Color MathUtils::clamp(const Color &c1, scalar min, scalar max)
 {
 	return {clamp(c1.r(), min, max),
 		   clamp(c1.g(), min, max),
@@ -335,7 +335,7 @@ scalar MathUtils::remap(scalar v, scalar max)
 	return clamp(v*max,0.0,max);
 }
 
-vxColor MathUtils::remap(const vxColor &col, scalar min, scalar max)
+Color MathUtils::remap(const Color &col, scalar min, scalar max)
 {
 	return {remap(col.r(),min,max),
 			remap(col.g(),min,max),
@@ -343,7 +343,7 @@ vxColor MathUtils::remap(const vxColor &col, scalar min, scalar max)
 			remap(col.alpha(),min,max)};
 }
 
-vxColor MathUtils::lerp(const vxColor &c1, const vxColor &c2, scalar r)
+Color MathUtils::lerp(const Color &c1, const Color &c2, scalar r)
 {	
 	return {lerp(c1.r(), c2.r(), r),
 			lerp(c1.g(), c2.g(), r),

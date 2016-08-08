@@ -40,10 +40,10 @@ Matrix44::~Matrix44()
 }
 
 
-vxStatus::code Matrix44::get(scalar dest[]) const
+Status::code Matrix44::get(scalar dest[]) const
 {
 	memcpy(dest, m_matrix, 16 * sizeof(scalar));
-	return vxStatus::code::kSuccess;
+	return Status::code::kSuccess;
 }
 
 Matrix44 Matrix44::transpose() const

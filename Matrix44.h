@@ -2,8 +2,8 @@
 #define MATRIX44_H
 #include <cstring>
 #include <array>
-#include "vxStatus.h"
-#include "vxVector.h"
+#include "Status.h"
+#include "Vector.h"
 #include <initializer_list>
 
 namespace vxCore {
@@ -51,7 +51,7 @@ public:
 	/// \param dest
 	/// \return 
 	///
-	vxStatus::code	get(scalar dest[]) const;
+	Status::code	get(scalar dest[]) const;
 	///
 	/// \brief transpose
 	/// \return 

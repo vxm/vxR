@@ -13,7 +13,7 @@ MUUnitTest::MUUnitTest()
 int MUUnitTest::testFunction_Intersection()
 {
 	std::cout << "Init:: Intersections tests"s << std::endl;
-	vxStatus st;
+	Status st;
 
 	// TEST 6 //Ray and plane from 3 points
 	{
@@ -21,7 +21,7 @@ int MUUnitTest::testFunction_Intersection()
 		const auto b{v3s(4.0, 2.0, 1.0)};
 		const auto c{v3s(9.0, 5.0, 6.0)};
 		
-		const vxRay ray(v3s(10,10,10), v3s(9,8,9));
+		const Ray ray(v3s(10,10,10), v3s(9,8,9));
 		
 		const v3s r = MU::rectAndPlane(ray, a, b, c);
 
@@ -52,7 +52,7 @@ int MUUnitTest::testFunction_Intersection()
 int MUUnitTest::testFunction_VectorBasics()
 {
 	std::cout << "Init:: Vector Basics tests"s << std::endl;
-	vxStatus st;
+	Status st;
 
 	// TEST 5 //Cross product
 	{
@@ -86,13 +86,13 @@ int MUUnitTest::testFunction_VectorBasics()
 int MUUnitTest::testFunction_rectAndXPlane()
 {
 	std::cout << "Init:: rectAndXPlane tests"s << std::endl;
-	vxStatus st;
+	Status st;
 
 	// TEST 1
 	{
 		const v3s origin{v3s(4.5, 4.5, 4.5)};
 		const v3s direction{v3s(1.0, 0.0, 0.0)};
-		const auto& ray = vxRay{origin,direction};
+		const auto& ray = Ray{origin,direction};
 		auto intersection = MU::rayAndXPlane(ray, 13.0);
 		
 		std::cout << "From 4.5, 4.5, 4.5, with planeX 13 in x direction intersection is: "s
@@ -107,7 +107,7 @@ int MUUnitTest::testFunction_rectAndXPlane()
 	{
 		const v3s origin{v3s(-30, 5.0, 5.0)};
 		const v3s direction{v3s(1.0, 0.0, 0.0)};
-		const auto& ray = vxRay{origin,direction};
+		const auto& ray = Ray{origin,direction};
 		auto intersection = MU::rayAndXPlane(ray, -20.0);
 		
 		std::cout << "From (-30, 5.0, 5.0), with planeX -20 in x direction intersection is: "s
@@ -122,7 +122,7 @@ int MUUnitTest::testFunction_rectAndXPlane()
 	{
 		const v3s origin{v3s(-30, -5.0, -5.0)};
 		const v3s direction{v3s(-1.0, 0.0, 0.0)};
-		const auto& ray = vxRay{origin,direction};
+		const auto& ray = Ray{origin,direction};
 		auto intersection = MU::rayAndXPlane(ray, -200.0);
 		
 		std::cout << "From (-30, -5.0, -5.0), with planeX -200 in x direction intersection is: "s
@@ -137,7 +137,7 @@ int MUUnitTest::testFunction_rectAndXPlane()
 	{
 		const v3s origin{v3s(5.0, 5.0, 5.0)};
 		const v3s direction{v3s(10.0, 1.0, 1.0)};
-		const auto& ray = vxRay{origin,direction};
+		const auto& ray = Ray{origin,direction};
 		auto intersection = MU::rayAndXPlane(ray, 40.0);
 
 		std::cout << "From (5.0, 5.0, 5.0), with planeX 40 in (10.0, 1.0, 1.0) direction intersection is: "s

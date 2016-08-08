@@ -7,7 +7,7 @@
 #include <iostream>
 #include <regex>
 
-#include "vxVector.h"
+#include "Vector.h"
 
 using namespace std::string_literals;
 using std::regex;

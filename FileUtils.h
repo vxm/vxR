@@ -10,8 +10,8 @@
 #include <iomanip>
 #include <regex>
 
-#include "vxVector.h"
-#include "vxmanager.h"
+#include "Vector.h"
+#include "Manager.h"
 
 namespace vxCore {
 

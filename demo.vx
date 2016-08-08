@@ -6,7 +6,7 @@ node
 name = "image_1"
 type = "vxImage"
 active = "true"
-    imagePath = "/home/john/code/vxR/Helipad_GoldenHour/LA_Downtown_Helipad_GoldenHour_8k.jpg"
+    imagePath = "/home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
     gain = 1.0
     gamma = 2.2
 }
@@ -16,7 +16,31 @@ node
 name = "shader_1"
 type = "vxShader"
 active = "true"
-    diffuseColor = 238 216 126
+    diffuseColor = 255 255 255
+    diffuseCoeficent = 1.0
+    giSamples = 0
+    giCoeficent = 1.0
+    giColorMultiplier = 238 216 126
+    reflectionSamples = 0
+    reflectionRadius = 1.0
+    reflectionCoefficent = 0.5
+    reflectionColorMultiplier = 238 216 126
+    refractionSamples = 0
+    refractionRadius = 1.0
+    refractionCoefficent = 0.5
+    refractionColorMultiplier = 238 216 126
+    sscSamples = 0
+    sscRadius = 1.0
+    sscCoefficent = 0.5
+    sscColorMultiplier = 238 216 126
+}
+
+node
+{
+name = "shader_2"
+type = "vxShader"
+active = "true"
+    diffuseColor = 255 255 255
     diffuseCoeficent = 1.0
     giSamples = 0
     giCoeficent = 1.0
@@ -65,7 +89,7 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 10
+    pixelSamples = 20
     reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.0
@@ -128,7 +152,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.2 0.8 -4.5 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.2 0.5 -4.5 1]
     focusDistance = 3.0
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -177,7 +201,7 @@ node
 name = "triceratops_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 4.0 -0.70 1.0 1]
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 -4.0 -0.70 1.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
 }
@@ -187,7 +211,7 @@ node
 name = "tennyson_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 -2.5 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.5 0.04 -2.5 1]
     filePath = "/home/john/Downloads/tennyson.ply"
     color = 118 118 144
 }
@@ -213,26 +237,51 @@ active = "false"
     color = 99 99 99
 }
 
+
 node
 {
-name = "gnome_tris"
+name = "juan"
+type = "vxGeometry"
+active = "false"
+    transform = [4 0 0 0 0 4 0 0 0 0 4 0 0.0 0.20 0.0 1]
+    filePath = "/home/john/code/vxR/juan_0.ply"
+    color = 249 249 249
+    shader = "shader_1"
+}
+
+
+node
+{
+name = "faun_tris"
+type = "vxGeometry"
+active = "false"
+    transform = [2.9 0 0 0 0 2.9 0 0 0 0 2.9 0 -1.0 -0.70 0.0 1]
+    filePath = "/home/john/Downloads/dancing_faun_low.ply"
+    color = 249 249 249
+    shader = "shader_1"
+}
+
+
+node
+{
+name = "gnome_tris_1"
 type = "vxGeometry"
 active = "true"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 -0.70 1.2 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
+    transform = [2.5 0 0 0 0 2.5 0 0 0 0 2.5 0 0.0 -0.70 0.0 1]
+    filePath = "/home/john/Downloads/gnome_low_1.ply"
     color = 249 249 249
     shader = "shader_1"
 }
 
 node
 {
-name = "gnome_tris_1"
+name = "gnome_tris_2"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.2 0.2 1]
-    filePath = "/home/john/Downloads/cruceta.ply"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.2 0.2 -0.2 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
     color = 249 249 150
-    shader = "shader_1"
+    shader = "shader_2"
 }
 
 
@@ -263,7 +312,7 @@ node
 name = "mercury_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.04 -1.7 1]
+    transform = [2.3 0 0 0 0 2.3 0 0 0 0 2.3 0 0.2 -0.7 -0.7 1]
     filePath = "/home/john/Downloads/mercury.ply"
     color = 199 198 134
     shader = "shader_1"
@@ -458,7 +507,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     radius = 1000.0
@@ -469,10 +518,10 @@ node
 {
 name = "area_light_2"
 type = "vxAreaLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4 6 2 1]
-    intensity = 1.28
-    color = 238 216 126
+    intensity = 1.08
+    color = 238 236 136
     samples = 1
     castShadows = "false"
     minX = -12.5
@@ -546,10 +595,10 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 0.97
-    color = 245 215 60
+    intensity = 1.27
+    color = 224 192 88
     orientation = 2.0 -7.0 -12.0
     samples = 1
     castShadows = "true"

@@ -1,6 +1,6 @@
 #ifndef Quaternion_H
 #define Quaternion_H
-#include "vxVector.h"
+#include "Vector.h"
 
 namespace vxCore {
 

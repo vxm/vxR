@@ -13,138 +13,140 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    vxVector.cpp \
-    vxShader.cpp \
-    vxScene.cpp \
-    vxObject.cpp \
-    vxLight.cpp \
-    vxGlobal.cpp \
-    vxCamera.cpp \
-    vxBoxCreator.cpp \
-    vxBox.cpp \
-    vxContactBuffer.cpp \
-    vxBucketList.cpp \
-    vxStatus.cpp \
     ImageProperties.cpp \
-    vxPixel.cpp \
-    vxProcess.cpp \
-    vxRayEmitter.cpp \
-    vxRenderMain.cpp \
-    vxRenderProcess.cpp \
-    vxrMainUi.cpp \
-    vxGrid.cpp \
-    vxSampler.cpp \
-    vxPlane.cpp \
-    vxPoint.cpp \
-    vxCollision.cpp \
     TimeUtils.cpp \
     FileUtils.cpp \
     MathUtils.cpp \
-    vxColor.cpp \
-    vxStopwatch.cpp \
-    vxStandardShader.cpp \
-    vxMap.cpp \
-    vxMap2d.cpp \
-    vxCirclesMap.cpp \
-    vxramp.cpp \
     renderPresset.cpp \
-    vxPLYImporter.cpp \
-    vxImage.cpp \
     imageData.cpp \
-    vxLegoBlock.cpp \
     sseUtils.cpp \
-    vxRay.cpp \
-    vxUnitTest.cpp \
-    vxGridUnitTest.cpp \
     MathUtilsUnitTest.cpp \
-    vxThreadPool.cpp \
-    vxSceneParser.cpp \
     StringUtils.cpp \
-    vxValue.cpp \
-    vxNode.cpp \
-    vxGeometry.cpp \
-    vxGeometryImporter.cpp \
-    vxDome.cpp \
-    vxTriRef.cpp \
-    vxBoundingBox.cpp \
-    vxGeoGrid.cpp \
-    vxList.cpp \
-    vxBroadPhase.cpp \
-    vxTriangleMesh.cpp \
-    vxClock.cpp \
     VectorUtils.cpp \
-    vxNonSequentalPool.cpp \
     Matrix33.cpp \
     Matrix44.cpp \
     Quaternion.cpp \
-    vxManager.cpp
+    List.cpp \
+    Light.cpp \
+    Ramp.cpp \
+    BoundingBox.cpp \
+    Box.cpp \
+    BoxCreator.cpp \
+    BroadPhase.cpp \
+    BucketList.cpp \
+    Camera.cpp \
+    CirclesMap.cpp \
+    Clock.cpp \
+    Collision.cpp \
+    Color.cpp \
+    ContactBuffer.cpp \
+    Dome.cpp \
+    GeoGrid.cpp \
+    Geometry.cpp \
+    GeometryImporter.cpp \
+    Global.cpp \
+    Grid.cpp \
+    GridUnitTest.cpp \
+    Image.cpp \
+    IsoGeometry.cpp \
+    LegoBlock.cpp \
+    Manager.cpp \
+    Map.cpp \
+    Map2d.cpp \
+    Node.cpp \
+    NonSequentalPool.cpp \
+    Pixel.cpp \
+    Object.cpp \
+    Plane.cpp \
+    PLYImporter.cpp \
+    Point.cpp \
+    Process.cpp \
+    Ray.cpp \
+    RayEmitter.cpp \
+    RenderMain.cpp \
+    RenderProcess.cpp \
+    rMainUi.cpp \
+    Sampler.cpp \
+    Scene.cpp \
+    SceneParser.cpp \
+    Shader.cpp \
+    Vector.cpp \
+    Value.cpp \
+    UnitTest.cpp \
+    TriRef.cpp \
+    TriangleMesh.cpp \
+    ThreadPool.cpp \
+    Stopwatch.cpp \
+    Status.cpp \
+    StandardShader.cpp
 
 HEADERS  += \
-    vxVector.h \
-    vxShader.h \
-    vxScene.h \
-    vxObject.h \
-    vxLight.h \
-    vxGlobal.h \
-    vxCamera.h \
-    vxBoxCreator.h \
-    vxBox.h \
-    vxContactBuffer.h \
-    vxBucketList.h \
-    vxStatus.h \
     ImageProperties.h \
-    vxPixel.h \
-    vxProcess.h \
-    vxRayEmitter.h \
-    vxRenderMain.h \
-    vxRenderProcess.h \
-    vxrMainUi.h \
-    vxGrid.h \
-    vxSampler.h \
-    vxmanager.h \
-    vxPlane.h \
-    vxPoint.h \
-    vxCollision.h \
     TimeUtils.h \
     MathUtils.h \
     FileUtils.h \
-    vxColor.h \
-    vxStopwatch.h \
-    vxStandardShader.h \
-    vxMap.h \
-    vxMap2d.h \
-    vxCirclesMap.h \
     renderPresset.h \
-    vxPLYImporter.h \
-    vxImage.h \
     imageData.h \
-    vxLegoBlock.h \
     sseUtils.h \
-    vxRay.h \
-    vxUnitTest.h \
-    vxGridUnitTest.h \
     MathUtilsUnitTest.h \
-    vxThreadPool.h \
-    vxSceneParser.h \
     StringUtils.h \
-    vxValue.h \
-    vxNode.h \
-    vxGeometry.h \
-    vxGeometryImporter.h \
-    vxDome.h \
-    vxTriRef.h \
-    vxBoundingBox.h \
-    vxGeoGrid.h \
-    vxList.h \
-    vxBroadPhase.h \
-    vxTriangleMesh.h \
-    vxClock.h \
+    List.h \
     VectorUtils.h \
-    vxNonSequentalPool.h \
     Matrix33.h \
     Matrix44.h \
     Quaternion.h \
-    vxRamp.h
+    Light.h \
+    BoundingBox.h \
+    Box.h \
+    Vector.h \
+    Value.h \
+    UnitTest.h \
+    TriRef.h \
+    TriangleMesh.h \
+    ThreadPool.h \
+    Stopwatch.h \
+    Status.h \
+    StandardShader.h \
+    Shader.h \
+    SceneParser.h \
+    Scene.h \
+    Sampler.h \
+    rMainUi.h \
+    RenderProcess.h \
+    RenderMain.h \
+    RayEmitter.h \
+    Ray.h \
+    Map2d.h \
+    Node.h \
+    NonSequentalPool.h \
+    Object.h \
+    Pixel.h \
+    Plane.h \
+    PLYImporter.h \
+    Point.h \
+    Process.h \
+    Ramp.h \
+    Map.h \
+    Manager.h \
+    LegoBlock.h \
+    IsoGeometry.h \
+    Image.h \
+    GridUnitTest.h \
+    Grid.h \
+    Global.h \
+    GeometryImporter.h \
+    Geometry.h \
+    GeoGrid.h \
+    Dome.h \
+    ContactBuffer.h \
+    Color.h \
+    Collision.h \
+    Clock.h \
+    CirclesMap.h \
+    Camera.h \
+    BucketList.h \
+    BroadPhase.h \
+    BoxCreator.h
 
 OTHER_FILES += \
     todo.txt \

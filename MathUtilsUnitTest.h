@@ -3,11 +3,11 @@
 
 #include <string>
 
-#include "vxUnitTest.h"
+#include "UnitTest.h"
 
 namespace vxCore {
 
-class MUUnitTest : public vxUnitTest
+class MUUnitTest : public UnitTest
 {
 public:
 	MUUnitTest();

@@ -5,7 +5,7 @@
 #include <chrono>
 #include <sstream>
 
-#include "vxVector.h"
+#include "Vector.h"
 
 namespace vxCore {
 

@@ -3,7 +3,7 @@
 
 #include<cmath>
 #include<vector>
-#include "vxPlane.h"
+#include "Plane.h"
 
 namespace vxCore
 {
@@ -35,22 +35,22 @@ class MathUtils
 
 	//Intersections
 	static v3s rectAndPlane(const v3s& ray,
-								   const vxPlane &plane);
+								   const Plane &plane);
 	static v3s rectAndXPlane(const v3s& ray, scalar x);
 	static v3s rectAndYPlane(const v3s& ray, scalar y);
 	static v3s rectAndZPlane(const v3s& ray, scalar z);
 	static scalar x_forRectAndYPlane(const v3s& ray, scalar y);
 	static scalar z_forRectAndYPlane(const v3s& ray, scalar y);
 
-	static v3s rayAndXPlane(const vxRay& ray, scalar x);
-	static v3s rayAndYPlane(const vxRay& ray, scalar y);
-	static v3s rayAndZPlane(const vxRay& ray, scalar z);
-	static v3s rectAndPlane(const vxRay& ray,
+	static v3s rayAndXPlane(const Ray& ray, scalar x);
+	static v3s rayAndYPlane(const Ray& ray, scalar y);
+	static v3s rayAndZPlane(const Ray& ray, scalar z);
+	static v3s rectAndPlane(const Ray& ray,
 										const v3s& a, 
 										const v3s& b, 
 										const v3s& c);
 	
-	static v3s rectAndPlane(const vxRay& ray, vxTriRef& t);
+	static v3s rectAndPlane(const Ray& ray, TriRef& t);
 	
 	//Geometry
 	static scalar area(const v3s &p1,
@@ -93,16 +93,16 @@ class MathUtils
 	// Ranges
 	static bool inRange(scalar r, scalar min, scalar max);
 	static scalar clamp(scalar val, scalar min, scalar max);
-	static vxColor clamp(const vxColor &c1, const vxColor &min, const vxColor &max);
-	static vxColor clamp(const vxColor &c1, scalar min, scalar max);
+	static Color clamp(const Color &c1, const Color &min, const Color &max);
+	static Color clamp(const Color &c1, scalar min, scalar max);
 	static unsigned int clamp(unsigned int v, unsigned int min, unsigned int max);
 	
 	static scalar lerp(scalar a, scalar b, scalar r);
 	static v3s lerp(const v3s &v1, const v3s &v2s, scalar r);
 	static scalar remap(scalar v, scalar max);
 	static scalar remap(scalar v, scalar min, scalar max);
-	static vxColor remap(const vxColor &col, scalar min, scalar max);
-	static vxColor lerp(const vxColor &c1, const vxColor &c2, scalar r);
+	static Color remap(const Color &col, scalar min, scalar max);
+	static Color lerp(const Color &c1, const Color &c2, scalar r);
 	
 	static scalar scaleFrom01(const scalar v, const scalar min, const scalar max);
 	static scalar scaleTo01(const scalar min, const scalar max, const scalar value);

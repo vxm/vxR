@@ -2,7 +2,7 @@
 #define IMAGEPROPERTIES_H
 #include <memory>
 
-#include "vxVector.h"
+#include "Vector.h"
 
 namespace vxCore {
 
