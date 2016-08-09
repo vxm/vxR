@@ -193,8 +193,7 @@ unsigned long TriangleMesh::uvsCount() const
 
 bool TriangleMesh::throwRay(const Ray &ray) const
 {
-	auto col = Collision();
-	return throwRay(ray, col);
+	return Geometry::throwRay(ray);
 }
 
 int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
@@ -275,13 +274,6 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 
 bool TriangleMesh::hasCollision(const Ray &ray) const
 {
-	Collision col;
-	
-	if(throwRay(ray,col)==1)
-	{
-		return true;
-	}
-	
-	return false;
+	return Geometry::hasCollision(ray);
 }
 

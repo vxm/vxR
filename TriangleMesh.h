@@ -16,7 +16,7 @@ class TriangleMesh final : public Geometry
 	/// \brief m_constructionPath
 	///
 	std::string m_constructionPath;
-	
+	///
 	std::atomic_bool m_openForEdition{false};
 	///
 	/// \brief m_grid
