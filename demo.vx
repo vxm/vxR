@@ -89,7 +89,7 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 20
+    pixelSamples = 2
     reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.0
@@ -191,6 +191,8 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     filePath = "/home/john/Downloads/temple_1.ply"
     color = 138 158 144
+    color = 138 158 144
+    shader = "shader_1"
 }
 
 node
@@ -201,6 +203,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     filePath = "/home/john/Downloads/temple_2.ply"
     color = 138 158 144
+    shader = "shader_1"
 }
 
 
@@ -214,6 +217,7 @@ active = "false"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 -4.0 -0.70 1.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
+    shader = "shader_1"
 }
 
 node
@@ -223,7 +227,8 @@ type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.5 0.04 -2.5 1]
     filePath = "/home/john/Downloads/tennyson.ply"
-    color = 118 118 144
+    color = 138 158 144
+    shader = "shader_1"
 }
 
 
@@ -234,7 +239,8 @@ type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 -2.5 1]
     filePath = "/home/john/Downloads/tennyson.ply"
-    color = 118 118 144
+    color = 138 158 144
+    shader = "shader_1"
 }
 
 node
@@ -244,7 +250,8 @@ type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.5 -0.7 -1.4 1]
     filePath = "/home/john/Downloads/malote_1.ply"
-    color = 99 99 99
+    color = 138 158 144
+    shader = "shader_1"
 }
 
 
@@ -276,7 +283,7 @@ node
 {
 name = "gnome_tris_1"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [2.5 0 0 0 0 2.5 0 0 0 0 2.5 0 0.0 -0.70 0.0 1]
     filePath = "/home/john/Downloads/gnome_low_1.ply"
     color = 249 249 249
