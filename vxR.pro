@@ -76,7 +76,8 @@ SOURCES += main.cpp\
     ThreadPool.cpp \
     Stopwatch.cpp \
     Status.cpp \
-    StandardShader.cpp
+    StandardShader.cpp \
+    cylinder.cpp
 
 HEADERS  += \
     ImageProperties.h \
@@ -144,7 +145,8 @@ HEADERS  += \
     Camera.h \
     BucketList.h \
     BroadPhase.h \
-    BoxCreator.h
+    BoxCreator.h \
+    cylinder.h
 
 OTHER_FILES += \
     todo.txt \
@@ -153,7 +155,7 @@ OTHER_FILES += \
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
 
-CONFIG += c++17
+CONFIG += c++14
 
 @
 QMAKE_CXXFLAGS_RELEASE -= -O2
