@@ -160,6 +160,15 @@ active = "true"
     pixelRadius = 2.8
 }
 
+node
+{
+name = "cylinder_1"
+type = "vxIsoGeometry"
+active = "true"
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 0.0 0.0 1]
+    radius = 1.0
+    shader = "shader_1"
+}
 
 
 node
@@ -170,6 +179,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     filePath = "/home/john/Downloads/temple.ply"
     color = 138 158 144
+    shader = "shader_1"
 }
 
 
