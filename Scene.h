@@ -21,6 +21,7 @@
 #include "Image.h"
 #include "Dome.h"
 #include "TriangleMesh.h"
+#include "IsoGeometry.h"
 
 namespace vxCore {
 
@@ -32,6 +33,7 @@ class AreaLight;
 class PointLight;
 class DirectLight;
 class AmbientLight;
+class IsoGeometry;
 
 class Scene: public std::enable_shared_from_this<Scene>
 {
@@ -96,6 +98,10 @@ public:
 	///
 	void buildGeometries();
 	///
+	/// \brief buildIsoGeometry
+	///
+	void buildIsoGeometry();
+	///
 	/// \brief buildPlanes
 	///
 	void buildPlanes();
@@ -128,7 +134,7 @@ public:
 	/// \brief createShader
 	/// \return 
 	///
-	vxShaderHandle createShader(const std::__cxx11::string &name);
+	vxShaderHandle createShader();
 	///
 	/// \brief imageProperties
 	/// \return 
@@ -242,6 +248,11 @@ public:
 	///
 	vxTriangleMeshHandle createGeometry(const std::string &path, 
 										const Matrix44 &transform);
+	///
+	/// \brief createIsoGeometry
+	/// \return 
+	///
+	IsoGeometryHandle createIsoGeometry();
 	///
 	/// \brief grids
 	/// \return 

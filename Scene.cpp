@@ -280,11 +280,41 @@ void Scene::buildPlanes()
 	}
 }
 
+
+void Scene::buildIsoGeometry()
+{
+	for(const auto node: m_nodeDB->getNodesByType("vxIsoGeometry"))
+	{
+		const auto radius = node->getString("radius");
+		const auto transform = node->getMatrix("transform");
+		
+		auto geo = createIsoGeometry();
+		
+		geo->setBaseColor(Color::lookup256(node->getColor("color")));
+		
+		auto&& shaderNodeName = node->getString("shader");
+		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
+		if(!shaderNode)
+		{
+			std::cerr << "shader node name " 
+					  << shaderNodeName 
+					  << " does not exist in database." 
+					  << std::endl;
+			assert(true);
+		}
+		
+		geo->setShader((Shader*)shaderNode->m_object);
+		geo->setTransform(transform);
+		
+		node->m_object = geo.get();
+	}
+}
+
+
 void Scene::buildGeometries()
 {
 	for(const auto node: m_nodeDB->getNodesByType("vxGeometry"))
 	{
-		
 		const auto path = node->getString("filePath");
 		const auto transform = node->getMatrix("transform");
 		
@@ -360,7 +390,7 @@ void Scene::updateCache()
 	std::cout << " -- End cache computation -- " << std::endl;
 }
 
-vxShaderHandle Scene::createShader(const std::string &name)
+vxShaderHandle Scene::createShader()
 {
 	auto lambert = std::make_shared<Lambert>();
 	m_shaders.emplace_back(lambert);
@@ -540,6 +570,15 @@ vxTriangleMeshHandle Scene::createGeometry(const std::string &path, const Matrix
 	geo->setTransform(transform);
 	geo->setConstructionPath(path);
 	m_broadPhase->addGeometry(geo);
+	
+	m_geometries.emplace_back(geo);
+	
+	return geo;
+}
+
+IsoGeometryHandle Scene::createIsoGeometry()
+{
+	auto geo = std::make_shared<IsoGeometry>();
 	
 	m_geometries.emplace_back(geo);
 	
