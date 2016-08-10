@@ -357,7 +357,7 @@ void Scene::buildShaders()
 {
 	for(const auto node: m_nodeDB->getNodesByType("vxShader"))
 	{
-		auto shader = createShader(node->name());
+		auto shader = createShader();
 		
 		shader->setDiffuseColor(Color::lookup256(node->getColor("diffuseColor")));
 		shader->setDiffuseCoeficent(node->getFloat("diffuseCoeficent"));
