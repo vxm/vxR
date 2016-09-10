@@ -294,6 +294,21 @@ scalar v3s::z() const
 	return m_z;
 }
 
+v2s v3s::xy() const
+{
+	return {m_x,m_y};
+}
+
+v2s v3s::xz() const
+{
+	return {m_x,m_z};
+}
+
+v2s v3s::yz() const
+{
+	return {m_y,m_z};
+}
+
 scalar v3s::operator[](const unsigned int idx) const
 {
 	switch(idx)

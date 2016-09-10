@@ -352,6 +352,21 @@ public:
 	///returns the z component
 	scalar z() const;
 	///
+	/// \brief xy
+	/// \return 
+	///
+	v2s xy() const;
+	///
+	/// \brief xz
+	/// \return 
+	///
+	v2s xz() const;
+	///
+	/// \brief yz
+	/// \return 
+	///
+	v2s yz() const;
+	///
 	/// \brief operator []
 	/// \return 
 	///returns a reference to the index value, x y or z
