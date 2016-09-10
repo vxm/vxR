@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 300
-#define PIXEL_Y 600
+#define PIXEL_X 1098
+#define PIXEL_Y 471
 #endif
 
 #ifdef _DEBUG
@@ -250,7 +250,7 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	unsigned int itV = PIXEL_Y;
 	
 	//TODO: return this to smart pointer.
-	vxCollision collision;
+	Collision collision;
 	const v2s hitCoordinates(
 				itV/(scalar)m_properties->ry(),
 				itH/(scalar)m_properties->rx());
@@ -261,7 +261,7 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	
 	const auto id = itH  + (itV * m_properties->rx());
 	//TODO:check ranges here, it might fail.
-	m_contactBuffer.pixel(id) = vxColor::white;
+	m_contactBuffer.pixel(id) = Color::white;
 	
 	
 #else
