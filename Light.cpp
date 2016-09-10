@@ -191,7 +191,7 @@ void PointLight::set(const v3s &orientation, bool biPointional)
 Color PointLight::acummulationLight(const Ray &, const Collision &collision) const
 {
 	const auto pp = collision.position();
-	const auto p = pp - m_transform.getOrigin();
+	const auto p = pp - m_transform.origin();
 
 	Ray f(p, collision.normal());
 	// compute all sort of shadows.
@@ -435,7 +435,7 @@ Color AreaLight::acummulationLight(const Ray &, const Collision &collision) cons
 		auto u = MU::getRand(m_maxX) + m_minX;
 		auto v = MU::getRand(m_maxY) + m_minY;
 
-		const auto&& orientation = m_transform.getOrigin() - cPnt + v3s(u, 0.0 ,v);
+		const auto&& orientation = m_transform.origin() - cPnt + v3s(u, 0.0 ,v);
 		if(collision.normal().follows(orientation.inverted()))
 		{
 			const Ray ff(cPnt+littleNormal, orientation);
