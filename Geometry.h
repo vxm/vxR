@@ -1,6 +1,7 @@
 #ifndef VXGEOMETRY_H
 #define VXGEOMETRY_H
 
+#include <functional>
 #include <typeinfo>
 #include <vector>
 #include <atomic>
@@ -21,6 +22,8 @@ class Geometry;
 class Shader;
 
 using vxGeometryHandle = std::shared_ptr<Geometry>;
+using rayFn = std::function<int(const Ray &,Collision &)>;
+using rayCondFn = std::function<int(const Ray &,Collision &, rayFn&)>;
 
 class Geometry
 {
