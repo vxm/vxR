@@ -24,6 +24,17 @@ void Geometry::setShader(Shader *shader)
 	m_shader = shader;
 }
 
+int Geometry::testBoundingBox(const Ray &ray, Collision &collide) const
+{
+	if(!m_bb->throwRay(ray, collide))
+	{
+		collide.setValid(false);
+		return 0;
+	}
+	
+	return 1;
+}
+
 Geometry::Geometry()
 {
 	m_bb = std::make_shared<BoundingBox>();

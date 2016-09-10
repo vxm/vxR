@@ -11,7 +11,7 @@
 namespace vxCore {
 
  class BoundingBox;
-
+ class Matrix44;
 
 using BoundingBoxHandle = std::shared_ptr<BoundingBox>;
 
@@ -20,54 +20,173 @@ class BoundingBox: public std::enable_shared_from_this<BoundingBox>
 {
 	std::atomic_bool m_init{false};
 	
-	scalar m_minx;
-	scalar m_miny;
-	scalar m_minz;
+	scalar m_minX;
+	scalar m_minY;
+	scalar m_minZ;
 
-	scalar m_maxx;
-	scalar m_maxy;
-	scalar m_maxz;
+	scalar m_maxX;
+	scalar m_maxY;
+	scalar m_maxZ;
 
 //	v3 m_scale;
 
 public:
-
+	///
+	/// \brief BoundingBox
+	///
 	BoundingBox();
+	///
+	/// \brief clear
+	///
 	void clear();
+	///
+	/// \brief set
+	/// \param position
+	/// \param size
+	///
 	void set(v3s position, scalar size);
+	///
+	/// \brief set
+	/// \param mnx
+	/// \param mny
+	/// \param mnz
+	/// \param mxx
+	/// \param mxy
+	/// \param mxz
+	///
 	void set(scalar mnx,scalar mny,scalar mnz,
 			 scalar mxx,scalar mxy,scalar mxz);
-	
+	///
+	/// \brief markAsInitialized
+	///
 	void markAsInitialized();
+	///
+	/// \brief close
+	///
 	void close();
-	
+	///
+	/// \brief extend
+	/// \param limit
+	///
 	void extend(const v3s &limit);
+	///
+	/// \brief extend
+	/// \param box
+	///
 	void extend(const BoundingBox &box);
-
+	///
+	/// \brief xLength
+	/// \return 
+	///
 	scalar xLength() const;
+	///
+	/// \brief yLength
+	/// \return 
+	///
 	scalar yLength() const;
+	///
+	/// \brief zLength
+	/// \return 
+	///
 	scalar zLength() const;
-
+	///
+	/// \brief max
+	/// \return 
+	///
 	v3s max() const;
+	///
+	/// \brief min
+	/// \return 
+	///
 	v3s min() const;
-	
+	///
+	/// \brief center
+	/// \return 
+	///
 	v3s center() const;
+	///
+	/// \brief minX
+	/// \return 
+	///
 	scalar minX() const;
+	///
+	/// \brief setMinX
+	/// \param minx
+	///
 	void setMinX(scalar minx);
+	///
+	/// \brief minY
+	/// \return 
+	///
 	scalar minY() const;
+	///
+	/// \brief setMinY
+	/// \param miny
+	///
 	void setMinY(scalar miny);
+	///
+	/// \brief minZ
+	/// \return 
+	///
 	scalar minZ() const;
+	///
+	/// \brief setMinZ
+	/// \param minz
+	///
 	void setMinZ(scalar minz);
+	///
+	/// \brief maxX
+	/// \return 
+	///
 	scalar maxX() const;
+	///
+	/// \brief setMaxX
+	/// \param maxx
+	///
 	void setMaxX(scalar maxx);
+	///
+	/// \brief maxY
+	/// \return 
+	///
 	scalar maxY() const;
+	///
+	/// \brief setMaxY
+	/// \param maxy
+	///
 	void setMaxY(scalar maxy);
+	///
+	/// \brief maxZ
+	/// \return 
+	///
 	scalar maxZ() const;
+	///
+	/// \brief setMaxZ
+	/// \param maxz
+	///
 	void setMaxZ(scalar maxz);
-
+	///
+	/// \brief contains
+	/// \param v
+	/// \return 
+	///
 	bool contains(const v3s &v) const;
+	///
+	/// \brief contains
+	/// \param v
+	/// \param tolerance
+	/// \return 
+	///
 	bool contains(const v3s &v, scalar tolerance) const;
+	///
+	/// \brief diagonal
+	/// \return 
+	///
 	v3s diagonal() const;
+	///
+	/// \brief applyTransform
+	/// \param m
+	///
+	void applyTransform(const Matrix44 &m);
 	
 	//renderable interface
 	bool throwRay(const Ray &ray) const;

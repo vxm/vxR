@@ -313,11 +313,14 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 #else
 #if NAIVE_BB_METHOD
 	
+	
 	if(!m_bb->throwRay(ray, collide))
 	{
 		collide.setValid(false);
 		return 0;
 	}
+	
+	collide.setValid(false);
 
 /*	// draw a margin
 	if(collide.u()<.001
@@ -339,23 +342,24 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	
 	for(auto&& geo:m_geometries)
 	{
-		auto hitValid = geo->throwRay(ray, temp);
-		
-		if(hitValid)
+		if(!geo->testBoundingBox(ray, temp))
 		{
-			auto s = temp.position().distance(ray.origin());
-			
-			if(s < mdis)
-			{
-				mdis = s;
-				collide = temp;
-				valid = 1;
-				collide.m_geo = geo.get();
-			}
+			continue;
+		}
+		
+		geo->throwRay(ray, temp);
+		
+		auto s = temp.position().distance(ray.origin());
+		
+		if(s < mdis && temp.isValid())
+		{
+			mdis = s;
+			collide = temp;
+			collide.m_geo = geo.get();
 		}
 	}
 	
-	return valid;
+	return collide.isValid();
 #else
 	
 	if(!m_bb->throwRay(ray, collide))

@@ -32,20 +32,58 @@ protected:
 	Shader* m_shader;
 	
 public:
-
+	///
+	/// \brief Geometry
+	///
 	Geometry();
 	virtual ~Geometry();
+	///
+	/// \brief transform
+	/// \return 
+	///
 	Matrix44 transform() const;
+	///
+	/// \brief transform
+	/// \return 
+	///
 	Matrix44& transform();
-
+	///
+	/// \brief setTransform
+	/// \param transform
+	///
 	void setTransform(const Matrix44 &transform);
-
+	///
+	/// \brief boundingBox
+	/// \return 
+	///
 	std::shared_ptr<BoundingBox> boundingBox();
-
+	///
+	/// \brief baseColor
+	/// \return 
+	///
 	Color baseColor() const;
+	///
+	/// \brief setBaseColor
+	/// \param baseColor
+	///
 	void setBaseColor(const Color &baseColor);
+	///
+	/// \brief shader
+	/// \return 
+	///
 	Shader *shader() const;
+	///
+	/// \brief setShader
+	/// \param shader
+	///
 	void setShader(Shader *shader);
+	///
+	/// \brief testBoundingBox
+	/// \param ray
+	/// \param collide
+	/// \return 
+	/// Will test the bounding box of this geometry for collision.
+	int testBoundingBox(const Ray &ray, Collision &collide) const;
 	
 	//renderable interface
 	virtual bool throwRay(const Ray &ray) const;

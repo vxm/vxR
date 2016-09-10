@@ -1,4 +1,5 @@
 #include "BoundingBox.h"
+#include "Matrix44.h"
 
 using namespace vxCore;
 
@@ -13,13 +14,13 @@ void BoundingBox::clear()
 
 void BoundingBox::set(v3s position, scalar size)
 {
-	m_minx = position.x() - (size / 2.0);
-	m_miny = position.y() - (size / 2.0);
-	m_minz = position.z() - (size / 2.0);
+	m_minX = position.x() - (size / 2.0);
+	m_minY = position.y() - (size / 2.0);
+	m_minZ = position.z() - (size / 2.0);
 
-	m_maxx = position.x() + (size / 2.0);
-	m_maxy = position.y() + (size / 2.0);
-	m_maxz = position.z() + (size / 2.0);
+	m_maxX = position.x() + (size / 2.0);
+	m_maxY = position.y() + (size / 2.0);
+	m_maxZ = position.z() + (size / 2.0);
 
 	m_init = true;
 }
@@ -27,13 +28,13 @@ void BoundingBox::set(v3s position, scalar size)
 void BoundingBox::set(scalar mnx, scalar mny, scalar mnz, 
 						scalar mxx, scalar mxy, scalar mxz)
 {
-	m_minx = mnx;
-	m_miny = mny;
-	m_minz = mnz;
+	m_minX = mnx;
+	m_minY = mny;
+	m_minZ = mnz;
 
-	m_maxx = mxx;
-	m_maxy = mxy;
-	m_maxz = mxz;
+	m_maxX = mxx;
+	m_maxY = mxy;
+	m_maxZ = mxz;
 
 	m_init = true;
 }
@@ -54,20 +55,20 @@ void BoundingBox::extend(const v3s &limit)
 {
 	if(!m_init)
 	{
-		m_maxx = m_minx = limit.x();
-		m_maxy = m_miny = limit.y();
-		m_maxz = m_minz = limit.z();
+		m_maxX = m_minX = limit.x();
+		m_maxY = m_minY = limit.y();
+		m_maxZ = m_minZ = limit.z();
 		markAsInitialized();
 		return;
 	}
 	
-	m_minx = std::min(limit.x(), m_minx);
-	m_miny = std::min(limit.y(), m_miny);
-	m_minz = std::min(limit.z(), m_minz);
+	m_minX = std::min(limit.x(), m_minX);
+	m_minY = std::min(limit.y(), m_minY);
+	m_minZ = std::min(limit.z(), m_minZ);
 	
-	m_maxx = std::max(limit.x(), m_maxx);
-	m_maxy = std::max(limit.y(), m_maxy);
-	m_maxz = std::max(limit.z(), m_maxz);
+	m_maxX = std::max(limit.x(), m_maxX);
+	m_maxY = std::max(limit.y(), m_maxY);
+	m_maxZ = std::max(limit.z(), m_maxZ);
 }
 
 
@@ -75,142 +76,156 @@ void BoundingBox::extend(const BoundingBox &box)
 {
 	if(!m_init)
 	{
-		m_minx = box.m_minx;
-		m_miny = box.m_miny;
-		m_minz = box.m_minz;
+		m_minX = box.m_minX;
+		m_minY = box.m_minY;
+		m_minZ = box.m_minZ;
 		
-		m_maxx = box.m_maxx;
-		m_maxy = box.m_maxy;
-		m_maxz = box.m_maxz;
+		m_maxX = box.m_maxX;
+		m_maxY = box.m_maxY;
+		m_maxZ = box.m_maxZ;
 		
 		markAsInitialized();
 		return;
 	}
 	
-	m_minx = std::min(box.minX(), m_minx);
-	m_miny = std::min(box.minY(), m_miny);
-	m_minz = std::min(box.minZ(), m_minz);
+	m_minX = std::min(box.minX(), m_minX);
+	m_minY = std::min(box.minY(), m_minY);
+	m_minZ = std::min(box.minZ(), m_minZ);
 	
-	m_maxx = std::max(box.maxX(), m_maxx);
-	m_maxy = std::max(box.maxY(), m_maxy);
-	m_maxz = std::max(box.maxZ(), m_maxz);
+	m_maxX = std::max(box.maxX(), m_maxX);
+	m_maxY = std::max(box.maxY(), m_maxY);
+	m_maxZ = std::max(box.maxZ(), m_maxZ);
 }
 
 scalar BoundingBox::xLength() const
 {
-	return m_maxx - m_minx;
+	return m_maxX - m_minX;
 }
 
 scalar BoundingBox::yLength() const
 {
-	return m_maxy - m_miny;
+	return m_maxY - m_minY;
 }
 
 scalar BoundingBox::zLength() const
 {
-	return m_maxz - m_minz;
+	return m_maxZ - m_minZ;
 }
 
 v3s BoundingBox::max() const
 {
-	return v3s(m_maxx,m_maxy,m_maxz);
+	return {m_maxX,m_maxY,m_maxZ};
 }
 
 v3s BoundingBox::min() const
 {
-	return v3s(m_minx,m_miny,m_minz);
+	return {m_minX,m_minY,m_minZ};
 }
 
 v3s BoundingBox::center() const
 {
-	return v3s(m_minx+m_maxx/2.0,
-			  m_miny+m_maxy/2.0,
-			  m_minz+m_maxz/2.0);
+	return {m_minX+m_maxX/2.0,
+		m_minY+m_maxY/2.0,
+		m_minZ+m_maxZ/2.0};
 }
 
 scalar BoundingBox::minX() const
 {
-	return m_minx;
+	return m_minX;
 }
 
 void BoundingBox::setMinX(scalar minx)
 {
-	m_minx = minx;
+	m_minX = minx;
 }
 
 scalar BoundingBox::minY() const
 {
-	return m_miny;
+	return m_minY;
 }
 
 void BoundingBox::setMinY(scalar miny)
 {
-	m_miny = miny;
+	m_minY = miny;
 }
 
 scalar BoundingBox::minZ() const
 {
-	return m_minz;
+	return m_minZ;
 }
 
 void BoundingBox::setMinZ(scalar minz)
 {
-	m_minz = minz;
+	m_minZ = minz;
 }
 
 scalar BoundingBox::maxX() const
 {
-	return m_maxx;
+	return m_maxX;
 }
 
 void BoundingBox::setMaxX(scalar maxx)
 {
-	m_maxx = maxx;
+	m_maxX = maxx;
 }
 
 scalar BoundingBox::maxY() const
 {
-	return m_maxy;
+	return m_maxY;
 }
 
 void BoundingBox::setMaxY(scalar maxy)
 {
-	m_maxy = maxy;
+	m_maxY = maxy;
 }
 
 scalar BoundingBox::maxZ() const
 {
-	return m_maxz;
+	return m_maxZ;
 }
 
 void BoundingBox::setMaxZ(scalar maxz)
 {
-	m_maxz = maxz;
+	m_maxZ = maxz;
 }
 
 bool BoundingBox::contains(const v3s &v) const
 {
-	return v.x() >= m_minx
-			&&  v.y() >= m_miny
-			&&  v.z() >= m_minz
-			&&  v.x() <= m_maxx
-			&&  v.y() <= m_maxy
-			&&  v.z() <= m_maxz;
+	return v.x() >= m_minX
+		&&  v.y() >= m_minY
+		&&  v.z() >= m_minZ
+		&&  v.x() <= m_maxX
+		&&  v.y() <= m_maxY
+		&&  v.z() <= m_maxZ;
 }
 
 bool BoundingBox::contains(const v3s &v, scalar tolerance) const
 {
-	return v.x() >= (m_minx + tolerance)
-			&&  v.y() >= (m_miny + tolerance)
-			&&  v.z() >= (m_minz + tolerance)
-			&&  v.x() <= (m_maxx - tolerance)
-			&&  v.y() <= (m_maxy - tolerance)
-			&&  v.z() <= (m_maxz - tolerance);
+	return v.x() >= (m_minX + tolerance)
+			&&  v.y() >= (m_minY + tolerance)
+			&&  v.z() >= (m_minZ + tolerance)
+			&&  v.x() <= (m_maxX - tolerance)
+			&&  v.y() <= (m_maxY - tolerance)
+			&&  v.z() <= (m_maxZ - tolerance);
 }
 
 v3s BoundingBox::diagonal() const
 {
-	return v3s(m_maxx-m_minx, m_maxy-m_miny, m_maxz-m_minz);
+	return {m_maxX-m_minX, m_maxY-m_minY, m_maxZ-m_minZ};
+}
+
+void BoundingBox::applyTransform(const Matrix44 &m)
+{
+	///TODO: account rotations.
+	auto&& o = m.origin();
+
+	m_minX+=o.x();
+	m_minY+=o.y();
+	m_minZ+=o.z();
+
+	m_maxX+=o.x();
+	m_maxY+=o.y();
+	m_maxZ+=o.z();
 }
 
 bool BoundingBox::throwRay(const Ray &ray) const
@@ -229,12 +244,12 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 	
 	const auto& d = ray.direction();
 	
-	auto&& minX = m_minx - p.x();
-	auto&& maxX = m_maxx - p.x();
-	auto&& minY = m_miny - p.y();
-	auto&& maxY = m_maxy - p.y();
-	auto&& minZ = m_minz - p.z();
-	auto&& maxZ = m_maxz - p.z();
+	auto&& minX = m_minX - p.x();
+	auto&& maxX = m_maxX - p.x();
+	auto&& minY = m_minY - p.y();
+	auto&& maxY = m_maxY - p.y();
+	auto&& minZ = m_minZ - p.z();
+	auto&& maxZ = m_maxZ - p.z();
 	
 	auto x = d.xPositive() ? minX : maxX;
 	auto t = (x - d.x()) / -d.x();
@@ -253,8 +268,8 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 			collide.setPosition(fp);
 			collide.setNormal(d.xPositive() ? v3s::constMinusX : v3s::constX);
 			collide.setValid();
-			collide.setUV(v2s( ((y - minY)) / yLength(),
-							  ((z - minZ)) / zLength()));
+			collide.setUV({(y - minY) / yLength(),
+						   (z - minZ) / zLength()});
 			return 1;
 		}
 	}
@@ -318,12 +333,12 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 		return true;
 	}
 	
-	auto&& minX = m_minx - p.x();
-	auto&& maxX = m_maxx - p.x();
-	auto&& minY = m_miny - p.y();
-	auto&& maxY = m_maxy - p.y();
-	auto&& minZ = m_minz - p.z();
-	auto&& maxZ = m_maxz - p.z();
+	auto&& minX = m_minX - p.x();
+	auto&& maxX = m_maxX - p.x();
+	auto&& minY = m_minY - p.y();
+	auto&& maxY = m_maxY - p.y();
+	auto&& minZ = m_minZ - p.z();
+	auto&& maxZ = m_maxZ - p.z();
 	
 	
 	auto x = d.xPositive() ? minX : maxX;
