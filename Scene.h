@@ -100,7 +100,7 @@ public:
 	///
 	/// \brief buildIsoGeometry
 	///
-	void buildIsoGeometry();
+	void buildIsoGeometries();
 	///
 	/// \brief buildPlanes
 	///
@@ -281,12 +281,6 @@ public:
 	/// \return 
 	///
 	vxImageHandle getImage(vxNodeHandle node);
-	///
-	/// \brief getShader
-	/// \param node
-	/// \return 
-	///
-	vxShaderHandle getShader(vxNodeHandle node);
 	
 	//renderable interface
 	bool throwRay(const Ray &ray) const;

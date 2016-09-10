@@ -41,6 +41,8 @@ void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 	
 	buildGeometries();
 	
+	buildIsoGeometries();
+	
 	buildDomes();
 	
 	buildLights();
@@ -195,7 +197,7 @@ void Scene::buildGrids()
 		const auto color = Color::lookup256(node->getColor("color"));
 		const auto size = node->getFloat("size");
 		
-		auto grid = std::make_shared<Grid>(transform.getOrigin(), size);
+		auto grid = std::make_shared<Grid>(transform.origin(), size);
 		grid->setResolution(resolution);
 		grid->setTransform(transform);
 		
@@ -262,7 +264,6 @@ void Scene::buildPlanes()
 		if(planeTypeName=="free"s)
 		{
 			planeType = Plane::type::kFree;
-			
 		}
 		auto plane = createPlane(planeType);
 		
@@ -281,11 +282,10 @@ void Scene::buildPlanes()
 }
 
 
-void Scene::buildIsoGeometry()
+void Scene::buildIsoGeometries()
 {
 	for(const auto node: m_nodeDB->getNodesByType("vxIsoGeometry"))
 	{
-		const auto radius = node->getString("radius");
 		const auto transform = node->getMatrix("transform");
 		
 		auto geo = createIsoGeometry();
@@ -300,11 +300,16 @@ void Scene::buildIsoGeometry()
 					  << shaderNodeName 
 					  << " does not exist in database." 
 					  << std::endl;
+			
 			assert(true);
 		}
 		
 		geo->setShader((Shader*)shaderNode->m_object);
 		geo->setTransform(transform);
+		geo->boundingBox()->applyTransform(transform);
+		
+		m_geometries.emplace_back(geo);
+		m_broadPhase->addGeometry(geo);
 		
 		node->m_object = geo.get();
 	}
@@ -489,14 +494,6 @@ std::shared_ptr<Plane> Scene::createPlane(Plane::type type)
 	return plane;
 }
 
-
-vxShaderHandle Scene::getShader(vxNodeHandle node)
-{
-	vxShaderHandle ret;
-	
-	return ret;
-}
-
 vxImageHandle Scene::getImage(vxNodeHandle node)
 {
 	vxImageHandle ret;
@@ -579,9 +576,6 @@ vxTriangleMeshHandle Scene::createGeometry(const std::string &path, const Matrix
 IsoGeometryHandle Scene::createIsoGeometry()
 {
 	auto geo = std::make_shared<IsoGeometry>();
-	
-	m_geometries.emplace_back(geo);
-	
 	return geo;
 }
 
