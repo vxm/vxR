@@ -87,7 +87,7 @@ Color Node::getColor(const std::string attrName)
 		}
 	}
 	
-	std::cerr << "Node: Color attribute " << attrName << " not found in node" << std::endl;
+	std::cerr << "Node: Color attribute '" << attrName << "' not found in node" << std::endl;
 	return Color::black;
 }
 
@@ -103,7 +103,7 @@ v3s Node::getVector3d(const std::string attrName)
 		}
 	}
 
-	std::cerr << "Node: Vector3d attribute " << attrName << " not found in node" << std::endl;
+	std::cerr << "Node: Vector3d attribute '" << attrName << "' not found in node" << std::endl;
 	return v3s::zero;
 }
 
@@ -119,7 +119,7 @@ v2s Node::getVector2d(const std::string attrName)
 		}
 	}
 	
-	std::cerr << "Node: Vector2d attribute " << attrName << " not found in node" << std::endl;
+	std::cerr << "Node: Vector2d attribute '" << attrName << "' not found in node" << std::endl;
 	return v2s::zero;
 }
 
@@ -136,7 +136,7 @@ float Node::getFloat(const std::string attrName)
 	}
 
 	
-	std::cerr << "Node: Float attribute " << attrName << " not found in node" << std::endl;
+	std::cerr << "Node: Float attribute '" << attrName << "' not found in node" << std::endl;
 	return 0.f;
 }
 
@@ -153,7 +153,7 @@ int Node::getInt(const std::string attrName)
 	}
 
 	
-	std::cerr << "Node: Int attribute " << attrName << " not found in node" << std::endl;
+	std::cerr << "Node: Int attribute '" << attrName << "' not found in node" << std::endl;
 	return 0;
 }
 
@@ -170,7 +170,7 @@ std::string Node::getString(const std::string attrName)
 	}
 
 	
-	std::cerr << "Node: String attribute " << attrName << " not found in node" << std::endl;
+	std::cerr << "Node: String attribute '" << attrName << "' not found in node" << std::endl;
 	return ""s;
 }
 
@@ -187,7 +187,7 @@ bool Node::getBool(const std::string attrName)
 		}
 	}
 	
-	std::cerr << "Node: Bool attribute " << attrName << " not found in node" << std::endl;
+	std::cerr << "Node: Bool attribute '" << attrName << "' not found in node" << std::endl;
 	return false;
 }
 
@@ -207,7 +207,7 @@ Matrix44 Node::getMatrix(const std::string attrName)
 		}
 	}
 
-	std::cerr << "Node: Matrix attribute " << attrName << " not found in node" << std::endl;
+	std::cerr << "Node: Matrix attribute '" << attrName << "' not found in node" << std::endl;
 	return Matrix44::identity44;
 }
 
