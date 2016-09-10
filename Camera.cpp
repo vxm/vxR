@@ -121,7 +121,7 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 	
 	//TODO: rotate origin and then place the origin of the ray in position
 	//TODO:read from scene.
-	ret.setOrigin(m_transform.getOrigin());
+	ret.setOrigin(m_transform.origin());
 	
 	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
 	ret.direction() = ret.direction().rotate({0.8, 0.5, 0.0}, 0.0005);

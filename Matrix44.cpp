@@ -233,7 +233,7 @@ void Matrix44::setOrigin(const v3s &orig) const
 	m_matrix[14] = orig.z();
 }
 
-v3s Matrix44::getOrigin() const
+v3s Matrix44::origin() const
 {
 	return v3s(m_matrix[12],m_matrix[13],m_matrix[14]);
 }

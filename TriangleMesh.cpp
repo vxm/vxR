@@ -112,7 +112,7 @@ void TriangleMesh::addVertexTransformed(const v3s &v3)
 		return;
 	}
 	
-	const auto &&orig = m_transform.getOrigin();
+	const auto &&orig = m_transform.origin();
 	const auto &&scale = m_transform.getScale();
 	const auto &newPoint = (v3*scale)+orig;
 	m_bb->extend(newPoint);

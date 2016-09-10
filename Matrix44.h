@@ -201,7 +201,7 @@ public:
 	/// \brief getOrigin
 	/// \return 
 	///
-	v3s getOrigin() const;
+	v3s origin() const;
 	///
 	/// \brief getScale
 	/// \return 
