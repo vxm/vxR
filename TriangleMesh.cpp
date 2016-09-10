@@ -199,25 +199,15 @@ bool TriangleMesh::throwRay(const Ray &ray) const
 int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 {
 #if	DRAWBBOX
-	if(m_bb->throwRay(ray, col))
-	{
-		col.setColor(m_baseColor);
-		col.setValid(true);
-		
-		return 1;
-	}
-#else
-	/*
-	*/
-	if(!m_bb->throwRay(ray, col))
-	{
-		return 0;
-	}
+	col.setColor(m_baseColor);
+	col.setValid(true);
 	
+	return 1;
+#else
 	auto&& p = ray.origin();
 	
 	std::vector<Collision> cols;
-	auto sp =  col.position();
+	auto&& sp =  col.position();
 //			+ (col.normal().inverted() / (scalar)10000.0);
 	
 	auto prev = m_grid.size();
