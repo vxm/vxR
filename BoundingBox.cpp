@@ -189,10 +189,25 @@ void BoundingBox::setMaxZ(scalar maxz)
 	m_maxZ = maxz;
 }
 
+scalar BoundingBox::midXValue() const
+{
+	return ( m_maxX + m_minX )/ 2.0;
+}
+
+scalar BoundingBox::midYValue() const
+{
+	return ( m_maxY + m_minY ) / 2.0;
+}
+
+scalar BoundingBox::midZValue() const
+{
+	return ( m_maxZ + m_minZ ) / 2.0;
+}
+
 bool BoundingBox::contains(const v3s &v) const
 {
 	return v.x() >= m_minX
-		&&  v.y() >= m_minY
+			&&  v.y() >= m_minY
 		&&  v.z() >= m_minZ
 		&&  v.x() <= m_maxX
 		&&  v.y() <= m_maxY

@@ -165,6 +165,21 @@ public:
 	///
 	void setMaxZ(scalar maxz);
 	///
+	/// \brief midXValue
+	/// \return 
+	///
+	scalar midXValue() const;
+	///
+	/// \brief midYValue
+	/// \return 
+	///
+	scalar midYValue() const;
+	///
+	/// \brief midZValue
+	/// \return 
+	///
+	scalar midZValue() const;
+	///
 	/// \brief contains
 	/// \param v
 	/// \return 
