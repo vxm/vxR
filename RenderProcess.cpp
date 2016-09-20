@@ -290,7 +290,7 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			
 			if(collision.isValid())
 			{
-				auto reflection{Color::zero};
+				Color reflection = Color::zero;
 				{
 					const auto& n = collision.normal();
 					Collision refxCollision;
