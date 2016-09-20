@@ -2,6 +2,8 @@
 #ifndef _VXVECTORMC_
 #define _VXVECTORMC_
 
+#include <quadmath.h>
+
 #include <math.h>
 #include <stdio.h>
 #include <iostream>
@@ -9,7 +11,7 @@
 namespace vxCore {
 
 //TODO: add literal for scalar 0.0r
-using scalar = double;
+using scalar = double; //float // double // __float128
 class Color;
 
 class v2s
@@ -115,6 +117,16 @@ public:
 	/// \return 
 	///
 	v2s unit() const;
+	///
+	/// \brief dot
+	/// \param v
+	/// \return 
+	///
+	scalar dot(const v2s& v)
+	{
+		scalar o = angle(v);
+		return length() * v.length() * cos(o);
+	}
 	///
 	/// \brief operator +
 	/// \param other
