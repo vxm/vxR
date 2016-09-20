@@ -170,7 +170,7 @@ void index(unsigned int idx)
 int main(int argc, char *argv[])
 {
 	MU::fillRand();
-	auto program{0u};
+	auto program(0u);
 	
 	// Depending on arguments the execution will be different.
 	// Here we extract the elements on the input argument array
