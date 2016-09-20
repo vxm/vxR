@@ -106,7 +106,7 @@ void BroadPhase::updateCache()
 	m_c_size = m_rx * m_ry * m_rz;
 	m_members.resize(m_c_size);
 	
-	auto idx{0ul};
+	auto idx(0ul);
 	for(auto &l:m_members)
 	{
 		l.index=idx++;
@@ -338,7 +338,6 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	auto mdis = std::numeric_limits<scalar>::max(); 
 	
 	Collision temp = collide;
-	int valid {0};
 	
 	for(auto&& geo:m_geometries)
 	{
