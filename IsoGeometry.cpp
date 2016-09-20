@@ -1,7 +1,9 @@
-#include "IsoGeometry.h"
-
 #include <functional>
 #include <memory>
+
+#include "Vector.h"
+
+#include "IsoGeometry.h"
 
 using namespace vxCore;
 
@@ -17,56 +19,56 @@ bool IsoGeometry::throwRay(const Ray &ray) const
 
 int IsoGeometry::throwRay(const Ray &ray, Collision &col) const
 {
-	/*
-	std::vector<rayFn> fs;
-	std::vector<rayCondFn> fcs;
+	col.setValid(false);
 	
-	auto yThreshold = [](const Ray &ray,Collision &col, rayFn &fn)
+	auto&& pos = col.position();
+	
+	scalar r = 0.5;
+	
+	//auto&& axisPoint = v3s{m_bb->midXValue(),m_bb->midYValue(),m_bb->midZValue()};
+	
+	auto&& axisPoint = v3s::zero;
+	
+	//Comparing floats is unsafe.
+	if(pos.y()==m_bb->maxY() || pos.y()==m_bb->minY())
 	{
-		/// yUp capp
-		if(col.positionu()<.5)
+		if(pos.distance(axisPoint)<r)
 		{
-			return 1;
-		}
-		
-		return 0;
-	};
-	
-	fcs.push_back(yThreshold);
-	
-	auto valid = [](const Ray &ray,Collision &col)
-	{
-		return 1;
-	};
-
-	
-	auto f = [](const Ray &ray,Collision &col)
-	{
-		/// yUp capp
-		if(col.normal()==v3s::constY && col.normal().follows(ray.direction()))
-		{
-			auto p = col.position();
-			
-			if(p.distance({0.0,p.y(),0.0})<.25)
-			{
-				return 1;
-			}
-		}
-		
-		return 0;
-	};
-	
-	fs.emplace_back(valid);
-	fs.emplace_back(f);
-	
-	for(auto i=0u;i<fcs.size();++i)
-	{
-		if(fcs[i](ray,col,fs[i]))
-		{
+			col.setNormal(v3s::constY);
+			col.setValid(true);
 			return 1;
 		}
 	}
-	*/
+	
+	auto d = ray.direction();
+	auto f = ray.origin() - axisPoint;
+	
+	auto a = d.dot(d);
+	auto b = 2.0*f.dot(d);
+	auto c = f.dot(f) - (r*r);
+	
+	scalar disc = (b*b)-(4.0*(a*c));
+	if(disc<0.0)
+	{
+		col.setValid(false);
+		return 0;
+	}
+	else
+	{
+		disc = sqrt(disc);
+		
+		scalar t1 = (-b - disc)/(2.0*a);
+		if(t1>=0.0)
+		{
+			col.setPosition(ray.origin()+(ray.direction()*t1));
+			
+			col.setNormal(col.position().unit());
+			col.setValid(true);
+			return 1;
+		}
+	}
+
+	col.setValid(false);
 	return 0;
 }
 
