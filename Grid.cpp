@@ -468,7 +468,7 @@ bool Grid::active(const unsigned long x,
 	return getElement(x,y,z);
 }
 
-inline bool Grid::active(const v3s &pos) const
+ bool Grid::active(const v3s &pos) const
 {
 	if(inGrid(pos))
 	{
@@ -481,7 +481,7 @@ inline bool Grid::active(const v3s &pos) const
 	return false;
 }
 
-inline bool Grid::activeInRange(const v3s &pos) const
+ bool Grid::activeInRange(const v3s &pos) const
 {
 	const auto&& fPos = pos - (m_position - m_c_midSize);
 	return getElement((unsigned long)floor(fPos.x()),
@@ -490,7 +490,7 @@ inline bool Grid::activeInRange(const v3s &pos) const
 }
 
 
-inline bool Grid::active(unsigned long idx) const
+ bool Grid::active(unsigned long idx) const
 {
 	if (idx<m_c_resXresXres)
 		return vxAt(idx).active();
@@ -498,7 +498,7 @@ inline bool Grid::active(unsigned long idx) const
 		return false;
 }
 
-inline void Grid::activate(const unsigned long x, 
+ void Grid::activate(const unsigned long x, 
 							 const unsigned long y, 
 							 const unsigned long z)
 {
@@ -521,19 +521,19 @@ bool Grid::activate(const v3s &pos)
 }
 
 
-inline void Grid::deactivate(const unsigned long x, const unsigned long y, const unsigned long z)
+ void Grid::deactivate(const unsigned long x, const unsigned long y, const unsigned long z)
 {
 	setElement(x,y,z,false);
 }
 
-inline bool Grid::getElement(const unsigned long x, 
+ bool Grid::getElement(const unsigned long x, 
 							   const unsigned long y, 
 							   const unsigned long z) const
 {
 	return active(index(x,y,z));
 }
 
-inline void Grid::setElement(const unsigned long x, 
+ void Grid::setElement(const unsigned long x, 
 							   const unsigned long y, 
 							   const unsigned long z, 
 							   bool value)
@@ -542,14 +542,14 @@ inline void Grid::setElement(const unsigned long x,
 }
 
 
-inline unsigned char Grid::elementColorIndex(const unsigned long x, 
+ unsigned char Grid::elementColorIndex(const unsigned long x, 
 											   const unsigned long y, 
 											   const unsigned long z) const
 {
 	return (index(x,y,z))%8;
 }
 
-inline void Grid::setElementColorIndex(const unsigned long x, 
+ void Grid::setElementColorIndex(const unsigned long x, 
 										 const unsigned long y, 
 										 const unsigned long z, 
 										 const unsigned char c)
@@ -557,7 +557,7 @@ inline void Grid::setElementColorIndex(const unsigned long x,
 	vxAt(x,y,z).setByte(c);
 }
 
-inline void Grid::setElement(unsigned long idx, bool value)
+ void Grid::setElement(unsigned long idx, bool value)
 {
 	vxAt(idx).activate(value);
 }
@@ -572,14 +572,14 @@ void Grid::getComponentsOfIndex(const unsigned long long idx,
 	retx = idx % m_resolution;
 }
 
-inline unsigned long Grid::indexAtPosition(const v3s &pos) const
+ unsigned long Grid::indexAtPosition(const v3s &pos) const
 {
 	auto p = ((pos - m_position + m_c_midSize)/m_c_boxSize).floorVector();
 	
 	return index((unsigned long)p.x(),(unsigned long)p.y(),(unsigned long)p.z());
 }
 
-inline v3s Grid::getVoxelPosition(const unsigned long iX, 
+ v3s Grid::getVoxelPosition(const unsigned long iX, 
 								   const unsigned long iY, 
 								   const unsigned long iZ) const
 {
@@ -589,7 +589,7 @@ inline v3s Grid::getVoxelPosition(const unsigned long iX,
 	
 }
 
-inline v3s Grid::getVoxelPosition(unsigned long long idx) const
+ v3s Grid::getVoxelPosition(unsigned long long idx) const
 {
 	long retx;
 	long rety;
@@ -600,13 +600,13 @@ inline v3s Grid::getVoxelPosition(unsigned long long idx) const
 	return getVoxelPosition(retx, rety, retz);
 }
 
-inline vx& Grid::vxAtPosition(const v3s &position)
+ vx& Grid::vxAtPosition(const v3s &position)
 {
 	const auto&& idx = indexAtPosition(position);
 	return vxAt(idx>=m_c_resXresXres ? 0 : idx);
 }
 
-inline vx Grid::vxAtPosition(const v3s &position) const
+ vx Grid::vxAtPosition(const v3s &position) const
 {
 	const auto&& idx = indexAtPosition(position);
 	return vxAt(idx>=m_c_resXresXres ? 0:idx);
@@ -628,12 +628,12 @@ vx Grid::vxAt(const unsigned long iX,
 }
 
 
-inline vx &Grid::vxAt(const unsigned long idx)
+ vx &Grid::vxAt(const unsigned long idx)
 {
 	return m_data[idx];
 }
 
-inline vx Grid::vxAt(const unsigned long idx) const
+ vx Grid::vxAt(const unsigned long idx) const
 {
 	return m_data[idx];
 }
@@ -672,12 +672,12 @@ void Grid::createSphere(const v3s &center,
 	}
 }
 
-inline bool Grid::inGrid(const v3s &pnt, scalar tol) const
+bool Grid::inGrid(const v3s &pnt, scalar tol) const
 {
 	return m_bb->contains(pnt, tol);
 }
 
-inline bool Grid::inGrid(const v3s &pnt) const
+bool Grid::inGrid(const v3s &pnt) const
 {
 	return m_bb->contains(pnt);
 }

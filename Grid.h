@@ -31,48 +31,48 @@ struct vx
 	/// \brief activate
 	/// \param active
 	///
-	inline void activate(bool active);
+	 void activate(bool active);
 	/// 
 	///
 	/// \brief active
 	/// \return 
 	///Returns true if any bit is active
-	inline bool active() const;
+	 bool active() const;
 	///
 	/// \brief activeBit
 	/// \param bit
 	/// \return 
 	///Returns true if the bit occupying the parameter
 	///position is 1 otherwise false.
-	inline bool activeBit(unsigned int bit) const;
+	 bool activeBit(unsigned int bit) const;
 	///
 	/// \brief activateBit
 	/// \param bit
 	///
-	inline void activateBit(unsigned int bit);
+	 void activateBit(unsigned int bit);
 	///
 	/// \brief deactivateBit
 	/// \param bit
 	///
-	inline void deactivateBit(unsigned int bit);
+	 void deactivateBit(unsigned int bit);
 	///
 	/// \brief activate
 	///
-	inline void activate();
+	 void activate();
 	///
 	/// \brief deactivate
 	///
-	inline void deactivate();
+	 void deactivate();
 	///
 	/// \brief byte
 	/// \return 
 	///
-	inline unsigned char byte() const;
+	 unsigned char byte() const;
 	///
 	/// \brief setByte
 	/// \param ci
 	///
-	inline void setByte(const unsigned char ci);
+	 void setByte(const unsigned char ci);
 };
 
 static_assert(sizeof(vx)==1, "vx size is wrong");
@@ -311,7 +311,7 @@ public:
 	/// \param z
 	/// \return 
 	///
-	inline unsigned long index(const unsigned long x, 
+	 unsigned long index(const unsigned long x, 
 								const unsigned long y, 
 								const unsigned long z) const;
 	///
@@ -342,13 +342,13 @@ public:
 	/// \return 
 	/// returns true if voxel at index is active
 	///
-	inline bool active(const v3s& pos) const;
+	 bool active(const v3s& pos) const;
 	///
 	/// \brief active
 	/// \param idx
 	/// \return 
 	///
-	inline bool active(unsigned long idx) const;
+	 bool active(unsigned long idx) const;
 	///
 	////// \brief active
 	////// \param x
@@ -356,7 +356,7 @@ public:
 	////// \param z
 	////// \return 
 	// returns true if voxel at index is active
-	inline bool active(const unsigned long x, 
+	 bool active(const unsigned long x, 
 					   const unsigned long y, 
 					   const unsigned long z) const;
 	///
@@ -398,7 +398,7 @@ public:
 	/// \return 
 	/// returns true if element at local coords 
 	/// is true
-	inline bool getElement(const unsigned long x, 
+	 bool getElement(const unsigned long x, 
 						   const unsigned long y, 
 						   const unsigned long z) const;
 	///
@@ -417,7 +417,7 @@ public:
 	/// \param value
 	/// changes the value of the element at local
 	/// coords x y z to be same as parameter value
-	inline void setElement(const unsigned long x, 
+	 void setElement(const unsigned long x, 
 						   const unsigned long y, 
 						   const unsigned long z, 
 							bool value);
@@ -426,7 +426,7 @@ public:
 	/// \param idx
 	/// \param value
 	///
-	inline void setElement(unsigned long idx, bool value);
+	 void setElement(unsigned long idx, bool value);
 	///
 	/// \brief getVoxelPosition
 	/// \param iX
@@ -448,25 +448,25 @@ public:
 	/// \param pos
 	/// \return 
 	///
-	inline unsigned long indexAtPosition(const v3s &pos) const;
+	 unsigned long indexAtPosition(const v3s &pos) const;
 	///
 	/// \brief vxAt
 	/// \param idx
 	/// \return 
 	///
-	inline vx& vxAt(const unsigned long idx);
+	 vx& vxAt(const unsigned long idx);
 	///
 	/// \brief vxAt
 	/// \param idx
 	/// \return 
 	///
-	inline vx vxAt(const unsigned long idx) const;
+	 vx vxAt(const unsigned long idx) const;
 	///
 	/// \brief vxAtPosition
 	/// \param position
 	/// \return 
 	///
-	inline vx& vxAtPosition(const v3s &position);
+	 vx& vxAtPosition(const v3s &position);
 	///
 	/// \brief vxAt
 	/// \param iX
@@ -474,7 +474,7 @@ public:
 	/// \param iZ
 	/// \return 
 	///
-	inline vx& vxAt(const unsigned long iX, 
+	 vx& vxAt(const unsigned long iX, 
 					const unsigned long iY, 
 					const unsigned long iZ);
 	///
