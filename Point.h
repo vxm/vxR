@@ -6,28 +6,28 @@
 namespace vxCore {
 
 
-class Point final:public v3s
+class Point final
 {
 public:
+	scalar m_x {0.0};
+	scalar m_y {0.0};
+	scalar m_z {0.0};
 	
 	Point()
-		:v3s{}
 	{
 	}
 	
 	Point(scalar x,
 			scalar y,
 			scalar z)
-		:v3s{x,y,z}
+		: m_x(x)
+		, m_y(y)
+		, m_z(z)
 	{
 	}
 
-	void operator=(const v3s &otro)
-	{
-		set(otro.x(),otro.y(),otro.z());
-	}
 };
 
-
-} // namespace vxCore
+}
+// namespace vxCore
 #endif // VXPOINT_H
