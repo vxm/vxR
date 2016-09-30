@@ -13,10 +13,10 @@
 #include "Sampler.h"
 #include "ThreadPool.h"
 
-#define SINGLERAY 0
+#define SINGLERAY 1
 #if SINGLERAY
-#define PIXEL_X 1098
-#define PIXEL_Y 471
+#define PIXEL_X 530
+#define PIXEL_Y 600
 #endif
 
 #ifdef _DEBUG
@@ -210,7 +210,7 @@ scalar vxRenderProcess::progress() const
 
 Color vxRenderProcess::computeLight(const Ray &ray, Collision &col)
 {
-	auto retColor{Color::zero};
+	Color retColor = Color::zero;
 	m_scene->throwRay(ray, col);
 	
 	if(col.isValid())
@@ -296,10 +296,10 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 					Collision refxCollision;
 					for(unsigned int k = 0u;k<m_reflectionSamples;k++)
 					{
-						v3s invV = ((n * ray.direction().dot(n) * -2.0)
+						v3s invV = ((n * ray.direction().dot(n) * scalar(-2.0))
 									+ ray.direction());
 						
-						invV+=MU::getSolidSphereRand3(3.141592);
+						invV+=MU::getSolidSphereRand3(0.3141592);
 						
 						const auto &&reflexRay =
 								Ray(collision.position() + n.tiny(), invV);
@@ -307,7 +307,7 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 						reflection = computeLight(reflexRay, refxCollision);
 					}
 					
-					reflection*=(0.2f/(float)m_reflectionSamples);
+					reflection*=(0.002f/(scalar)m_reflectionSamples);
 					firstHitColor+= (reflection);
 				}
 				

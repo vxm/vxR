@@ -89,7 +89,7 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 2
+    pixelSamples = 6
     reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.0
@@ -152,7 +152,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.2 1.2 -4.5 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.2 0.2 -4.5 1]
     focusDistance = 3.0
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -165,7 +165,7 @@ node
 name = "cylinder_1"
 type = "vxIsoGeometry"
 active = "true"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 2.0 0.2 1.0 1]
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.5 0.0 1]
     radius = 1.0
     shader = "shader_1"
 }
@@ -533,13 +533,13 @@ active = "false"
 
 node
 {
-name = "area_light_2"
+name = "area_light_1"
 type = "vxAreaLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4 6 2 1]
-    intensity = 1.08
+    intensity = 0.38
     color = 238 236 136
-    samples = 1
+    samples = 20
     castShadows = "false"
     minX = -12.5
     minY = 0.3
@@ -550,13 +550,13 @@ active = "true"
 
 node
 {
-name = "area_light_1"
+name = "area_light_2"
 type = "vxAreaLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
-    intensity = 0.22
+    intensity = 0.42
     color = 266 170 123
-    samples = 1
+    samples = 20
     castShadows = "true"
     minX = -4.5
     minY = 0.3
@@ -569,12 +569,12 @@ node
 {
 name = "point_light_1"
 type = "vxPointLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9 12 5 1]
-    intensity = 0.70
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3 3.1 0.5 1]
+    intensity = 0.290
     color = 255 230 240
     samples = 1
-    castShadows = "false"
+    castShadows = "true"
     position = -2 5 -2
 }
 
