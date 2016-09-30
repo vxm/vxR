@@ -24,7 +24,30 @@ void Light::setTransform(const Matrix44 &transform)
 	m_transform = transform;
 }
 
+bool Light::reachesLightSource(const Ray &ray) const
+{
+	Collision col;
+	
+	const auto hits  = m_scene.lock()->throwRay(ray,col);
+	
+	/// what about distance?.
+	if(!hits)
+	{
+		return true;
+	}
+	
+	const auto originToHit = ray.origin().distance(col.position());
+	
+	if(originToHit==scalar(0.0))
+		return true;
+	
+	const auto originToSource = ray.origin().distance(m_transform.origin());
+	
+	return originToSource<originToHit;
+}
+
 Light::Light()
+	:m_castShadows(true)
 {
 }
 
@@ -120,7 +143,6 @@ DirectLight::DirectLight(scalar instensity, const Color &col)
 	:Light(instensity, col)
 {}
 
-
 DirectLight::DirectLight(const v3s &orientation, bool bidirectional) 
 	: m_orientation(orientation)
 	, m_biDirectional(bidirectional)
@@ -132,8 +154,6 @@ void DirectLight::set(const v3s &orientation, bool bidirectional)
 	m_orientation.set(orientation.unit());
 	m_biDirectional=bidirectional;
 }
-
-
 
 SpotLight::SpotLight()
 	:Light()
@@ -188,11 +208,12 @@ void PointLight::set(const v3s &orientation, bool biPointional)
 	m_orientation.set(orientation.unit());
 	m_biDirectional=biPointional;
 }
+
 Color PointLight::acummulationLight(const Ray &, const Collision &collision) const
 {
-	const auto pp = collision.position();
-	const auto p = pp - m_transform.origin();
-
+	const auto&& pp = collision.position();
+	const auto&& p = pp - m_transform.origin();
+	
 	Ray f(p, collision.normal());
 	// compute all sort of shadows.
 	Color ret{Color::zero};
@@ -201,10 +222,10 @@ Color PointLight::acummulationLight(const Ray &, const Collision &collision) con
 	{
 		auto ratio = lightRatio(f, p.inverted());
 		auto lumm = m_intensity * ratio;
-
+		
 		const Ray ff(pp+collision.normal().tiny(), p.inverted());
-		const auto&& scn = m_scene.lock();
-		if (m_castShadows && !scn->throwRay(ff))
+		
+		if (m_castShadows && reachesLightSource(ff))
 		{
 			ret = color().gained(lumm);
 		}
@@ -212,8 +233,6 @@ Color PointLight::acummulationLight(const Ray &, const Collision &collision) con
 	
 	return ret;
 }
-
-
 
 scalar IBLight::gain() const
 {

@@ -18,7 +18,7 @@ class Light
 protected:
 	
 	Matrix44 m_transform;
-	bool m_castShadows{true};
+	bool m_castShadows = true;
 	//not every light needs a position
 	v3s m_position	{0.0,0.0,0.0};
 	scalar m_intensity		{1.0};
@@ -68,11 +68,18 @@ public:
 	
 	Matrix44 getTransform() const;
 	void setTransform(const Matrix44 &transform);
+
+	///
+	/// \brief reachesLightSource
+	/// \return 
+	///
+	bool reachesLightSource(const Ray &ray) const;
+
 };
 
 
 
-class SpotLight:public Light
+class SpotLight final : public Light
 {
 private:
 	v3s m_orientation;
