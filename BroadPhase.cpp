@@ -348,6 +348,11 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		
 		geo->throwRay(ray, temp);
 		
+		if(!geo->boundingBox()->contains(temp.position(),scalar(0.00001)))
+		{
+			continue;
+		}
+		
 		auto s = temp.position().distance(ray.origin());
 		
 		if(s < mdis && temp.isValid())
