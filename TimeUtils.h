@@ -11,7 +11,7 @@ namespace vxCore {
 
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
-using timeDuration = std::chrono::duration<scalar>;
+using timeDuration = std::chrono::duration<double>;
 
 
 class TimeUtils

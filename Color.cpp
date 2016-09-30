@@ -68,15 +68,15 @@ Color Color::lookup(const scalar r,
 
 Color Color::lookup256(const int r, const int g, const int b, const int a)
 {
-	return {MU::remap(r/255.0, mnc, mxc),
-			MU::remap(g/255.0, mnc, mxc),
-			MU::remap(b/255.0, mnc, mxc),
-			MU::remap(a/255.0, mnc, mxc)};
+	return {MU::remap(r/scalar(255.0), mnc, mxc),
+			MU::remap(g/scalar(255.0), mnc, mxc),
+			MU::remap(b/scalar(255.0), mnc, mxc),
+			MU::remap(a/scalar(255.0), mnc, mxc)};
 }
 
 Color Color::lookup256(const Color &col)
 {
-	return std::move(MU::remap(col/(scalar)255.0, mnc, mxc));
+	return std::move(MU::remap(col/scalar(255.0), mnc, mxc));
 }
 
 Color Color::indexColor(const unsigned char idx)
@@ -259,10 +259,10 @@ void Color::add(const Color &other)
 
 void Color::blend(const Color &other)
 {
-	m_r = (m_r + other.m_r) / 2.0;
-	m_g = (m_g + other.m_g) / 2.0;
-	m_b = (m_b + other.m_b) / 2.0;
-	m_a = (m_a + other.m_a) / 2.0;
+	m_r = (m_r + other.m_r) / scalar(2.0);
+	m_g = (m_g + other.m_g) / scalar(2.0);
+	m_b = (m_b + other.m_b) / scalar(2.0);
+	m_a = (m_a + other.m_a) / scalar(2.0);
 }
 
 void Color::setToGamma(scalar gamma, scalar offset)
@@ -412,10 +412,10 @@ Color Color::operator+(const Color &other) const
 
 void Color::toRGBA8888(unsigned char tbuff[4]) const
 {
-	tbuff[0] = (unsigned char)char(MU::remap(m_r,255.0));
-	tbuff[1] = (unsigned char)char(MU::remap(m_g,255.0));
-	tbuff[2] = (unsigned char)char(MU::remap(m_b,255.0));
-	tbuff[3] = (unsigned char)char(MU::remap(m_a,255.0));
+	tbuff[0] = (unsigned char)char(MU::remap(m_r,scalar(255.0)));
+	tbuff[1] = (unsigned char)char(MU::remap(m_g,scalar(255.0)));
+	tbuff[2] = (unsigned char)char(MU::remap(m_b,scalar(255.0)));
+	tbuff[3] = (unsigned char)char(MU::remap(m_a,scalar(255.0)));
 }
 
 Color Color::zero {(scalar)0.0, (scalar)0.0, (scalar)0.0, (scalar)1.0};
@@ -444,6 +444,6 @@ Color Color::yellowishOrange(Color::lookup256(231, 224, 0, 255));
 Color Color::yellow			(Color::lookup256(234, 231, 94, 255));
 Color Color::yellowishGreen	(Color::lookup256(170, 209, 60, 255));
 Color Color::black			{mnc, mnc, mnc, 1.0};
-Color Color::grey			{(mnc+mxc)/2.0, (mnc+mxc)/2.0, (mnc+mxc)/2.0, 1.0};
+Color Color::grey			{(mnc+mxc)/scalar(2.0), (mnc+mxc)/scalar(2.0), (mnc+mxc)/scalar(2.0), 1.0};
 
 

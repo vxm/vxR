@@ -76,10 +76,10 @@ Color Image::compute(const Collision &collision) const
 {
 	auto px = m_data.get({ 1.0-collision.v(), collision.u()});
 	
-	return {px[2]/255.0,
-			px[1]/255.0,
-			px[0]/255.0,
-			px[3]/255.0};
+	return {px[2]/scalar(255.0),
+			px[1]/scalar(255.0),
+			px[0]/scalar(255.0),
+			px[3]/scalar(255.0)};
 }
 std::string Image::path() const
 {

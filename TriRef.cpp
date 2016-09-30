@@ -44,7 +44,7 @@ scalar& TriRef::computeArea()
 {
 	m_c_h1 = fabs(MU::distanceToLine(p1,p2,p3));
 	m_c_h2 = fabs(MU::distanceToLine(p2,p3,p1));
-	ah = (p1.distance(p2) * m_c_h1) / 2.0;
+	ah = (p1.distance(p2) * m_c_h1) / scalar(2.0);
 	return ah;
 }
 
@@ -81,22 +81,31 @@ int TriRef::throwRay(const Ray &ray, Collision &collide) const
 	auto ta = area();
 	
 	ta-= MU::area(p1,p2,p);
+	
 	if(ta<threshold)
+	{
 		return 0;
+	}
 	
 	ta-= MU::area(p1,p,p3);
+	
 	if(ta<threshold)
+	{
 		return 0;
+	}
 	
 	ta-= MU::area(p,p2,p3);
+	
 	if(ta<threshold)
+	{
 		return 0;
+	}
 	
 	collide.setPosition(p);
 	
 	auto t = MU::distanceToLine(p1,p2,p) / m_c_h1;
 	auto s = MU::distanceToLine(p2,p3,p) / m_c_h2;
-	auto u = 1.0 - s - t;
+	auto u = scalar(1.0) - s - t;
 	
 	collide.setNormal(n1 * s + n2 * u + n3 * t);
 	

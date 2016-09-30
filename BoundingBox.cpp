@@ -14,13 +14,13 @@ void BoundingBox::clear()
 
 void BoundingBox::set(v3s position, scalar size)
 {
-	m_minX = position.x() - (size / 2.0);
-	m_minY = position.y() - (size / 2.0);
-	m_minZ = position.z() - (size / 2.0);
+	m_minX = position.x() - (size / scalar(2.0));
+	m_minY = position.y() - (size / scalar(2.0));
+	m_minZ = position.z() - (size / scalar(2.0));
 
-	m_maxX = position.x() + (size / 2.0);
-	m_maxY = position.y() + (size / 2.0);
-	m_maxZ = position.z() + (size / 2.0);
+	m_maxX = position.x() + (size / scalar(2.0));
+	m_maxY = position.y() + (size / scalar(2.0));
+	m_maxZ = position.z() + (size / scalar(2.0));
 
 	m_init = true;
 }
@@ -124,9 +124,9 @@ v3s BoundingBox::min() const
 
 v3s BoundingBox::center() const
 {
-	return {m_minX+m_maxX/2.0,
-		m_minY+m_maxY/2.0,
-		m_minZ+m_maxZ/2.0};
+	return {m_minX+m_maxX/scalar(2.0),
+		m_minY+m_maxY/scalar(2.0),
+		m_minZ+m_maxZ/scalar(2.0)};
 }
 
 scalar BoundingBox::minX() const
@@ -191,23 +191,23 @@ void BoundingBox::setMaxZ(scalar maxz)
 
 scalar BoundingBox::midXValue() const
 {
-	return ( m_maxX + m_minX )/ 2.0;
+	return ( m_maxX + m_minX )/ scalar(2.0);
 }
 
 scalar BoundingBox::midYValue() const
 {
-	return ( m_maxY + m_minY ) / 2.0;
+	return ( m_maxY + m_minY ) / scalar(2.0);
 }
 
 scalar BoundingBox::midZValue() const
 {
-	return ( m_maxZ + m_minZ ) / 2.0;
+	return ( m_maxZ + m_minZ ) / scalar(2.0);
 }
 
 bool BoundingBox::contains(const v3s &v) const
 {
 	return v.x() >= m_minX
-			&&  v.y() >= m_minY
+		&&  v.y() >= m_minY
 		&&  v.z() >= m_minZ
 		&&  v.x() <= m_maxX
 		&&  v.y() <= m_maxY
@@ -216,12 +216,12 @@ bool BoundingBox::contains(const v3s &v) const
 
 bool BoundingBox::contains(const v3s &v, scalar tolerance) const
 {
-	return v.x() >= (m_minX + tolerance)
-			&&  v.y() >= (m_minY + tolerance)
-			&&  v.z() >= (m_minZ + tolerance)
-			&&  v.x() <= (m_maxX - tolerance)
-			&&  v.y() <= (m_maxY - tolerance)
-			&&  v.z() <= (m_maxZ - tolerance);
+	return v.x() >= (m_minX - tolerance)
+			&&  v.y() >= (m_minY - tolerance)
+			&&  v.z() >= (m_minZ - tolerance)
+			&&  v.x() <= (m_maxX + tolerance)
+			&&  v.y() <= (m_maxY + tolerance)
+			&&  v.z() <= (m_maxZ + tolerance);
 }
 
 v3s BoundingBox::diagonal() const

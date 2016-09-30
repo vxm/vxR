@@ -4,6 +4,7 @@
 #include<memory>
 #include<cmath>
 
+#include "Vector.h"
 #include "Ray.h"
 #include "Box.h"
 
@@ -42,7 +43,7 @@ public:
 	int throwRay(const Ray &ray, Collision &collide) const
 	{
 		const v3s p = m_instance.position() - ray.origin();
-		const scalar mSize = m_instance.size()/2;
+		auto mSize = m_instance.size()/scalar(2.0);
 		
 		scalar minX = p.x() - mSize;
 		scalar minY = p.y() - mSize;

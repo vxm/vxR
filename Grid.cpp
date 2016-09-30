@@ -73,7 +73,7 @@ void Grid::setResolution(unsigned long resolution)
 void Grid::setSize(const scalar size)
 {
 	m_size = size;
-	m_c_midSize = size/2.0;
+	m_c_midSize = size/scalar(2.0);
 	setBoxSize();
 }
 
@@ -101,7 +101,7 @@ unsigned long Grid::resolution() const
 void Grid::setBoxSize()
 {
 	m_c_boxSize = m_size/scalar(m_resolution);
-	m_c_midBoxSize = m_c_boxSize/2.0;
+	m_c_midBoxSize = m_c_boxSize/scalar(2.0);
 }
 
 void Grid::createDiagonals(unsigned char colorIndex)

@@ -75,8 +75,8 @@ Camera::Camera(const v3s &position,
 	m_horizontalAperture = apertureH;
 	m_verticalAperture = apertureV;
 	
-	m_hApTan = tan(-m_horizontalAperture/(scalar)2.0);
-	m_vApTan = tan(-m_verticalAperture/(scalar)2.0);
+	m_hApTan = tan(-m_horizontalAperture/scalar(2.0));
+	m_vApTan = tan(-m_verticalAperture/scalar(2.0));
 	
 	srand(time(NULL));
 }
@@ -102,20 +102,20 @@ void Camera::set(const v3s& position,
 		m_verticalAperture = apertureV;
 	}
 	
-	m_hApTan = tan(-m_horizontalAperture/(scalar)2.0);
-	m_vApTan = tan(-m_verticalAperture/(scalar)2.0);
+	m_hApTan = tan(-m_horizontalAperture/scalar(2.0));
+	m_vApTan = tan(-m_verticalAperture/scalar(2.0));
 }
 
 Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 {
-	auto xFactor = coord.x() * 2.0 -1.0;
-	auto yFactor = coord.y() * 2.0 -1.0;
+	auto xFactor = coord.x() * scalar(2.0) -1.0;
+	auto yFactor = coord.y() * scalar(2.0) -1.0;
 	//std::cout << "Pixel factor " << xFactor << " " << yFactor << std::endl;
 	
 	auto&& s = sampler.xy(m_pixelRadius);
 	
-	const auto compX = m_hApTan * xFactor - s.x()/(scalar)(2.0 * m_rx);
-	const auto compY = m_vApTan * yFactor - s.y()/(scalar)(2.0 * m_ry);
+	const auto compX = m_hApTan * xFactor - s.x()/(scalar)(scalar(2.0) * m_rx);
+	const auto compY = m_vApTan * yFactor - s.y()/(scalar)(scalar(2.0) * m_ry);
 	
 	auto&& ret = Ray{{compY, compX, m_focusDistance}};
 	
@@ -123,7 +123,7 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 	//TODO:read from scene.
 	ret.setOrigin(m_transform.origin());
 	
-	ret.direction().rotateX( 2.0 * (MU::PI/8.0) );
+	ret.direction().rotateX( scalar(2.0) * (MU::PI/8.0) );
 	ret.direction() = ret.direction().rotate({0.8, 0.5, 0.0}, 0.0005);
 	
 	ret.direction().setUnit();
@@ -133,12 +133,12 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 
 Ray Camera::givemeRandRay(const v2s &coord)
 {
-	scalar compX = m_hApTan * (( coord.x() * 2.0) -1.0 ) 
-			- 1.0/(scalar)(2.0 * m_properties->rx()) 
+	scalar compX = m_hApTan * (( coord.x() * scalar(2.0)) -1.0 ) 
+			- 1.0/(scalar)(scalar(2.0) * m_properties->rx()) 
 			+ ((rand()/(scalar)RAND_MAX))/(scalar)(m_properties->rx());
 	
-	scalar compY = m_vApTan * (( coord.y() * 2.0) -1.0 ) 
-			- 1.0/(scalar)(2.0 * m_properties->ry()) 
+	scalar compY = m_vApTan * (( coord.y() * scalar(2.0)) -1.0 ) 
+			- 1.0/(scalar)(scalar(2.0) * m_properties->ry()) 
 			+ ((rand()/(scalar)RAND_MAX))/(scalar)(m_properties->ry());
 	
 	auto ret = Ray( compY, compX, m_focusDistance );
@@ -150,8 +150,8 @@ Ray Camera::givemeNextRay(const ContactBuffer &imagen, scalar ang)
 {
 	Ray ret;
 	auto&& direction = ret.direction();
-	direction.set(tan(m_verticalAperture/(scalar)2.0) * ((imagen.getScanYd()*2)-1),
-				  tan(m_horizontalAperture/(scalar)2.0)*(( imagen.getScanXd() *2)-1),
+	direction.set(tan(m_verticalAperture/scalar(2.0)) * ((imagen.getScanYd()*2)-1),
+				  tan(m_horizontalAperture/scalar(2.0))*(( imagen.getScanXd() *2)-1),
 				  m_focusDistance);
 	direction.setUnit();
 	direction=direction.rotateY(ang);
@@ -163,8 +163,8 @@ Ray Camera::givemeRandomRay(const v2s &coord)
 	scalar yrv,xrv;
 	xrv=((rand()/scalar(RAND_MAX)))/m_properties->rx();
 	yrv=((rand()/scalar(RAND_MAX)))/m_properties->ry();
-	return v3s{m_hApTan * (((coord.y()+yrv)*(scalar)2.0)-(scalar)1.0) ,
-				m_vApTan * (((coord.x()+xrv)*(scalar)2.0)-(scalar)1.0), 
+	return v3s{m_hApTan * (((coord.y()+yrv)*scalar(2.0))-(scalar)1.0) ,
+				m_vApTan * (((coord.x()+xrv)*scalar(2.0))-(scalar)1.0), 
 				m_focusDistance};
 }
 

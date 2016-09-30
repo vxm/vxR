@@ -109,7 +109,7 @@ protected:
 
 	scalar m_c_invRes				= {1/(scalar)5.0};
 	scalar m_c_resDivTres	= {m_size/(scalar)3.0};
-	scalar m_c_midSize	= {m_size/(scalar)2.0};
+	scalar m_c_midSize	= {m_size/scalar(2.0)};
 
 	/// cache objects
 	scalar m_c_boxSize			= {1.0};

@@ -11,7 +11,7 @@ using namespace vxCore;
 
 const scalar MathUtils::C{299'792'458.0};
 const scalar MathUtils::PI{3.141'592'653'589'793'238'462'643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816};
-const scalar MathUtils::HALF_PI{PI/(scalar)2.0};
+const scalar MathUtils::HALF_PI{PI/scalar(2.0)};
 
 //////////////////////////////////////
 ///////////////  RANDOM CACHES ///////
@@ -69,8 +69,8 @@ constexpr scalar MathUtils::ratio(int a, int b)
 v2s MathUtils::normalToCartesian(const v3s& normal)
 {
 	auto normalized = normal.unit();
-	auto x = (scalar)(PI + atan2(normalized.z(), normalized.x()))/((scalar)2.0*PI);
-	auto y = (scalar)((PI/(scalar)2.0) + asin( normalized.y())) / PI;
+	auto x = (scalar)(PI + atan2(normalized.z(), normalized.x()))/(scalar(2.0)*PI);
+	auto y = (scalar)((PI/scalar(2.0)) + asin( normalized.y())) / PI;
 	return v2s {x, y};
 }
 
@@ -142,7 +142,7 @@ scalar MathUtils::area(const v3s &p1,
 	const auto pb = closestPointInLine(p1,p2,p3);
 	const auto b = p1.distance(p2);
 	const auto h = p3.distance(pb);
-	return (b * h) / 2.0;
+	return (b * h) / scalar(2.0);
 }
 
 v3s MathUtils::normal(const v3s &p1, const v3s &p2, const v3s &p3)
@@ -255,8 +255,8 @@ v3s MathUtils::getHollowSphereRand(scalar radius)
 	auto u = getRand();
 	auto v = getRand();
 	
-	auto a = (scalar)(2.0 * PI * u );
-	auto b = (scalar)acos( (2.0 * v) - 1.0);
+	auto a = (scalar)(scalar(2.0) * PI * u );
+	auto b = (scalar)acos( (scalar(2.0) * v) - 1.0);
 
 	return cartesianToNormal(v2s{a,b}) * radius;
 }
@@ -291,7 +291,7 @@ v3s MathUtils::getHollowHemisphereRand(scalar radius,
 
 v3s MathUtils::getSphereRand(scalar radius)
 {
-	return getHollowSphereRand(getRand(radius)-(radius/(scalar)2.0));
+	return getHollowSphereRand(getRand(radius)-(radius/scalar(2.0)));
 }
 						
 bool MathUtils::inRange(scalar r, scalar min, scalar max)

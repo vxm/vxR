@@ -42,8 +42,8 @@ bool Box::throwRay(const Ray &ray) const
 	}
 	
 	const auto&& p = m_position - ray.origin();
-	const auto&& min = p - m_size/(scalar)2.0;
-	const auto&& max = p + m_size/(scalar)2.0;
+	const auto&& min = p - m_size/scalar(2.0);
+	const auto&& max = p + m_size/scalar(2.0);
 	
 	bool bMax = std::signbit(ray.direction().x());
 	
@@ -81,7 +81,7 @@ bool Box::throwRay(const Ray &ray) const
 int Box::throwRay(const Ray &ray, Collision &collide) const
 {
 	const auto&& p = m_position - ray.origin();
-	const auto&& mSize = m_size/(scalar)2.0;
+	const auto&& mSize = m_size/scalar(2.0);
 	const auto&& min = p - mSize;
 	const auto&& max = p + mSize;
 	
@@ -136,7 +136,7 @@ bool Box::hasCollision(const Ray &ray) const
 	}
 
 	const auto&& p = m_position - ray.origin();
-	const auto mSize = m_size/(scalar)2.0;
+	const auto mSize = m_size/scalar(2.0);
 	
 	const auto&& min = p - mSize;
 	const auto&& max = p + mSize;

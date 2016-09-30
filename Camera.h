@@ -29,8 +29,8 @@ private:
 	scalar m_horizontalAperture = {1.42};
 	scalar m_verticalAperture = {1.42};
 	
-	scalar m_hApTan = tan(-m_horizontalAperture/2.0);
-	scalar m_vApTan = tan(-m_verticalAperture/2.0);
+	scalar m_hApTan = tan(-m_horizontalAperture/scalar(2.0));
+	scalar m_vApTan = tan(-m_verticalAperture/scalar(2.0));
 	scalar m_pixelRadius{1.0};
 
 	scalar m_rx;

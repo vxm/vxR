@@ -169,9 +169,9 @@ void BroadPhase::locateAndRegister(vxGeometryHandle geo)
 	auto bb = geo->boundingBox();
 	auto cnt = bb->center();
 	int a1,b1,c1;
-	auto idx1 = lookupVoxel(bb->min()+0.001, a1, b1, c1);
+	auto idx1 = lookupVoxel(bb->min()+smallScalar, a1, b1, c1);
 	int a2,b2,c2;
-	auto idx2 = lookupVoxel(bb->max()-0.001, a2, b2, c2);
+	auto idx2 = lookupVoxel(bb->max()-smallScalar, a2, b2, c2);
 	
 #ifdef _DEBUG
 	std::cout << std::endl << std::endl << std::endl;
