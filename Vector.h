@@ -255,7 +255,7 @@ public:
 };
 
 
-class v3s
+class v3s final
 {
 
 protected:
