@@ -18,6 +18,7 @@ constexpr const scalar minScalar =  std::numeric_limits<scalar>::min();
 constexpr const scalar smallScalar =  fabs(minScalar)*scalar(1000.0);
 constexpr const scalar maxScalar =  std::numeric_limits<scalar>::max();
 constexpr const scalar bigScalar =  fabs(maxScalar)*scalar(0.001);
+constexpr const scalar sZero = scalar(0.0);
 
 class Color;
 
