@@ -13,7 +13,7 @@
 #include "Sampler.h"
 #include "ThreadPool.h"
 
-#define SINGLERAY 1
+#define SINGLERAY 0
 #if SINGLERAY
 #define PIXEL_X 530
 #define PIXEL_Y 600

@@ -177,7 +177,7 @@ v3s MathUtils::rectAndXPlane(const v3s& ray, scalar x)
 	const auto y = t * -ray.y() + ray.y();
 	const auto z = t * -ray.z() + ray.z();
 
-	return v3s{x,y,z};
+	return {x,y,z};
 }
 
 v3s MathUtils::rectAndYPlane(const v3s& ray, scalar y)
@@ -187,7 +187,7 @@ v3s MathUtils::rectAndYPlane(const v3s& ray, scalar y)
 	auto x = t * (-ray.x()) + ray.x();
 	auto z = t * (-ray.z()) + ray.z();
 
-	return v3s{x,y,z};
+	return {x,y,z};
 }
 
 scalar MathUtils::x_forRectAndYPlane(const v3s& ray, scalar y)
@@ -207,7 +207,7 @@ v3s MathUtils::rectAndZPlane(const v3s& ray, scalar z)
 	auto x = t * -ray.x() + ray.x();
 	auto y = t * -ray.y() + ray.y();
 
-	return v3s{x,y,z};
+	return {x,y,z};
 }
 
 v3s MathUtils::rayAndXPlane(const Ray &ray, scalar x)
@@ -275,7 +275,7 @@ v3s MathUtils::getSolidSphereRand(scalar radius)
 {
 	return getHollowSphereRand(getRand(radius));
 }
-					   
+
 v3s MathUtils::getHollowHemisphereRand(scalar radius, 
 											  const v3s &n)
 {

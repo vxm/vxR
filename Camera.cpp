@@ -114,8 +114,8 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 	
 	auto&& s = sampler.xy(m_pixelRadius);
 	
-	const auto compX = m_hApTan * xFactor - s.x()/(scalar)(scalar(2.0) * m_rx);
-	const auto compY = m_vApTan * yFactor - s.y()/(scalar)(scalar(2.0) * m_ry);
+	const auto compX = m_hApTan * xFactor - s.x()/(scalar(2.0) * m_rx);
+	const auto compY = m_vApTan * yFactor - s.y()/(scalar(2.0) * m_ry);
 	
 	auto&& ret = Ray{{compY, compX, m_focusDistance}};
 	
@@ -124,7 +124,7 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 	ret.setOrigin(m_transform.origin());
 	
 	ret.direction().rotateX( scalar(2.0) * (MU::PI/8.0) );
-	ret.direction() = ret.direction().rotate({0.8, 0.5, 0.0}, 0.0005);
+	ret.direction() = ret.direction().rotate({1.0, 0.0, -1.0}, 0.02);
 	
 	ret.direction().setUnit();
 	
