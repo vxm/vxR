@@ -19,18 +19,19 @@ bool IsoGeometry::throwRay(const Ray &ray) const
 
 int IsoGeometry::throwRay(const Ray &ray, Collision &col) const
 {
+	scalar r = 0.5;
 	col.setValid(false);
 	
+	//// CAPS
+	
 	auto&& pos = col.position();
-	auto&& axisPoint = v3s{m_bb->midXValue(),pos.y(),m_bb->midZValue()};
-	
-	scalar r = 0.5;
-	
+	auto&& levelCenter = v3s{m_bb->midXValue(),pos.y(),m_bb->midZValue()};
 	//Comparing floats is unsafe.
 	if(pos.y()==m_bb->maxY())
 	{
-		if(pos.distance(axisPoint)<r)
+		if(pos.distance(levelCenter)<r)
 		{
+			col.setPosition(col.position()-v3s{0,0.001,0});
 			col.setNormal(v3s::constY);
 			col.setValid(true);
 			return 1;
@@ -39,7 +40,7 @@ int IsoGeometry::throwRay(const Ray &ray, Collision &col) const
 	
 	if(pos.y()==m_bb->minY())
 	{	
-		if(pos.distance(axisPoint)<r)
+		if(pos.distance(levelCenter)<r)
 		{
 			col.setNormal(v3s::constMinusY);
 			col.setValid(true);
@@ -47,8 +48,23 @@ int IsoGeometry::throwRay(const Ray &ray, Collision &col) const
 		}
 	}
 	
-	auto d = ray.direction();
-	auto f = ray.origin() - axisPoint;
+	//// BODY
+	auto rey = ray;
+	
+	rey.setDirection({ray.direction().x(),
+					  sZero,
+					  ray.direction().z()});
+	
+	rey.setOrigin({ray.origin().x(),
+				   sZero,
+				   ray.origin().z()});
+	
+	auto&& circleCenter = v3s{m_bb->midXValue(),
+								sZero,
+								m_bb->midZValue()};
+	
+	auto d = rey.direction();
+	auto f = rey.origin() - circleCenter;
 	
 	auto a = d.dot(d);
 	auto b = scalar(2.0)*f.dot(d);
@@ -62,11 +78,31 @@ int IsoGeometry::throwRay(const Ray &ray, Collision &col) const
 		scalar t1 = (-b - disc)/(scalar(2.0)*a);
 		if(t1>=0.0)
 		{
-			col.setPosition(ray.origin()+(ray.direction()*t1));
-			col.setNormal((col.position()-axisPoint).unit());
+			v3s twoPos = {rey.origin()+(rey.direction()*t1)};
+			col.setNormal((twoPos-circleCenter).unit());
+			
+			auto finalPos = MU::rectAndZPlane(ray.direction(), twoPos.z() - ray.origin().z());
+			finalPos+=ray.origin();
+			
+			col.setPosition(finalPos);
 			col.setValid(true);
 			return 1;
 		}
+		/*
+		scalar t2 = (-b + disc)/(scalar(2.0)*a);
+		if(t2>=0.0)
+		{
+			v3s twoPos = {rey.origin()+(rey.direction()*t2)};
+			
+			auto finalPos = MU::rectAndXPlane(ray.direction(), twoPos.x() - ray.origin().x());
+			
+			col.setPosition(finalPos);
+			
+			col.setNormal((twoPos-circleCenter).unit());
+			col.setValid(true);
+			return 1;
+		}
+		*/
 	}
 	
 	col.setValid(false);
