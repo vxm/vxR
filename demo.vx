@@ -6,7 +6,7 @@ node
 name = "image_1"
 type = "vxImage"
 active = "true"
-    imagePath = "/home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
+    imagePath = "/home/john/code/vxR/Winter_Forest/WinterForest_8k.jpg"
     gain = 1.0
     gamma = 2.2
 }
@@ -89,9 +89,9 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 6
+    pixelSamples = 2
     reflectionSamples = 1
-    giSamples = 1
+    giSamples = 0
     giMultiplier = 1.0
     numThreads = -1
 }
@@ -152,8 +152,8 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.2 0.2 -4.5 1]
-    focusDistance = 3.0
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 0.32 -2.0 1]
+    focusDistance = 2.0
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -165,11 +165,30 @@ node
 name = "cylinder_1"
 type = "vxIsoGeometry"
 active = "true"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.5 0.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 10.0 0.4 0.0 1]
     radius = 1.0
     shader = "shader_1"
 }
 
+node
+{
+name = "cylinder_2"
+type = "vxIsoGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -12.4 0.0 1.0 1]
+    radius = 1.0
+    shader = "shader_1"
+}
+
+node
+{
+name = "cylinder_3"
+type = "vxIsoGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2.4 -0.2 12.0 1]
+    radius = 1.0
+    shader = "shader_1"
+}
 
 node
 {
@@ -213,8 +232,8 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 -4.0 -0.70 1.0 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.64 0.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
     shader = "shader_1"
@@ -272,7 +291,7 @@ node
 name = "faun_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [2.9 0 0 0 0 2.9 0 0 0 0 2.9 0 -1.0 -0.70 0.0 1]
+    transform = [2.9 0 0 0 0 2.9 0 0 0 0 2.9 0 0.0 0.501 0.0 1]
     filePath = "/home/john/Downloads/dancing_faun_low.ply"
     color = 249 249 249
     shader = "shader_1"
@@ -284,7 +303,7 @@ node
 name = "gnome_tris_1"
 type = "vxGeometry"
 active = "false"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 1.0 -0.70 1.0 1]
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.8 -0.6 0.2 1]
     filePath = "/home/john/Downloads/gnome_low_1.ply"
     color = 249 249 249
     shader = "shader_1"
@@ -295,7 +314,7 @@ node
 name = "gnome_tris_2"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.2 0.2 -0.2 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.8 -0.7 0.2 1]
     filePath = "/home/john/Downloads/gnome_mid.ply"
     color = 249 249 150
     shader = "shader_2"
@@ -536,10 +555,10 @@ node
 name = "area_light_1"
 type = "vxAreaLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4 6 2 1]
-    intensity = 0.38
-    color = 238 236 136
-    samples = 20
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -7 9 0 1]
+    intensity = 0.78
+    color = 238 197 136
+    samples = 4
     castShadows = "false"
     minX = -12.5
     minY = 0.3
@@ -555,8 +574,8 @@ type = "vxAreaLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
     intensity = 0.42
-    color = 266 170 123
-    samples = 20
+    color = 166 170 193
+    samples = 4
     castShadows = "true"
     minX = -4.5
     minY = 0.3
@@ -569,9 +588,9 @@ node
 {
 name = "point_light_1"
 type = "vxPointLight"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3 3.1 0.5 1]
-    intensity = 0.290
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -14.0 13.0 -14.0 1]
+    intensity = 0.690
     color = 255 230 240
     samples = 1
     castShadows = "true"
@@ -584,11 +603,11 @@ node
 name = "point_light_2"
 type = "vxPointLight"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 9 11 3 1]
-    intensity = 0.50
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0  12.0 11.0 -3.0 1]
+    intensity = 0.60
     color = 235 243 246
     samples = 1
-    castShadows = "false"
+    castShadows = "true"
     position = -2 5 -2
 }
 
@@ -616,7 +635,7 @@ active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 1.27
     color = 224 192 88
-    orientation = 2.0 -7.0 -12.0
+    orientation = 12.0 -2.0 12.0
     samples = 1
     castShadows = "true"
 }

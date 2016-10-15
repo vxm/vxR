@@ -236,10 +236,18 @@ Color vxRenderProcess::computeLight(const Ray &ray, Collision &col)
 	return retColor;
 }
 
-Color vxRenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
+Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, Collision &col)
 {
+	//Decrease one iteration now.
+	Color firstHitColor;
+	
+	if(iter==0)
+	{
+		return firstHitColor;
+	}
+
 	//get first hit and compute the shader
-	Color firstHitColor = computeLight(ray,col);
+	firstHitColor = computeLight(ray,col);
 	
 	const auto&& dome = m_scene->dome();
 	
@@ -262,9 +270,13 @@ Color vxRenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 						Ray(col.position() + n.tiny(), invV);
 				
 				reflection = computeLight(reflexRay, refxCollision);
+
+				//Collision nextRound = refxCollision;
+				//reflection+= computeEnergyAndColor(iter-1, ray, nextRound);
+
 			}
 			
-			reflection*=(0.002f/(scalar)m_reflectionSamples);
+			reflection*=(0.02f/(scalar)m_reflectionSamples);
 			firstHitColor+= (reflection);
 		}
 		
@@ -279,7 +291,7 @@ Color vxRenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 			{
 				const auto&& r = MU::getHollowHemisphereRand(1.0, col.normal());
 				const Ray giRay(col.position()
-								+col.normal().tiny(), 
+								+col.normal().tiny(),
 								r.inverted());
 				
 				auto rayIncidence = giRay.incidence(col.normal());
@@ -291,6 +303,11 @@ Color vxRenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 				{
 					Color gi(m_scene->defaultShader()->getIlluminatedColor(ray,giColl));
 					globalIlm.mixSumm(baseColor * gi * rayIncidence, colorRatio);
+					// Get another round for all the previous
+
+					Collision nextRound = giColl;
+					firstHitColor+= computeEnergyAndColor(iter-1, giRay, nextRound) * (0.5);
+
 				}
 				else
 				{
@@ -307,6 +324,7 @@ Color vxRenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 			}
 			firstHitColor+= globalIlm;
 		}
+		
 	}
 	
 	return firstHitColor;
@@ -360,8 +378,8 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			Collision col;
 			auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			
-			/// Big thing was removed here.
-			firstHitColor+= computeEnergyAndColor(ray,col);
+			///TODO: this crashes with 0
+			firstHitColor+= computeEnergyAndColor(2,ray,col);
 			
 			sampler.next();
 		}

@@ -171,7 +171,7 @@ public:
 	/// \param col
 	/// \return 
 	///
-	Color computeEnergyAndColor(const Ray &ray, Collision &col);
+	Color computeEnergyAndColor(unsigned int iter, const Ray &ray, Collision &col);
 };
 
 #endif // VXRENDERPROCESS_H
