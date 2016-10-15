@@ -31,17 +31,18 @@ int IsoGeometry::throwRay(const Ray &ray, Collision &col) const
 	{
 		if(pos.distance(levelCenter)<r)
 		{
-			col.setPosition(col.position()-v3s{0,0.001,0});
+			col.setPosition(col.position()-v3s{0,0.0001,0});
 			col.setNormal(v3s::constY);
 			col.setValid(true);
 			return 1;
 		}
 	}
 	
-	if(pos.y()==m_bb->minY())
+	if(fabs(pos.y()-m_bb->minY())<0.0001)
 	{	
 		if(pos.distance(levelCenter)<r)
 		{
+			col.setPosition(col.position());
 			col.setNormal(v3s::constMinusY);
 			col.setValid(true);
 			return 1;
