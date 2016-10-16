@@ -255,6 +255,7 @@ Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, 
 	{
 		
 		// Compute reflection
+		if(false)
 		{
 			Color reflection = Color::zero;
 			const auto& n = col.normal();
@@ -276,7 +277,7 @@ Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, 
 
 			}
 			
-			reflection*=(0.02f/(scalar)m_reflectionSamples);
+			reflection*=(0.08f/(scalar)m_reflectionSamples);
 			firstHitColor+= (reflection);
 		}
 		
@@ -286,7 +287,7 @@ Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, 
 			Color globalIlm = Color::zero;
 			Color baseColor = m_scene->defaultShader()->getColor(ray,col);
 			const auto n = m_reflectionSamples;
-			const auto colorRatio = m_giMultiplier*.5/(scalar)n;
+			const auto colorRatio = m_giMultiplier*scalar(0.5)/(scalar)n;
 			for(auto i=0u; i<n; i++)
 			{
 				const auto&& r = MU::getHollowHemisphereRand(1.0, col.normal());
@@ -306,7 +307,7 @@ Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, 
 					// Get another round for all the previous
 
 					Collision nextRound = giColl;
-					firstHitColor+= computeEnergyAndColor(iter-1, giRay, nextRound) * (0.5);
+					firstHitColor+= computeEnergyAndColor(iter-1, giRay, nextRound) * (scalar(iter)/7.0);
 
 				}
 				else
@@ -379,7 +380,7 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			
 			///TODO: this crashes with 0
-			firstHitColor+= computeEnergyAndColor(2,ray,col);
+			firstHitColor+= computeEnergyAndColor(3,ray,col);
 			
 			sampler.next();
 		}
