@@ -20,33 +20,72 @@ using namespace vxCore;
  * in a vxContactBuffer
  */
 
-class vxRenderProcess : public Process
+class RenderProcess : public Process
 {
 private:
+	///
+	/// \brief m_properties
+	///
 	std::shared_ptr<const ImageProperties> m_properties;
+	///
+	/// \brief m_scene
+	///
 	std::shared_ptr<Scene> m_scene;
+	///
+	/// \brief m_finished
+	///
 	std::atomic_bool m_finished;
+	///
+	/// \brief m_nThreads
+	///
 	unsigned int m_nThreads;
-	
-	scalar m_giMultiplier{1.0};
+
+	///
+	/// \brief m_giMultiplier
+	///
+	scalar m_giMultiplier = 1.0;
+	///
+	/// \brief m_progress
+	///
 	std::atomic<scalar> m_progress{0.0};
+	///
+	/// \brief m_imageData
+	///
 	ImageData m_imageData;
+	///
+	/// \brief m_contactBuffer
+	///
 	ContactBuffer m_contactBuffer;
-	
-	unsigned int m_samples{1};
-	scalar m_c_invSamples{1/(scalar)m_samples};
-	unsigned int m_reflectionSamples{0};
-	unsigned int m_giSamples{0};
+	///
+	unsigned int m_samples = 1u;
+	///
+	/// \brief m_c_invSamples
+	///
+	scalar m_c_invSamples = scalar(1.0)/scalar(m_samples);
+	///
+	/// \brief m_reflectionSamples
+	///
+	unsigned int m_reflectionSamples = 0u;
+	///
+	/// \brief m_giSamples
+	///
+	unsigned int m_giSamples = 0u;
+	///
+	/// \brief m_lightBounces
+	///
+	unsigned int m_lightBounces = 2u;
+
 public:
 	
 	// constructor with imageproperties propagation
-	vxRenderProcess(ImagePropertiesHandle &prop,
+	RenderProcess(ImagePropertiesHandle &prop,
 					unsigned int samples);
 	
-	virtual Status::code preProcess(Process* p=nullptr) override;
-	virtual Status::code postProcess(Process* p=nullptr) override;
-	virtual Status::code execute() override;
-	virtual Status::code preConditions() override;
+	// constructor with imageproperties propagation
+	virtual ~RenderProcess()
+	{}
+	
+	virtual Status::code execute();
 	
 	///
 	/// \brief render
@@ -172,6 +211,8 @@ public:
 	/// \return 
 	///
 	Color computeEnergyAndColor(unsigned int iter, const Ray &ray, Collision &col);
+	unsigned int lightBounces() const;
+	void setLightBounces(unsigned int lightBounces);
 };
 
 #endif // VXRENDERPROCESS_H

@@ -26,13 +26,23 @@
 #endif
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
-using render = vxCompute::vxRenderProcess;
+using render = vxCompute::RenderProcess;
 
 
 namespace vxCompute 
 {
 
-vxRenderProcess::vxRenderProcess(ImagePropertiesHandle &prop, 
+unsigned int RenderProcess::lightBounces() const
+{
+	return m_lightBounces;
+}
+
+void RenderProcess::setLightBounces(unsigned int lightBounces)
+{
+	m_lightBounces = lightBounces;
+}
+
+RenderProcess::RenderProcess(ImagePropertiesHandle &prop, 
 								 unsigned int samples)
 	:	m_properties(prop)
 	,	m_imageData(prop)
@@ -42,80 +52,80 @@ vxRenderProcess::vxRenderProcess(ImagePropertiesHandle &prop,
 	setNMaxThreads(100);
 }
 
-unsigned int vxRenderProcess::samples() const
+unsigned int RenderProcess::samples() const
 {
 	return m_samples;
 }
 
-void vxRenderProcess::setSamples(unsigned int samples)
+void RenderProcess::setSamples(unsigned int samples)
 {
 	m_samples = samples;
 }
 
-std::shared_ptr<const ImageProperties> vxRenderProcess::properties() const
+std::shared_ptr<const ImageProperties> RenderProcess::properties() const
 {
 	return m_properties;
 }
 
-void vxRenderProcess::setProperties(const std::shared_ptr<const ImageProperties> &properties)
+void RenderProcess::setProperties(const std::shared_ptr<const ImageProperties> &properties)
 {
 	m_properties = properties;
 }
 
 
-unsigned int vxRenderProcess::giSamples() const
+unsigned int RenderProcess::giSamples() const
 {
 	return m_giSamples;
 }
 
-void vxRenderProcess::setGISamples(unsigned int giSamples)
+void RenderProcess::setGISamples(unsigned int giSamples)
 {
 	m_giSamples = giSamples;
 }
 
-scalar vxRenderProcess::giMultiplier() const
+scalar RenderProcess::giMultiplier() const
 {
 	return m_giMultiplier;
 }
 
-void vxRenderProcess::setGIMultiplier(const scalar &giMultiplier)
+void RenderProcess::setGIMultiplier(const scalar &giMultiplier)
 {
 	m_giMultiplier = giMultiplier;
 }
 
-unsigned int vxRenderProcess::nMaxThreads() const
+unsigned int RenderProcess::nMaxThreads() const
 {
 	return m_nThreads;
 }
 
-void vxRenderProcess::setNMaxThreads(unsigned int nMaxThreads)
+void RenderProcess::setNMaxThreads(unsigned int nMaxThreads)
 {
 	m_nThreads = std::min(std::thread::hardware_concurrency(), nMaxThreads);
 }
 
-unsigned int vxRenderProcess::visSamples() const
+unsigned int RenderProcess::visSamples() const
 {
 	return m_samples;
 }
 
-void vxRenderProcess::setVisSamples(unsigned int visSamples)
+void RenderProcess::setVisSamples(unsigned int visSamples)
 {
 	m_samples = visSamples;
 	m_c_invSamples = 1.0/(scalar)m_samples;
 }
 
-unsigned int vxRenderProcess::reflectionSamples() const
+unsigned int RenderProcess::reflectionSamples() const
 {
 	return m_reflectionSamples;
 }
 
-void vxRenderProcess::setReflectionSamples(unsigned int reflectionSamples)
+void RenderProcess::setReflectionSamples(unsigned int reflectionSamples)
 {
 	m_reflectionSamples = reflectionSamples;
 }
 
 
-Status vxRenderProcess::setDatabase(std::shared_ptr<SceneParser> )
+Status RenderProcess::setDatabase(std::shared_ptr<SceneParser> )
 {
 	Status st;
 	
@@ -127,28 +137,9 @@ Status vxRenderProcess::setDatabase(std::shared_ptr<SceneParser> )
 	return st;
 }
 
-Status::code vxRenderProcess::preProcess(Process *p)
-{
-	if(p!=nullptr)
-	{
-		p->execute();
-	}
-	
-	return Status::code::kSuccess;
-}
-
-Status::code vxRenderProcess::postProcess(Process *p)
-{
-	if(p!=nullptr)
-	{
-		p->execute();
-	}
-	
-	return Status::code::kSuccess;
-}
 
 
-Status::code vxRenderProcess::execute()
+Status::code RenderProcess::execute()
 {
 	timePoint start = std::chrono::system_clock::now();
 	m_finished = false;
@@ -203,12 +194,12 @@ Status::code vxRenderProcess::execute()
 	return Status::code::kSuccess;
 }
 
-scalar vxRenderProcess::progress() const
+scalar RenderProcess::progress() const
 {
 	return  100.0 * m_progress.load() / (m_properties->ry()*m_nThreads);
 }
 
-Color vxRenderProcess::computeLight(const Ray &ray, Collision &col)
+Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 {
 	Color retColor = Color::zero;
 	m_scene->throwRay(ray, col);
@@ -216,7 +207,8 @@ Color vxRenderProcess::computeLight(const Ray &ray, Collision &col)
 	if(col.isValid())
 	{
 		Shader* sh{nullptr};
-		if(col.m_geo!=nullptr)
+		
+		if(col.m_geo!=nullptr && col.m_geo->shader()!=nullptr)
 		{
 			sh = col.m_geo->shader();
 		}
@@ -236,7 +228,7 @@ Color vxRenderProcess::computeLight(const Ray &ray, Collision &col)
 	return retColor;
 }
 
-Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, Collision &col)
+Color RenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, Collision &col)
 {
 	//Decrease one iteration now.
 	Color firstHitColor;
@@ -287,7 +279,7 @@ Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, 
 			Color globalIlm = Color::zero;
 			Color baseColor = m_scene->defaultShader()->getColor(ray,col);
 			const auto n = m_reflectionSamples;
-			const auto colorRatio = m_giMultiplier*scalar(0.5)/(scalar)n;
+			const auto colorRatio = m_giMultiplier*scalar(1.0)/(scalar)n;
 			for(auto i=0u; i<n; i++)
 			{
 				const auto&& r = MU::getHollowHemisphereRand(1.0, col.normal());
@@ -307,8 +299,8 @@ Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, 
 					// Get another round for all the previous
 
 					Collision nextRound = giColl;
-					firstHitColor+= computeEnergyAndColor(iter-1, giRay, nextRound) * (scalar(iter)/7.0);
-
+					firstHitColor+= computeEnergyAndColor(iter-1, giRay, nextRound) 
+							* (scalar(iter)/scalar(m_lightBounces));
 				}
 				else
 				{
@@ -332,7 +324,7 @@ Color vxRenderProcess::computeEnergyAndColor(unsigned int iter, const Ray &ray, 
 }
 
 
-Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
+Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset<this->imageProperties()->rx());
 	const auto&& rCamera = scene()->camera();
@@ -380,7 +372,7 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 			auto&& ray = rCamera->ray(hitCoordinates, sampler);
 			
 			///TODO: this crashes with 0
-			firstHitColor+= computeEnergyAndColor(3,ray,col);
+			firstHitColor+= computeEnergyAndColor(m_lightBounces,ray,col);
 			
 			sampler.next();
 		}
@@ -410,20 +402,12 @@ Status::code vxRenderProcess::render(unsigned int by, unsigned int offset)
 	return Status::code::kSuccess;
 }
 
-Status::code vxRenderProcess::preConditions()
-{
-	return Status::code::kSuccess;
-}
-
-
 const unsigned char *
-vxRenderProcess::generateImage()
+RenderProcess::generateImage()
 {
 	static_assert(sizeof(float)==4, "scalar is no 32bits");
 	static_assert(sizeof(double)==8, "scalar is no 64bits");
 	static_assert(sizeof(unsigned char)==1, "unsigned char is no 8bits");
-	
-	const auto&& prop = imageProperties();
 	
 	auto buff = m_imageData.initialise();
 	
@@ -441,22 +425,22 @@ vxRenderProcess::generateImage()
 	return buff;
 }
 
-std::shared_ptr<const ImageProperties> vxRenderProcess::imageProperties() const
+std::shared_ptr<const ImageProperties> RenderProcess::imageProperties() const
 {
 	return m_properties;
 }
 
-void vxRenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> imageProperties)
+void RenderProcess::setImageProperties(std::shared_ptr<const ImageProperties> imageProperties)
 {
 	m_properties = imageProperties;
 }
 
-std::shared_ptr<Scene> vxRenderProcess::scene() const
+std::shared_ptr<Scene> RenderProcess::scene() const
 {
 	return m_scene;
 }
 
-void vxRenderProcess::setScene(const std::shared_ptr<Scene> &scene)
+void RenderProcess::setScene(const std::shared_ptr<Scene> &scene)
 {
 	m_scene = scene;
 }

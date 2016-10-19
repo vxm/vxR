@@ -14,14 +14,15 @@ class Process
 	std::string m_name;
 	
 	public:
+	///
+	/// \brief Process
+	///
 	Process();
-
-	// performs any preprocess of this task
-	virtual Status::code preProcess(Process* p=nullptr) = 0;
-	// performs any postprocess of this task
-	virtual Status::code postProcess(Process* p=nullptr) = 0;
-	virtual Status::code execute() = 0;
-	virtual Status::code preConditions() = 0;
+	///
+	/// \brief ~Process
+	///
+	virtual ~Process() {}
+	
 	std::string name() const;
 	void setName(const std::string &name);
 };
