@@ -21,7 +21,7 @@
 static const std::string baseName("image.0000001.tif");
 using namespace std::string_literals;
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
-using render = vxCompute::vxRenderProcess;
+using render = vxCompute::RenderProcess;
 using namespace vxCore;
 
 int executeRenderProcess(int argc, char *argv[])
@@ -59,7 +59,9 @@ int executeRenderProcess(int argc, char *argv[])
 			const auto reflectionSamples = node->getInt("reflectionSamples");
 			const auto giSamples = node->getInt("giSamples");
 			const auto giMultiplier = node->getFloat("giMultiplier");
-//			const auto numThreads = node->getInt("numThreads");
+			const auto lightBounces = node->getInt("lightBounces");
+			
+			//			const auto numThreads = node->getInt("numThreads");
 			
 			// Img properties for render.
 			auto renderProperties = std::make_shared<ImageProperties>(resolution.x(),
@@ -84,6 +86,7 @@ int executeRenderProcess(int argc, char *argv[])
 			rp.setScene(m_scene);
 			rp.setDatabase(sceneParser);
 			rp.setGIMultiplier(giMultiplier);
+			rp.setLightBounces(lightBounces);
 			rp.setVisSamples(samples);
 			rp.setReflectionSamples(reflectionSamples);
 			rp.setGISamples(giSamples);

@@ -192,12 +192,26 @@ void Scene::buildGrids()
 {
 	for(const auto node: m_nodeDB->getNodesByType("vxGrid"))
 	{
-		const auto resolution = node->getInt("resolution");
 		const auto transform = node->getMatrix("transform");
-		const auto color = Color::lookup256(node->getColor("color"));
 		const auto size = node->getFloat("size");
-		
 		auto grid = std::make_shared<Grid>(transform.origin(), size);
+		
+		auto&& shaderNodeName = node->getString("shader");
+		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
+		if(!shaderNode)
+		{
+			std::cerr << "shader node name " 
+					  << shaderNodeName 
+					  << " does not exist in database." 
+					  << std::endl;
+			assert(true);
+		}
+		
+		grid->setShader((Shader*)shaderNode->m_object);
+		
+		const auto color = Color::lookup256(node->getColor("color"));
+		const auto resolution = (unsigned long)node->getInt("resolution");
+		
 		grid->setResolution(resolution);
 		grid->setTransform(transform);
 		
@@ -224,6 +238,7 @@ void Scene::buildGrids()
 		//grid->createEdges((unsigned char)12u);
 		//grid->createRandom(.004,0.85);
 		//grid->dumpFileInMemory("/home/mario/Downloads/xyzrgb_statuette_1.ply");
+		
 		
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();

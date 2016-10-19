@@ -74,7 +74,7 @@ void TriangleMesh::open()
 
 void TriangleMesh::close()
 {
-	auto triangleID{0ul};
+	auto triangleID = 0ul;
 
 	updateAccelerationStuctures();
 	
@@ -252,7 +252,7 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 			}
 		}
 		
-		//col.setColor(m_baseColor);
+		col.setColor(m_baseColor);
 		col.setValid(true);
 		return 1;
 	}

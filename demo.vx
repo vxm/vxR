@@ -81,6 +81,7 @@ active = "false"
     giSamples = 0
     giMultiplier = 1.0
     numThreads = -1
+    lightBounces = 4
 }
 
 node
@@ -89,11 +90,12 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 2
+    pixelSamples = 4
     reflectionSamples = 1
     giSamples = 0
     giMultiplier = 1.0
     numThreads = -1
+    lightBounces = 9
 }
 
 node
@@ -107,6 +109,7 @@ active = "false"
     giSamples = 10
     giMultiplier = 0.7
     numThreads = -1
+    lightBounces = 4
 }
 
 node
@@ -120,6 +123,7 @@ active = "false"
     giSamples = 1
     giMultiplier = 1.5
     numThreads = -1
+    lightBounces = 4
 }
 
 node
@@ -133,6 +137,7 @@ active = "false"
     giSamples = 25
     giMultiplier = 1.5
     numThreads = -1
+    lightBounces = 4
 }
 
 node
@@ -145,6 +150,7 @@ active = "false"
     reflectionSamples = 4
     giSamples = 230
     numThreads = -1
+    lightBounces = 4
 }
 
 node
@@ -164,7 +170,7 @@ node
 {
 name = "cylinder_1"
 type = "vxIsoGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 10.0 0.4 0.0 1]
     radius = 1.0
     shader = "shader_1"
@@ -174,7 +180,7 @@ node
 {
 name = "cylinder_2"
 type = "vxIsoGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -12.4 0.0 1.0 1]
     radius = 1.0
     shader = "shader_1"
@@ -184,7 +190,7 @@ node
 {
 name = "cylinder_3"
 type = "vxIsoGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2.4 -0.2 12.0 1]
     radius = 1.0
     shader = "shader_1"
@@ -232,7 +238,7 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.64 0.0 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
     color = 138 158 144
@@ -304,6 +310,18 @@ name = "gnome_tris_1"
 type = "vxGeometry"
 active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.8 -0.6 0.2 1]
+    filePath = "/home/john/Downloads/gnome_low_1.ply"
+    color = 249 1 1
+    shader = "shader_1"
+}
+
+
+node
+{
+name = "gnome_tris_3"
+type = "vxGeometry"
+active = "false"
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.2 -0.6 0.2 1]
     filePath = "/home/john/Downloads/gnome_low_1.ply"
     color = 249 249 249
     shader = "shader_1"
@@ -554,16 +572,16 @@ node
 {
 name = "area_light_1"
 type = "vxAreaLight"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -7 9 0 1]
-    intensity = 0.78
-    color = 238 197 136
-    samples = 4
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -17 9 0 1]
+    intensity = 01.78
+    color = 238 238 238
+    samples = 12
     castShadows = "false"
-    minX = -12.5
+    minX = -5.5
     minY = 0.3
-    maxX = 12.5
-    maxY = 2.3
+    maxX = 5.5
+    maxY = 3.3
 }
 
 
@@ -571,7 +589,7 @@ node
 {
 name = "area_light_2"
 type = "vxAreaLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 8 5 -5 1]
     intensity = 0.42
     color = 166 170 193
@@ -631,11 +649,11 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 1.27
     color = 224 192 88
-    orientation = 12.0 -2.0 12.0
+    orientation = -12.0 -7.0 0.0
     samples = 1
     castShadows = "true"
 }
@@ -681,9 +699,9 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "false"
+active = "true"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0 0.65 0 1]
-    resolution = 260
+    resolution = 100
     size = 2.35
     color = 212 212 212
     shader = "shader_1"
