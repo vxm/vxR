@@ -71,7 +71,7 @@ void GeoGrid::setBb(const std::shared_ptr<BoundingBox> &bb)
 				  MU::clamp((unsigned int)(d.z()*64.0), 4u, 64u));
 }
 
-unsigned int GeoGrid::size() const
+unsigned long GeoGrid::size() const
 {
 	return m_rx * m_ry * m_rz;
 }

@@ -20,7 +20,7 @@ struct searchResult
 ///
 /// \brief The vxGeoGrid class
 ///
-class GeoGrid
+class GeoGrid final
 {
 	///
 	/// \brief m_bb
@@ -89,7 +89,7 @@ public:
 	/// \brief size
 	/// \return 
 	///
-	unsigned int size() const;
+	unsigned long size() const;
 	///
 	/// \brief index
 	/// \param a
