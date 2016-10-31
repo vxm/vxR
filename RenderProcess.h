@@ -210,9 +210,40 @@ public:
 	/// \param col
 	/// \return 
 	///
-	Color computeEnergyAndColor(unsigned int iter, const Ray &ray, Collision &col);
+	Color computeEnergyAndColor(const Ray &ray, Collision &col);
+	///
+	/// \brief lightBounces
+	/// \return 
+	///
 	unsigned int lightBounces() const;
+	///
+	/// \brief setLightBounces
+	/// \param lightBounces
+	///
 	void setLightBounces(unsigned int lightBounces);
+	///
+	/// \brief computeReflection
+	/// \param iter
+	/// \param ray
+	/// \param col
+	/// \return 
+	///
+	Color computeReflection(unsigned int iter, const Ray &ray, Collision &col);
+	///
+	/// \brief computeGI
+	/// \param iter
+	/// \param ray
+	/// \param col
+	/// \return 
+	///
+	Color computeGI(unsigned int iter, Collision &col);
+	///
+	/// \brief getShader
+	/// \param col
+	/// \return 
+	///Gets the proper shader, either stored in geometry 
+	/// or scene default.
+	Shader *getShader(const Collision &col);
 };
 
 #endif // VXRENDERPROCESS_H

@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include "MathUtils.h"
-
+#include "Geometry.h"
 using namespace vxCore;
 
 Lambert::Lambert()
@@ -195,9 +195,9 @@ Color Lambert::getIlluminatedColor(const Ray &ray, const Collision &collide) con
 
 Color Lambert::getColor(const Ray &, const Collision &collide) const
 {
-	Color ret;
+	Color ret = Color::zero;
 	
-	auto&& color = m_diffuse.compute(collide)*m_diffuseColor;
+	auto&& color = collide.m_geo->baseColor();//m_diffuse.compute(collide)*m_diffuseColor;
 	ret = MU::remap(color, 0.0, 0.85);
 
 	return ret;
@@ -215,7 +215,7 @@ Color vxCore::Shader::getLightLoop(const Ray &ray, const Collision &collision) c
 	//assert(m_lights);
 	Color acumColor;
 
-	for(const auto& light:*m_lights)
+	for(auto&& light:*m_lights)
 	{
 		acumColor.add( light->acummulationLight(ray, collision) );
 	}

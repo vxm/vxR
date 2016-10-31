@@ -558,6 +558,10 @@ public:
 	bool operator>(const v3s &other) const;
 	bool operator<(const v3s &other) const;
 	///
+	/// \brief invert
+	///
+	void invert();
+	///
 	/// \brief follows
 	/// \param direction
 	/// \return 

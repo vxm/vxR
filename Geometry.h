@@ -31,7 +31,7 @@ protected:
 	std::shared_ptr<BoundingBox> m_bb;
 	Matrix44 m_transform;
 	
-	Color m_baseColor;
+	Color m_baseColor = Color::grey;
 	Shader* m_shader;
 	
 public:

@@ -279,12 +279,12 @@ v3s MathUtils::getSolidSphereRand(scalar radius)
 v3s MathUtils::getHollowHemisphereRand(scalar radius, 
 											  const v3s &n)
 {
-	v3s r;
-	do
+	auto&& r = getHollowSphereRand(radius);
+	
+	if(!n.follows(r))
 	{
-		r = getHollowSphereRand(radius);
+		r.invert();
 	}
-	while(!n.follows(r));
 	
 	return r;
 }

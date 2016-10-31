@@ -640,6 +640,8 @@ int Scene::domeThrowRay(const Ray &ray, Collision &collide) const
 		m_domes[0]->throwRay(ray, collide);
 	}
 	
+	collide.setAlphaValue(0.0);
+	
 	return 1;
 }
 
@@ -653,6 +655,7 @@ int Scene::throwRay(const Ray &ray, Collision &collide) const
 	}
 	
 	collide.setValid(false);
+	
 	return 0;
 }
 

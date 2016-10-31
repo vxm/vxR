@@ -498,6 +498,13 @@ bool v3s::operator<(const v3s& other) const
 	return a<b;
 }
 
+void v3s::invert()
+{
+	m_x*=scalar(-1.0);
+	m_y*=scalar(-1.0);
+	m_z*=scalar(-1.0);
+}
+
 bool v3s::follows(const v3s &direction) const
 {
 	return dot(direction)<0.0;
