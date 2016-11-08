@@ -81,7 +81,7 @@ static_assert(sizeof(vx)==1, "vx size is wrong");
 /// \brief The Voxel class
 /// This is a temporary interchange struct data 
 /// it is not meant to be stored in the grid data.
-class Voxel
+class VoxelInfo
 {
 public:
 	unsigned long long index{0ull};
@@ -320,7 +320,7 @@ public:
 	/// \param sp
 	/// \return 
 	///
-	Voxel nextVoxel(const Ray &ray, v3s &sp) const;
+	VoxelInfo nextVoxel(const Ray &ray, v3s &sp) const;
 	///
 	/// \brief initialize
 	/// \param value

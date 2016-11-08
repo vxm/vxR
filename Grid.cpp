@@ -682,9 +682,9 @@ bool Grid::inGrid(const v3s &pnt) const
 	return m_bb->contains(pnt);
 }
 
-Voxel Grid::nextVoxel(const Ray &ray, v3s &sp) const
+VoxelInfo Grid::nextVoxel(const Ray &ray, v3s &sp) const
 {
-	Voxel retVal;
+	VoxelInfo retVal;
 	retVal.size = m_c_boxSize;
 	
 	const auto& d = ray.direction();
@@ -813,17 +813,12 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		{
 			box.set(voxel.position, voxel.size);
 			
-			srand(prev);
-			scalar ang = MU::getRand(.1);
-			
-			auto nRay = ray;
-			nRay.setDirection(nRay.direction().rotate({0,1,0},ang));
-			
-			if(box.throwRay(nRay,col))
+			if(box.throwRay(ray,col))
 			{
 				return 1;
 			}
 			return 1;
+			
 			//col.setColor(Color::indexColor(voxel.data.byte())/1.0);
 			//col.setColor(Color::green);
 		}
