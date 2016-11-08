@@ -10,7 +10,7 @@ namespace vxCore {
 class Dome
 {
 	// Light domm
-	vxImageHandle m_image;
+	ImageHandle m_image;
 
 	scalar m_radius{62.8};
 	
@@ -23,7 +23,7 @@ public:
 	/// \brief vxDome
 	/// \param env
 	///
-	Dome(vxImageHandle env);
+	Dome(ImageHandle env);
 	///
 	/// \brief gain
 	/// \return 
@@ -54,6 +54,14 @@ public:
 	/// \param radius
 	///
 	void setRadius(const scalar &radius);
+
+	///
+	/// \brief computeLight
+	/// \param ray
+	/// \param collide
+	/// \return 
+	///
+	int computeLight(const Ray &ray, Collision &collide) const;
 
 	//renderable interface
 	bool throwRay(const Ray &) const;

@@ -7,7 +7,7 @@ Dome::Dome()
 {
 }
 
-Dome::Dome(vxImageHandle env)
+Dome::Dome(ImageHandle env)
 	: m_image(env)
 {
 }
@@ -50,13 +50,29 @@ bool Dome::throwRay(const Ray &) const
 int Dome::throwRay(const Ray &ray, Collision &collide) const
 {
 	collide.setUV(MU::normalToCartesian(ray.direction()));
+
 	auto environmentColor = m_image->compute(collide);
+	
 	collide.setPosition(ray.origin() + ray.direction() * m_radius);
-	//TODO: this should be valid and maybe have an alpha 0.
-	//collide.setValid(false);
 	
 	collide.setColor(environmentColor);
-	collide.setAlphaValue(1.0);
+	
+	return 1;
+}
+
+
+int Dome::computeLight(const Ray &ray, Collision &collide) const
+{
+	collide.setUV(MU::normalToCartesian(ray.direction()));
+	
+	auto environmentColor = m_image->compute(collide);
+	
+	collide.setPosition(ray.origin() + ray.direction() * m_radius);
+	
+	environmentColor.applyCurve(gamma(), gain());
+	
+	collide.setColor(environmentColor);
+	
 	return 1;
 }
 
