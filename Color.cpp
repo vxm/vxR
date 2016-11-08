@@ -236,9 +236,9 @@ scalar Color::lumma() const
 
 void Color::mix(const Color &other, scalar alpha)
 {
-	m_r += MU::lerp(m_r, other.m_r, alpha);
-	m_g += MU::lerp(m_g, other.m_g, alpha);
-	m_b += MU::lerp(m_b, other.m_b, alpha);
+	m_r = MU::lerp(m_r, other.m_r, alpha);
+	m_g = MU::lerp(m_g, other.m_g, alpha);
+	m_b = MU::lerp(m_b, other.m_b, alpha);
 }
 
 void Color::mixSumm(const Color &other, scalar alpha)
