@@ -780,21 +780,14 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		return 1;
 	}
 #else
-	
-	Collision tmp;
-	if(!m_bb->throwRay(ray, tmp))
-	{
-		return 0;
-	}
-	
-	auto&& sp = tmp.position()
-			+ (tmp.normal().inverted().tiny());
+	auto&& sp = col.position()
+			+ (col.normal().inverted().tiny());
 	
 	auto prev = m_c_resXresXres;
 	BoundingBox box;
 	
 	//Should this be cached?
-	Voxel voxel;
+	VoxelInfo voxel;
 	do
 	{
 		voxel = nextVoxel(ray, sp);
