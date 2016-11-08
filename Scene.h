@@ -56,7 +56,7 @@ protected:
 	
 	std::vector<std::shared_ptr<Light>> m_lights;
 	
-	std::vector<vxImageHandle> m_bitMaps;
+	std::vector<ImageHandle> m_bitMaps;
 	std::vector<vxDomeHandle> m_domes;
 	
 	vxShaderHandle m_shader = {nullptr};
@@ -237,7 +237,7 @@ public:
 	/// \param path
 	/// \return 
 	///
-	vxImageHandle createImage(const std::string &path,
+	ImageHandle createImage(const std::string &path,
 							  const scalar gain,
 							  const scalar gamma);
 	///
@@ -280,7 +280,15 @@ public:
 	/// \param node
 	/// \return 
 	///
-	vxImageHandle getImage(vxNodeHandle node);
+	ImageHandle getImage(vxNodeHandle node);
+	
+	///
+	/// \brief domeComputeLight
+	/// \param ray
+	/// \param collide
+	/// \return 
+	///
+	int domeComputeLight(const Ray &ray, Collision &collide) const;
 	
 	//renderable interface
 	bool throwRay(const Ray &ray) const;

@@ -509,9 +509,9 @@ std::shared_ptr<Plane> Scene::createPlane(Plane::type type)
 	return plane;
 }
 
-vxImageHandle Scene::getImage(vxNodeHandle node)
+ImageHandle Scene::getImage(vxNodeHandle node)
 {
-	vxImageHandle ret;
+	ImageHandle ret;
 	
 	if(node->type()!="vxImage"s)
 	{
@@ -550,7 +550,7 @@ vxImageHandle Scene::getImage(vxNodeHandle node)
 	return ret;
 }
 
-vxImageHandle Scene::createImage(const std::string &path,
+ImageHandle Scene::createImage(const std::string &path,
 								   const scalar gain,
 								   const scalar gamma)
 {

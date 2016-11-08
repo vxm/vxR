@@ -73,7 +73,7 @@ public:
 	bool operator==(const Image& other) const;
 };
 
-using vxImageHandle = std::shared_ptr<Image>;
+using ImageHandle = std::shared_ptr<Image>;
 
 }
 
