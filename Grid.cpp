@@ -787,10 +787,8 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		return 0;
 	}
 	
-	auto&& p = ray.origin();
-	
-	auto sp =  tmp.position()
-			+ (tmp.normal().inverted() / (scalar)10000.0);
+	auto&& sp = tmp.position()
+			+ (tmp.normal().inverted().tiny());
 	
 	auto prev = m_c_resXresXres;
 	BoundingBox box;
@@ -814,9 +812,20 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		if(voxel.data.active())
 		{
 			box.set(voxel.position, voxel.size);
-			box.throwRay(ray,col);
-			col.setColor(Color::indexColor(voxel.data.byte()));
+			
+			srand(prev);
+			scalar ang = MU::getRand(.1);
+			
+			auto nRay = ray;
+			nRay.setDirection(nRay.direction().rotate({0,1,0},ang));
+			
+			if(box.throwRay(nRay,col))
+			{
+				return 1;
+			}
 			return 1;
+			//col.setColor(Color::indexColor(voxel.data.byte())/1.0);
+			//col.setColor(Color::green);
 		}
 	}
 	while(!voxel.data.active());

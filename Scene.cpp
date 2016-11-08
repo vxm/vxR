@@ -638,11 +638,21 @@ int Scene::domeThrowRay(const Ray &ray, Collision &collide) const
 	if(m_domes.size())
 	{
 		m_domes[0]->throwRay(ray, collide);
+		return 1;
 	}
-	
-	collide.setAlphaValue(0.0);
-	
-	return 1;
+		
+	return 0;
+}
+
+int Scene::domeComputeLight(const Ray &ray, Collision &collide) const
+{
+	if(m_domes.size())
+	{
+		m_domes[0]->computeLight(ray, collide);
+		return 1;
+	}
+		
+	return 0;
 }
 
 int Scene::throwRay(const Ray &ray, Collision &collide) const
