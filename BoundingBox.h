@@ -10,16 +10,14 @@
 
 namespace vxCore {
 
- class BoundingBox;
- class Matrix44;
+class BoundingBox;
+class Matrix44;
 
 using BoundingBoxHandle = std::shared_ptr<BoundingBox>;
 
 //TODO: this class needs heavy caching on "close" method.
 class BoundingBox: public std::enable_shared_from_this<BoundingBox>
 {
-	std::atomic_bool m_init{false};
-	
 	scalar m_minX;
 	scalar m_minY;
 	scalar m_minZ;

@@ -9,7 +9,7 @@ BoundingBox::BoundingBox()
 
 void BoundingBox::clear()
 {
-	m_init = false;
+	m_minX = m_maxX - 1.0;
 }
 
 void BoundingBox::set(v3s position, scalar size)
@@ -21,8 +21,6 @@ void BoundingBox::set(v3s position, scalar size)
 	m_maxX = position.x() + (size / scalar(2.0));
 	m_maxY = position.y() + (size / scalar(2.0));
 	m_maxZ = position.z() + (size / scalar(2.0));
-
-	m_init = true;
 }
 
 void BoundingBox::set(scalar mnx, scalar mny, scalar mnz, 
@@ -35,13 +33,12 @@ void BoundingBox::set(scalar mnx, scalar mny, scalar mnz,
 	m_maxX = mxx;
 	m_maxY = mxy;
 	m_maxZ = mxz;
-
-	m_init = true;
 }
 
 void BoundingBox::markAsInitialized()
 {
-	m_init = true;
+	if(m_minX>m_maxX)
+		m_minX = m_maxX;
 }
 
 void BoundingBox::close()
@@ -53,12 +50,11 @@ void BoundingBox::close()
 
 void BoundingBox::extend(const v3s &limit)
 {
-	if(!m_init)
+	if(m_minX>m_maxX)
 	{
 		m_maxX = m_minX = limit.x();
 		m_maxY = m_minY = limit.y();
 		m_maxZ = m_minZ = limit.z();
-		markAsInitialized();
 		return;
 	}
 	
@@ -74,7 +70,7 @@ void BoundingBox::extend(const v3s &limit)
 
 void BoundingBox::extend(const BoundingBox &box)
 {
-	if(!m_init)
+	if(m_minX>m_maxX)
 	{
 		m_minX = box.m_minX;
 		m_minY = box.m_minY;
@@ -83,9 +79,6 @@ void BoundingBox::extend(const BoundingBox &box)
 		m_maxX = box.m_maxX;
 		m_maxY = box.m_maxY;
 		m_maxZ = box.m_maxZ;
-		
-		markAsInitialized();
-		return;
 	}
 	
 	m_minX = std::min(box.minX(), m_minX);
