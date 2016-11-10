@@ -770,16 +770,7 @@ bool Grid::throwRay(const Ray &ray) const
 }
 
 int Grid::throwRay(const Ray &ray, Collision &col) const
-{ 
-#if DRAWBBOX
-	if(m_bb->throwRay(ray, col))
-	{
-		col.setColor(m_baseColor);
-		col.setValid(true);
-		
-		return 1;
-	}
-#else
+{
 	auto&& sp = col.position()
 			+ (col.normal().inverted().tiny());
 	
