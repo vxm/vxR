@@ -164,12 +164,6 @@ int printHelp()
 	return 0;
 }
 
-void index(unsigned int idx)
-{
-	std::cout << "index: " << idx << " [p]: " << (idx>>abs(idx>>2)) << std::endl;
-}
-
-
 int main(int argc, char *argv[])
 {
 	MU::fillRand();
