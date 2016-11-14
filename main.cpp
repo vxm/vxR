@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
 		for(int i=1; i<argc; i++)
 		{
 			std::cout << "\t arc   " << argv[i] << std::endl;
-			if("-r"s==argv[i])
+			if(argv[i] == "-r"s)
 			{
 				program = 3;
 				break;

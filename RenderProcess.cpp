@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 655
-#define PIXEL_Y 328
+#define PIXEL_X 531
+#define PIXEL_Y 228
 #endif
 
 #ifdef _DEBUG
@@ -333,7 +333,7 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 	if(col.isValid())
 	{
 		// Compute reflection
-		retColor += computeReflection(m_lightBounces, ray, col);
+		//retColor += computeReflection(m_lightBounces, ray, col);
 		
 		// Compute Global Illumination
 		retColor += computeGI(m_lightBounces, col);

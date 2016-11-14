@@ -169,11 +169,11 @@ unsigned int Grid::neighboursAlive(unsigned long long idx)
 				}
 				
 				if(x >= (long)m_resolution
-					|| y >= (long)m_resolution
-					|| z >= (long)m_resolution
-					|| x<0
-					|| y<0 
-					|| z<0)
+						|| y >= (long)m_resolution
+						|| z >= (long)m_resolution
+						|| x<0
+						|| y<0 
+						|| z<0)
 				{
 					continue;
 				}
@@ -218,13 +218,13 @@ unsigned long long Grid::playGameOfLife()
 void Grid::markCellAsDead(vx &cell)
 {
 	cell.c = 0b0000'0000;
-	cell.activateBit(4);
+			cell.activateBit(4);
 }
 
 void Grid::markCellForGenesis(vx &cell)
 {
 	cell.c = 0b0000'0000;
-	cell.activateBit(6);
+			cell.activateBit(6);
 }
 
 unsigned long long Grid::killTheDead()
@@ -462,13 +462,13 @@ long Grid::getNumberOfVoxels() const
 }
 
 bool Grid::active(const unsigned long x, 
-					const unsigned long y, 
-					const unsigned long z) const
+				  const unsigned long y, 
+				  const unsigned long z) const
 {
 	return getElement(x,y,z);
 }
 
- bool Grid::active(const v3s &pos) const
+bool Grid::active(const v3s &pos) const
 {
 	if(inGrid(pos))
 	{
@@ -481,7 +481,7 @@ bool Grid::active(const unsigned long x,
 	return false;
 }
 
- bool Grid::activeInRange(const v3s &pos) const
+bool Grid::activeInRange(const v3s &pos) const
 {
 	const auto&& fPos = pos - (m_position - m_c_midSize);
 	return getElement((unsigned long)floor(fPos.x()),
@@ -490,7 +490,7 @@ bool Grid::active(const unsigned long x,
 }
 
 
- bool Grid::active(unsigned long idx) const
+bool Grid::active(unsigned long idx) const
 {
 	if (idx<m_c_resXresXres)
 		return vxAt(idx).active();
@@ -498,9 +498,9 @@ bool Grid::active(const unsigned long x,
 		return false;
 }
 
- void Grid::activate(const unsigned long x, 
-							 const unsigned long y, 
-							 const unsigned long z)
+void Grid::activate(const unsigned long x, 
+					const unsigned long y, 
+					const unsigned long z)
 {
 	setElement(x,y,z,true);
 }
@@ -521,75 +521,75 @@ bool Grid::activate(const v3s &pos)
 }
 
 
- void Grid::deactivate(const unsigned long x, const unsigned long y, const unsigned long z)
+void Grid::deactivate(const unsigned long x, const unsigned long y, const unsigned long z)
 {
 	setElement(x,y,z,false);
 }
 
- bool Grid::getElement(const unsigned long x, 
-							   const unsigned long y, 
-							   const unsigned long z) const
+bool Grid::getElement(const unsigned long x, 
+					  const unsigned long y, 
+					  const unsigned long z) const
 {
 	return active(index(x,y,z));
 }
 
- void Grid::setElement(const unsigned long x, 
-							   const unsigned long y, 
-							   const unsigned long z, 
-							   bool value)
+void Grid::setElement(const unsigned long x, 
+					  const unsigned long y, 
+					  const unsigned long z, 
+					  bool value)
 {
 	vxAt(x,y,z).activate(value);
 }
 
 
- unsigned char Grid::elementColorIndex(const unsigned long x, 
-											   const unsigned long y, 
-											   const unsigned long z) const
+unsigned char Grid::elementColorIndex(const unsigned long x, 
+									  const unsigned long y, 
+									  const unsigned long z) const
 {
 	return (index(x,y,z))%8;
 }
 
- void Grid::setElementColorIndex(const unsigned long x, 
-										 const unsigned long y, 
-										 const unsigned long z, 
-										 const unsigned char c)
+void Grid::setElementColorIndex(const unsigned long x, 
+								const unsigned long y, 
+								const unsigned long z, 
+								const unsigned char c)
 {
 	vxAt(x,y,z).setByte(c);
 }
 
- void Grid::setElement(unsigned long idx, bool value)
+void Grid::setElement(unsigned long idx, bool value)
 {
 	vxAt(idx).activate(value);
 }
 
 void Grid::getComponentsOfIndex(const unsigned long long idx,
-								  long &retx, 
-								  long &rety, 
-								  long &retz) const
+								long &retx, 
+								long &rety, 
+								long &retz) const
 {
 	retz = idx / m_c_resXres;
 	rety = (idx % m_c_resXres) / m_resolution;
 	retx = idx % m_resolution;
 }
 
- unsigned long Grid::indexAtPosition(const v3s &pos) const
+unsigned long Grid::indexAtPosition(const v3s &pos) const
 {
 	auto p = ((pos - m_position + m_c_midSize)/m_c_boxSize).floorVector();
 	
 	return index((unsigned long)p.x(),(unsigned long)p.y(),(unsigned long)p.z());
 }
 
- v3s Grid::getVoxelPosition(const unsigned long iX, 
-								   const unsigned long iY, 
-								   const unsigned long iZ) const
+v3s Grid::getVoxelPosition(const unsigned long iX, 
+						   const unsigned long iY, 
+						   const unsigned long iZ) const
 {
 	return v3s(m_bb->minX()+(iX*m_c_boxSize),
-			  m_bb->minY()+(iY*m_c_boxSize),
-			  m_bb->minZ()+(iZ*m_c_boxSize)) + (m_c_midBoxSize);
+			   m_bb->minY()+(iY*m_c_boxSize),
+			   m_bb->minZ()+(iZ*m_c_boxSize)) + (m_c_midBoxSize);
 	
 }
 
- v3s Grid::getVoxelPosition(unsigned long long idx) const
+v3s Grid::getVoxelPosition(unsigned long long idx) const
 {
 	long retx;
 	long rety;
@@ -600,40 +600,40 @@ void Grid::getComponentsOfIndex(const unsigned long long idx,
 	return getVoxelPosition(retx, rety, retz);
 }
 
- vx& Grid::vxAtPosition(const v3s &position)
+vx& Grid::vxAtPosition(const v3s &position)
 {
 	const auto&& idx = indexAtPosition(position);
 	return vxAt(idx>=m_c_resXresXres ? 0 : idx);
 }
 
- vx Grid::vxAtPosition(const v3s &position) const
+vx Grid::vxAtPosition(const v3s &position) const
 {
 	const auto&& idx = indexAtPosition(position);
 	return vxAt(idx>=m_c_resXresXres ? 0:idx);
 }
 
 vx &Grid::vxAt(const unsigned long iX, 
-				 const unsigned long iY, 
-				 const unsigned long iZ)
+			   const unsigned long iY, 
+			   const unsigned long iZ)
 {
 	return vxAt(index(iX,iY,iZ));
 }
 
 
 vx Grid::vxAt(const unsigned long iX, 
-				const unsigned long iY, 
-				const unsigned long iZ) const
+			  const unsigned long iY, 
+			  const unsigned long iZ) const
 {
 	return vxAt(index(iX,iY,iZ));
 }
 
 
- vx &Grid::vxAt(const unsigned long idx)
+vx &Grid::vxAt(const unsigned long idx)
 {
 	return m_data[idx];
 }
 
- vx Grid::vxAt(const unsigned long idx) const
+vx Grid::vxAt(const unsigned long idx) const
 {
 	return m_data[idx];
 }
@@ -651,8 +651,8 @@ bool Grid::bitInBufferData(const unsigned long idx) const
 }
 
 void Grid::createSphere(const v3s &center, 
-						  const scalar radio, 
-						  unsigned char colorIndex)
+						const scalar radio, 
+						unsigned char colorIndex)
 {
 	unsigned long x, y, z;
 	
@@ -690,13 +690,13 @@ VoxelInfo Grid::nextVoxel(const Ray &ray, v3s &sp) const
 	const auto& d = ray.direction();
 	const auto& p = ray.origin();
 	
-	scalar velX = d.xPositive() ? 1.0 : 0.0;
-	scalar velY = d.yPositive() ? 1.0 : 0.0;
-	scalar velZ = d.zPositive() ? 1.0 : 0.0;
+	const scalar velX = d.xPositive() ? 1.0 : 0.0;
+	const scalar velY = d.yPositive() ? 1.0 : 0.0;
+	const scalar velZ = d.zPositive() ? 1.0 : 0.0;
 	
-	auto&& xProgress = p + v3s((velX ? m_c_midBoxSize : -m_c_midBoxSize), 0.0, 0.0);
-	auto&& yProgress = p + v3s(0.0, (velY ? m_c_midBoxSize : -m_c_midBoxSize), 0.0);
-	auto&& zProgress = p + v3s(0.0, 0.0, (velZ ? m_c_midBoxSize : -m_c_midBoxSize));
+	const auto xProgress = p + v3s((velX ? m_c_midBoxSize : -m_c_midBoxSize), 0.0, 0.0);
+	const auto yProgress = p + v3s(0.0, (velY ? m_c_midBoxSize : -m_c_midBoxSize), 0.0);
+	const auto zProgress = p + v3s(0.0, 0.0, (velZ ? m_c_midBoxSize : -m_c_midBoxSize));
 	
 	long retx;
 	long rety;
@@ -775,41 +775,126 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			+ (col.normal().inverted().tiny());
 	
 	auto prev = m_c_resXresXres;
+	
 	BoundingBox box;
 	
 	//Should this be cached?
 	VoxelInfo voxel;
+	
+	const auto& d = ray.direction();
+	const auto& p = ray.origin();
+	
+	const scalar velX = d.xPositive() ? 1.0 : 0.0;
+	const scalar velY = d.yPositive() ? 1.0 : 0.0;
+	const scalar velZ = d.zPositive() ? 1.0 : 0.0;
+	
+	const auto xProgress = p + v3s((velX ? m_c_midBoxSize : -m_c_midBoxSize), 0.0, 0.0);
+	const auto yProgress = p + v3s(0.0, (velY ? m_c_midBoxSize : -m_c_midBoxSize), 0.0);
+	const auto zProgress = p + v3s(0.0, 0.0, (velZ ? m_c_midBoxSize : -m_c_midBoxSize));
+	
+	bool skipVoxel = false;
 	do
 	{
-		voxel = nextVoxel(ray, sp);
+		VoxelInfo retVal;
+		retVal.size = m_c_boxSize;
 		
-		if(prev==voxel.index
+		long retx;
+		long rety;
+		long retz;
+		
+		bool inside = true;
+		
+		do
+		{
+			retVal.index = indexAtPosition(sp);
+			retVal.data = vxAt(retVal.index);
+			
+			if(retVal.index >= m_c_resXresXres)
+			{
+				goto retPoint;
+			}
+			
+			if(skipVoxel)
+			{
+				retVal.data.deactivate();
+				skipVoxel = false;
+			}
+			
+			if(retVal.data.active())
+			{
+				retVal.position = getVoxelPosition(retVal.index);
+				goto retPoint;
+			}
+			
+			getComponentsOfIndex(retVal.index, retx, rety, retz);
+			
+			scalar xVal = m_bb->minX() + (retx + velX) * m_c_boxSize - p.x();
+			scalar yVal = m_bb->minY() + (rety + velY) * m_c_boxSize - p.y();
+			scalar zVal = m_bb->minZ() + (retz + velZ) * m_c_boxSize - p.z();
+			
+			v3s&& intersectX = MU::rectAndXPlane(d, xVal);
+			if(fabs(intersectX.y()) <= fabs(yVal)
+					&& fabs(intersectX.z()) <= fabs(zVal))
+			{
+				sp = intersectX + xProgress;
+				continue;
+			}
+			
+			v3s&& intersectY = MU::rectAndYPlane(d, yVal);
+			if(fabs(intersectY.x()) <= fabs(xVal)
+					&& fabs(intersectY.z()) <= fabs(zVal))
+			{
+				sp = intersectY + yProgress;
+				continue;
+			}
+			
+			v3s&& intersectZ = MU::rectAndZPlane(d, zVal);
+			if(fabs(intersectZ.x()) <= fabs(xVal)
+					&& fabs(intersectZ.y()) <= fabs(yVal))
+			{
+				sp = intersectZ + zProgress;
+				continue;
+			}
+			
+		}
+		while(!retVal.data.active()
+			  && (inside = m_bb->contains(sp)));
+		
+		retVal.data.deactivate();
+		
+		retVal.index = m_c_resXresXres;
+		
+retPoint:
+		voxel = retVal;
+		
+		if(prev == voxel.index
 				|| voxel.x >= m_resolution
 				|| voxel.y >= m_resolution
 				|| voxel.z >= m_resolution)
 		{
-			break;
+			goto fin;
 		}
 		
 		prev = voxel.index;
 		
 		if(voxel.data.active())
 		{
-			box.set(voxel.position, voxel.size);
+			box.set(voxel.position, voxel.size / 2.0);
 			
-			if(box.throwRay(ray,col))
+			box.throwRay(ray,col);
+			//if(box.throwRay(ray,col))
 			{
+				col.setColor(Color::indexColor(voxel.data.byte()));
 				return 1;
 			}
-			return 1;
 			
-			//col.setColor(Color::indexColor(voxel.data.byte())/1.0);
-			//col.setColor(Color::green);
+			skipVoxel = true;
+			voxel.data.deactivate();
 		}
 	}
 	while(!voxel.data.active());
-	
-#endif
+
+fin:
 	
 	col.setValid(false);
 	return 0;
@@ -948,14 +1033,15 @@ void vx::activate()
 
 void vx::deactivate()
 {
-	deactivateBit(7);
+	c=0;
+	/*deactivateBit(7);
 	deactivateBit(6);
 	deactivateBit(5);
 	deactivateBit(4);
 	
 	activateBit(0);
 	activateBit(1);
-	activateBit(2);
+	activateBit(2);*/
 }
 
 unsigned char vx::byte() const
