@@ -704,7 +704,7 @@ active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 21 0 0 0 0 1]
     intensity = 1.1
     color = 224 220 201
-    orientation = 14.0 -6.0 11.0
+    orientation = 6.0 -4.0 1.0
     samples = 1
     castShadows = "true"
 }
@@ -752,7 +752,7 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 0.50 0.0 1]
-    resolution = 2
+    resolution = 200
     size = 1.0
     color = 112 112 142
     shader = "shader_1"

@@ -215,13 +215,13 @@ unsigned long long Grid::playGameOfLife()
 	return newLife;
 }
 
-void Grid::markCellAsDead(vx &cell)
+void Grid::markCellAsDead(VoxelData &cell)
 {
 	cell.c = 0b0000'0000;
 	cell.activateBit(4);
 }
 
-void Grid::markCellForGenesis(vx &cell)
+void Grid::markCellForGenesis(VoxelData &cell)
 {
 	cell.c = 0b0000'0000;
 	cell.activateBit(6);
@@ -360,7 +360,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle geo)
 	for(auto&& tri: geo->triangles())
 	{
 		{
-			const auto& p{tri.p1};
+			const auto& p = tri.p1;
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -368,7 +368,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle geo)
 			}
 		}
 		{
-			const auto& p{tri.p2};
+			const auto& p = tri.p2;
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -376,7 +376,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle geo)
 			}
 		}
 		{
-			const auto& p{tri.p3};
+			const auto& p = tri.p3;
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -388,7 +388,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle geo)
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p1, tri.p2, (i+1)/(scalar)interp);
-			const auto& p{a};
+			const auto& p = a;
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -399,7 +399,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle geo)
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p1, tri.p3, (i+1)/(scalar)interp);
-			const auto& p{a};
+			const auto& p = a;
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -410,7 +410,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle geo)
 		for(uint i=0; i<interp; i++)
 		{
 			auto a = MU::lerp(tri.p2, tri.p3, (i+1)/(scalar)interp);
-			const auto& p{a};
+			const auto& p = a;
 			if(inGrid(p))
 			{
 				auto&& v = vxAtPosition(p);
@@ -600,19 +600,19 @@ void Grid::getComponentsOfIndex(const unsigned long long idx,
 	return getVoxelPosition(retx, rety, retz);
 }
 
- vx& Grid::vxAtPosition(const v3s &position)
+ VoxelData& Grid::vxAtPosition(const v3s &position)
 {
 	const auto&& idx = indexAtPosition(position);
 	return vxAt(idx>=m_c_resXresXres ? 0 : idx);
 }
 
- vx Grid::vxAtPosition(const v3s &position) const
+ VoxelData Grid::vxAtPosition(const v3s &position) const
 {
 	const auto&& idx = indexAtPosition(position);
 	return vxAt(idx>=m_c_resXresXres ? 0:idx);
 }
 
-vx &Grid::vxAt(const unsigned long iX, 
+VoxelData &Grid::vxAt(const unsigned long iX, 
 				 const unsigned long iY, 
 				 const unsigned long iZ)
 {
@@ -620,7 +620,7 @@ vx &Grid::vxAt(const unsigned long iX,
 }
 
 
-vx Grid::vxAt(const unsigned long iX, 
+VoxelData Grid::vxAt(const unsigned long iX, 
 				const unsigned long iY, 
 				const unsigned long iZ) const
 {
@@ -628,12 +628,12 @@ vx Grid::vxAt(const unsigned long iX,
 }
 
 
- vx &Grid::vxAt(const unsigned long idx)
+VoxelData &Grid::vxAt(const unsigned long idx)
 {
 	return m_data[idx];
 }
 
- vx Grid::vxAt(const unsigned long idx) const
+VoxelData Grid::vxAt(const unsigned long idx) const
 {
 	return m_data[idx];
 }
@@ -902,17 +902,17 @@ std::cout << "maxZ " << m_zmax << std::endl;
 */
 
 
-void vx::activate(bool active)
+void VoxelData::activate(bool active)
 {
 	active ? activate() : deactivate();
 }
 
-bool vx::active() const
+bool VoxelData::active() const
 {
 	return (bool)c;
 }
 
-bool vx::activeBit(unsigned int bit) const
+bool VoxelData::activeBit(unsigned int bit) const
 {
 	switch(bit)
 	{
@@ -945,7 +945,7 @@ bool vx::activeBit(unsigned int bit) const
 	return c&0b0000'0000;
 }
 
-void vx::activateBit(unsigned int bit)
+void VoxelData::activateBit(unsigned int bit)
 {
 	switch(bit)
 	{
@@ -976,7 +976,7 @@ void vx::activateBit(unsigned int bit)
 	}
 }
 
-void vx::deactivateBit(unsigned int bit)
+void VoxelData::deactivateBit(unsigned int bit)
 {
 	switch(bit)
 	{
@@ -1007,12 +1007,12 @@ void vx::deactivateBit(unsigned int bit)
 	}
 }
 
-void vx::activate()
+void VoxelData::activate()
 {
 	activateBit(7);
 }
 
-void vx::deactivate()
+void VoxelData::deactivate()
 {
 	deactivateBit(7);
 	deactivateBit(6);
@@ -1024,12 +1024,12 @@ void vx::deactivate()
 	activateBit(2);
 }
 
-unsigned char vx::byte() const
+unsigned char VoxelData::byte() const
 {
 	return c;
 }
 
-void vx::setByte(const unsigned char ci)
+void VoxelData::setByte(const unsigned char ci)
 {
 	c = ci;
 	activate();

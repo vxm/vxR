@@ -24,7 +24,7 @@ namespace vxCore {
 class Grid;
 class Box;
 
-struct vx
+struct VoxelData
 {
 	unsigned char c{0b0000'0000};
 	///
@@ -75,7 +75,7 @@ struct vx
 	 void setByte(const unsigned char ci);
 };
 
-static_assert(sizeof(vx)==1, "vx size is wrong");
+static_assert(sizeof(VoxelData)==1, "VoxelData size is wrong, should be 8 bits");
 
 ///
 /// \brief The Voxel class
@@ -90,7 +90,7 @@ public:
 	unsigned long y{0ul};
 	unsigned long z{0ul};
 	
-	vx data;
+	VoxelData data;
 	v3s position;
 	scalar size;
 };
@@ -101,7 +101,7 @@ public:
 class Grid final : public Geometry
 {
 protected:
-	std::vector<vx>	m_data;
+	std::vector<VoxelData>	m_data;
 
 	v3s m_position;
 	scalar m_size				= {5.0};
@@ -273,12 +273,12 @@ public:
 	
 	//////////////////////////////////////////////////The game of life//////////
 	///
-	void markCellAsDead(vx& cell);
+	void markCellAsDead(VoxelData& cell);
 	///
 	/// \brief markCellForGenesis
 	/// \param cell
 	///
-	void markCellForGenesis(vx& cell);
+	void markCellForGenesis(VoxelData& cell);
 	///
 	/// \brief neighboursAlive
 	/// \param idx
@@ -454,19 +454,19 @@ public:
 	/// \param idx
 	/// \return 
 	///
-	 vx& vxAt(const unsigned long idx);
+	 VoxelData& vxAt(const unsigned long idx);
 	///
 	/// \brief vxAt
 	/// \param idx
 	/// \return 
 	///
-	 vx vxAt(const unsigned long idx) const;
+	 VoxelData vxAt(const unsigned long idx) const;
 	///
 	/// \brief vxAtPosition
 	/// \param position
 	/// \return 
 	///
-	 vx& vxAtPosition(const v3s &position);
+	 VoxelData& vxAtPosition(const v3s &position);
 	///
 	/// \brief vxAt
 	/// \param iX
@@ -474,7 +474,7 @@ public:
 	/// \param iZ
 	/// \return 
 	///
-	 vx& vxAt(const unsigned long iX, 
+	 VoxelData& vxAt(const unsigned long iX, 
 					const unsigned long iY, 
 					const unsigned long iZ);
 	///
@@ -482,7 +482,7 @@ public:
 	/// \param position
 	/// \return 
 	///
-	vx vxAtPosition(const v3s &position) const;
+	VoxelData vxAtPosition(const v3s &position) const;
 	///
 	/// \brief vxAt
 	/// \param iX
@@ -490,7 +490,7 @@ public:
 	/// \param iZ
 	/// \return 
 	///
-	vx vxAt(const unsigned long iX, 
+	VoxelData vxAt(const unsigned long iX, 
 			const unsigned long iY, 
 			const unsigned long iZ) const;
 	///
