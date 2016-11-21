@@ -223,7 +223,7 @@ Color PointLight::acummulationLight(const Ray &, const Collision &collision) con
 		auto ratio = lightRatio(f, p.inverted());
 		auto lumm = m_intensity * ratio;
 		
-		const Ray ff(pp+collision.normal().tiny(), p.inverted());
+		const Ray ff(pp+collision.normal().small(), p.inverted());
 		
 		if (m_castShadows && reachesLightSource(ff))
 		{
@@ -314,7 +314,7 @@ Color Light::acummulationLight(const Ray &, const Collision &collision) const
 Color DirectLight::acummulationLight(const Ray &, 
 										 const Collision &collision) const
 {
-	const auto&& cPnt = collision.position();
+	const auto cPnt = collision.position();
 
 	Ray f(cPnt, collision.normal());
 	// compute all sort of shadows.
@@ -325,7 +325,8 @@ Color DirectLight::acummulationLight(const Ray &,
 		auto ratio = lightRatio(f, m_orientation.inverted());
 		auto lumm = m_intensity * ratio;
 
-		const Ray ff(cPnt+collision.normal().tiny(), m_orientation.inverted());
+		v3s littleNormal = collision.normal()/scalar(10000.0);
+		const Ray ff(cPnt+littleNormal, m_orientation.inverted());
 		const auto&& scn = m_scene.lock();
 		Collision col;
 		if (!m_castShadows || !(scn->throwRay(ff,col)==1))
@@ -446,7 +447,7 @@ Color AreaLight::acummulationLight(const Ray &, const Collision &collision) cons
 	Ray f(collision.position(), collision.normal());
 	const auto&& cPnt = collision.position();
 
-	const auto littleNormal = collision.normal().tiny();
+	const auto littleNormal = collision.normal().small();
 		const auto finalIntensity = m_intensity / (scalar)m_samples;
 		 
 	for(auto x = 0u; x<m_samples; x++)

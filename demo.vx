@@ -26,7 +26,7 @@ active = "true"
     giSamples = 1
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 2
+    lightBounces = 3
 }
 
 node
@@ -40,7 +40,7 @@ active = "true"
     giSamples = 0
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 2
+    lightBounces = 5
 }
 
 node
@@ -61,7 +61,7 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 5464 3072
     pixelSamples = 400
     reflectionSamples = 2
@@ -75,7 +75,7 @@ node
 {
 name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 5464 3072
     pixelSamples = 800
     reflectionSamples = 4
@@ -90,7 +90,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2.0 0.45 -2.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 0.51 -3.0 1]
     focusDistance = 2.1
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -120,7 +120,7 @@ active = "true"
     giColorMultiplier = 238 216 126
     reflectionSamples = 0
     reflectionRadius = 0.5
-    reflectionCoefficent = 0.7
+    reflectionCoefficent = 0.6
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 1.0
@@ -143,8 +143,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     reflectionSamples = 0
-    reflectionRadius = 0.001
-    reflectionCoefficent = 0.1
+    reflectionRadius = 0.07
+    reflectionCoefficent = 0.3
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 1.0
@@ -612,7 +612,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     radius = 1000.0
@@ -700,7 +700,7 @@ node
 {
 name = "sun"
 type = "vxDirectLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 21 0 0 0 0 1]
     intensity = 1.1
     color = 224 220 201
@@ -752,8 +752,8 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 0.50 0.0 1]
-    resolution = 200
-    size = 1.0
+    resolution = 40
+    size = 2.0
     color = 112 112 142
     shader = "shader_1"
 }

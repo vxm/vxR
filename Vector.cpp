@@ -260,6 +260,13 @@ bool v3s::isCloser(const v3s &a, const v3s &b) const
 
 v3s v3s::tiny() const
 {
+	return {m_x * tinyScalar,
+		m_y * tinyScalar,
+		m_z * tinyScalar};
+}
+
+v3s v3s::small() const
+{
 	return {m_x * smallScalar,
 		m_y * smallScalar,
 		m_z * smallScalar};

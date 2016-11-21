@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 531
-#define PIXEL_Y 228
+#define PIXEL_X 762
+#define PIXEL_Y 358
 #endif
 
 #ifdef _DEBUG
@@ -259,7 +259,7 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray, Collis
 	// Noise Sphere
 	invV += MU::getSolidSphereRand3(sh->getReflectionRadius() * 3.141592);
 	
-	auto reflexRay = Ray(col.position() + n.tiny(), invV);
+	auto reflexRay = Ray(col.position() + n.small(), invV);
 	
 	reflection = computeLight(reflexRay, refxCollision);
 	
@@ -294,7 +294,7 @@ Color RenderProcess::computeGI(unsigned int iter, Collision &col)
 	
 	const auto&& r = MU::getHollowHemisphereRand(1.0, col.normal());
 	
-	const Ray giRay(col.position() + col.normal().tiny(), r.inverted());
+	const Ray giRay(col.position() + col.normal().small(), r.inverted());
 	
 	const auto treeLevel = scalar(iter) / scalar(m_lightBounces*2);
 	
@@ -333,7 +333,7 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 	if(col.isValid())
 	{
 		// Compute reflection
-		//retColor += computeReflection(m_lightBounces, ray, col);
+		retColor += computeReflection(m_lightBounces, ray, col);
 		
 		// Compute Global Illumination
 		retColor += computeGI(m_lightBounces, col);
@@ -375,8 +375,15 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 	computeEnergyAndColor(ray, collision);
 	
 	const auto id = itH  + (itV * m_properties->rx());
-	//TODO:check ranges here, it might fail.
-	m_contactBuffer.pixel(id) = Color::white;
+	
+	if(m_properties->numPixels()<=id)
+	{
+		std::cerr << "Error: trying to write a pixel which doesnt exist" << std::endl;
+	}
+	else
+	{
+		m_contactBuffer.pixel(id) = Color::white;
+	}
 	
 	
 #else
@@ -423,6 +430,7 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 #endif
 	
 	auto thInfo = ThreadPool::threadInfo(std::this_thread::get_id());
+	
 	std::cout << "Finished task on thread ::" << thInfo.id << "::" << std::endl;
 	
 	m_finished = true;

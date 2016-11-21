@@ -15,7 +15,9 @@ namespace vxCore {
 using scalar = double; //float // double // __float128
 
 constexpr const scalar minScalar =  std::numeric_limits<scalar>::min();
-constexpr const scalar smallScalar =  fabs(minScalar)*scalar(1000.0);
+constexpr const scalar tinyScalar =  fabs(minScalar)*scalar(1000.0);
+constexpr const scalar smallScalar =  scalar(1.0)/scalar(10000.0);
+
 constexpr const scalar maxScalar =  std::numeric_limits<scalar>::max();
 constexpr const scalar bigScalar =  fabs(maxScalar)*scalar(0.001);
 constexpr const scalar sZero = scalar(0.0);
@@ -395,6 +397,11 @@ public:
 	/// \return 
 	///returns a copy to the value
 	scalar operator[](const unsigned int) const;
+	///
+	/// \brief small
+	/// \return 
+	///
+	v3s small() const;
 	///
 	/// \brief dot
 	/// \param v

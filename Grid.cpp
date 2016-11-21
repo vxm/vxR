@@ -771,12 +771,12 @@ bool Grid::throwRay(const Ray &ray) const
 
 int Grid::throwRay(const Ray &ray, Collision &col) const
 {
-	auto&& sp = col.position() + (col.normal().inverted().tiny());
+	auto sp = col.position();
 	
 	const auto& d = ray.direction();
 	auto&& p = ray.origin();
 	
-	//Define the quadrant.
+	//Defines the quadrant.
 	const auto velX = scalar(d.xPositive());
 	const auto velY = scalar(d.yPositive());
 	const auto velZ = scalar(d.zPositive());
@@ -803,15 +803,14 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		{
 			voxel.position = getVoxelPosition(voxel.index);
 			
-			box.set(voxel.position, voxel.size/1.0);
+			box.set(voxel.position, voxel.size/1.5);
 			
 			Collision c;
 			
 			if(box.throwRay(ray,c))
 			{
 				col = c;
-				col.setColor(Color::indexColor(voxel.data.byte())/1.0);
-				//col.setColor(Color::green);
+				col.setColor(Color::indexColor(voxel.data.byte())/2.0);
 				col.setValid(true);
 				return 1;
 			}
