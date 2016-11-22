@@ -197,7 +197,7 @@ Color Lambert::getColor(const Ray &, const Collision &collide) const
 {
 	Color ret = Color::zero;
 	
-	auto&& color = collide.m_geo->baseColor();//m_diffuse.compute(collide)*m_diffuseColor;
+	auto&& color = collide.color() * collide.m_geo->baseColor();//m_diffuse.compute(collide)*m_diffuseColor;
 	ret = MU::remap(color, 0.0, 0.85);
 
 	return ret;
