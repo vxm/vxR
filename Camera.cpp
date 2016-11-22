@@ -124,7 +124,7 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 	ret.setOrigin(m_transform.origin());
 	
 	ret.direction().rotateX( scalar(2.0) * (MU::PI/8.0) );
-	ret.direction() = ret.direction().rotate({1.0, 0.0, -1.0}, 0.02);
+	ret.direction() = ret.direction().rotate({0.990, 0.0, -1.1}, 0.05);
 	
 	ret.direction().setUnit();
 	

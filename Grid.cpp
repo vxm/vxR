@@ -803,7 +803,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		{
 			voxel.position = getVoxelPosition(voxel.index);
 			
-			box.set(voxel.position, voxel.size/1.5);
+			box.set(voxel.position, voxel.size/1.2);
 			
 			Collision c;
 			

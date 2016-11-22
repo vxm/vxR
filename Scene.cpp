@@ -238,8 +238,7 @@ void Scene::buildGrids()
 		//grid->createEdges((unsigned char)12u);
 		//grid->createRandom(.004,0.85);
 		//grid->dumpFileInMemory("/home/mario/Downloads/xyzrgb_statuette_1.ply");
-		
-		grid->createEdges((unsigned char)12u);
+		//grid->createEdges((unsigned char)12u);
 		
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();
