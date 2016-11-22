@@ -21,7 +21,7 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 2
+    pixelSamples = 4
     reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.0
@@ -49,7 +49,7 @@ name = "renderSettings_3"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1360 768
-    pixelSamples = 30
+    pixelSamples = 300
     reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.5
@@ -61,21 +61,21 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 5464 3072
     pixelSamples = 400
     reflectionSamples = 2
     giSamples = 25
     giMultiplier = 1.5
     numThreads = -1
-    lightBounces = 4
+    lightBounces = 5
 }
 
 node
 {
 name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 5464 3072
     pixelSamples = 800
     reflectionSamples = 4
@@ -90,8 +90,8 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 0.51 -3.0 1]
-    focusDistance = 2.1
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.0 0.78 -4.0 1]
+    focusDistance = 2.8
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLenth = 2.0
@@ -104,8 +104,8 @@ name = "image_1"
 type = "vxImage"
 active = "true"
     imagePath = "/home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg"
-    gain = 0.9
-    gamma = 2.2
+    gain = 1.0
+    gamma = 2.7
 }
 
 node
@@ -143,8 +143,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     reflectionSamples = 0
-    reflectionRadius = 0.07
-    reflectionCoefficent = 0.3
+    reflectionRadius = 0.1
+    reflectionCoefficent = 0.1
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 1.0
@@ -430,7 +430,7 @@ type = "vxGeometry"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.7 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
-    color = 125 125 125
+    color = 112 115 165
     shader = "shader_2"
 }
 
@@ -624,9 +624,9 @@ node
 name = "area_light_1"
 type = "vxAreaLight"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -170 90 0 1]
-    intensity = 1.2
-    color = 238 230 210
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -170 900 0 1]
+    intensity = 0.0
+    color = 218 230 200
     samples = 1
     castShadows = "false"
     minX = -1.5
@@ -640,10 +640,10 @@ node
 {
 name = "area_light_2"
 type = "vxAreaLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 18 15 -15 1]
-    intensity = 0.82
-    color = 205 202 238
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 180 2 -150 1]
+    intensity = 5.32
+    color = 215 212 202
     samples = 1
     castShadows = "true"
     minX = -4.5
@@ -752,9 +752,9 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 0.50 0.0 1]
-    resolution = 40
-    size = 2.0
-    color = 112 112 142
+    resolution = 260
+    size = 3.0
+    color = 400 400 400
     shader = "shader_1"
 }
 
@@ -789,7 +789,17 @@ node
 {
 name = "gnome_vx"
 type = "vxGridGeometry"
+active = "false"
+    transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 0.0 -0.65 0.0 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
+}
+
+node
+{
+name = "gnome_vx"
+type = "vxGridGeometry"
 active = "true"
     transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 0.0 -0.65 0.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    filePath = "/home/john/Downloads/pieta.ply"
 }
+
