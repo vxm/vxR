@@ -16,7 +16,7 @@ using scalar = double; //float // double // __float128
 
 constexpr const scalar minScalar =  std::numeric_limits<scalar>::min();
 constexpr const scalar tinyScalar =  fabs(minScalar)*scalar(1000.0);
-constexpr const scalar smallScalar =  scalar(1.0)/scalar(10000.0);
+constexpr const scalar smallScalar =  scalar(1.0)/scalar(100000.0);
 
 constexpr const scalar maxScalar =  std::numeric_limits<scalar>::max();
 constexpr const scalar bigScalar =  fabs(maxScalar)*scalar(0.001);
