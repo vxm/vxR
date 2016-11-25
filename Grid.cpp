@@ -759,6 +759,23 @@ VoxelInfo Grid::nextVoxel(const Ray &ray, v3s &sp) const
 	return retVal;
 }
 
+VoxelInfo Grid::neighbourVoxel(const VoxelInfo &orig, const std::array<int, 3> &moves) const
+{
+	VoxelInfo inf = orig;
+	
+	inf.x += moves[0];
+	inf.y += moves[1];
+	inf.z += moves[2];
+	
+	inf.index = (orig.index + moves[0])
+				+ (moves[1] * m_resolution )
+				+ (moves[2] * m_c_resXresXres );
+	
+	inf.data = vxAt(inf.index);
+	
+	return inf;
+}
+
 bool Grid::throwRay(const Ray &ray) const
 { 
 #if DRAWBBOX
@@ -810,9 +827,30 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			if(box.throwRay(ray,c))
 			{
 				col = c;
-				col.setColor(Color::indexColor(voxel.data.byte())/2.0);
+				col.setColor(Color::indexColor(voxel.data.byte())/3.0);
 				col.setValid(true);
 				return 1;
+			}
+		}
+		else
+		{
+			auto&& neighbour = neighbourVoxel(voxel, {{0,-1,0}});
+			
+			if(neighbour.data.active())
+			{
+				neighbour.position = getVoxelPosition(voxel.index);
+				
+				box.set(neighbour.position+v3s{0.0,-m_c_boxSize/2.0,0.0}, voxel.size/2.0);
+				
+				Collision c;
+				
+				if(box.throwRay(ray,c))
+				{
+					col = c;
+					col.setColor(Color::indexColor(voxel.data.byte())/2.0);
+					col.setValid(true);
+					return 1;
+				}
 			}
 		}
 		

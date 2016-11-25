@@ -2,6 +2,7 @@
 #define _VXGRIDMC_
 #include <memory>
 
+#include <array>
 #include <bitset>
 #include <climits>
 #include <cmath>
@@ -321,6 +322,13 @@ public:
 	/// \return 
 	///
 	VoxelInfo nextVoxel(const Ray &ray, v3s &sp) const;
+	///
+	/// \brief neighbourVoxel
+	/// \param ray
+	/// \param sp
+	/// \return 
+	///
+	VoxelInfo neighbourVoxel(const VoxelInfo &orig, const std::array<int,3> &moves) const;
 	///
 	/// \brief initialize
 	/// \param value
