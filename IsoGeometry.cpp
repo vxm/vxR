@@ -7,6 +7,16 @@
 
 using namespace vxCore;
 
+scalar IsoGeometry::radius() const
+{
+	return m_radius;
+}
+
+void IsoGeometry::setRadius(const scalar &radius)
+{
+	m_radius = radius;
+}
+
 IsoGeometry::IsoGeometry()
 {
 	m_bb->set({0,0,0},1);
@@ -19,7 +29,7 @@ bool IsoGeometry::throwRay(const Ray &ray) const
 
 int IsoGeometry::throwRay(const Ray &ray, Collision &col) const
 {
-	scalar r = 0.5;
+	const scalar& r = m_radius;
 	col.setValid(false);
 	
 	//// CAPS
@@ -89,21 +99,6 @@ int IsoGeometry::throwRay(const Ray &ray, Collision &col) const
 			col.setValid(true);
 			return 1;
 		}
-		/*
-		scalar t2 = (-b + disc)/(scalar(2.0)*a);
-		if(t2>=0.0)
-		{
-			v3s twoPos = {rey.origin()+(rey.direction()*t2)};
-			
-			auto finalPos = MU::rectAndXPlane(ray.direction(), twoPos.x() - ray.origin().x());
-			
-			col.setPosition(finalPos);
-			
-			col.setNormal((twoPos-circleCenter).unit());
-			col.setValid(true);
-			return 1;
-		}
-		*/
 	}
 	
 	col.setValid(false);

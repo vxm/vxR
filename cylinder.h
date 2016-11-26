@@ -7,8 +7,11 @@ namespace vxCore {
 
 class Cylinder final : public IsoGeometry
 {
+	scalar m_radius;
+
 public:
 	Cylinder();
+	
 };
 
 

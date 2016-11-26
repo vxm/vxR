@@ -4,6 +4,9 @@
 
 #include "MathUtils.h"
 #include "Grid.h"
+#include "cylinder.h"
+
+
 std::mutex gridMutex;
 using namespace vxCore;
 
@@ -802,7 +805,10 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 	auto&& yProgress = p + v3s(0.0, (velY ? m_c_midBoxSize : -m_c_midBoxSize), 0.0);
 	auto&& zProgress = p + v3s(0.0, 0.0, (velZ ? m_c_midBoxSize : -m_c_midBoxSize));
 	
+	/// geometries for voxels
 	BoundingBox box;
+	//Cylinder cyl;
+	///
 	
 	VoxelInfo voxel;
 	voxel.size = m_c_boxSize;
@@ -820,19 +826,19 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		{
 			voxel.position = getVoxelPosition(voxel.index);
 			
-			box.set(voxel.position, voxel.size/1.2);
+			box.set(voxel.position, voxel.size);
 			
 			Collision c;
 			
 			if(box.throwRay(ray,c))
 			{
 				col = c;
-				col.setColor(Color::indexColor(voxel.data.byte())/3.0);
+				col.setColor(Color::indexColor(voxel.data.byte()));
 				col.setValid(true);
 				return 1;
 			}
 		}
-		else
+		else if(voxel.y>0)
 		{
 			auto&& neighbour = neighbourVoxel(voxel, {{0,-1,0}});
 			
@@ -840,14 +846,15 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			{
 				neighbour.position = getVoxelPosition(voxel.index);
 				
-				box.set(neighbour.position+v3s{0.0,-m_c_boxSize/2.0,0.0}, voxel.size/2.0);
+				//cyl.setRadius(voxel.size/2.0);
+				box.set(neighbour.position+v3s{0.0,-m_c_boxSize/2.0,0.0},voxel.size/3.0);
 				
 				Collision c;
 				
 				if(box.throwRay(ray,c))
 				{
 					col = c;
-					col.setColor(Color::indexColor(voxel.data.byte())/2.0);
+					col.setColor(Color::indexColor(voxel.data.byte()));
 					col.setValid(true);
 					return 1;
 				}
