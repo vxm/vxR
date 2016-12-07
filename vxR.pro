@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     Matrix33.cpp \
     Matrix44.cpp \
     Quaternion.cpp \
-    List.cpp \
     Light.cpp \
     Ramp.cpp \
     BoundingBox.cpp \
@@ -89,7 +88,6 @@ HEADERS  += \
     sseUtils.h \
     MathUtilsUnitTest.h \
     StringUtils.h \
-    List.h \
     VectorUtils.h \
     Matrix33.h \
     Matrix44.h \
