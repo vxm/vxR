@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 762
-#define PIXEL_Y 358
+#define PIXEL_X 622
+#define PIXEL_Y 592
 #endif
 
 #ifdef _DEBUG
@@ -263,7 +263,7 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray, Collis
 	
 	reflection = computeLight(reflexRay, refxCollision);
 	
-	reflection.applyCurve(2.2,0.0);
+	reflection.applyCurve(0.0,1.0);
 	reflection.mix(Color::zero, sh->getReflectionCoefficent());
 //	Collision nextRound = refxCollision;
 	

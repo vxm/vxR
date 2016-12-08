@@ -41,7 +41,7 @@ void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 	
 	buildGeometries();
 	
-	buildIsoGeometries();
+	buildCylinders();
 	
 	buildDomes();
 	
@@ -234,9 +234,12 @@ void Scene::buildGrids()
 			grid->addGeometry(grid_geo);
 		}
 		
-		//grid->createGround(0, (unsigned char)4u);
+		//grid->createGround(3, (unsigned char)4u);
 		//grid->createEdges((unsigned char)12u);
-		//grid->createRandom(.004,0.85);
+		//grid->createRandom(.3,-0.64);
+		//grid->createRandom(.03,-0.6);
+		//grid->createRandom(.0003,-0.5);
+
 		//grid->dumpFileInMemory("/home/mario/Downloads/xyzrgb_statuette_1.ply");
 		//grid->createEdges((unsigned char)12u);
 		
@@ -297,13 +300,13 @@ void Scene::buildPlanes()
 }
 
 
-void Scene::buildIsoGeometries()
+void Scene::buildCylinders()
 {
-	for(const auto node: m_nodeDB->getNodesByType("vxIsoGeometry"))
+	for(const auto node: m_nodeDB->getNodesByType("vxCylinder"))
 	{
 		const auto transform = node->getMatrix("transform");
 		
-		auto geo = createIsoGeometry();
+		auto geo = createCylinder();
 		
 		geo->setBaseColor(Color::lookup256(node->getColor("color")));
 		
@@ -588,9 +591,9 @@ vxTriangleMeshHandle Scene::createGeometry(const std::string &path, const Matrix
 	return geo;
 }
 
-IsoGeometryHandle Scene::createIsoGeometry()
+CylinderHandle Scene::createCylinder()
 {
-	auto geo = std::make_shared<IsoGeometry>();
+	auto geo = std::make_shared<Cylinder>();
 	return geo;
 }
 

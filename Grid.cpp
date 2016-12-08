@@ -4,7 +4,7 @@
 
 #include "MathUtils.h"
 #include "Grid.h"
-#include "cylinder.h"
+#include "Cylinder.h"
 
 
 std::mutex gridMutex;
@@ -349,7 +349,7 @@ void Grid::createRandom(scalar ratio, scalar y_threshold)
 	int i=0;
 	for(auto& it:m_data)
 	{
-		if(MU::getBoolRand(ratio) && getVoxelPosition(i).y()>y_threshold)
+		if(MU::getBoolRand(ratio) && getVoxelPosition(i).y()<y_threshold)
 		{
 			it.setByte((unsigned int)MU::getRand(25.0));
 		}
@@ -807,7 +807,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 	
 	/// geometries for voxels
 	BoundingBox box;
-	//Cylinder cyl;
+	Cylinder cyl;
 	///
 	
 	VoxelInfo voxel;
@@ -820,13 +820,21 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 	do
 	{
 		voxel.index = indexAtPosition(sp);
+		
+		if(voxel.index>=m_c_resXresXres)
+		{
+			break;
+		}
+		
 		voxel.data = vxAt(voxel.index);
+		
+		getComponentsOfIndex(voxel.index, retx, rety, retz);
 		
 		if(voxel.data.active())
 		{
 			voxel.position = getVoxelPosition(voxel.index);
 			
-			box.set(voxel.position, voxel.size);
+			box.set(voxel.position, voxel.size/1.05);
 			
 			Collision c;
 			
@@ -838,7 +846,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 				return 1;
 			}
 		}
-		else if(voxel.y>0)
+		else if(rety>0)
 		{
 			auto&& neighbour = neighbourVoxel(voxel, {{0,-1,0}});
 			
@@ -846,22 +854,19 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			{
 				neighbour.position = getVoxelPosition(voxel.index);
 				
-				//cyl.setRadius(voxel.size/2.0);
-				box.set(neighbour.position+v3s{0.0,-m_c_boxSize/2.0,0.0},voxel.size/3.0);
+				box.set(neighbour.position+v3s{0.0,-m_c_boxSize/2.0,0.0}, voxel.size/2.0);
 				
 				Collision c;
 				
 				if(box.throwRay(ray,c))
 				{
 					col = c;
-					col.setColor(Color::indexColor(voxel.data.byte()));
+					col.setColor(Color::indexColor(neighbour.data.byte()));
 					col.setValid(true);
 					return 1;
 				}
 			}
 		}
-		
-		getComponentsOfIndex(voxel.index, retx, rety, retz);
 		
 		const scalar xVal = m_bb->minX() + (retx + velX) * m_c_boxSize - p.x();
 		const scalar yVal = m_bb->minY() + (rety + velY) * m_c_boxSize - p.y();
