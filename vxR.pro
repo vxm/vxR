@@ -76,7 +76,7 @@ SOURCES += main.cpp\
     Stopwatch.cpp \
     Status.cpp \
     StandardShader.cpp \
-    cylinder.cpp
+    Cylinder.cpp
 
 HEADERS  += \
     ImageProperties.h \
@@ -144,7 +144,7 @@ HEADERS  += \
     BucketList.h \
     BroadPhase.h \
     BoxCreator.h \
-    cylinder.h
+    Cylinder.h
 
 OTHER_FILES += \
     todo.txt \
