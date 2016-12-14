@@ -2,9 +2,10 @@
 #include <limits>
 #include <algorithm>
 
-#define DRAWBBOX 0
-
+#define DRAW_BBOX 0
+#define DRAW_OBJECT_BBOX 0
 using namespace vxCore;
+
 
 BroadPhase::BroadPhase()
 {
@@ -302,7 +303,7 @@ bool BroadPhase::throwRay(const Ray &ray) const
 #define NAIVE_BB_METHOD 1
 int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 {
-#if	DRAWBBOX
+#if	DRAW_BBOX
 	if(m_bb->throwRay(ray, collide))
 	{
 		collide.setColor(m_color);
@@ -312,7 +313,6 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	}
 #else
 #if NAIVE_BB_METHOD
-	
 	
 	if(!m_bb->throwRay(ray, collide))
 	{
@@ -334,8 +334,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		return 1;
 	}
 */
-	
-	auto mdis = std::numeric_limits<scalar>::max(); 
+	auto mdis = std::numeric_limits<scalar>::max();
 	
 	Collision temp = collide;
 	
@@ -346,10 +345,16 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 			continue;
 		}
 		
+#if DRAW_OBJECT_BBOX
+		geo->boundingBox()->throwRay(ray, temp);
+		temp.setColor(geo->baseColor());
+#else
 		geo->throwRay(ray, temp);
+#endif
 		
-		if(!geo->boundingBox()->contains(temp.position(),scalar(0.00001)))
+		if(!geo->boundingBox()->contains(temp.position(),scalar(0.0001)))
 		{
+			
 			continue;
 		}
 		
