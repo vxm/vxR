@@ -3,12 +3,13 @@
 #include <algorithm>
 #include "MathUtils.h"
 #include "Geometry.h"
+
 using namespace vxCore;
 
-Lambert::Lambert()
-	:Shader() 
+vxCore::Shader::Shader()
 {
 }
+
 
 Color Shader::getDiffuseColor() const
 {
@@ -180,41 +181,11 @@ void Shader::setSscColorMultiplier(const Color &sscColorMultiplier)
 	m_sscColorMultiplier = sscColorMultiplier;
 }
 
-vxCore::Shader::Shader()
-{
-}
-
-
-Color Lambert::getIlluminatedColor(const Ray &ray, const Collision &collide) const
-{
-	auto lumm = getLightLoop(ray, collide);
-	
-	return getColor(ray, collide) * lumm;
-}
-
-
-Color Lambert::getColor(const Ray &, const Collision &collide) const
-{
-	Color ret = Color::zero;
-	
-	auto&& color = collide.color() * collide.m_geo->baseColor();//m_diffuse.compute(collide)*m_diffuseColor;
-	ret = MU::remap(color, 0.0, 0.85);
-
-	return ret;
-}
-
-v3s Lambert::getVector(const Collision &collide) const
-{
-	const auto& c = m_diffuse.compute(collide);
-	return v3s(c.r(), c.g(), c.b());
-}
-
-
 Color vxCore::Shader::getLightLoop(const Ray &ray, const Collision &collision) const
 {
 	//assert(m_lights);
 	Color acumColor;
-
+	
 	for(auto&& light:*m_lights)
 	{
 		acumColor.add( light->acummulationLight(ray, collision) );
@@ -231,6 +202,46 @@ void vxCore::Shader::setScene(std::weak_ptr<Scene> scene)
 void vxCore::Shader::setLights(std::vector<std::shared_ptr<Light>> * lights)
 {
 	m_lights = lights;
+}
+
+
+////////// Lambert
+
+Lambert::Lambert()
+	:Shader() 
+{
+}
+
+Color Lambert::getIlluminatedColor(const Ray &ray, const Collision &collide) const
+{
+	auto lumm = getLightLoop(ray, collide);
+	
+	return getColor(ray, collide) * lumm;
+}
+
+
+Color Lambert::getColor(const Ray &, const Collision &collide) const
+{
+	Color ret = Color::zero;
+	
+	if(collide.m_geo)
+	{
+		auto&& color = collide.color() * collide.m_geo->baseColor();//m_diffuse.compute(collide)*m_diffuseColor;
+		ret = MU::remap(color, 0.0, 0.85);
+	}
+	else
+	{
+		auto&& color = collide.color();//m_diffuse.compute(collide)*m_diffuseColor;
+		ret = MU::remap(color, 0.0, 0.85);
+	}
+	
+	return ret;
+}
+
+v3s Lambert::getVector(const Collision &collide) const
+{
+	const auto& c = m_diffuse.compute(collide);
+	return v3s(c.r(), c.g(), c.b());
 }
 
 

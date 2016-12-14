@@ -14,7 +14,7 @@ class Scene;
 Scene::Scene(ImagePropertiesHandle prop)
 	: m_properties(prop)
 {
-	m_broadPhase = std::make_shared<BroadPhase>();
+	m_broadPhase = std::make_unique<BroadPhase>();
 }
 
 Scene::~Scene()
@@ -255,7 +255,10 @@ void Scene::buildDomes()
 {
 	for(const auto node: m_nodeDB->getNodesByType("vxDome"))
 	{
-		auto dome = createDome(node->getString("imageNode"));
+		auto imageNodeName = node->getString("imageNode");
+		auto imageLightNode = node->getString("lightImageNode");
+		
+		auto dome = createDome(imageNodeName,imageLightNode);
 		dome->setRadius(node->getFloat("radius"));
 		node->m_object = dome.get();
 	}
@@ -361,6 +364,8 @@ void Scene::buildGeometries()
 		
 		auto plyReader = std::make_shared<PLYImporter>(geo);
 		plyReader->processPLYFile(path);
+
+		m_broadPhase->addGeometry(geo);
 		
 		node->m_object = geo.get();
 	}
@@ -485,7 +490,7 @@ AmbientLightHandle Scene::createAmbientLight()
 	return al1;
 }
 
-vxDomeHandle Scene::createDome(const std::string &imagePath)
+vxDomeHandle Scene::createDome(const std::string &imagePath, const std::string &lightImagePath)
 {
 	auto imageNode = m_nodeDB->getNodeByName(imagePath);
 	
@@ -499,10 +504,29 @@ vxDomeHandle Scene::createDome(const std::string &imagePath)
 	}
 	
 	auto image = getImage(imageNode);
+
+	auto lightImageNode = m_nodeDB->getNodeByName(lightImagePath);
+	
+	if(!lightImageNode)
+	{
+		std::cerr << "image node name " 
+				  << lightImagePath 
+				  << " does not exist in database." 
+				  << std::endl;
+		assert(true);
+	}
+	
+	auto lightImage = getImage(lightImageNode);
 	
 	auto dome = std::make_shared<Dome>(image);
+	dome->setLightImage(lightImage);
+	
 	m_domes.emplace_back(dome);
 	return dome;
+
+
+
+
 }
 
 std::shared_ptr<Plane> Scene::createPlane(Plane::type type)

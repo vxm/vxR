@@ -9,10 +9,13 @@ namespace vxCore {
 
 class Dome
 {
-	// Light domm
+	// Visual image domm
 	ImageHandle m_image;
 
-	scalar m_radius{62.8};
+	// Light image domm
+	ImageHandle m_lightImage;
+
+	scalar m_radius{5000.8};
 	
 public:
 	///
@@ -54,7 +57,16 @@ public:
 	/// \param radius
 	///
 	void setRadius(const scalar &radius);
-
+	///
+	/// \brief lightImage
+	/// \return 
+	///
+	ImageHandle lightImage() const;
+	///
+	/// \brief setLightImage
+	/// \param lightImage
+	///
+	void setLightImage(const ImageHandle &lightImage);
 	///
 	/// \brief computeLight
 	/// \param ray

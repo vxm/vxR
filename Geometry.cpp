@@ -32,6 +32,7 @@ int Geometry::testBoundingBox(const Ray &ray, Collision &collide) const
 		return 0;
 	}
 	
+	collide.setValid(true);
 	return 1;
 }
 

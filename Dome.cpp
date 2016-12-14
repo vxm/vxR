@@ -3,6 +3,16 @@
 
 using namespace vxCore;
 
+ImageHandle Dome::lightImage() const
+{
+	return m_lightImage;
+}
+
+void Dome::setLightImage(const ImageHandle &lightImage)
+{
+	m_lightImage = lightImage;
+}
+
 Dome::Dome()
 {
 }
@@ -65,7 +75,7 @@ int Dome::computeLight(const Ray &ray, Collision &collide) const
 {
 	collide.setUV(MU::normalToCartesian(ray.direction()));
 	
-	auto environmentColor = m_image->compute(collide);
+	auto environmentColor = m_lightImage->compute(collide);
 	
 	collide.setPosition(ray.origin() + ray.direction() * m_radius);
 	
