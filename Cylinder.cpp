@@ -23,7 +23,6 @@ bool Cylinder::throwRay(const Ray &ray) const
 
 int Cylinder::throwRay(const Ray &ray, Collision &col) const
 {
-	scalar r = 0.5;
 	col.setValid(false);
 	
 	//// CAPS
@@ -33,7 +32,7 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 	//Comparing floats is unsafe.
 	if(pos.y()==m_bb->maxY())
 	{
-		if(pos.distance(levelCenter)<r)
+		if(pos.distance(levelCenter)<m_radius)
 		{
 			col.setPosition(col.position()-v3s{0,0.0001,0});
 			col.setNormal(v3s::constY);
@@ -44,7 +43,7 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 	
 	if(fabs(pos.y()-m_bb->minY())<0.0001)
 	{	
-		if(pos.distance(levelCenter)<r)
+		if(pos.distance(levelCenter)<m_radius)
 		{
 			col.setPosition(col.position());
 			col.setNormal(v3s::constMinusY);
@@ -64,7 +63,7 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 				   sZero,
 				   ray.origin().z()});
 	
-	auto&& circleCenter = v3s{m_bb->midXValue(),
+	auto circleCenter = v3s{m_bb->midXValue(),
 								sZero,
 								m_bb->midZValue()};
 	
@@ -73,7 +72,7 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 	
 	auto a = d.dot(d);
 	auto b = scalar(2.0)*f.dot(d);
-	auto c = f.dot(f) - (r*r);
+	auto c = f.dot(f) - (m_radius*m_radius);
 	
 	scalar disc = (b*b)-(scalar(4.0)*(a*c));
 	if(disc>=0.0)
