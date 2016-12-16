@@ -32,7 +32,7 @@ struct VoxelData
 	/// \brief activate
 	/// \param active
 	///
-	 void activate(bool active);
+	void activate(bool active);
 	/// 
 	///
 	/// \brief active
@@ -544,6 +544,9 @@ public:
 	virtual bool throwRay(const Ray &ray) const override;
 	virtual int throwRay(const Ray &ray, Collision &col) const override;
 	virtual bool hasCollision(const Ray &ray) const override;
+	
+	// Geometry interface
+	virtual void updateBoundingBox() override;
 };
 
 /*

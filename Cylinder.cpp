@@ -30,10 +30,11 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 	auto&& pos = col.position();
 	auto&& levelCenter = v3s{m_bb->midXValue(),pos.y(),m_bb->midZValue()};
 	//Comparing floats is unsafe.
-	if(pos.y()==m_bb->maxY())
+	if(fabs(pos.y()-m_bb->maxY())<0.0001)
 	{
 		if(pos.distance(levelCenter)<m_radius)
 		{
+			col.setColor(Color::white);
 			col.setPosition(col.position()-v3s{0,0.0001,0});
 			col.setNormal(v3s::constY);
 			col.setValid(true);
@@ -87,7 +88,8 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 			
 			auto finalPos = MU::rectAndZPlane(ray.direction(), twoPos.z() - ray.origin().z());
 			finalPos+=ray.origin();
-			
+
+			col.setColor(Color::white);
 			col.setPosition(finalPos);
 			col.setValid(true);
 			return 1;
@@ -116,5 +118,12 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 bool Cylinder::hasCollision(const Ray &ray) const
 {
 	return Geometry::hasCollision(ray);
+}
+
+void Cylinder::updateBoundingBox()
+{
+	m_bb->clear();
+	m_bb->extend({m_radius,m_radius,m_radius});
+	m_bb->extend({-m_radius,-m_radius,-m_radius});
 }
 

@@ -80,6 +80,9 @@ public:
 	/// \param shader
 	///
 	void setShader(Shader *shader);
+	
+	virtual void updateBoundingBox() = 0;
+	
 	///
 	/// \brief testBoundingBox
 	/// \param ray

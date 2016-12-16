@@ -267,3 +267,13 @@ bool TriangleMesh::hasCollision(const Ray &ray) const
 	return Geometry::hasCollision(ray);
 }
 
+void TriangleMesh::updateBoundingBox()
+{
+	m_bb->clear();
+	
+	for(auto&& v:m_vertices)
+	{
+		m_bb->extend(v);
+	}
+}
+

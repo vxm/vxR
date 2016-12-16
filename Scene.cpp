@@ -6,6 +6,7 @@
 #include<future>
 
 #include "Scene.h"
+#include "BroadPhase.h"
 
 namespace vxCore{
 
@@ -309,9 +310,10 @@ void Scene::buildCylinders()
 	{
 		const auto transform = node->getMatrix("transform");
 		
-		auto geo = createCylinder();
+		auto cylinderGeo = createCylinder();
+		auto radius = node->getFloat("radius");
 		
-		geo->setBaseColor(Color::lookup256(node->getColor("color")));
+		cylinderGeo->setBaseColor(Color::lookup256(node->getColor("color")));
 		
 		auto&& shaderNodeName = node->getString("shader");
 		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
@@ -325,14 +327,15 @@ void Scene::buildCylinders()
 			assert(true);
 		}
 		
-		geo->setShader((Shader*)shaderNode->m_object);
-		geo->setTransform(transform);
-		geo->boundingBox()->applyTransform(transform);
+		cylinderGeo->setShader((Shader*)shaderNode->m_object);
+		cylinderGeo->setTransform(transform);
+		cylinderGeo->setRadius(radius);
+		cylinderGeo->updateBoundingBox();
+		cylinderGeo->boundingBox()->applyTransform(transform);
+		m_geometries.emplace_back(cylinderGeo);
+		m_broadPhase->addGeometry(cylinderGeo);
 		
-		m_geometries.emplace_back(geo);
-		m_broadPhase->addGeometry(geo);
-		
-		node->m_object = geo.get();
+		node->m_object = cylinderGeo.get();
 	}
 }
 

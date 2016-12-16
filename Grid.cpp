@@ -913,6 +913,13 @@ bool Grid::hasCollision(const Ray &ray) const
 #endif
 }
 
+void Grid::updateBoundingBox()
+{
+	m_bb->clear();
+	m_bb->extend({m_size/2.0,m_size/2.0,m_size/2.0});
+	m_bb->extend({-m_size/2.0,-m_size/2.0,-m_size/2.0});
+}
+
 /*
 std::cout << "minX " << m_xmin << std::endl;
 std::cout << "minY " << m_ymin << std::endl;
