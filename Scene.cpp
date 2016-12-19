@@ -311,7 +311,6 @@ void Scene::buildCylinders()
 		const auto transform = node->getMatrix("transform");
 		
 		auto cylinderGeo = createCylinder();
-		auto radius = node->getFloat("radius");
 		
 		cylinderGeo->setBaseColor(Color::lookup256(node->getColor("color")));
 		
@@ -329,7 +328,13 @@ void Scene::buildCylinders()
 		
 		cylinderGeo->setShader((Shader*)shaderNode->m_object);
 		cylinderGeo->setTransform(transform);
+		
+		auto radius = node->getFloat("radius");
+		auto height = node->getFloat("height");
+		
 		cylinderGeo->setRadius(radius);
+		cylinderGeo->setHeight(height);
+		
 		cylinderGeo->updateBoundingBox();
 		cylinderGeo->boundingBox()->applyTransform(transform);
 		m_geometries.emplace_back(cylinderGeo);

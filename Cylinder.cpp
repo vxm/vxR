@@ -2,6 +2,16 @@
 
 using namespace vxCore;
 
+scalar Cylinder::height() const
+{
+	return m_height;
+}
+
+void Cylinder::setHeight(const scalar &height)
+{
+	m_height = height;
+}
+
 Cylinder::Cylinder()
 {
 }
@@ -35,7 +45,7 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 		if(pos.distance(levelCenter)<m_radius)
 		{
 			col.setColor(Color::white);
-			col.setPosition(col.position()-v3s{0,0.0001,0});
+			col.setPosition(col.position());
 			col.setNormal(v3s::constY);
 			col.setValid(true);
 			return 1;
@@ -123,7 +133,7 @@ bool Cylinder::hasCollision(const Ray &ray) const
 void Cylinder::updateBoundingBox()
 {
 	m_bb->clear();
-	m_bb->extend({m_radius,m_radius,m_radius});
-	m_bb->extend({-m_radius,-m_radius,-m_radius});
+	m_bb->extend({m_radius,m_height/2.0,m_radius});
+	m_bb->extend({-m_radius,-m_height/2.0,-m_radius});
 }
 

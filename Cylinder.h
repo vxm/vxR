@@ -8,12 +8,16 @@ namespace vxCore {
 class Cylinder final : public IsoGeometry
 {
 	scalar m_radius = 0.50;
-
+	scalar m_height = 0.50;
+	
 public:
 	Cylinder();
 	
 	scalar radius() const;
 	void setRadius(const scalar &radius);
+	
+	scalar height() const;
+	void setHeight(const scalar &height);
 	
 	// Geometry interface
 	virtual void updateBoundingBox() override;
@@ -21,7 +25,6 @@ public:
 	virtual bool throwRay(const Ray &ray) const override;
 	virtual int throwRay(const Ray &ray, Collision &collide) const override;
 	virtual bool hasCollision(const Ray &ray) const override;
-	
 };
 
 using CylinderHandle = std::shared_ptr<Cylinder>;
