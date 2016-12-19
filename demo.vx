@@ -187,7 +187,19 @@ active = "true"
     shader = "shader_2"
     color = 138 138 138
     radius = 2.0
-    height = 0.02
+    height = 0.05
+}
+
+node
+{
+name = "cylinder_11"
+type = "vxCylinder"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 1.8 -0.1 1]
+    shader = "shader_2"
+    color = 138 138 138
+    radius = 2.0
+    height = 0.05
 }
 
 node
@@ -211,7 +223,7 @@ active = "true"
     color = 138 138 138
     shader = "shader_1"
     radius = 0.1
-    height = 2.0
+    height = 5.0
 }
 
 node
@@ -400,6 +412,76 @@ active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.2 -0.7 0.1 1]
     filePath = "/home/john/Downloads/gnome_mid.ply"
     color = 249 249 150
+    shader = "shader_2"
+}
+
+node
+{
+name = "gnome_tris_5"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.6 -0.7 2.1 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
+    color = 159 189 240
+    shader = "shader_2"
+}
+
+
+node
+{
+name = "gnome_tris_6"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.72 0.2 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
+    color = 159 240 189
+    shader = "shader_2"
+}
+
+
+node
+{
+name = "gnome_tris_7"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.1 -0.65 -1.20 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
+    color = 240 159 189
+    shader = "shader_2"
+}
+
+
+node
+{
+name = "gnome_tris_8"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.3 0.72 -1.20 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
+    color = 250 139 119
+    shader = "shader_2"
+}
+
+node
+{
+name = "gnome_tris_9"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 -0.65 -1.20 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
+    color = 94 97 159
+    shader = "shader_2"
+}
+
+
+node
+{
+name = "gnome_tris_10"
+type = "vxGeometry"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 0.72 0.20 1]
+    filePath = "/home/john/Downloads/gnome_mid.ply"
+    color = 100 109 119
     shader = "shader_2"
 }
 
