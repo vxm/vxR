@@ -352,7 +352,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		geo->throwRay(ray, temp);
 #endif
 		
-		if(!geo->boundingBox()->contains(temp.position(),scalar(0.0001)))
+		if(!geo->boundingBox()->contains(temp.position(),scalar(0.00001)))
 		{
 			
 			continue;

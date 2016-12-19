@@ -263,14 +263,13 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray, Collis
 	
 	reflection = computeLight(reflexRay, refxCollision);
 	
-	reflection.applyCurve(0.0,1.0);
-	reflection.mix(Color::zero, sh->getReflectionCoefficent());
+	reflection.applyCurve(1.0,0.0);
 //	Collision nextRound = refxCollision;
 	
 //	reflection+= computeReflection(iter-1, ray, nextRound) 
 //			* (scalar(iter) * colorRatio/scalar(m_lightBounces));
 	
-	return reflection;
+	return reflection * sh->getReflectionCoefficent();
 }
 
 Color RenderProcess::computeGI(unsigned int iter, Collision &col)
