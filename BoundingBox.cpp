@@ -9,7 +9,7 @@ BoundingBox::BoundingBox()
 
 void BoundingBox::clear()
 {
-	m_minX = m_maxX - 1.0;
+	m_minX = (m_maxX + 1.0);
 }
 
 void BoundingBox::set(v3s position, scalar size)
