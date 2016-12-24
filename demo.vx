@@ -40,7 +40,7 @@ active = "true"
     giSamples = 0
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 7
+    lightBounces = 5
 }
 
 node
@@ -54,21 +54,21 @@ active = "true"
     giSamples = 1
     giMultiplier = 1.5
     numThreads = -1
-    lightBounces = 7
+    lightBounces = 5
 }
 
 node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 2720 1536
-    pixelSamples = 100
+    pixelSamples = 200
     reflectionSamples = 2
     giSamples = 25
     giMultiplier = 1.5
     numThreads = -1
-    lightBounces = 7
+    lightBounces = 5
 }
 
 node
@@ -82,7 +82,7 @@ active = "false"
     giSamples = 230
     giMultiplier = 1.5
     numThreads = -1
-    lightBounces = 4
+    lightBounces = 5
 }
 
 node
@@ -130,8 +130,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     reflectionSamples = 0
-    reflectionRadius = 1.3
-    reflectionCoefficent = 0.1
+    reflectionRadius = 2.3
+    reflectionCoefficent = 0.01
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 0.01
@@ -155,7 +155,7 @@ active = "true"
     giColorMultiplier = 238 216 126
     reflectionSamples = 0
     reflectionRadius = 0.9
-    reflectionCoefficent = 0.4
+    reflectionCoefficent = 0.04
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 1.0
@@ -182,48 +182,12 @@ node
 {
 name = "cylinder_1"
 type = "vxCylinder"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 0.7 -0.1 1]
+active = "false"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 2.1 -0.1 1]
     shader = "shader_2"
     color = 138 138 138
-    radius = 2.0
-    height = 0.05
-}
-
-node
-{
-name = "cylinder_11"
-type = "vxCylinder"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 1.8 -0.1 1]
-    shader = "shader_2"
-    color = 138 138 138
-    radius = 2.0
-    height = 0.05
-}
-
-node
-{
-name = "cylinder_2"
-type = "vxCylinder"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.4 -0.1 1.0 1]
-    shader = "shader_1"
-    color = 138 138 138
-    radius = 0.8
-    height = 1.4
-}
-
-node
-{
-name = "cylinder_3"
-type = "vxCylinder"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.4 -0.0 -1.0 1]
-    color = 138 138 138
-    shader = "shader_1"
-    radius = 0.1
-    height = 5.0
+    radius = 2.4
+    height = 0.07
 }
 
 node
@@ -379,112 +343,6 @@ active = "true"
     color = 210 210 210
     shader = "shader_1"
 }
-
-
-node
-{
-name = "gnome_tris_3"
-type = "vxGeometry"
-active = "true"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.8 -0.65 1.2 1]
-    filePath = "/home/john/Downloads/gnome_low_1.ply"
-    color = 211 214 207
-    shader = "shader_2"
-}
-
-node
-{
-name = "gnome_tris_4"
-type = "vxGeometry"
-active = "false"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.8 -0.65 -0.8 1]
-    filePath = "/home/john/Downloads/gnome_low_1.ply"
-    color = 140 148 220
-    shader = "shader_1"
-}
-
-
-node
-{
-name = "gnome_tris_2"
-type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.2 -0.7 0.1 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
-    color = 249 249 150
-    shader = "shader_2"
-}
-
-node
-{
-name = "gnome_tris_5"
-type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.6 -0.7 2.1 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
-    color = 159 189 240
-    shader = "shader_2"
-}
-
-
-node
-{
-name = "gnome_tris_6"
-type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.2 0.72 0.2 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
-    color = 159 240 189
-    shader = "shader_2"
-}
-
-
-node
-{
-name = "gnome_tris_7"
-type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.1 -0.65 -1.20 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
-    color = 240 159 189
-    shader = "shader_2"
-}
-
-
-node
-{
-name = "gnome_tris_8"
-type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.3 0.72 -1.20 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
-    color = 250 139 119
-    shader = "shader_2"
-}
-
-node
-{
-name = "gnome_tris_9"
-type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 -0.65 -1.20 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
-    color = 94 97 159
-    shader = "shader_2"
-}
-
-
-node
-{
-name = "gnome_tris_10"
-type = "vxGeometry"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 0.72 0.20 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
-    color = 100 109 119
-    shader = "shader_2"
-}
-
 
 node
 {
@@ -785,7 +643,6 @@ active = "false"
     position = -2 5 -2
 }
 
-
 node
 {
 name = "point_light_2"
@@ -869,10 +726,10 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "false"
-    transform = [2 0 0 0 0 2 0 0 0 0 2 0 0.0 0.25 0.0 1]
-    resolution = 854
-    size = 8.0
+active = "true"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 1.5 0.25 0.0 1]
+    resolution = 454
+    size = 4.75
     color = 256 256 256
     shader = "shader_1"
 }
@@ -881,7 +738,7 @@ node
 {
 name = "milo_vx"
 type = "vxGridGeometry"
-active = "false"
+active = "true"
     transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.5 -0.63 1.6 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
 }
@@ -890,7 +747,7 @@ node
 {
 name = "triceratops_vx"
 type = "vxGridGeometry"
-active = "false"
+active = "true"
     transform = [1.3 0 0 0 0 1.3 0 0 0 0 1.3 0 2.3 -0.63 -0.9 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
 }
@@ -908,8 +765,8 @@ node
 {
 name = "gnome_vx"
 type = "vxGridGeometry"
-active = "false"
-    transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 -1.0 -0.65 2.0 1]
+active = "true"
+    transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/gnome_mid.ply"
 }
 
@@ -927,7 +784,7 @@ node
 {
 name = "male_vx"
 type = "vxGridGeometry"
-active = "false"
+active = "true"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.5 -0.63 1.0 1]
     filePath = "/home/john/Downloads/male.ply"
 }
