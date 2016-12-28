@@ -144,6 +144,19 @@ void Scene::buildLights()
 		node->m_object = point.get();
 	}
 	
+	for(const auto node: m_nodeDB->getNodesByType("vxSunLight"))
+	{
+		auto point = createSunLight();
+		point->setIntensity(node->getFloat("intensity"));
+		point->setColor(Color::lookup256(node->getColor("color")));
+		point->setSamples(node->getInt("samples"));
+		point->setComputeShadows(node->getBool("castShadows"));
+		
+		const auto transform = node->getMatrix("transform");
+		point->setTransform(transform);
+		node->m_object = point.get();
+	}
+	
 	for(const auto node: m_nodeDB->getNodesByType("vxAreaLight"))
 	{
 		auto area = createAreaLight();
@@ -466,6 +479,15 @@ PointLightHandle Scene::createPointLight()
 {
 	auto pl1 = std::make_shared<PointLight>(1.0, Color::white);
 	m_pointLights.emplace_back(pl1);
+	m_lights.emplace_back(pl1);
+	pl1->setScene(shared_from_this());
+	return pl1;
+}
+
+SunLightHandle Scene::createSunLight()
+{
+	auto pl1 = std::make_shared<SunLight>(1.0, Color::white);
+	m_sunLights.emplace_back(pl1);
 	m_lights.emplace_back(pl1);
 	pl1->setScene(shared_from_this());
 	return pl1;

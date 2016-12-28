@@ -47,6 +47,7 @@ protected:
 	std::vector<AreaLightHandle> m_areaLights;
 	std::vector<IBLightHandle> m_IBLights;
 	std::vector<PointLightHandle> m_pointLights;
+	std::vector<SunLightHandle> m_sunLights;
 	std::vector<DirectLightHandle> m_directLights;
 	std::vector<AmbientLightHandle> m_ambientLights;
 	
@@ -204,6 +205,11 @@ public:
 	/// \return 
 	///
 	PointLightHandle createPointLight();
+	///
+	/// \brief createSunLight
+	/// \return 
+	///
+	SunLightHandle createSunLight();
 	///
 	/// \brief createDirectLight
 	/// \return 

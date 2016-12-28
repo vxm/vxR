@@ -90,7 +90,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.0 0.9 -4.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2.0 0.0 -2.0 1]
     focusDistance = 2.7
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -338,7 +338,7 @@ node
 name = "gnome_tris_1"
 type = "vxGeometry"
 active = "true"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.8 -0.65 0.2 1]
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/gnome_low_1.ply"
     color = 210 210 210
     shader = "shader_1"
@@ -675,13 +675,13 @@ active = "false"
 node
 {
 name = "sun"
-type = "vxDirectLight"
+type = "vxSunLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 21 0 0 0 0 1]
     intensity = 1.4
     color = 194 220 211
     orientation = -2.0 -10.0 7.0
-    samples = 1
+    samples = 10
     castShadows = "true"
 }
 
@@ -726,7 +726,7 @@ node
 {
 name = "grid"
 type = "vxGrid"
-active = "true"
+active = "false"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 1.5 0.25 0.0 1]
     resolution = 454
     size = 4.75
@@ -738,7 +738,7 @@ node
 {
 name = "milo_vx"
 type = "vxGridGeometry"
-active = "true"
+active = false"
     transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.5 -0.63 1.6 1]
     filePath = "/home/john/Downloads/vmilo_0.ply"
 }
@@ -747,7 +747,7 @@ node
 {
 name = "triceratops_vx"
 type = "vxGridGeometry"
-active = "true"
+active = false"
     transform = [1.3 0 0 0 0 1.3 0 0 0 0 1.3 0 2.3 -0.63 -0.9 1]
     filePath = "/home/john/Downloads/triceratops_1.ply"
 }
@@ -765,7 +765,7 @@ node
 {
 name = "gnome_vx"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/gnome_mid.ply"
 }
@@ -784,7 +784,7 @@ node
 {
 name = "male_vx"
 type = "vxGridGeometry"
-active = "true"
+active = false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.5 -0.63 1.0 1]
     filePath = "/home/john/Downloads/male.ply"
 }
