@@ -15,6 +15,7 @@
 #include "GeoGrid.h"
 #include "Color.h"
 #include <set>
+#include <visible.h>
 
 namespace vxCore {
 
@@ -25,9 +26,13 @@ using vxGeometryHandle = std::shared_ptr<Geometry>;
 using rayFn = std::function<int(const Ray &,Collision &)>;
 using rayCondFn = std::function<int(const Ray &,Collision &, rayFn&)>;
 
-class Geometry
+
+
+
+class Geometry : public Visible
 {
 protected:
+
 	std::shared_ptr<BoundingBox> m_bb;
 	Matrix44 m_transform;
 	

@@ -259,7 +259,9 @@ void SunLight::set(const v3s &orientation)
 Color SunLight::acummulationLight(const Ray &, const Collision &collision) const
 {
 	const auto&& pp = collision.position();
-	const auto&& p = pp - v3s(0,0,1).rotate({.2,.2,0.0}, 0.32) * m_distance;
+	auto position = v3s(0,0,1).rotate({1.0,0.0,0.0}, 4.0) * m_distance;
+	position+=MU::getSolidSphereRand(m_radius);
+	const auto&& p = pp - position;
 	
 	Ray f(p, collision.normal());
 	// compute all sort of shadows.

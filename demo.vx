@@ -12,7 +12,7 @@ active = "true"
     giSamples = 1
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 5
+    lightBounces = 2
 }
 
 node
@@ -340,7 +340,7 @@ type = "vxGeometry"
 active = "true"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/gnome_low_1.ply"
-    color = 210 210 210
+    color = 230 230 230
     shader = "shader_1"
 }
 
@@ -588,7 +588,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     lightImageNode = "image_2"
@@ -679,7 +679,7 @@ type = "vxSunLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 21 0 0 0 0 1]
     intensity = 1.4
-    color = 194 220 211
+    color = 255 254 252
     orientation = -2.0 -10.0 7.0
     samples = 10
     castShadows = "true"
@@ -728,7 +728,7 @@ name = "grid"
 type = "vxGrid"
 active = "false"
     transform = [2 0 0 0 0 2 0 0 0 0 2 0 1.5 0.25 0.0 1]
-    resolution = 454
+    resolution = 154
     size = 4.75
     color = 256 256 256
     shader = "shader_1"
@@ -784,7 +784,7 @@ node
 {
 name = "male_vx"
 type = "vxGridGeometry"
-active = false"
+active = "true"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.5 -0.63 1.0 1]
     filePath = "/home/john/Downloads/male.ply"
 }
