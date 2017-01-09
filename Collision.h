@@ -7,7 +7,7 @@
 
 namespace vxCore {
 
-class Geometry;
+class Visible;
 
 class Collision
 {
@@ -22,7 +22,7 @@ private:
 
 public:
 
-	Geometry* m_geo{nullptr};
+	Visible* m_geo{nullptr};
 	
 	Collision();
 	

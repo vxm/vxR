@@ -12,9 +12,9 @@ BroadPhase::BroadPhase()
 	m_bb = std::make_shared<BoundingBox>();
 }
 
-void BroadPhase::addGeometry(vxGeometryHandle geo)
+void BroadPhase::addVisible(VisibleHandle vis)
 {
-	m_geometries.emplace_back(geo);
+	m_visibles.emplace_back(vis);
 }
 
 BoundingBoxHandle BroadPhase::closestBox(const v3s &p) const
@@ -23,7 +23,7 @@ BoundingBoxHandle BroadPhase::closestBox(const v3s &p) const
 	
 	scalar d =  std::numeric_limits<scalar>::max();
 	
-	for(auto geo:m_geometries)
+	for(auto geo:m_visibles)
 	{
 		auto t = geo->boundingBox()->center().distance(p);
 		
@@ -39,7 +39,7 @@ BoundingBoxHandle BroadPhase::closestBox(const v3s &p) const
 
 void BroadPhase::updateCache()
 {
-	const auto dngs = m_geometries.size() * 2;
+	const auto dngs = m_visibles.size() * 2;
 	
 	m_xvalues.resize(dngs);
 	m_yvalues.resize(dngs);
@@ -52,7 +52,7 @@ void BroadPhase::updateCache()
 	
 	///Run through geometries and slice the 
 	///broad phase
-	for(auto geo:m_geometries)
+	for(auto geo:m_visibles)
 	{
 		auto bb = geo->boundingBox();
 		
@@ -113,7 +113,7 @@ void BroadPhase::updateCache()
 		l.index=idx++;
 	}
 	
-	for(auto& geo:m_geometries)
+	for(auto& geo:m_visibles)
 	{
 		locateAndRegister(geo);
 	}
@@ -126,7 +126,7 @@ void BroadPhase::updateCache()
 		if(l.geoRefs!=nullptr)
 			for(auto& g: *l.geoRefs)
 			{
-				std::cout << "\tgeo color: " << g->baseColor() << std::endl;
+				std::cout << "\tgeo color: " << g->color() << std::endl;
 			}
 	}
 	
@@ -165,9 +165,9 @@ unsigned long BroadPhase::lookupVoxel(const v3s &v,
 	return index(a,b,c);
 }
 
-void BroadPhase::locateAndRegister(vxGeometryHandle geo)
+void BroadPhase::locateAndRegister(VisibleHandle vis)
 {
-	auto bb = geo->boundingBox();
+	auto bb = vis->boundingBox();
 	int a1,b1,c1;
 	auto idx1 = lookupVoxel(bb->min()+smallScalar, a1, b1, c1);
 	int a2,b2,c2;
@@ -198,10 +198,10 @@ void BroadPhase::locateAndRegister(vxGeometryHandle geo)
 	{
 		if(m_members[idx1].geoRefs == nullptr)
 		{
-			m_members[idx1].geoRefs = std::make_shared<geometryHandleArray>();
+			m_members[idx1].geoRefs = std::make_shared<VisibleHandleArray>();
 		}
 		
-		m_members[idx1].geoRefs->emplace_back(geo);
+		m_members[idx1].geoRefs->emplace_back(vis);
 		return;
 	}
 	
@@ -215,11 +215,11 @@ void BroadPhase::locateAndRegister(vxGeometryHandle geo)
 				
 				if(m_members[idx].geoRefs == nullptr)
 				{
-					m_members[idx].geoRefs = std::make_shared<geometryHandleArray>();
+					m_members[idx].geoRefs = std::make_shared<VisibleHandleArray>();
 				}
 				
 				//this index could be very redundant. //TODO:check
-				m_members[idx].geoRefs->push_back(geo);
+				m_members[idx].geoRefs->push_back(vis);
 			}
 		}
 	}
@@ -338,7 +338,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	
 	Collision temp = collide;
 	
-	for(auto&& geo:m_geometries)
+	for(auto&& geo:m_visibles)
 	{
 		if(!geo->testBoundingBox(ray, temp))
 		{
