@@ -7,6 +7,7 @@
 
 #include "Scene.h"
 #include "BroadPhase.h"
+#include "Light.h"
 
 namespace vxCore{
 
@@ -229,10 +230,10 @@ void Scene::buildGrids()
 		grid->setResolution(resolution);
 		grid->setTransform(transform);
 		
-		grid->setBaseColor(color);
+		grid->setColor(color);
 		m_grids.emplace_back(grid);
 		m_geometries.emplace_back(grid);
-		m_broadPhase->addGeometry(grid);
+		m_broadPhase->addVisible(grid);
 		
 		for(const auto nodeGeo: m_nodeDB->getNodesByType("vxGridGeometry"))
 		{
@@ -325,7 +326,7 @@ void Scene::buildCylinders()
 		
 		auto cylinderGeo = createCylinder();
 		
-		cylinderGeo->setBaseColor(Color::lookup256(node->getColor("color")));
+		cylinderGeo->setColor(Color::lookup256(node->getColor("color")));
 		
 		auto&& shaderNodeName = node->getString("shader");
 		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
@@ -351,7 +352,7 @@ void Scene::buildCylinders()
 		cylinderGeo->updateBoundingBox();
 		cylinderGeo->boundingBox()->applyTransform(transform);
 		m_geometries.emplace_back(cylinderGeo);
-		m_broadPhase->addGeometry(cylinderGeo);
+		m_broadPhase->addVisible(cylinderGeo);
 		
 		node->m_object = cylinderGeo.get();
 	}
@@ -366,7 +367,7 @@ void Scene::buildGeometries()
 		const auto transform = node->getMatrix("transform");
 		
 		auto geo = createGeometry(path, transform);
-		geo->setBaseColor(Color::lookup256(node->getColor("color")));
+		geo->setColor(Color::lookup256(node->getColor("color")));
 		
 		auto&& shaderNodeName = node->getString("shader");
 		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
@@ -386,7 +387,7 @@ void Scene::buildGeometries()
 		auto plyReader = std::make_shared<PLYImporter>(geo);
 		plyReader->processPLYFile(path);
 
-		m_broadPhase->addGeometry(geo);
+		m_broadPhase->addVisible(geo);
 		
 		node->m_object = geo.get();
 	}
@@ -465,31 +466,34 @@ void Scene::buildDefaultShader()
 	m_shader->setScene(shared_from_this());
 }
 
+void Scene::addLight(LightHandle lh)
+{
+	m_lights.emplace_back(lh);
+	lh->setScene(shared_from_this());
+	m_broadPhase->addVisible(lh);
+}
+
 AreaLightHandle Scene::createAreaLight()
 {
 	auto area = std::make_shared<AreaLight>();
 	m_areaLights.emplace_back(area);
-	m_lights.emplace_back(area);
-	area->setScene(shared_from_this());
+	addLight(area);
 	return area;
-	
 }
 
 PointLightHandle Scene::createPointLight()
 {
-	auto pl1 = std::make_shared<PointLight>(1.0, Color::white);
+	auto pl1 = std::make_shared<PointLight>();
 	m_pointLights.emplace_back(pl1);
-	m_lights.emplace_back(pl1);
-	pl1->setScene(shared_from_this());
+	addLight(pl1);
 	return pl1;
 }
 
 SunLightHandle Scene::createSunLight()
 {
-	auto pl1 = std::make_shared<SunLight>(1.0, Color::white);
+	auto pl1 = std::make_shared<SunLight>();
 	m_sunLights.emplace_back(pl1);
-	m_lights.emplace_back(pl1);
-	pl1->setScene(shared_from_this());
+	addLight(pl1);
 	return pl1;
 }
 
@@ -497,26 +501,23 @@ IBLightHandle Scene::createIBLight(const std::string path)
 {
 	auto ibl1 = std::make_shared<IBLight>(1.0, path);
 	m_IBLights.emplace_back(ibl1);
-	m_lights.emplace_back(ibl1);
-	ibl1->setScene(shared_from_this());
+	addLight(ibl1);
 	return ibl1;
 }
 
 DirectLightHandle Scene::createDirectLight()
 {
-	auto dl1 = std::make_shared<DirectLight>(1.0, Color::white);
+	auto dl1 = std::make_shared<DirectLight>();
 	m_directLights.emplace_back(dl1);
-	m_lights.emplace_back(dl1);
-	dl1->setScene(shared_from_this());
+	addLight(dl1);
 	return dl1;
 }
 
 AmbientLightHandle Scene::createAmbientLight()
 {
-	auto al1 = std::make_shared<AmbientLight>(1.0, Color::white);
+	auto al1 = std::make_shared<AmbientLight>();
 	m_ambientLights.emplace_back(al1);
-	m_lights.emplace_back(al1);
-	al1->setScene(shared_from_this());
+	addLight(al1);
 	return al1;
 }
 
@@ -638,7 +639,7 @@ vxTriangleMeshHandle Scene::createGeometry(const std::string &path, const Matrix
 	auto geo = std::make_shared<TriangleMesh>();
 	geo->setTransform(transform);
 	geo->setConstructionPath(path);
-	m_broadPhase->addGeometry(geo);
+	m_broadPhase->addVisible(geo);
 	
 	m_geometries.emplace_back(geo);
 	

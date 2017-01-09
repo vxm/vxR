@@ -1,8 +1,28 @@
 #include "Light.h"
 #include "Scene.h"
 
-namespace vxCore 
+using namespace vxCore;
+
+Light::Light()
 {
+}
+
+Light::Light(const scalar intensity)
+	: m_intensity(intensity)
+	, m_castShadows(true)
+{
+}
+
+Light::Light(const v3s &position) 
+	:m_position(position)
+{
+}
+
+Light::Light(scalar x, scalar y, scalar z)
+	:m_position(x,y,z)
+{
+}
+
 
 bool Light::computeShadows() const
 {
@@ -46,27 +66,6 @@ bool Light::reachesLightSource(const Ray &ray) const
 	return originToSource<originToHit;
 }
 
-Light::Light()
-	:m_castShadows(true)
-{
-}
-
-Light::Light(scalar intensity, const Color &color)
-	:m_intensity(intensity)
-	,m_color(color)
-{
-}
-
-Light::Light(const v3s &position) 
-	:m_position(position)
-{
-}
-
-Light::Light(scalar x, scalar y, scalar z)
-	:m_position(x,y,z)
-{
-}
-
 scalar Light::radius() const
 {
 	return m_radius;
@@ -108,11 +107,6 @@ void Light::setIntensity(scalar intensity)
 	m_intensity = intensity;
 }
 
-void Light::setColor(const Color &color) 
-{
-	m_color = color;
-}
-
 v3s Light::position() const 
 {
 	return m_position;
@@ -138,10 +132,6 @@ DirectLight::DirectLight()
 	:Light()
 {
 }
-
-DirectLight::DirectLight(scalar instensity, const Color &col)
-	:Light(instensity, col)
-{}
 
 DirectLight::DirectLight(const v3s &orientation, bool bidirectional) 
 	: m_orientation(orientation)
@@ -196,11 +186,6 @@ PointLight::PointLight()
 {
 }
 
-PointLight::PointLight(scalar instensity, const Color &col)
-	:Light(instensity, col)
-{}
-
-
 PointLight::PointLight(const v3s &orientation, bool biPointional) 
 	: m_orientation(orientation)
 	, m_biDirectional(biPointional)
@@ -246,10 +231,6 @@ SunLight::SunLight()
 	:Light()
 {
 }
-
-SunLight::SunLight(scalar instensity, const Color &col)
-	:Light(instensity, col)
-{}
 
 void SunLight::set(const v3s &orientation)
 {
@@ -321,14 +302,8 @@ IBLight::IBLight()
 {
 }
 
-IBLight::IBLight(scalar instensity, const Color &col)
-	:Light(instensity, col)
-	,m_map("")
-{
-}
-
 IBLight::IBLight(scalar instensity, const std::string path)
-	:Light(instensity, Color::white)
+	:Light(instensity)
 	,m_map(path)
 {
 }
@@ -341,10 +316,10 @@ v3s IBLight::getLightRay(const v3s &position) const
 
 
 ////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////// IBL Light ////////////////////////
+//////////////////////////// Accumulation functions ////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
-
+/* This is virtual now
 Color Light::acummulationLight(const Ray &, const Collision &collision) const
 {
 	Color acumColor;
@@ -368,7 +343,7 @@ Color Light::acummulationLight(const Ray &, const Collision &collision) const
 
 	return acumColor;
 }
-
+*/
 
 Color DirectLight::acummulationLight(const Ray &, 
 										 const Collision &collision) const
@@ -393,6 +368,8 @@ Color DirectLight::acummulationLight(const Ray &,
 			ret = color().gained(lumm);
 		}
 	}
+	
+	std::cout << "direct light acummul: " << ret << std::endl;
 	
 	return ret;
 }
@@ -443,11 +420,6 @@ Color IBLight::acummulationLight(const Ray &, const Collision &collision) const
 AmbientLight::AmbientLight()
 {
 	
-}
-
-AmbientLight::AmbientLight(scalar intensity, const Color &color)
-	:Light(intensity, color)
-{
 }
 
 v3s AmbientLight::getLightRay(const v3s &position) const
@@ -546,5 +518,3 @@ void AreaLight::setMinX(const scalar &minX)
 	m_minX = minX;
 }
 
-
-}

@@ -252,7 +252,7 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 			}
 		}
 		
-		col.setColor(m_baseColor);
+		col.setColor(m_color);
 		col.setValid(true);
 		return 1;
 	}

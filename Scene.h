@@ -51,7 +51,7 @@ protected:
 	std::vector<DirectLightHandle> m_directLights;
 	std::vector<AmbientLightHandle> m_ambientLights;
 	
-	std::vector<vxGeometryHandle> m_geometries;
+	std::vector<GeometryHandle> m_geometries;
 	std::vector<std::shared_ptr<TriangleMesh>> m_triangleMeshes;
 	std::vector<std::shared_ptr<Plane>> m_planes;
 	
@@ -131,6 +131,11 @@ public:
 	/// After all builds this process will ensure the scene is ready 
 	/// and optimized for render.
 	void updateCache();
+	///
+	/// \brief addLight
+	/// \param lh
+	/// Adds a light to the scene.
+	void addLight(LightHandle lh);
 	///
 	/// \brief createShader
 	/// \return 
