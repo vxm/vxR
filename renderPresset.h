@@ -24,7 +24,7 @@ public:
 		k32k
 	};
 	
-	static auto quality(imageQuality qlt)
+	static vxCore::ImageProperties quality(imageQuality qlt)
 	{
 		switch(qlt)
 		{

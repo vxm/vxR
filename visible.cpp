@@ -4,6 +4,16 @@ using namespace vxCore;
 
 #define DRAW_BB 0
 
+std::shared_ptr<Shader> Visible::shader() const
+{
+	return m_shader;
+}
+
+void Visible::setShader(std::shared_ptr<Shader> shader)
+{
+	m_shader = shader;
+}
+
 Visible::Visible()
 {
 	m_bb = std::make_shared<BoundingBox>();
@@ -19,16 +29,6 @@ Color Visible::color() const
 void Visible::setColor(const Color &baseColor)
 {
 	m_color = baseColor;
-}
-
-Shader *Visible::shader() const
-{
-	return m_shader;
-}
-
-void Visible::setShader(Shader *shader)
-{
-	m_shader = shader;
 }
 
 int Visible::testBoundingBox(const Ray &ray, Collision &collide) const

@@ -1,26 +1,31 @@
 #include "Light.h"
 #include "Scene.h"
+#include "LightShader.h"
 
 using namespace vxCore;
 
 Light::Light()
 {
+	m_shader = std::make_shared<LightShader>();
 }
 
 Light::Light(const scalar intensity)
 	: m_intensity(intensity)
 	, m_castShadows(true)
 {
+	m_shader = std::make_shared<LightShader>();
 }
 
 Light::Light(const v3s &position) 
 	:m_position(position)
 {
+	m_shader = std::make_shared<LightShader>();
 }
 
 Light::Light(scalar x, scalar y, scalar z)
 	:m_position(x,y,z)
 {
+	m_shader = std::make_shared<LightShader>();
 }
 
 

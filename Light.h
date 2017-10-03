@@ -173,17 +173,17 @@ public:
 	bool reachesLightSource(const Ray &ray) const;
 	
 	//renderable interface
-	virtual bool throwRay(const Ray &ray) const override
+	virtual bool throwRay(const Ray &) const override
 	{
 		return false;
 	}
 	
-	virtual int throwRay(const Ray &ray, Collision &collide) const  override
+	virtual int throwRay(const Ray &, Collision &) const  override
 	{
 		return 0;
 	}
 	
-	virtual bool hasCollision(const Ray &ray) const override
+	virtual bool hasCollision(const Ray &) const override
 	{
 		return false;
 	}
@@ -243,17 +243,17 @@ public:
 
 	
 	//renderable interface
-	virtual bool throwRay(const Ray &ray) const
+	virtual bool throwRay(const Ray &) const override
 	{
 		return false;
 	}
 	
-	virtual int throwRay(const Ray &ray, Collision &collide) const
+	virtual int throwRay(const Ray &, Collision &) const override
 	{
 		return 0;
 	}
 	
-	virtual bool hasCollision(const Ray &ray) const
+	virtual bool hasCollision(const Ray &) const override
 	{
 		return false;
 	}
@@ -314,17 +314,17 @@ public:
 	
 	
 	//renderable interface
-	virtual bool throwRay(const Ray &ray) const
+	virtual bool throwRay(const Ray &) const override
 	{
 		return false;
 	}
 	
-	virtual int throwRay(const Ray &ray, Collision &collide) const
+	virtual int throwRay(const Ray &, Collision &) const override
 	{
 		return 0;
 	}
 	
-	virtual bool hasCollision(const Ray &ray) const
+	virtual bool hasCollision(const Ray &) const override
 	{
 		return false;
 	}
@@ -380,23 +380,23 @@ public:
 	// Visible interface
 	
 	//renderable interface
-	virtual bool throwRay(const Ray &ray) const
+	virtual bool throwRay(const Ray &) const override
 	{
 		return false;
 	}
 	
-	virtual int throwRay(const Ray &ray, Collision &collide) const
+	virtual int throwRay(const Ray &, Collision &collide) const override
 	{
 		return 0;
 	}
 	
-	virtual bool hasCollision(const Ray &ray) const
+	virtual bool hasCollision(const Ray &) const override
 	{
 		return false;
 	}
 	
 	// Visible interface
-	virtual void updateBoundingBox() override
+	virtual void updateBoundingBox() override 
 	{
 		return;
 	}
@@ -446,17 +446,17 @@ public:
 	// Visible interface
 	
 	//renderable interface
-	virtual bool throwRay(const Ray &ray) const
+	virtual bool throwRay(const Ray &) const override
 	{
 		return false;
 	}
 	
-	virtual int throwRay(const Ray &ray, Collision &collide) const
+	virtual int throwRay(const Ray &, Collision &) const override
 	{
 		return 0;
 	}
 	
-	virtual bool hasCollision(const Ray &ray) const
+	virtual bool hasCollision(const Ray &) const override
 	{
 		return false;
 	}
@@ -542,17 +542,17 @@ public:
 	// Visible interface
 	
 	//renderable interface
-	virtual bool throwRay(const Ray &ray) const
+	virtual bool throwRay(const Ray &) const override
 	{
 		return false;
 	}
 	
-	virtual int throwRay(const Ray &ray, Collision &collide) const
+	virtual int throwRay(const Ray &, Collision &) const override
 	{
 		return 0;
 	}
 	
-	virtual bool hasCollision(const Ray &ray) const
+	virtual bool hasCollision(const Ray &) const override
 	{
 		return false;
 	}
@@ -585,17 +585,17 @@ public:
 	
 	
 	//renderable interface
-	virtual bool throwRay(const Ray &ray) const
+	virtual bool throwRay(const Ray &) const override
 	{
 		return false;
 	}
 	
-	virtual int throwRay(const Ray &ray, Collision &collide) const
+	virtual int throwRay(const Ray &, Collision &) const override
 	{
 		return 0;
 	}
 	
-	virtual bool hasCollision(const Ray &ray) const
+	virtual bool hasCollision(const Ray &) const override
 	{
 		return false;
 	}

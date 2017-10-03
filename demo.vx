@@ -600,7 +600,7 @@ node
 {
 name = "area_light_1"
 type = "vxAreaLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -170 900 0 1]
     intensity = 0.0
     color = 218 230 200
@@ -677,12 +677,12 @@ node
 name = "sun"
 type = "vxSunLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 21 0 0 0 0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 1.4
     color = 255 254 252
     orientation = -2.0 -10.0 7.0
     samples = 10
-    castShadows = "true"
+    castShadows = "false"
 }
 
 node
@@ -691,7 +691,7 @@ name = "amblight"
 type = "vxAmbientLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    radius = 0.04
+    radius = 0.14
     intensity = 0.2
     color = 255 255 255
     samples = 1

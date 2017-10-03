@@ -31,7 +31,7 @@ protected:
 	
 	Color m_color = Color::white;
 	
-	Shader* m_shader;
+	std::shared_ptr<Shader> m_shader;
 	
 public:
 	///
@@ -70,16 +70,6 @@ public:
 	/// \param baseColor
 	///
 	void setColor(const Color &color);
-	///
-	/// \brief shader
-	/// \return 
-	///
-	Shader *shader() const;
-	///
-	/// \brief setShader
-	/// \param shader
-	///
-	void setShader(Shader *shader);
 	
 	virtual void updateBoundingBox() = 0;
 	
@@ -97,6 +87,8 @@ public:
 	virtual int throwRay(const Ray &ray, Collision &collide) const = 0;
 	virtual bool hasCollision(const Ray &ray) const = 0;
 	
+	std::shared_ptr<Shader> shader() const;
+	void setShader(std::shared_ptr<Shader> shader);
 };
 
 using VisibleHandle = std::shared_ptr<Visible>;

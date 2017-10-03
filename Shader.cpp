@@ -6,6 +6,26 @@
 
 using namespace vxCore;
 
+bool Shader::hasReflection() const
+{
+	return m_hasReflection;
+}
+
+void Shader::setHasReflection(bool hasReflection)
+{
+	m_hasReflection = hasReflection;
+}
+
+bool Shader::hasGI() const
+{
+	return m_hasGI;
+}
+
+void Shader::setHasGI(bool hasGI)
+{
+	m_hasGI = hasGI;
+}
+
 vxCore::Shader::Shader()
 {
 }
