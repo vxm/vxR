@@ -73,7 +73,7 @@ void Scene::buildImages()
 
 		img->load();
 
-		node->m_sharedObj = img;
+		node->bind(img);
 	}
 }
 
@@ -91,7 +91,7 @@ void Scene::buildLights()
 		std::string &&cast = node->getString("castShadows"s);
 		direct->setComputeShadows(cast == "true"s);
 
-		node->m_sharedObj = direct;
+		node->bind(direct);
 	}
 
 	for (const auto node : m_nodeDB->getNodesByType("vxIBLight"))
@@ -106,7 +106,7 @@ void Scene::buildLights()
 		env->setGamma(node->getFloat("gamma"));
 		env->setLowThreshold(node->getFloat("lowThreshold"));
 
-		node->m_sharedObj = env;
+		node->bind(env);
 	}
 
 	for (const auto node : m_nodeDB->getNodesByType("vxAmbientLight"))
@@ -119,7 +119,7 @@ void Scene::buildLights()
 		const auto transform = node->getMatrix("transform");
 		ambient->setTransform(transform);
 
-		node->m_sharedObj = ambient;
+		node->bind(ambient);
 	}
 
 	for (const auto node : m_nodeDB->getNodesByType("vxPointLight"))
@@ -132,7 +132,7 @@ void Scene::buildLights()
 
 		const auto transform = node->getMatrix("transform");
 		point->setTransform(transform);
-		node->m_sharedObj = point;
+		node->bind(point);
 	}
 
 	for (const auto node : m_nodeDB->getNodesByType("vxSunLight"))
@@ -145,7 +145,7 @@ void Scene::buildLights()
 
 		const auto transform = node->getMatrix("transform");
 		point->setTransform(transform);
-		node->m_sharedObj = point;
+		node->bind(point);
 	}
 
 	for (const auto node : m_nodeDB->getNodesByType("vxAreaLight"))
@@ -164,7 +164,7 @@ void Scene::buildLights()
 		const auto transform = node->getMatrix("transform");
 		area->setTransform(transform);
 
-		node->m_sharedObj = area;
+		node->bind(area);
 	}
 }
 
@@ -184,7 +184,7 @@ void Scene::buildCameras()
 
 		m_camera->setPixelRadius(pRadius);
 		m_camera->setTransform(transform);
-		node->m_sharedObj = m_camera;
+		node->bind(m_camera);
 	}
 }
 
@@ -205,7 +205,7 @@ void Scene::buildGrids()
 			assert(true);
 		}
 
-		auto sh = std::static_pointer_cast<Shader>(shaderNode->m_sharedObj);
+		auto sh = std::static_pointer_cast<Shader>(shaderNode->node());
 		grid->setShader(sh);
 
 		const auto color = Color::lookup256(node->getColor("color"));
@@ -246,7 +246,7 @@ void Scene::buildGrids()
 		auto totals = grid->getNumberOfVoxels();
 		std::cout << "Number of active voxels " << na << " of " << totals
 		          << std::endl;
-		node->m_sharedObj = grid;
+		node->bind(grid);
 	}
 }
 
@@ -259,7 +259,7 @@ void Scene::buildDomes()
 
 		auto dome = createDome(imageNodeName, imageLightNode);
 		dome->setRadius(node->getFloat("radius"));
-		node->m_sharedObj = dome;
+		node->bind(dome);
 	}
 }
 
@@ -297,7 +297,7 @@ void Scene::buildPlanes()
 		plane->setX(node->getFloat("x"));
 		plane->setY(node->getFloat("y"));
 		plane->setZ(node->getFloat("z"));
-		node->m_sharedObj = plane;
+		node->bind(plane);
 	}
 }
 
@@ -322,7 +322,7 @@ void Scene::buildCylinders()
 		}
 
 		cylinderGeo->setShader(
-		    std::static_pointer_cast<Shader>(shaderNode->m_sharedObj));
+		    std::static_pointer_cast<Shader>(shaderNode->node()));
 		cylinderGeo->setTransform(transform);
 
 		auto radius = node->getFloat("radius");
@@ -336,7 +336,7 @@ void Scene::buildCylinders()
 		m_geometries.emplace_back(cylinderGeo);
 		m_broadPhase->addVisible(cylinderGeo);
 
-		node->m_sharedObj = cylinderGeo;
+		node->bind(cylinderGeo);
 	}
 }
 
@@ -359,7 +359,7 @@ void Scene::buildGeometries()
 			assert(true);
 		}
 
-		geo->setShader(std::static_pointer_cast<Shader>(shaderNode->m_sharedObj));
+		geo->setShader(std::static_pointer_cast<Shader>(shaderNode->node()));
 
 		geo->setTransform(transform);
 
@@ -368,7 +368,7 @@ void Scene::buildGeometries()
 
 		m_broadPhase->addVisible(geo);
 
-		node->m_sharedObj = geo;
+		node->bind(geo);
 	}
 }
 
@@ -410,7 +410,7 @@ void Scene::buildShaders()
 		shader->setSscColorMultiplier(
 		    Color::lookup256(node->getColor("sscColorMultiplier")));
 
-		node->m_sharedObj = shader;
+		node->bind(shader);
 	}
 }
 
@@ -449,7 +449,7 @@ void Scene::addLight(LightHandle lh)
 {
 	m_lights.emplace_back(lh);
 	lh->setScene(shared_from_this());
-	//m_broadPhase->addVisible(lh);
+	// m_broadPhase->addVisible(lh);
 }
 
 AreaLightHandle Scene::createAreaLight()

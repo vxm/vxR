@@ -26,10 +26,12 @@ class Node
 
 	std::vector<Attribute> m_attributes;
 	int id{0};
+	std::shared_ptr<void> m_sharedObj;
 
 public:
+	void bind(std::shared_ptr<void> node) { m_sharedObj = node; }
 
-	std::shared_ptr<void> m_sharedObj;
+	std::shared_ptr<void> node() const { return m_sharedObj; }
 
 	Node();
 	~Node() { nNodes--; }

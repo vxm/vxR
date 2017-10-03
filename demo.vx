@@ -1,6 +1,8 @@
 #vxR scene
 #format ascii 1.0
 
+//TODO: add output file template name into rendersettings
+
 node
 {
 name = "renderSettings_0_low"
@@ -600,7 +602,7 @@ node
 {
 name = "area_light_1"
 type = "vxAreaLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -170 900 0 1]
     intensity = 0.0
     color = 218 230 200
@@ -634,8 +636,8 @@ node
 {
 name = "point_light_1"
 type = "vxPointLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -14.0 10.0 1.0 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.0 1.0 -1.0 1]
     intensity = 0.690
     color = 255 230 240
     samples = 1
@@ -676,7 +678,7 @@ node
 {
 name = "sun"
 type = "vxSunLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 1.4
     color = 255 254 252
