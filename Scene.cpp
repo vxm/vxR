@@ -129,6 +129,7 @@ void Scene::buildLights()
 		point->setColor(Color::lookup256(node->getColor("color")));
 		point->setSamples(node->getInt("samples"));
 		point->setComputeShadows(node->getBool("castShadows"));
+		point->setRadius(node->getFloat("radius"));
 
 		const auto transform = node->getMatrix("transform");
 		point->setTransform(transform);
@@ -449,7 +450,7 @@ void Scene::addLight(LightHandle lh)
 {
 	m_lights.emplace_back(lh);
 	lh->setScene(shared_from_this());
-	// m_broadPhase->addVisible(lh);
+	m_broadPhase->addVisible(lh);
 }
 
 AreaLightHandle Scene::createAreaLight()

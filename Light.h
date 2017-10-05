@@ -330,10 +330,7 @@ public:
 	}
 	
 	// Visible interface
-	virtual void updateBoundingBox() override
-	{
-		return;
-	}
+	virtual void updateBoundingBox() override;
 };
 
 ///

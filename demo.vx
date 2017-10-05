@@ -21,7 +21,7 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 20
     reflectionSamples = 1
@@ -35,7 +35,7 @@ node
 {
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 45
     reflectionSamples = 1
@@ -49,7 +49,7 @@ node
 {
 name = "renderSettings_3"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 2720 1536
     pixelSamples = 64
     reflectionSamples = 1
@@ -63,7 +63,7 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 2720 1536
     pixelSamples = 200
     reflectionSamples = 2
@@ -637,12 +637,13 @@ node
 name = "point_light_1"
 type = "vxPointLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.0 1.0 -1.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.5 -0.6 1]
     intensity = 0.690
     color = 255 230 240
     samples = 1
     castShadows = "true"
-    position = -2 5 -2
+    position = 0 0 0
+    radius = 0.2
 }
 
 node
@@ -689,12 +690,12 @@ active = "false"
 
 node
 {
-name = "amblight"
+name = "amb_light"
 type = "vxAmbientLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    radius = 0.14
-    intensity = 0.2
+    radius = 0.0
+    intensity = 0.1
     color = 255 255 255
     samples = 1
 }

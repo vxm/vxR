@@ -203,10 +203,26 @@ void PointLight::set(const v3s &orientation, bool biPointional)
 	m_biDirectional=biPointional;
 }
 
+void PointLight::updateBoundingBox()
+{
+	auto&& orig = m_transform.origin() + m_position;
+	
+	m_bb->setMinX(orig.x() - m_radius);
+	m_bb->setMaxX(orig.x() + m_radius);
+	
+	m_bb->setMinY(orig.y() - m_radius);
+	m_bb->setMaxY(orig.y() + m_radius);
+	
+	m_bb->setMinZ(orig.z() - m_radius);
+	m_bb->setMaxZ(orig.z() + m_radius);
+	
+	return;
+}
+
 Color PointLight::acummulationLight(const Ray &, const Collision &collision) const
 {
 	const auto&& pp = collision.position();
-	const auto&& p = pp - m_transform.origin();
+	const auto&& p = pp - (m_position + m_transform.origin());
 	
 	Ray f(p, collision.normal());
 	// compute all sort of shadows.
