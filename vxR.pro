@@ -157,7 +157,7 @@ OTHER_FILES += \
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
 
-CONFIG += c++14
+CONFIG += c++1z
 
 @
 QMAKE_CXXFLAGS_RELEASE -= -O2

@@ -7,6 +7,7 @@ using namespace vxCore;
 Light::Light()
 {
 	m_shader = std::make_shared<LightShader>();
+	m_type = VisibleType::kLight;
 }
 
 Light::Light(const scalar intensity)
@@ -228,12 +229,12 @@ Color PointLight::acummulationLight(const Ray &, const Collision &collision) con
 	// compute all sort of shadows.
 	Color ret{Color::zero};
 	
-	if(collision.normal().follows(p))
+	if(collision.normal().follows(p)) // m_castShadows here?
 	{
 		auto ratio = lightRatio(f, p.inverted());
 		auto lumm = m_intensity * ratio;
 		
-		const Ray ff(pp+collision.normal().small(), p.inverted());
+		const Ray ff(pp+collision.normal().small(), p.inverted(), VisionType::kOpaque);
 		
 		if (m_castShadows && reachesLightSource(ff))
 		{

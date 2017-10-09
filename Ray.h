@@ -2,24 +2,35 @@
 #define VXRAY_H
 
 #include "Vector.h"
+//#include "visible.h"
 
 namespace vxCore{
+
+enum class VisionType
+{
+	kOpaque,
+	kSemitransparent,
+	kLight,
+	kAll
+};
 
 class Ray
 {
 private:
 	v3s m_direction{1.0,0.0,0.0};
 	v3s m_origin{0.0,0.0,0.0};
-
+	
 public:
 	Ray();
 	Ray(const v3s& direction);
+	Ray(const v3s& origin, const v3s& direction, VisionType vis);
 	Ray(const v3s& origin, const v3s& direction);
 	Ray(scalar x, scalar y, scalar z);
 	Ray(const Ray&& ray);
 	Ray(const Ray& ray);
 	~Ray(){}
 
+	VisionType m_vision = VisionType::kAll;
 	v3s origin() const;
 	void setOrigin(const v3s &origin);
 

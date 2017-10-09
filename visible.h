@@ -21,6 +21,15 @@ namespace vxCore {
 
 class Shader;
 
+enum class VisibleType
+{
+	kOpaque,
+	kSemitransparent,
+	kLight,
+	kAll
+};
+
+
 class Visible
 {
 protected:
@@ -32,6 +41,8 @@ protected:
 	Color m_color = Color::white;
 	
 	std::shared_ptr<Shader> m_shader;
+	
+	VisibleType m_type = VisibleType::kOpaque;
 	
 public:
 	///
@@ -89,6 +100,8 @@ public:
 	
 	std::shared_ptr<Shader> shader() const;
 	void setShader(std::shared_ptr<Shader> shader);
+	VisibleType type() const;
+	void setType(const VisibleType &type);
 };
 
 using VisibleHandle = std::shared_ptr<Visible>;

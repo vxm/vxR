@@ -334,9 +334,16 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 
 	Collision temp = collide;
 
-	for (auto &&geo : m_visibles)
+	for (auto &visbl : m_visibles)
 	{
-		if (!geo->testBoundingBox(ray, temp))
+		/// if ray can only see opaque and this is a light we move on.
+		if (ray.m_vision == VisionType::kOpaque &&
+		    visbl->type() == VisibleType::kLight)
+		{
+			continue;
+		}
+
+		if (!visbl->testBoundingBox(ray, temp))
 		{
 			continue;
 		}
@@ -345,10 +352,10 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		geo->boundingBox()->throwRay(ray, temp);
 		temp.setColor(geo->color());
 #else
-		geo->throwRay(ray, temp);
+		visbl->throwRay(ray, temp);
 #endif
 
-		if (!geo->boundingBox()->contains(temp.position(), scalar(0.00001)))
+		if (!visbl->boundingBox()->contains(temp.position(), scalar(0.00001)))
 		{
 
 			continue;
@@ -360,7 +367,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		{
 			mdis = s;
 			collide = temp;
-			collide.m_geo = geo.get();
+			collide.m_geo = visbl.get();
 		}
 	}
 

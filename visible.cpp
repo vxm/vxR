@@ -14,16 +14,26 @@ void Visible::setShader(std::shared_ptr<Shader> shader)
 	m_shader = shader;
 }
 
+VisibleType Visible::type() const
+{
+    return m_type;
+}
+
+void Visible::setType(const VisibleType &type)
+{
+    m_type = type;
+}
+
 Visible::Visible()
 {
-	m_bb = std::make_shared<BoundingBox>();
+    m_bb = std::make_shared<BoundingBox>();
 }
 
 using namespace vxCore;
 
 Color Visible::color() const
 {
-	return m_color;
+    return m_color;
 }
 
 void Visible::setColor(const Color &baseColor)

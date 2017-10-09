@@ -692,7 +692,7 @@ node
 {
 name = "amb_light"
 type = "vxAmbientLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     radius = 0.0
     intensity = 0.1

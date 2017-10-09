@@ -12,8 +12,14 @@ Ray::Ray(const v3s &direction)
 
 Ray::Ray(const v3s &origin, 
 			 const v3s &direction)
+	: Ray(origin,direction,VisionType::kAll)
+{
+}
+
+Ray::Ray(const v3s &origin, const v3s &direction, VisionType vis)
 	:m_direction(direction.unit())
 	,m_origin(origin)
+	,m_vision(vis)
 {
 }
 
