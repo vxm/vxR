@@ -49,10 +49,10 @@ void BroadPhase::updateCache()
 
 	/// Run through geometries and slice the
 	/// broad phase
-	for (auto geo : m_visibles)
+	for (auto visibl : m_visibles)
 	{
-		geo->updateBoundingBox();
-		auto bb = geo->boundingBox();
+		visibl->updateBoundingBox();
+		auto bb = visibl->boundingBox();
 
 		m_xvalues[i] = bb->minX();
 		m_xvalues[ii] = bb->maxX();
@@ -110,9 +110,9 @@ void BroadPhase::updateCache()
 		l.index = idx++;
 	}
 
-	for (auto &geo : m_visibles)
+	for (auto &visibl : m_visibles)
 	{
-		locateAndRegister(geo);
+		locateAndRegister(visibl);
 	}
 
 #if _DEBUG
@@ -342,7 +342,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		{
 			continue;
 		}
-
+		
 		if (!visbl->testBoundingBox(ray, temp))
 		{
 			continue;
