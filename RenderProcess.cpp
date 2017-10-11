@@ -307,23 +307,24 @@ Color RenderProcess::computeGI(unsigned int iter, Collision &col)
 
 Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 {
-	Color retColor;
-
 	m_scene->throwRay(ray, col);
-
+	
+	Color retColor = computeLight(ray, col);
+	
 	if (col.isValid())
 	{
 		auto sh = getShader(col);
-		// Compute reflection
-		if (sh->hasReflection())
-		{
-			retColor += computeReflection(m_lightBounces, ray, col);
-		}
 
 		// Compute Global Illumination
 		if (sh->hasGI())
 		{
 			retColor += computeGI(m_lightBounces, col);
+		}
+
+		// Compute reflection
+		if (sh->hasReflection())
+		{
+			retColor += computeReflection(m_lightBounces, ray, col);
 		}
 		/*else
 		{

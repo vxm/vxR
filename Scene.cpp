@@ -361,7 +361,6 @@ void Scene::buildGeometries()
 		}
 
 		geo->setShader(std::static_pointer_cast<Shader>(shaderNode->node()));
-
 		geo->setTransform(transform);
 
 		auto plyReader = std::make_shared<PLYImporter>(geo);
@@ -417,11 +416,11 @@ void Scene::buildShaders()
 
 void Scene::updateCache()
 {
-	std::cout << " -- Start caching -- " << std::endl;
+	//std::cout << " -- Start caching -- " << std::endl;
 
 	m_broadPhase->updateCache();
 
-	std::cout << " -- End cache computation -- " << std::endl;
+	//std::cout << " -- End cache computation -- " << std::endl;
 }
 
 vxShaderHandle Scene::createShader()

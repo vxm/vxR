@@ -9,19 +9,19 @@ name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "true"
     resolution = 607 341
-    pixelSamples = 2
-    reflectionSamples = 1
-    giSamples = 1
+    pixelSamples = 3
+    reflectionSamples = 2
+    giSamples = 2
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 2
+    lightBounces = 3
 }
 
 node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
     pixelSamples = 20
     reflectionSamples = 1
@@ -92,7 +92,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -2.0 0.0 -2.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.0 -0.2 -4.0 1]
     focusDistance = 2.7
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -131,12 +131,12 @@ active = "true"
     giSamples = 0
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
-    reflectionSamples = 0
-    reflectionRadius = 2.3
-    reflectionCoefficent = 0.01
+    reflectionSamples = 1
+    reflectionRadius = 0.0003
+    reflectionCoefficent = 1.0
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
-    refractionRadius = 0.01
+    refractionRadius = 0.001
     refractionCoefficent = 0.05
     refractionColorMultiplier = 238 216 126
     sscSamples = 0
@@ -186,7 +186,7 @@ name = "cylinder_1"
 type = "vxCylinder"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.3 2.1 -0.1 1]
-    shader = "shader_2"
+    shader = "shader_1"
     color = 138 138 138
     radius = 2.4
     height = 0.07
@@ -341,7 +341,7 @@ name = "gnome_tris_1"
 type = "vxGeometry"
 active = "true"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 0.0 1]
-    filePath = "/home/john/Downloads/gnome_low_1.ply"
+    filePath = "/home/john/Downloads/gnome_mid.ply"
     color = 230 230 230
     shader = "shader_1"
 }
@@ -398,7 +398,7 @@ active = "false"
     transform = [1.2 0 0 0 0 1.2 0 0 0 0 1.2 0 0.0 -0.7 -0.0 1]
     filePath = "/home/john/Downloads/male.ply"
     color = 199 198 195
-    shader = "shader_2"
+    shader = "shader_1"
 }
 
 node
@@ -409,7 +409,7 @@ active = "true"
     transform = [0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0.0 -0.7 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 172 172 172
-    shader = "shader_2"
+    shader = "shader_1"
 }
 
 ////////////////////////////////////////////////////////
@@ -637,13 +637,13 @@ node
 name = "point_light_1"
 type = "vxPointLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.5 -0.6 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.1 -0.1 -1.2 1]
     intensity = 0.690
-    color = 255 230 240
+    color = 255 230 250
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.2
+    radius = 0.1
 }
 
 node
