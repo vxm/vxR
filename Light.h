@@ -314,20 +314,11 @@ public:
 	
 	
 	//renderable interface
-	virtual bool throwRay(const Ray &) const override
-	{
-		return false;
-	}
+	virtual bool throwRay(const Ray &ray) const override;
 	
-	virtual int throwRay(const Ray &, Collision &) const override
-	{
-		return 0;
-	}
+	virtual int throwRay(const Ray &ray, Collision &col) const override;
 	
-	virtual bool hasCollision(const Ray &) const override
-	{
-		return false;
-	}
+	virtual bool hasCollision(const Ray &ray) const override;
 	
 	// Visible interface
 	virtual void updateBoundingBox() override;

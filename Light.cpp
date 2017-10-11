@@ -204,6 +204,26 @@ void PointLight::set(const v3s &orientation, bool biPointional)
 	m_biDirectional=biPointional;
 }
 
+bool PointLight::throwRay(const Ray &ray) const
+{
+	Collision col;
+	return throwRay(ray, col) == 1;
+}
+
+int PointLight::throwRay(const Ray &ray, Collision &col) const
+{
+	col.setPosition(m_position + m_transform.origin());
+	col.setColor(m_color);
+	col.setValid(true);
+	return 1;
+}
+
+bool PointLight::hasCollision(const Ray &ray) const
+{
+	Collision col;
+	return throwRay(ray, col) == 1;
+}
+
 void PointLight::updateBoundingBox()
 {
 	auto&& orig = m_transform.origin() + m_position;
