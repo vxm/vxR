@@ -236,17 +236,18 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
 	// Noise Sphere
 	invV += MU::getSolidSphereRand3(sh->getReflectionRadius() * 3.141592);
 
-	auto reflexRay = Ray(col.position() + n.small(), invV);
+	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
 
 	reflection = computeLight(reflexRay, refxCollision);
 
-	reflection.applyCurve(1.0, 0.0);
+	reflection*=sh->getReflectionCoefficent();
+	reflection.applyCurve(2.2, 0.0);
 	//	Collision nextRound = refxCollision;
 
 	//	reflection+= computeReflection(iter-1, ray, nextRound)
 	//			* (scalar(iter) * colorRatio/scalar(m_lightBounces));
 
-	return reflection * 0.1;
+	return reflection;
 }
 
 Color RenderProcess::computeGI(unsigned int iter, Collision &col)
