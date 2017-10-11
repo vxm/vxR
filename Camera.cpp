@@ -108,16 +108,16 @@ void Camera::set(const v3s& position,
 
 Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 {
-	auto xFactor = coord.x() * scalar(2.0) -1.0;
-	auto yFactor = coord.y() * scalar(2.0) -1.0;
+	const auto xFactor = coord.x() * scalar(2.0) -1.0;
+	const auto yFactor = coord.y() * scalar(2.0) -1.0;
 	//std::cout << "Pixel factor " << xFactor << " " << yFactor << std::endl;
 	
-	auto&& s = sampler.xy(m_pixelRadius);
+	const auto&& s = sampler.xy(m_pixelRadius);
 	
 	const auto compX = m_hApTan * xFactor - s.x()/(scalar(2.0) * m_rx);
 	const auto compY = m_vApTan * yFactor - s.y()/(scalar(2.0) * m_ry);
 	
-	auto&& ret = Ray{{compY, compX, m_focusDistance}};
+	auto&& ret = Ray{{0,0,0}, {compY, compX, m_focusDistance}, VisionType::kAll};
 	
 	//TODO: rotate origin and then place the origin of the ray in position
 	//TODO:read from scene.
