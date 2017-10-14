@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 275
-#define PIXEL_Y 119
+#define PIXEL_X 276
+#define PIXEL_Y 110
 #endif
 
 #ifdef _DEBUG
@@ -231,21 +231,24 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
 	Collision refxCollision;
 
 	// Reflected direction
-	v3s invV = ((n * ray.direction().dot(n) * scalar(-2.0)) + ray.direction());
+	auto invV = ((n * ray.direction().dot(n) * scalar(-2.0)) + ray.direction());
 
 	// Noise Sphere
-	invV += MU::getSolidSphereRand3(sh->getReflectionRadius() * 3.141592);
+	auto invVRand = MU::getSolidSphereRand3(sh->getReflectionRadius() * 3.141592);
+	auto ratio = invV.dot(invVRand);
 
+	invV+=invVRand;
+	
 	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
 
-	reflection = computeLight(reflexRay, refxCollision);
+	reflection = computeEnergyAndColor(reflexRay, refxCollision);
 
-	reflection*=sh->getReflectionCoefficent();
+
+	reflection*=sh->getReflectionCoefficent()-fabs(ratio);//ratio)/(3.1415*2);
+
+	//std::cout << ratio << std::endl;
+	
 	reflection.applyCurve(2.2, 0.0);
-	//	Collision nextRound = refxCollision;
-
-	//	reflection+= computeReflection(iter-1, ray, nextRound)
-	//			* (scalar(iter) * colorRatio/scalar(m_lightBounces));
 
 	return reflection;
 }
@@ -271,7 +274,7 @@ Color RenderProcess::computeGI(unsigned int iter, Collision &col)
 
 	const auto &&r = MU::getHollowHemisphereRand(1.0, col.normal());
 
-	const Ray giRay(col.position() + col.normal().small(), r.inverted());
+	const Ray giRay(col.position() + col.normal().small(), r.inverted(), VisionType::kOpaque);
 
 	const auto treeLevel = scalar(iter) / scalar(m_lightBounces * 2);
 
@@ -307,8 +310,6 @@ Color RenderProcess::computeGI(unsigned int iter, Collision &col)
 
 Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 {
-	m_scene->throwRay(ray, col);
-	
 	Color retColor = computeLight(ray, col);
 	
 	if (col.isValid())

@@ -99,7 +99,7 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 			auto finalPos = MU::rectAndZPlane(ray.direction(), twoPos.z() - ray.origin().z());
 			finalPos+=ray.origin();
 
-			col.setColor(Color::white);
+			col.setColor(color());
 			col.setPosition(finalPos);
 			col.setValid(true);
 			return 1;

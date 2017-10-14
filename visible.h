@@ -23,10 +23,11 @@ class Shader;
 
 enum class VisibleType
 {
-	kOpaque,
-	kSemitransparent,
-	kLight,
-	kAll
+	kOpaque, // it is opaque
+	kOtherOpaque, // it is opaque but it can't see itself.
+	kSemitransparent, // it is semi transparent
+	kLight, // it is a light kind
+	kAll // generic
 };
 
 

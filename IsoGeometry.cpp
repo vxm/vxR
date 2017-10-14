@@ -10,4 +10,6 @@ using namespace vxCore;
 IsoGeometry::IsoGeometry()
 {
 	m_bb->set({0,0,0},1);
+	
+	m_type = VisibleType::kOtherOpaque;
 }
