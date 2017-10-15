@@ -241,7 +241,7 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
 	
 	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
 
-	reflection = computeEnergyAndColor(reflexRay, refxCollision);
+	reflection = computeEnergyAndColor(reflexRay, refxCollision,1,1);
 
 
 	reflection*=sh->getReflectionCoefficent()-fabs(ratio);//ratio)/(3.1415*2);
@@ -308,7 +308,9 @@ Color RenderProcess::computeGI(unsigned int iter, Collision &col)
 	return globalIlm;
 }
 
-Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
+Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col
+										   , int giBounces = -1
+		, int rflBounces = -1)
 {
 	Color retColor = computeLight(ray, col);
 	
@@ -316,16 +318,18 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col)
 	{
 		auto sh = getShader(col);
 
+		giBounces = giBounces < 0 ? m_lightBounces : giBounces;
 		// Compute Global Illumination
-		if (sh->hasGI())
+		if (sh->hasGI() && giBounces > 0)
 		{
-			retColor += computeGI(m_lightBounces, col);
+			retColor += computeGI(giBounces, col);
 		}
 
+		rflBounces = rflBounces < 0 ? m_lightBounces : rflBounces;
 		// Compute reflection
-		if (sh->hasReflection())
+		if (sh->hasReflection() && rflBounces > 0)
 		{
-			retColor += computeReflection(m_lightBounces, ray, col);
+			retColor += computeReflection(rflBounces, ray, col);
 		}
 		/*else
 		{

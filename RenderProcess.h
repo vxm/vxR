@@ -210,7 +210,7 @@ public:
 	/// \param col
 	/// \return 
 	///
-	Color computeEnergyAndColor(const Ray &ray, Collision &col);
+	Color computeEnergyAndColor(const Ray &ray, Collision &col, int giBounces, int rflBounces);
 	///
 	/// \brief lightBounces
 	/// \return 
