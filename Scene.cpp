@@ -349,7 +349,7 @@ void Scene::buildSpheres()
 	{
 		const auto transform = node->getMatrix("transform");
 
-		auto cylinderGeo = createCylinder();
+		auto cylinderGeo = createSphere();
 
 		cylinderGeo->setColor(Color::lookup256(node->getColor("color")));
 

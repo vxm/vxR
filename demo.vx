@@ -184,7 +184,7 @@ node
 {
 name = "cylinder_1"
 type = "vxCylinder"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     shader = "shader_1"
     color = 255 255 255

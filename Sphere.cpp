@@ -25,26 +25,8 @@ int Sphere::throwRay(const Ray &ray, Collision &col) const
 {
 	col.setValid(false);
 	
-	//// CAPS
-	
-	auto&& pos = col.position();
-	auto&& levelCenter = v3s{m_bb->midXValue(),m_bb->midYValue(),m_bb->midZValue()};
-	auto rey = ray;
-	
-	rey.setDirection({ray.direction().x(),
-					  sZero,
-					  ray.direction().z()});
-	
-	rey.setOrigin({ray.origin().x(),
-				   sZero,
-				   ray.origin().z()});
-	
-	auto circleCenter = v3s{m_bb->midXValue(),
-								sZero,
-								m_bb->midZValue()};
-	
-	auto d = rey.direction();
-	auto f = rey.origin() - circleCenter;
+	auto d = ray.direction();
+	auto f = ray.origin() - m_bb->center();
 	
 	auto a = d.dot(d);
 	auto b = scalar(2.0)*f.dot(d);
@@ -58,8 +40,8 @@ int Sphere::throwRay(const Ray &ray, Collision &col) const
 		scalar t1 = (-b - disc)/(scalar(2.0)*a);
 		if(t1>=0.0)
 		{
-			v3s twoPos = {rey.origin()+(rey.direction()*t1)};
-			col.setNormal((twoPos-circleCenter).unit());
+			v3s twoPos = {ray.origin()+(ray.direction()*t1)};
+			col.setNormal((twoPos-m_bb->center()).unit());
 			
 			auto finalPos = MU::rectAndZPlane(ray.direction(), twoPos.z() - ray.origin().z());
 			finalPos+=ray.origin();
