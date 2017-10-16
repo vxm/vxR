@@ -78,7 +78,8 @@ SOURCES += main.cpp\
     StandardShader.cpp \
     Cylinder.cpp \
     visible.cpp \
-    LightShader.cpp
+    LightShader.cpp \
+    Sphere.cpp
 
 HEADERS  += \
     ImageProperties.h \
@@ -148,7 +149,8 @@ HEADERS  += \
     BoxCreator.h \
     Cylinder.h \
     visible.h \
-    LightShader.h
+    LightShader.h \
+    Sphere.h
 
 OTHER_FILES += \
     todo.txt \

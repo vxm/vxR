@@ -42,6 +42,8 @@ void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 	buildGeometries();
 
 	buildCylinders();
+	
+	buildSpheres();
 
 	buildDomes();
 
@@ -341,6 +343,43 @@ void Scene::buildCylinders()
 	}
 }
 
+void Scene::buildSpheres()
+{
+	for (const auto node : m_nodeDB->getNodesByType("vxSphere"))
+	{
+		const auto transform = node->getMatrix("transform");
+
+		auto cylinderGeo = createCylinder();
+
+		cylinderGeo->setColor(Color::lookup256(node->getColor("color")));
+
+		auto &&shaderNodeName = node->getString("shader");
+		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
+		if (!shaderNode)
+		{
+			std::cerr << "shader node name " << shaderNodeName
+			          << " does not exist in database." << std::endl;
+
+			assert(true);
+		}
+
+		cylinderGeo->setShader(
+		    std::static_pointer_cast<Shader>(shaderNode->node()));
+		cylinderGeo->setTransform(transform);
+
+		auto radius = node->getFloat("radius");
+
+		cylinderGeo->setRadius(radius);
+
+		cylinderGeo->updateBoundingBox();
+		cylinderGeo->boundingBox()->applyTransform(transform);
+		m_geometries.emplace_back(cylinderGeo);
+		m_broadPhase->addVisible(cylinderGeo);
+
+		node->bind(cylinderGeo);
+	}
+}
+
 void Scene::buildGeometries()
 {
 	for (const auto node : m_nodeDB->getNodesByType("vxGeometry"))
@@ -610,6 +649,12 @@ vxTriangleMeshHandle Scene::createGeometry(const std::string &path,
 CylinderHandle Scene::createCylinder()
 {
 	auto geo = std::make_shared<Cylinder>();
+	return geo;
+}
+
+SphereHandle Scene::createSphere()
+{
+	auto geo = std::make_shared<Sphere>();
 	return geo;
 }
 

@@ -22,6 +22,7 @@
 #include "Dome.h"
 #include "TriangleMesh.h"
 #include "Cylinder.h"
+#include "Sphere.h"
 
 namespace vxCore {
 
@@ -300,6 +301,9 @@ public:
 	/// \return 
 	///
 	int domeComputeLight(const Ray &ray, Collision &collide) const;
+	
+	SphereHandle createSphere();
+	void buildSpheres();
 	
 	//renderable interface
 	bool throwRay(const Ray &ray) const;
