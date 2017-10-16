@@ -117,9 +117,7 @@ v3s BoundingBox::min() const
 
 v3s BoundingBox::center() const
 {
-	return {m_minX+m_maxX/scalar(2.0),
-		m_minY+m_maxY/scalar(2.0),
-		m_minZ+m_maxZ/scalar(2.0)};
+	return {midXValue(),midYValue(),midZValue()};
 }
 
 scalar BoundingBox::minX() const
