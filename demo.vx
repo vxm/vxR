@@ -14,7 +14,7 @@ active = "true"
     giSamples = 1
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 3
+    lightBounces = 4
 }
 
 node
@@ -28,7 +28,7 @@ active = "true"
     giSamples = 1
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 3
+    lightBounces = 4
 }
 
 node

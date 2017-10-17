@@ -1,11 +1,11 @@
 #ifndef CYLINDER_H
 #define CYLINDER_H
 
-#include "IsoGeometry.h"
+#include "ConvexGeometry.h"
 
 namespace vxCore {
 
-class Cylinder final : public IsoGeometry
+class Cylinder final : public ConvexGeometry
 {
 	scalar m_radius = 0.50;
 	scalar m_height = 0.50;

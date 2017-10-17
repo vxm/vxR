@@ -3,11 +3,11 @@
 
 #include "Vector.h"
 
-#include "IsoGeometry.h"
+#include "ConvexGeometry.h"
 
 using namespace vxCore;
 
-IsoGeometry::IsoGeometry()
+ConvexGeometry::ConvexGeometry()
 {
 	m_bb->set({0,0,0},1);
 	

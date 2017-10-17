@@ -1,12 +1,12 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include "IsoGeometry.h"
+#include "ConvexGeometry.h"
 
 namespace vxCore
 {
 
-class Sphere final : public IsoGeometry
+class Sphere final : public ConvexGeometry
 {
 	scalar m_radius = 0.50;
 

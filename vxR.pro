@@ -45,7 +45,7 @@ SOURCES += main.cpp\
     Grid.cpp \
     GridUnitTest.cpp \
     Image.cpp \
-    IsoGeometry.cpp \
+    ConvexGeometry.cpp \
     LegoBlock.cpp \
     Manager.cpp \
     Map.cpp \
@@ -79,7 +79,8 @@ SOURCES += main.cpp\
     Cylinder.cpp \
     visible.cpp \
     LightShader.cpp \
-    Sphere.cpp
+    Sphere.cpp \
+    ConvexGeometry.cpp
 
 HEADERS  += \
     ImageProperties.h \
@@ -129,7 +130,7 @@ HEADERS  += \
     Map.h \
     Manager.h \
     LegoBlock.h \
-    IsoGeometry.h \
+    ConvexGeometry.h \
     Image.h \
     GridUnitTest.h \
     Grid.h \
@@ -150,7 +151,8 @@ HEADERS  += \
     Cylinder.h \
     visible.h \
     LightShader.h \
-    Sphere.h
+    Sphere.h \
+    ConvexGeometry.h
 
 OTHER_FILES += \
     todo.txt \
