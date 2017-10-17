@@ -241,13 +241,14 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
 	
 	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
 
-	reflection = computeEnergyAndColor(reflexRay, refxCollision,1,1);
+	reflection = computeEnergyAndColor(iter, 
+									   reflexRay, 
+									   refxCollision,
+									   1,
+									   1);
 
+	reflection*=sh->getReflectionCoefficent()-fabs(ratio);
 
-	reflection*=sh->getReflectionCoefficent()-fabs(ratio);//ratio)/(3.1415*2);
-
-	//std::cout << ratio << std::endl;
-	
 	reflection.applyCurve(2.2, 0.0);
 
 	return reflection;
@@ -308,33 +309,35 @@ Color RenderProcess::computeGI(unsigned int iter, Collision &col)
 	return globalIlm;
 }
 
-Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col
-										   , int giBounces = -1
-		, int rflBounces = -1)
+Color RenderProcess::computeEnergyAndColor(unsigned int iter,
+											const Ray &ray,
+											Collision &col,
+											unsigned int giBounces = 100u,
+											unsigned int rflBounces = 100u)
 {
+	if(iter==0)
+		return Color::zero;
+	iter--;
+	
 	Color retColor = computeLight(ray, col);
 	
 	if (col.isValid())
 	{
 		auto sh = getShader(col);
 
-		giBounces = giBounces < 0 ? m_lightBounces : giBounces;
+		giBounces = std::min(giBounces,iter);
 		// Compute Global Illumination
 		if (sh->hasGI() && giBounces > 0)
 		{
 			retColor += computeGI(giBounces, col);
 		}
 
-		rflBounces = rflBounces < 0 ? m_lightBounces : rflBounces;
+		rflBounces = std::min(rflBounces,iter);
 		// Compute reflection
 		if (sh->hasReflection() && rflBounces > 0)
 		{
 			retColor += computeReflection(rflBounces, ray, col);
 		}
-		/*else
-		{
-			return Color::white;
-		}*/
 	}
 	else
 	{
@@ -401,7 +404,11 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 			auto &&ray = rCamera->ray(hitCoordinates, sampler);
 
 			/// TODO: this crashes with 0
-			firstHitColor += computeEnergyAndColor(ray, col);
+			firstHitColor += computeEnergyAndColor(m_lightBounces,
+												   ray, 
+												   col, 
+												   m_lightBounces, 
+												   m_lightBounces);
 
 			sampler.next();
 		}
