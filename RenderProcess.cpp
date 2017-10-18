@@ -214,15 +214,13 @@ Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
                                        Collision &col)
 {
-	auto sh = getShader(col);
-
 	// Decrease one iteration now.
 	if (iter == 0)
 	{
 		return Color::zero;
 	}
 
-	iter--;
+	auto sh = getShader(col);
 
 	Color reflection = Color::zero;
 
@@ -241,11 +239,7 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
 	
 	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
 
-	reflection = computeEnergyAndColor(iter, 
-									   reflexRay, 
-									   refxCollision,
-									   1,
-									   1);
+	reflection = computeLight(reflexRay, refxCollision);
 
 	reflection*=sh->getReflectionCoefficent()-fabs(ratio);
 
@@ -256,64 +250,36 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
 
 Color RenderProcess::computeGI(unsigned int iter, Collision &col)
 {
-	auto sh = getShader(col);
-
-	const auto ray = Ray();
-
-	auto baseColor = sh->getColor(ray, col);
-
-	auto lumm = sh->getLightLoop(ray, col);
-
-	Color globalIlm = baseColor * lumm;
-
 	if (iter == 0)
 	{
-		return globalIlm;
+		return Color::zero;
 	}
-
-	iter--;
-
+	
 	const auto &&r = MU::getHollowHemisphereRand(1.0, col.normal());
 
 	const Ray giRay(col.position() + col.normal().small(), r.inverted(), VisionType::kOpaque);
 
-	const auto treeLevel = scalar(iter) / scalar(m_lightBounces * 2);
-
-	auto &&rayIncidence = giRay.incidence(col.normal()) * treeLevel;
-
-	if (rayIncidence < 0.001)
-	{
-		return globalIlm;
-	}
+	auto ratio = giRay.direction().dot(col.normal());
 
 	Collision nextRound = col;
 
-	m_scene->throwRay(giRay, nextRound);
+	Color hitColor = computeLight(giRay, nextRound);
 	
-	if (!nextRound.m_geo->shader()->hasGI())
+	Color globalIlm = hitColor * (1.0-fabs(ratio));
+	
+	if(nextRound.isValid())
 	{
-		return globalIlm;
+		globalIlm *= computeGI(--iter, nextRound);
 	}
 	
-	if (nextRound.isValid())
-	{
-		const auto &&nextColor = computeGI(iter, nextRound);
-
-		globalIlm += nextColor * baseColor;
-	}
-	else if (m_scene->domeComputeLight(giRay, nextRound))
-	{
-		globalIlm += nextRound.color() * baseColor;
-	}
-
 	return globalIlm;
 }
 
 Color RenderProcess::computeEnergyAndColor(unsigned int iter,
 											const Ray &ray,
 											Collision &col,
-											unsigned int giBounces = 100u,
-											unsigned int rflBounces = 100u)
+											unsigned int giBounces,
+											unsigned int rflBounces)
 {
 	if(iter==0)
 		return Color::zero;
@@ -325,18 +291,16 @@ Color RenderProcess::computeEnergyAndColor(unsigned int iter,
 	{
 		auto sh = getShader(col);
 
-		giBounces = std::min(giBounces,iter);
 		// Compute Global Illumination
-		if (sh->hasGI() && giBounces > 0)
+		if (sh->hasGI())
 		{
-			retColor += computeGI(giBounces, col);
+			retColor += computeGI(1, col);
 		}
 
-		rflBounces = std::min(rflBounces,iter);
 		// Compute reflection
-		if (sh->hasReflection() && rflBounces > 0)
+		if (sh->hasReflection())
 		{
-			retColor += computeReflection(rflBounces, ray, col);
+			retColor += computeReflection(1, ray, col);
 		}
 	}
 	else
@@ -407,8 +371,8 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 			firstHitColor += computeEnergyAndColor(m_lightBounces,
 												   ray, 
 												   col, 
-												   m_lightBounces, 
-												   m_lightBounces);
+												   1, 
+												   1);
 
 			sampler.next();
 		}

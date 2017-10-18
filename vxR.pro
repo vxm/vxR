@@ -45,7 +45,6 @@ SOURCES += main.cpp\
     Grid.cpp \
     GridUnitTest.cpp \
     Image.cpp \
-    ConvexGeometry.cpp \
     LegoBlock.cpp \
     Manager.cpp \
     Map.cpp \
@@ -130,7 +129,6 @@ HEADERS  += \
     Map.h \
     Manager.h \
     LegoBlock.h \
-    ConvexGeometry.h \
     Image.h \
     GridUnitTest.h \
     Grid.h \
