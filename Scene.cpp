@@ -42,7 +42,7 @@ void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 	buildGeometries();
 
 	buildCylinders();
-	
+
 	buildSpheres();
 
 	buildDomes();
@@ -334,7 +334,6 @@ void Scene::buildCylinders()
 		cylinderGeo->setRadius(radius);
 		cylinderGeo->setHeight(height);
 
-		cylinderGeo->updateBoundingBox();
 		cylinderGeo->boundingBox()->applyTransform(transform);
 		m_geometries.emplace_back(cylinderGeo);
 		m_broadPhase->addVisible(cylinderGeo);
@@ -349,9 +348,9 @@ void Scene::buildSpheres()
 	{
 		const auto transform = node->getMatrix("transform");
 
-		auto cylinderGeo = createSphere();
+		auto sphereGeo = createSphere();
 
-		cylinderGeo->setColor(Color::lookup256(node->getColor("color")));
+		sphereGeo->setColor(Color::lookup256(node->getColor("color")));
 
 		auto &&shaderNodeName = node->getString("shader");
 		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
@@ -363,20 +362,17 @@ void Scene::buildSpheres()
 			assert(true);
 		}
 
-		cylinderGeo->setShader(
-		    std::static_pointer_cast<Shader>(shaderNode->node()));
-		cylinderGeo->setTransform(transform);
+		sphereGeo->setShader(std::static_pointer_cast<Shader>(shaderNode->node()));
+		sphereGeo->setTransform(transform);
 
 		auto radius = node->getFloat("radius");
 
-		cylinderGeo->setRadius(radius);
+		sphereGeo->setRadius(radius);
 
-		cylinderGeo->updateBoundingBox();
-		cylinderGeo->boundingBox()->applyTransform(transform);
-		m_geometries.emplace_back(cylinderGeo);
-		m_broadPhase->addVisible(cylinderGeo);
+		m_geometries.emplace_back(sphereGeo);
+		m_broadPhase->addVisible(sphereGeo);
 
-		node->bind(cylinderGeo);
+		node->bind(sphereGeo);
 	}
 }
 
@@ -455,11 +451,11 @@ void Scene::buildShaders()
 
 void Scene::updateCache()
 {
-	//std::cout << " -- Start caching -- " << std::endl;
+	// std::cout << " -- Start caching -- " << std::endl;
 
 	m_broadPhase->updateCache();
 
-	//std::cout << " -- End cache computation -- " << std::endl;
+	// std::cout << " -- End cache computation -- " << std::endl;
 }
 
 vxShaderHandle Scene::createShader()

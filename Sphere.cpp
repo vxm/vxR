@@ -10,9 +10,10 @@ void Sphere::setRadius(const scalar &radius) { m_radius = radius; }
 
 void Sphere::updateBoundingBox()
 {
+	const auto& t = m_transform.origin();
 	m_bb->clear();
-	m_bb->extend({m_radius,m_radius,m_radius});
-	m_bb->extend({-m_radius,-m_radius,-m_radius});
+	m_bb->extend({m_radius+t.x(),m_radius+t.y(),m_radius+t.z()});
+	m_bb->extend({-m_radius+t.x(),-m_radius+t.y(),-m_radius+t.z()});
 }
 
 
@@ -23,10 +24,8 @@ bool Sphere::throwRay(const Ray &ray) const
 
 int Sphere::throwRay(const Ray &ray, Collision &col) const
 {
-	col.setValid(false);
-	
 	auto d = ray.direction();
-	auto f = ray.origin() - m_bb->center();
+	auto f = ray.origin() + m_bb->center();
 	
 	auto a = d.dot(d);
 	auto b = scalar(2.0)*f.dot(d);
