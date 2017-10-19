@@ -36,7 +36,15 @@ BoundingBoxHandle BroadPhase::closestBox(const v3s &p) const
 
 void BroadPhase::updateCache()
 {
-	const auto dngs = m_visibles.size() * 2;
+	m_bb->clear();
+	for (auto visibl : m_visibles)
+	{
+		visibl->updateBoundingBox();
+		auto bb = visibl->boundingBox();
+		m_bb->extend(*bb);
+	}	
+	
+/*	const auto dngs = m_visibles.size() * 2;
 
 	m_xvalues.resize(dngs);
 	m_yvalues.resize(dngs);
@@ -128,6 +136,7 @@ void BroadPhase::updateCache()
 	}
 
 #endif
+*/
 }
 
 unsigned long BroadPhase::index(unsigned int a, unsigned int b,
@@ -358,8 +367,8 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		}
 
 #if DRAW_OBJECT_BBOX
-		geo->boundingBox()->throwRay(ray, temp);
-		temp.setColor(geo->color());
+		visbl->boundingBox()->throwRay(ray, temp);
+		temp.setColor(visbl->color());
 #else
 		visbl->throwRay(ray, temp);
 #endif
