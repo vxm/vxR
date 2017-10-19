@@ -232,7 +232,7 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
 	auto invV = ((n * ray.direction().dot(n) * scalar(-2.0)) + ray.direction());
 
 	// Noise Sphere
-	auto invVRand = MU::getSolidSphereRand3(sh->getReflectionRadius() * 3.141592);
+	auto invVRand = MU::getSolidSphereRand3(sh->getReflectionRadius());
 	auto ratio = invV.dot(invVRand);
 
 	invV+=invVRand;
