@@ -243,7 +243,7 @@ Color RenderProcess::computeReflection(unsigned int iter, const Ray &ray,
 
 	reflection*=sh->getReflectionCoefficent()-fabs(ratio);
 
-	reflection.applyCurve(2.2, 0.0);
+	reflection.applyCurve(1.2, 0.0);
 
 	return reflection;
 }
@@ -285,7 +285,7 @@ Color RenderProcess::computeEnergyAndColor(unsigned int iter,
 		return Color::zero;
 	iter--;
 	
-	Color retColor = computeLight(ray, col);
+	Color firstHitColor = computeLight(ray, col);
 	
 	if (col.isValid())
 	{
@@ -294,25 +294,26 @@ Color RenderProcess::computeEnergyAndColor(unsigned int iter,
 		// Compute Global Illumination
 		if (sh->hasGI())
 		{
-			retColor += computeGI(1, col);
+			firstHitColor += computeGI(1, col);
 		}
 
 		// Compute reflection
 		if (sh->hasReflection())
 		{
-			retColor += computeReflection(1, ray, col);
+			firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
+			firstHitColor += computeReflection(1, ray, col);
 		}
 	}
 	else
 	{
 		m_scene->domeThrowRay(ray, col);
 
-		retColor = col.color();
+		firstHitColor = col.color();
 	}
 
-	retColor.setA(1.0);
+	firstHitColor.setA(1.0);
 
-	return retColor;
+	return firstHitColor;
 }
 
 Status::code RenderProcess::render(unsigned int by, unsigned int offset)
