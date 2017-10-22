@@ -39,14 +39,14 @@ int Sphere::throwRay(const Ray &ray, Collision &col) const
 		scalar t1 = (-b - disc)/(scalar(2.0)*a);
 		if(t1>=0.0)
 		{
-			v3s twoPos = {ray.origin()+(ray.direction()*t1)};
+			v3s twoPos = {f+(ray.direction()*t1)};
 			col.setNormal((twoPos-m_bb->center()).unit());
 			
-			auto finalPos = MU::rectAndZPlane(ray.direction(), twoPos.z() - ray.origin().z());
-			finalPos+=ray.origin();
+			auto finalPos = MU::rectAndZPlane(ray.direction(), twoPos.z() - f.z());
+			finalPos+=f;
 
 			col.setColor(color());
-			col.setPosition(finalPos);
+			col.setPosition(finalPos + m_bb->center());
 			col.setValid(true);
 			return 1;
 		}
