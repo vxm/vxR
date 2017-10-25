@@ -208,23 +208,21 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 	
 	std::vector<Collision> cols;
 	auto&& sp =  col.position();
-//			+ (col.normal().inverted() / (scalar)10000.0);
 	
 	auto prev = m_grid.size();
-	searchResult triangles;
 	
 	do
 	{
-		triangles = m_grid.getList(ray, sp);
+		const auto&& triangles = m_grid.getList(ray, sp);
 		
-		if(prev==triangles.index)
+		if(prev==triangles->index)
 		{
 			break;
 		}
 		
-		prev = triangles.index;
+		prev = triangles->index;
 		
-		for(const auto &id: *(triangles.listRef) )
+		for(const auto &id: *(triangles->listRef) )
 		{
 			if(m_triangles[id].throwRay(ray,col))
 			{
