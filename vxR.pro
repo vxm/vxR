@@ -8,6 +8,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = vxR
 TEMPLATE = app
+CONFIG += c++1z
 
 
 SOURCES += main.cpp\
@@ -159,7 +160,6 @@ OTHER_FILES += \
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
 
-CONFIG += c++1z
 
 @
 QMAKE_CXXFLAGS_RELEASE -= -O2
