@@ -1,5 +1,5 @@
-#ifndef _VXBOXMC_
-#define _VXBOXMC_
+#ifndef BOXMC
+#define BOXMC
 
 #include<memory>
 #include<cmath>
