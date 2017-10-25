@@ -4,7 +4,8 @@
 
 using namespace vxCore;
 
-const searchResult GeoGrid::invalidResult{0ul, std::make_shared<std::vector<unsigned long>>()};
+std::unique_ptr<SearchResult> GeoGrid::invalidResult = 
+		std::make_unique<SearchResult>(0ul, std::make_shared<std::vector<unsigned long>>());
 
 GeoGrid::GeoGrid()
 {
@@ -196,12 +197,13 @@ void GeoGrid::locateAndRegister(const TriRef &tri, unsigned long triangleID)
 	{
 		if(indexIsValid(idx1))
 		{
-			if(m_members[idx1].listRef ==nullptr)
+			if(m_members[idx1] == nullptr)
 			{
-				m_members[idx1].listRef = std::make_shared<std::vector<unsigned long>>();
+				m_members[idx1] = std::make_unique<SearchResult>(0ul,
+					std::make_shared<std::vector<unsigned long>>());
 			}
 			
-			m_members[idx1].listRef->emplace_back(triangleID);
+			m_members[idx1]->listRef->emplace_back(triangleID);
 		}
 		else
 		{
@@ -229,13 +231,14 @@ void GeoGrid::locateAndRegister(const TriRef &tri, unsigned long triangleID)
 				
 				if(indexIsValid(idx))
 				{
-					if(m_members[idx].listRef==nullptr)
+					if(!m_members[idx])
 					{
-						m_members[idx].listRef = std::make_shared<std::vector<unsigned long>>();
+						m_members[idx] = std::make_unique<SearchResult>(0ul,
+										std::make_shared<std::vector<unsigned long>>());
 					}
 					
-					m_members[idx].index = idx;
-					m_members[idx].listRef->emplace_back(triangleID);
+					m_members[idx]->index = idx;
+					m_members[idx]->listRef->emplace_back(triangleID);
 				}
 				else
 				{
@@ -254,7 +257,7 @@ void GeoGrid::locateAndRegister(const TriRef &tri, unsigned long triangleID)
 
 bool GeoGrid::hasTriangles(const long idx) const
 {
-	return !(m_members[idx].listRef==nullptr);
+	return !(m_members[idx] == nullptr);
 }
 
 bool GeoGrid::indexIsValid(const long idx) const
@@ -262,7 +265,7 @@ bool GeoGrid::indexIsValid(const long idx) const
 	return !(idx<0l || idx>=numVoxels());
 }
 
-const searchResult GeoGrid::getList(const Ray &ray, v3s &sp) const
+const std::unique_ptr<SearchResult>&& GeoGrid::getList(const Ray &ray, v3s &sp) const
 {
 	long retVal{-1l};
 	
@@ -283,7 +286,7 @@ const searchResult GeoGrid::getList(const Ray &ray, v3s &sp) const
 		
 		if(!indexIsValid(retVal))
 		{
-			return GeoGrid::invalidResult;
+			return std::move(GeoGrid::invalidResult);
 		}
 		
 		auto xVal = m_xvalues[idX + velX] - p.x();
@@ -313,11 +316,11 @@ const searchResult GeoGrid::getList(const Ray &ray, v3s &sp) const
 		
 		if(hasTriangles(retVal))
 		{
-			return m_members[retVal];
+			return std::move(m_members[retVal]);
 		}
 	}
 	while(indexIsValid(retVal) && m_bb->contains(sp));
 	
-	return GeoGrid::invalidResult;
+	return std::move(GeoGrid::invalidResult);
 }
 

@@ -7,14 +7,20 @@
 
 namespace vxCore {
 
-using triangleIds = std::vector<unsigned long>; 
-using triangleIdsRef = std::shared_ptr<triangleIds>;
+using TriangleIds = std::vector<unsigned long>; 
+using TriangleIdsRef = std::shared_ptr<TriangleIds>;
 
 /// name to be changed
-struct searchResult
+struct SearchResult
 {
+	SearchResult(unsigned long in, 
+				 const TriangleIdsRef & ref)
+		: index(in)
+		, listRef(ref)
+	{
+	}
 	unsigned long index;
-	triangleIdsRef listRef;
+	TriangleIdsRef listRef;
 };
 
 ///
@@ -44,7 +50,7 @@ class GeoGrid final
 	std::vector<scalar> m_zvalues;
 
 public:
-	static const searchResult invalidResult;
+	static std::unique_ptr<SearchResult> invalidResult;
 	///
 	/// \brief vxGeoGrid
 	///
@@ -74,7 +80,7 @@ public:
 	///
 	/// \brief m_members
 	///
-	std::vector<searchResult> m_members;
+	std::vector<std::unique_ptr<SearchResult>> m_members;
 	///
 	/// \brief bb
 	/// \return 
@@ -165,7 +171,7 @@ public:
 	/// \param sp
 	/// \return 
 	///
-	const searchResult getList(const Ray &ray, v3s &sp) const;
+	const std::unique_ptr<SearchResult> &&getList(const Ray &ray, v3s &sp) const;
 	///
 	/// \brief indexIsValid
 	/// \param idx
