@@ -268,6 +268,7 @@ bool GeoGrid::indexIsValid(const long idx) const
 const std::unique_ptr<SearchResult>&& GeoGrid::getList(const Ray &ray, v3s &sp) const
 {
 	long retVal{-1l};
+	long prevretVal{-2l};
 	
 	const auto& d = ray.direction();
 	const auto& p = ray.origin();
@@ -284,10 +285,12 @@ const std::unique_ptr<SearchResult>&& GeoGrid::getList(const Ray &ray, v3s &sp) 
 	{
 		retVal = linearLookupVoxel(sp, idX, idY, idZ);
 		
-		if(!indexIsValid(retVal))
+		if(!indexIsValid(retVal) || retVal == prevretVal)
 		{
 			return std::move(GeoGrid::invalidResult);
 		}
+		
+		prevretVal = retVal;
 		
 		auto xVal = m_xvalues[idX + velX] - p.x();
 		auto yVal = m_yvalues[idY + velY] - p.y();
