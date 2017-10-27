@@ -215,7 +215,7 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 	{
 		const auto&& triangles = m_grid.getList(ray, sp);
 		
-		if(prev==triangles->index)
+		if(prev==triangles->index || triangles == GeoGrid::invalidResult)
 		{
 			break;
 		}
