@@ -32,6 +32,7 @@ class Light;
 class IBLight;
 class AreaLight;
 class PointLight;
+class SphereLight;
 class DirectLight;
 class AmbientLight;
 class Cylinder;
@@ -48,6 +49,7 @@ protected:
 	std::vector<AreaLightHandle> m_areaLights;
 	std::vector<IBLightHandle> m_IBLights;
 	std::vector<PointLightHandle> m_pointLights;
+	std::vector<SphereLightHandle> m_SphereLights;
 	std::vector<SunLightHandle> m_sunLights;
 	std::vector<DirectLightHandle> m_directLights;
 	std::vector<AmbientLightHandle> m_ambientLights;
@@ -211,6 +213,11 @@ public:
 	/// \return 
 	///
 	PointLightHandle createPointLight();
+	///
+	/// \brief createSphereLight
+	/// \return 
+	///
+	SphereLightHandle createSphereLight();
 	///
 	/// \brief createSunLight
 	/// \return 

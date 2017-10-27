@@ -283,6 +283,7 @@ Color RenderProcess::computeEnergyAndColor(unsigned int iter,
 {
 	if(iter==0)
 		return Color::zero;
+	
 	iter--;
 	
 	Color firstHitColor = computeLight(ray, col);
@@ -300,7 +301,7 @@ Color RenderProcess::computeEnergyAndColor(unsigned int iter,
 		// Compute reflection
 		if (sh->hasReflection())
 		{
-			firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
+			//firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
 			firstHitColor += computeReflection(1, ray, col);
 		}
 	}

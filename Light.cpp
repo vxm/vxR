@@ -212,9 +212,19 @@ bool PointLight::throwRay(const Ray &ray) const
 
 int PointLight::throwRay(const Ray &ray, Collision &col) const
 {
-	col.setPosition(m_position + m_transform.origin());
-	col.setColor(m_color);
-	col.setValid(true);
+	auto p = m_position + m_transform.origin();
+	auto v2 = p-ray.origin();
+	if(ray.direction().angle(v2) <  atan(m_radius)/v2.length())
+	{
+		col.setPosition(p);
+		col.setColor(m_color * m_intensity * m_intensity);
+	}
+	else
+	{
+		col.setValid(false);
+		return 0;
+	}
+	
 	return 1;
 }
 
@@ -243,7 +253,9 @@ void PointLight::updateBoundingBox()
 Color PointLight::acummulationLight(const Ray &, const Collision &collision) const
 {
 	const auto&& pp = collision.position();
-	const auto&& p = pp - (m_position + m_transform.origin());
+	const auto&& p = pp 
+						- (m_position + m_transform.origin()) 
+						+ MU::getSolidSphereRand(m_radius);
 	
 	Ray f(p, collision.normal());
 	// compute all sort of shadows.
@@ -264,6 +276,103 @@ Color PointLight::acummulationLight(const Ray &, const Collision &collision) con
 	
 	return ret;
 }
+
+
+////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// Sphere Light ////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+SphereLight::SphereLight()
+	:Light()
+{
+}
+
+SphereLight::SphereLight(const v3s &orientation, bool biPointional) 
+	: m_orientation(orientation)
+	, m_biDirectional(biPointional)
+{
+}
+
+void SphereLight::set(const v3s &orientation, bool biPointional) 
+{
+	m_orientation.set(orientation.unit());
+	m_biDirectional=biPointional;
+}
+
+bool SphereLight::throwRay(const Ray &ray) const
+{
+	Collision col;
+	return throwRay(ray, col) == 1;
+}
+
+int SphereLight::throwRay(const Ray &ray, Collision &col) const
+{
+	auto p = m_position + m_transform.origin();
+	auto v2 = p-ray.origin();
+	if(ray.direction().angle(v2) <  atan(m_radius)/v2.length())
+	{
+		col.setPosition(p);
+		col.setColor(m_color * m_intensity * m_intensity);
+	}
+	else
+	{
+		col.setValid(false);
+		return 0;
+	}
+	
+	return 1;
+}
+
+bool SphereLight::hasCollision(const Ray &ray) const
+{
+	Collision col;
+	return throwRay(ray, col) == 1;
+}
+
+void SphereLight::updateBoundingBox()
+{
+	auto&& orig = m_transform.origin() + m_position;
+	
+	m_bb->setMinX(orig.x() - m_radius);
+	m_bb->setMaxX(orig.x() + m_radius);
+	
+	m_bb->setMinY(orig.y() - m_radius);
+	m_bb->setMaxY(orig.y() + m_radius);
+	
+	m_bb->setMinZ(orig.z() - m_radius);
+	m_bb->setMaxZ(orig.z() + m_radius);
+	
+	return;
+}
+
+Color SphereLight::acummulationLight(const Ray &, const Collision &collision) const
+{
+	const auto&& pp = collision.position();
+	const auto&& p = pp 
+						- (m_position + m_transform.origin()) 
+						+ MU::getSolidSphereRand(m_radius);
+	
+	Ray f(p, collision.normal());
+	// compute all sort of shadows.
+	Color ret{Color::zero};
+	
+	if(collision.normal().follows(p)) // m_castShadows here?
+	{
+		auto ratio = lightRatio(f, p.inverted());
+		auto lumm = m_intensity * ratio;
+		
+		const Ray ff(pp+collision.normal().small(), p.inverted(), VisionType::kOpaque);
+		
+		if (m_castShadows && reachesLightSource(ff))
+		{
+			ret = color().gained(lumm);
+		}
+	}
+	
+	return ret;
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// Sun Light ////////////////////////

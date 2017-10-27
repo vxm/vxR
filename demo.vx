@@ -21,7 +21,7 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
     pixelSamples = 12
     reflectionSamples = 1
@@ -35,7 +35,7 @@ node
 {
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
     pixelSamples = 45
     reflectionSamples = 1
@@ -132,8 +132,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     reflectionSamples = 1
-    reflectionRadius = 0.2
-    reflectionCoefficent = 0.3
+    reflectionRadius = 0.1
+    reflectionCoefficent = 0.7
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 0.001
@@ -212,7 +212,7 @@ active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     shader = "shader_1"
     color = 255 171 122
-    radius = 0.3
+    radius = 0.7
 }
 
 
@@ -363,8 +363,8 @@ node
 {
 name = "gnome_tris_1"
 type = "vxGeometry"
-active = "false"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -1.4 -0.65 0.0 1]
+active = "true"
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/gnome_low_0.ply"
     color = 230 230 230
     shader = "shader_1"
@@ -430,7 +430,7 @@ node
 name = "model_4"
 type = "vxGeometry"
 active = "true"
-    transform = [0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0.0 -0.7 0.0 1]
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.7 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 161 162 152
     shader = "shader_1"
@@ -614,7 +614,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     lightImageNode = "image_2"
@@ -655,12 +655,11 @@ active = "false"
     maxY = 2.5
 }
 
-
 node
 {
-name = "point_light_1"
+name = "point_light"
 type = "vxPointLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 -0.1 0.0 1]
     intensity = 1.290
     color = 255 234 250
@@ -672,11 +671,11 @@ active = "true"
 
 node
 {
-name = "point_light_2"
-type = "vxPointLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.1 0.0 1]
-    intensity = 0.990
+name = "sphere_light"
+type = "vxSphereLight"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 -0.1 0.0 1]
+    intensity = 1.290
     color = 255 234 250
     samples = 1
     castShadows = "true"

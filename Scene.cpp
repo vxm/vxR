@@ -137,7 +137,21 @@ void Scene::buildLights()
 		point->setTransform(transform);
 		node->bind(point);
 	}
+	
+	for (const auto node : m_nodeDB->getNodesByType("vxSphereLight"))
+	{
+		auto point = createSphereLight();
+		point->setIntensity(node->getFloat("intensity"));
+		point->setColor(Color::lookup256(node->getColor("color")));
+		point->setSamples(node->getInt("samples"));
+		point->setComputeShadows(node->getBool("castShadows"));
+		point->setRadius(node->getFloat("radius"));
 
+		const auto transform = node->getMatrix("transform");
+		point->setTransform(transform);
+		node->bind(point);
+	}
+	
 	for (const auto node : m_nodeDB->getNodesByType("vxSunLight"))
 	{
 		auto point = createSunLight();
@@ -499,6 +513,14 @@ PointLightHandle Scene::createPointLight()
 {
 	auto pl1 = std::make_shared<PointLight>();
 	m_pointLights.emplace_back(pl1);
+	addLight(pl1);
+	return pl1;
+}
+
+SphereLightHandle Scene::createSphereLight()
+{
+	auto pl1 = std::make_shared<SphereLight>();
+	m_SphereLights.emplace_back(pl1);
 	addLight(pl1);
 	return pl1;
 }

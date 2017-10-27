@@ -262,7 +262,8 @@ public:
 	virtual void updateBoundingBox() override
 	{
 		return;
-	}};
+	}
+};
 
 
 class PointLight final : public Light
@@ -323,6 +324,68 @@ public:
 	// Visible interface
 	virtual void updateBoundingBox() override;
 };
+
+
+
+class SphereLight final : public Light
+{
+protected:
+	///
+	/// \brief m_orientation
+	///
+	v3s m_orientation = {0.0,0.0,0.0};
+	///
+	/// \brief m_biDirectional
+	/// 
+	bool m_biDirectional;
+	
+public:
+	///
+	/// \brief SphereLight
+	///
+	SphereLight();
+	///
+	/// \brief SphereLight
+	/// \param orientation
+	/// \param bidirectional
+	///
+	SphereLight(const v3s &orientation,
+				 bool bidirectional);
+	///
+	/// \brief acummulationLight
+	/// \param collision
+	/// \return 
+	///
+	Color acummulationLight(const Ray &, const Collision &collision) const override;
+	///
+	/// \brief set
+	/// \param orientation
+	/// \param bidirectional
+	///
+	void set(const v3s &orientation,bool bidirectional);
+	///
+	/// \brief setOrientation
+	/// \param orientation
+	///
+	void setOrientation (const v3s &orientation) {m_orientation.set(orientation);}
+	///
+	/// \brief setBidirectional
+	/// \param bidirectional
+	///
+	void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
+	
+	
+	//renderable interface
+	virtual bool throwRay(const Ray &ray) const override;
+	
+	virtual int throwRay(const Ray &ray, Collision &col) const override;
+	
+	virtual bool hasCollision(const Ray &ray) const override;
+	
+	// Visible interface
+	virtual void updateBoundingBox() override;
+};
+
 
 ///
 /// \brief The SunLight class
@@ -674,6 +737,7 @@ public:
 using AreaLightHandle = std::shared_ptr<AreaLight>;
 using IBLightHandle = std::shared_ptr<IBLight>;
 using PointLightHandle = std::shared_ptr<PointLight>;
+using SphereLightHandle = std::shared_ptr<SphereLight>;
 using SunLightHandle = std::shared_ptr<SunLight>;
 using DirectLightHandle = std::shared_ptr<DirectLight>;
 using AmbientLightHandle = std::shared_ptr<AmbientLight>;
