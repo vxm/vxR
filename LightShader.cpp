@@ -20,5 +20,5 @@ Color LightShader::getIlluminatedColor(const Ray &, const Collision &) const
 
 v3s LightShader::getVector(const Collision &) const
 {
-	return v3s::constZ;
+	return constZ;
 }

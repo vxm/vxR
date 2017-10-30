@@ -92,7 +92,7 @@ int Box::throwRay(const Ray &ray, Collision &collide) const
 			&& hitX.y()<=max.y() && hitX.y()>=min.y())
 	{
 		collide.setValid(true);
-		collide.setNormal(aMax ? v3s::constX : v3s::constMinusX);
+		collide.setNormal(aMax ? constX : constMinusX);
 		collide.setPosition(hitX + ray.origin());
 		collide.setUV(v2s{(mSize + hitX.z() - p.z())/m_size,
 								 (mSize + hitX.y() - p.y())/m_size});
@@ -105,7 +105,7 @@ int Box::throwRay(const Ray &ray, Collision &collide) const
 			&& hitZ.y()<=max.y() && hitZ.y()>=min.y())
 	{
 		collide.setValid(true);
-		collide.setNormal(bMax ? v3s::constZ : v3s::constMinusZ);
+		collide.setNormal(bMax ? constZ : constMinusZ);
 		collide.setPosition(hitZ + ray.origin());
 		collide.setUV(v2s{(mSize + hitZ.x() - p.x())/m_size,
 								 (mSize + hitZ.y() - p.y())/m_size});
@@ -118,7 +118,7 @@ int Box::throwRay(const Ray &ray, Collision &collide) const
 			&& hitY.z()<=max.z() && hitY.z()>=min.z())
 	{
 		collide.setValid(true);
-		collide.setNormal(cMax ? v3s::constY : v3s::constMinusY);
+		collide.setNormal(cMax ? constY : constMinusY);
 		collide.setPosition(hitY + ray.origin());
 		collide.setUV(v2s{(mSize + hitY.x() - p.x())/m_size,
 								 (mSize + hitY.z() - p.z())/m_size});

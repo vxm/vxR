@@ -272,7 +272,7 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 				return 0;
 			}
 			collide.setPosition(fp);
-			collide.setNormal(d.xPositive() ? v3s::constMinusX : v3s::constX);
+			collide.setNormal(d.xPositive() ? constMinusX : constX);
 			collide.setValid();
 			collide.setUV({(y - minY) / yLength(),
 						   (z - minZ) / zLength()});
@@ -295,7 +295,7 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 				return 0;
 			}
 			collide.setPosition(fp);
-			collide.setNormal(d.yPositive() ? v3s::constMinusY : v3s::constY);
+			collide.setNormal(d.yPositive() ? constMinusY : constY);
 			collide.setValid();
 			collide.setUV(v2s( ((x - minX)) / xLength(),
 							  ((z - minZ)) / zLength()));
@@ -318,7 +318,7 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 				return 0;
 			}
 			collide.setPosition(fp);
-			collide.setNormal(d.zPositive() ? v3s::constMinusZ :  v3s::constZ);
+			collide.setNormal(d.zPositive() ? constMinusZ :  constZ);
 			collide.setValid();
 			collide.setUV(v2s( ((x - minX)) /  xLength(),
 							  ((y - minY)) /  yLength()));

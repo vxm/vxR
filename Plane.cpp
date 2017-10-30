@@ -95,7 +95,7 @@ int Plane::throwRay(const Ray &ray, Collision &collide) const
 		const auto& p = MU::rectAndYPlane(ray.direction(), m_y-ray.origin().y());
 		if((ray.origin()-p).follows(ray.direction()))
 		{
-			collide.setNormal(v3s::constY);
+			collide.setNormal(constY);
 			collide.setPosition(p+ray.origin());
 			collide.setU((scalar)0.5);
 			collide.setV((scalar)0.5);

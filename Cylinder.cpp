@@ -46,7 +46,7 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 		{
 			col.setColor(Color::white);
 			col.setPosition(col.position());
-			col.setNormal(v3s::constY);
+			col.setNormal(constY);
 			col.setValid(true);
 			return 1;
 		}
@@ -57,7 +57,7 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 		if(pos.distance(levelCenter)<m_radius)
 		{
 			col.setPosition(col.position());
-			col.setNormal(v3s::constMinusY);
+			col.setNormal(constMinusY);
 			col.setValid(true);
 			return 1;
 		}

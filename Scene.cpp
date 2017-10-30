@@ -197,7 +197,7 @@ void Scene::buildCameras()
 		const auto vAperture = node->getFloat("verticalAperture");
 		const auto transform = node->getMatrix("transform");
 
-		m_camera->set(v3s::zero, v3s::constZ, fDistance, hAperture, vAperture);
+		m_camera->set(zero3, constZ, fDistance, hAperture, vAperture);
 
 		m_camera->setPixelRadius(pRadius);
 		m_camera->setTransform(transform);

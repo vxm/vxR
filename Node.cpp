@@ -1,4 +1,6 @@
 #include "Node.h"
+#include "Vector.h"
+
 using namespace vxCore;
 
 bool Node::active() const { return m_active; }
@@ -81,7 +83,7 @@ v3s Node::getVector3d(const std::string attrName)
 
 	std::cerr << "Node: Vector3d attribute '" << attrName << "' not found in node"
 	          << std::endl;
-	return v3s::zero;
+	return zero3;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
@@ -98,7 +100,7 @@ v2s Node::getVector2d(const std::string attrName)
 
 	std::cerr << "Node: Vector2d attribute '" << attrName << "' not found in node"
 	          << std::endl;
-	return v2s::zero;
+	return zero2;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
