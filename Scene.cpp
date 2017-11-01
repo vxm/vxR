@@ -2,12 +2,12 @@
 #include <memory>
 
 #include <cassert>
-#include <thread>
 #include <future>
+#include <thread>
 
-#include "Scene.h"
 #include "BroadPhase.h"
 #include "Light.h"
+#include "Scene.h"
 
 namespace vxCore
 {
@@ -137,7 +137,7 @@ void Scene::buildLights()
 		point->setTransform(transform);
 		node->bind(point);
 	}
-	
+
 	for (const auto node : m_nodeDB->getNodesByType("vxSphereLight"))
 	{
 		auto point = createSphereLight();
@@ -151,7 +151,7 @@ void Scene::buildLights()
 		point->setTransform(transform);
 		node->bind(point);
 	}
-	
+
 	for (const auto node : m_nodeDB->getNodesByType("vxSunLight"))
 	{
 		auto point = createSunLight();
@@ -415,8 +415,7 @@ void Scene::buildGeometries()
 		auto plyReader = std::make_shared<PLYImporter>(geo);
 		plyReader->processPLYFile(path);
 
-		m_broadPhase->addVisible(geo);
-
+		geo->updateBoundingBox();
 		node->bind(geo);
 	}
 }

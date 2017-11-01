@@ -49,7 +49,7 @@ node
 {
 name = "renderSettings_3"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
     pixelSamples = 124
     reflectionSamples = 1
@@ -63,7 +63,7 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 2720 1536
     pixelSamples = 200
     reflectionSamples = 2
@@ -77,7 +77,7 @@ node
 {
 name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 5464 3072
     pixelSamples = 800
     reflectionSamples = 4
@@ -208,7 +208,7 @@ node
 {
 name = "sphere_2"
 type = "vxSphere"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     shader = "shader_1"
     color = 255 171 122
@@ -365,7 +365,7 @@ name = "gnome_tris_1"
 type = "vxGeometry"
 active = "true"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 0.0 1]
-    filePath = "/home/john/Downloads/gnome_low_0.ply"
+    filePath = "/home/john/Downloads/gnome_low.ply"
     color = 230 230 230
     shader = "shader_1"
 }
@@ -614,7 +614,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     lightImageNode = "image_2"
@@ -675,12 +675,12 @@ name = "sphere_light"
 type = "vxSphereLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 -0.1 0.0 1]
-    intensity = 1.290
-    color = 255 234 250
+    intensity = 0.7
+    color = 255 234 220
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.1
+    radius = 0.7
 }
 
 

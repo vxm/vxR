@@ -1,22 +1,21 @@
 #ifndef VXGEOGRID_H
 #define VXGEOGRID_H
 
+#include "BoundingBox.h"
 #include <set>
 #include <vector>
-#include "BoundingBox.h"
 
-namespace vxCore {
+namespace vxCore
+{
 
-using TriangleIds = std::vector<unsigned long>; 
+using TriangleIds = std::vector<unsigned long>;
 using TriangleIdsRef = std::shared_ptr<TriangleIds>;
 
 /// name to be changed
 struct SearchResult
 {
-	SearchResult(unsigned long in, 
-				 const TriangleIdsRef & ref)
-		: index(in)
-		, listRef(ref)
+	SearchResult(unsigned long in, const TriangleIdsRef &ref)
+	    : index(in), listRef(ref)
 	{
 	}
 	unsigned long index;
@@ -32,11 +31,11 @@ class GeoGrid final
 	/// \brief m_bb
 	///
 	std::shared_ptr<BoundingBox> m_bb;
-	//TODO: above 11 this becomes problematic, investigate why.
+	// TODO: above 11 this becomes problematic, investigate why.
 	unsigned int m_rx = {11u};
 	unsigned int m_ry = {5u};
 	unsigned int m_rz = {11u};
-	
+
 	scalar m_xSlice;
 	scalar m_ySlice;
 	scalar m_zSlice;
@@ -44,13 +43,12 @@ class GeoGrid final
 	scalar m_c_xBoxSize;
 	scalar m_c_yBoxSize;
 	scalar m_c_zBoxSize;
-	
+
 	std::vector<scalar> m_xvalues;
 	std::vector<scalar> m_yvalues;
 	std::vector<scalar> m_zvalues;
 
 public:
-	static std::unique_ptr<SearchResult> invalidResult;
 	///
 	/// \brief vxGeoGrid
 	///
@@ -62,10 +60,9 @@ public:
 	/// \param rz
 	///
 	GeoGrid(unsigned int rx, unsigned int ry, unsigned int rz)
-		:m_rx(rx)
-		,m_ry(ry)
-		,m_rz(rz)
-	{}
+	    : m_rx(rx), m_ry(ry), m_rz(rz)
+	{
+	}
 	///
 	/// \brief updateCache
 	///
@@ -83,7 +80,7 @@ public:
 	std::vector<std::unique_ptr<SearchResult>> m_members;
 	///
 	/// \brief bb
-	/// \return 
+	/// \return
 	///
 	std::shared_ptr<BoundingBox> bb() const;
 	///
@@ -93,7 +90,7 @@ public:
 	void setBb(const std::shared_ptr<BoundingBox> &bb);
 	///
 	/// \brief size
-	/// \return 
+	/// \return
 	///
 	unsigned long size() const;
 	///
@@ -101,19 +98,17 @@ public:
 	/// \param a
 	/// \param b
 	/// \param c
-	/// \return 
+	/// \return
 	///
-	unsigned long index(unsigned int a,
-						unsigned int b,
-						unsigned int c) const;
+	unsigned long index(unsigned int a, unsigned int b, unsigned int c) const;
 	///
 	/// \brief numVoxels
-	/// \return 
+	/// \return
 	///
 	unsigned long numVoxels() const;
 	///
 	/// \brief rx
-	/// \return 
+	/// \return
 	///
 	unsigned int rx() const;
 	///
@@ -123,7 +118,7 @@ public:
 	void setRx(unsigned int rx);
 	///
 	/// \brief ry
-	/// \return 
+	/// \return
 	///
 	unsigned int ry() const;
 	///
@@ -133,7 +128,7 @@ public:
 	void setRy(unsigned int ry);
 	///
 	/// \brief rz
-	/// \return 
+	/// \return
 	///
 	unsigned int rz() const;
 	///
@@ -147,7 +142,7 @@ public:
 	/// \param a
 	/// \param b
 	/// \param c
-	/// \return 
+	/// \return
 	///
 	unsigned long linearLookupVoxel(const v3s &v, int &a, int &b, int &c) const;
 	///
@@ -156,7 +151,7 @@ public:
 	/// \param a
 	/// \param b
 	/// \param c
-	/// \return 
+	/// \return
 	///
 	unsigned long lookupVoxel(const v3s &v, int &a, int &b, int &c) const;
 	///
@@ -169,22 +164,21 @@ public:
 	/// \brief getList
 	/// \param ray
 	/// \param sp
-	/// \return 
+	/// \return
 	///
-	const std::unique_ptr<SearchResult> &&getList(const Ray &ray, v3s &sp) const;
+	const SearchResult *getList(const Ray &ray, v3s &sp) const;
 	///
 	/// \brief indexIsValid
 	/// \param idx
-	/// \return 
+	/// \return
 	///
 	bool indexIsValid(const long idx) const;
 	///
 	/// \brief hasTriangles
 	/// \param idx
-	/// \return 
+	/// \return
 	///
 	bool hasTriangles(const long idx) const;
 };
-
 }
 #endif // VXGEOGRID_H

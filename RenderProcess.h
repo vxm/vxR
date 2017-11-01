@@ -1,16 +1,17 @@
 #ifndef VXRENDERPROCESS_H
 #define VXRENDERPROCESS_H
 
-#include <memory>
 #include <atomic>
+#include <memory>
 
-#include "Process.h"
-#include "Status.h"
 #include "ImageProperties.h"
-#include "SceneParser.h"
+#include "Process.h"
 #include "Scene.h"
+#include "SceneParser.h"
+#include "Status.h"
 #include "imageData.h"
-namespace vxCompute {
+namespace vxCompute
+{
 
 using namespace vxCore;
 
@@ -61,7 +62,7 @@ private:
 	///
 	/// \brief m_c_invSamples
 	///
-	scalar m_c_invSamples = scalar(1.0)/scalar(m_samples);
+	scalar m_c_invSamples = scalar(1.0) / scalar(m_samples);
 	///
 	/// \brief m_reflectionSamples
 	///
@@ -76,40 +77,38 @@ private:
 	unsigned int m_lightBounces = 2u;
 
 public:
-	
 	// constructor with imageproperties propagation
-	RenderProcess(ImagePropertiesHandle &prop,
-					unsigned int samples);
-	
+	RenderProcess(ImagePropertiesHandle &prop, unsigned int samples);
+
 	// constructor with imageproperties propagation
-	virtual ~RenderProcess()
-	{}
-	
+	virtual ~RenderProcess() {}
+
 	virtual Status::code execute();
-	
+
 	///
 	/// \brief render
 	/// \param by
 	/// \param offset
-	/// \return 
+	/// \return
 	///
 	Status::code render(unsigned int by = 1u, unsigned int offset = 0u);
-	
-	//void createBucketList(unsigned int samples);
+
+	// void createBucketList(unsigned int samples);
 	const unsigned char *generateImage();
 	///
 	/// \brief setDatabase
-	/// \return 
+	/// \return
 	///
 	Status setDatabase(std::shared_ptr<SceneParser>);
 	///
 	/// \brief setImageProperties
 	/// \param imageProperties
 	///
-	void setImageProperties(std::shared_ptr<const ImageProperties> imageProperties);
+	void
+	setImageProperties(std::shared_ptr<const ImageProperties> imageProperties);
 	///
 	/// \brief imageProperties
-	/// \return 
+	/// \return
 	///
 	std::shared_ptr<const ImageProperties> imageProperties() const;
 	///
@@ -119,7 +118,7 @@ public:
 	void setScene(const std::shared_ptr<Scene> &scene);
 	///
 	/// \brief scene
-	/// \return 
+	/// \return
 	///
 	std::shared_ptr<Scene> scene() const;
 	///
@@ -129,17 +128,17 @@ public:
 	void setNMaxThreads(unsigned int nMaxThreads);
 	///
 	/// \brief nMaxThreads
-	/// \return 
+	/// \return
 	///
 	unsigned int nMaxThreads() const;
 	///
 	/// \brief progress
-	/// \return 
+	/// \return
 	///
 	scalar progress() const;
 	///
 	/// \brief visSamples
-	/// \return 
+	/// \return
 	///
 	unsigned int visSamples() const;
 	///
@@ -149,7 +148,7 @@ public:
 	void setVisSamples(unsigned int visSamples);
 	///
 	/// \brief reflectionSamples
-	/// \return 
+	/// \return
 	///
 	unsigned int reflectionSamples() const;
 	///
@@ -159,7 +158,7 @@ public:
 	void setReflectionSamples(unsigned int reflectionSamples);
 	///
 	/// \brief giSamples
-	/// \return 
+	/// \return
 	///
 	unsigned int giSamples() const;
 	///
@@ -169,7 +168,7 @@ public:
 	void setGISamples(unsigned int giSamples);
 	///
 	/// \brief giMultiplier
-	/// \return 
+	/// \return
 	///
 	scalar giMultiplier() const;
 	///
@@ -179,7 +178,7 @@ public:
 	void setGIMultiplier(const scalar &giMultiplier);
 	///
 	/// \brief samples
-	/// \return 
+	/// \return
 	///
 	unsigned int samples() const;
 	///
@@ -189,7 +188,7 @@ public:
 	void setSamples(unsigned int samples);
 	///
 	/// \brief properties
-	/// \return 
+	/// \return
 	///
 	std::shared_ptr<const ImageProperties> properties() const;
 	///
@@ -201,23 +200,20 @@ public:
 	/// \brief computeLight
 	/// \param ray
 	/// \param col
-	/// \return 
+	/// \return
 	///
 	Color computeLight(const Ray &ray, Collision &col);
 	///
 	/// \brief computeEnergyAndColor
 	/// \param ray
 	/// \param col
-	/// \return 
+	/// \return
 	///
-	Color computeEnergyAndColor(unsigned int iter, 
-								const Ray &ray, 
-								Collision &col, 
-								unsigned int giBounces, 
-								unsigned int rflBounces);
+	Color computeEnergyAndColor(const Ray &ray, Collision &col,
+	                            unsigned int giBounces, unsigned int rflBounces);
 	///
 	/// \brief lightBounces
-	/// \return 
+	/// \return
 	///
 	unsigned int lightBounces() const;
 	///
@@ -230,26 +226,25 @@ public:
 	/// \param iter
 	/// \param ray
 	/// \param col
-	/// \return 
+	/// \return
 	///
-	Color computeReflection(unsigned int iter, const Ray &ray, Collision &col);
+	Color computeReflection(const Ray &ray, Collision &col);
 	///
 	/// \brief computeGI
 	/// \param iter
 	/// \param ray
 	/// \param col
-	/// \return 
+	/// \return
 	///
-	Color computeGI(unsigned int iter, Collision &col);
+	Color computeGI(Collision &col);
 	///
 	/// \brief getShader
 	/// \param col
-	/// \return 
-	///Gets the proper shader, either stored in geometry 
+	/// \return
+	/// Gets the proper shader, either stored in geometry
 	/// or scene default.
 	Shader *getShader(const Collision &col);
 };
 
 #endif // VXRENDERPROCESS_H
-
 }

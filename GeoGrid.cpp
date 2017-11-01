@@ -4,10 +4,6 @@
 
 using namespace vxCore;
 
-std::unique_ptr<SearchResult> GeoGrid::invalidResult =
-    std::make_unique<SearchResult>(
-        0ul, std::make_shared<std::vector<unsigned long>>());
-
 GeoGrid::GeoGrid() {}
 
 std::shared_ptr<BoundingBox> GeoGrid::bb() const { return m_bb; }
@@ -18,15 +14,17 @@ void GeoGrid::updateCache()
 	m_xvalues.resize(m_rx + 1);
 
 	// Recording xlices to the grid.
-	m_xSlice = fabs(m_bb->maxX() - m_bb->minX()) / (scalar)(m_rx);
+	auto xlen = m_bb->xLength();
+	m_xSlice = xlen / scalar(m_rx);
 	auto k = 0u;
-	for (auto &xval : m_xvalues)
+	m_xvalues[0] = m_bb->minX();
+	for (auto i = 1u; i < m_rx + 1; i++)
 	{
-		xval = m_bb->minX() + m_xSlice * k++;
+		m_xvalues[i] = m_xvalues[i - 1] + m_xSlice;
 	}
 
 	m_yvalues.resize(m_ry + 1);
-	m_ySlice = fabs(m_bb->maxY() - m_bb->minY()) / (scalar)(m_ry);
+	m_ySlice = m_bb->yLength() / (scalar)(m_ry);
 	k = 0u;
 	for (auto &yval : m_yvalues)
 	{
@@ -34,7 +32,7 @@ void GeoGrid::updateCache()
 	}
 
 	m_zvalues.resize(m_rz + 1);
-	m_zSlice = fabs(m_bb->maxZ() - m_bb->minZ()) / (scalar)(m_rz);
+	m_zSlice = m_bb->zLength() / (scalar)(m_rz);
 	k = 0u;
 	for (auto &zval : m_zvalues)
 	{
@@ -60,6 +58,7 @@ void GeoGrid::setBb(const std::shared_ptr<BoundingBox> &bb)
 	m_bb = bb;
 
 	auto d = m_bb->diagonal();
+
 	setResolution(MU::clamp((unsigned int)(d.x() * 64.0), 4u, 64u),
 	              MU::clamp((unsigned int)(d.y() * 64.0), 4u, 64u),
 	              MU::clamp((unsigned int)(d.z() * 64.0), 4u, 64u));
@@ -223,8 +222,7 @@ bool GeoGrid::indexIsValid(const long idx) const
 	return !(idx < 0l || idx >= numVoxels());
 }
 
-const std::unique_ptr<SearchResult> &&GeoGrid::getList(const Ray &ray,
-                                                       v3s &sp) const
+const SearchResult *GeoGrid::getList(const Ray &ray, v3s &sp) const
 {
 	long retVal{-1l};
 	long prevretVal{-2l};
@@ -242,21 +240,21 @@ const std::unique_ptr<SearchResult> &&GeoGrid::getList(const Ray &ray,
 
 	do
 	{
-		std::cout << "sp: " << sp << std::endl;
+		//		std::cout << "sp: " << sp << std::endl;
 
 		retVal = linearLookupVoxel(sp, idX, idY, idZ);
 
-		std::cout << "\tidx: " << idX << "idx: " << idY << "idx: " << idZ
-		          << std::endl;
+		//		std::cout << "\tidx: " << idX << "idx: " << idY << "idx: " << idZ
+		//		          << std::endl;
 
 		//		std::cout << "Retval  ::" << retVal << "::" << std::endl;
 		if (!indexIsValid(retVal) || retVal == prevretVal)
 		{
-			return std::move(GeoGrid::invalidResult);
+			return nullptr;
 		}
 
-		std::cout << "index value: " << retVal << std::endl;
-		//		prevretVal = retVal;
+		// std::cout << "index value: " << retVal << std::endl;
+		// prevretVal = retVal;
 
 		auto xVal = m_xvalues[idX + velX] - p.x();
 		auto yVal = m_yvalues[idY + velY] - p.y();
@@ -266,28 +264,28 @@ const std::unique_ptr<SearchResult> &&GeoGrid::getList(const Ray &ray,
 		if (fabs(intersectX.y()) <= fabs(yVal) &&
 		    fabs(intersectX.z()) <= fabs(zVal))
 		{
-			sp = p + intersectX + v3s((velX ? 1.0 : -1.0) / 1000.0, 0.0, 0.0);
+			sp = p + intersectX + v3s((velX ? 1.0 : -1.0) / 100.0, 0.0, 0.0);
 		}
 
 		v3s intersectY = MU::rectAndYPlane(d, yVal);
 		if (fabs(intersectY.x()) <= fabs(xVal) &&
 		    fabs(intersectY.z()) <= fabs(zVal))
 		{
-			sp = p + intersectY + v3s(0.0, (velY ? 1.0 : -1.0) / 1000.0, 0.0);
+			sp = p + intersectY + v3s(0.0, (velY ? 1.0 : -1.0) / 100.0, 0.0);
 		}
 
 		v3s intersectZ = MU::rectAndZPlane(d, zVal);
 		if (fabs(intersectZ.x()) <= fabs(xVal) &&
 		    fabs(intersectZ.y()) <= fabs(yVal))
 		{
-			sp = p + intersectZ + v3s(0.0, 0.0, (velZ ? 1.0 : -1.0) / 1000.0);
+			sp = p + intersectZ + v3s(0.0, 0.0, (velZ ? 1.0 : -1.0) / 100.0);
 		}
 
 		if (hasTriangles(retVal))
 		{
-			return std::move(m_members[retVal]);
+			return m_members[retVal].get();
 		}
 	} while (indexIsValid(retVal) && m_bb->contains(sp));
 
-	return std::move(GeoGrid::invalidResult);
+	return nullptr;
 }
