@@ -1,6 +1,6 @@
 #include "BroadPhase.h"
-#include <limits>
 #include <algorithm>
+#include <limits>
 
 #define DRAW_BBOX 0
 #define DRAW_OBJECT_BBOX 0
@@ -42,101 +42,101 @@ void BroadPhase::updateCache()
 		visibl->updateBoundingBox();
 		auto bb = visibl->boundingBox();
 		m_bb->extend(*bb);
-	}	
-	
-/*	const auto dngs = m_visibles.size() * 2;
-
-	m_xvalues.resize(dngs);
-	m_yvalues.resize(dngs);
-	m_zvalues.resize(dngs);
-
-	m_bb->clear();
-
-	unsigned int i = 0;
-	unsigned int ii = 1;
-
-	/// Run through geometries and slice the
-	/// broad phase
-	for (auto visibl : m_visibles)
-	{
-		visibl->updateBoundingBox();
-		auto bb = visibl->boundingBox();
-
-		m_xvalues[i] = bb->minX();
-		m_xvalues[ii] = bb->maxX();
-
-		m_yvalues[i] = bb->minY();
-		m_yvalues[ii] = bb->maxY();
-
-		m_zvalues[i] = bb->minZ();
-		m_zvalues[ii] = bb->maxZ();
-
-		m_bb->extend(*bb);
-
-		ii += 2;
-		i += 2;
 	}
 
-	// TODO:this sort could be less naive as I am
-	// inserting min and max, min and max...
-	m_rx = VU::sortAndUnique(m_xvalues) - 1;
-	m_ry = VU::sortAndUnique(m_yvalues) - 1;
-	m_rz = VU::sortAndUnique(m_zvalues) - 1;
+	/*	const auto dngs = m_visibles.size() * 2;
 
-#ifdef _DEBUG
-	std::cout << "Resolution: " << m_rx << " " << m_ry << " " << m_rz
-	          << std::endl;
+	  m_xvalues.resize(dngs);
+	  m_yvalues.resize(dngs);
+	  m_zvalues.resize(dngs);
 
-	std::cout << "X: ";
-	for (auto x : m_xvalues)
-	{
-		std::cout << ", " << x;
-	}
-	std::cout << std::endl;
+	  m_bb->clear();
 
-	std::cout << "Y: ";
-	for (auto y : m_yvalues)
-	{
-		std::cout << ", " << y;
-	}
-	std::cout << std::endl;
+	  unsigned int i = 0;
+	  unsigned int ii = 1;
 
-	std::cout << "Z: ";
-	for (auto z : m_zvalues)
-	{
-		std::cout << ", " << z;
-	}
-	std::cout << std::endl;
-#endif
+	  /// Run through geometries and slice the
+	  /// broad phase
+	  for (auto visibl : m_visibles)
+	  {
+	    visibl->updateBoundingBox();
+	    auto bb = visibl->boundingBox();
 
-	m_c_size = m_rx * m_ry * m_rz;
-	m_members.resize(m_c_size);
+	    m_xvalues[i] = bb->minX();
+	    m_xvalues[ii] = bb->maxX();
 
-	auto idx(0ul);
-	for (auto &l : m_members)
-	{
-		l.index = idx++;
-	}
+	    m_yvalues[i] = bb->minY();
+	    m_yvalues[ii] = bb->maxY();
 
-	for (auto &visibl : m_visibles)
-	{
-		locateAndRegister(visibl);
-	}
+	    m_zvalues[i] = bb->minZ();
+	    m_zvalues[ii] = bb->maxZ();
 
-#if _DEBUG
+	    m_bb->extend(*bb);
 
-	for (auto &l : m_members)
-	{
-		std::cout << "Index: " << l.index << std::endl;
-		if (l.geoRefs != nullptr)
-			for (auto &g : *l.geoRefs)
-			{
-				std::cout << "\tgeo color: " << g->color() << std::endl;
-			}
-	}
+	    ii += 2;
+	    i += 2;
+	  }
 
-#endif
-*/
+	  // TODO:this sort could be less naive as I am
+	  // inserting min and max, min and max...
+	  m_rx = VU::sortAndUnique(m_xvalues) - 1;
+	  m_ry = VU::sortAndUnique(m_yvalues) - 1;
+	  m_rz = VU::sortAndUnique(m_zvalues) - 1;
+
+	#ifdef _DEBUG
+	  std::cout << "Resolution: " << m_rx << " " << m_ry << " " << m_rz
+	            << std::endl;
+
+	  std::cout << "X: ";
+	  for (auto x : m_xvalues)
+	  {
+	    std::cout << ", " << x;
+	  }
+	  std::cout << std::endl;
+
+	  std::cout << "Y: ";
+	  for (auto y : m_yvalues)
+	  {
+	    std::cout << ", " << y;
+	  }
+	  std::cout << std::endl;
+
+	  std::cout << "Z: ";
+	  for (auto z : m_zvalues)
+	  {
+	    std::cout << ", " << z;
+	  }
+	  std::cout << std::endl;
+	#endif
+
+	  m_c_size = m_rx * m_ry * m_rz;
+	  m_members.resize(m_c_size);
+
+	  auto idx(0ul);
+	  for (auto &l : m_members)
+	  {
+	    l.index = idx++;
+	  }
+
+	  for (auto &visibl : m_visibles)
+	  {
+	    locateAndRegister(visibl);
+	  }
+
+	#if _DEBUG
+
+	  for (auto &l : m_members)
+	  {
+	    std::cout << "Index: " << l.index << std::endl;
+	    if (l.geoRefs != nullptr)
+	      for (auto &g : *l.geoRefs)
+	      {
+	        std::cout << "\tgeo color: " << g->color() << std::endl;
+	      }
+	  }
+
+	#endif
+	*/
 }
 
 unsigned long BroadPhase::index(unsigned int a, unsigned int b,
@@ -148,10 +148,7 @@ unsigned long BroadPhase::index(unsigned int a, unsigned int b,
 unsigned long BroadPhase::lookupVoxel(const v3s &v, int &a, int &b,
                                       int &c) const
 {
-	const auto less_or_equal = [](scalar lhs, scalar rhs)
-	{
-		return lhs <= rhs;
-	};
+	const auto less_or_equal = [](scalar lhs, scalar rhs) { return lhs <= rhs; };
 
 	auto it = std::lower_bound(m_xvalues.begin(), m_xvalues.end() - 1u, v.x(),
 	                           less_or_equal);
@@ -319,12 +316,13 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 #else
 #if NAIVE_BB_METHOD
 
-	if (!m_bb->throwRay(ray, collide))
-	{
-		collide.setValid(false);
-		return 0;
-	}
-
+	/*	// check if this is really faster.
+	 * if (!m_bb->throwRay(ray, collide))
+	  {
+	    collide.setValid(false);
+	    return 0;
+	  }
+	*/
 	collide.setValid(false);
 
 	/*	// draw a margin
@@ -347,19 +345,19 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	{
 		// if ray comes from an object which cannot see itself.
 		// aka convex.
-		if(visbl.get() == collide.m_geo && 
-		   collide.m_geo->type()==VisibleType::kOtherOpaque)
+		if (visbl.get() == collide.m_geo &&
+		    collide.m_geo->type() == VisibleType::kOtherOpaque)
 		{
 			continue;
 		}
-		
+
 		/// if ray can only see opaque and this is a light we move on.
 		if (ray.m_vision == VisionType::kOpaque &&
 		    visbl->type() == VisibleType::kLight)
 		{
 			continue;
 		}
-		
+
 		// if it's own hit falls outside it's bounding box.
 		if (!visbl->testBoundingBox(ray, temp))
 		{
@@ -375,7 +373,6 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 
 		if (!visbl->boundingBox()->contains(temp.position(), scalar(0.00001)))
 		{
-
 			continue;
 		}
 
