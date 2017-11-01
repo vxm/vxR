@@ -1,32 +1,33 @@
 #ifndef VXBOUNDINGBOX_H
 #define VXBOUNDINGBOX_H
 
-#include <memory>
-#include <atomic>
-#include "Vector.h"
-#include "Ray.h"
 #include "Collision.h"
 #include "MathUtils.h"
+#include "Ray.h"
+#include "Vector.h"
+#include <atomic>
+#include <memory>
 
-namespace vxCore {
+namespace vxCore
+{
 
 class BoundingBox;
 class Matrix44;
 
 using BoundingBoxHandle = std::shared_ptr<BoundingBox>;
 
-//TODO: this class needs heavy caching on "close" method.
-class BoundingBox: public std::enable_shared_from_this<BoundingBox>
+// TODO: this class needs heavy caching on "close" method.
+class BoundingBox : public std::enable_shared_from_this<BoundingBox>
 {
-	scalar m_minX;
-	scalar m_minY;
-	scalar m_minZ;
+	scalar m_minX = 1.0;
+	scalar m_minY = 0.0;
+	scalar m_minZ = 0.0;
 
-	scalar m_maxX;
-	scalar m_maxY;
-	scalar m_maxZ;
+	scalar m_maxX = -1.0;
+	scalar m_maxY = 0.0;
+	scalar m_maxZ = 0.0;
 
-//	v3 m_scale;
+	//	v3 m_scale;
 
 public:
 	///
@@ -52,8 +53,8 @@ public:
 	/// \param mxy
 	/// \param mxz
 	///
-	void set(scalar mnx,scalar mny,scalar mnz,
-			 scalar mxx,scalar mxy,scalar mxz);
+	void set(scalar mnx, scalar mny, scalar mnz, scalar mxx, scalar mxy,
+	         scalar mxz);
 	///
 	/// \brief markAsInitialized
 	///
@@ -74,37 +75,37 @@ public:
 	void extend(const BoundingBox &box);
 	///
 	/// \brief xLength
-	/// \return 
+	/// \return
 	///
 	scalar xLength() const;
 	///
 	/// \brief yLength
-	/// \return 
+	/// \return
 	///
 	scalar yLength() const;
 	///
 	/// \brief zLength
-	/// \return 
+	/// \return
 	///
 	scalar zLength() const;
 	///
 	/// \brief max
-	/// \return 
+	/// \return
 	///
 	v3s max() const;
 	///
 	/// \brief min
-	/// \return 
+	/// \return
 	///
 	v3s min() const;
 	///
 	/// \brief center
-	/// \return 
+	/// \return
 	///
 	v3s center() const;
 	///
 	/// \brief minX
-	/// \return 
+	/// \return
 	///
 	scalar minX() const;
 	///
@@ -114,7 +115,7 @@ public:
 	void setMinX(scalar minx);
 	///
 	/// \brief minY
-	/// \return 
+	/// \return
 	///
 	scalar minY() const;
 	///
@@ -124,7 +125,7 @@ public:
 	void setMinY(scalar miny);
 	///
 	/// \brief minZ
-	/// \return 
+	/// \return
 	///
 	scalar minZ() const;
 	///
@@ -134,7 +135,7 @@ public:
 	void setMinZ(scalar minz);
 	///
 	/// \brief maxX
-	/// \return 
+	/// \return
 	///
 	scalar maxX() const;
 	///
@@ -144,7 +145,7 @@ public:
 	void setMaxX(scalar maxx);
 	///
 	/// \brief maxY
-	/// \return 
+	/// \return
 	///
 	scalar maxY() const;
 	///
@@ -154,7 +155,7 @@ public:
 	void setMaxY(scalar maxy);
 	///
 	/// \brief maxZ
-	/// \return 
+	/// \return
 	///
 	scalar maxZ() const;
 	///
@@ -164,35 +165,35 @@ public:
 	void setMaxZ(scalar maxz);
 	///
 	/// \brief midXValue
-	/// \return 
+	/// \return
 	///
 	scalar midXValue() const;
 	///
 	/// \brief midYValue
-	/// \return 
+	/// \return
 	///
 	scalar midYValue() const;
 	///
 	/// \brief midZValue
-	/// \return 
+	/// \return
 	///
 	scalar midZValue() const;
 	///
 	/// \brief contains
 	/// \param v
-	/// \return 
+	/// \return
 	///
 	bool contains(const v3s &v) const;
 	///
 	/// \brief contains
 	/// \param v
 	/// \param tolerance
-	/// \return 
+	/// \return
 	///
 	bool contains(const v3s &v, scalar tolerance) const;
 	///
 	/// \brief diagonal
-	/// \return 
+	/// \return
 	///
 	v3s diagonal() const;
 	///
@@ -200,8 +201,8 @@ public:
 	/// \param m
 	///
 	void applyTransform(const Matrix44 &m);
-	
-	//renderable interface
+
+	// renderable interface
 	bool throwRay(const Ray &ray) const;
 	int throwRay(const Ray &ray, Collision &collide) const;
 	bool hasCollision(const Ray &ray) const;
