@@ -210,27 +210,23 @@ Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 
 Color RenderProcess::computeReflection(const Ray &ray, Collision &col)
 {
-	auto sh = getShader(col);
-
 	Color reflection = Color::zero;
 
 	const auto &n = col.normal();
-
-	Collision refxCollision;
 
 	// Reflected direction
 	auto invV = ((n * ray.direction().dot(n) * scalar(-2.0)) + ray.direction());
 
 	// Noise Sphere
+	auto sh = getShader(col);
 	auto invVRand = MU::getSolidSphereRand3(sh->getReflectionRadius());
 	auto ratio = invV.dot(invVRand);
-
 	invV += invVRand;
 
 	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
 
+	Collision refxCollision;
 	reflection = computeLight(reflexRay, refxCollision);
-
 	reflection *= sh->getReflectionCoefficent() - fabs(ratio);
 
 	reflection.applyCurve(1.2, 0.0);
@@ -247,17 +243,11 @@ Color RenderProcess::computeGI(Collision &col)
 
 	auto ratio = giRay.direction().dot(col.normal());
 
-	Collision nextRound = col;
+	Collision nextRound;
 
 	Color hitColor = computeLight(giRay, nextRound);
 
 	Color globalIlm = hitColor * (1.0 - fabs(ratio));
-
-	/*
-	if (nextRound.isValid())
-	{
-	  globalIlm *= computeGI(nextRound);
-	}*/
 
 	return globalIlm;
 }
@@ -273,13 +263,13 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 		auto sh = getShader(col);
 
 		// Compute Global Illumination
-		if (sh->hasGI())
+		if (sh->hasGI() && giBounces)
 		{
 			firstHitColor += computeGI(col);
 		}
 
 		// Compute reflection
-		if (sh->hasReflection())
+		if (sh->hasReflection() && rflBounces)
 		{
 			// firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
 			firstHitColor += computeReflection(ray, col);

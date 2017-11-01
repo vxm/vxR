@@ -260,21 +260,22 @@ void SphereLight::updateBoundingBox()
 Color SphereLight::acummulationLight(const Ray &,
                                      const Collision &collision) const
 {
-	const auto &&pp = collision.position();
-	const auto &&p = pp - (m_position + m_transform.origin()) +
-	                 MU::getSolidSphereRand(m_radius);
+	auto pointLightPosition =
+	    MU::getSolidSphereRand(m_radius) + (m_position + m_transform.origin());
 
-	Ray f(p, collision.normal());
+	const auto &&pp = collision.position();
+	const auto &&p = pointLightPosition - pp;
+
+	Ray f(pp, collision.normal());
 	// compute all sort of shadows.
 	Color ret{Color::zero};
 
-	if (collision.normal().follows(p)) // m_castShadows here?
+	if (collision.normal().follows(p.inverted())) // m_castShadows here?
 	{
-		auto ratio = lightRatio(f, p.inverted());
+		auto ratio = lightRatio(f, p);
 		auto lumm = m_intensity * ratio;
 
-		const Ray ff(pp + collision.normal().small(), p.inverted(),
-		             VisionType::kOpaque);
+		const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
 
 		if (m_castShadows && reachesLightSource(ff))
 		{
