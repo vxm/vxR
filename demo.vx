@@ -132,8 +132,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     reflectionSamples = 1
-    reflectionRadius = 0.2
-    reflectionCoefficent = 0.4
+    reflectionRadius = 0.3
+    reflectionCoefficent = 0.3
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 0.001
@@ -363,13 +363,24 @@ node
 {
 name = "gnome_tris_1"
 type = "vxGeometry"
-active = "false"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 1.1 -0.65 0.0 1]
+active = "true"
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 1.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 230 230 230
     shader = "shader_1"
 }
 
+
+node
+{
+name = "gnome_tris_2"
+type = "vxGeometry"
+active = "false"
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 -1.0 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    color = 230 230 230
+    shader = "shader_1"
+}
 node
 {
 name = "cruceta_tris"
@@ -674,8 +685,8 @@ node
 name = "sphere_light_1"
 type = "vxSphereLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 -0.1 1.0 1]
-    intensity = 1.2
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.1 0.0 1]
+    intensity = 2.1
     color = 255 234 220
     samples = 1
     castShadows = "true"
@@ -690,7 +701,7 @@ name = "sphere_light_2"
 type = "vxSphereLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.3 3.1 -4.0 1]
-    intensity = 1.2
+    intensity = 0.2
     color = 220 236 255
     samples = 1
     castShadows = "true"
@@ -799,8 +810,8 @@ node
 {
 name = "gnome_vx"
 type = "vxGridGeometry"
-active = "false"
-    transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 0.8 -0.65 0.0 1]
+active = "true"
+    transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 0.8 -0.65 1.0 1]
     filePath = "/home/john/Downloads/gnome_mid.ply"
 }
 

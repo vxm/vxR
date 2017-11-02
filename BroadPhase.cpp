@@ -342,14 +342,14 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	Collision temp = collide;
 
 	for (auto &visbl : m_visibles)
-	{
-		// if ray comes from an object which cannot see itself.
-		// aka convex.
-		if (visbl.get() == collide.m_geo &&
-		    collide.m_geo->type() == VisibleType::kOtherOpaque)
-		{
-			continue;
-		}
+	{ /*
+		 // if ray comes from an object which cannot see itself.
+		 // aka convex.
+		 if (visbl.get() == collide.m_geo &&
+		     collide.m_geo->type() == VisibleType::kOtherOpaque)
+		 {
+		   continue;
+		 }*/
 
 		/// if ray can only see opaque and this is a light we move on.
 		if (ray.m_vision == VisionType::kOpaque &&

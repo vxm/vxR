@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 304
-#define PIXEL_Y 189
+#define PIXEL_X 430
+#define PIXEL_Y 132
 #endif
 
 #ifdef _DEBUG

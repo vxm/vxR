@@ -130,7 +130,10 @@ void Scene::buildLights()
 		point->setIntensity(node->getFloat("intensity"));
 		point->setColor(Color::lookup256(node->getColor("color")));
 		point->setSamples(node->getInt("samples"));
-		point->setComputeShadows(node->getBool("castShadows"));
+
+		std::string &&cast = node->getString("castShadows"s);
+		point->setComputeShadows(cast == "true"s);
+
 		point->setRadius(node->getFloat("radius"));
 
 		const auto transform = node->getMatrix("transform");
@@ -144,7 +147,10 @@ void Scene::buildLights()
 		point->setIntensity(node->getFloat("intensity"));
 		point->setColor(Color::lookup256(node->getColor("color")));
 		point->setSamples(node->getInt("samples"));
-		point->setComputeShadows(node->getBool("castShadows"));
+
+		std::string &&cast = node->getString("castShadows"s);
+		point->setComputeShadows(cast == "true"s);
+
 		point->setRadius(node->getFloat("radius"));
 
 		const auto transform = node->getMatrix("transform");
@@ -158,7 +164,9 @@ void Scene::buildLights()
 		point->setIntensity(node->getFloat("intensity"));
 		point->setColor(Color::lookup256(node->getColor("color")));
 		point->setSamples(node->getInt("samples"));
-		point->setComputeShadows(node->getBool("castShadows"));
+
+		std::string &&cast = node->getString("castShadows"s);
+		point->setComputeShadows(cast == "true"s);
 
 		const auto transform = node->getMatrix("transform");
 		point->setTransform(transform);

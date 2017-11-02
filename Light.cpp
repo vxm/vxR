@@ -263,8 +263,8 @@ Color SphereLight::acummulationLight(const Ray &,
 	auto pointLightPosition =
 	    MU::getSolidSphereRand(m_radius) + (m_position + m_transform.origin());
 
-	const auto &&pp = collision.position();
-	const auto &&p = pointLightPosition - pp;
+	const auto &pp = collision.position();
+	const auto &p = pointLightPosition - pp;
 
 	Ray f(pp, collision.normal());
 	// compute all sort of shadows.
