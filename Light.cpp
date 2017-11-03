@@ -224,7 +224,7 @@ int SphereLight::throwRay(const Ray &ray, Collision &col) const
 	if (ray.direction().angle(v2) < atan(m_radius) / v2.length())
 	{
 		col.setPosition(p);
-		col.setColor(m_color * m_intensity * m_intensity);
+		col.setColor(m_color);
 	}
 	else
 	{
