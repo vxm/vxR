@@ -60,7 +60,7 @@ Color Node::getColor(const std::string attrName)
 	{
 		if (nodeAttr.first == attrName)
 		{
-			return Color(*nodeAttr.second.asVector3d());
+			return Color(nodeAttr.second.asVector3d());
 		}
 	}
 
@@ -77,7 +77,7 @@ v3s Node::getVector3d(const std::string attrName)
 	{
 		if (nodeAttr.first == attrName)
 		{
-			return *nodeAttr.second.asVector3d();
+			return nodeAttr.second.asVector3d();
 		}
 	}
 
@@ -94,7 +94,7 @@ v2s Node::getVector2d(const std::string attrName)
 	{
 		if (nodeAttr.first == attrName)
 		{
-			return *nodeAttr.second.asVector2d();
+			return nodeAttr.second.asVector2d();
 		}
 	}
 
@@ -182,7 +182,7 @@ Matrix44 Node::getMatrix(const std::string attrName)
 
 		if (nodeAttr.first == attrName)
 		{
-			return *nodeAttr.second.asMatrix44();
+			return nodeAttr.second.asMatrix44();
 		}
 	}
 
