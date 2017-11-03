@@ -228,7 +228,7 @@ public:
 	/// \param col
 	/// \return
 	///
-	Color computeReflection(const Ray &ray, Collision &col);
+	Color computeReflection(const Ray &ray, Collision &col, unsigned int deep);
 	///
 	/// \brief computeGI
 	/// \param iter
@@ -236,7 +236,7 @@ public:
 	/// \param col
 	/// \return
 	///
-	Color computeGI(Collision &col);
+	Color computeGI(Collision &col, unsigned int deep);
 	///
 	/// \brief getShader
 	/// \param col

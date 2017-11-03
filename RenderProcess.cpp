@@ -208,7 +208,8 @@ Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 	return retColor;
 }
 
-Color RenderProcess::computeReflection(const Ray &ray, Collision &col)
+Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
+                                       unsigned int deep = 0)
 {
 	Color reflection = Color::zero;
 
@@ -226,7 +227,16 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col)
 	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
 
 	Collision refxCollision;
-	reflection = computeLight(reflexRay, refxCollision);
+
+	if (deep == 0)
+	{
+		reflection = computeLight(reflexRay, refxCollision);
+	}
+	else
+	{
+		reflection = computeEnergyAndColor(reflexRay, refxCollision, 0, 0);
+	}
+
 	reflection *= sh->getReflectionCoefficent() - fabs(ratio);
 
 	reflection.applyCurve(1.2, 0.0);
@@ -234,7 +244,7 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col)
 	return reflection;
 }
 
-Color RenderProcess::computeGI(Collision &col)
+Color RenderProcess::computeGI(Collision &col, unsigned int deep = 0)
 {
 	const auto &&r = MU::getHollowHemisphereRand(1.0, col.normal());
 
@@ -245,7 +255,16 @@ Color RenderProcess::computeGI(Collision &col)
 
 	Collision nextRound;
 
-	Color hitColor = computeLight(giRay, nextRound);
+	Color hitColor;
+
+	if (deep == 0)
+	{
+		hitColor = computeLight(giRay, nextRound);
+	}
+	else
+	{
+		hitColor = computeEnergyAndColor(giRay, nextRound, 0, 0);
+	}
 
 	Color globalIlm = hitColor * (1.0 - fabs(ratio));
 
@@ -265,14 +284,14 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 		// Compute Global Illumination
 		if (sh->hasGI() && giBounces)
 		{
-			firstHitColor += computeGI(col);
+			firstHitColor += computeGI(col, giBounces);
 		}
 
 		// Compute reflection
 		if (sh->hasReflection() && rflBounces)
 		{
 			// firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
-			firstHitColor += computeReflection(ray, col);
+			firstHitColor += computeReflection(ray, col, rflBounces);
 		}
 	}
 	else

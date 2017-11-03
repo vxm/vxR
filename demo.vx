@@ -418,7 +418,7 @@ node
 {
 name = "napoleon_head_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [2.6 0 0 0 0 2.6 0 0 0 0 2.6 0 0.8 -0.7 -0.7 1]
     filePath = "/home/john/Downloads/napoleon_head.ply"
     color = 159 162 157
@@ -686,8 +686,8 @@ name = "sphere_light_1"
 type = "vxSphereLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.1 0.0 1]
-    intensity = 2.1
-    color = 255 234 220
+    intensity = 1.1
+    color = 255 254 220
     samples = 1
     castShadows = "true"
     position = 0 0 0
