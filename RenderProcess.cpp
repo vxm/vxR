@@ -221,7 +221,7 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
 	// Noise Sphere
 	auto sh = getShader(col);
 	auto invVRand = MU::getSolidSphereRand3(sh->getReflectionRadius());
-	auto ratio = invV.dot(invVRand);
+	// auto ratio = invV.dot(invVRand);
 	invV += invVRand;
 
 	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
