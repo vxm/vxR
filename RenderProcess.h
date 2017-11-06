@@ -210,7 +210,7 @@ public:
 	/// \return
 	///
 	Color computeEnergyAndColor(const Ray &ray, Collision &col,
-	                            unsigned int giBounces, unsigned int rflBounces);
+	                            unsigned int bounces);
 	///
 	/// \brief lightBounces
 	/// \return
@@ -228,7 +228,7 @@ public:
 	/// \param col
 	/// \return
 	///
-	Color computeReflection(const Ray &ray, Collision &col, unsigned int deep);
+	Color computeReflection(const Ray &ray, Collision &col, int deep);
 	///
 	/// \brief computeGI
 	/// \param iter
@@ -236,7 +236,7 @@ public:
 	/// \param col
 	/// \return
 	///
-	Color computeGI(Collision &col, unsigned int deep);
+	Color computeGI(Collision &col, int deep);
 	///
 	/// \brief getShader
 	/// \param col

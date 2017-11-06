@@ -209,7 +209,7 @@ Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 }
 
 Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
-                                       unsigned int deep = 0)
+                                       int deep = 0)
 {
 	Color reflection = Color::zero;
 
@@ -234,7 +234,9 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
 	}
 	else
 	{
-		reflection = computeEnergyAndColor(reflexRay, refxCollision, 0, 0);
+		--deep;
+		deep = std::max(0, deep - 1);
+		reflection = computeEnergyAndColor(reflexRay, refxCollision, deep);
 	}
 
 	reflection *= sh->getReflectionCoefficent() - fabs(ratio);
@@ -244,7 +246,7 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
 	return reflection;
 }
 
-Color RenderProcess::computeGI(Collision &col, unsigned int deep = 0)
+Color RenderProcess::computeGI(Collision &col, int deep = 0)
 {
 	const auto &&r = MU::getHollowHemisphereRand(1.0, col.normal());
 
@@ -263,7 +265,9 @@ Color RenderProcess::computeGI(Collision &col, unsigned int deep = 0)
 	}
 	else
 	{
-		hitColor = computeEnergyAndColor(giRay, nextRound, 0, 0);
+		--deep;
+		deep = std::max(0, deep - 1);
+		hitColor = computeEnergyAndColor(giRay, nextRound, deep);
 	}
 
 	Color globalIlm = hitColor * (1.0 - fabs(ratio));
@@ -272,8 +276,7 @@ Color RenderProcess::computeGI(Collision &col, unsigned int deep = 0)
 }
 
 Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
-                                           unsigned int giBounces,
-                                           unsigned int rflBounces)
+                                           unsigned int bounces)
 {
 	Color firstHitColor = computeLight(ray, col);
 
@@ -282,16 +285,16 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 		auto sh = getShader(col);
 
 		// Compute Global Illumination
-		if (sh->hasGI() && giBounces)
+		if (sh->hasGI() && bounces)
 		{
-			firstHitColor += computeGI(col, giBounces);
+			firstHitColor += computeGI(col, bounces);
 		}
 
 		// Compute reflection
-		if (sh->hasReflection() && rflBounces)
+		if (sh->hasReflection() && bounces)
 		{
 			// firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
-			firstHitColor += computeReflection(ray, col, rflBounces);
+			firstHitColor += computeReflection(ray, col, bounces);
 		}
 	}
 	else
@@ -326,7 +329,7 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
 
-	computeEnergyAndColor(ray, collision, 0, 0);
+	computeEnergyAndColor(ray, collision, 0);
 
 	const auto id = itH + (itV * m_properties->rx());
 
@@ -358,7 +361,7 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 			Collision col;
 			auto &&ray = rCamera->ray(hitCoordinates, sampler);
 
-			firstHitColor += computeEnergyAndColor(ray, col, 1, 1);
+			firstHitColor += computeEnergyAndColor(ray, col, 3);
 
 			sampler.next();
 		}
