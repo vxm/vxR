@@ -236,10 +236,10 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
 	{
 		--deep;
 		deep = std::max(0, deep - 1);
-		reflection = computeEnergyAndColor(reflexRay, refxCollision, deep);
+		reflection += computeEnergyAndColor(reflexRay, refxCollision, deep);
 	}
 
-	reflection *= sh->getReflectionCoefficent() - fabs(ratio);
+	reflection *= sh->getReflectionCoefficent(); // - fabs(ratio);
 
 	reflection.applyCurve(1.2, 0.0);
 
@@ -267,7 +267,7 @@ Color RenderProcess::computeGI(Collision &col, int deep = 0)
 	{
 		--deep;
 		deep = std::max(0, deep - 1);
-		hitColor = computeEnergyAndColor(giRay, nextRound, deep);
+		hitColor += computeEnergyAndColor(giRay, nextRound, deep);
 	}
 
 	Color globalIlm = hitColor * (1.0 - fabs(ratio));

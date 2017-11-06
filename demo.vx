@@ -92,7 +92,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 0.35 -3.8 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 0.55 -3.8 1]
     focusDistance = 2.7
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -105,7 +105,7 @@ node
 name = "image_1"
 type = "vxImage"
 active = "true"
-    imagePath = "/home/john/code/vxR/PaperMill_Ruins_E/PaperMill_E_8k.jpg"
+    imagePath = "/home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
     gain = 1.0
     gamma = 2.1
 }
@@ -116,7 +116,7 @@ node
 name = "image_2"
 type = "vxImage"
 active = "true"
-    imagePath = "/home/john/code/vxR/PaperMill_Ruins_E/PaperMill_E_8k.jpg"
+    imagePath = "/home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
     gain = 1.0
     gamma = 2.1
 }
@@ -132,8 +132,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     reflectionSamples = 1
-    reflectionRadius = 0.3
-    reflectionCoefficent = 0.3
+    reflectionRadius = 0.1
+    reflectionCoefficent = 0.24
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 0.001
@@ -156,8 +156,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     reflectionSamples = 0
-    reflectionRadius = 0.9
-    reflectionCoefficent = 0.0001
+    reflectionRadius = 2.7
+    reflectionCoefficent = 0.3
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 1.0
@@ -168,7 +168,6 @@ active = "true"
     sscCoefficent = 0.5
     sscColorMultiplier = 238 216 126
 }
-
 
 node
 {
@@ -418,10 +417,10 @@ node
 {
 name = "napoleon_head_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [2.6 0 0 0 0 2.6 0 0 0 0 2.6 0 0.8 -0.7 -0.7 1]
+active = "true"
+    transform = [2.6 0 0 0 0 2.6 0 0 0 0 2.6 0 0.8 -0.6 -0.7 1]
     filePath = "/home/john/Downloads/napoleon_head.ply"
-    color = 159 162 157
+    color = 255 255 255
     shader = "shader_1"
 }
 
@@ -444,7 +443,7 @@ active = "true"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.7 0.0 1]
     filePath = "/home/john/Downloads/broad_phase_model_4.ply"
     color = 161 162 152
-    shader = "shader_1"
+    shader = "shader_2"
 }
 
 ////////////////////////////////////////////////////////
@@ -625,7 +624,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     lightImageNode = "image_2"
@@ -684,7 +683,7 @@ node
 {
 name = "sphere_light_1"
 type = "vxSphereLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.1 0.0 1]
     intensity = 1.1
     color = 255 254 220
@@ -699,7 +698,7 @@ node
 {
 name = "sphere_light_2"
 type = "vxSphereLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.3 3.1 -4.0 1]
     intensity = 0.2
     color = 220 236 255
@@ -730,13 +729,13 @@ node
 {
 name = "sun"
 type = "vxSunLight"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 1.6
+    intensity = 1.2
     color = 255 254 252
-    orientation = 12.0 -10.0 17.0
+    orientation = -0.3 1.0 -0.10
     samples = 10
-    castShadows = "false"
+    castShadows = "true"
 }
 
 node
