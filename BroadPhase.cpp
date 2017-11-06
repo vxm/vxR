@@ -11,7 +11,13 @@ BroadPhase::BroadPhase() { m_bb = std::make_shared<BoundingBox>(); }
 void BroadPhase::addVisible(VisibleHandle vis)
 {
 	vis->updateBoundingBox();
-	m_visibles.emplace_back(vis);
+
+	// never add a visible twice
+	auto v = std::find(m_visibles.begin(), m_visibles.end(), vis);
+	if (v != m_visibles.end())
+	{
+		m_visibles.emplace_back(vis);
+	}
 }
 
 BoundingBoxHandle BroadPhase::closestBox(const v3s &p) const
