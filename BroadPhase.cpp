@@ -14,7 +14,7 @@ void BroadPhase::addVisible(VisibleHandle vis)
 
 	// never add a visible twice
 	auto v = std::find(m_visibles.begin(), m_visibles.end(), vis);
-	if (v != m_visibles.end())
+	if (v == m_visibles.end())
 	{
 		m_visibles.emplace_back(vis);
 	}
