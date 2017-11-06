@@ -1,22 +1,23 @@
 #ifndef _VXLIGHTSMC_
 #define _VXLIGHTSMC_
 
-#include <memory>
-#include "Vector.h"
 #include "Collision.h"
-#include "MathUtils.h"
 #include "Image.h"
+#include "MathUtils.h"
 #include "Matrix44.h"
 #include "Sampler.h"
+#include "Vector.h"
+#include <memory>
 #include <visible.h>
 
-namespace vxCore {
+namespace vxCore
+{
 
 class Scene;
 
 class Light : public Visible
 {
-	
+
 protected:
 	///
 	/// \brief m_intensity
@@ -26,9 +27,9 @@ protected:
 	/// \brief m_castShadows
 	///
 	bool m_castShadows = true;
-	
-	//not every light needs a position
-	v3s m_position = {0.0,0.0,0.0};
+
+	// not every light needs a position
+	v3s m_position = {0.0, 0.0, 0.0};
 	///
 	/// \brief m_radius
 	///
@@ -41,7 +42,7 @@ protected:
 	/// \brief m_scene
 	///
 	std::weak_ptr<Scene> m_scene;
-	
+
 public:
 	///
 	/// \brief Light
@@ -62,11 +63,11 @@ public:
 	/// \param y
 	/// \param z
 	///
-	Light(scalar x, scalar y, scalar z );
+	Light(scalar x, scalar y, scalar z);
 	///
 	/// \brief ~Light
 	///
-	virtual ~Light(){}
+	virtual ~Light() {}
 	///
 	/// \brief setScene
 	/// \param scene
@@ -97,37 +98,37 @@ public:
 	void setIntensity(scalar intensity);
 	///
 	/// \brief position
-	/// \return 
+	/// \return
 	///
 	v3s position() const;
 	///
 	/// \brief intensity
-	/// \return 
+	/// \return
 	///
-	scalar intensity() const {return m_intensity;}
+	scalar intensity() const { return m_intensity; }
 	///
 	/// \brief getLightRay
 	/// \param position
-	/// \return 
+	/// \return
 	///
 	virtual v3s getLightRay(const v3s &position) const;
 	///
 	/// \brief lightRatio
 	/// \param ray
 	/// \param lightDirection
-	/// \return 
+	/// \return
 	///
-	virtual scalar lightRatio(const Ray &ray,
-							  const v3s &lightDirection) const;
+	virtual scalar lightRatio(const Ray &ray, const v3s &lightDirection) const;
 	///
 	/// \brief acummulationLight
 	/// \param collision
-	/// \return 
+	/// \return
 	///
-	virtual Color acummulationLight(const Ray &, const Collision &collision) const = 0;
+	virtual Color acummulationLight(const Ray &,
+	                                const Collision &collision) const = 0;
 	///
 	/// \brief radius
-	/// \return 
+	/// \return
 	///
 	scalar radius() const;
 	///
@@ -137,7 +138,7 @@ public:
 	void setRadius(scalar radius);
 	///
 	/// \brief samples
-	/// \return 
+	/// \return
 	///
 	unsigned int samples() const;
 	///
@@ -147,7 +148,7 @@ public:
 	void setSamples(int samples);
 	///
 	/// \brief computeShadows
-	/// \return 
+	/// \return
 	///
 	bool computeShadows() const;
 	///
@@ -157,7 +158,7 @@ public:
 	void setComputeShadows(bool computeShadows);
 	///
 	/// \brief getTransform
-	/// \return 
+	/// \return
 	///
 	Matrix44 getTransform() const;
 	///
@@ -168,42 +169,29 @@ public:
 
 	///
 	/// \brief reachesLightSource
-	/// \return 
+	/// \return
 	///
 	bool reachesLightSource(const Ray &ray) const;
-	
-	//renderable interface
-	virtual bool throwRay(const Ray &) const override
-	{
-		return false;
-	}
-	
-	virtual int throwRay(const Ray &, Collision &) const  override
-	{
-		return 0;
-	}
-	
-	virtual bool hasCollision(const Ray &) const override
-	{
-		return false;
-	}
-	
-	// Visible interface
-	virtual void updateBoundingBox() override
-	{
-		return;
-	}
-};
 
+	// renderable interface
+	virtual bool throwRay(const Ray &) const override { return false; }
+
+	virtual int throwRay(const Ray &, Collision &) const override { return 0; }
+
+	virtual bool hasCollision(const Ray &) const override { return false; }
+
+	// Visible interface
+	virtual void updateBoundingBox() override { return; }
+};
 
 class SpotLight final : public Light
 {
 private:
 	v3s m_orientation;
-	
-	scalar m_maxAngle=1.3;
-	scalar m_minAngle=1;
-	
+
+	scalar m_maxAngle = 1.3;
+	scalar m_minAngle = 1;
+
 public:
 	///
 	/// \brief SpotLight
@@ -216,7 +204,8 @@ public:
 	/// \param maxAngle
 	/// \param minAngle
 	///
-	SpotLight(const v3s &position,const v3s &orientation,scalar maxAngle,scalar minAngle);
+	SpotLight(const v3s &position, const v3s &orientation, scalar maxAngle,
+	          scalar minAngle);
 	///
 	/// \brief set
 	/// \param position
@@ -224,7 +213,8 @@ public:
 	/// \param maxAngle
 	/// \param minAngle
 	///
-	void set(const v3s &position,const v3s &orientation,scalar maxAngle,scalar minAngle);
+	void set(const v3s &position, const v3s &orientation, scalar maxAngle,
+	         scalar minAngle);
 	///
 	/// \brief setOrientation
 	/// \param orientation
@@ -234,37 +224,23 @@ public:
 	/// \brief setMin
 	/// \param maxAngle
 	///
-	void setMin(scalar maxAngle) {m_maxAngle=maxAngle;}
+	void setMin(scalar maxAngle) { m_maxAngle = maxAngle; }
 	///
 	/// \brief setMax
 	/// \param minAngle
 	///
-	void setMax(scalar minAngle) {m_minAngle=minAngle;}
+	void setMax(scalar minAngle) { m_minAngle = minAngle; }
 
-	
-	//renderable interface
-	virtual bool throwRay(const Ray &) const override
-	{
-		return false;
-	}
-	
-	virtual int throwRay(const Ray &, Collision &) const override
-	{
-		return 0;
-	}
-	
-	virtual bool hasCollision(const Ray &) const override
-	{
-		return false;
-	}
-	
+	// renderable interface
+	virtual bool throwRay(const Ray &) const override { return false; }
+
+	virtual int throwRay(const Ray &, Collision &) const override { return 0; }
+
+	virtual bool hasCollision(const Ray &) const override { return false; }
+
 	// Visible interface
-	virtual void updateBoundingBox() override
-	{
-		return;
-	}
+	virtual void updateBoundingBox() override { return; }
 };
-
 
 class PointLight final : public Light
 {
@@ -272,12 +248,12 @@ protected:
 	///
 	/// \brief m_orientation
 	///
-	v3s m_orientation = {0.0,0.0,0.0};
+	v3s m_orientation = {0.0, 0.0, 0.0};
 	///
 	/// \brief m_biDirectional
-	/// 
+	///
 	bool m_biDirectional;
-	
+
 public:
 	///
 	/// \brief PointLight
@@ -288,44 +264,44 @@ public:
 	/// \param orientation
 	/// \param bidirectional
 	///
-	PointLight(const v3s &orientation,
-				 bool bidirectional);
+	PointLight(const v3s &orientation, bool bidirectional);
 	///
 	/// \brief acummulationLight
 	/// \param collision
-	/// \return 
+	/// \return
 	///
-	Color acummulationLight(const Ray &, const Collision &collision) const override;
+	Color acummulationLight(const Ray &,
+	                        const Collision &collision) const override;
 	///
 	/// \brief set
 	/// \param orientation
 	/// \param bidirectional
 	///
-	void set(const v3s &orientation,bool bidirectional);
+	void set(const v3s &orientation, bool bidirectional);
 	///
 	/// \brief setOrientation
 	/// \param orientation
 	///
-	void setOrientation (const v3s &orientation) {m_orientation.set(orientation);}
+	void setOrientation(const v3s &orientation)
+	{
+		m_orientation.set(orientation);
+	}
 	///
 	/// \brief setBidirectional
 	/// \param bidirectional
 	///
-	void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
-	
-	
-	//renderable interface
+	void setBidirectional(bool bidirectional) { m_biDirectional = bidirectional; }
+
+	// renderable interface
 	virtual bool throwRay(const Ray &ray) const override;
-	
+
 	virtual int throwRay(const Ray &ray, Collision &col) const override;
-	
+
 	virtual bool hasCollision(const Ray &ray) const override;
-	
+
 	// Visible interface
 	virtual void updateBoundingBox() override;
 };
-
-
 
 class SphereLight final : public Light
 {
@@ -333,12 +309,12 @@ protected:
 	///
 	/// \brief m_orientation
 	///
-	v3s m_orientation = {0.0,0.0,0.0};
+	v3s m_orientation = {0.0, 0.0, 0.0};
 	///
 	/// \brief m_biDirectional
-	/// 
+	///
 	bool m_biDirectional;
-	
+
 public:
 	///
 	/// \brief SphereLight
@@ -349,43 +325,44 @@ public:
 	/// \param orientation
 	/// \param bidirectional
 	///
-	SphereLight(const v3s &orientation,
-				 bool bidirectional);
+	SphereLight(const v3s &orientation, bool bidirectional);
 	///
 	/// \brief acummulationLight
 	/// \param collision
-	/// \return 
+	/// \return
 	///
-	Color acummulationLight(const Ray &, const Collision &collision) const override;
+	Color acummulationLight(const Ray &,
+	                        const Collision &collision) const override;
 	///
 	/// \brief set
 	/// \param orientation
 	/// \param bidirectional
 	///
-	void set(const v3s &orientation,bool bidirectional);
+	void set(const v3s &orientation, bool bidirectional);
 	///
 	/// \brief setOrientation
 	/// \param orientation
 	///
-	void setOrientation (const v3s &orientation) {m_orientation.set(orientation);}
+	void setOrientation(const v3s &orientation)
+	{
+		m_orientation.set(orientation);
+	}
 	///
 	/// \brief setBidirectional
 	/// \param bidirectional
 	///
-	void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
-	
-	
-	//renderable interface
+	void setBidirectional(bool bidirectional) { m_biDirectional = bidirectional; }
+
+	// renderable interface
 	virtual bool throwRay(const Ray &ray) const override;
-	
+
 	virtual int throwRay(const Ray &ray, Collision &col) const override;
-	
+
 	virtual bool hasCollision(const Ray &ray) const override;
-	
+
 	// Visible interface
 	virtual void updateBoundingBox() override;
 };
-
 
 ///
 /// \brief The SunLight class
@@ -396,14 +373,14 @@ protected:
 	///
 	/// \brief m_orientation
 	///
-	v3s m_orientation = {0.0,0.0,0.0};
+	v3s m_orientation = {-0.1, 1.0, -0.2};
 	///
 	/// \brief m_radius
 	///
 	scalar m_radius = 695'700'000;
 	///
 	scalar m_distance = 149'600'000'000;
-	///temperature = 5.777K
+	/// temperature = 5.777K
 
 public:
 	///
@@ -413,9 +390,10 @@ public:
 	///
 	/// \brief acummulationLight
 	/// \param collision
-	/// \return 
+	/// \return
 	///
-	Color acummulationLight(const Ray &, const Collision &collision) const override;
+	Color acummulationLight(const Ray &,
+	                        const Collision &collision) const override;
 	///
 	/// \brief set
 	/// \param orientation
@@ -426,39 +404,33 @@ public:
 	/// \brief setOrientation
 	/// \param orientation
 	///
-	void setOrientation (const v3s &orientation) {m_orientation.set(orientation);}
-	
-	// Visible interface
-	
-	//renderable interface
-	virtual bool throwRay(const Ray &) const override
+	void setOrientation(const v3s &orientation)
 	{
-		return false;
+		m_orientation.set(orientation);
 	}
-	
+
+	// Visible interface
+
+	// renderable interface
+	virtual bool throwRay(const Ray &) const override { return false; }
+
 	virtual int throwRay(const Ray &, Collision &collide) const override
 	{
 		return 0;
 	}
-	
-	virtual bool hasCollision(const Ray &) const override
-	{
-		return false;
-	}
-	
+
+	virtual bool hasCollision(const Ray &) const override { return false; }
+
 	// Visible interface
-	virtual void updateBoundingBox() override 
-	{
-		return;
-	}
+	virtual void updateBoundingBox() override { return; }
 };
 
-class DirectLight final: public Light
+class DirectLight final : public Light
 {
 protected:
 	v3s m_orientation;
 	bool m_biDirectional;
-	
+
 public:
 	///
 	/// \brief DirectLight
@@ -469,54 +441,45 @@ public:
 	/// \param orientation
 	/// \param bidirectional
 	///
-	DirectLight(const v3s &orientation,
-				  bool bidirectional);
+	DirectLight(const v3s &orientation, bool bidirectional);
 	///
 	/// \brief acummulationLight
 	/// \param collision
-	/// \return 
+	/// \return
 	///
-	Color acummulationLight(const Ray &, const Collision &collision) const override;
+	Color acummulationLight(const Ray &,
+	                        const Collision &collision) const override;
 	///
 	/// \brief set
 	/// \param orientation
 	/// \param bidirectional
 	///
-	void set(const v3s &orientation,bool bidirectional);
+	void set(const v3s &orientation, bool bidirectional);
 	///
 	/// \brief setOrientation
 	/// \param orientation
 	///
-	void setOrientation (const v3s &orientation) {m_orientation.set(orientation);}
+	void setOrientation(const v3s &orientation)
+	{
+		m_orientation.set(orientation);
+	}
 	///
 	/// \brief setBidirectional
 	/// \param bidirectional
 	///
-	void setBidirectional (bool bidirectional) {m_biDirectional=bidirectional;}
-	
+	void setBidirectional(bool bidirectional) { m_biDirectional = bidirectional; }
+
 	// Visible interface
-	
-	//renderable interface
-	virtual bool throwRay(const Ray &) const override
-	{
-		return false;
-	}
-	
-	virtual int throwRay(const Ray &, Collision &) const override
-	{
-		return 0;
-	}
-	
-	virtual bool hasCollision(const Ray &) const override
-	{
-		return false;
-	}
-	
+
+	// renderable interface
+	virtual bool throwRay(const Ray &) const override { return false; }
+
+	virtual int throwRay(const Ray &, Collision &) const override { return 0; }
+
+	virtual bool hasCollision(const Ray &) const override { return false; }
+
 	// Visible interface
-	virtual void updateBoundingBox() override
-	{
-		return;
-	}
+	virtual void updateBoundingBox() override { return; }
 };
 
 class IBLight final : public Light
@@ -537,7 +500,7 @@ class IBLight final : public Light
 	/// \brief m_lowThreshold
 	///
 	scalar m_lowThreshold = 0.1;
-	
+
 public:
 	///
 	/// \brief IBLight
@@ -549,19 +512,19 @@ public:
 	/// \param path
 	///
 	IBLight(scalar instensity, const std::string path);
-	
+
 	// vxLight interface
 	v3s getLightRay(const v3s &position) const override;
 	///
 	/// \brief acummulationLight
 	/// \param collision
-	/// \return 
+	/// \return
 	///
-	Color acummulationLight(const Ray &, 
-							  const Collision &collision) const override;
+	Color acummulationLight(const Ray &,
+	                        const Collision &collision) const override;
 	///
 	/// \brief gain
-	/// \return 
+	/// \return
 	///
 	scalar gain() const;
 	///
@@ -571,7 +534,7 @@ public:
 	void setGain(scalar gain);
 	///
 	/// \brief gamma
-	/// \return 
+	/// \return
 	///
 	scalar gamma() const;
 	///
@@ -581,7 +544,7 @@ public:
 	void setGamma(scalar gamma);
 	///
 	/// \brief lowThreshold
-	/// \return 
+	/// \return
 	///
 	scalar lowThreshold() const;
 	///
@@ -589,30 +552,18 @@ public:
 	/// \param lowThreshold
 	///
 	void setLowThreshold(scalar lowThreshold);
-	
+
 	// Visible interface
-	
-	//renderable interface
-	virtual bool throwRay(const Ray &) const override
-	{
-		return false;
-	}
-	
-	virtual int throwRay(const Ray &, Collision &) const override
-	{
-		return 0;
-	}
-	
-	virtual bool hasCollision(const Ray &) const override
-	{
-		return false;
-	}
-	
+
+	// renderable interface
+	virtual bool throwRay(const Ray &) const override { return false; }
+
+	virtual int throwRay(const Ray &, Collision &) const override { return 0; }
+
+	virtual bool hasCollision(const Ray &) const override { return false; }
+
 	// Visible interface
-	virtual void updateBoundingBox() override
-	{
-		return;
-	}
+	virtual void updateBoundingBox() override { return; }
 };
 
 class AmbientLight final : public Light
@@ -625,52 +576,38 @@ public:
 	///
 	/// \brief getLightRay
 	/// \param position
-	/// \return 
+	/// \return
 	///
 	v3s getLightRay(const v3s &position) const override;
 	///
 	/// \brief acummulationLight
-	/// \return 
+	/// \return
 	///
 	Color acummulationLight(const Ray &, const Collision &) const override;
-	
-	
-	//renderable interface
-	virtual bool throwRay(const Ray &) const override
-	{
-		return false;
-	}
-	
-	virtual int throwRay(const Ray &, Collision &) const override
-	{
-		return 0;
-	}
-	
-	virtual bool hasCollision(const Ray &) const override
-	{
-		return false;
-	}
-	
+
+	// renderable interface
+	virtual bool throwRay(const Ray &) const override { return false; }
+
+	virtual int throwRay(const Ray &, Collision &) const override { return 0; }
+
+	virtual bool hasCollision(const Ray &) const override { return false; }
+
 	// Visible interface
-	virtual void updateBoundingBox() override
-	{
-		return;
-	}};
+	virtual void updateBoundingBox() override { return; }
+};
 
-
-class AreaLight final: public Light
+class AreaLight final : public Light
 {
 protected:
-
 	scalar m_minX = -1.25;
 	scalar m_minY = -1.25;
-	scalar m_maxX =  1.25;
-	scalar m_maxY =  1.25;
-	
+	scalar m_maxX = 1.25;
+	scalar m_maxY = 1.25;
+
 	v3s m_normal = {0.0, -1.0, 0.0};
-	
+
 	Sampler m_sampler;
-	
+
 public:
 	///
 	/// \brief AreaLight
@@ -679,12 +616,13 @@ public:
 	///
 	/// \brief acummulationLight
 	/// \param collision
-	/// \return 
+	/// \return
 	///
-	Color acummulationLight(const Ray &, const Collision &collision) const override;
+	Color acummulationLight(const Ray &,
+	                        const Collision &collision) const override;
 	///
 	/// \brief minX
-	/// \return 
+	/// \return
 	///
 	scalar minX() const;
 	///
@@ -694,7 +632,7 @@ public:
 	void setMinX(const scalar &minX);
 	///
 	/// \brief minY
-	/// \return 
+	/// \return
 	///
 	scalar minY() const;
 	///
@@ -704,7 +642,7 @@ public:
 	void setMinY(const scalar &minY);
 	///
 	/// \brief maxX
-	/// \return 
+	/// \return
 	///
 	scalar maxX() const;
 	///
@@ -714,7 +652,7 @@ public:
 	void setMaxX(const scalar &maxX);
 	///
 	/// \brief maxY
-	/// \return 
+	/// \return
 	///
 	scalar maxY() const;
 	///
@@ -724,7 +662,7 @@ public:
 	void setMaxY(const scalar &maxY);
 	///
 	/// \brief normal
-	/// \return 
+	/// \return
 	///
 	v3s normal() const;
 	///
@@ -744,4 +682,4 @@ using AmbientLightHandle = std::shared_ptr<AmbientLight>;
 
 using LightHandle = std::shared_ptr<Light>;
 }
-#endif 
+#endif

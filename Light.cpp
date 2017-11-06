@@ -299,21 +299,22 @@ void SunLight::set(const v3s &orientation)
 
 Color SunLight::acummulationLight(const Ray &, const Collision &collision) const
 {
-	const auto &&pp = collision.position();
-	auto position = v3s(0, 0, 1).rotate({1.0, 0.0, 0.0}, 4.0) * m_distance;
-	position += MU::getSolidSphereRand(m_radius);
-	const auto &&p = pp - position;
+	auto pointLightPosition =
+	    MU::getSolidSphereRand(m_radius) + (m_orientation.unit() * m_distance);
 
-	Ray f(p, collision.normal());
+	const auto &pp = collision.position();
+	const auto &p = pointLightPosition - pp;
+
+	Ray f(pp, collision.normal());
 	// compute all sort of shadows.
 	Color ret{Color::zero};
 
-	if (collision.normal().follows(p))
+	if (collision.normal().follows(p.inverted())) // m_castShadows here?
 	{
-		auto ratio = lightRatio(f, p.inverted());
+		auto ratio = lightRatio(f, p);
 		auto lumm = m_intensity * ratio;
 
-		const Ray ff(pp + collision.normal().small(), p.inverted());
+		const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
 
 		if (m_castShadows && reachesLightSource(ff))
 		{
