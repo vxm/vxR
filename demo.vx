@@ -9,7 +9,7 @@ name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "true"
     resolution = 607 341
-    pixelSamples = 10
+    pixelSamples = 12
     reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.0
@@ -21,9 +21,9 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
-    pixelSamples = 14
+    pixelSamples = 24
     reflectionSamples = 1
     giSamples = 1
     giMultiplier = 1.0
@@ -35,7 +35,7 @@ node
 {
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
     pixelSamples = 145
     reflectionSamples = 1
@@ -63,7 +63,7 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 2720 1536
     pixelSamples = 200
     reflectionSamples = 2
@@ -77,7 +77,7 @@ node
 {
 name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 5464 3072
     pixelSamples = 800
     reflectionSamples = 4
@@ -92,7 +92,7 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 0.55 -3.8 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.0 1.2 -4.6 1]
     focusDistance = 2.7
     horizontalAperture = 1.27
     verticalAperture = 1.7786
@@ -105,7 +105,7 @@ node
 name = "image_1"
 type = "vxImage"
 active = "true"
-    imagePath = "/home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
+    imagePath = "/home/mario/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
     gain = 1.0
     gamma = 2.1
 }
@@ -116,7 +116,7 @@ node
 name = "image_2"
 type = "vxImage"
 active = "true"
-    imagePath = "/home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
+    imagePath = "/home/mario/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
     gain = 1.0
     gamma = 2.1
 }
@@ -132,8 +132,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     reflectionSamples = 1
-    reflectionRadius = 0.1
-    reflectionCoefficent = 0.24
+    reflectionRadius = 0.8
+    reflectionCoefficent = 0.14
     reflectionColorMultiplier = 238 216 126
     refractionSamples = 0
     refractionRadius = 0.001
@@ -221,7 +221,7 @@ name = "temple_1"
 type = "vxGeometry"
 active = "false"
     transform = [5 0 0 0 0 5 0 0 0 0 5 0 0.0 -0.7 0.0 1]
-    filePath = "/home/john/Downloads/temple_1.ply"
+    filePath = "/home/mario/Downloads/temple_1.ply"
     color = 138 158 144
     shader = "shader_1"
 }
@@ -233,7 +233,7 @@ name = "temple_2"
 type = "vxGeometry"
 active = "false"
     transform = [5 0 0 0 0 5 0 0 0 0 5 0 0.0 -0.7 0.0 1]
-    filePath = "/home/john/Downloads/temple_2.ply"
+    filePath = "/home/mario/Downloads/temple_2.ply"
     color = 138 158 144
     color = 138 158 144
     shader = "shader_1"
@@ -245,7 +245,7 @@ name = "temple_3"
 type = "vxGeometry"
 active = "false"
     transform = [5 0 0 0 0 5 0 0 0 0 5 0 0.0 -0.7 0.0 1]
-    filePath = "/home/john/Downloads/temple_3.ply"
+    filePath = "/home/mario/Downloads/temple_3.ply"
     color = 138 158 144
     shader = "shader_1"
 }
@@ -257,20 +257,32 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.64 0.0 1]
-    filePath = "/home/john/Downloads/triceratops_1.ply"
-    color = 138 158 144
+active = "true"
+    transform = [2.2 0 0 0 0 2.2 0 0 0 0 2.2 0 4.0 -0.64 4.1 1]
+    filePath = "/home/mario/Downloads/triceratops_1.ply"
+    color = 158 159 154
     shader = "shader_1"
 }
+
+node
+{
+name = "panther_tris"
+type = "vxGeometry"
+active = "true"
+    transform = [1.3 0 0 0 0 1.3 0 0 0 0 1.3 0 0.2 -0.65 -0.3 1]
+    filePath = "/home/mario/Downloads/panther.ply"
+    color = 171 171 174
+    shader = "shader_1"
+}
+
 
 node
 {
 name = "tennyson_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.5 0.04 -2.5 1]
-    filePath = "/home/john/Downloads/tennyson.ply"
+    transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 1.5 -0.69 -2.0 1]
+    filePath = "/home/mario/Downloads/tennyson.ply"
     color = 138 158 144
     shader = "shader_1"
 }
@@ -282,7 +294,7 @@ name = "tennyson_tris_1"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.5 0.04 -2.5 1]
-    filePath = "/home/john/Downloads/tennyson.ply"
+    filePath = "/home/mario/Downloads/tennyson.ply"
     color = 138 158 144
     shader = "shader_1"
 }
@@ -293,7 +305,7 @@ name = "malote_tris"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.5 -0.7 -1.4 1]
-    filePath = "/home/john/Downloads/malote_1.ply"
+    filePath = "/home/mario/Downloads/malote_1.ply"
     color = 138 158 144
     shader = "shader_1"
 }
@@ -305,7 +317,7 @@ name = "juan"
 type = "vxGeometry"
 active = "false"
     transform = [4 0 0 0 0 4 0 0 0 0 4 0 0.0 0.20 0.0 1]
-    filePath = "/home/john/code/vxR/juan_0.ply"
+    filePath = "/home/mario/code/vxR/juan_0.ply"
     color = 249 249 249
     shader = "shader_1"
 }
@@ -317,7 +329,7 @@ name = "faun_tris"
 type = "vxGeometry"
 active = "false"
     transform = [2.9 0 0 0 0 2.9 0 0 0 0 2.9 0 0.0 0.501 0.0 1]
-    filePath = "/home/john/Downloads/dancing_faun_low.ply"
+    filePath = "/home/mario/Downloads/dancing_faun_low.ply"
     color = 249 249 249
     shader = "shader_1"
 }
@@ -329,7 +341,7 @@ name = "womans_head_1"
 type = "vxGeometry"
 active = "false"
     transform = [1.5 0 0 0 0 1.5 0 0 0 0 1.5 0 0.8 -0.65 -0.4 1]
-    filePath = "/home/john/Downloads/womans_head.ply"
+    filePath = "/home/mario/Downloads/womans_head.ply"
     color = 210 210 215
     shader = "shader_1"
 }
@@ -341,7 +353,7 @@ name = "pieta_1"
 type = "vxGeometry"
 active = "false"
     transform = [1.5 0 0 0 0 1.5 0 0 0 0 1.5 0 -1. -0.65 0.2 1]
-    filePath = "/home/john/Downloads/pieta.ply"
+    filePath = "/home/mario/Downloads/pieta.ply"
     color = 210 210 215
     shader = "shader_1"
 }
@@ -353,18 +365,31 @@ name = "republique_1"
 type = "vxGeometry"
 active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.7 0.0 1]
-    filePath = "/home/john/Downloads/republique.ply"
+    filePath = "/home/mario/Downloads/republique.ply"
     color = 210 210 213
     shader = "shader_1"
 }
+
+
+node
+{
+name = "tree"
+type = "vxGeometry"
+active = "false"
+    transform = [2.1 0 0 0 0 2.1 0 0 0 0 2.1 0 0.95 -0.65 -2.0 1]
+    filePath = "/home/mario/Downloads/tree.ply"
+    color = 230 230 230
+    shader = "shader_1"
+}
+
 
 node
 {
 name = "gnome_tris_1"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 1.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    filePath = "/home/mario/Downloads/gnome_low.ply"
     color = 230 230 230
     shader = "shader_1"
 }
@@ -376,7 +401,7 @@ name = "gnome_tris_2"
 type = "vxGeometry"
 active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 -1.0 1]
-    filePath = "/home/john/Downloads/gnome_low.ply"
+    filePath = "/home/mario/Downloads/gnome_low.ply"
     color = 230 230 230
     shader = "shader_1"
 }
@@ -386,7 +411,7 @@ name = "cruceta_tris"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
-    filePath = "/home/john/Downloads/cruceta.ply"
+    filePath = "/home/mario/Downloads/cruceta.ply"
     color = 249 150 249
     shader = "shader_1"
 }
@@ -396,10 +421,10 @@ node
 name = "milo_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1.4 0 0 0 0 1.4 0 0 0 0 1.4 0 0.8 -0.65 -0.4 1]
-    filePath = "/home/john/Downloads/vmilo_0.ply"
-    color = 199 198 134
-    shader = "shader_1"
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 1.1 -0.65 -0.4 1]
+    filePath = "/home/mario/Downloads/vmilo_0.ply"
+    color = 212 210 198
+    shader = "shader_2"
 }
 
 node
@@ -407,9 +432,55 @@ node
 name = "mercury_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [2.3 0 0 0 0 2.3 0 0 0 0 2.3 0 0.2 -0.7 3.1 1]
-    filePath = "/home/john/Downloads/mercury.ply"
+    transform = [2.0 0 0 0 0 2.0 0 0 0 0 2.0 0 0.0 -0.7 -0.2 1]
+    filePath = "/home/mario/Downloads/mercury.ply"
     color = 199 198 194
+    shader = "shader_1"
+}
+
+node
+{
+name = "dogs_tris"
+type = "vxGeometry"
+active = "true"
+    transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 -0.7 -0.65 1.4 1]
+    filePath = "/home/mario/Downloads/dogs.ply"
+    color = 159 178 164
+    shader = "shader_1"
+}
+
+
+node
+{
+name = "tiger_snake_tris"
+type = "vxGeometry"
+active = "true"
+    transform = [0.9 0 0 0 0 0.9 0 0 0 0 0.9 0 1.2 -0.65 -1.5 1]
+    filePath = "/home/mario/Downloads/tiger_snake.ply"
+    color = 163 168 164
+    shader = "shader_1"
+}
+
+
+node
+{
+name = "bear_tris"
+type = "vxGeometry"
+active = "true"
+    transform = [2.2 0 0 0 0 2.2 0 0 0 0 2.2 0 2.9 -0.68 -0.5 1]
+    filePath = "/home/mario/Downloads/bear.ply"
+    color = 189 183 185
+    shader = "shader_1"
+}
+
+node
+{
+name = "rino_tris"
+type = "vxGeometry"
+active = "true"
+    transform = [2.9 0 0 0 0 2.9 0 0 0 0 2.9 0 2.9 -0.68 1.8 1]
+    filePath = "/home/mario/Downloads/rino.ply"
+    color = 189 175 173
     shader = "shader_1"
 }
 
@@ -417,9 +488,9 @@ node
 {
 name = "napoleon_head_tris"
 type = "vxGeometry"
-active = "true"
-    transform = [2.6 0 0 0 0 2.6 0 0 0 0 2.6 0 0.8 -0.6 -0.7 1]
-    filePath = "/home/john/Downloads/napoleon_head.ply"
+active = "false"
+    transform = [2.6 0 0 0 0 2.6 0 0 0 0 2.6 0 0.8 -0.6 -1.2 1]
+    filePath = "/home/mario/Downloads/napoleon_head.ply"
     color = 255 255 255
     shader = "shader_1"
 }
@@ -430,7 +501,7 @@ name = "male_tris"
 type = "vxGeometry"
 active = "false"
     transform = [1.2 0 0 0 0 1.2 0 0 0 0 1.2 0 1.0 -0.7 0.0 1]
-    filePath = "/home/john/Downloads/male.ply"
+    filePath = "/home/mario/Downloads/male.ply"
     color = 199 198 195
     shader = "shader_1"
 }
@@ -440,9 +511,9 @@ node
 name = "model_4"
 type = "vxGeometry"
 active = "true"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.7 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_4.ply"
-    color = 161 162 152
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.4 -0.7 0.0 1]
+    filePath = "/home/mario/Downloads/broad_phase_model_4.ply"
+    color = 174 174 174
     shader = "shader_2"
 }
 
@@ -457,7 +528,7 @@ name = "cube_0"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 1.0 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_0.ply"
     color = 1 1 125
     shader = "shader_1"
 }
@@ -468,7 +539,7 @@ name = "cube_1"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 3.0 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_0.ply"
     color = 125 125 1
     shader = "shader_1"
 }
@@ -479,7 +550,7 @@ name = "cube_2"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 5.0 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_0.ply"
     color = 125 1 125
     shader = "shader_1"
 }
@@ -490,7 +561,7 @@ name = "cube_3"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 5.0 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_0.ply"
     color = 1 125 125
     shader = "shader_1"
 }
@@ -502,7 +573,7 @@ name = "cube_4"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_0.ply"
     color = 125 1 1
     shader = "shader_1"
 }
@@ -514,7 +585,7 @@ name = "cube_5"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 0.0 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_0.ply"
     color = 1 125 1
     shader = "shader_1"
 }
@@ -526,7 +597,7 @@ name = "cube_6"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 2.5 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_0.ply"
     color = 1 255 125
     shader = "shader_1"
 }
@@ -537,7 +608,7 @@ name = "cube_7"
 type = "vxGeometry"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 2.5 6.0 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_0.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_0.ply"
     color = 255 1 125
     shader = "shader_1"
 }
@@ -548,76 +619,76 @@ active = "false"
 ////////////////////////////////////////////////////////
 
 //plyReader->processPLYFile("../vxR/juan_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/statue_and_dog_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/dragon_1.ply");
-//plyReader->processPLYFile("/home/john/Downloads/vmilo_0.ply");
-//plyReader->processPLYFile("/home/john/Downloads/lucyTop_1.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/statue_and_dog_1.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/dragon_1.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/vmilo_0.ply");
+//plyReader->processPLYFile("/home/mario/Downloads/lucyTop_1.ply");
 
-///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
-///home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg
-///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
-///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
-///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
-///home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
-///home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg
-///home/john/code/vxR/MonValley_Lookout/MonValley_A_LookoutPoint_8k.jpg
-///home/john/code/vxR/Mono_Lake_C/Mono_Lake_C_HiRes.jpg
-///home/john/code/vxR/Alexs_Apartment/Alexs_Apt_8k.jpg
-///home/john/code/vxR/Ueno-Shrine/03-Ueno-Shrine_8k.jpg
-///home/john/code/vxR/Frozen_Waterfall/Frozen_Waterfall_HiRes_TMap.jpg
-///home/john/code/vxR/Hamarikyu_Bridge_B/14-Hamarikyu_Bridge_B_8k.jpg
-///home/john/code/vxR/Serpentine_Valley/Serpentine_Valley_8k.jpg
-///home/john/code/vxR/Chelsea_Stairs/Chelsea_Stairs_8k.jpg
-///home/john/code/vxR/Summi_Pool/Summi_Pool_8k.jpg
-///home/john/code/vxR/Old_Industrial_Hall/fin4_Bg.jpg
-///home/john/code/vxR/Milkyway/Milkyway_BG.jpg
-///home/john/code/vxR/Ditch_River/DSC_9738.jpg
-///home/john/code/vxR/Ditch_River/DSC_0326.jpg
-///home/john/code/vxR/Bryant_Park/Bryant_Park_8k.jpg
-///home/john/code/vxR/Walk_Of_Fame/Mans_Outside_8k_TMap.jpg
-///home/john/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
-///home/john/code/vxR/Shiodome_Stairs/10-Shiodome_Stairs_8k.jpg
-///home/john/code/vxR/Playa_Sunrise/Playa_Sunrise_8k.jpg
-///home/john/code/vxR/MonValley_DirtRoad/MonValley_G_DirtRoad_8k.jpg
-///home/john/code/vxR/Chiricahua_NarrowPath/NarrowPath_8k.jpg
-///home/john/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
-///home/john/code/vxR/Ice_Lake/Ice_Lake_HiRes_TMap.jpg
-///home/john/code/vxR/Stadium_Center/Stadium_Center_8k.jpg
-///home/john/code/vxR/Mono_Lake_B/Mono_Lake_B_HiRes_TMap.jpg
-///home/john/code/vxR/Factory_Catwalk/Factory_Catwalk_Bg.jpg
-///home/john/code/vxR/Theatre_Seating/Theatre-Side_8k_TMap.jpg
-///home/john/code/vxR/Winter_Forest/WinterForest_8k.jpg
-///home/john/code/vxR/Power_Plant/rad06_Bg.jpg
-///home/john/code/vxR/Chiricahua_Plaza/GravelPlaza_8k.jpg
-///home/john/code/vxR/Circus_Backstage/Circus_Backstage_8k.jpg
-///home/john/code/vxR/PaperMill_Ruins_E/PaperMill_E_8k.jpg
-///home/john/code/vxR/Tokyo_BigSight/Tokyo_BigSight_8k.jpg
-///home/john/code/vxR/Malibu_Overlook/Malibu_Overlook_8k.jpg
-///home/john/code/vxR/Sierra_Madre_B/Sierra_Madre_B_HiRes_TMap.jpg
-///home/john/code/vxR/UV-Testgrid/testgrid.jpg
-///home/john/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg
-///home/john/code/vxR/Zion_Sunsetpeek/Zion_7_Sunsetpeek_8k_Bg.jpg
-///home/john/code/vxR/Helipad_Afternoon/LA_Downtown_Afternoon_Fishing_B_8k.jpg
-///home/john/code/vxR/Popcorn_Lobby/Lobby-Center_8k_TMap.jpg
-///home/john/code/vxR/waterfall/waterfall_Bg.jpg
-///home/john/code/vxR/Newport_Loft/Newport_Loft_8k.jpg
-///home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg
-///home/john/code/vxR/Arches_E_PineTree/Arches_E_PineTree_8k.jpg
-///home/john/code/vxR/Hollywood_Sign/HWSign3-Fence_TMap.jpg
-///home/john/code/vxR/Desert_Highway/Road_to_MonumentValley_8k.jpg
-///home/john/code/vxR/Theatre_Center/Theatre-Center_8k_TMap.jpg
-///home/john/code/vxR/snow_machine/test8_Bg.jpg
-///home/john/code/vxR/PaperMill_Ruins_A/PaperMill_A_8k.jpg
-///home/john/code/vxR/Tropical_Beach/Tropical_Beach_8k.jpg
-///home/john/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg
-///home/john/code/vxR/Barcelona_Rooftops/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg
-///home/john/code/vxR/Basketball_Court/BasketballCourt_8k.jpg
-///home/john/code/vxR/Wooden_Door/WoodenDoor_6k_Tmap.jpg
-///home/john/code/vxR/Ridgecrest_Road/Ridgecrest_Road_4k_Bg.jpg
-///home/john/code/vxR/Helipad_GoldenHour/LA_Downtown_Helipad_GoldenHour_8k.jpg
-///home/john/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
-///home/john/code/vxR/Subway_Lights/20_Subway_Lights_8k.jpg
-///home/john/code/vxR/GrandCanyon_C_YumaPoint/GCanyon_C_YumaPoint_8k.jpg
+///home/mario/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg
+///home/mario/code/vxR/Basketball_Court/BasketballCourt_8k.jpg 
+///home/mario/code/vxR/Milkyway/Milkyway_BG.jpg
+///home/mario/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
+///home/mario/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
+///home/mario/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg
+///home/mario/code/vxR/MonValley_Lookout/MonValley_A_LookoutPoint_8k.jpg
+///home/mario/code/vxR/Mono_Lake_C/Mono_Lake_C_HiRes.jpg
+///home/mario/code/vxR/Alexs_Apartment/Alexs_Apt_8k.jpg
+///home/mario/code/vxR/Ueno-Shrine/03-Ueno-Shrine_8k.jpg
+///home/mario/code/vxR/Frozen_Waterfall/Frozen_Waterfall_HiRes_TMap.jpg
+///home/mario/code/vxR/Hamarikyu_Bridge_B/14-Hamarikyu_Bridge_B_8k.jpg
+///home/mario/code/vxR/Serpentine_Valley/Serpentine_Valley_8k.jpg
+///home/mario/code/vxR/Chelsea_Stairs/Chelsea_Stairs_8k.jpg
+///home/mario/code/vxR/Summi_Pool/Summi_Pool_8k.jpg
+///home/mario/code/vxR/Old_Industrial_Hall/fin4_Bg.jpg
+///home/mario/code/vxR/Milkyway/Milkyway_BG.jpg
+///home/mario/code/vxR/Ditch_River/DSC_9738.jpg
+///home/mario/code/vxR/Ditch_River/DSC_0326.jpg
+///home/mario/code/vxR/Bryant_Park/Bryant_Park_8k.jpg
+///home/mario/code/vxR/Walk_Of_Fame/Mans_Outside_8k_TMap.jpg
+///home/mario/code/vxR/Tropical_Ruins/TropicalRuins_8k.jpg
+///home/mario/code/vxR/Shiodome_Stairs/10-Shiodome_Stairs_8k.jpg
+///home/mario/code/vxR/Playa_Sunrise/Playa_Sunrise_8k.jpg
+///home/mario/code/vxR/MonValley_DirtRoad/MonValley_G_DirtRoad_8k.jpg
+///home/mario/code/vxR/Chiricahua_NarrowPath/NarrowPath_8k.jpg
+///home/mario/code/vxR/EtniesPark_Center/Etnies_Park_Center_8k.jpg
+///home/mario/code/vxR/Ice_Lake/Ice_Lake_HiRes_TMap.jpg
+///home/mario/code/vxR/Stadium_Center/Stadium_Center_8k.jpg
+///home/mario/code/vxR/Mono_Lake_B/Mono_Lake_B_HiRes_TMap.jpg
+///home/mario/code/vxR/Factory_Catwalk/Factory_Catwalk_Bg.jpg
+///home/mario/code/vxR/Theatre_Seating/Theatre-Side_8k_TMap.jpg
+///home/mario/code/vxR/Winter_Forest/WinterForest_8k.jpg
+///home/mario/code/vxR/Power_Plant/rad06_Bg.jpg
+///home/mario/code/vxR/Chiricahua_Plaza/GravelPlaza_8k.jpg
+///home/mario/code/vxR/Circus_Backstage/Circus_Backstage_8k.jpg
+///home/mario/code/vxR/PaperMill_Ruins_E/PaperMill_E_8k.jpg
+///home/mario/code/vxR/Tokyo_BigSight/Tokyo_BigSight_8k.jpg
+///home/mario/code/vxR/Malibu_Overlook/Malibu_Overlook_8k.jpg
+///home/mario/code/vxR/Sierra_Madre_B/Sierra_Madre_B_HiRes_TMap.jpg
+///home/mario/code/vxR/UV-Testgrid/testgrid.jpg
+///home/mario/code/vxR/QueenMary_Chimney/QueenMary_Chimney_8k.jpg
+///home/mario/code/vxR/Zion_Sunsetpeek/Zion_7_Sunsetpeek_8k_Bg.jpg
+///home/mario/code/vxR/Helipad_Afternoon/LA_Downtown_Afternoon_Fishing_B_8k.jpg
+///home/mario/code/vxR/Popcorn_Lobby/Lobby-Center_8k_TMap.jpg
+///home/mario/code/vxR/waterfall/waterfall_Bg.jpg
+///home/mario/code/vxR/Newport_Loft/Newport_Loft_8k.jpg
+///home/mario/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg
+///home/mario/code/vxR/Arches_E_PineTree/Arches_E_PineTree_8k.jpg
+///home/mario/code/vxR/Hollywood_Sign/HWSign3-Fence_TMap.jpg
+///home/mario/code/vxR/Desert_Highway/Road_to_MonumentValley_8k.jpg
+///home/mario/code/vxR/Theatre_Center/Theatre-Center_8k_TMap.jpg
+///home/mario/code/vxR/snow_machine/test8_Bg.jpg
+///home/mario/code/vxR/PaperMill_Ruins_A/PaperMill_A_8k.jpg
+///home/mario/code/vxR/Tropical_Beach/Tropical_Beach_8k.jpg
+///home/mario/code/vxR/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg
+///home/mario/code/vxR/Barcelona_Rooftops/Barcelona_Rooftops/Barce_Rooftop_C_8k.jpg
+///home/mario/code/vxR/Basketball_Court/BasketballCourt_8k.jpg
+///home/mario/code/vxR/Wooden_Door/WoodenDoor_6k_Tmap.jpg
+///home/mario/code/vxR/Ridgecrest_Road/Ridgecrest_Road_4k_Bg.jpg
+///home/mario/code/vxR/Helipad_GoldenHour/LA_Downtown_Helipad_GoldenHour_8k.jpg
+///home/mario/code/vxR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_tmap.jpg
+///home/mario/code/vxR/Subway_Lights/20_Subway_Lights_8k.jpg
+///home/mario/code/vxR/GrandCanyon_C_YumaPoint/GCanyon_C_YumaPoint_8k.jpg
 
 
 node
@@ -715,7 +786,7 @@ name = "environment"
 type = "vxIBLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    filePath = "/home/john/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
+    filePath = "/home/mario/code/vxR/Ditch_River/Ditch-River_TMap.jpg"
     intensity = 12.00
     color = 255 255 255
     samples = 13
@@ -731,9 +802,9 @@ name = "sun"
 type = "vxSunLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 1.2
+    intensity = 2.2
     color = 255 254 252
-    orientation = -0.3 1.0 -0.10
+    orientation = 0.5 3.0 -0.80
     samples = 10
     castShadows = "true"
 }
@@ -783,17 +854,17 @@ node
 name = "milo_vx"
 type = "vxGridGeometry"
 active = false"
-    transform = [0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 0.5 -0.63 1.6 1]
-    filePath = "/home/john/Downloads/vmilo_0.ply"
+    transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.5 -0.63 1.6 1]
+    filePath = "/home/mario/Downloads/vmilo_0.ply"
 }
 
 node
 {
 name = "triceratops_vx"
 type = "vxGridGeometry"
-active = false"
-    transform = [1.3 0 0 0 0 1.3 0 0 0 0 1.3 0 2.3 -0.63 -0.9 1]
-    filePath = "/home/john/Downloads/triceratops_1.ply"
+active = "false"
+    transform = [1.9 0 0 0 0 1.9 0 0 0 0 1.9 0 2.9 -0.63 4.1 1]
+    filePath = "/home/mario/Downloads/triceratops_1.ply"
 }
 
 node
@@ -802,7 +873,7 @@ name = "malote_vx"
 type = "vxGridGeometry"
 active = "false"
     transform = [1.2 0 0 0 0 1.2 0 0 0 0 1.2 0 -1.5 -0.63 -2.6 1]
-    filePath = "/home/john/Downloads/malote_1.ply"
+    filePath = "/home/mario/Downloads/malote_1.ply"
 }
 
 node
@@ -811,7 +882,7 @@ name = "gnome_vx"
 type = "vxGridGeometry"
 active = "true"
     transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 0.8 -0.65 1.0 1]
-    filePath = "/home/john/Downloads/gnome_mid.ply"
+    filePath = "/home/mario/Downloads/gnome_mid.ply"
 }
 
 node
@@ -820,7 +891,7 @@ name = "pieta_vx"
 type = "vxGridGeometry"
 active = "false"
     transform = [1.2 0 0 0 0 1.2 0 0 0 0 1.2 0 0.0 -0.65 0.0 1]
-    filePath = "/home/john/Downloads/pieta.ply"
+    filePath = "/home/mario/Downloads/pieta.ply"
 }
 
 
@@ -830,5 +901,5 @@ name = "male_vx"
 type = "vxGridGeometry"
 active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.5 -0.63 1.0 1]
-    filePath = "/home/john/Downloads/male.ply"
+    filePath = "/home/mario/Downloads/male.ply"
 }
