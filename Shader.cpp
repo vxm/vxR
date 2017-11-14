@@ -33,10 +33,6 @@ void Shader::setDiffuseCoeficent(const scalar &diffuseCoeficent)
 	m_diffuseCoeficent = diffuseCoeficent;
 }
 
-unsigned int Shader::getGiSamples() const { return m_giSamples; }
-
-void Shader::setGiSamples(unsigned int giSamples) { m_giSamples = giSamples; }
-
 scalar Shader::getGiCoeficent() const { return m_giCoeficent; }
 
 void Shader::setGiCoeficent(const scalar &giCoeficent)
@@ -51,15 +47,9 @@ void Shader::setGiColorMultiplier(const Color &giColorMultiplier)
 	m_giColorMultiplier = giColorMultiplier;
 }
 
-unsigned int Shader::getReflectionSamples() const
-{
-	return m_reflectionSamples;
-}
+unsigned int Shader::getRayDepth() const { return m_rayDepth; }
 
-void Shader::setReflectionSamples(unsigned int reflectionSamples)
-{
-	m_reflectionSamples = reflectionSamples;
-}
+void Shader::setRayDepth(unsigned int rayDepth) { m_rayDepth = rayDepth; }
 
 scalar Shader::getReflectionRadius() const { return m_reflectionRadius; }
 
@@ -198,7 +188,8 @@ Color Lambert::getColor(const Ray &, const Collision &collide) const
 	}
 	else
 	{
-		auto &&color = collide.color(); // m_diffuse.compute(collide)*m_diffuseColor;
+		auto &&color =
+		    collide.color(); // m_diffuse.compute(collide)*m_diffuseColor;
 		ret = MU::remap(color, 0.0, 0.85);
 	}
 

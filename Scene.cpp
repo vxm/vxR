@@ -446,11 +446,10 @@ void Scene::buildShaders()
 
 		shader->setDiffuseColor(Color::lookup256(node->getColor("diffuseColor")));
 		shader->setDiffuseCoeficent(node->getFloat("diffuseCoeficent"));
-		shader->setGiSamples(node->getInt("giSamples"));
 		shader->setGiCoeficent(node->getFloat("giCoeficent"));
 		shader->setGiColorMultiplier(
 		    Color::lookup256(node->getColor("giColorMultiplier")));
-		shader->setReflectionSamples(node->getInt("reflectionSamples"));
+		shader->setRayDepth(node->getInt("rayDepth"));
 		shader->setReflectionRadius(node->getFloat("reflectionRadius"));
 		shader->setReflectionCoefficent(node->getFloat("reflectionCoefficent"));
 		shader->setReflectionColorMultiplier(

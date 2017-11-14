@@ -9,12 +9,10 @@ name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "true"
     resolution = 607 341
-    pixelSamples = 10
-    reflectionSamples = 1
-    giSamples = 1
+    pixelSamples = 3
+    rayDepth = 0
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 4
 }
 
 node
@@ -23,12 +21,10 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 14
-    reflectionSamples = 1
-    giSamples = 1
+    pixelSamples = 8
+    rayDepth = 0
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 4
 }
 
 node
@@ -38,11 +34,9 @@ type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
     pixelSamples = 145
-    reflectionSamples = 1
-    giSamples = 0
+    rayDepth = 1
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 3
 }
 
 node
@@ -52,11 +46,9 @@ type = "vxRenderSettings"
 active = "false"
     resolution = 1366 768
     pixelSamples = 124
-    reflectionSamples = 1
-    giSamples = 1
+    rayDepth = 1
     giMultiplier = 1.0
     numThreads = -1
-    lightBounces = 3
 }
 
 node
@@ -66,11 +58,9 @@ type = "vxRenderSettings"
 active = "false"
     resolution = 2720 1536
     pixelSamples = 200
-    reflectionSamples = 2
-    giSamples = 25
+    rayDepth = 2
     giMultiplier = 1.5
     numThreads = -1
-    lightBounces = 3
 }
 
 node
@@ -80,11 +70,9 @@ type = "vxRenderSettings"
 active = "false"
     resolution = 5464 3072
     pixelSamples = 800
-    reflectionSamples = 4
-    giSamples = 230
+    rayDepth = 4
     giMultiplier = 1.5
     numThreads = -1
-    lightBounces = 4
 }
 
 node
@@ -128,10 +116,9 @@ type = "vxShader"
 active = "true"
     diffuseColor = 255 255 255
     diffuseCoeficent = 1.0
-    giSamples = 0
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
-    reflectionSamples = 1
+    rayDepth = 1
     reflectionRadius = 0.1
     reflectionCoefficent = 0.24
     reflectionColorMultiplier = 238 216 126
@@ -152,10 +139,9 @@ type = "vxShader"
 active = "true"
     diffuseColor = 255 255 255
     diffuseCoeficent = 1.0
-    giSamples = 0
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
-    reflectionSamples = 0
+    rayDepth = 0
     reflectionRadius = 2.7
     reflectionCoefficent = 0.3
     reflectionColorMultiplier = 238 216 126
@@ -196,10 +182,10 @@ node
 name = "sphere_1"
 type = "vxSphere"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.3 0.4 1.2 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.3 0.9 1.2 1]
     shader = "shader_1"
     color = 255 255 255
-    radius = 0.1
+    radius = 0.8
 }
 
 
@@ -363,7 +349,7 @@ node
 name = "gnome_tris_1"
 type = "vxGeometry"
 active = "true"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 1.0 1]
+    transform = [2.0 0 0 0 0 2.0 0 0 0 0 2.0 0 0.0 -0.65 0.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 230 230 230
     shader = "shader_1"
@@ -378,8 +364,21 @@ active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 -0.65 -1.0 1]
     filePath = "/home/john/Downloads/gnome_low.ply"
     color = 230 230 230
-    shader = "shader_1"
+    shader = "shader_2"
 }
+
+
+node
+{
+name = "gnome_tris_3"
+type = "vxGeometry"
+active = "false"
+    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 1.5 -0.65 0.0 1]
+    filePath = "/home/john/Downloads/gnome_low.ply"
+    color = 230 230 230
+    shader = "shader_2"
+}
+
 node
 {
 name = "cruceta_tris"
@@ -417,7 +416,7 @@ node
 {
 name = "napoleon_head_tris"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [2.6 0 0 0 0 2.6 0 0 0 0 2.6 0 0.8 -0.6 -0.7 1]
     filePath = "/home/john/Downloads/napoleon_head.ply"
     color = 255 255 255
@@ -624,7 +623,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     lightImageNode = "image_2"
@@ -683,14 +682,14 @@ node
 {
 name = "sphere_light_1"
 type = "vxSphereLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.1 0.0 1]
-    intensity = 1.1
-    color = 255 254 220
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 3.1 0.0 1]
+    intensity = 1.9
+    color = 255 255 255
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.2
+    radius = 2.2
 }
 
 
@@ -729,9 +728,9 @@ node
 {
 name = "sun"
 type = "vxSunLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    intensity = 1.2
+    intensity = 1.8
     color = 255 254 252
     orientation = -0.3 1.0 -0.10
     samples = 10
