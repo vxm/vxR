@@ -260,8 +260,16 @@ void SphereLight::updateBoundingBox()
 Color SphereLight::acummulationLight(const Ray &,
                                      const Collision &collision) const
 {
-	auto pointLightPosition =
-	    MU::getSolidSphereRand(m_radius) + (m_position + m_transform.origin());
+	auto sphr = MU::getSolidSphereRand(m_radius);
+
+	v3s pointLightPosition = sphr + (m_position + m_transform.origin());
+	Color c = m_color;
+	scalar i = m_intensity;
+	if (sphr.length() > (m_radius * 0.9))
+	{
+		c = Color::yellow;
+		i /= 3.0;
+	}
 
 	const auto &pp = collision.position();
 	const auto &p = pointLightPosition - pp;
@@ -273,13 +281,13 @@ Color SphereLight::acummulationLight(const Ray &,
 	if (collision.normal().follows(p.inverted())) // m_castShadows here?
 	{
 		auto ratio = lightRatio(f, p);
-		auto lumm = m_intensity * ratio;
+		auto lumm = i * ratio;
 
 		const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
 
 		if (m_castShadows && reachesLightSource(ff))
 		{
-			ret = color().gained(lumm);
+			ret = c.gained(lumm);
 		}
 	}
 
@@ -313,21 +321,61 @@ void SunLight::updateBoundingBox()
 	return;
 }
 
+Color SunLight::acummulationLight(const Ray &, const Collision &collision) const
+{
+	// calculate probability of going into de sphere or the disk
 
-	Ray f(pp, collision.normal());
-	// compute all sort of shadows.
 	Color ret{Color::zero};
 
-	if (collision.normal().follows(p.inverted())) // m_castShadows here?
+	auto ringvss = .8;
+
+	if (MU::getRand(1) < ringvss)
 	{
-		auto ratio = lightRatio(f, p);
-		auto lumm = m_intensity * ratio;
+		auto pointLightPosition =
+		    MU::getSolidSphereRand(ringvss + m_sunRadius * (1.0 - ringvss)) +
+		    (m_orientation.unit() * m_distance);
 
-		const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
+		const auto &pp = collision.position();
+		const auto &p = pointLightPosition - pp;
 
-		if (m_castShadows && reachesLightSource(ff))
+		Ray f(pp, collision.normal());
+		// compute all sort of shadows.
+
+		if (collision.normal().follows(p.inverted())) // m_castShadows here?
 		{
-			ret = color().gained(lumm);
+			auto ratio = lightRatio(f, p);
+			auto lumm = m_intensity * ratio * ringvss;
+
+			const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
+
+			if (m_castShadows && reachesLightSource(ff))
+			{
+				ret = color().gained(lumm);
+			}
+		}
+	}
+	else
+	{
+		auto pointLightPosition = MU::getSolidSphereRand(m_sunRadius) +
+		                          (m_orientation.unit() * m_distance);
+
+		const auto &pp = collision.position();
+		const auto &p = pointLightPosition - pp;
+
+		Ray f(pp, collision.normal());
+		// compute all sort of shadows.
+
+		if (collision.normal().follows(p.inverted())) // m_castShadows here?
+		{
+			auto ratio = lightRatio(f, p);
+			auto lumm = m_intensity * ratio;
+
+			const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
+
+			if (m_castShadows && reachesLightSource(ff))
+			{
+				ret = color().gained(lumm);
+			}
 		}
 	}
 
