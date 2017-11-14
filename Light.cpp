@@ -297,13 +297,22 @@ void SunLight::set(const v3s &orientation)
 	m_orientation.set(orientation.unit());
 }
 
-Color SunLight::acummulationLight(const Ray &, const Collision &collision) const
+void SunLight::updateBoundingBox()
 {
-	auto pointLightPosition =
-	    MU::getSolidSphereRand(m_radius) + (m_orientation.unit() * m_distance);
+	auto &&orig = m_transform.origin() + m_position;
 
-	const auto &pp = collision.position();
-	const auto &p = pointLightPosition - pp;
+	m_bb->setMinX(orig.x() - m_sunRadius);
+	m_bb->setMaxX(orig.x() + m_sunRadius);
+
+	m_bb->setMinY(orig.y() - m_sunRadius);
+	m_bb->setMaxY(orig.y() + m_sunRadius);
+
+	m_bb->setMinZ(orig.z() - m_sunRadius);
+	m_bb->setMaxZ(orig.z() + m_sunRadius);
+
+	return;
+}
+
 
 	Ray f(pp, collision.normal());
 	// compute all sort of shadows.

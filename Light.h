@@ -377,7 +377,7 @@ protected:
 	///
 	/// \brief m_radius
 	///
-	scalar m_radius = 695'700'000;
+	scalar m_sunRadius = 695'700'000; //(695.700.000)
 	///
 	scalar m_distance = 149'600'000'000;
 	/// temperature = 5.777K
@@ -422,7 +422,7 @@ public:
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
 	// Visible interface
-	virtual void updateBoundingBox() override { return; }
+	virtual void updateBoundingBox() override;
 };
 
 class DirectLight final : public Light
