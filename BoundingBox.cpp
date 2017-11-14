@@ -179,13 +179,18 @@ bool BoundingBox::throwRay(const Ray &ray) const { return hasCollision(ray); }
 int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 {
 	const auto &p = ray.origin();
+	const auto &d = ray.direction();
 	if (contains(p))
 	{
 		collide.setPosition(p);
 		return 1;
 	}
 
-	const auto &d = ray.direction();
+	// TODO:this is not required to be 3d
+	if (d.dot(p - center()) > 0.0)
+	{
+		return 0;
+	}
 
 	auto &&minX = m_minX - p.x();
 	auto &&maxX = m_maxX - p.x();
