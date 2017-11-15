@@ -36,24 +36,7 @@ void Light::setTransform(const Matrix44 &transform) { m_transform = transform; }
 
 bool Light::reachesLightSource(const Ray &ray) const
 {
-	Collision col;
-
-	const auto hits = m_scene.lock()->throwRay(ray, col);
-
-	/// what about distance?.
-	if (!hits)
-	{
-		return true;
-	}
-
-	const auto originToHit = ray.origin().distance(col.position());
-
-	if (originToHit == scalar(0.0))
-		return true;
-
-	const auto originToSource = ray.origin().distance(m_transform.origin());
-
-	return originToSource < originToHit;
+	return !m_scene.lock()->hasCollision(ray);
 }
 
 scalar Light::radius() const { return m_radius; }

@@ -222,7 +222,36 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 
 bool TriangleMesh::hasCollision(const Ray &ray) const
 {
-	return Geometry::hasCollision(ray);
+	Collision col;
+	m_bb->throwRay(ray, col);
+
+	auto &&p = ray.origin();
+
+	auto &&sp = col.position();
+
+	auto prev = m_grid.size();
+
+	do
+	{
+		const auto triangles = m_grid.getList(ray, sp);
+
+		if (!triangles || prev == triangles->index)
+		{
+			break;
+		}
+
+		prev = triangles->index;
+
+		for (const auto &id : *(triangles->listRef))
+		{
+			if (m_triangles[id].throwRay(ray, col))
+			{
+				return true;
+			}
+		}
+	} while (m_bb->contains(sp));
+
+	return false;
 }
 
 void TriangleMesh::updateBoundingBox()
