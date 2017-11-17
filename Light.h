@@ -373,7 +373,7 @@ protected:
 	///
 	/// \brief m_orientation
 	///
-	v3s m_orientation = {-0.1, 1.0, -0.2};
+	v3s m_orientation = {-0.5, 1.0, -0.6};
 	///
 	/// \brief m_radius
 	///
