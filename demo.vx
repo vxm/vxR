@@ -695,7 +695,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     lightImageNode = "image_2"
@@ -754,14 +754,14 @@ node
 {
 name = "sphere_light_1"
 type = "vxSphereLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.1 0.0 1]
-    intensity = 1.1
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 -0.4 0.0 1]
+    intensity = 1.5
     color = 255 254 220
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.2
+    radius = 0.3
 }
 
 
@@ -770,13 +770,13 @@ node
 name = "sphere_light_2"
 type = "vxSphereLight"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.3 3.1 -4.0 1]
-    intensity = 0.2
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.3 0.3 -4.0 1]
+    intensity = 0.7
     color = 220 236 255
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.2
+    radius = 0.8
 }
 
 
@@ -800,7 +800,7 @@ node
 {
 name = "sun"
 type = "vxSunLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     intensity = 2.2
     color = 255 254 252
