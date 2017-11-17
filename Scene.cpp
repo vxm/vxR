@@ -751,6 +751,13 @@ int Scene::throwRay(const Ray &ray, Collision &collide) const
 bool Scene::hasCollision(const Ray &ray) const
 {
 	return m_broadPhase->hasCollision(ray);
+	/*Collision collide;
+	if (m_broadPhase->throwRay(ray, collide))
+	{
+	  return collide.isValid();
+	}
+
+	return false;*/
 }
 
 vxShaderHandle Scene::defaultShader() const { return m_shader; }

@@ -223,7 +223,13 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 bool TriangleMesh::hasCollision(const Ray &ray) const
 {
 	Collision col;
+
 	m_bb->throwRay(ray, col);
+
+	if (col.position().distance(ray.origin()) > ray.length())
+	{
+		return false;
+	}
 
 	auto &&p = ray.origin();
 
@@ -246,6 +252,11 @@ bool TriangleMesh::hasCollision(const Ray &ray) const
 		{
 			if (m_triangles[id].throwRay(ray, col))
 			{
+				if (ray.length() > 0.0 &&
+				    col.position().distance(ray.origin()) > ray.length())
+				{
+					return false;
+				}
 				return true;
 			}
 		}

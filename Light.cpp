@@ -155,18 +155,16 @@ Color PointLight::acummulationLight(const Ray &,
 	const auto &&pp = collision.position();
 	const auto &&p = pp - (m_position + m_transform.origin());
 
-	Ray f(p, collision.normal());
+	auto f = collision.nextRay();
 
-	// compute all sort of shadows.
 	Color ret{Color::zero};
-
-	if (collision.normal().follows(p)) // m_castShadows here?
+	if (collision.normal().follows(p))
 	{
 		auto ratio = lightRatio(f, p.inverted());
 		auto lumm = m_intensity * ratio;
 
-		const Ray ff(pp + collision.normal().small(), p.inverted(),
-		             VisionType::kOpaque);
+		Ray ff(pp + collision.normal().small(), p.inverted(), VisionType::kOpaque);
+		ff.setLength(p.length());
 
 		if (m_castShadows && reachesLightSource(ff))
 		{
@@ -204,7 +202,8 @@ int SphereLight::throwRay(const Ray &ray, Collision &col) const
 {
 	auto p = m_position + m_transform.origin();
 	auto v2 = p - ray.origin();
-	if (ray.direction().angle(v2) < atan(m_radius) / v2.length())
+	auto incidence = ray.direction().angle(v2);
+	if (incidence < atan(m_radius) / v2.length())
 	{
 		col.setPosition(p);
 		col.setColor(m_color);
@@ -243,30 +242,26 @@ void SphereLight::updateBoundingBox()
 Color SphereLight::acummulationLight(const Ray &,
                                      const Collision &collision) const
 {
-	auto sphr = MU::getSolidSphereRand(m_radius);
+	auto sphr = MU::getHollowSphereRand(m_radius);
 
 	v3s pointLightPosition = sphr + (m_position + m_transform.origin());
 	Color c = m_color;
 	scalar i = m_intensity;
-	if (sphr.length() > (m_radius * 0.9))
-	{
-		c = Color::yellow;
-		i /= 3.0;
-	}
 
-	const auto &pp = collision.position();
-	const auto &p = pointLightPosition - pp;
+	const auto &cp = collision.position();
+	const auto &p = pointLightPosition - cp;
 
-	Ray f(pp, collision.normal());
+	auto f = collision.nextRay();
+
 	// compute all sort of shadows.
 	Color ret{Color::zero};
-
 	if (collision.normal().follows(p.inverted())) // m_castShadows here?
 	{
 		auto ratio = lightRatio(f, p);
 		auto lumm = i * ratio;
 
-		const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
+		Ray ff(cp + collision.normal().small(), p, VisionType::kOpaque);
+		ff.setLength(p.length());
 
 		if (m_castShadows && reachesLightSource(ff))
 		{
