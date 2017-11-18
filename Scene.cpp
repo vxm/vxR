@@ -446,11 +446,10 @@ void Scene::buildShaders()
 
 		shader->setDiffuseColor(Color::lookup256(node->getColor("diffuseColor")));
 		shader->setDiffuseCoeficent(node->getFloat("diffuseCoeficent"));
-		shader->setGiSamples(node->getInt("giSamples"));
 		shader->setGiCoeficent(node->getFloat("giCoeficent"));
 		shader->setGiColorMultiplier(
 		    Color::lookup256(node->getColor("giColorMultiplier")));
-		shader->setReflectionSamples(node->getInt("reflectionSamples"));
+		shader->setRayDepth(node->getInt("rayDepth"));
 		shader->setReflectionRadius(node->getFloat("reflectionRadius"));
 		shader->setReflectionCoefficent(node->getFloat("reflectionCoefficent"));
 		shader->setReflectionColorMultiplier(
@@ -751,8 +750,14 @@ int Scene::throwRay(const Ray &ray, Collision &collide) const
 
 bool Scene::hasCollision(const Ray &ray) const
 {
-	Collision col;
-	return throwRay(ray, col) == 1;
+	return m_broadPhase->hasCollision(ray);
+	/*Collision collide;
+	if (m_broadPhase->throwRay(ray, collide))
+	{
+	  return collide.isValid();
+	}
+
+	return false;*/
 }
 
 vxShaderHandle Scene::defaultShader() const { return m_shader; }

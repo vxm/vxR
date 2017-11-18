@@ -8,14 +8,14 @@ LightShader::LightShader()
 	m_hasGI= false;
 }
 
-Color LightShader::getColor(const Ray &, const Collision &) const
+Color LightShader::getColor(const Ray &, const Collision &col) const
 {
-	return Color::white;
+	return col.color();
 }
 
-Color LightShader::getIlluminatedColor(const Ray &, const Collision &) const
+Color LightShader::getIlluminatedColor(const Ray &, const Collision &col) const
 {
-	return Color::white;
+	return col.color();
 }
 
 v3s LightShader::getVector(const Collision &) const

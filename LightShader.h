@@ -25,9 +25,9 @@ public:
 	// Shader interface
 public:
 	virtual Color getColor(const Ray &ray,
-	                       const Collision &) const override;
+	                       const Collision &col) const override;
 	virtual Color getIlluminatedColor(const Ray &,
-	                                  const Collision &) const override;
+	                                  const Collision &col) const override;
 	virtual v3s getVector(const Collision &) const override;
 };
 }

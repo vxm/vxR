@@ -6,10 +6,10 @@
 #include <memory>
 #include <vector>
 
-#include "Vector.h"
+#include "CirclesMap.h"
 #include "Collision.h"
 #include "Light.h"
-#include "CirclesMap.h"
+#include "Vector.h"
 
 namespace vxCore
 {
@@ -35,11 +35,10 @@ protected:
 	Color m_diffuseColor{1.0, 1.0, 1.0, 1.0};
 	scalar m_diffuseCoeficent = 1.0;
 
-	unsigned int m_giSamples = 1;
 	scalar m_giCoeficent = 1.0;
 	Color m_giColorMultiplier{1.0, 1.0, 1.0, 1.0};
 
-	unsigned int m_reflectionSamples = 0;
+	unsigned int m_rayDepth = 0;
 	scalar m_reflectionRadius = 1.0;
 	scalar m_reflectionCoefficent = 1.0;
 	Color m_reflectionColorMultiplier{1.0, 1.0, 1.0, 1.0};
@@ -53,7 +52,7 @@ protected:
 	scalar m_sscRadius = 1.0;
 	scalar m_sscCoefficent = 0.5;
 	Color m_sscColorMultiplier{1.0, 1.0, 1.0, 1.0};
-	
+
 	bool m_hasGI = true;
 	bool m_hasReflection = true;
 	///
@@ -124,16 +123,6 @@ public:
 	///
 	void setDiffuseCoeficent(const scalar &diffuseCoeficent);
 	///
-	/// \brief getGiSamples
-	/// \return
-	///
-	unsigned int getGiSamples() const;
-	///
-	/// \brief setGiSamples
-	/// \param giSamples
-	///
-	void setGiSamples(unsigned int giSamples);
-	///
 	/// \brief getGiCoeficent
 	/// \return
 	///
@@ -154,15 +143,15 @@ public:
 	///
 	void setGiColorMultiplier(const Color &giColorMultiplier);
 	///
-	/// \brief getReflectionSamples
+	/// \brief getrayDepth
 	/// \return
 	///
-	unsigned int getReflectionSamples() const;
+	unsigned int getRayDepth() const;
 	///
-	/// \brief setReflectionSamples
-	/// \param reflectionSamples
+	/// \brief setRayDepth
+	/// \param rayDepth
 	///
-	void setReflectionSamples(unsigned int reflectionSamples);
+	void setRayDepth(unsigned int rayDepth);
 	///
 	/// \brief getReflectionRadius
 	/// \return
@@ -275,7 +264,7 @@ public:
 	void setSscColorMultiplier(const Color &sscColorMultiplier);
 	///
 	/// \brief hasReflection
-	/// \return 
+	/// \return
 	///
 	bool hasReflection() const;
 	///
@@ -285,7 +274,7 @@ public:
 	void setHasReflection(bool hasReflection);
 	///
 	/// \brief hasGI
-	/// \return 
+	/// \return
 	///
 	bool hasGI() const;
 	///
@@ -300,7 +289,7 @@ class Lambert final : public Shader
 protected:
 public:
 	Lambert();
-	
+
 	///
 	/// \brief getColor
 	/// \param collide

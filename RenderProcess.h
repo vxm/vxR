@@ -64,17 +64,9 @@ private:
 	///
 	scalar m_c_invSamples = scalar(1.0) / scalar(m_samples);
 	///
-	/// \brief m_reflectionSamples
+	/// \brief m_rayDepth
 	///
-	unsigned int m_reflectionSamples = 0u;
-	///
-	/// \brief m_giSamples
-	///
-	unsigned int m_giSamples = 0u;
-	///
-	/// \brief m_lightBounces
-	///
-	unsigned int m_lightBounces = 2u;
+	unsigned int m_rayDepth = 0u;
 
 public:
 	// constructor with imageproperties propagation
@@ -147,25 +139,15 @@ public:
 	///
 	void setVisSamples(unsigned int visSamples);
 	///
-	/// \brief reflectionSamples
+	/// \brief rayDepth
 	/// \return
 	///
-	unsigned int reflectionSamples() const;
+	unsigned int rayDepth() const;
 	///
-	/// \brief setReflectionSamples
-	/// \param reflectionSamples
+	/// \brief setRayDepth
+	/// \param rayDepth
 	///
-	void setReflectionSamples(unsigned int reflectionSamples);
-	///
-	/// \brief giSamples
-	/// \return
-	///
-	unsigned int giSamples() const;
-	///
-	/// \brief setGISamples
-	/// \param giSamples
-	///
-	void setGISamples(unsigned int giSamples);
+	void setRayDepth(unsigned int rayDepth);
 	///
 	/// \brief giMultiplier
 	/// \return
@@ -211,16 +193,6 @@ public:
 	///
 	Color computeEnergyAndColor(const Ray &ray, Collision &col,
 	                            unsigned int bounces);
-	///
-	/// \brief lightBounces
-	/// \return
-	///
-	unsigned int lightBounces() const;
-	///
-	/// \brief setLightBounces
-	/// \param lightBounces
-	///
-	void setLightBounces(unsigned int lightBounces);
 	///
 	/// \brief computeReflection
 	/// \param iter

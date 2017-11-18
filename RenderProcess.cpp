@@ -31,13 +31,6 @@ using render = vxCompute::RenderProcess;
 namespace vxCompute
 {
 
-unsigned int RenderProcess::lightBounces() const { return m_lightBounces; }
-
-void RenderProcess::setLightBounces(unsigned int lightBounces)
-{
-	m_lightBounces = lightBounces;
-}
-
 RenderProcess::RenderProcess(ImagePropertiesHandle &prop, unsigned int samples)
     : m_properties(prop), m_imageData(prop),
       m_contactBuffer(prop->numPixels()), m_samples{samples}
@@ -58,13 +51,6 @@ void RenderProcess::setProperties(
     const std::shared_ptr<const ImageProperties> &properties)
 {
 	m_properties = properties;
-}
-
-unsigned int RenderProcess::giSamples() const { return m_giSamples; }
-
-void RenderProcess::setGISamples(unsigned int giSamples)
-{
-	m_giSamples = giSamples;
 }
 
 scalar RenderProcess::giMultiplier() const { return m_giMultiplier; }
@@ -89,14 +75,11 @@ void RenderProcess::setVisSamples(unsigned int visSamples)
 	m_c_invSamples = 1.0 / (scalar)m_samples;
 }
 
-unsigned int RenderProcess::reflectionSamples() const
-{
-	return m_reflectionSamples;
-}
+unsigned int RenderProcess::rayDepth() const { return m_rayDepth; }
 
-void RenderProcess::setReflectionSamples(unsigned int reflectionSamples)
+void RenderProcess::setRayDepth(unsigned int rayDepth)
 {
-	m_reflectionSamples = reflectionSamples;
+	m_rayDepth = rayDepth;
 }
 
 Status RenderProcess::setDatabase(std::shared_ptr<SceneParser>)
@@ -235,7 +218,7 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
 	else
 	{
 		--deep;
-		deep = std::max(0, deep - 1);
+		deep = std::max(0, deep - 2);
 		reflection += computeEnergyAndColor(reflexRay, refxCollision, deep);
 	}
 
@@ -361,7 +344,7 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 			Collision col;
 			auto &&ray = rCamera->ray(hitCoordinates, sampler);
 
-			firstHitColor += computeEnergyAndColor(ray, col, 3);
+			firstHitColor += computeEnergyAndColor(ray, col, m_rayDepth);
 
 			sampler.next();
 		}

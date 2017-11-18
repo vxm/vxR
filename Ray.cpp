@@ -2,16 +2,26 @@
 
 using namespace vxCore;
 
+scalar Ray::length() const
+{
+    return m_length;
+}
+
+void Ray::setLength(const scalar &length)
+{
+    m_length = length;
+}
+
 Ray::Ray()
 {}
 
 Ray::Ray(const v3s &direction)
-	:m_direction(direction.unit())
+    :m_direction(direction.unit())
 {
 }
 
 Ray::Ray(const v3s &origin, 
-			 const v3s &direction)
+         const v3s &direction)
 	: Ray(origin,direction,VisionType::kAll)
 {
 }
