@@ -231,9 +231,9 @@ bool TriangleMesh::hasCollision(const Ray &ray) const
 		return false;
 	}
 
-	auto &&p = ray.origin();
+	const auto &p = ray.origin();
 
-	auto &&sp = col.position();
+	auto sp = col.position();
 
 	auto prev = m_grid.size();
 
@@ -269,7 +269,7 @@ void TriangleMesh::updateBoundingBox()
 {
 	m_bb->clear();
 
-	for (auto &&v : m_vertices)
+	for (const auto &v : m_vertices)
 	{
 		m_bb->extend(v);
 	}

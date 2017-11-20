@@ -186,7 +186,6 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 		return 1;
 	}
 
-	// TODO:this is not required to be 3d
 	if (d.dot(p - center()) > 0.0)
 	{
 		return 0;
