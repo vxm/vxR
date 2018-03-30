@@ -21,8 +21,8 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 1
-    rayDepth = 0
+    pixelSamples = 40
+    rayDepth = 2
     giMultiplier = 1.0
     numThreads = -1
 }
@@ -181,7 +181,7 @@ node
 name = "sphere_1"
 type = "vxSphere"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.2 0.0 0.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.6 0.0 0.0 1]
     shader = "shader_1"
     color = 255 255 255
     radius = 0.4
@@ -191,7 +191,7 @@ node
 {
 name = "sphere_2"
 type = "vxSphere"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.5 0.0 -0.7 1]
     shader = "shader_1"
     color = 255 255 255
@@ -761,13 +761,13 @@ node
 name = "sphere_light_1"
 type = "vxSphereLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 0.0 0.2 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.0 0.5 0.2 1]
     intensity = 1.7
     color = 255 255 255
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.4
+    radius = 0.2
 }
 
 
