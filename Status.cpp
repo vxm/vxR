@@ -6,7 +6,7 @@ Status::Status()
 {
 }
 
-void Status::examine(std::function<bool ()> f, const std::__cxx11::string &msg)
+void Status::examine(std::function<bool ()> f, const std::string &msg)
 {
 	if(!f())
 	{

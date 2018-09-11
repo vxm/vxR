@@ -2,7 +2,6 @@
 #ifndef _VXVECTORMC_
 #define _VXVECTORMC_
 
-#include <quadmath.h>
 #include <limits>
 #include <algorithm>
 #include <math.h>
@@ -14,13 +13,13 @@ namespace vxCore {
 //TODO: add literal for scalar 0.0r
 using scalar = double; //float // double // __float128
 
-constexpr const scalar minScalar =  std::numeric_limits<scalar>::min();
-constexpr const scalar tinyScalar =  fabs(minScalar)*scalar(1000.0);
-constexpr const scalar smallScalar =  scalar(1.0)/scalar(100000.0);
+ const scalar minScalar =  std::numeric_limits<scalar>::min();
+ const scalar tinyScalar =  fabs(minScalar)*scalar(1000.0);
+ const scalar smallScalar =  scalar(1.0)/scalar(100000.0);
 
-constexpr const scalar maxScalar =  std::numeric_limits<scalar>::max();
-constexpr const scalar bigScalar =  fabs(maxScalar)*scalar(0.001);
-constexpr const scalar sZero = scalar(0.0);
+ const scalar maxScalar =  std::numeric_limits<scalar>::max();
+ const scalar bigScalar =  fabs(maxScalar)*scalar(0.001);
+ const scalar sZero = scalar(0.0);
 
 class Color;
 
