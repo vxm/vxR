@@ -22,6 +22,7 @@
 #include "Dome.h"
 #include "TriangleMesh.h"
 #include "Cylinder.h"
+#include "Sphere.h"
 
 namespace vxCore {
 
@@ -31,6 +32,7 @@ class Light;
 class IBLight;
 class AreaLight;
 class PointLight;
+class SphereLight;
 class DirectLight;
 class AmbientLight;
 class Cylinder;
@@ -47,10 +49,12 @@ protected:
 	std::vector<AreaLightHandle> m_areaLights;
 	std::vector<IBLightHandle> m_IBLights;
 	std::vector<PointLightHandle> m_pointLights;
+	std::vector<SphereLightHandle> m_SphereLights;
+	std::vector<SunLightHandle> m_sunLights;
 	std::vector<DirectLightHandle> m_directLights;
 	std::vector<AmbientLightHandle> m_ambientLights;
 	
-	std::vector<vxGeometryHandle> m_geometries;
+	std::vector<GeometryHandle> m_geometries;
 	std::vector<std::shared_ptr<TriangleMesh>> m_triangleMeshes;
 	std::vector<std::shared_ptr<Plane>> m_planes;
 	
@@ -131,6 +135,11 @@ public:
 	/// and optimized for render.
 	void updateCache();
 	///
+	/// \brief addLight
+	/// \param lh
+	/// Adds a light to the scene.
+	void addLight(LightHandle lh);
+	///
 	/// \brief createShader
 	/// \return 
 	///
@@ -204,6 +213,16 @@ public:
 	/// \return 
 	///
 	PointLightHandle createPointLight();
+	///
+	/// \brief createSphereLight
+	/// \return 
+	///
+	SphereLightHandle createSphereLight();
+	///
+	/// \brief createSunLight
+	/// \return 
+	///
+	SunLightHandle createSunLight();
 	///
 	/// \brief createDirectLight
 	/// \return 
@@ -289,6 +308,9 @@ public:
 	/// \return 
 	///
 	int domeComputeLight(const Ray &ray, Collision &collide) const;
+	
+	SphereHandle createSphere();
+	void buildSpheres();
 	
 	//renderable interface
 	bool throwRay(const Ray &ray) const;

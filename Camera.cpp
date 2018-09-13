@@ -97,7 +97,7 @@ void Camera::set(const v3s& position,
 		m_verticalAperture = m_properties->aspectRatio();
 	}
 	else
-	{	
+	{
 		m_horizontalAperture = apertureH;
 		m_verticalAperture = apertureV;
 	}
@@ -108,22 +108,44 @@ void Camera::set(const v3s& position,
 
 Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 {
-	auto xFactor = coord.x() * scalar(2.0) -1.0;
-	auto yFactor = coord.y() * scalar(2.0) -1.0;
+	const auto xFactor = coord.x() * scalar(2.0) -1.0;
+	const auto yFactor = coord.y() * scalar(2.0) -1.0;
 	//std::cout << "Pixel factor " << xFactor << " " << yFactor << std::endl;
 	
-	auto&& s = sampler.xy(m_pixelRadius);
+	const auto&& s = sampler.xy(m_pixelRadius);
 	
 	const auto compX = m_hApTan * xFactor - s.x()/(scalar(2.0) * m_rx);
 	const auto compY = m_vApTan * yFactor - s.y()/(scalar(2.0) * m_ry);
+
+	v3s pos = m_transform.origin();
+	v3s ta =  v3s( 0,0,10000.0 );
+	scalar roll = 0.0;
+
+	const scalar FOCUSDISTANCE = 5.45;
+
+	// camera tx
+	v3s cw = (ta-pos).unit();
+	v3s cp = v3s( sin(roll), cos(roll), 0.0 );
+	v3s cu = cw.cross(cp).unit();
+	v3s cv = cu.cross(cw).unit();
+
+	v3s er = {compY, compX, m_focusDistance};
+
+	v3s rd = cu * er.x() + cv * er.y() + cw * er.z();
+
+	v3s go = v3s( s.x()/2.0,s.y()/2.0, 0.0 ) * 0.15;
+	v3s gd = ( er*FOCUSDISTANCE - go ).unit();
 	
-	auto&& ret = Ray{{compY, compX, m_focusDistance}};
+	pos += cu*go.x() + cv*go.y();
+	rd += cu*gd.x() + cv*gd.y();
+	
+	auto ret = Ray{{0,0,0}, rd.unit(), VisionType::kAll};
 	
 	//TODO: rotate origin and then place the origin of the ray in position
 	//TODO:read from scene.
 	ret.setOrigin(m_transform.origin());
 	
-	ret.direction().rotateX( scalar(2.2) * (MU::PI/8.0) );
+	ret.direction().rotateX( scalar(2.0) * (MU::PI/8.0) );
 	ret.direction() = ret.direction().rotate({0.990, 0.0, -1.1}, 0.05);
 	
 	ret.direction().setUnit();

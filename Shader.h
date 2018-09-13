@@ -6,20 +6,22 @@
 #include <memory>
 #include <vector>
 
-#include "Vector.h"
+#include "CirclesMap.h"
 #include "Collision.h"
 #include "Light.h"
-#include "CirclesMap.h"
+#include "Vector.h"
 
-namespace vxCore {
+namespace vxCore
+{
 
 class Light;
 class Scene;
 
+using lightsRef = std::shared_ptr<std::vector<Light>>;
+
 class Shader
 {
-	using lightsRef = std::shared_ptr<std::vector<Light>>;
-	
+
 protected:
 	///
 	/// \brief m_lights
@@ -29,36 +31,36 @@ protected:
 	/// \brief m_scene
 	///
 	std::weak_ptr<Scene> m_scene;
-	
+
 	Color m_diffuseColor{1.0, 1.0, 1.0, 1.0};
 	scalar m_diffuseCoeficent = 1.0;
-	
-	unsigned int m_giSamples = 1;
+
 	scalar m_giCoeficent = 1.0;
 	Color m_giColorMultiplier{1.0, 1.0, 1.0, 1.0};
-	
-	unsigned int m_reflectionSamples = 0;
+
+	unsigned int m_rayDepth = 0;
 	scalar m_reflectionRadius = 1.0;
 	scalar m_reflectionCoefficent = 1.0;
 	Color m_reflectionColorMultiplier{1.0, 1.0, 1.0, 1.0};
-	
+
 	unsigned int m_refractionSamples = 0;
 	scalar m_refractionRadius = 1.0;
 	scalar m_refractionCoefficent = 1.0;
 	Color m_refractionColorMultiplier{1.0, 1.0, 1.0, 1.0};
-	
+
 	unsigned int m_sscSamples = 0;
 	scalar m_sscRadius = 1.0;
 	scalar m_sscCoefficent = 0.5;
 	Color m_sscColorMultiplier{1.0, 1.0, 1.0, 1.0};
-	
+
+	bool m_hasGI = true;
+	bool m_hasReflection = true;
 	///
 	/// \brief m_diffuse
 	///
 	CirclesMap m_diffuse;
-	
+
 public:
-	
 	///
 	/// \brief vxShader
 	///
@@ -68,20 +70,21 @@ public:
 	/// \brief getIlluminatedColor
 	/// \param ray
 	/// \param collide
-	/// \return 
+	/// \return
 	///
-	virtual Color getIlluminatedColor(const Ray &ray, const Collision &collide) const = 0;
+	virtual Color getIlluminatedColor(const Ray &ray,
+	                                  const Collision &collide) const = 0;
 	///
 	/// \brief getVector
 	/// \param collide
-	/// \return 
+	/// \return
 	///
 	virtual v3s getVector(const Collision &collide) const = 0;
 	///
 	/// \brief getLightLoop
 	/// \param ray
 	/// \param collision
-	/// \return 
+	/// \return
 	///
 	virtual Color getLightLoop(const Ray &ray, const Collision &collision) const;
 	///
@@ -91,7 +94,7 @@ public:
 	void setScene(std::weak_ptr<Scene> scene);
 	///
 	/// \brief light
-	/// \return 
+	/// \return
 	///
 	std::shared_ptr<Light> light() const;
 	///
@@ -101,7 +104,7 @@ public:
 	void setLights(std::vector<std::shared_ptr<Light>> *lights);
 	///
 	/// \brief getDiffuseColor
-	/// \return 
+	/// \return
 	///
 	Color getDiffuseColor() const;
 	///
@@ -111,7 +114,7 @@ public:
 	void setDiffuseColor(const Color &diffuseColor);
 	///
 	/// \brief getDiffuseCoeficent
-	/// \return 
+	/// \return
 	///
 	scalar getDiffuseCoeficent() const;
 	///
@@ -120,18 +123,8 @@ public:
 	///
 	void setDiffuseCoeficent(const scalar &diffuseCoeficent);
 	///
-	/// \brief getGiSamples
-	/// \return 
-	///
-	unsigned int getGiSamples() const;
-	///
-	/// \brief setGiSamples
-	/// \param giSamples
-	///
-	void setGiSamples(unsigned int giSamples);
-	///
 	/// \brief getGiCoeficent
-	/// \return 
+	/// \return
 	///
 	scalar getGiCoeficent() const;
 	///
@@ -141,7 +134,7 @@ public:
 	void setGiCoeficent(const scalar &giCoeficent);
 	///
 	/// \brief getGiColorMultiplier
-	/// \return 
+	/// \return
 	///
 	Color getGiColorMultiplier() const;
 	///
@@ -150,18 +143,18 @@ public:
 	///
 	void setGiColorMultiplier(const Color &giColorMultiplier);
 	///
-	/// \brief getReflectionSamples
-	/// \return 
+	/// \brief getrayDepth
+	/// \return
 	///
-	unsigned int getReflectionSamples() const;
+	unsigned int getRayDepth() const;
 	///
-	/// \brief setReflectionSamples
-	/// \param reflectionSamples
+	/// \brief setRayDepth
+	/// \param rayDepth
 	///
-	void setReflectionSamples(unsigned int reflectionSamples);
+	void setRayDepth(unsigned int rayDepth);
 	///
 	/// \brief getReflectionRadius
-	/// \return 
+	/// \return
 	///
 	scalar getReflectionRadius() const;
 	///
@@ -171,7 +164,7 @@ public:
 	void setReflectionRadius(const scalar &reflectionRadius);
 	///
 	/// \brief getReflectionCoefficent
-	/// \return 
+	/// \return
 	///
 	scalar getReflectionCoefficent() const;
 	///
@@ -181,7 +174,7 @@ public:
 	void setReflectionCoefficent(const scalar &reflectionCoefficent);
 	///
 	/// \brief getReflectionColorMultiplier
-	/// \return 
+	/// \return
 	///
 	Color getReflectionColorMultiplier() const;
 	///
@@ -191,7 +184,7 @@ public:
 	void setReflectionColorMultiplier(const Color &reflectionColorMultiplier);
 	///
 	/// \brief getRefractionSamples
-	/// \return 
+	/// \return
 	///
 	unsigned int getRefractionSamples() const;
 	///
@@ -201,7 +194,7 @@ public:
 	void setRefractionSamples(unsigned int refractionSamples);
 	///
 	/// \brief getRefractionRadius
-	/// \return 
+	/// \return
 	///
 	scalar getRefractionRadius() const;
 	///
@@ -211,7 +204,7 @@ public:
 	void setRefractionRadius(const scalar &refractionRadius);
 	///
 	/// \brief getRefractionCoefficent
-	/// \return 
+	/// \return
 	///
 	scalar getRefractionCoefficent() const;
 	///
@@ -221,7 +214,7 @@ public:
 	void setRefractionCoefficent(const scalar &refractionCoefficent);
 	///
 	/// \brief getRefractionColorMultiplier
-	/// \return 
+	/// \return
 	///
 	Color getRefractionColorMultiplier() const;
 	///
@@ -231,7 +224,7 @@ public:
 	void setRefractionColorMultiplier(const Color &refractionColorMultiplier);
 	///
 	/// \brief getSscSamples
-	/// \return 
+	/// \return
 	///
 	unsigned int getSscSamples() const;
 	///
@@ -241,7 +234,7 @@ public:
 	void setSscSamples(unsigned int sscSamples);
 	///
 	/// \brief getSscRadius
-	/// \return 
+	/// \return
 	///
 	scalar getSscRadius() const;
 	///
@@ -251,7 +244,7 @@ public:
 	void setSscRadius(const scalar &sscRadius);
 	///
 	/// \brief getSscCoefficent
-	/// \return 
+	/// \return
 	///
 	scalar getSscCoefficent() const;
 	///
@@ -261,7 +254,7 @@ public:
 	void setSscCoefficent(const scalar &sscCoefficent);
 	///
 	/// \brief getSscColorMultiplier
-	/// \return 
+	/// \return
 	///
 	Color getSscColorMultiplier() const;
 	///
@@ -269,38 +262,56 @@ public:
 	/// \param sscColorMultiplier
 	///
 	void setSscColorMultiplier(const Color &sscColorMultiplier);
+	///
+	/// \brief hasReflection
+	/// \return
+	///
+	bool hasReflection() const;
+	///
+	/// \brief setHasReflection
+	/// \param hasReflection
+	///
+	void setHasReflection(bool hasReflection);
+	///
+	/// \brief hasGI
+	/// \return
+	///
+	bool hasGI() const;
+	///
+	/// \brief setHasGI
+	/// \param hasGI
+	///
+	void setHasGI(bool hasGI);
 };
 
 class Lambert final : public Shader
 {
 protected:
-	
-	
 public:
 	Lambert();
-	
+
 	///
 	/// \brief getColor
 	/// \param collide
-	/// \return 
+	/// \return
 	///
 	virtual Color getColor(const Ray &, const Collision &collide) const override;
 	///
 	/// \brief getVector
 	/// \param collide
-	/// \return 
+	/// \return
 	///
 	virtual v3s getVector(const Collision &collide) const override;
 	///
 	/// \brief getIlluminatedColor
 	/// \param ray
 	/// \param collide
-	/// \return 
+	/// \return
 	///
-	virtual Color getIlluminatedColor(const Ray &ray, const Collision &collide) const override;
+	virtual Color getIlluminatedColor(const Ray &ray,
+	                                  const Collision &collide) const override;
 };
 
 using vxShaderHandle = std::shared_ptr<Shader>;
-
 }
 #endif

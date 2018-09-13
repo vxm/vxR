@@ -1,35 +1,33 @@
 #ifndef VXCOLLISION_H
 #define VXCOLLISION_H
 
-#include "Vector.h"
-#include "Point.h"
 #include "Color.h"
+#include "Point.h"
+#include "Vector.h"
 
-namespace vxCore {
+namespace vxCore
+{
 
-class Geometry;
+class Visible;
+class Ray;
 
 class Collision
 {
 private:
-
 	v3s m_position;
 	v3s m_normal;
 	Color m_color;
 	v2s m_uv;
 
-	bool m_valid {false};
+	bool m_valid{false};
 
 public:
+	Visible *m_geo{nullptr};
 
-	Geometry* m_geo{nullptr};
-	
 	Collision();
-	
-	Collision(const v3s &p,
-				const v3s &n = {0,0,0},
-				const Color &c = {0,0,0,1},
-				const v2s &uv = {.5,.5});
+
+	Collision(const v3s &p, const v3s &n = {0, 0, 0},
+	          const Color &c = {0, 0, 0, 1}, const v2s &uv = {.5, .5});
 	///
 	/// \brief setAlphaValue
 	/// \param a
@@ -46,7 +44,7 @@ public:
 	void setValid(bool v = true);
 	///
 	/// \brief isValid
-	/// \return 
+	/// \return
 	///
 	bool isValid() const;
 	///
@@ -63,7 +61,7 @@ public:
 	void setPosition(scalar x, scalar y, scalar z);
 	///
 	/// \brief position
-	/// \return 
+	/// \return
 	///
 	v3s position() const;
 	///
@@ -85,7 +83,7 @@ public:
 	void setColor(scalar r, scalar g, scalar b);
 	///
 	/// \brief color
-	/// \return 
+	/// \return
 	Color color() const;
 	///
 	/// \brief setNormal
@@ -94,7 +92,7 @@ public:
 	void setNormal(const v3s &val);
 	///
 	/// \brief normal
-	/// \return 
+	/// \return
 	///
 	v3s normal() const;
 	///
@@ -109,7 +107,7 @@ public:
 	void setU(scalar u);
 	///
 	/// \brief u
-	/// \return 
+	/// \return
 	///
 	scalar u() const;
 	///
@@ -119,28 +117,24 @@ public:
 	void setV(scalar v);
 	///
 	/// \brief v
-	/// \return 
+	/// \return
 	///
 	scalar v() const;
 	///
 	/// \brief uv
-	/// \return 
+	/// \return
 	///
 	v2s uv() const;
 
-	//TODO:complete this.
-	friend std::ostream& operator<<(std::ostream &os, const Collision& v)
+	Ray nextRay() const;
+
+	// TODO:complete this.
+	friend std::ostream &operator<<(std::ostream &os, const Collision &v)
 	{
-		return os << v.m_position
-					<< ", "
-					<< v.m_normal 
-					<< ", "
-					<< v.m_color 
-					<< ", "
-					<< v.m_uv;
+		return os << v.m_position << ", " << v.m_normal << ", " << v.m_color << ", "
+		          << v.m_uv;
 	}
 };
 
-
-}// vxCore namespace.
+} // vxCore namespace.
 #endif // VXCOLLISION_H

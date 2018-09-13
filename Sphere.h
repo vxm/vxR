@@ -1,33 +1,29 @@
-#ifndef CYLINDER_H
-#define CYLINDER_H
+#ifndef SPHERE_H
+#define SPHERE_H
 
 #include "ConvexGeometry.h"
 
-namespace vxCore {
+namespace vxCore
+{
 
-class Cylinder final : public ConvexGeometry
+class Sphere final : public ConvexGeometry
 {
 	scalar m_radius = 0.50;
-	scalar m_height = 0.50;
-	
+
 public:
-	Cylinder();
-	
+	Sphere();
+
 	scalar radius() const;
 	void setRadius(const scalar &radius);
 	
-	scalar height() const;
-	void setHeight(const scalar &height);
-	
-	// Geometry interface
+	// Visible interface
 	virtual void updateBoundingBox() override;
-	
 	virtual bool throwRay(const Ray &ray) const override;
 	virtual int throwRay(const Ray &ray, Collision &collide) const override;
 	virtual bool hasCollision(const Ray &ray) const override;
 };
 
-using CylinderHandle = std::shared_ptr<Cylinder>;
-
+using SphereHandle = std::shared_ptr<Sphere>;
 }
-#endif // CYLINDER_H
+
+#endif // SPHERE_H

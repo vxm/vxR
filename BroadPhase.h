@@ -8,23 +8,23 @@
 
 namespace vxCore {
 
-using geometryHandleArray = std::vector<vxGeometryHandle>; 
-using geometryHandleArrayRef = std::shared_ptr<geometryHandleArray>;
+using VisibleHandleArray = std::vector<VisibleHandle>; 
+using VisibleHandleArrayRef = std::shared_ptr<VisibleHandleArray>;
 
 
 /// name to be changed
 struct bpSearchResult
 {
 	unsigned long index;
-	geometryHandleArrayRef geoRefs;
+	VisibleHandleArrayRef geoRefs;
 };
 
 class BroadPhase
 {
-	std::vector<vxGeometryHandle> m_geometries;
+	std::vector<VisibleHandle> m_visibles;
 	BoundingBoxHandle m_bb;
 	BoundingBoxHandle m_cameraBB;
-	using collision_geometryH = std::pair<Collision, vxGeometryHandle>;
+	using collision_visibleH = std::pair<Collision, VisibleHandle>;
 	
 public:
 
@@ -34,10 +34,10 @@ public:
 	BroadPhase();
 
 	///
-	/// \brief addGeometry
+	/// \brief addVisible
 	/// \param geo
-	///adds a geometry handle to be viewed by broadphase
-	void addGeometry(vxGeometryHandle geo);
+	///adds a Visible handle to be viewed by broadphase
+	void addVisible(VisibleHandle vis);
 	
 	BoundingBoxHandle closestBox(const v3s &p) const;
 	
@@ -84,7 +84,7 @@ public:
 	void setRz(unsigned int rz);
 	
 	unsigned long lookupVoxel(const v3s &v, int &a, int &b, int &c) const;
-	void locateAndRegister(vxGeometryHandle geo);
+	void locateAndRegister(VisibleHandle vis);
 	
 	const bpSearchResult getList(const Ray &ray, 
 								 v3s &sp, 

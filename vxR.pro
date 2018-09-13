@@ -8,6 +8,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = vxR
 TEMPLATE = app
+CONFIG += c++1z
 
 
 SOURCES += main.cpp\
@@ -45,7 +46,6 @@ SOURCES += main.cpp\
     Grid.cpp \
     GridUnitTest.cpp \
     Image.cpp \
-    IsoGeometry.cpp \
     LegoBlock.cpp \
     Manager.cpp \
     Map.cpp \
@@ -76,7 +76,11 @@ SOURCES += main.cpp\
     Stopwatch.cpp \
     Status.cpp \
     StandardShader.cpp \
-    Cylinder.cpp
+    Cylinder.cpp \
+    visible.cpp \
+    LightShader.cpp \
+    Sphere.cpp \
+    ConvexGeometry.cpp
 
 HEADERS  += \
     ImageProperties.h \
@@ -126,7 +130,6 @@ HEADERS  += \
     Map.h \
     Manager.h \
     LegoBlock.h \
-    IsoGeometry.h \
     Image.h \
     GridUnitTest.h \
     Grid.h \
@@ -144,7 +147,11 @@ HEADERS  += \
     BucketList.h \
     BroadPhase.h \
     BoxCreator.h \
-    Cylinder.h
+    Cylinder.h \
+    visible.h \
+    LightShader.h \
+    Sphere.h \
+    ConvexGeometry.h
 
 OTHER_FILES += \
     todo.txt \
@@ -153,7 +160,6 @@ OTHER_FILES += \
 
 CONFIG(debug, release|debug):DEFINES += _DEBUG
 
-CONFIG += c++14
 
 @
 QMAKE_CXXFLAGS_RELEASE -= -O2

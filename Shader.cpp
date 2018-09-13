@@ -1,80 +1,57 @@
 #include "Shader.h"
 
-#include <algorithm>
-#include "MathUtils.h"
 #include "Geometry.h"
+#include "MathUtils.h"
+#include <algorithm>
 
 using namespace vxCore;
 
-vxCore::Shader::Shader()
+bool Shader::hasReflection() const { return m_hasReflection; }
+
+void Shader::setHasReflection(bool hasReflection)
 {
+	m_hasReflection = hasReflection;
 }
 
+bool Shader::hasGI() const { return m_hasGI; }
 
-Color Shader::getDiffuseColor() const
-{
-	return m_diffuseColor;
-}
+void Shader::setHasGI(bool hasGI) { m_hasGI = hasGI; }
+
+vxCore::Shader::Shader() {}
+
+Color Shader::getDiffuseColor() const { return m_diffuseColor; }
 
 void Shader::setDiffuseColor(const Color &diffuseColor)
 {
 	m_diffuseColor = diffuseColor;
 }
 
-scalar Shader::getDiffuseCoeficent() const
-{
-	return m_diffuseCoeficent;
-}
+scalar Shader::getDiffuseCoeficent() const { return m_diffuseCoeficent; }
 
 void Shader::setDiffuseCoeficent(const scalar &diffuseCoeficent)
 {
 	m_diffuseCoeficent = diffuseCoeficent;
 }
 
-unsigned int Shader::getGiSamples() const
-{
-	return m_giSamples;
-}
-
-void Shader::setGiSamples(unsigned int giSamples)
-{
-	m_giSamples = giSamples;
-}
-
-scalar Shader::getGiCoeficent() const
-{
-	return m_giCoeficent;
-}
+scalar Shader::getGiCoeficent() const { return m_giCoeficent; }
 
 void Shader::setGiCoeficent(const scalar &giCoeficent)
 {
 	m_giCoeficent = giCoeficent;
 }
 
-Color Shader::getGiColorMultiplier() const
-{
-	return m_giColorMultiplier;
-}
+Color Shader::getGiColorMultiplier() const { return m_giColorMultiplier; }
 
 void Shader::setGiColorMultiplier(const Color &giColorMultiplier)
 {
 	m_giColorMultiplier = giColorMultiplier;
 }
 
-unsigned int Shader::getReflectionSamples() const
-{
-	return m_reflectionSamples;
-}
+unsigned int Shader::getRayDepth() const { return m_rayDepth; }
 
-void Shader::setReflectionSamples(unsigned int reflectionSamples)
-{
-	m_reflectionSamples = reflectionSamples;
-}
+void Shader::setRayDepth(unsigned int rayDepth) { m_rayDepth = rayDepth; }
 
-scalar Shader::getReflectionRadius() const
-{
-	return m_reflectionRadius;
-}
+scalar Shader::getReflectionRadius() const { return m_reflectionRadius; }
 
 void Shader::setReflectionRadius(const scalar &reflectionRadius)
 {
@@ -96,7 +73,8 @@ Color Shader::getReflectionColorMultiplier() const
 	return m_reflectionColorMultiplier;
 }
 
-void Shader::setReflectionColorMultiplier(const Color &reflectionColorMultiplier)
+void Shader::setReflectionColorMultiplier(
+    const Color &reflectionColorMultiplier)
 {
 	m_reflectionColorMultiplier = reflectionColorMultiplier;
 }
@@ -111,10 +89,7 @@ void Shader::setRefractionSamples(unsigned int refractionSamples)
 	m_refractionSamples = refractionSamples;
 }
 
-scalar Shader::getRefractionRadius() const
-{
-	return m_refractionRadius;
-}
+scalar Shader::getRefractionRadius() const { return m_refractionRadius; }
 
 void Shader::setRefractionRadius(const scalar &refractionRadius)
 {
@@ -136,112 +111,93 @@ Color Shader::getRefractionColorMultiplier() const
 	return m_refractionColorMultiplier;
 }
 
-void Shader::setRefractionColorMultiplier(const Color &refractionColorMultiplier)
+void Shader::setRefractionColorMultiplier(
+    const Color &refractionColorMultiplier)
 {
 	m_refractionColorMultiplier = refractionColorMultiplier;
 }
 
-unsigned int Shader::getSscSamples() const
-{
-	return m_sscSamples;
-}
+unsigned int Shader::getSscSamples() const { return m_sscSamples; }
 
 void Shader::setSscSamples(unsigned int sscSamples)
 {
 	m_sscSamples = sscSamples;
 }
 
-scalar Shader::getSscRadius() const
-{
-	return m_sscRadius;
-}
+scalar Shader::getSscRadius() const { return m_sscRadius; }
 
-void Shader::setSscRadius(const scalar &sscRadius)
-{
-	m_sscRadius = sscRadius;
-}
+void Shader::setSscRadius(const scalar &sscRadius) { m_sscRadius = sscRadius; }
 
-scalar Shader::getSscCoefficent() const
-{
-	return m_sscCoefficent;
-}
+scalar Shader::getSscCoefficent() const { return m_sscCoefficent; }
 
 void Shader::setSscCoefficent(const scalar &sscCoefficent)
 {
 	m_sscCoefficent = sscCoefficent;
 }
 
-Color Shader::getSscColorMultiplier() const
-{
-	return m_sscColorMultiplier;
-}
+Color Shader::getSscColorMultiplier() const { return m_sscColorMultiplier; }
 
 void Shader::setSscColorMultiplier(const Color &sscColorMultiplier)
 {
 	m_sscColorMultiplier = sscColorMultiplier;
 }
 
-Color vxCore::Shader::getLightLoop(const Ray &ray, const Collision &collision) const
+Color vxCore::Shader::getLightLoop(const Ray &ray,
+                                   const Collision &collision) const
 {
-	//assert(m_lights);
+	// assert(m_lights);
 	Color acumColor;
-	
-	for(auto&& light:*m_lights)
+
+	for (const auto &light : *m_lights)
 	{
-		acumColor.add( light->acummulationLight(ray, collision) );
+		acumColor.add(light->acummulationLight(ray, collision));
 	}
-	
+
 	return acumColor;
 }
 
-void vxCore::Shader::setScene(std::weak_ptr<Scene> scene)
-{
-	m_scene = scene;
-}
+void vxCore::Shader::setScene(std::weak_ptr<Scene> scene) { m_scene = scene; }
 
-void vxCore::Shader::setLights(std::vector<std::shared_ptr<Light>> * lights)
+void vxCore::Shader::setLights(std::vector<std::shared_ptr<Light>> *lights)
 {
 	m_lights = lights;
 }
 
-
 ////////// Lambert
 
-Lambert::Lambert()
-	:Shader() 
-{
-}
+Lambert::Lambert() : Shader() {}
 
-Color Lambert::getIlluminatedColor(const Ray &ray, const Collision &collide) const
+Color Lambert::getIlluminatedColor(const Ray &ray,
+                                   const Collision &collide) const
 {
 	auto lumm = getLightLoop(ray, collide);
-	
+
 	return getColor(ray, collide) * lumm;
 }
-
 
 Color Lambert::getColor(const Ray &, const Collision &collide) const
 {
 	Color ret = Color::zero;
-	
-	if(collide.m_geo)
+
+	if (collide.m_geo)
 	{
-		auto&& color = collide.color() * collide.m_geo->baseColor();//m_diffuse.compute(collide)*m_diffuseColor;
+		auto &&color =
+		    collide.color() *
+		    collide.m_geo->color(); // m_diffuse.compute(collide)*m_diffuseColor;
 		ret = MU::remap(color, 0.0, 0.85);
 	}
 	else
 	{
-		auto&& color = collide.color();//m_diffuse.compute(collide)*m_diffuseColor;
+		auto &&color =
+		    collide.color(); // m_diffuse.compute(collide)*m_diffuseColor;
 		ret = MU::remap(color, 0.0, 0.85);
 	}
-	
+
 	return ret;
 }
 
 v3s Lambert::getVector(const Collision &collide) const
 {
-	const auto& c = m_diffuse.compute(collide);
+	const auto &c = m_diffuse.compute(collide);
 	return v3s(c.r(), c.g(), c.b());
 }
-
-
