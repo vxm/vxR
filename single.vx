@@ -3,16 +3,16 @@
 
 node
 {
-name = "renderSettings_0_low"
+name = "renderSettings"
 type = "vxRenderSettings"
 active = "true"
-    resolution = 607 341
-    pixelSamples = 2
+    resolution = 2720 1536
+    pixelSamples = 40
     reflectionSamples = 1
     giSamples = 1
-    giMultiplier = 1.0
+    giMultiplier = 1.5
     numThreads = -1
-    lightBounces = 5
+    lightBounces = 3
 }
 
 node
@@ -54,45 +54,18 @@ active = "true"
 
 node
 {
-name = "dome"
-type = "vxDome"
-active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    imageNode = "image_1"
-    lightImageNode = "image_2"
-    radius = 1000.0
-}
-
-
-node
-{
-name = "area_light_1"
+name = "area_light_2"
 type = "vxAreaLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -170 900 0 1]
-    intensity = 0.0
-    color = 218 230 200
-    samples = 1
-    castShadows = "false"
-    minX = -1.5
-    minY = -1.5
-    maxX = 1.5
-    maxY = 1.5
-}
-
-
-
-node
-{
-name = "point_light_1"
-type = "vxPointLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -14.0 10.0 1.0 1]
-    intensity = 0.690
-    color = 255 230 240
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 18 2 -15 1]
+    intensity = 5.32
+    color = 215 212 202
     samples = 1
     castShadows = "true"
-    position = -2 5 -2
+    minX = -4.5
+    minY = 0.3
+    maxX = 4.5
+    maxY = 2.5
 }
 
 node
@@ -100,35 +73,44 @@ node
 name = "sun"
 type = "vxDirectLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 21 0 0 0 0 1]
-    intensity = 1.4
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+    intensity = 2.1
     color = 194 220 211
     orientation = -2.0 -10.0 7.0
     samples = 1
     castShadows = "true"
 }
 
+
 node
 {
-name = "sphere1"
-type = "vxSphere"
+name = "juan"
+type = "vxGeometry"
 active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    radius = 1
+    transform = [4 0 0 0 0 4 0 0 0 0 4 0 0.0 0.20 0.3 1]
+    filePath = "/Users/mblanc/code/temp/vxR/juan_0.ply"
+    color = 249 249 249
+    shader = "shader_1"
+}
+
+
+node
+{
+name = "grid"
+type = "vxGrid"
+active = "true"
+    transform = [2 0 0 0 0 2 0 0 0 0 2 0 1.5 0.25 0.0 1]
+    resolution = 256
+    size = 4.75
+    color = 256 256 256
+    shader = "shader_1"
 }
 
 node
 {
-name = "floor"
-type = "vxPlane"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
-    planeType = "Y"
-    x = 0.0
-    y = -0.48
-    z = 0.0
-    pointA = 440.0 -57.0 440.0
-    pointB = 450.0 -56.0 440.0
-    pointC = 440.0 -56.0 450.0
-    color = 60 50 80
+name = "juan_vx"
+type = "vxGridGeometry"
+active = "true"
+    transform = [8.1 0 0 0 0 8.1 0 0 0 0 8.1 0 0.5 -0.63 0 1]
+    filePath = "/Users/mblanc/code/temp/vxR/juan_0.ply"
 }
