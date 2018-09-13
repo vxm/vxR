@@ -40,6 +40,12 @@ BoundingBoxHandle BroadPhase::closestBox(const v3s &p) const
 void BroadPhase::updateCache()
 {
 	const auto dngs = m_geometries.size() * 2;
+
+    if(dngs==0)
+    {
+            std::cout << "No cash created. There is no geometries in scene" << std::endl;
+            return;
+    }
 	
 	m_xvalues.resize(dngs);
 	m_yvalues.resize(dngs);

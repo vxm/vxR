@@ -167,3 +167,6 @@ QMAKE_LFLAGS_RELEASE += -O1
 @
 
 #
+
+DISTFILES += \
+    single.vx
