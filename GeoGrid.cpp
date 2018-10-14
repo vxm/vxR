@@ -59,9 +59,9 @@ void GeoGrid::setBb(const std::shared_ptr<BoundingBox> &bb)
 
 	auto d = m_bb->diagonal();
 
-	setResolution(MU::clamp((unsigned int)(d.x() * 64.0), 4u, 64u),
-	              MU::clamp((unsigned int)(d.y() * 64.0), 4u, 64u),
-	              MU::clamp((unsigned int)(d.z() * 64.0), 4u, 64u));
+	setResolution(MU::clamp((unsigned int)(d.x() * 84.0), 4u, 84u),
+	              MU::clamp((unsigned int)(d.y() * 84.0), 4u, 84u),
+	              MU::clamp((unsigned int)(d.z() * 84.0), 4u, 84u));
 }
 
 unsigned long GeoGrid::size() const { return m_rx * m_ry * m_rz; }
