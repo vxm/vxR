@@ -159,6 +159,11 @@ void PLYImporter::processPLYFile(const std::string &fileName)
 			default:
 				break;
 			}
+			
+			if(x>10.0)
+			{
+					std::cout << "big x value " << x << std::endl;
+			}
 		}
 		
 		k++;
@@ -177,8 +182,14 @@ void PLYImporter::processPLYFile(const std::string &fileName)
 			unsigned long b = std::stoul(lineTokens[2]);
 			unsigned long c = std::stoul(lineTokens[3]);
 			
+			
 			auto& newTri = m_geo->addTriangle(a,b,c);
 			newTri.computeArea();
+			
+			if(newTri.area()>1.0)
+			{
+				std::cout << "big area " << newTri.area() << std::endl;
+			}
 			
 			capturedFaces++;
 		}
