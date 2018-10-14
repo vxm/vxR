@@ -354,7 +354,7 @@ Color Color::operator+(scalar factor) const
 
 Color Color::operator+(const Color &other) const
 {
-	return {other.m_r + m_r, other.m_g + m_g, other.m_b + m_b, other.m_a + m_a};
+	return {fabs(other.m_r + m_r), fabs(other.m_g + m_g), other.m_b + m_b, other.m_a + m_a};
 }
 
 void Color::toRGBA8888(unsigned char tbuff[4]) const
