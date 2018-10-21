@@ -103,7 +103,7 @@ node
 name = "image_2"
 type = "vxImage"
 active = "false"
-    imagePath = "/home/john/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
+    imagePath = "/home/mario/code/vxR/Topanga_Forest_B/Topanga_Forest_B_8k.jpg"
     gain = 1.0
     gamma = 2.1
 }
@@ -180,7 +180,7 @@ node
 {
 name = "sphere_1"
 type = "vxSphere"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.6 0.0 0.0 1]
     shader = "shader_1"
     color = 255 255 255
@@ -191,7 +191,7 @@ node
 {
 name = "sphere_2"
 type = "vxSphere"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.5 0.0 -0.7 1]
     shader = "shader_1"
     color = 255 255 255
@@ -372,7 +372,7 @@ name = "tree"
 type = "vxGeometry"
 active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.0 0.0 1.5 1]
-    filePath = "/home/john/Downloads/torus.ply"
+    filePath = "/home/mario/Downloads/torus.ply"
     color = 230 230 230
     shader = "shader_1"
 }
@@ -507,7 +507,7 @@ name = "model_5"
 type = "vxGeometry"
 active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 3.0 -0.7 3.0 1]
-    filePath = "/home/john/Downloads/model_5.ply"
+    filePath = "/home/mario/Downloads/model_5.ply"
     color = 161 162 152
     shader = "shader_2"
 }
@@ -516,9 +516,9 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "true"
+active = true"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.4 -0.7 0.0 1]
-    filePath = "/home/john/Downloads/broad_phase_model_4.ply"
+    filePath = "/home/mario/Downloads/broad_phase_model_4.ply"
     color = 174 174 174
     shader = "shader_2"
 }

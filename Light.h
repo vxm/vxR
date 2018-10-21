@@ -414,10 +414,7 @@ public:
 	// renderable interface
 	virtual bool throwRay(const Ray &) const override { return false; }
 
-	virtual int throwRay(const Ray &, Collision &collide) const override
-	{
-		return 0;
-	}
+	virtual int throwRay(const Ray &, Collision &) const override;
 
 	virtual bool hasCollision(const Ray &) const override { return false; }
 

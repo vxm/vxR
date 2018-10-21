@@ -283,6 +283,11 @@ void SunLight::set(const v3s &orientation)
 	m_orientation.set(orientation.unit());
 }
 
+int SunLight::throwRay(const Ray &, Collision &) const
+{
+	return 0;
+}
+
 void SunLight::updateBoundingBox()
 {
 	auto &&orig = m_transform.origin() + m_position;
