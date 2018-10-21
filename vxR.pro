@@ -168,11 +168,10 @@ QMAKE_CXXFLAGS_RELEASE += -Ofast -fomit-frame-pointer \
 							-mtune=native -flto -msse \
 							-mrecip -mfpmath=sse -msse2 \
 							-mssse3 -lSDL \
-                                                        -lpthread -lstdc++
+							-lpthread -lstdc++ -fopenacc
 QMAKE_LFLAGS_RELEASE += -O1
 @
 
-#
+QMAKE_CXXFLAGS += -fopenmp -fopenacc
 
-DISTFILES += \
-    single.vx
+#

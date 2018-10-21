@@ -1,5 +1,4 @@
 #include "PLYImporter.h"
-#include <map>
 
 using namespace vxCore;
 

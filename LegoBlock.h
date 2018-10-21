@@ -10,6 +10,7 @@
 
 namespace vxCore
 {
+
 class LegoBlockInGrid
 {
 private:
@@ -58,7 +59,7 @@ public:
 		    std::isless(hitX.y(), maxY) && std::isgreater(hitX.y(), minY))
 		{
 			collide.setValid(true);
-            collide.setNormal(bMax ? v3s::constX : v3s::constMinusX);
+			collide.setNormal(bMax ? constX : constMinusX);
 			collide.setPosition(hitX);
 			collide.setUV(v2s{maxZ - hitX.z(), maxY - hitX.y()});
 			return 1;
@@ -70,7 +71,7 @@ public:
 		    std::isless(hitY.z(), maxZ) && std::isgreater(hitY.z(), minZ))
 		{
 			collide.setValid(true);
-            collide.setNormal(bMax ? v3s::constY : v3s::constMinusY);
+			collide.setNormal(bMax ? constY : constMinusY);
 			collide.setPosition(hitY);
 			collide.setUV(v2s{maxX - hitY.x(), maxZ - hitY.z()});
 			return 1;
@@ -82,7 +83,7 @@ public:
 		    std::isless(hitZ.y(), maxY) && std::isgreater(hitZ.y(), minY))
 		{
 			collide.setValid(true);
-            collide.setNormal(bMax ? v3s::constZ : v3s::constMinusZ);
+			collide.setNormal(bMax ? constZ : constMinusZ);
 			collide.setPosition(hitZ);
 			collide.setUV(v2s{maxX - hitZ.x(), maxY - hitZ.y()});
 			return 1;
