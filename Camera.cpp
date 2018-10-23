@@ -132,7 +132,7 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 	auto orig = ret.origin();
 
 	auto np = orig +( d*6.33 );
-	auto no = orig + (MU::getSolidSphereRand(0.05));
+	auto no = orig + (MU::getSolidSphereRand(0.02));
 	
 	ret.setOrigin(no);
 	
