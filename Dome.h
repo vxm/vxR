@@ -21,7 +21,7 @@ public:
 	///
 	/// \brief vxDome
 	///
-	Dome();
+	Dome() = default;
 	///
 	/// \brief vxDome
 	/// \param env

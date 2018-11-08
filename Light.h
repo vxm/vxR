@@ -240,6 +240,12 @@ public:
 
 	// Visible interface
 	virtual void updateBoundingBox() override { return; }
+
+	// Light interface
+public:
+	virtual v3s getLightRay(const v3s &) const override;
+	virtual scalar lightRatio(const Ray &, const v3s &) const override;
+	virtual Color acummulationLight(const Ray &, const Collision &) const override;
 };
 
 class PointLight final : public Light
@@ -295,7 +301,7 @@ public:
 	// renderable interface
 	virtual bool throwRay(const Ray &ray) const override;
 
-	virtual int throwRay(const Ray &ray, Collision &col) const override;
+	virtual int throwRay(const Ray &, Collision &col) const override;
 
 	virtual bool hasCollision(const Ray &ray) const override;
 

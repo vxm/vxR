@@ -68,14 +68,11 @@ bool Box::throwRay(const Ray &ray) const
 	
 	bMax = std::signbit(ray.direction().y());
 	const auto hitY = MU::rayAndYPlane(ray, bMax ? max.y() : min.y());
-	if( std::islessequal(hitY.x(),max.x()) 
+
+	return std::islessequal(hitY.x(),max.x())
 			&& std::isgreaterequal(hitY.x(),min.x())
 			&& std::islessequal(hitY.z(),max.z()) 
-			&& std::isgreaterequal(hitY.z(),min.z()))
-	{
-		return true;
-	}
-	return false;
+			&& std::isgreaterequal(hitY.z(),min.z());
 }
 
 int Box::throwRay(const Ray &ray, Collision &collide) const
@@ -161,14 +158,9 @@ bool Box::hasCollision(const Ray &ray) const
 	
 	bMax = std::signbit(max.z());
 	const auto hitZ = MU::rectAndZPlane(ray.direction(), bMax ? max.z() : min.z());
-	if( std::islessequal(hitZ.x(),max.x()) 
+	return std::islessequal(hitZ.x(),max.x())
 			&& std::isgreaterequal(hitZ.x(),min.x())
 			&& std::islessequal(hitZ.y(),max.y()) 
-			&& std::isgreaterequal(hitZ.y(),min.y()))
-	{
-		return true;
-	}
-	
-	return false;
+			&& std::isgreaterequal(hitZ.y(),min.y());
 }
 

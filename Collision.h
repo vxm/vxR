@@ -24,7 +24,7 @@ private:
 public:
 	Visible *m_geo{nullptr};
 
-	Collision();
+	Collision() = default;
 
 	Collision(const v3s &p, const v3s &n = {0, 0, 0},
 	          const Color &c = {0, 0, 0, 1}, const v2s &uv = {.5, .5});

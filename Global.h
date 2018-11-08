@@ -1,5 +1,5 @@
-#ifndef _VXGLOBALMC_
-#define _VXGLOBALMC_
+#ifndef VXGLOBALMC
+#define VXGLOBALMC
 
 #include <memory>
 #include "Object.h"
@@ -17,7 +17,7 @@ class LegoBlock;
 class Global
 {
 private:
-	Global();
+	Global() = default;
 
 public:
 	

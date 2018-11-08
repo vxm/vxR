@@ -33,8 +33,10 @@ class FileUtils : public vxManager
 	static bool fileExists(const std::string &filePath);
 	
 	static std::string makeUnique(const std::string &fileName, scalar suffix=0.0);
-	
-	
+
+	static std::string removeLastFileOnRoute(std::string &str);
+
+	static std::string path;
 };
 
 }

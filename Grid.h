@@ -144,7 +144,7 @@ public:
 	///
 	Grid(scalar x, scalar y,  scalar z,  scalar size);
 	
-	~Grid();
+	~Grid() = default;
 
 // GETTER AND SETTERS
 	///

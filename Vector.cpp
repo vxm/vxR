@@ -19,8 +19,9 @@ v3s constMinusXZ{-1.0, 0.0, 1.0};
 v3s constMinusYZ{0.0, -1.0, -1.0};
 v3s constMinusXYZ{-1.0, -1.0, -1.0};
 
-v3s zero3{0.0, 0.0, 0.0};
-v2s zero2{0.0, 0.0};
+
+const v3s v3s::zero = {0.0,0.0,0.0};
+const v2s v2s::zero = {0.0,0.0};
 
 v2s::v2s() {}
 

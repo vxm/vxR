@@ -44,6 +44,9 @@ int executeRenderProcess(int argc, char *argv[])
 			sceneParam = true;
 		}
 	}
+
+
+	FileUtils::path = FileUtils::removeLastFileOnRoute(scenePath);
 	std::cout << "\t Captured scene file argument: " << scenePath << std::endl;
 
 	// TODO:find a home for this next two lines of code.
@@ -57,7 +60,7 @@ int executeRenderProcess(int argc, char *argv[])
 			const auto resolution = node->getVector2d("resolution");
 			const auto samples = node->getInt("pixelSamples");
 			const auto rayDepth = node->getInt("rayDepth");
-			const auto giMultiplier = node->getFloat("giMultiplier");
+			const auto giMultiplier = node->getScalar("giMultiplier");
 
 			//			const auto numThreads = node->getInt("numThreads");
 

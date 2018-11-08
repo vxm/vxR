@@ -26,6 +26,9 @@ private:
 	v3s m_orientation{0.0, 0.0, 1.0};
 
 	scalar m_focusDistance = {1.0};
+
+	scalar m_focalLength = {1.0};
+	scalar m_lensSize = {0.02};
 	scalar m_horizontalAperture = {1.42};
 	scalar m_verticalAperture = {1.42};
 	
@@ -33,8 +36,8 @@ private:
 	scalar m_vApTan = tan(-m_verticalAperture/scalar(2.0));
 	scalar m_pixelRadius{1.0};
 
-	scalar m_rx;
-	scalar m_ry;
+	scalar m_rx = 0;
+	scalar m_ry = 0;
 
 	std::shared_ptr<const ImageProperties> m_properties;
 
@@ -44,7 +47,7 @@ public:
 	/// \brief vxCamera
 	/// \param prop
 	///
-	Camera(std::shared_ptr<const ImageProperties> prop);
+	Camera(const std::shared_ptr<const ImageProperties> &prop);
 	///
 	/// \brief vxCamera
 	/// \param position
@@ -111,7 +114,7 @@ public:
 	/// \brief setProp
 	/// \param prop
 	///
-	void setProp(std::shared_ptr<const ImageProperties> prop);
+	void setProp(const std::shared_ptr<const ImageProperties> &prop);
 	///
 	/// \brief horizontalAperture
 	/// \return 
@@ -162,6 +165,10 @@ public:
 	/// \param pixelRadius
 	///
 	void setPixelRadius(const scalar &pixelRadius);
+	scalar lensSize() const;
+	void setLensSize(const scalar &lensSize);
+	scalar focalLength() const;
+	void setFocalLength(const scalar &focalLength);
 };
 
 }

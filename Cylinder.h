@@ -11,7 +11,7 @@ class Cylinder final : public ConvexGeometry
 	scalar m_height = 0.50;
 	
 public:
-	Cylinder();
+	Cylinder() = default;
 	
 	scalar radius() const;
 	void setRadius(const scalar &radius);

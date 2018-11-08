@@ -2,10 +2,6 @@
 
 using namespace vxCore;
 
-CirclesMap::CirclesMap()
-{
-}
-
 Color CirclesMap::compute(const Collision &collision) const
 {
 	Color outColor(Color::white);

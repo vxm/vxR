@@ -1,12 +1,11 @@
 
-#ifndef _VXVECTORMC_
-#define _VXVECTORMC_
+#ifndef _VXVECTOR1MC_
+#define _VXVECTOR1MC_
 
 #include <algorithm>
 #include <iostream>
 #include <limits>
 #include <math.h>
-#include <quadmath.h>
 #include <stdio.h>
 
 namespace vxCore
@@ -15,13 +14,13 @@ namespace vxCore
 // TODO: add literal for scalar 0.0r
 using scalar = double; // float // double // __float128
 
-constexpr const scalar minScalar = std::numeric_limits<scalar>::min();
-constexpr const scalar tinyScalar = fabs(minScalar) * scalar(10000.0);
-constexpr const scalar smallScalar = scalar(1.0) / scalar(100.0);
+ const scalar minScalar = std::numeric_limits<scalar>::min();
+ const scalar tinyScalar = fabs(minScalar) * scalar(10000.0);
+ const scalar smallScalar = scalar(1.0) / scalar(100.0);
 
-constexpr const scalar maxScalar = std::numeric_limits<scalar>::max();
-constexpr const scalar bigScalar = fabs(maxScalar) * scalar(0.001);
-constexpr const scalar sZero = scalar(0.0);
+ const scalar maxScalar = std::numeric_limits<scalar>::max();
+ const scalar bigScalar = fabs(maxScalar) * scalar(0.001);
+ const scalar sZero = scalar(0.0);
 
 class Color;
 
@@ -31,6 +30,9 @@ class v2s final
 	scalar m_y{0.0};
 
 public:
+
+	static const v2s zero;
+
 	///
 	/// \brief v2s
 	///
@@ -255,8 +257,6 @@ public:
 	}
 };
 
-static v2s zero2;
-
 class v3s final
 {
 
@@ -269,6 +269,9 @@ protected:
 	scalar m_w{0.0};
 
 public:
+
+	static const v3s zero;
+
 	///
 	/// \brief The axis enum
 	/// Identifies all different axis.
@@ -675,6 +678,5 @@ static v3s constMinusXY;
 static v3s constMinusXZ;
 static v3s constMinusYZ;
 static v3s constMinusXYZ;
-static v3s zero3;
 }
 #endif

@@ -23,7 +23,7 @@ protected:
 
 public:
 
-	Color ();
+	Color () = default;
 	Color (scalar other);
 	Color (const scalar r, 
 			 const scalar g, 

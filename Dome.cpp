@@ -13,10 +13,6 @@ void Dome::setLightImage(const ImageHandle &lightImage)
 	m_lightImage = lightImage;
 }
 
-Dome::Dome()
-{
-}
-
 Dome::Dome(ImageHandle env)
 	: m_image(env)
 {

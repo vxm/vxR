@@ -31,10 +31,6 @@ class BoundingBox : public std::enable_shared_from_this<BoundingBox>
 
 public:
 	///
-	/// \brief BoundingBox
-	///
-	BoundingBox();
-	///
 	/// \brief clear
 	///
 	void clear();
@@ -43,7 +39,7 @@ public:
 	/// \param position
 	/// \param size
 	///
-	void set(v3s position, scalar size);
+	void set(const v3s &position, scalar size);
 	///
 	/// \brief set
 	/// \param mnx

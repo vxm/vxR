@@ -16,8 +16,6 @@ class Clock
 	static scalar m_end;
 	
 public:
-	Clock();
-	
 	static Clock clock()
 	{
 		static Clock cl;

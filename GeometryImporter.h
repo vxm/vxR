@@ -10,7 +10,7 @@ namespace vxCore {
 class GeometryImporter
 {
 public:
-	GeometryImporter();
+	GeometryImporter() = default;
 };
 
 #endif // VXIMPORTER_H

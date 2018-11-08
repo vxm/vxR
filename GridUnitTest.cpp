@@ -6,7 +6,7 @@ using namespace vxCore;
 using namespace std::string_literals;
 
 
-v3s GridUnitTest::testNextVoxel(v3s org, v3s dir)
+v3s GridUnitTest::testNextVoxel(const v3s &org, const v3s &dir)
 {
 	Grid grid;
 	const Ray z{org, dir};

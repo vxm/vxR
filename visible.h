@@ -51,7 +51,7 @@ public:
 	///
 	Visible();
 	
-	virtual ~Visible();
+	virtual ~Visible() = default;
 	///
 	/// \brief transform
 	/// \return 
@@ -100,7 +100,7 @@ public:
 	virtual bool hasCollision(const Ray &ray) const = 0;
 	
 	std::shared_ptr<Shader> shader() const;
-	void setShader(std::shared_ptr<Shader> shader);
+	void setShader(const std::shared_ptr<Shader> &shader);
 	VisibleType type() const;
 	void setType(const VisibleType &type);
 };

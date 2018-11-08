@@ -135,7 +135,7 @@ bool PointLight::throwRay(const Ray &ray) const
 	return throwRay(ray, col) == 1;
 }
 
-int PointLight::throwRay(const Ray &ray, Collision &col) const
+int PointLight::throwRay(const Ray &, Collision &col) const
 {
 	col.setValid(false);
 	return 0;
@@ -562,3 +562,18 @@ Color AreaLight::acummulationLight(const Ray &,
 scalar AreaLight::minX() const { return m_minX; }
 
 void AreaLight::setMinX(const scalar &minX) { m_minX = minX; }
+
+v3s vxCore::SpotLight::getLightRay(const v3s &) const
+{
+	return v3s::zero;
+}
+
+scalar vxCore::SpotLight::lightRatio(const Ray &, const v3s &) const
+{
+	return 0.0;
+}
+
+Color vxCore::SpotLight::acummulationLight(const Ray &, const Collision &) const
+{
+	return Color::zero;
+}

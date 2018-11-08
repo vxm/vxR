@@ -20,7 +20,7 @@ Grid::Grid()
 	createGridData(5);
 	initialize();
 	updateBB();
-	srand(time(NULL));
+	srand(time(nullptr));
 }
 
 Grid::Grid(const v3s &position, scalar size)
@@ -31,7 +31,7 @@ Grid::Grid(const v3s &position, scalar size)
 	
 	initialize();
 	updateBB();
-	srand(time(NULL));
+	srand(time(nullptr));
 }
 
 Grid::Grid(scalar x, scalar y, scalar z, scalar size)
@@ -43,11 +43,7 @@ Grid::Grid(scalar x, scalar y, scalar z, scalar size)
 	
 	initialize();
 	updateBB();
-	srand(time(NULL));
-}
-
-Grid::~Grid()
-{
+	srand(time(nullptr));
 }
 
 void Grid::updateBB()
@@ -496,9 +492,11 @@ bool Grid::activeInRange(const v3s &pos) const
 bool Grid::active(unsigned long idx) const
 {
 	if (idx<m_c_resXresXres)
+	{
 		return vxAt(idx).active();
-	else
-		return false;
+	}
+
+	return false;
 }
 
 void Grid::activate(const unsigned long x, 
@@ -807,7 +805,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 	
 	/// geometries for voxels
 	BoundingBox box;
-	Cylinder cyl;
+	//Cylinder cyl;
 	///
 	
 	VoxelInfo voxel;
@@ -846,27 +844,27 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 				return 1;
 			}
 		}
-		else if(rety>0)
-		{
-			auto&& neighbour = neighbourVoxel(voxel, {{0,-1,0}});
+//		else if(rety>0)
+//		{
+//			auto&& neighbour = neighbourVoxel(voxel, {{0,-1,0}});
 			
-			if(neighbour.data.active())
-			{
-				neighbour.position = getVoxelPosition(voxel.index);
+//			if(neighbour.data.active())
+//			{
+//				neighbour.position = getVoxelPosition(voxel.index);
 				
-				box.set(neighbour.position+v3s{0.0,-m_c_boxSize/2.0,0.0}, voxel.size/2.0);
+//				box.set(neighbour.position+v3s{0.0,-m_c_boxSize/2.0,0.0}, voxel.size/2.0);
 				
-				Collision c;
+//				Collision c;
 				
-				if(box.throwRay(ray,c))
-				{
-					col = c;
-					col.setColor(Color::indexColor(neighbour.data.byte()));
-					col.setValid(true);
-					return 1;
-				}
-			}
-		}
+//				if(box.throwRay(ray,c))
+//				{
+//					col = c;
+//					col.setColor(Color::indexColor(neighbour.data.byte()));
+//					col.setValid(true);
+//					return 1;
+//				}
+//			}
+//		}
 		
 		const scalar xVal = m_bb->minX() + (retx + velX) * m_c_boxSize - p.x();
 		const scalar yVal = m_bb->minY() + (rety + velY) * m_c_boxSize - p.y();

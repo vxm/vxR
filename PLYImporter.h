@@ -34,7 +34,7 @@ public:
 	/// \brief processPLYFile
 	/// \param fileName
 	///
-	void processPLYFile(const std::string &fileName);
+	bool processPLYFile(const std::string &fileName);
 	///
 	/// \brief getGeometry
 	/// \return 

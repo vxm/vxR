@@ -9,7 +9,7 @@ std::shared_ptr<Shader> Visible::shader() const
 	return m_shader;
 }
 
-void Visible::setShader(std::shared_ptr<Shader> shader)
+void Visible::setShader(const std::shared_ptr<Shader> &shader)
 {
 	m_shader = shader;
 }
@@ -53,8 +53,6 @@ int Visible::testBoundingBox(const Ray &ray, Collision &collide) const
 	return 1;
 }
 
-Visible::~Visible() {}
-
 std::shared_ptr<BoundingBox> Visible::boundingBox()
 {
 	return m_bb;
@@ -96,11 +94,6 @@ int Visible::throwRay(const Ray &ray, Collision &col) const
 bool Visible::hasCollision(const Ray &ray) const
 {
 	Collision col;
-	if(m_bb->throwRay(ray, col))
-	{
-		return true;
-	}
-	
-	return false;
+	return m_bb->throwRay(ray, col);
 }
 

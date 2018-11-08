@@ -26,7 +26,7 @@ BoundingBoxHandle BroadPhase::closestBox(const v3s &p) const
 
 	scalar d = std::numeric_limits<scalar>::max();
 
-	for (auto geo : m_visibles)
+	for (const auto &geo : m_visibles)
 	{
 		auto t = geo->boundingBox()->center().distance(p);
 
@@ -43,7 +43,7 @@ BoundingBoxHandle BroadPhase::closestBox(const v3s &p) const
 void BroadPhase::updateCache()
 {
 	m_bb->clear();
-	for (auto visibl : m_visibles)
+	for (const auto &visibl : m_visibles)
 	{
 		visibl->updateBoundingBox();
 		auto bb = visibl->boundingBox();
@@ -300,12 +300,7 @@ bool BroadPhase::indexIsValid(const long idx) const
 bool BroadPhase::throwRay(const Ray &ray) const
 {
 	Collision col;
-	if (throwRay(ray, col))
-	{
-		return true;
-	}
-
-	return false;
+	return throwRay(ray, col);
 }
 
 #define NAIVE_BB_METHOD 1

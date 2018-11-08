@@ -11,8 +11,6 @@ namespace vxCore
 
 class CirclesMap : public Map2d
 {
-public:
-	CirclesMap();
 	
 	// vxMap interface
 public:

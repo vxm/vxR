@@ -2,6 +2,8 @@
 
 using namespace vxCore;
 
+std::string FileUtils::path = "";
+
 FileUtils::FileUtils()
 {
 }
@@ -65,4 +67,17 @@ std::string FileUtils::makeUnique(const std::string &fileName, scalar suffix)
 	}
 	
 	return unique;
+}
+
+std::string FileUtils::removeLastFileOnRoute(std::string &str)
+{
+	std::string k("/");
+	std::string retStr;
+
+	auto t = str.rfind(k);
+
+	if (t!=std::string::npos)
+		retStr = str.substr(0,t+1);
+
+	return retStr;
 }

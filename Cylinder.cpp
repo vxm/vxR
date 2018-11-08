@@ -12,10 +12,6 @@ void Cylinder::setHeight(const scalar &height)
 	m_height = height;
 }
 
-Cylinder::Cylinder()
-{
-}
-
 scalar Cylinder::radius() const
 {
 	return m_radius;

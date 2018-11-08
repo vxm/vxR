@@ -6,10 +6,6 @@ scalar Clock::m_step = 1.0;
 scalar Clock::m_start = 0.0;
 scalar Clock::m_end = 1.0;
 
-Clock::Clock()
-{
-	
-}
 
 scalar Clock::time()
 {

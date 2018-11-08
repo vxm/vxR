@@ -28,6 +28,7 @@ public:
 	{}
 	
 	Hit()
+		:m_color(0.0,0.0,0.0,0.0)
 	{}
 	
 	Color m_color;

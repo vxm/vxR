@@ -8,8 +8,6 @@ using namespace vxCore;
 scalar mxc = 220.0 / 256.0;
 scalar mnc = 10.0 / 256.0;
 
-Color::Color() {}
-
 Color::Color(const scalar r, const scalar g, const scalar b, const scalar alpha)
     : m_r(r), m_g(g), m_b(b), m_a(alpha)
 {
@@ -21,11 +19,11 @@ Color::Color(const Color &other)
 }
 
 Color::Color(const v3s &other)
-    : m_r(other.x()), m_g(other.y()), m_b(other.z()), m_a(1.0)
+	: m_r(other.x()), m_g(other.y()), m_b(other.z())
 {
 }
 
-Color::Color(scalar other) : m_r(other), m_g(other), m_b(other), m_a(1.0) {}
+Color::Color(scalar other) : m_r(other), m_g(other), m_b(other) {}
 
 Color &Color::operator=(const v3s &otro)
 {
@@ -61,82 +59,56 @@ Color Color::indexColor(const unsigned char idx)
 	{
 	case 0:
 		return white;
-		break;
 	case 1:
 		return red;
-		break;
 	case 2:
 		return green;
-		break;
 	case 3:
 		return blue;
-		break;
 	case 4:
 		return yellow;
-		break;
 	case 5:
 		return pink;
-		break;
 	case 6:
 		return purple;
-		break;
 	case 7:
 		return reddishPurple;
-		break;
 	case 8:
 		return grey;
-		break;
 	case 9:
 		return orange;
-		break;
 	case 10:
 		return redPurple;
-		break;
 	case 11:
 		return bluegreen;
-		break;
 	case 12:
 		return reddishOrange;
-		break;
 	case 13:
 		return bluishPurple;
-		break;
 	case 14:
 		return orangePink;
-		break;
 	case 15:
 		return greenishBlue;
-		break;
 	case 16:
 		return bluishGreen;
-		break;
 	case 17:
 		return greenishYellow;
-		break;
 	case 18:
 		return yellowishGreen;
-		break;
 	case 19:
 		return purplishBlue;
-		break;
 	case 20:
 		return purplishPink;
-		break;
 	case 21:
 		return purplishRed;
-		break;
 	case 22:
 		return yellowGreen;
-		break;
 	case 23:
 		return yellowishOrange;
-		break;
 	case 24:
 		return black;
-		break;
 	default:
 		return red;
-		break;
 	}
 
 	return red;

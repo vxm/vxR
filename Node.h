@@ -74,7 +74,7 @@ public:
 	}
 
 	Color getColor(const std::string attrName);
-	float getFloat(const std::string attrName);
+	scalar getScalar(const std::string attrName);
 	v3s getVector3d(const std::string attrName);
 	v2s getVector2d(const std::string attrName);
 	int getInt(const std::string attrName);

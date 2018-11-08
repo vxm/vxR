@@ -8,6 +8,8 @@
 namespace vxCore
 {
 
+
+
 static std::vector<scalar> rand_scalar;
 static std::vector<v2s> rand_v2s;
 static std::vector<v3s> rand_v3s;
@@ -17,17 +19,23 @@ class MathUtils
 	public:
 		MathUtils();
 
+	// floating precission
+		static scalar equalWithEpsilon(const scalar a, const scalar b);
+
 	
 	// Rationals
-	constexpr static scalar ratio(scalar a, scalar b);
-	constexpr static scalar ratio(scalar a, int b);
-	constexpr static scalar ratio(int a, scalar b);
-	constexpr static scalar ratio(int a, int b);
-	
+
+		constexpr static scalar ratio(scalar a, scalar b);
+		constexpr static scalar ratio(scalar a, int b);
+		constexpr static scalar ratio(int a, scalar b);
+		constexpr static scalar ratio(int a, int b);
+
 	// Speed of light
-	static const scalar C;
-	static const scalar PI;
-	static const scalar HALF_PI;
+
+	static constexpr scalar epsilon = 0.0001;
+	static constexpr scalar C = 299'792'458.0;
+	static constexpr scalar PI = 3.141'592'653'589'793'238'462'643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816;
+	static constexpr scalar HALF_PI = MathUtils::PI / scalar(2.0);
 
 	//Polar coordinates.
 	static v2s normalToCartesian(const v3s& normal);

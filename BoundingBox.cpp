@@ -3,7 +3,6 @@
 
 using namespace vxCore;
 
-BoundingBox::BoundingBox() {}
 
 void BoundingBox::clear()
 {
@@ -11,7 +10,7 @@ void BoundingBox::clear()
 	m_minX = 1.0;
 }
 
-void BoundingBox::set(v3s position, scalar size)
+void BoundingBox::set(const v3s &position, scalar size)
 {
 	m_minX = position.x() - (size / scalar(2.0));
 	m_minY = position.y() - (size / scalar(2.0));
@@ -293,11 +292,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 		if (z <= maxZ && z >= minZ)
 		{
 			auto fp = v3s(x, y, z) + p;
-			if (!(p - fp).follows(d))
-			{
-				return false;
-			}
-			return true;
+			return (p - fp).follows(d);
 		}
 	}
 
@@ -310,11 +305,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 		if (z <= maxZ && z >= minZ)
 		{
 			auto fp = v3s(x, y, z) + p;
-			if (!(p - fp).follows(d))
-			{
-				return false;
-			}
-			return true;
+			return (p - fp).follows(d);
 		}
 	}
 
@@ -327,11 +318,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 		if (y <= maxY && y >= minY)
 		{
 			auto fp = v3s(x, y, z) + p;
-			if (!(p - fp).follows(d))
-			{
-				return false;
-			}
-			return true;
+			return (p - fp).follows(d);
 		}
 	}
 

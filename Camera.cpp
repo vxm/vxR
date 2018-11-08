@@ -1,5 +1,5 @@
 #include "Camera.h"
-
+#include <utility>
 using namespace vxCore;
 
 
@@ -30,7 +30,7 @@ std::shared_ptr<const ImageProperties> Camera::properties() const
 void Camera::setProperties(const std::shared_ptr<const ImageProperties> &properties)
 {
 	m_properties = properties;
-	srand(time(NULL));
+	srand(time(nullptr));
 	m_rx = (scalar)m_properties->rx();
 	m_ry = (scalar)m_properties->ry();
 }
@@ -55,10 +55,30 @@ void Camera::setPixelRadius(const scalar &pixelRadius)
 	m_pixelRadius = pixelRadius;
 }
 
-Camera::Camera(std::shared_ptr<const ImageProperties> prop) 
+scalar Camera::lensSize() const
+{
+	return m_lensSize;
+}
+
+void Camera::setLensSize(const scalar &lensSize)
+{
+	m_lensSize = lensSize;
+}
+
+scalar Camera::focalLength() const
+{
+	return m_focalLength;
+}
+
+void Camera::setFocalLength(const scalar &focalLength)
+{
+	m_focalLength = focalLength;
+}
+
+Camera::Camera(const std::shared_ptr<const ImageProperties> &prop)
 	: m_properties{prop}
 {
-	srand(time(NULL));
+	srand(time(nullptr));
 	m_rx = (scalar)m_properties->rx();
 	m_ry = (scalar)m_properties->ry();
 }
@@ -78,7 +98,7 @@ Camera::Camera(const v3s &position,
 	m_hApTan = tan(-m_horizontalAperture/scalar(2.0));
 	m_vApTan = tan(-m_verticalAperture/scalar(2.0));
 	
-	srand(time(NULL));
+	srand(time(nullptr));
 }
 
 void Camera::set(const v3s& position, 
@@ -108,8 +128,8 @@ void Camera::set(const v3s& position,
 
 Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 {
-	const auto xFactor = coord.x() * scalar(2.0) -1.0;
-	const auto yFactor = coord.y() * scalar(2.0) -1.0;
+	const auto xFactor = coord.x() * scalar(2.0) - 1.0;
+	const auto yFactor = coord.y() * scalar(2.0) - 1.0;
 	//std::cout << "Pixel factor " << xFactor << " " << yFactor << std::endl;
 	
 	const auto&& s = sampler.xy(m_pixelRadius);
@@ -117,7 +137,7 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 	const auto compX = m_hApTan * xFactor - s.x()/(scalar(2.0) * m_rx);
 	const auto compY = m_vApTan * yFactor - s.y()/(scalar(2.0) * m_ry);
 	
-	auto&& ret = Ray{{0,0,0}, {compY, compX, m_focusDistance}, VisionType::kAll};
+	auto&& ret = Ray{{0,0,0}, {compY, compX, m_focalLength}, VisionType::kAll};
 	
 	//TODO: rotate origin and then place the origin of the ray in position
 	//TODO:read from scene.
@@ -131,8 +151,8 @@ Ray Camera::ray(const v2s &coord, Sampler &sampler) const
 	auto d = ret.direction().unit();
 	auto orig = ret.origin();
 
-	auto np = orig +( d*6.33 );
-	auto no = orig + (MU::getSolidSphereRand(0.02));
+	auto np = orig +( d * m_focusDistance );
+	auto no = orig + (MU::getSolidSphereRand(m_lensSize));
 	
 	ret.setOrigin(no);
 	
@@ -183,7 +203,7 @@ std::shared_ptr<const ImageProperties> Camera::prop() const
 	return m_properties;
 }
 
-void Camera::setProp(std::shared_ptr<const ImageProperties> prop)
+void Camera::setProp(const std::shared_ptr<const ImageProperties> &prop)
 {
 	m_properties = prop;
 }

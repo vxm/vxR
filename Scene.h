@@ -244,7 +244,7 @@ public:
 	/// \param path
 	/// \return 
 	///
-	vxDomeHandle createDome(const std::string &imageName, const std::__cxx11::string &lightImagePath);
+	vxDomeHandle createDome(const std::string &imageName, const std::string &lightImagePath);
 	///
 	/// \brief createPlane
 	/// \param type

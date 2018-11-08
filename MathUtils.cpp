@@ -7,12 +7,9 @@
 
 #define USE_STORE_RAND 0
 
+
 using namespace vxCore;
 
-const scalar MathUtils::C{299'792'458.0};
-const scalar MathUtils::PI{
-    3.141'592'653'589'793'238'462'643'383'279'502'884'197'169'399'375'105'820'974'944'592'307'816};
-const scalar MathUtils::HALF_PI{PI / scalar(2.0)};
 
 //////////////////////////////////////
 ///////////////  RANDOM CACHES ///////
@@ -43,6 +40,11 @@ void MathUtils::fillRand()
 /// \brief MathUtils::MathUtils
 ///
 MathUtils::MathUtils() {}
+
+scalar MathUtils::equalWithEpsilon(const scalar a, const scalar b)
+{
+	return scalar(fabs(a-b)<MathUtils::epsilon);
+}
 
 constexpr scalar MathUtils::ratio(scalar a, scalar b) { return a / (scalar)b; }
 
@@ -87,7 +89,7 @@ v3s MathUtils::rectAndPlane(const v3s &ray, const Plane &plane)
 		break;
 	}
 
-	return zero3;
+	return v3s::zero;
 }
 
 v3s MathUtils::rectAndPlane(const Ray &ray, const v3s &a, const v3s &b,
@@ -97,7 +99,7 @@ v3s MathUtils::rectAndPlane(const Ray &ray, const v3s &a, const v3s &b,
 	const auto &p1 = ray.origin();
 	if (n.dot(ray.direction()) == 0.0)
 	{
-		return zero3;
+		return v3s::zero;
 	}
 
 	scalar u = n.dot(a - p1) / n.dot(ray.direction());
@@ -111,7 +113,7 @@ v3s MathUtils::rectAndPlane(const Ray &ray, TriRef &tri)
 	const auto &c = ray.direction();
 	if (n.dot(c) == 0.0)
 	{
-		return zero3;
+		return v3s::zero;
 	}
 
 	scalar u = n.dot(tri.p1 - p1) / n.dot(c);
@@ -207,7 +209,7 @@ scalar MathUtils::getRand(const scalar range)
 #if USE_STORE_RAND
 	return range * rand_scalar[(m_k++) % cached_random];
 #else
-	return range * (rand() / (scalar)RAND_MAX);
+	return (range * (rand() / (scalar)RAND_MAX));
 #endif
 }
 

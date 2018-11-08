@@ -56,7 +56,7 @@ void Node::addAttribute(const Attribute &attr)
 // it's values to a color to be returned.
 Color Node::getColor(const std::string attrName)
 {
-	for (const auto nodeAttr : m_attributes)
+	for (const auto& nodeAttr : m_attributes)
 	{
 		if (nodeAttr.first == attrName)
 		{
@@ -73,7 +73,7 @@ Color Node::getColor(const std::string attrName)
 // it's values to a color to be returned.
 v3s Node::getVector3d(const std::string attrName)
 {
-	for (const auto nodeAttr : m_attributes)
+	for (const auto& nodeAttr : m_attributes)
 	{
 		if (nodeAttr.first == attrName)
 		{
@@ -83,14 +83,14 @@ v3s Node::getVector3d(const std::string attrName)
 
 	std::cerr << "Node: Vector3d attribute '" << attrName << "' not found in node"
 	          << std::endl;
-	return zero3;
+	return v3s::zero;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
 v2s Node::getVector2d(const std::string attrName)
 {
-	for (const auto nodeAttr : m_attributes)
+	for (const auto& nodeAttr : m_attributes)
 	{
 		if (nodeAttr.first == attrName)
 		{
@@ -100,31 +100,31 @@ v2s Node::getVector2d(const std::string attrName)
 
 	std::cerr << "Node: Vector2d attribute '" << attrName << "' not found in node"
 	          << std::endl;
-	return zero2;
+	return v2s::zero;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-float Node::getFloat(const std::string attrName)
+scalar Node::getScalar(const std::string attrName)
 {
-	for (const auto nodeAttr : m_attributes)
+	for (const auto& nodeAttr : m_attributes)
 	{
 		if (nodeAttr.first == attrName)
 		{
-			return nodeAttr.second.asFloat();
+			return nodeAttr.second.asScalar();
 		}
 	}
 
 	std::cerr << "Node: Float attribute '" << attrName << "' not found in node"
 	          << std::endl;
-	return 0.f;
+	return scalar(0.0);
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
 int Node::getInt(const std::string attrName)
 {
-	for (const auto nodeAttr : m_attributes)
+	for (const auto& nodeAttr : m_attributes)
 	{
 		if (nodeAttr.first == attrName)
 		{
@@ -141,7 +141,7 @@ int Node::getInt(const std::string attrName)
 // it's values to a color to be returned.
 std::string Node::getString(const std::string attrName)
 {
-	for (const auto nodeAttr : m_attributes)
+	for (const auto& nodeAttr : m_attributes)
 	{
 		if (nodeAttr.first == attrName)
 		{
@@ -158,7 +158,7 @@ std::string Node::getString(const std::string attrName)
 // it's values to a color to be returned.
 bool Node::getBool(const std::string attrName)
 {
-	for (const auto nodeAttr : m_attributes)
+	for (const auto& nodeAttr : m_attributes)
 	{
 		if (nodeAttr.first == attrName)
 		{
@@ -177,7 +177,7 @@ Matrix44 Node::getMatrix(const std::string attrName)
 {
 	// TODO: I see lambdas to specify the function to convert the data type
 	// and return the default of the value in case it didnt find the attr.
-	for (const auto nodeAttr : m_attributes)
+	for (const auto& nodeAttr : m_attributes)
 	{
 
 		if (nodeAttr.first == attrName)

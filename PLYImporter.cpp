@@ -1,4 +1,5 @@
 #include "PLYImporter.h"
+#include <map>
 
 using namespace vxCore;
 
@@ -17,12 +18,12 @@ void PLYImporter::setGeometry(const vxTriangleMeshHandle &geo)
 	m_geo = geo;
 }
 
-void PLYImporter::processPLYFile(const std::string &fileName)
+bool PLYImporter::processPLYFile(const std::string &fileName)
 {
 	if (!FileUtils::fileExists(fileName))
 	{
 		std::cerr << "PLY: File " << fileName << " doesn't exist" << std::endl;
-		return;
+		return false;
 	}
 
 	std::ifstream iFile(fileName);
@@ -34,7 +35,7 @@ void PLYImporter::processPLYFile(const std::string &fileName)
 	if(line!="ply")
 	{
 		std::cerr << "PLY: File " << fileName << " doesn't contain ply info" << std::endl;
-		return;
+		return false;
 	}
 	
 	// checking if ASCII
@@ -42,7 +43,7 @@ void PLYImporter::processPLYFile(const std::string &fileName)
 	if(line!="format ascii 1.0")
 	{
 		std::cerr << "PLY: File " << fileName << " is not ASCII" << std::endl;
-		return;
+		return false;
 	}
 	
 	//optional lines
@@ -57,7 +58,7 @@ void PLYImporter::processPLYFile(const std::string &fileName)
 	if(vertexAmountTok.size()!=3)
 	{
 		std::cerr << "PLY: vertex count is unexpected:: '" << line << "'" << std::endl;
-		return;
+		return false;
 	}
 	
 	auto numVertex = std::stoul(vertexAmountTok[2]);
@@ -117,7 +118,7 @@ void PLYImporter::processPLYFile(const std::string &fileName)
 		if(vts.size()!=properties.size())
 		{
 			std::cerr << "PLY: Line " << k << " could not be parsed as xyx scalar" << std::endl;
-			return;
+			return false;
 		}
 		else
 		{
@@ -231,5 +232,7 @@ void PLYImporter::processPLYFile(const std::string &fileName)
 
 	m_geo->close();
 	iFile.close();
+
+	return true;
 }
 
