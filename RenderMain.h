@@ -13,7 +13,7 @@ class vxRenderMain : public QMainWindow
 		Q_OBJECT
 		
 	public:
-		explicit vxRenderMain(QWidget *parent = 0);
+		explicit vxRenderMain(QWidget *parent = nullptr);
 		~vxRenderMain();
 
 	private:

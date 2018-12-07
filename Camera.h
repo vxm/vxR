@@ -1,5 +1,5 @@
-﻿#ifndef _VXCAMERAMC_
-#define _VXCAMERAMC_
+﻿#ifndef VXCAMERAMC
+#define VXCAMERAMC
 
 #include <iostream>
 #include <math.h>

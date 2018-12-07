@@ -2,16 +2,6 @@
 
 using namespace vxCore;
 
+bool UnitTest::verbose() { return m_verbose; }
 
-bool UnitTest::verbose()
-{
-	return m_verbose;
-}
-
-void UnitTest::setVerbose(bool verbose)
-{
-	m_verbose = verbose;
-}
-UnitTest::UnitTest()
-{
-}
+void UnitTest::setVerbose(bool verbose) { m_verbose = verbose; }

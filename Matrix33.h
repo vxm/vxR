@@ -210,21 +210,6 @@ public:
 	/// \return 
 	///
 	bool isSingular() const;
-	///
-	/// \brief setOrigin
-	/// \param orig
-	///
-	void setOrigin(const v3s& orig) const;
-	///
-	/// \brief getOrigin
-	/// \return 
-	///
-	v3s getOrigin() const;
-	///
-	/// \brief getScale
-	/// \return 
-	///
-	v3s getScale() const;
 	
 	//Matrix33 operator* (scalar, const Matrix33& right);
 	//std::ostream & operator<< (std::ostream &os, const Matrix33&m);

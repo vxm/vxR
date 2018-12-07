@@ -18,7 +18,9 @@ public:
 	///
 	/// \brief ImageData
 	///
-	ImageData();
+	ImageData() = default;
+
+	bool hasData() const;
 	///
 	/// \brief setProperties
 	/// \param prop

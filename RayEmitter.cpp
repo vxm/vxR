@@ -2,6 +2,4 @@
 
 using namespace vxCore;
 
-RayEmitter::RayEmitter()
-{
-}
+RayEmitter::RayEmitter() {}

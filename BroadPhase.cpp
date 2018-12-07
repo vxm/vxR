@@ -4,6 +4,7 @@
 
 #define DRAW_BBOX 0
 #define DRAW_OBJECT_BBOX 0
+
 using namespace vxCore;
 
 BroadPhase::BroadPhase() { m_bb = std::make_shared<BoundingBox>(); }

@@ -1,24 +1,16 @@
 #include "Status.h"
-namespace vxCore {
-
-
-Status::Status()
+namespace vxCore
 {
-}
 
-void Status::examine(std::function<bool ()> f, const std::string &msg)
+void Status::examine(const std::function<bool()> &f, const std::string &msg)
 {
-	if(!f())
+	if (!f())
 	{
 		std::cout << msg << " failure." << std::endl;
 		m_internalStatus = code::kError;
 	}
 }
 
-bool Status::isSuccess()
-{
-	return m_internalStatus == code::kSuccess;
-}
+bool Status::isSuccess() { return m_internalStatus == code::kSuccess; }
 
-
-}
+} // namespace vxCore

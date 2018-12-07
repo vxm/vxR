@@ -61,4 +61,4 @@ void Collision::setColor(const Color &val) { m_color = val; }
 void Collision::setColor(const v3s &val) { m_color = val; }
 
 void Collision::setPosition(const v3s &val) { m_position = val; }
-}
+} // namespace vxCore

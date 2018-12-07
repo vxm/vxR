@@ -3,7 +3,6 @@
 
 using namespace vxCore;
 
-
 void BoundingBox::clear()
 {
 	m_maxX = -1.0;
@@ -185,10 +184,10 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 		return 1;
 	}
 
-	if (d.dot(p - center()) > 0.0)
-	{
-		return 0;
-	}
+	//	if (d.dot(p - center()) > 0.0)
+	//	{
+	//		return 0;
+	//	}
 
 	auto &&minX = m_minX - p.x();
 	auto &&maxX = m_maxX - p.x();
@@ -212,7 +211,7 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 				return 0;
 			}
 			collide.setPosition(fp);
-			collide.setNormal(d.xPositive() ? constMinusX : constX);
+			collide.setNormal(d.xPositive() ? v3s::constMinusX : v3s::constX);
 			collide.setValid();
 			collide.setUV({(y - minY) / yLength(), (z - minZ) / zLength()});
 			return 1;
@@ -234,7 +233,7 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 				return 0;
 			}
 			collide.setPosition(fp);
-			collide.setNormal(d.yPositive() ? constMinusY : constY);
+			collide.setNormal(d.yPositive() ? v3s::constMinusY : v3s::constY);
 			collide.setValid();
 			collide.setUV(v2s(((x - minX)) / xLength(), ((z - minZ)) / zLength()));
 			return 1;
@@ -256,7 +255,7 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 				return 0;
 			}
 			collide.setPosition(fp);
-			collide.setNormal(d.zPositive() ? constMinusZ : constZ);
+			collide.setNormal(d.zPositive() ? v3s::constMinusZ : v3s::constZ);
 			collide.setValid();
 			collide.setUV(v2s(((x - minX)) / xLength(), ((y - minY)) / yLength()));
 			return 1;

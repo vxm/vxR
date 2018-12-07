@@ -132,9 +132,9 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 		auto matValues =
 		    base_match[5].str().substr(1, base_match[5].str().size() - 2);
 		std::stringstream strValue(matValues);
-		for (int i = 0; i < 16; i++)
+		for (auto &v : m)
 		{
-			strValue >> m[i];
+			strValue >> v;
 		}
 
 		ret.second.setMatrix44(Matrix44(m));
@@ -153,7 +153,8 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 	return ret;
 }
 
-Status SceneParser::parseNodeBody(std::ifstream &inFile, vxNodeHandle node)
+Status SceneParser::parseNodeBody(std::ifstream &inFile,
+								  const vxNodeHandle &node)
 {
 	// Condition to finish node reading.
 	const std::regex rel("(\\})");
@@ -188,7 +189,7 @@ Status SceneParser::parseNodeBody(std::ifstream &inFile, vxNodeHandle node)
 
 			// then we are reading an attribute
 			const auto &&attr = parseAttribute(line.substr(ind));
-			if (attr.first.size())
+			if (!attr.first.empty())
 			{
 				node->addAttribute(attr);
 			}

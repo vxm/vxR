@@ -17,7 +17,7 @@ static std::vector<v3s> rand_v3s;
 class MathUtils
 {
 	public:
-		MathUtils();
+		MathUtils() = default;
 
 	// floating precission
 		static scalar equalWithEpsilon(const scalar a, const scalar b);

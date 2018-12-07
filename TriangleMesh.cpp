@@ -78,7 +78,7 @@ void TriangleMesh::addVertexTransformed(const v3s &v3)
 	if (!m_openForEdition)
 	{
 		std::cerr << "You tried to edit a geometry when is closed for edition"
-		          << std::endl;
+				  << std::endl;
 		return;
 	}
 
@@ -94,7 +94,7 @@ void TriangleMesh::addVertexNormalTransformed(const v3s &normal)
 	if (!m_openForEdition)
 	{
 		std::cerr << "You tried to edit a geometry when is closed for edition"
-		          << std::endl;
+				  << std::endl;
 		return;
 	}
 
@@ -109,7 +109,7 @@ void TriangleMesh::addUV(const v2s &uv)
 	if (!m_openForEdition)
 	{
 		std::cerr << "You tried to edit a geometry when is closed for edition"
-		          << std::endl;
+				  << std::endl;
 		return;
 	}
 
@@ -117,12 +117,12 @@ void TriangleMesh::addUV(const v2s &uv)
 }
 
 TriRef &TriangleMesh::addTriangle(unsigned long a, unsigned long b,
-                                  unsigned long c)
+								  unsigned long c)
 {
 	if (!m_openForEdition)
 	{
 		std::cerr << "You are editing a geometry when is closed for edition"
-		          << std::endl;
+				  << std::endl;
 	}
 
 	if (m_uvs.empty())
@@ -136,8 +136,8 @@ TriRef &TriangleMesh::addTriangle(unsigned long a, unsigned long b,
 
 	// TODO:emplace_back ?
 	m_triangles.emplace_back(m_vertices[a], m_vertices[b], m_vertices[c],
-	                         m_vertexNormals[a], m_vertexNormals[b],
-	                         m_vertexNormals[c], uvRefA, uvRefB, uvRefC);
+							 m_vertexNormals[a], m_vertexNormals[b],
+							 m_vertexNormals[c], uvRefA, uvRefB, uvRefC);
 	return m_triangles.back();
 }
 
@@ -193,9 +193,9 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 				}
 			}
 		}
-	} while (!cols.size());
+	} while (cols.empty());
 
-	if (cols.size())
+	if (!cols.empty())
 	{
 		auto mind = (cols[0].position() - p).length();
 		col = cols[0];
@@ -231,7 +231,7 @@ bool TriangleMesh::hasCollision(const Ray &ray) const
 		return false;
 	}
 
-	const auto &p = ray.origin();
+	// const auto &p = ray.origin();
 
 	auto sp = col.position();
 
@@ -253,7 +253,7 @@ bool TriangleMesh::hasCollision(const Ray &ray) const
 			if (m_triangles[id].throwRay(ray, col))
 			{
 				if (ray.length() > 0.0 &&
-				    col.position().distance(ray.origin()) > ray.length())
+					col.position().distance(ray.origin()) > ray.length())
 				{
 					return false;
 				}

@@ -19,7 +19,7 @@ class Image : public Map2d
 
 public:
 	
-	Image(const std::string path);
+	Image(const std::string &path);
 	///
 	/// \brief compute
 	/// \param collision

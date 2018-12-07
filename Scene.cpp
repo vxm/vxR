@@ -14,16 +14,14 @@ namespace vxCore
 
 class Scene;
 
-Scene::Scene(ImagePropertiesHandle prop) : m_properties(prop)
+Scene::Scene(ImagePropertiesHandle prop) : m_properties(std::move(prop))
 {
 	m_broadPhase = std::make_unique<BroadPhase>();
 }
 
-Scene::~Scene() {}
-
 void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 {
-	m_nodeDB = nodeDB;
+	m_nodeDB = std::move(nodeDB);
 
 	buildDefaultShader();
 
@@ -71,7 +69,8 @@ void Scene::buildImages()
 		auto &&gain = node->getScalar("gain");
 		auto &&gamma = node->getScalar("gamma");
 
-		auto img = createImage(node->getString("imagePath"), gain, gamma);
+		auto img = createImage(FileUtils::path + node->getString("imagePath"), gain,
+							   gamma);
 
 		img->load();
 
@@ -160,17 +159,18 @@ void Scene::buildLights()
 
 	for (const auto &node : m_nodeDB->getNodesByType("vxSunLight"))
 	{
-		auto point = createSunLight();
-		point->setIntensity(node->getScalar("intensity"));
-		point->setColor(Color::lookup256(node->getColor("color")));
-		point->setSamples(node->getInt("samples"));
+		auto sun = createSunLight();
+		sun->setIntensity(node->getScalar("intensity"));
+		sun->setOrientation(node->getVector3d("orientation"));
+		sun->setColor(Color::lookup256(node->getColor("color")));
+		sun->setSamples(node->getInt("samples"));
 
 		std::string &&cast = node->getString("castShadows"s);
-		point->setComputeShadows(cast == "true"s);
+		sun->setComputeShadows(cast == "true"s);
 
 		const auto transform = node->getMatrix("transform");
-		point->setTransform(transform);
-		node->bind(point);
+		sun->setTransform(transform);
+		node->bind(sun);
 	}
 
 	for (const auto &node : m_nodeDB->getNodesByType("vxAreaLight"))
@@ -207,7 +207,7 @@ void Scene::buildCameras()
 		const auto vAperture = node->getScalar("verticalAperture");
 		const auto transform = node->getMatrix("transform");
 
-		m_camera->set(v3s::zero, constZ, fDistance, hAperture, vAperture);
+		m_camera->set(v3s::zero, v3s::constZ, fDistance, hAperture, vAperture);
 
 		m_camera->setFocalLength(focalLength);
 		m_camera->setLensSize(lensSize);
@@ -230,12 +230,11 @@ void Scene::buildGrids()
 		if (!shaderNode)
 		{
 			std::cerr << "shader node name " << shaderNodeName
-			          << " does not exist in database." << std::endl;
-			assert(true);
+					  << " does not exist in database." << std::endl;
+			static_assert(true);
 		}
 
-		auto sh = std::static_pointer_cast<Shader>(shaderNode->node());
-		grid->setShader(sh);
+		grid->setShader(std::static_pointer_cast<Shader>(shaderNode->node()));
 
 		const auto color = Color::lookup256(node->getColor("color"));
 		const auto resolution = (unsigned long)node->getInt("resolution");
@@ -263,9 +262,9 @@ void Scene::buildGrids()
 		}
 
 		// grid->createGround(3, (unsigned char)4u);
-		grid->createEdges((unsigned char)12u);
-		grid->createRandom(.3,-0.64);
-		grid->fill();
+		// grid->createEdges((unsigned char)12u);
+		// grid->createRandom(.3,-0.64);
+		// grid->fill();
 		// grid->createRandom(.03,-0.6);
 		// grid->createRandom(.0003,-0.5);
 
@@ -275,7 +274,7 @@ void Scene::buildGrids()
 		auto na = grid->numActiveVoxels();
 		auto totals = grid->getNumberOfVoxels();
 		std::cout << "Number of active voxels " << na << " of " << totals
-		          << std::endl;
+				  << std::endl;
 		node->bind(grid);
 	}
 }
@@ -346,13 +345,13 @@ void Scene::buildCylinders()
 		if (!shaderNode)
 		{
 			std::cerr << "shader node name " << shaderNodeName
-			          << " does not exist in database." << std::endl;
+					  << " does not exist in database." << std::endl;
 
-			assert(true);
+			static_assert(true);
 		}
 
 		cylinderGeo->setShader(
-		    std::static_pointer_cast<Shader>(shaderNode->node()));
+			std::static_pointer_cast<Shader>(shaderNode->node()));
 		cylinderGeo->setTransform(transform);
 
 		auto radius = node->getScalar("radius");
@@ -384,9 +383,9 @@ void Scene::buildSpheres()
 		if (!shaderNode)
 		{
 			std::cerr << "shader node name " << shaderNodeName
-			          << " does not exist in database." << std::endl;
+					  << " does not exist in database." << std::endl;
 
-			assert(true);
+			static_assert(true);
 		}
 
 		sphereGeo->setShader(std::static_pointer_cast<Shader>(shaderNode->node()));
@@ -419,15 +418,15 @@ void Scene::buildGeometries()
 		if (!shaderNode)
 		{
 			std::cerr << "shader node name " << shaderNodeName
-			          << " does not exist in database." << std::endl;
-			assert(true);
+					  << " does not exist in database." << std::endl;
+			static_assert(true);
 		}
 
 		geo->setShader(std::static_pointer_cast<Shader>(shaderNode->node()));
 		geo->setTransform(transform);
 
 		auto plyReader = std::make_shared<PLYImporter>(geo);
-		if(plyReader->processPLYFile(path))
+		if (plyReader->processPLYFile(path))
 		{
 			geo->updateBoundingBox();
 			node->bind(geo);
@@ -455,22 +454,23 @@ void Scene::buildShaders()
 		shader->setDiffuseCoeficent(node->getScalar("diffuseCoeficent"));
 		shader->setGiCoeficent(node->getScalar("giCoeficent"));
 		shader->setGiColorMultiplier(
-		    Color::lookup256(node->getColor("giColorMultiplier")));
+			Color::lookup256(node->getColor("giColorMultiplier")));
 		shader->setRayDepth((unsigned int)node->getInt("rayDepth"));
 		shader->setReflectionRadius(node->getScalar("reflectionRadius"));
 		shader->setReflectionCoefficent(node->getScalar("reflectionCoefficent"));
 		shader->setReflectionColorMultiplier(
-		    Color::lookup256(node->getColor("reflectionColorMultiplier")));
-		shader->setRefractionSamples((unsigned int)node->getInt("refractionSamples"));
+			Color::lookup256(node->getColor("reflectionColorMultiplier")));
+		shader->setRefractionSamples(
+			(unsigned int)node->getInt("refractionSamples"));
 		shader->setRefractionRadius(node->getScalar("refractionRadius"));
 		shader->setRefractionCoefficent(node->getScalar("refractionCoefficent"));
 		shader->setRefractionColorMultiplier(
-		    Color::lookup256(node->getColor("refractionColorMultiplier")));
+			Color::lookup256(node->getColor("refractionColorMultiplier")));
 		shader->setSscSamples((unsigned int)node->getInt("sscSamples"));
 		shader->setSscRadius(node->getScalar("sscRadius"));
 		shader->setSscCoefficent(node->getScalar("sscCoefficent"));
 		shader->setSscColorMultiplier(
-		    Color::lookup256(node->getColor("sscColorMultiplier")));
+			Color::lookup256(node->getColor("sscColorMultiplier")));
 
 		node->bind(shader);
 	}
@@ -494,7 +494,7 @@ vxShaderHandle Scene::createShader()
 	return lambert;
 }
 
-void Scene::setShader(vxShaderHandle shader) { m_shader = shader; }
+void Scene::setShader(const vxShaderHandle &shader) { m_shader = shader; }
 void Scene::setCamera(const std::shared_ptr<Camera> &camera)
 {
 	m_camera = camera;
@@ -546,7 +546,7 @@ SunLightHandle Scene::createSunLight()
 	return pl1;
 }
 
-IBLightHandle Scene::createIBLight(const std::string path)
+IBLightHandle Scene::createIBLight(const std::string &path)
 {
 	auto ibl1 = std::make_shared<IBLight>(1.0, path);
 	m_IBLights.emplace_back(ibl1);
@@ -571,15 +571,15 @@ AmbientLightHandle Scene::createAmbientLight()
 }
 
 vxDomeHandle Scene::createDome(const std::string &imagePath,
-                               const std::string &lightImagePath)
+							   const std::string &lightImagePath)
 {
 	auto imageNode = m_nodeDB->getNodeByName(imagePath);
 
 	if (!imageNode)
 	{
 		std::cerr << "image node name " << imagePath
-		          << " does not exist in database." << std::endl;
-		assert(true);
+				  << " does not exist in database." << std::endl;
+		static_assert(true);
 	}
 
 	auto image = getImage(imageNode);
@@ -589,8 +589,8 @@ vxDomeHandle Scene::createDome(const std::string &imagePath,
 	if (!lightImageNode)
 	{
 		std::cerr << "image node name " << lightImagePath
-		          << " does not exist in database." << std::endl;
-		assert(true);
+				  << " does not exist in database." << std::endl;
+		static_assert(true);
 	}
 
 	auto lightImage = getImage(lightImageNode);
@@ -609,7 +609,7 @@ std::shared_ptr<Plane> Scene::createPlane(Plane::type type)
 	return plane;
 }
 
-ImageHandle Scene::getImage(vxNodeHandle node)
+ImageHandle Scene::getImage(const vxNodeHandle &node)
 {
 	ImageHandle ret;
 
@@ -618,7 +618,7 @@ ImageHandle Scene::getImage(vxNodeHandle node)
 		std::cerr << "Node " << node->name() << " is not an image" << std::endl;
 	}
 
-	auto &&path = node->getString("imagePath");
+	auto path = FileUtils::path + node->getString("imagePath");
 	auto gain = node->getScalar("gain");
 	auto gamma = node->getScalar("gamma");
 
@@ -633,14 +633,14 @@ ImageHandle Scene::getImage(vxNodeHandle node)
 	if (!ret)
 	{
 		std::cerr << "Image with path " << path << " gain " << gain << " and gamma "
-		          << gamma << " could not be found" << std::endl;
+				  << gamma << " could not be found" << std::endl;
 	}
 
 	return ret;
 }
 
 ImageHandle Scene::createImage(const std::string &path, const scalar gain,
-                               const scalar gamma)
+							   const scalar gamma)
 {
 	// looking for previouly opened images.
 
@@ -653,7 +653,7 @@ ImageHandle Scene::createImage(const std::string &path, const scalar gain,
 }
 
 vxTriangleMeshHandle Scene::createGeometry(const std::string &path,
-                                           const Matrix44 &transform)
+										   const Matrix44 &transform)
 {
 	// looking for previouly processed meshes.
 	for (const auto &geo : m_triangleMeshes)
@@ -707,7 +707,7 @@ std::shared_ptr<Camera> Scene::camera() const { return m_camera; }
 
 vxDomeHandle Scene::dome() const
 {
-	if (m_domes.size())
+	if (!m_domes.empty())
 		return m_domes[0];
 
 	return vxDomeHandle();
@@ -721,7 +721,7 @@ bool Scene::throwRay(const Ray &ray) const
 
 int Scene::domeThrowRay(const Ray &ray, Collision &collide) const
 {
-	if (m_domes.size())
+	if (!m_domes.empty())
 	{
 		m_domes[0]->throwRay(ray, collide);
 		return 1;
@@ -732,7 +732,7 @@ int Scene::domeThrowRay(const Ray &ray, Collision &collide) const
 
 int Scene::domeComputeLight(const Ray &ray, Collision &collide) const
 {
-	if (m_domes.size())
+	if (!m_domes.empty())
 	{
 		m_domes[0]->computeLight(ray, collide);
 		return 1;
@@ -768,4 +768,4 @@ bool Scene::hasCollision(const Ray &ray) const
 }
 
 vxShaderHandle Scene::defaultShader() const { return m_shader; }
-}
+} // namespace vxCore

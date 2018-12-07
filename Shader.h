@@ -1,5 +1,5 @@
-#ifndef _VXSHADERMC_
-#define _VXSHADERMC_
+#ifndef VXSHADERMC
+#define VXSHADERMC
 
 #include "stdlib.h"
 #include "time.h"
@@ -40,7 +40,7 @@ protected:
 
 	unsigned int m_rayDepth = 0;
 	scalar m_reflectionRadius = 1.0;
-	scalar m_reflectionCoefficent = 1.0;
+	scalar m_reflectionCoefficent = 0.0;
 	Color m_reflectionColorMultiplier{1.0, 1.0, 1.0, 1.0};
 
 	unsigned int m_refractionSamples = 0;

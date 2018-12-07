@@ -11,7 +11,7 @@ namespace vxCore {
 class Map
 {
 	public:
-		Map();
+		Map() = default;
 	
 	virtual Color compute(const Collision &collision) const = 0;
 };

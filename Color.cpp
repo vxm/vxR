@@ -9,17 +9,16 @@ scalar mxc = 220.0 / 256.0;
 scalar mnc = 10.0 / 256.0;
 
 Color::Color(const scalar r, const scalar g, const scalar b, const scalar alpha)
-    : m_r(r), m_g(g), m_b(b), m_a(alpha)
+	: m_r(r), m_g(g), m_b(b), m_a(alpha)
 {
 }
 
 Color::Color(const Color &other)
-    : m_r(other.m_r), m_g(other.m_g), m_b(other.m_b), m_a(other.m_a)
+	: m_r(other.m_r), m_g(other.m_g), m_b(other.m_b), m_a(other.m_a)
 {
 }
 
-Color::Color(const v3s &other)
-	: m_r(other.x()), m_g(other.y()), m_b(other.z())
+Color::Color(const v3s &other) : m_r(other.x()), m_g(other.y()), m_b(other.z())
 {
 }
 
@@ -34,23 +33,23 @@ Color &Color::operator=(const v3s &otro)
 Color Color::lookup(const Color &col) { return MU::remap(col, mnc, mxc); }
 
 Color Color::lookup(const scalar r, const scalar g, const scalar b,
-                    const scalar a)
+					const scalar a)
 {
 	return {MU::remap(r, mnc, mxc), MU::remap(g, mnc, mxc),
-	        MU::remap(b, mnc, mxc), MU::remap(a, mnc, mxc)};
+			MU::remap(b, mnc, mxc), MU::remap(a, mnc, mxc)};
 }
 
 Color Color::lookup256(const int r, const int g, const int b, const int a)
 {
 	return {MU::remap(r / scalar(255.0), mnc, mxc),
-	        MU::remap(g / scalar(255.0), mnc, mxc),
-	        MU::remap(b / scalar(255.0), mnc, mxc),
-	        MU::remap(a / scalar(255.0), mnc, mxc)};
+			MU::remap(g / scalar(255.0), mnc, mxc),
+			MU::remap(b / scalar(255.0), mnc, mxc),
+			MU::remap(a / scalar(255.0), mnc, mxc)};
 }
 
 Color Color::lookup256(const Color &col)
 {
-	return std::move(MU::remap(col / scalar(255.0), mnc, mxc));
+	return MU::remap(col / scalar(255.0), mnc, mxc);
 }
 
 Color Color::indexColor(const unsigned char idx)
@@ -193,7 +192,7 @@ void Color::add(const Color &other)
 	m_g += other.m_g;
 	m_b += other.m_b;
 	m_a += other.m_a;
-	m_a = std::min(1.0, m_a);
+	m_a = std::min(scalar(1.0), m_a);
 }
 
 void Color::blend(const Color &other)
@@ -225,12 +224,12 @@ Color Color::dimm(scalar factor) const
 	return (*this) * ((scalar)1.0 / factor);
 }
 
-Color &Color::operator*=(const Color &entrada)
+Color &Color::operator*=(const Color &inputColor)
 {
-	m_r *= entrada.m_r;
-	m_g *= entrada.m_g;
-	m_b *= entrada.m_b;
-	m_a *= entrada.m_a;
+	m_r *= inputColor.m_r;
+	m_g *= inputColor.m_g;
+	m_b *= inputColor.m_b;
+	m_a *= inputColor.m_a;
 
 	return *this;
 }
@@ -245,12 +244,12 @@ Color &Color::operator*=(scalar factor)
 	return *this;
 }
 
-Color &Color::operator+=(const Color &entrada)
+Color &Color::operator+=(const Color &inputColor)
 {
-	m_r += entrada.m_r;
-	m_g += entrada.m_g;
-	m_b += entrada.m_b;
-	m_a += entrada.m_a;
+	m_r += inputColor.m_r;
+	m_g += inputColor.m_g;
+	m_b += inputColor.m_b;
+	m_a += inputColor.m_a;
 
 	return *this;
 }
@@ -265,12 +264,12 @@ Color &Color::operator+=(scalar factor)
 	return *this;
 }
 
-Color &Color::operator-=(const Color &entrada)
+Color &Color::operator-=(const Color &inputColor)
 {
-	m_r -= entrada.m_r;
-	m_g -= entrada.m_g;
-	m_b -= entrada.m_b;
-	m_a -= entrada.m_a;
+	m_r -= inputColor.m_r;
+	m_g -= inputColor.m_g;
+	m_b -= inputColor.m_b;
+	m_a -= inputColor.m_a;
 
 	return *this;
 }
@@ -288,19 +287,19 @@ Color &Color::operator-=(scalar factor)
 Color Color::operator/(scalar factor) const
 {
 	return {m_r / (scalar)factor, m_g / (scalar)factor, m_b / (scalar)factor,
-	        m_a / (scalar)factor};
+			m_a / (scalar)factor};
 }
 
-Color Color::operator/(const Color &entrada) const
+Color Color::operator/(const Color &inputColor) const
 {
-	return {entrada.m_r / m_r, entrada.m_g / m_g, entrada.m_b / m_b,
-	        entrada.m_a / m_a};
+	return {inputColor.m_r / m_r, inputColor.m_g / m_g, inputColor.m_b / m_b,
+			inputColor.m_a / m_a};
 }
 
-Color Color::operator*(const Color &entrada) const
+Color Color::operator*(const Color &inputColor) const
 {
-	return {entrada.m_r * m_r, entrada.m_g * m_g, entrada.m_b * m_b,
-	        entrada.m_a * m_a};
+	return {inputColor.m_r * m_r, inputColor.m_g * m_g, inputColor.m_b * m_b,
+			inputColor.m_a * m_a};
 }
 
 Color Color::operator*(const scalar factor) const
@@ -313,10 +312,10 @@ Color Color::operator-(scalar factor) const
 	return {m_r - factor, m_g - factor, m_b - factor, m_a - factor};
 }
 
-Color Color::operator-(const Color &entrada) const
+Color Color::operator-(const Color &inputColor) const
 {
-	return {m_r - entrada.m_r, m_g - entrada.m_g, m_b - entrada.m_b,
-	        m_a - entrada.m_a};
+	return {m_r - inputColor.m_r, m_g - inputColor.m_g, m_b - inputColor.m_b,
+			m_a - inputColor.m_a};
 }
 
 Color Color::operator+(scalar factor) const
@@ -326,7 +325,8 @@ Color Color::operator+(scalar factor) const
 
 Color Color::operator+(const Color &other) const
 {
-	return {fabs(other.m_r + m_r), fabs(other.m_g + m_g), other.m_b + m_b, other.m_a + m_a};
+	return {fabs(other.m_r + m_r), fabs(other.m_g + m_g), other.m_b + m_b,
+			other.m_a + m_a};
 }
 
 void Color::toRGBA8888(unsigned char tbuff[4]) const

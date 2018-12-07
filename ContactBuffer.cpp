@@ -1,6 +1,5 @@
 #include "ContactBuffer.h"
-namespace vxCore {
-
-
+namespace vxCore
+{
 
 }

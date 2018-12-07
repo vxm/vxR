@@ -4,7 +4,7 @@
 class vxManager
 {
 	public:
-		vxManager();
+		vxManager() = default;
 };
 
 #endif // VXMANAGER_H

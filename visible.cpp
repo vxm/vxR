@@ -4,69 +4,42 @@ using namespace vxCore;
 
 #define DRAW_BB 0
 
-std::shared_ptr<Shader> Visible::shader() const
-{
-	return m_shader;
-}
+std::shared_ptr<Shader> Visible::shader() const { return m_shader; }
 
 void Visible::setShader(const std::shared_ptr<Shader> &shader)
 {
 	m_shader = shader;
 }
 
-VisibleType Visible::type() const
-{
-    return m_type;
-}
+VisibleType Visible::type() const { return m_type; }
 
-void Visible::setType(const VisibleType &type)
-{
-    m_type = type;
-}
+void Visible::setType(const VisibleType &type) { m_type = type; }
 
-Visible::Visible()
-{
-    m_bb = std::make_shared<BoundingBox>();
-}
+Visible::Visible() { m_bb = std::make_shared<BoundingBox>(); }
 
 using namespace vxCore;
 
-Color Visible::color() const
-{
-    return m_color;
-}
+Color Visible::color() const { return m_color; }
 
-void Visible::setColor(const Color &baseColor)
-{
-	m_color = baseColor;
-}
+void Visible::setColor(const Color &baseColor) { m_color = baseColor; }
 
 int Visible::testBoundingBox(const Ray &ray, Collision &collide) const
 {
-	if(!m_bb->throwRay(ray, collide))
+	if (!m_bb->throwRay(ray, collide))
 	{
 		collide.setValid(false);
 		return 0;
 	}
-	
+
 	collide.setValid(true);
 	return 1;
 }
 
-std::shared_ptr<BoundingBox> Visible::boundingBox()
-{
-	return m_bb;
-}
+std::shared_ptr<BoundingBox> Visible::boundingBox() { return m_bb; }
 
-Matrix44 Visible::transform() const
-{
-	return m_transform;
-}
+Matrix44 Visible::transform() const { return m_transform; }
 
-Matrix44& Visible::transform()
-{
-	return m_transform;
-}
+Matrix44 &Visible::transform() { return m_transform; }
 
 void Visible::setTransform(const Matrix44 &transform)
 {
@@ -81,7 +54,7 @@ bool Visible::throwRay(const Ray &ray) const
 
 int Visible::throwRay(const Ray &ray, Collision &col) const
 {
-	if(m_bb->throwRay(ray, col))
+	if (m_bb->throwRay(ray, col))
 	{
 		col.setColor(m_color);
 		col.setValid(true);
@@ -96,4 +69,3 @@ bool Visible::hasCollision(const Ray &ray) const
 	Collision col;
 	return m_bb->throwRay(ray, col);
 }
-

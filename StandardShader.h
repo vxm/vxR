@@ -9,7 +9,7 @@ namespace vxCore
 class StandardShader : public Shader
 {
 	public:
-		StandardShader();
+		StandardShader() = default;
 		
 		std::shared_ptr<Map> m_diffueseTexture;
 		// vxShader interface

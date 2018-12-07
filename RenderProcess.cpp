@@ -13,10 +13,10 @@
 #include "ThreadPool.h"
 #include "TimeUtils.h"
 
-#define SINGLERAY 0
+#define SINGLERAY 1
 #if SINGLERAY
-#define PIXEL_X 303
-#define PIXEL_Y 170
+#define PIXEL_X 557
+#define PIXEL_Y 274
 #endif
 
 #ifdef _DEBUG
@@ -33,7 +33,7 @@ namespace vxCompute
 
 RenderProcess::RenderProcess(ImagePropertiesHandle &prop, unsigned int samples)
     : m_properties(prop), m_imageData(prop),
-      m_contactBuffer(prop->numPixels()), m_samples{samples}
+	  m_contactBuffer(prop->numPixels()), m_samples{samples}
 {
 	setNMaxThreads(100);
 }
@@ -48,7 +48,7 @@ std::shared_ptr<const ImageProperties> RenderProcess::properties() const
 }
 
 void RenderProcess::setProperties(
-    const std::shared_ptr<const ImageProperties> &properties)
+	const std::shared_ptr<const ImageProperties> &properties)
 {
 	m_properties = properties;
 }
@@ -125,10 +125,10 @@ Status::code RenderProcess::execute()
 		}
 
 		std::this_thread::sleep_for(
-		    std::chrono::seconds((int)customUpdateInterval));
+			std::chrono::seconds((int)customUpdateInterval));
 		std::cout << "\t\t(" << customUpdateInterval
-		          << ") progress update: " << std::setprecision(2) << dProgress
-		          << "%" << std::endl;
+				  << ") progress update: " << std::setprecision(2) << dProgress
+				  << "%" << std::endl;
 
 		prevProgress = dProgress;
 	}
@@ -146,7 +146,7 @@ Status::code RenderProcess::execute()
 #endif
 
 	std::cout << "Render Process done, took: "
-	          << TimeUtils::decorateTime(start, 2);
+			  << TimeUtils::decorateTime(start, 2);
 	return Status::code::kSuccess;
 }
 
@@ -192,7 +192,7 @@ Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 }
 
 Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
-                                       int deep = 0)
+									   int deep = 0)
 {
 	Color reflection = Color::zero;
 
@@ -222,19 +222,21 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
 		reflection += computeEnergyAndColor(reflexRay, refxCollision, deep);
 	}
 
-	reflection *= sh->getReflectionCoefficent(); // - fabs(ratio);
-
 	reflection.applyCurve(1.2, 0.0);
+
+	reflection *= sh->getReflectionCoefficent(); // - fabs(ratio);
 
 	return reflection;
 }
 
 Color RenderProcess::computeGI(Collision &col, int deep = 0)
 {
+	const auto &orColor = col.color();
+
 	const auto &&r = MU::getHollowHemisphereRand(1.0, col.normal());
 
 	const Ray giRay(col.position() + col.normal().small(), r.inverted(),
-	                VisionType::kOpaque);
+					VisionType::kOpaque);
 
 	auto ratio = giRay.direction().dot(col.normal());
 
@@ -253,13 +255,13 @@ Color RenderProcess::computeGI(Collision &col, int deep = 0)
 		hitColor += computeEnergyAndColor(giRay, nextRound, deep);
 	}
 
-	Color globalIlm = hitColor * (1.0 - fabs(ratio));
+	Color globalIlm = orColor * hitColor * (1.0 - fabs(ratio));
 
 	return globalIlm;
 }
 
 Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
-                                           unsigned int bounces)
+										   unsigned int bounces)
 {
 	Color firstHitColor = computeLight(ray, col);
 
@@ -308,7 +310,7 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 	// TODO: return this to smart pointer.
 	Collision collision;
 	const v2s hitCoordinates(itV / (scalar)m_properties->ry(),
-	                         itH / (scalar)m_properties->rx());
+							 itH / (scalar)m_properties->rx());
 
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
 
@@ -319,7 +321,7 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 	if (m_properties->numPixels() <= id)
 	{
 		std::cerr << "Error: trying to write a pixel which doesnt exist"
-		          << std::endl;
+				  << std::endl;
 	}
 	else
 	{
@@ -337,7 +339,7 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 	{
 		Color firstHitColor(Color::zero);
 		const v2s hitCoordinates(itV / (scalar)m_properties->ry(),
-		                         itH / (scalar)m_properties->rx());
+								 itH / (scalar)m_properties->rx());
 
 		for (auto s = 0u; s < m_samples; s++)
 		{
@@ -404,7 +406,7 @@ std::shared_ptr<const ImageProperties> RenderProcess::imageProperties() const
 }
 
 void RenderProcess::setImageProperties(
-    std::shared_ptr<const ImageProperties> imageProperties)
+	std::shared_ptr<const ImageProperties> imageProperties)
 {
 	m_properties = imageProperties;
 }
@@ -415,4 +417,4 @@ void RenderProcess::setScene(const std::shared_ptr<Scene> &scene)
 {
 	m_scene = scene;
 }
-}
+} // namespace vxCompute

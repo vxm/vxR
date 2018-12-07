@@ -2,16 +2,11 @@
 
 using namespace vxCore;
 
-Quaternion::Quaternion()
-{
-	
-}
+Quaternion::Quaternion() {}
 
 Quaternion::Quaternion(scalar ix, scalar iy, scalar iz, scalar iw)
-	: x(ix)
-	, y(iy)
-	, z(iz)
-	, w(iw)
+	: x(ix), y(iy), z(iz), w(iw)
+
 {
 }
 
@@ -27,11 +22,10 @@ void Quaternion::set(const v3s &axis, const scalar angle)
 	set(axis.x() * s, axis.y() * s, axis.z() * s, cos(angle / scalar(2.0)));
 }
 
-
 void Quaternion::set(scalar ix, scalar iy, scalar iz, scalar iw)
 {
-	x=ix;
-	y=iy;
-	z=iz;
-	w=iw;
+	x = ix;
+	y = iy;
+	z = iz;
+	w = iw;
 }

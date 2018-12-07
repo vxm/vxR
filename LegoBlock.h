@@ -18,7 +18,7 @@ private:
 	scalar m_size;
 
 public:
-	LegoBlockInGrid() {}
+	LegoBlockInGrid() = default;
 	v3s position() const;
 	void setPosition(const v3s &value);
 	scalar size() const;
@@ -31,7 +31,7 @@ private:
 	LegoBlockInGrid m_instance;
 
 public:
-	LegoBlock();
+	LegoBlock() = default;
 
 	std::shared_ptr<LegoBlock> at(const v3s &pos, scalar size)
 	{
@@ -59,7 +59,7 @@ public:
 		    std::isless(hitX.y(), maxY) && std::isgreater(hitX.y(), minY))
 		{
 			collide.setValid(true);
-			collide.setNormal(bMax ? constX : constMinusX);
+			collide.setNormal(bMax ? v3s::constX : v3s::constMinusX);
 			collide.setPosition(hitX);
 			collide.setUV(v2s{maxZ - hitX.z(), maxY - hitX.y()});
 			return 1;
@@ -71,7 +71,7 @@ public:
 		    std::isless(hitY.z(), maxZ) && std::isgreater(hitY.z(), minZ))
 		{
 			collide.setValid(true);
-			collide.setNormal(bMax ? constY : constMinusY);
+			collide.setNormal(bMax ? v3s::constY : v3s::constMinusY);
 			collide.setPosition(hitY);
 			collide.setUV(v2s{maxX - hitY.x(), maxZ - hitY.z()});
 			return 1;
@@ -83,7 +83,7 @@ public:
 		    std::isless(hitZ.y(), maxY) && std::isgreater(hitZ.y(), minY))
 		{
 			collide.setValid(true);
-			collide.setNormal(bMax ? constZ : constMinusZ);
+			collide.setNormal(bMax ? v3s::constZ : v3s::constMinusZ);
 			collide.setPosition(hitZ);
 			collide.setUV(v2s{maxX - hitZ.x(), maxY - hitZ.y()});
 			return 1;

@@ -19,7 +19,7 @@ namespace vxCore
 class VectorUtils
 {
 public:
-	VectorUtils();
+	VectorUtils() = default;
 
 	//TODO::template the vector element type.
 	static unsigned int sortAndUnique(std::vector<scalar> &vec)

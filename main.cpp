@@ -45,7 +45,6 @@ int executeRenderProcess(int argc, char *argv[])
 		}
 	}
 
-
 	FileUtils::path = FileUtils::removeLastFileOnRoute(scenePath);
 	std::cout << "\t Captured scene file argument: " << scenePath << std::endl;
 

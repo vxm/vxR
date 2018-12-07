@@ -3,27 +3,24 @@
 
 using namespace vxCore;
 
-v3s constX{1.0, 0.0, 0.0};
-v3s constY{0.0, 1.0, 0.0};
-v3s constZ{0.0, 0.0, 1.0};
-v3s constXY{1.0, 1.0, 0.0};
-v3s constXZ{1.0, 0.0, 1.0};
-v3s constYZ{0.0, 1.0, 1.0};
-v3s constXYZ{1.0, 1.0, 1.0};
+const v3s v3s::constX{1.0, 0.0, 0.0};
+const v3s v3s::constY{0.0, 1.0, 0.0};
+const v3s v3s::constZ{0.0, 0.0, 1.0};
+const v3s v3s::constXY{1.0, 1.0, 0.0};
+const v3s v3s::constXZ{1.0, 0.0, 1.0};
+const v3s v3s::constYZ{0.0, 1.0, 1.0};
+const v3s v3s::constXYZ{1.0, 1.0, 1.0};
 
-v3s constMinusX{-1.0, 0.0, 0.0};
-v3s constMinusY{0.0, -1.0, 0.0};
-v3s constMinusZ{0.0, 0.0, -1.0};
-v3s constMinusXY{-1.0, -1.0, 0.0};
-v3s constMinusXZ{-1.0, 0.0, 1.0};
-v3s constMinusYZ{0.0, -1.0, -1.0};
-v3s constMinusXYZ{-1.0, -1.0, -1.0};
+const v3s v3s::constMinusX{-1.0, 0.0, 0.0};
+const v3s v3s::constMinusY{0.0, -1.0, 0.0};
+const v3s v3s::constMinusZ{0.0, 0.0, -1.0};
+const v3s v3s::constMinusXY{-1.0, -1.0, 0.0};
+const v3s v3s::constMinusXZ{-1.0, 0.0, 1.0};
+const v3s v3s::constMinusYZ{0.0, -1.0, -1.0};
+const v3s v3s::constMinusXYZ{-1.0, -1.0, -1.0};
 
-
-const v3s v3s::zero = {0.0,0.0,0.0};
-const v2s v2s::zero = {0.0,0.0};
-
-v2s::v2s() {}
+const v3s v3s::zero = {0.0, 0.0, 0.0};
+const v2s v2s::zero = {0.0, 0.0};
 
 v2s::v2s(scalar x, scalar y) : m_x(x), m_y(y) {}
 
@@ -151,9 +148,7 @@ v2s v2s::operator+(const v2s &other) const
 	return {other.m_x + m_x, other.m_y + m_y};
 }
 
-v3s::v3s() {}
-
-v3s::v3s(scalar vals[])
+v3s::v3s(const scalar *vals)
 {
 	m_x = vals[0];
 	m_y = vals[1];
@@ -162,9 +157,8 @@ v3s::v3s(scalar vals[])
 
 v3s::v3s(const v3s &other) : m_x{other.m_x}, m_y{other.m_y}, m_z{other.m_z} {}
 
-v3s::v3s(const v3s &&other)
-    : m_x{std::move(other.m_x)}, m_y{std::move(other.m_y)}, m_z{std::move(
-                                                                other.m_z)}
+v3s::v3s(const v3s &&other) noexcept
+	: m_x{other.m_x}, m_y{other.m_y}, m_z{other.m_z}
 {
 }
 
@@ -298,8 +292,8 @@ v3s v3s::midPoint(const v3s &other) const
 
 v3s v3s::aaVector() const
 {
-	return {std::copysign(1.0, m_x), std::copysign(1.0, m_y),
-	        std::copysign(1.0, m_z)};
+	return v3s(std::copysign(1.0, m_x), std::copysign(1.0, m_y),
+			   std::copysign(1.0, m_z));
 }
 
 scalar v3s::distance(const v3s &ref) const
@@ -356,7 +350,7 @@ v3s &v3s::operator*=(const v3s &other)
 v3s v3s::operator^(const v3s &b) const
 {
 	return {(m_y * b.m_z) - (m_z * b.m_y), (m_z * b.m_x) - (m_x * b.m_z),
-	        (m_x * b.m_y) - (m_y * b.m_x)};
+			(m_x * b.m_y) - (m_y * b.m_x)};
 }
 
 v3s v3s::rotate(const v3s &axis, const scalar angle)
@@ -382,7 +376,7 @@ bool v3s::operator>(const v3s &other) const
 {
 	const auto &&a = m_x * m_x + m_y * m_y + m_z * m_z;
 	const auto &&b =
-	    other.m_x * other.m_x + other.m_y * other.m_y + other.m_z * other.m_z;
+		other.m_x * other.m_x + other.m_y * other.m_y + other.m_z * other.m_z;
 
 	return a > b;
 }
@@ -391,7 +385,7 @@ bool v3s::operator<(const v3s &other) const
 {
 	const auto &&a = m_x * m_x + m_y * m_y + m_z * m_z;
 	const auto &&b =
-	    other.m_x * other.m_x + other.m_y * other.m_y + other.m_z * other.m_z;
+		other.m_x * other.m_x + other.m_y * other.m_y + other.m_z * other.m_z;
 
 	return a < b;
 }
@@ -432,7 +426,7 @@ scalar v3s::angleYZ() const { return atan2(m_z, m_y); }
 
 scalar v3s::angleZX() const { return atan2(m_x, m_z); }
 
-v3s v3s::operator=(const v3s &otro)
+v3s &v3s::operator=(const v3s &otro)
 {
 	set(otro.m_x, otro.y(), otro.m_z);
 	return (*this);

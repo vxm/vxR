@@ -11,7 +11,7 @@ class Sphere final : public ConvexGeometry
 	scalar m_radius = 0.50;
 
 public:
-	Sphere();
+	Sphere() = default;
 
 	scalar radius() const;
 	void setRadius(const scalar &radius);

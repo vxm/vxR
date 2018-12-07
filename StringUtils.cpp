@@ -1,32 +1,28 @@
 #include "StringUtils.h"
 using namespace vxCore;
 
-
-
-StringUtils::StringUtils()
-{
-}
+StringUtils::StringUtils() {}
 
 unsigned int StringUtils::indentation(const std::string &line)
 {
 	auto n = 0u;
-	
-	for(const auto c:line)
+
+	for (const auto c : line)
 	{
 		auto notFound{true};
-		if(c=='\t')
+		if (c == '\t')
 		{
-			n+= SPACES_ARE_A_TAB;
+			n += SPACES_ARE_A_TAB;
 			notFound = false;
 		}
-		
-		if(std::isspace(c))
+
+		if (std::isspace(c))
 		{
 			n++;
 			notFound = false;
 		}
-		
-		if(notFound)
+
+		if (notFound)
 		{
 			break;
 		}
@@ -35,20 +31,16 @@ unsigned int StringUtils::indentation(const std::string &line)
 	return n;
 }
 
-std::vector<std::string> 
-	StringUtils::tokenizeSpace(const std::string &str)
+std::vector<std::string> StringUtils::tokenizeSpace(const std::string &str)
 {
 	std::vector<std::string> ret;
-	sregex_token_iterator it(str.begin(), 
-							 str.end(), 
-							 spaceDelimiter, 
-							 -1);
+	sregex_token_iterator it(str.begin(), str.end(), spaceDelimiter, -1);
 
 	sregex_token_iterator reg_end;
-	for (; it != reg_end; ++it) 
+	for (; it != reg_end; ++it)
 	{
-		 ret.emplace_back(it->str());
+		ret.emplace_back(it->str());
 	}
-	
+
 	return ret;
 }

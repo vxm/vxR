@@ -19,7 +19,7 @@ namespace vxCore {
 class FileUtils : public vxManager
 {
 	public:
-		FileUtils();
+		FileUtils() = default;
 	
 	struct fileDesc
 	{

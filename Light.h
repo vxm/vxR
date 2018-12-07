@@ -1,5 +1,5 @@
-#ifndef _VXLIGHTSMC_
-#define _VXLIGHTSMC_
+#ifndef VXLIGHTSMC
+#define VXLIGHTSMC
 
 #include "Collision.h"
 #include "Image.h"
@@ -181,7 +181,10 @@ public:
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
 	// Visible interface
-	virtual void updateBoundingBox() override { return; }
+	virtual void updateBoundingBox() override { 	m_bb->clear();
+													m_bb->extend( m_transform.origin() + m_position + v3s(1,1,1));
+													m_bb->extend( m_transform.origin() + m_position + v3s(-1,-1,-1));
+											  }
 };
 
 class SpotLight final : public Light
@@ -238,8 +241,6 @@ public:
 
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
-	// Visible interface
-	virtual void updateBoundingBox() override { return; }
 
 	// Light interface
 public:
@@ -306,7 +307,6 @@ public:
 	virtual bool hasCollision(const Ray &ray) const override;
 
 	// Visible interface
-	virtual void updateBoundingBox() override;
 };
 
 class SphereLight final : public Light
@@ -319,7 +319,7 @@ protected:
 	///
 	/// \brief m_biDirectional
 	///
-	bool m_biDirectional;
+	bool m_biDirectional = false;
 
 public:
 	///
@@ -367,7 +367,6 @@ public:
 	virtual bool hasCollision(const Ray &ray) const override;
 
 	// Visible interface
-	virtual void updateBoundingBox() override;
 };
 
 ///
@@ -410,10 +409,7 @@ public:
 	/// \brief setOrientation
 	/// \param orientation
 	///
-	void setOrientation(const v3s &orientation)
-	{
-		m_orientation.set(orientation);
-	}
+	void setOrientation(const v3s &orientation);
 
 	// Visible interface
 
@@ -425,7 +421,7 @@ public:
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
 	// Visible interface
-	virtual void updateBoundingBox() override;
+	v3s orientation() const;
 };
 
 class DirectLight final : public Light
@@ -482,7 +478,6 @@ public:
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
 	// Visible interface
-	virtual void updateBoundingBox() override { return; }
 };
 
 class IBLight final : public Light
@@ -514,7 +509,7 @@ public:
 	/// \param instensity
 	/// \param path
 	///
-	IBLight(scalar instensity, const std::string path);
+	IBLight(scalar instensity, const std::string &path);
 
 	// vxLight interface
 	v3s getLightRay(const v3s &position) const override;
@@ -566,7 +561,6 @@ public:
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
 	// Visible interface
-	virtual void updateBoundingBox() override { return; }
 };
 
 class AmbientLight final : public Light
@@ -575,7 +569,7 @@ public:
 	///
 	/// \brief AmbientLight
 	///
-	AmbientLight();
+	AmbientLight() = default;
 	///
 	/// \brief getLightRay
 	/// \param position
@@ -596,7 +590,6 @@ public:
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
 	// Visible interface
-	virtual void updateBoundingBox() override { return; }
 };
 
 class AreaLight final : public Light

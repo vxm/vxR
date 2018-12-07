@@ -7,9 +7,7 @@
 
 #define USE_STORE_RAND 0
 
-
 using namespace vxCore;
-
 
 //////////////////////////////////////
 ///////////////  RANDOM CACHES ///////
@@ -39,11 +37,9 @@ void MathUtils::fillRand()
 ///
 /// \brief MathUtils::MathUtils
 ///
-MathUtils::MathUtils() {}
-
 scalar MathUtils::equalWithEpsilon(const scalar a, const scalar b)
 {
-	return scalar(fabs(a-b)<MathUtils::epsilon);
+	return scalar(fabs(a - b) < MathUtils::epsilon);
 }
 
 constexpr scalar MathUtils::ratio(scalar a, scalar b) { return a / (scalar)b; }
@@ -77,14 +73,11 @@ v3s MathUtils::rectAndPlane(const v3s &ray, const Plane &plane)
 	switch (plane.m_type)
 	{
 	case Plane::type::kZ:
-		return rectAndZPlane(std::move(ray), plane.z());
-		break;
+		return rectAndZPlane(ray, plane.z());
 	case Plane::type::kX:
-		return rectAndXPlane(std::move(ray), plane.x());
-		break;
+		return rectAndXPlane(ray, plane.x());
 	case Plane::type::kY:
-		return rectAndYPlane(std::move(ray), plane.y());
-		break;
+		return rectAndYPlane(ray, plane.y());
 	default:
 		break;
 	}

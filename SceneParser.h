@@ -73,8 +73,8 @@ public:
 
 	std::pair<std::string, Value> parseAttribute(const std::string &txt);
 
-	Status parseNodeBody(std::ifstream &inFile, 
-							  vxNodeHandle node);
+	Status parseNodeBody(std::ifstream &inFile,
+							  const vxNodeHandle &node);
 
 	VS procesScene();
 

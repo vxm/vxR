@@ -7,11 +7,11 @@ using namespace vxCore;
 Light::Light()
 {
 	m_shader = std::make_shared<LightShader>();
+
 	m_type = VisibleType::kLight;
 }
 
-Light::Light(const scalar intensity)
-    : m_intensity(intensity), m_castShadows(true)
+Light::Light(const scalar intensity) : m_intensity(intensity)
 {
 	m_shader = std::make_shared<LightShader>();
 }
@@ -74,12 +74,16 @@ scalar Light::lightRatio(const Ray &ray, const v3s &lightDirection) const
 	return ray.incidence(lightDirection);
 }
 
-void Light::setPosition(const v3s &position) { m_position.set(position); }
+void Light::setPosition(const v3s &position)
+{
+	m_position.set(position);
+	updateBoundingBox();
+}
 
 DirectLight::DirectLight() : Light() {}
 
 DirectLight::DirectLight(const v3s &orientation, bool bidirectional)
-    : m_orientation(orientation), m_biDirectional(bidirectional)
+	: m_orientation(orientation), m_biDirectional(bidirectional)
 {
 }
 
@@ -94,12 +98,12 @@ SpotLight::SpotLight() : Light() {}
 SpotLight::SpotLight(const v3s &position, const v3s &orientation,
                      scalar maxAngle, scalar minAngle)
     : Light(position), m_orientation(orientation), m_maxAngle(maxAngle),
-      m_minAngle(minAngle)
+	  m_minAngle(minAngle)
 {
 }
 
 void SpotLight::set(const v3s &position, const v3s &orientation,
-                    scalar maxAngle, scalar minAngle)
+					scalar maxAngle, scalar minAngle)
 {
 	m_position.set(position);
 	m_orientation.set(orientation);
@@ -119,7 +123,7 @@ void SpotLight::setOrientation(const v3s &orientation)
 PointLight::PointLight() : Light() {}
 
 PointLight::PointLight(const v3s &orientation, bool biPointional)
-    : m_orientation(orientation), m_biDirectional(biPointional)
+	: m_orientation(orientation), m_biDirectional(biPointional)
 {
 }
 
@@ -147,10 +151,8 @@ bool PointLight::hasCollision(const Ray &ray) const
 	return throwRay(ray, col) == 1;
 }
 
-void PointLight::updateBoundingBox() { return; }
-
 Color PointLight::acummulationLight(const Ray &,
-                                    const Collision &collision) const
+									const Collision &collision) const
 {
 	const auto &&pp = collision.position();
 	const auto &&p = pp - (m_position + m_transform.origin());
@@ -182,7 +184,7 @@ Color PointLight::acummulationLight(const Ray &,
 SphereLight::SphereLight() : Light() {}
 
 SphereLight::SphereLight(const v3s &orientation, bool biPointional)
-    : m_orientation(orientation), m_biDirectional(biPointional)
+	: m_orientation(orientation), m_biDirectional(biPointional)
 {
 }
 
@@ -223,24 +225,8 @@ bool SphereLight::hasCollision(const Ray &ray) const
 	return throwRay(ray, col) == 1;
 }
 
-void SphereLight::updateBoundingBox()
-{
-	auto &&orig = m_transform.origin() + m_position;
-
-	m_bb->setMinX(orig.x() - m_radius);
-	m_bb->setMaxX(orig.x() + m_radius);
-
-	m_bb->setMinY(orig.y() - m_radius);
-	m_bb->setMaxY(orig.y() + m_radius);
-
-	m_bb->setMinZ(orig.z() - m_radius);
-	m_bb->setMaxZ(orig.z() + m_radius);
-
-	return;
-}
-
 Color SphereLight::acummulationLight(const Ray &,
-                                     const Collision &collision) const
+									 const Collision &collision) const
 {
 	auto sphr = MU::getHollowSphereRand(m_radius);
 
@@ -276,6 +262,8 @@ Color SphereLight::acummulationLight(const Ray &,
 /////////////////////////////////////// Sun Light ////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
+v3s SunLight::orientation() const { return m_orientation; }
+
 SunLight::SunLight() : Light() {}
 
 void SunLight::set(const v3s &orientation)
@@ -283,82 +271,44 @@ void SunLight::set(const v3s &orientation)
 	m_orientation.set(orientation.unit());
 }
 
-int SunLight::throwRay(const Ray &, Collision &) const
+void SunLight::setOrientation(const v3s &orientation)
 {
-	return 0;
+	m_orientation.set(orientation);
+	setPosition(m_orientation.unit() * m_distance);
 }
 
-void SunLight::updateBoundingBox()
+int SunLight::throwRay(const Ray &, Collision &) const
 {
-	auto &&orig = m_transform.origin() + m_position;
-
-	m_bb->setMinX(orig.x() - m_sunRadius);
-	m_bb->setMaxX(orig.x() + m_sunRadius);
-
-	m_bb->setMinY(orig.y() - m_sunRadius);
-	m_bb->setMaxY(orig.y() + m_sunRadius);
-
-	m_bb->setMinZ(orig.z() - m_sunRadius);
-	m_bb->setMaxZ(orig.z() + m_sunRadius);
-
-	return;
+	// TODO:this is empty. Should create a sphere and return it's visibility.
+	return 0;
 }
 
 Color SunLight::acummulationLight(const Ray &, const Collision &collision) const
 {
-	// calculate probability of going into de sphere or the disk
+	auto sphr = MU::getSolidSphereRand(m_sunRadius);
 
+	v3s pointLightPosition = sphr + (m_position + m_transform.origin());
+	Color c = m_color;
+	scalar i = m_intensity;
+
+	const auto &cp = collision.position();
+	const auto &p = pointLightPosition - cp;
+
+	auto f = collision.nextRay();
+
+	// compute all sort of shadows.
 	Color ret{Color::zero};
-
-	auto ringvss = .8;
-
-	if (MU::getRand(1) < ringvss)
+	if (collision.normal().follows(p.inverted())) // m_castShadows here?
 	{
-		auto pointLightPosition =
-		    MU::getSolidSphereRand(ringvss + m_sunRadius * (1.0 - ringvss)) +
-		    (m_orientation.unit() * m_distance);
+		auto ratio = lightRatio(f, p);
+		auto lumm = i * ratio;
 
-		const auto &pp = collision.position();
-		const auto &p = pointLightPosition - pp;
+		Ray ff(cp + collision.normal().small(), p, VisionType::kOpaque);
+		ff.setLength(p.length());
 
-		Ray f(pp, collision.normal());
-		// compute all sort of shadows.
-
-		if (collision.normal().follows(p.inverted())) // m_castShadows here?
+		if (m_castShadows && reachesLightSource(ff))
 		{
-			auto ratio = lightRatio(f, p);
-			auto lumm = m_intensity * ratio * ringvss;
-
-			const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
-
-			if (m_castShadows && reachesLightSource(ff))
-			{
-				ret = color().gained(lumm);
-			}
-		}
-	}
-	else
-	{
-		auto pointLightPosition = MU::getSolidSphereRand(m_sunRadius) +
-		                          (m_orientation.unit() * m_distance);
-
-		const auto &pp = collision.position();
-		const auto &p = pointLightPosition - pp;
-
-		Ray f(pp, collision.normal());
-		// compute all sort of shadows.
-
-		if (collision.normal().follows(p.inverted())) // m_castShadows here?
-		{
-			auto ratio = lightRatio(f, p);
-			auto lumm = m_intensity * ratio;
-
-			const Ray ff(pp + collision.normal().small(), p, VisionType::kOpaque);
-
-			if (m_castShadows && reachesLightSource(ff))
-			{
-				ret = color().gained(lumm);
-			}
+			ret = c.gained(lumm);
 		}
 	}
 
@@ -385,8 +335,8 @@ void IBLight::setLowThreshold(scalar lowThreshold)
 }
 IBLight::IBLight() : m_map("") {}
 
-IBLight::IBLight(scalar instensity, const std::string path)
-    : Light(instensity), m_map(path)
+IBLight::IBLight(scalar instensity, const std::string &path)
+	: Light(instensity), m_map(path)
 {
 }
 
@@ -426,7 +376,7 @@ Color Light::acummulationLight(const Ray &, const Collision &collision) const
 */
 
 Color DirectLight::acummulationLight(const Ray &,
-                                     const Collision &collision) const
+									 const Collision &collision) const
 {
 	const auto cPnt = collision.position();
 
@@ -484,7 +434,7 @@ Color IBLight::acummulationLight(const Ray &, const Collision &collision) const
 			else
 			{
 				environmentColor =
-				    environmentColor * (scalar)(m_gain + pow(luma, m_gamma));
+					environmentColor * (scalar)(m_gain + pow(luma, m_gamma));
 				acumColor.mixSumm(environmentColor.gained(lumm), colorRatio);
 			}
 		}
@@ -496,9 +446,6 @@ Color IBLight::acummulationLight(const Ray &, const Collision &collision) const
 ////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////// Ambient Light ////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-
-AmbientLight::AmbientLight() {}
-
 v3s AmbientLight::getLightRay(const v3s &position) const
 {
 	return position.inverted();
@@ -528,7 +475,7 @@ void AreaLight::setNormal(const v3s &normal) { m_normal = normal; }
 AreaLight::AreaLight() : m_sampler(8) {}
 
 Color AreaLight::acummulationLight(const Ray &,
-                                   const Collision &collision) const
+								   const Collision &collision) const
 {
 	Color ret{Color::zero};
 	Ray f(collision.position(), collision.normal());
@@ -563,10 +510,7 @@ scalar AreaLight::minX() const { return m_minX; }
 
 void AreaLight::setMinX(const scalar &minX) { m_minX = minX; }
 
-v3s vxCore::SpotLight::getLightRay(const v3s &) const
-{
-	return v3s::zero;
-}
+v3s vxCore::SpotLight::getLightRay(const v3s &) const { return v3s::zero; }
 
 scalar vxCore::SpotLight::lightRatio(const Ray &, const v3s &) const
 {

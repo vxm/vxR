@@ -9,11 +9,11 @@ namespace vxCore
 class Map2d : public Map
 {
 	public:
-		Map2d();
+		Map2d() = default;
 		
-		virtual ~Map2d(){}
+		virtual ~Map2d() = default;
 		
-		virtual Color compute(const Collision &collision) const  = 0;
+		virtual Color compute(const Collision &collision) const = 0;
 };
 
 }

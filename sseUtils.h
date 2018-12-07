@@ -43,7 +43,7 @@ int testSSE(void)
 class sseUtils
 {
 public:
-	sseUtils();
+	sseUtils() = default;
 };
 
 #endif // SSEUTILS_H

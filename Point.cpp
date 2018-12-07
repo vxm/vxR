@@ -1,8 +1,5 @@
 #include "Point.h"
-namespace vxCore {
+namespace vxCore
+{
 
-
-
-
-
-}// end of vxCore
+} // namespace vxCore

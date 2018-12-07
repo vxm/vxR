@@ -1,5 +1,5 @@
-#ifndef _VXOBJMC_
-#define _VXOBJMC_
+#ifndef VXOBJMC
+#define VXOBJMC
 
 namespace vxCore {
 

@@ -10,7 +10,7 @@ class UnitTest
 {
 	bool m_verbose{false};
 public:
-	UnitTest();
+	UnitTest() = default;
 	bool verbose();
 	void setVerbose(bool verbose);
 };

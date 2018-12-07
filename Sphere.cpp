@@ -2,8 +2,6 @@
 
 using namespace vxCore;
 
-Sphere::Sphere() {}
-
 scalar Sphere::radius() const { return m_radius; }
 
 void Sphere::setRadius(const scalar &radius) { m_radius = radius; }
@@ -11,6 +9,7 @@ void Sphere::setRadius(const scalar &radius) { m_radius = radius; }
 void Sphere::updateBoundingBox()
 {
 	const auto &t = m_transform.origin();
+
 	m_bb->clear();
 	m_bb->extend({m_radius + t.x(), m_radius + t.y(), m_radius + t.z()});
 	m_bb->extend({-m_radius + t.x(), -m_radius + t.y(), -m_radius + t.z()});

@@ -66,9 +66,9 @@ public:
 	///
 	/// \brief m_c_h1
 	///caches the first height
-	scalar m_c_h1;
+	scalar m_c_h1 = 0.0;
 	///caches a second height
-	scalar m_c_h2;
+	scalar m_c_h2 = 0.0;
 	///
 	/// \brief computeArea
 	/// \return 

@@ -6,7 +6,10 @@
 
 using namespace vxCore;
 
-bool Shader::hasReflection() const { return m_hasReflection; }
+bool Shader::hasReflection() const
+{
+	return m_hasReflection && m_reflectionCoefficent != 0.0;
+}
 
 void Shader::setHasReflection(bool hasReflection)
 {
@@ -74,7 +77,7 @@ Color Shader::getReflectionColorMultiplier() const
 }
 
 void Shader::setReflectionColorMultiplier(
-    const Color &reflectionColorMultiplier)
+	const Color &reflectionColorMultiplier)
 {
 	m_reflectionColorMultiplier = reflectionColorMultiplier;
 }
@@ -112,7 +115,7 @@ Color Shader::getRefractionColorMultiplier() const
 }
 
 void Shader::setRefractionColorMultiplier(
-    const Color &refractionColorMultiplier)
+	const Color &refractionColorMultiplier)
 {
 	m_refractionColorMultiplier = refractionColorMultiplier;
 }
@@ -143,7 +146,7 @@ void Shader::setSscColorMultiplier(const Color &sscColorMultiplier)
 }
 
 Color vxCore::Shader::getLightLoop(const Ray &ray,
-                                   const Collision &collision) const
+								   const Collision &collision) const
 {
 	// assert(m_lights);
 	Color acumColor;
@@ -168,7 +171,7 @@ void vxCore::Shader::setLights(std::vector<std::shared_ptr<Light>> *lights)
 Lambert::Lambert() : Shader() {}
 
 Color Lambert::getIlluminatedColor(const Ray &ray,
-                                   const Collision &collide) const
+								   const Collision &collide) const
 {
 	auto lumm = getLightLoop(ray, collide);
 
@@ -182,14 +185,15 @@ Color Lambert::getColor(const Ray &, const Collision &collide) const
 	if (collide.m_geo)
 	{
 		auto &&color =
-		    collide.color() *
-		    collide.m_geo->color(); // m_diffuse.compute(collide)*m_diffuseColor;
+			collide.color() *
+			collide.m_geo->color(); // m_diffuse.compute(collide)*m_diffuseColor;
+
 		ret = MU::remap(color, 0.0, 0.85);
 	}
 	else
 	{
 		auto &&color =
-		    collide.color(); // m_diffuse.compute(collide)*m_diffuseColor;
+			collide.color(); // m_diffuse.compute(collide)*m_diffuseColor;
 		ret = MU::remap(color, 0.0, 0.85);
 	}
 
