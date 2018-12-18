@@ -213,6 +213,12 @@ bool PLYImporter::processPLYFile(const std::string &fileName)
 			  << std::endl;
 
 	m_geo->close();
+	auto bb = m_geo->boundingBox();
+	std::cout << "final bb min " << bb->minX() << " " << bb->minY() << " "
+			  << bb->minZ() << std::endl;
+	std::cout << "final bb max " << bb->maxX() << " " << bb->maxY() << " "
+			  << bb->maxZ() << std::endl;
+
 	iFile.close();
 
 	return true;

@@ -9,9 +9,17 @@ SceneParser::SceneParser(const std::string &fileName) : m_fileName(fileName) {}
 decltype(auto) SceneParser::getLine(std::ifstream &f, std::string &line) const
 {
 	decltype(auto) ln = std::getline(f, line);
-	if (ln && line[0] == '/' && line[1] == '/')
+
+	if (f.fail() || (ln && line[0] == '/' && line[1] == '/'))
 	{
 		line.clear();
+	}
+	else
+	{
+		if (!line.empty() && *line.rbegin() == '\r')
+		{
+			line.erase(line.length() - 1, 1);
+		}
 	}
 	return ln;
 }
@@ -34,7 +42,7 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 		ret.second = Value(convert);
 #if COUT_PARSING
 		std::cout << " string (" << ret.first << ")="
-		          << "(" << ret.second.asString() << ")" << std::endl;
+				  << "(" << ret.second.asString() << ")" << std::endl;
 #endif
 	}
 
@@ -45,7 +53,7 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 		ret.second.setInt(intValue);
 #if COUT_PARSING
 		std::cout << " int (" << ret.first << ")="
-		          << "(" << ret.second.asInt() << ")" << std::endl;
+				  << "(" << ret.second.asInt() << ")" << std::endl;
 #endif
 	}
 
@@ -56,7 +64,7 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 		ret.second.setFloat(floatValue);
 #if COUT_PARSING
 		std::cout << " float (" << ret.first << ")="
-		          << "(" << ret.second.asFloat() << ")" << std::endl;
+				  << "(" << ret.second.asFloat() << ")" << std::endl;
 #endif
 	}
 
@@ -72,7 +80,7 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 #if COUT_PARSING
 		auto capt = ret.second.asVector2d();
 		std::cout << " v2 (" << ret.first << ")="
-		          << "(" << capt->x() << ", " << capt->y() << ")" << std::endl;
+				  << "(" << capt->x() << ", " << capt->y() << ")" << std::endl;
 #endif
 	}
 
@@ -88,8 +96,8 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 #if COUT_PARSING
 		auto capt = ret.second.asVector3d();
 		std::cout << " v3 (" << ret.first << ")="
-		          << "(" << capt->x() << ", " << capt->y() << ", " << capt->z()
-		          << ")" << std::endl;
+				  << "(" << capt->x() << ", " << capt->y() << ", " << capt->z()
+				  << ")" << std::endl;
 #endif
 	}
 
@@ -103,7 +111,7 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 #if COUT_PARSING
 		auto capt = ret.second.asVector3d();
 		std::cout << " v2 (" << ret.first << ")="
-		          << "(" << capt->x() << ", " << capt->y() << ")" << std::endl;
+				  << "(" << capt->x() << ", " << capt->y() << ")" << std::endl;
 #endif
 	}
 
@@ -119,8 +127,8 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 #if COUT_PARSING
 		auto capt = ret.second.asVector3d();
 		std::cout << " v3 (" << ret.first << ")="
-		          << "--------(" << capt->x() << ", " << capt->y() << ", "
-		          << capt->z() << ")" << std::endl;
+				  << "--------(" << capt->x() << ", " << capt->y() << ", "
+				  << capt->z() << ")" << std::endl;
 #endif
 	}
 
@@ -130,7 +138,7 @@ Attribute SceneParser::parseAttribute(const std::string &txt)
 
 		scalar m[16];
 		auto matValues =
-		    base_match[5].str().substr(1, base_match[5].str().size() - 2);
+			base_match[5].str().substr(1, base_match[5].str().size() - 2);
 		std::stringstream strValue(matValues);
 		for (auto &v : m)
 		{
@@ -218,17 +226,17 @@ VS SceneParser::procesScene()
 	if (line != "#vxR scene")
 	{
 		std::cerr << "scene parse: '" << m_fileName
-		          << "' doesn't contain vxR scene information." << std::endl;
+				  << "' doesn't contain vxR scene information." << std::endl;
 		return VS::kError;
 	}
 
 	// checking if ASCII
-	getline(iFile, line);
+	getLine(iFile, line);
 	std::cout << "line: '" << line << "'" << std::endl;
 	if (line != "#format ascii 1.0"s)
 	{
 		std::cerr << "scene parse: File " << m_fileName << " is not ASCII"
-		          << std::endl;
+				  << std::endl;
 		return VS::kError;
 	}
 
@@ -247,8 +255,8 @@ VS SceneParser::procesScene()
 			if (m_nodes.find(nodeName) != m_nodes.end())
 			{
 				std::cerr << "Node '" << nodeName
-				          << "' not added. There is already a node"
-				          << " with that name in scene" << std::endl;
+						  << "' not added. There is already a node"
+						  << " with that name in scene" << std::endl;
 			}
 			else if (newNode->active())
 			{
@@ -260,7 +268,7 @@ VS SceneParser::procesScene()
 	iFile.close();
 
 	std::cout << "scene parse: " << m_fileName << " finished:: '"
-	          << m_nodes.size() << "' nodes taken" << std::endl;
+			  << m_nodes.size() << "' nodes taken" << std::endl;
 	return VS::kSuccess;
 }
 
