@@ -36,7 +36,7 @@ void Light::setTransform(const Matrix44 &transform) { m_transform = transform; }
 
 bool Light::reachesLightSource(const Ray &ray) const
 {
-	return !m_scene.lock()->hasCollision(ray);
+	return !m_scene->hasCollision(ray);
 }
 
 scalar Light::radius() const { return m_radius; }
@@ -47,7 +47,7 @@ unsigned int Light::samples() const { return m_samples; }
 
 void Light::setSamples(int samples) { m_samples = samples; }
 
-void Light::setScene(std::weak_ptr<Scene> scene) { m_scene = scene; }
+void Light::setScene(Scene *scene) { m_scene = scene; }
 
 void Light::setPosition(scalar x, scalar y, scalar z)
 {
@@ -183,8 +183,8 @@ Color PointLight::acummulationLight(const Ray &,
 
 SphereLight::SphereLight() : Light() {}
 
-SphereLight::SphereLight(const v3s &orientation, bool biPointional)
-	: m_orientation(orientation), m_biDirectional(biPointional)
+SphereLight::SphereLight(const v3s orientation, bool biPointional)
+	: m_orientation(std::move(orientation)), m_biDirectional(biPointional)
 {
 }
 
@@ -391,9 +391,9 @@ Color DirectLight::acummulationLight(const Ray &,
 
 		v3s littleNormal = collision.normal() / scalar(10000.0);
 		const Ray ff(cPnt + littleNormal, m_orientation.inverted());
-		const auto &&scn = m_scene.lock();
+
 		Collision col;
-		if (!m_castShadows || !(scn->throwRay(ff, col) == 1))
+		if (!m_castShadows || !(m_scene->throwRay(ff, col) == 1))
 		{
 			ret = color().gained(lumm);
 		}
@@ -424,9 +424,8 @@ Color IBLight::acummulationLight(const Ray &, const Collision &collision) const
 
 		if (luma > m_lowThreshold && lumm > 0.0001)
 		{
-			const auto &scn = m_scene.lock();
 			Collision col;
-			scn->throwRay(f, col);
+			m_scene->throwRay(f, col);
 			if (col.isValid())
 			{
 				acumColor.mixSumm(col.color().gained(.01), colorRatio);
@@ -493,9 +492,8 @@ Color AreaLight::acummulationLight(const Ray &,
 		if (collision.normal().follows(orientation.inverted()))
 		{
 			const Ray ff(cPnt + littleNormal, orientation);
-			const auto &&scn = m_scene.lock();
 			Collision col;
-			if (!(scn->throwRay(ff, col) == 1))
+			if (!(m_scene->throwRay(ff, col) == 1))
 			{
 				auto ratio = lightRatio(f, orientation);
 				ret += color().gained(finalIntensity * (ratio * ratio * ratio));

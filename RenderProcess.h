@@ -31,7 +31,7 @@ private:
 	///
 	/// \brief m_scene
 	///
-	std::shared_ptr<Scene> m_scene;
+	Scene *m_scene = nullptr;
 	///
 	/// \brief m_finished
 	///
@@ -107,12 +107,12 @@ public:
 	/// \brief setScene
 	/// \param scene
 	///
-	void setScene(const std::shared_ptr<Scene> &scene);
+	void setScene(Scene *scene);
 	///
 	/// \brief scene
 	/// \return
 	///
-	std::shared_ptr<Scene> scene() const;
+	Scene *scene() const;
 	///
 	/// \brief setNMaxThreads
 	/// \param nMaxThreads

@@ -84,7 +84,7 @@ int executeRenderProcess(int argc, char *argv[])
 
 			// call time callbacks.
 
-			rp.setScene(m_scene);
+			rp.setScene(m_scene.get());
 			rp.setDatabase(sceneParser);
 			rp.setGIMultiplier(giMultiplier);
 			rp.setVisSamples(samples);

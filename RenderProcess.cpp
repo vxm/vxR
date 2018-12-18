@@ -13,14 +13,14 @@
 #include "ThreadPool.h"
 #include "TimeUtils.h"
 
-#define SINGLERAY 1
+#define SINGLERAY 0
 #if SINGLERAY
 #define PIXEL_X 557
 #define PIXEL_Y 274
 #endif
 
 #ifdef _DEBUG
-#define USE_THREADS 0
+#define USE_THREADS 1
 #else
 #define USE_THREADS 1
 #endif
@@ -32,7 +32,7 @@ namespace vxCompute
 {
 
 RenderProcess::RenderProcess(ImagePropertiesHandle &prop, unsigned int samples)
-    : m_properties(prop), m_imageData(prop),
+	: m_properties(prop), m_imageData(prop),
 	  m_contactBuffer(prop->numPixels()), m_samples{samples}
 {
 	setNMaxThreads(100);
@@ -411,10 +411,7 @@ void RenderProcess::setImageProperties(
 	m_properties = imageProperties;
 }
 
-std::shared_ptr<Scene> RenderProcess::scene() const { return m_scene; }
+Scene *RenderProcess::scene() const { return m_scene; }
 
-void RenderProcess::setScene(const std::shared_ptr<Scene> &scene)
-{
-	m_scene = scene;
-}
+void RenderProcess::setScene(Scene *scene) { m_scene = scene; }
 } // namespace vxCompute

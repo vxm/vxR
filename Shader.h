@@ -30,7 +30,7 @@ protected:
 	///
 	/// \brief m_scene
 	///
-	std::weak_ptr<Scene> m_scene;
+	Scene *m_scene = nullptr;
 
 	Color m_diffuseColor{1.0, 1.0, 1.0, 1.0};
 	scalar m_diffuseCoeficent = 1.0;
@@ -73,7 +73,7 @@ public:
 	/// \return
 	///
 	virtual Color getIlluminatedColor(const Ray &ray,
-	                                  const Collision &collide) const = 0;
+									  const Collision &collide) const = 0;
 	///
 	/// \brief getVector
 	/// \param collide
@@ -91,7 +91,7 @@ public:
 	/// \brief setScene
 	/// \param scene
 	///
-	void setScene(std::weak_ptr<Scene> scene);
+	void setScene(Scene *scene);
 	///
 	/// \brief light
 	/// \return
@@ -309,9 +309,9 @@ public:
 	/// \return
 	///
 	virtual Color getIlluminatedColor(const Ray &ray,
-	                                  const Collision &collide) const override;
+									  const Collision &collide) const override;
 };
 
 using vxShaderHandle = std::shared_ptr<Shader>;
-}
+} // namespace vxCore
 #endif

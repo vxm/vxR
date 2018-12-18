@@ -489,7 +489,7 @@ vxShaderHandle Scene::createShader()
 {
 	auto lambert = std::make_shared<Lambert>();
 	m_shaders.emplace_back(lambert);
-	lambert->setScene(shared_from_this());
+	lambert->setScene(this);
 	lambert->setLights(&m_lights);
 	return lambert;
 }
@@ -504,13 +504,13 @@ void Scene::buildDefaultShader()
 {
 	m_shader = std::make_shared<Lambert>();
 	m_shader->setLights(&m_lights);
-	m_shader->setScene(shared_from_this());
+	m_shader->setScene(this);
 }
 
 void Scene::addLight(LightHandle lh)
 {
 	m_lights.emplace_back(lh);
-	lh->setScene(shared_from_this());
+	lh->setScene(this);
 	m_broadPhase->addVisible(lh);
 }
 

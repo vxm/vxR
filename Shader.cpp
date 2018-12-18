@@ -159,7 +159,7 @@ Color vxCore::Shader::getLightLoop(const Ray &ray,
 	return acumColor;
 }
 
-void vxCore::Shader::setScene(std::weak_ptr<Scene> scene) { m_scene = scene; }
+void vxCore::Shader::setScene(Scene *scene) { m_scene = scene; }
 
 void vxCore::Shader::setLights(std::vector<std::shared_ptr<Light>> *lights)
 {

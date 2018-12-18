@@ -41,7 +41,7 @@ protected:
 	///
 	/// \brief m_scene
 	///
-	std::weak_ptr<Scene> m_scene;
+	Scene *m_scene = nullptr;
 
 public:
 	///
@@ -72,7 +72,7 @@ public:
 	/// \brief setScene
 	/// \param scene
 	///
-	void setScene(std::weak_ptr<Scene> scene);
+	void setScene(Scene *scene);
 	///
 	/// \brief setPosition
 	/// \param position
@@ -181,10 +181,12 @@ public:
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
 	// Visible interface
-	virtual void updateBoundingBox() override { 	m_bb->clear();
-													m_bb->extend( m_transform.origin() + m_position + v3s(1,1,1));
-													m_bb->extend( m_transform.origin() + m_position + v3s(-1,-1,-1));
-											  }
+	virtual void updateBoundingBox() override
+	{
+		m_bb->clear();
+		m_bb->extend(m_transform.origin() + m_position + v3s(1, 1, 1));
+		m_bb->extend(m_transform.origin() + m_position + v3s(-1, -1, -1));
+	}
 };
 
 class SpotLight final : public Light
@@ -241,12 +243,12 @@ public:
 
 	virtual bool hasCollision(const Ray &) const override { return false; }
 
-
 	// Light interface
 public:
 	virtual v3s getLightRay(const v3s &) const override;
 	virtual scalar lightRatio(const Ray &, const v3s &) const override;
-	virtual Color acummulationLight(const Ray &, const Collision &) const override;
+	virtual Color acummulationLight(const Ray &,
+									const Collision &) const override;
 };
 
 class PointLight final : public Light
@@ -331,7 +333,7 @@ public:
 	/// \param orientation
 	/// \param bidirectional
 	///
-	SphereLight(const v3s &orientation, bool bidirectional);
+	SphereLight(const v3s orientation, bool bidirectional);
 	///
 	/// \brief acummulationLight
 	/// \param collision
@@ -677,5 +679,5 @@ using DirectLightHandle = std::shared_ptr<DirectLight>;
 using AmbientLightHandle = std::shared_ptr<AmbientLight>;
 
 using LightHandle = std::shared_ptr<Light>;
-}
+} // namespace vxCore
 #endif
