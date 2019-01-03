@@ -13,11 +13,6 @@ Color::Color(const scalar r, const scalar g, const scalar b, const scalar alpha)
 {
 }
 
-Color::Color(const Color &other)
-	: m_r(other.m_r), m_g(other.m_g), m_b(other.m_b), m_a(other.m_a)
-{
-}
-
 Color::Color(const v3s &other) : m_r(other.x()), m_g(other.y()), m_b(other.z())
 {
 }

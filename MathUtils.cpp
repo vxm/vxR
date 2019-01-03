@@ -144,7 +144,6 @@ scalar MathUtils::distanceToLine(const v3s &p1, const v3s &p2, const v3s &p)
 
 v3s MathUtils::rectAndXPlane(const v3s &ray, scalar x)
 {
-	// parametric ecuation of the linconst v3s &&ray, - ray.x()) / -ray.x();
 	const auto t = (x - ray.x()) / (-ray.x());
 	const auto y = t * -ray.y() + ray.y();
 	const auto z = t * -ray.z() + ray.z();
@@ -154,7 +153,6 @@ v3s MathUtils::rectAndXPlane(const v3s &ray, scalar x)
 
 v3s MathUtils::rectAndYPlane(const v3s &ray, scalar y)
 {
-	// parametric ecuation of the line solved.
 	auto t = (y - ray.y()) / (-ray.y());
 	auto x = t * (-ray.x()) + ray.x();
 	auto z = t * (-ray.z()) + ray.z();
@@ -162,19 +160,8 @@ v3s MathUtils::rectAndYPlane(const v3s &ray, scalar y)
 	return {x, y, z};
 }
 
-scalar MathUtils::x_forRectAndYPlane(const v3s &ray, scalar y)
-{
-	return (y - ray.y()) / (-ray.y()) * (-ray.x()) + ray.x();
-}
-
-scalar MathUtils::z_forRectAndYPlane(const v3s &ray, scalar y)
-{
-	return (y - ray.y()) / (-ray.y()) * (-ray.z()) + ray.z();
-}
-
 v3s MathUtils::rectAndZPlane(const v3s &ray, scalar z)
 {
-	// parametric ecuation of the linconst v3s &&ray, - ray.z()) / -ray.z();
 	auto t = (z - ray.z()) / (-ray.z());
 	auto x = t * -ray.x() + ray.x();
 	auto y = t * -ray.y() + ray.y();
@@ -182,19 +169,44 @@ v3s MathUtils::rectAndZPlane(const v3s &ray, scalar z)
 	return {x, y, z};
 }
 
+scalar MathUtils::x_forRectAndYPlane(const v3s &ray, scalar y)
+{
+	return (y - ray.y()) / (-ray.y()) * (-ray.x()) - ray.x();
+}
+
+scalar MathUtils::z_forRectAndYPlane(const v3s &ray, scalar y)
+{
+	return (y - ray.y()) / (-ray.y()) * (-ray.z()) - ray.z();
+}
+
 v3s MathUtils::rayAndXPlane(const Ray &ray, scalar x)
 {
-	return rectAndXPlane(ray.direction(), x);
+	v3s planePoint = {x, 0.0, 0.0};
+	v3s diff = ray.origin() - planePoint;
+	scalar prod1 = diff.dot({1.0, 0.0, 0.0});
+	scalar prod2 = ray.direction().dot({1.0, 0.0, 0.0});
+	scalar prod3 = prod1 / prod2;
+	return ray.origin() - ray.direction() * prod3;
 }
 
 v3s MathUtils::rayAndYPlane(const Ray &ray, scalar y)
 {
-	return rectAndYPlane(ray.direction(), y);
+	v3s planePoint = {0.0, y, 0.0};
+	v3s diff = ray.origin() - planePoint;
+	scalar prod1 = diff.dot({0.0, 1.0, 0.0});
+	scalar prod2 = ray.direction().dot({0.0, 1.0, 0.0});
+	scalar prod3 = prod1 / prod2;
+	return ray.origin() - ray.direction() * prod3;
 }
 
 v3s MathUtils::rayAndZPlane(const Ray &ray, scalar z)
 {
-	return rectAndZPlane(ray.direction(), z);
+	v3s planePoint = {0.0, 0.0, z};
+	v3s diff = ray.origin() - planePoint;
+	scalar prod1 = diff.dot({0.0, 0.0, 1.0});
+	scalar prod2 = ray.direction().dot({0.0, 0.0, 1.0});
+	scalar prod3 = prod1 / prod2;
+	return ray.origin() - ray.direction() * prod3;
 }
 
 scalar MathUtils::getRand(const scalar range)
@@ -267,7 +279,8 @@ v3s MathUtils::getSphereRand(scalar radius)
 
 bool MathUtils::inRange(scalar r, scalar min, scalar max)
 {
-	return std::isgreaterequal(r, min) && std::islessequal(r, max);
+	return std::isgreaterequal(r, std::min(min, max)) &&
+		   std::islessequal(r, std::max(min, max));
 }
 
 scalar MathUtils::clamp(scalar val, scalar min, scalar max)

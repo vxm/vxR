@@ -24,7 +24,7 @@ private:
 	scalar m_length = -1.0;
 
 public:
-	Ray();
+	Ray() = default;
 	Ray(const v3s &direction);
 	Ray(const v3s &origin, const v3s &direction, VisionType vis);
 	Ray(const v3s &origin, const v3s &direction);
@@ -57,6 +57,8 @@ public:
 	/// from the origin.
 	scalar distance(const v3s &final) const;
 
+	v3s nextPosition() const;
+
 	///
 	/// \brief isCloser
 	/// \param a
@@ -77,10 +79,10 @@ public:
 		const auto &dr = ray.direction();
 
 		return os << org.x() << " " << org.y() << " " << org.z() << ", " << dr.x()
-		          << " " << dr.y() << " " << dr.z();
+				  << " " << dr.y() << " " << dr.z();
 	}
 	scalar length() const;
 	void setLength(const scalar &length);
 };
-}
+} // namespace vxCore
 #endif // VXRAY_H

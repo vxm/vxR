@@ -5,7 +5,8 @@
 #include "Object.h"
 #include "Vector.h"
 
-namespace vxCore {
+namespace vxCore
+{
 /*
  Munsell, hue, value, chroma
  Ostwald, dominant wavelength, purity, luminance
@@ -15,28 +16,24 @@ namespace vxCore {
 class Color
 {
 protected:
-/*tristimulus values*/
+	/*tristimulus values*/
 	scalar m_r = {0.0};
 	scalar m_g = {0.0};
 	scalar m_b = {0.0};
 	scalar m_a = {1.0};
 
 public:
+	Color() = default;
+	Color(scalar other);
+	Color(const scalar r, const scalar g, const scalar b, const scalar alpha);
 
-	Color () = default;
-	Color (scalar other);
-	Color (const scalar r, 
-			 const scalar g, 
-			 const scalar b, 
-			 const scalar alpha);
-	
-	Color (const Color& other);
-	Color (const v3s& other);
-	Color& operator=(const v3s &otro);
+	Color(const Color &other) = default;
+	Color(const v3s &other);
+	Color &operator=(const v3s &otro);
 	///
 	/// \brief lookup
 	/// \param col
-	/// \return 
+	/// \return
 	///
 	static Color lookup(const Color &col);
 	///
@@ -45,33 +42,28 @@ public:
 	/// \param g
 	/// \param b
 	/// \param a
-	/// \return 
+	/// \return
 	///
-	static Color lookup(const scalar r,
-							const scalar g,
-							const scalar b,
-							const scalar a = 1.0);
+	static Color lookup(const scalar r, const scalar g, const scalar b,
+						const scalar a = 1.0);
 	///
 	/// \brief lookup256
 	/// \param r
 	/// \param g
 	/// \param b
-	/// \return 
+	/// \return
 	///
-	static Color lookup256(const int r,
-								const int g,
-								const int b, 
-								const int a);
+	static Color lookup256(const int r, const int g, const int b, const int a);
 	///
 	/// \brief lookup256
 	/// \param col
-	/// \return 
+	/// \return
 	///
 	static Color lookup256(const Color &col);
 	///
 	/// \brief indexColor
 	/// \param idx
-	/// \return 
+	/// \return
 	///
 	static Color indexColor(const unsigned char idx);
 	///
@@ -102,25 +94,25 @@ public:
 	/// \brief setR
 	/// \param r
 	///
-	void setR(scalar r) {m_r=r;}
+	void setR(scalar r) { m_r = r; }
 	///
 	/// \brief setG
 	/// \param g
 	///
-	void setG(scalar g) {m_g=g;}
+	void setG(scalar g) { m_g = g; }
 	///
 	/// \brief setB
 	/// \param b
 	///
-	void setB(scalar b) {m_b=b;}
+	void setB(scalar b) { m_b = b; }
 	///
 	/// \brief setA
 	/// \param a
 	///
-	void setA(scalar a) {m_a=a;}
+	void setA(scalar a) { m_a = a; }
 	///
 	/// \brief get
-	/// \return 
+	/// \return
 	///
 	Color get() const;
 	///
@@ -133,24 +125,24 @@ public:
 	void get(scalar &ri, scalar &gi, scalar &bi, scalar &ai) const;
 	///
 	/// \brief r
-	/// \return 
+	/// \return
 	///
-	scalar r() const {return m_r;}
+	scalar r() const { return m_r; }
 	///
 	/// \brief g
-	/// \return 
+	/// \return
 	///
-	scalar g() const {return m_g;}
+	scalar g() const { return m_g; }
 	///
 	/// \brief b
-	/// \return 
+	/// \return
 	///
-	scalar b() const {return m_b;}
+	scalar b() const { return m_b; }
 	///
 	/// \brief alpha
-	/// \return 
+	/// \return
 	///
-	scalar alpha() const {return m_a;}
+	scalar alpha() const { return m_a; }
 	///
 	/// \brief applyCurve
 	/// \param gamma
@@ -159,7 +151,7 @@ public:
 	void applyCurve(scalar gamma, scalar gain);
 	///
 	/// \brief lumma
-	/// \return 
+	/// \return
 	///
 	scalar lumma() const;
 	///
@@ -189,7 +181,7 @@ public:
 	/// \param gamma
 	/// \param offset
 	///
-	void setToGamma(scalar gamma=2.2, scalar offset = 1.0);
+	void setToGamma(scalar gamma = 2.2, scalar offset = 1.0);
 	///
 	/// \brief gain
 	/// \param gain
@@ -198,99 +190,99 @@ public:
 	///
 	/// \brief dimm
 	/// \param factor
-	/// \return 
+	/// \return
 	///
 	Color dimm(scalar factor) const;
 	///
 	/// \brief gained
 	/// \param gain
-	/// \return 
+	/// \return
 	///
 	Color gained(scalar gain) const;
 	///
 	/// \brief operator +
 	/// \param other
-	/// \return 
+	/// \return
 	///
 	Color operator+(const Color &other) const;
 	///
 	/// \brief operator +
 	/// \param factor
-	/// \return 
+	/// \return
 	///
 	Color operator+(scalar factor) const;
 	///
 	/// \brief operator -
 	/// \param entrada
-	/// \return 
+	/// \return
 	///
 	Color operator-(const Color &entrada) const;
 	///
 	/// \brief operator -
 	/// \param factor
-	/// \return 
+	/// \return
 	///
 	Color operator-(scalar factor) const;
 	///
 	/// \brief operator *
 	/// \param entrada
-	/// \return 
+	/// \return
 	///
 	Color operator*(const Color &entrada) const;
 	///
 	/// \brief operator *
 	/// \param factor
-	/// \return 
+	/// \return
 	///
 	Color operator*(scalar factor) const;
 	///
 	/// \brief operator /
 	/// \param entrada
-	/// \return 
+	/// \return
 	///
 	Color operator/(const Color &entrada) const;
 	///
 	/// \brief operator /
 	/// \param factor
-	/// \return 
+	/// \return
 	///
 	Color operator/(scalar factor) const;
 	///
 	/// \brief operator *=
 	/// \param entrada
-	/// \return 
+	/// \return
 	///
-	Color& operator*=(const Color &entrada);
+	Color &operator*=(const Color &entrada);
 	///
 	/// \brief operator *=
 	/// \param factor
-	/// \return 
+	/// \return
 	///
-	Color& operator*=(scalar factor);
+	Color &operator*=(scalar factor);
 	///
 	/// \brief operator +=
 	/// \param entrada
-	/// \return 
+	/// \return
 	///
-	Color& operator+=(const Color &entrada);
+	Color &operator+=(const Color &entrada);
 	///
 	/// \brief operator +=
 	/// \param factor
-	/// \return 
+	/// \return
 	///
-	Color& operator+=(scalar factor);
+	Color &operator+=(scalar factor);
 	///
 	/// \brief operator -=
 	/// \param entrada
-	/// \return 
+	/// \return
 	///
-	Color& operator-=(const Color &entrada);
+	Color &operator-=(const Color &entrada);
 	///
 	/// \brief operator -=
 	/// \param factor
-	/// \return 
+	/// \return
 	///
-	Color& operator-=(scalar factor);
+	Color &operator-=(scalar factor);
 	///
 	/// \brief toRGBA8888
 	/// \param tbuff
@@ -326,13 +318,11 @@ public:
 	static Color black;
 	static Color grey;
 
-	friend std::ostream& operator<<(std::ostream &os, const Color &c)
+	friend std::ostream &operator<<(std::ostream &os, const Color &c)
 	{
 		return os << c.m_r << " " << c.m_g << " " << c.m_b << " " << c.m_a;
 	}
-	
 };
 
-
-}
+} // namespace vxCore
 #endif // VXCOLOR_H

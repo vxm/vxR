@@ -10,7 +10,7 @@ void Dome::setLightImage(const ImageHandle &lightImage)
 	m_lightImage = lightImage;
 }
 
-Dome::Dome(ImageHandle env) : m_image(env) {}
+Dome::Dome(ImageHandle env) : m_image(std::move(env)) {}
 
 scalar Dome::radius() const { return m_radius; }
 

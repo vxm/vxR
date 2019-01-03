@@ -2,11 +2,9 @@
 
 using namespace vxCore;
 
-scalar Ray::length() const { return m_length; }
+scalar Ray::length() const { return fabs(m_length); }
 
-void Ray::setLength(const scalar &length) { m_length = length; }
-
-Ray::Ray() {}
+void Ray::setLength(const scalar &length) { m_length = fabs(length); }
 
 Ray::Ray(const v3s &direction) : m_direction(direction.unit()) {}
 
@@ -50,6 +48,8 @@ scalar Ray::distance(const v3s &final) const
 {
 	return m_origin.distance(final);
 }
+
+v3s Ray::nextPosition() const { return m_origin + m_direction; }
 
 bool Ray::isCloser(const v3s &a, const v3s &b) const
 {

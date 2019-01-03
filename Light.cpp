@@ -96,8 +96,8 @@ void DirectLight::set(const v3s &orientation, bool bidirectional)
 SpotLight::SpotLight() : Light() {}
 
 SpotLight::SpotLight(const v3s &position, const v3s &orientation,
-                     scalar maxAngle, scalar minAngle)
-    : Light(position), m_orientation(orientation), m_maxAngle(maxAngle),
+					 scalar maxAngle, scalar minAngle)
+	: Light(position), m_orientation(orientation), m_maxAngle(maxAngle),
 	  m_minAngle(minAngle)
 {
 }
@@ -360,15 +360,15 @@ Color Light::acummulationLight(const Ray &, const Collision &collision) const
   // compute all sort of shadows.
   for(auto i=0u; i<n; i++)
   {
-    auto r = MU::getHollowSphereRand(radius());
+  auto r = MU::getHollowSphereRand(radius());
 
-    const Ray f(cPnt, position() + r);
-    auto lumm = m_intensity * lightRatio(f, position() + r);
+  const Ray f(cPnt, position() + r);
+  auto lumm = m_intensity * lightRatio(f, position() + r);
 
-    if (lumm>0.001 && !scn->hasCollision(f))
-    {
-      acumColor.mixSumm(color().gained(lumm), colorRatio);
-    }
+  if (lumm>0.001 && !scn->hasCollision(f))
+  {
+  acumColor.mixSumm(color().gained(lumm), colorRatio);
+  }
   }
 
   return acumColor;

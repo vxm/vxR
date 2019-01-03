@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 557
-#define PIXEL_Y 274
+#define PIXEL_X 185
+#define PIXEL_Y 185
 #endif
 
 #ifdef _DEBUG
@@ -344,7 +344,7 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 		for (auto s = 0u; s < m_samples; s++)
 		{
 			Collision col;
-			auto &&ray = rCamera->ray(hitCoordinates, sampler);
+			const auto &ray = rCamera->ray(hitCoordinates, sampler);
 
 			firstHitColor += computeEnergyAndColor(ray, col, m_rayDepth);
 

@@ -66,22 +66,22 @@ void BroadPhase::updateCache()
 	  /// broad phase
 	  for (auto visibl : m_visibles)
 	  {
-	    visibl->updateBoundingBox();
-	    auto bb = visibl->boundingBox();
+	  visibl->updateBoundingBox();
+	  auto bb = visibl->boundingBox();
 
-	    m_xvalues[i] = bb->minX();
-	    m_xvalues[ii] = bb->maxX();
+	  m_xvalues[i] = bb->minX();
+	  m_xvalues[ii] = bb->maxX();
 
-	    m_yvalues[i] = bb->minY();
-	    m_yvalues[ii] = bb->maxY();
+	  m_yvalues[i] = bb->minY();
+	  m_yvalues[ii] = bb->maxY();
 
-	    m_zvalues[i] = bb->minZ();
-	    m_zvalues[ii] = bb->maxZ();
+	  m_zvalues[i] = bb->minZ();
+	  m_zvalues[ii] = bb->maxZ();
 
-	    m_bb->extend(*bb);
+	  m_bb->extend(*bb);
 
-	    ii += 2;
-	    i += 2;
+	  ii += 2;
+	  i += 2;
 	  }
 
 	  // TODO:this sort could be less naive as I am
@@ -92,26 +92,26 @@ void BroadPhase::updateCache()
 
 	#ifdef _DEBUG
 	  std::cout << "Resolution: " << m_rx << " " << m_ry << " " << m_rz
-	            << std::endl;
+	  << std::endl;
 
 	  std::cout << "X: ";
 	  for (auto x : m_xvalues)
 	  {
-	    std::cout << ", " << x;
+	  std::cout << ", " << x;
 	  }
 	  std::cout << std::endl;
 
 	  std::cout << "Y: ";
 	  for (auto y : m_yvalues)
 	  {
-	    std::cout << ", " << y;
+	  std::cout << ", " << y;
 	  }
 	  std::cout << std::endl;
 
 	  std::cout << "Z: ";
 	  for (auto z : m_zvalues)
 	  {
-	    std::cout << ", " << z;
+	  std::cout << ", " << z;
 	  }
 	  std::cout << std::endl;
 	#endif
@@ -122,24 +122,24 @@ void BroadPhase::updateCache()
 	  auto idx(0ul);
 	  for (auto &l : m_members)
 	  {
-	    l.index = idx++;
+	  l.index = idx++;
 	  }
 
 	  for (auto &visibl : m_visibles)
 	  {
-	    locateAndRegister(visibl);
+	  locateAndRegister(visibl);
 	  }
 
 	#if _DEBUG
 
 	  for (auto &l : m_members)
 	  {
-	    std::cout << "Index: " << l.index << std::endl;
-	    if (l.geoRefs != nullptr)
-	      for (auto &g : *l.geoRefs)
-	      {
-	        std::cout << "\tgeo color: " << g->color() << std::endl;
-	      }
+	  std::cout << "Index: " << l.index << std::endl;
+	  if (l.geoRefs != nullptr)
+	  for (auto &g : *l.geoRefs)
+	  {
+	  std::cout << "\tgeo color: " << g->color() << std::endl;
+	  }
 	  }
 
 	#endif
@@ -147,26 +147,26 @@ void BroadPhase::updateCache()
 }
 
 unsigned long BroadPhase::index(unsigned int a, unsigned int b,
-                                unsigned int c) const
+								unsigned int c) const
 {
 	return ((m_ry * m_rx) * c) + (m_rx * b) + a;
 }
 
 unsigned long BroadPhase::lookupVoxel(const v3s &v, int &a, int &b,
-                                      int &c) const
+									  int &c) const
 {
 	const auto less_or_equal = [](scalar lhs, scalar rhs) { return lhs <= rhs; };
 
 	auto it = std::lower_bound(m_xvalues.begin(), m_xvalues.end() - 1u, v.x(),
-	                           less_or_equal);
+							   less_or_equal);
 	a = it <= m_xvalues.begin() ? 0u : it - m_xvalues.begin() - 1u;
 
 	it = std::lower_bound(m_yvalues.begin(), m_yvalues.end() - 1u, v.y(),
-	                      less_or_equal);
+						  less_or_equal);
 	b = it <= m_yvalues.begin() ? 0u : it - m_yvalues.begin() - 1u;
 
 	it = std::lower_bound(m_zvalues.begin(), m_zvalues.end() - 1u, v.z(),
-	                      less_or_equal);
+						  less_or_equal);
 	c = it <= m_zvalues.begin() ? 0u : it - m_zvalues.begin() - 1u;
 
 #if _DEBUG
@@ -263,21 +263,21 @@ const bpSearchResult BroadPhase::getList(const Ray &ray, v3s &sp, v3s &fp) const
 
 		v3s intersectX = MU::rectAndXPlane(d, xVal);
 		if (fabs(intersectX.y()) <= fabs(yVal) &&
-		    fabs(intersectX.z()) <= fabs(zVal))
+			fabs(intersectX.z()) <= fabs(zVal))
 		{
 			fp = p + intersectX + v3s((velX ? 1.0 : -1.0) / 100.0, 0.0, 0.0);
 		}
 
 		v3s intersectY = MU::rectAndYPlane(d, yVal);
 		if (fabs(intersectY.x()) <= fabs(xVal) &&
-		    fabs(intersectY.z()) <= fabs(zVal))
+			fabs(intersectY.z()) <= fabs(zVal))
 		{
 			fp = p + intersectY + v3s(0.0, (velY ? 1.0 : -1.0) / 100.0, 0.0);
 		}
 
 		v3s intersectZ = MU::rectAndZPlane(d, zVal);
 		if (fabs(intersectZ.x()) <= fabs(xVal) &&
-		    fabs(intersectZ.y()) <= fabs(yVal))
+			fabs(intersectZ.y()) <= fabs(yVal))
 		{
 			fp = p + intersectZ + v3s(0.0, 0.0, (velZ ? 1.0 : -1.0) / 100.0);
 		}
@@ -321,41 +321,41 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	/*	// check if this is really faster.
 	 * if (!m_bb->throwRay(ray, collide))
 	  {
-	    collide.setValid(false);
-	    return 0;
+	  collide.setValid(false);
+	  return 0;
 	  }
 	*/
 	collide.setValid(false);
 
 	/*	// draw a margin
 	  if(collide.u()<.001
-	      || collide.u()>.999
-	      || collide.v()<.001
-	      || collide.v()>.999)
+	  || collide.u()>.999
+	  || collide.v()<.001
+	  || collide.v()>.999)
 	  {
-	    collide.setColor(vxColor::white);
-	    collide.setValid(true);
-	    collide.setUV(v2s(0.5,0.5));
-	    return 1;
+	  collide.setColor(vxColor::white);
+	  collide.setValid(true);
+	  collide.setUV(v2s(0.5,0.5));
+	  return 1;
 	  }
 	*/
 	auto mdis = std::numeric_limits<scalar>::max();
 
 	Collision temp = collide;
 
-	for (auto &visbl : m_visibles)
+	for (const auto &visbl : m_visibles)
 	{ /*
 		 // if ray comes from an object which cannot see itself.
 		 // aka convex.
 		 if (visbl.get() == collide.m_geo &&
-		     collide.m_geo->type() == VisibleType::kOtherOpaque)
+		   collide.m_geo->type() == VisibleType::kOtherOpaque)
 		 {
 		   continue;
 		 }*/
 
 		/// if ray can only see opaque and this is a light we move on.
 		if (ray.m_vision == VisionType::kOpaque &&
-		    visbl->type() == VisibleType::kLight)
+			visbl->type() == VisibleType::kLight)
 		{
 			continue;
 		}
@@ -366,10 +366,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 			continue;
 		}
 
-#if DRAW_OBJECT_BBOX
-		visbl->boundingBox()->throwRay(ray, temp);
-		temp.setColor(visbl->color());
-#else
+#if !DRAW_OBJECT_BBOX
 		visbl->throwRay(ray, temp);
 #endif
 
@@ -388,7 +385,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		}
 	}
 
-	return collide.isValid();
+	return collide.isValid() ? 1 : 0;
 #else
 
 	if (!m_bb->throwRay(ray, collide))
@@ -399,7 +396,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 
 	// draw a margin
 	if (collide.u() < .001 || collide.u() > .999 || collide.v() < .001 ||
-	    collide.v() > .999)
+		collide.v() > .999)
 	{
 		collide.setColor(vxColor::white);
 		collide.setValid(true);

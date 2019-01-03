@@ -200,8 +200,9 @@ public:
 
 	// renderable interface
 	bool throwRay(const Ray &ray) const;
-	int throwRay(const Ray &ray, Collision &collide) const;
+	int throwRay(const Ray &ray, Collision &col) const;
 	bool hasCollision(const Ray &ray) const;
 };
-}
+
+} // namespace vxCore
 #endif // VXBOUNDINGBOX_H

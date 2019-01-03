@@ -21,7 +21,7 @@ void BoundingBox::set(const v3s &position, scalar size)
 }
 
 void BoundingBox::set(scalar mnx, scalar mny, scalar mnz, scalar mxx,
-                      scalar mxy, scalar mxz)
+					  scalar mxy, scalar mxz)
 {
 	m_minX = mnx;
 	m_minY = mny;
@@ -143,14 +143,14 @@ scalar BoundingBox::midZValue() const
 bool BoundingBox::contains(const v3s &v) const
 {
 	return v.x() >= m_minX && v.y() >= m_minY && v.z() >= m_minZ &&
-	       v.x() <= m_maxX && v.y() <= m_maxY && v.z() <= m_maxZ;
+		   v.x() <= m_maxX && v.y() <= m_maxY && v.z() <= m_maxZ;
 }
 
 bool BoundingBox::contains(const v3s &v, scalar tolerance) const
 {
 	return v.x() >= (m_minX - tolerance) && v.y() >= (m_minY - tolerance) &&
-	       v.z() >= (m_minZ - tolerance) && v.x() <= (m_maxX + tolerance) &&
-	       v.y() <= (m_maxY + tolerance) && v.z() <= (m_maxZ + tolerance);
+		   v.z() >= (m_minZ - tolerance) && v.x() <= (m_maxX + tolerance) &&
+		   v.y() <= (m_maxY + tolerance) && v.z() <= (m_maxZ + tolerance);
 }
 
 v3s BoundingBox::diagonal() const
@@ -174,90 +174,122 @@ void BoundingBox::applyTransform(const Matrix44 &m)
 
 bool BoundingBox::throwRay(const Ray &ray) const { return hasCollision(ray); }
 
-int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
+int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 {
 	const auto &p = ray.origin();
 	const auto &d = ray.direction();
 	if (contains(p))
 	{
-		collide.setPosition(p);
+		col.setPosition(p);
+		col.setNormal(ray.direction().inverted());
+		col.setValid(true);
 		return 1;
 	}
 
-	//	if (d.dot(p - center()) > 0.0)
-	//	{
-	//		return 0;
-	//	}
+	scalar x;
 
-	auto &&minX = m_minX - p.x();
-	auto &&maxX = m_maxX - p.x();
-	auto &&minY = m_minY - p.y();
-	auto &&maxY = m_maxY - p.y();
-	auto &&minZ = m_minZ - p.z();
-	auto &&maxZ = m_maxZ - p.z();
-
-	auto x = d.xPositive() ? minX : maxX;
-	auto t = (x - d.x()) / -d.x();
-	auto y = t * (-d.y()) + d.y();
-	if (y <= maxY && y >= minY)
+	if (d.xPositive())
 	{
-		auto z = t * (-d.z()) + d.z();
-		if (z <= maxZ && z >= minZ)
+		if (p.x() > m_maxX)
 		{
-			auto fp = p + v3s(x, y, z);
-			// TODO:this is not required to be 3d
-			if (!(p - fp).follows(d))
-			{
-				return 0;
-			}
-			collide.setPosition(fp);
-			collide.setNormal(d.xPositive() ? v3s::constMinusX : v3s::constX);
-			collide.setValid();
-			collide.setUV({(y - minY) / yLength(), (z - minZ) / zLength()});
+			col.setValid(false);
+			return 0;
+		}
+		x = m_minX;
+	}
+	else
+	{
+		if (p.x() < m_minX)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		x = m_maxX;
+	}
+
+	scalar y;
+
+	if (d.yPositive())
+	{
+		if (p.y() > m_maxY)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		y = m_minY;
+	}
+	else
+	{
+		if (p.y() < m_minY)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		y = m_maxY;
+	}
+
+	scalar z;
+
+	if (d.zPositive())
+	{
+		if (p.z() > m_maxZ)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		z = m_minZ;
+	}
+	else
+	{
+		if (p.z() < m_minZ)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		z = m_maxZ;
+	}
+
+	if (d.x() != 0.0)
+	{
+		auto v = MU::rayAndXPlane(ray, x);
+
+		if (MU::inRange(v.y(), m_minY, m_maxY) &&
+			MU::inRange(v.z(), m_minZ, m_maxZ))
+		{
+			col.setPosition(v);
+			col.setNormal(d.xPositive() ? v3s::constMinusX : v3s::constX);
+			col.setValid();
+			col.setUV({0.5, 0.5});
 			return 1;
 		}
 	}
 
-	y = d.yPositive() ? minY : maxY;
-	t = (y - d.y()) / -d.y();
-	x = t * (-d.x()) + d.x();
-	if (x <= maxX && x >= minX)
+	if (d.y() != 0.0)
 	{
-		auto z = t * (-d.z()) + d.z();
-		if (z <= maxZ && z >= minZ)
+		auto v = MU::rayAndYPlane(ray, y);
+
+		if (MU::inRange(v.x(), m_minX, m_maxX) &&
+			MU::inRange(v.z(), m_minZ, m_maxZ))
 		{
-			auto fp = p + v3s(x, y, z);
-			// TODO:this is not required to be 3d
-			if (!(p - fp).follows(d))
-			{
-				return 0;
-			}
-			collide.setPosition(fp);
-			collide.setNormal(d.yPositive() ? v3s::constMinusY : v3s::constY);
-			collide.setValid();
-			collide.setUV(v2s(((x - minX)) / xLength(), ((z - minZ)) / zLength()));
+			col.setPosition(v);
+			col.setNormal(d.yPositive() ? v3s::constMinusY : v3s::constY);
+			col.setValid(true);
+			col.setUV({0.5, 0.5});
 			return 1;
 		}
 	}
 
-	auto z = d.zPositive() ? minZ : maxZ;
-	t = (z - d.z()) / -d.z();
-	x = t * (-d.x()) + d.x();
-	if (x <= maxX && x >= minX)
+	if (d.z() != 0.0)
 	{
-		y = t * (-d.y()) + d.y();
-		if (y <= maxY && y >= minY)
+		auto v = MU::rayAndZPlane(ray, z);
+
+		if (MU::inRange(v.x(), m_minX, m_maxX) &&
+			MU::inRange(v.y(), m_minY, m_maxY))
 		{
-			auto fp = p + v3s(x, y, z);
-			// TODO:this is not required to be 3d
-			if (!(p - fp).follows(d))
-			{
-				return 0;
-			}
-			collide.setPosition(fp);
-			collide.setNormal(d.zPositive() ? v3s::constMinusZ : v3s::constZ);
-			collide.setValid();
-			collide.setUV(v2s(((x - minX)) / xLength(), ((y - minY)) / yLength()));
+			col.setPosition(v);
+			col.setNormal(d.zPositive() ? v3s::constMinusZ : v3s::constZ);
+			col.setValid();
+			col.setUV({0.5, 0.5});
 			return 1;
 		}
 	}
@@ -267,59 +299,102 @@ int BoundingBox::throwRay(const Ray &ray, Collision &collide) const
 
 bool BoundingBox::hasCollision(const Ray &ray) const
 {
-	const auto &d = ray.direction();
 	const auto &p = ray.origin();
-
+	const auto &d = ray.direction();
 	if (contains(p))
 	{
-		return true;
+		return 1;
 	}
 
-	auto &&minX = m_minX - p.x();
-	auto &&maxX = m_maxX - p.x();
-	auto &&minY = m_minY - p.y();
-	auto &&maxY = m_maxY - p.y();
-	auto &&minZ = m_minZ - p.z();
-	auto &&maxZ = m_maxZ - p.z();
+	scalar x;
 
-	auto x = d.xPositive() ? minX : maxX;
-	auto t = (x - d.x()) / -d.x();
-	auto y = t * (-d.y()) + d.y();
-	if (y <= maxY && y >= minY)
+	if (d.xPositive())
 	{
-		auto z = t * (-d.z()) + d.z();
-		if (z <= maxZ && z >= minZ)
+		if (p.x() > m_maxX)
 		{
-			auto fp = v3s(x, y, z) + p;
-			return (p - fp).follows(d);
+			return 0;
+		}
+		x = m_minX;
+	}
+	else
+	{
+		if (p.x() < m_minX)
+		{
+			return 0;
+		}
+		x = m_maxX;
+	}
+
+	scalar y;
+
+	if (d.yPositive())
+	{
+		if (p.y() > m_maxY)
+		{
+			return 0;
+		}
+		y = m_minY;
+	}
+	else
+	{
+		if (p.y() < m_minY)
+		{
+			return 0;
+		}
+		y = m_maxY;
+	}
+
+	scalar z;
+
+	if (d.zPositive())
+	{
+		if (p.z() > m_maxZ)
+		{
+			return 0;
+		}
+		z = m_minZ;
+	}
+	else
+	{
+		if (p.z() < m_minZ)
+		{
+			return 0;
+		}
+		z = m_maxZ;
+	}
+
+	if (d.x() != 0.0)
+	{
+		auto v = MU::rayAndXPlane(ray, x);
+
+		if (MU::inRange(v.y(), m_minY, m_maxY) &&
+			MU::inRange(v.z(), m_minZ, m_maxZ))
+		{
+			return 1;
 		}
 	}
 
-	y = d.yPositive() ? minY : maxY;
-	t = (y - d.y()) / -d.y();
-	x = t * (-d.x()) + d.x();
-	if (x <= maxX && x >= minX)
+	if (d.y() != 0.0)
 	{
-		auto z = t * (-d.z()) + d.z();
-		if (z <= maxZ && z >= minZ)
+		auto v = MU::rayAndYPlane(ray, y);
+
+		if (MU::inRange(v.x(), m_minX, m_maxX) &&
+			MU::inRange(v.z(), m_minZ, m_maxZ))
 		{
-			auto fp = v3s(x, y, z) + p;
-			return (p - fp).follows(d);
+			return 1;
 		}
 	}
 
-	auto z = d.zPositive() ? minZ : maxZ;
-	t = (z - d.z()) / -d.z();
-	x = t * (-d.x()) + d.x();
-	if (x <= maxX && x >= minX)
+	if (d.z() != 0.0)
 	{
-		y = t * (-d.y()) + d.y();
-		if (y <= maxY && y >= minY)
+		auto v = MU::rayAndZPlane(ray, z);
+
+		if (MU::inRange(v.x(), m_minX, m_maxX) &&
+			MU::inRange(v.y(), m_minY, m_maxY))
 		{
-			auto fp = v3s(x, y, z) + p;
-			return (p - fp).follows(d);
+			return 1;
 		}
 	}
 
-	return false;
+	return 0;
 }
