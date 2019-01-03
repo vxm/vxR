@@ -24,10 +24,10 @@ void MathUtils::fillRand()
 	{
 		rand_scalar.push_back((rand() / (scalar)RAND_MAX));
 		rand_v2s.emplace_back((rand() / (scalar)RAND_MAX),
-		                      (rand() / (scalar)RAND_MAX));
+							  (rand() / (scalar)RAND_MAX));
 		rand_v3s.emplace_back((rand() / (scalar)RAND_MAX),
-		                      (rand() / (scalar)RAND_MAX),
-		                      (rand() / (scalar)RAND_MAX));
+							  (rand() / (scalar)RAND_MAX),
+							  (rand() / (scalar)RAND_MAX));
 	}
 #endif
 }
@@ -54,7 +54,7 @@ v2s MathUtils::normalToCartesian(const v3s &normal)
 {
 	auto normalized = normal.unit();
 	auto x =
-	    (scalar)(PI + atan2(normalized.z(), normalized.x())) / (scalar(2.0) * PI);
+		(scalar)(PI + atan2(normalized.z(), normalized.x())) / (scalar(2.0) * PI);
 	auto y = (scalar)((PI / scalar(2.0)) + asin(normalized.y())) / PI;
 	return v2s{x, y};
 }
@@ -86,7 +86,7 @@ v3s MathUtils::rectAndPlane(const v3s &ray, const Plane &plane)
 }
 
 v3s MathUtils::rectAndPlane(const Ray &ray, const v3s &a, const v3s &b,
-                            const v3s &c)
+							const v3s &c)
 {
 	const auto n = MU::normal(a, b, c);
 	const auto &p1 = ray.origin();
@@ -111,6 +111,18 @@ v3s MathUtils::rectAndPlane(const Ray &ray, TriRef &tri)
 
 	scalar u = n.dot(tri.p1 - p1) / n.dot(c);
 	return (c * u) + ray.origin();
+
+	/*
+	  v3s MathUtils::rayAndZPlane(const Ray &ray, scalar z)
+{
+	v3s planePoint = {0.0, 0.0, z};
+	v3s diff = ray.origin() - planePoint;
+	scalar prod1 = diff.dot({0.0, 0.0, 1.0});
+	scalar prod2 = ray.direction().dot({0.0, 0.0, 1.0});
+	scalar prod3 = prod1 / prod2;
+	return ray.origin() - ray.direction() * prod3;
+}
+*/
 }
 
 scalar MathUtils::area(const v3s &p1, const v3s &p2, const v3s &p3)
@@ -181,31 +193,25 @@ scalar MathUtils::z_forRectAndYPlane(const v3s &ray, scalar y)
 
 v3s MathUtils::rayAndXPlane(const Ray &ray, scalar x)
 {
-	v3s planePoint = {x, 0.0, 0.0};
-	v3s diff = ray.origin() - planePoint;
-	scalar prod1 = diff.dot({1.0, 0.0, 0.0});
-	scalar prod2 = ray.direction().dot({1.0, 0.0, 0.0});
-	scalar prod3 = prod1 / prod2;
+	const scalar prod1 = ray.origin().x() - x;
+	const scalar prod2 = ray.direction().x();
+	const scalar prod3 = prod1 / prod2;
 	return ray.origin() - ray.direction() * prod3;
 }
 
 v3s MathUtils::rayAndYPlane(const Ray &ray, scalar y)
 {
-	v3s planePoint = {0.0, y, 0.0};
-	v3s diff = ray.origin() - planePoint;
-	scalar prod1 = diff.dot({0.0, 1.0, 0.0});
-	scalar prod2 = ray.direction().dot({0.0, 1.0, 0.0});
-	scalar prod3 = prod1 / prod2;
+	const scalar prod1 = ray.origin().y() - y;
+	const scalar prod2 = ray.direction().y();
+	const scalar prod3 = prod1 / prod2;
 	return ray.origin() - ray.direction() * prod3;
 }
 
 v3s MathUtils::rayAndZPlane(const Ray &ray, scalar z)
 {
-	v3s planePoint = {0.0, 0.0, z};
-	v3s diff = ray.origin() - planePoint;
-	scalar prod1 = diff.dot({0.0, 0.0, 1.0});
-	scalar prod2 = ray.direction().dot({0.0, 0.0, 1.0});
-	scalar prod3 = prod1 / prod2;
+	const scalar prod1 = ray.origin().z() - z;
+	const scalar prod2 = ray.direction().z();
+	const scalar prod3 = prod1 / prod2;
 	return ray.origin() - ray.direction() * prod3;
 }
 
@@ -291,18 +297,18 @@ scalar MathUtils::clamp(scalar val, scalar min, scalar max)
 Color MathUtils::clamp(const Color &c1, const Color &min, const Color &max)
 {
 	return {clamp(c1.r(), min.r(), max.r()), clamp(c1.g(), min.g(), max.g()),
-	        clamp(c1.b(), min.b(), max.b()),
-	        clamp(c1.alpha(), min.alpha(), max.alpha())};
+			clamp(c1.b(), min.b(), max.b()),
+			clamp(c1.alpha(), min.alpha(), max.alpha())};
 }
 
 Color MathUtils::clamp(const Color &c1, scalar min, scalar max)
 {
 	return {clamp(c1.r(), min, max), clamp(c1.g(), min, max),
-	        clamp(c1.b(), min, max), clamp(c1.alpha(), min, max)};
+			clamp(c1.b(), min, max), clamp(c1.alpha(), min, max)};
 }
 
 unsigned int MathUtils::clamp(unsigned int val, unsigned int min,
-                              unsigned int max)
+							  unsigned int max)
 {
 	return std::max(std::min(max, val), min);
 }
@@ -320,13 +326,13 @@ scalar MathUtils::remap(scalar v, scalar max)
 Color MathUtils::remap(const Color &col, scalar min, scalar max)
 {
 	return {remap(col.r(), min, max), remap(col.g(), min, max),
-	        remap(col.b(), min, max), remap(col.alpha(), min, max)};
+			remap(col.b(), min, max), remap(col.alpha(), min, max)};
 }
 
 Color MathUtils::lerp(const Color &c1, const Color &c2, scalar r)
 {
 	return {lerp(c1.r(), c2.r(), r), lerp(c1.g(), c2.g(), r),
-	        lerp(c1.b(), c2.b(), r), lerp(c1.b(), c2.b(), r)};
+			lerp(c1.b(), c2.b(), r), lerp(c1.b(), c2.b(), r)};
 }
 
 scalar MathUtils::remap(scalar v, scalar min, scalar max)
@@ -337,7 +343,7 @@ scalar MathUtils::remap(scalar v, scalar min, scalar max)
 v3s MathUtils::lerp(const v3s &v1, const v3s &v2, scalar r)
 {
 	return v3s(lerp(v1.x(), v2.x(), r), lerp(v1.y(), v2.y(), r),
-	           lerp(v1.z(), v2.z(), r));
+			   lerp(v1.z(), v2.z(), r));
 }
 
 scalar MathUtils::scaleFrom01(scalar v, scalar min, scalar max)
@@ -346,7 +352,7 @@ scalar MathUtils::scaleFrom01(scalar v, scalar min, scalar max)
 }
 
 scalar MathUtils::scaleTo01(const scalar min, const scalar max,
-                            const scalar value)
+							const scalar value)
 {
 	return (value - min) / (max - min);
 }
