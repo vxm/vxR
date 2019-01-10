@@ -58,11 +58,14 @@ Color Image::compute(const Collision &collision) const
 	{
 		auto px = m_data.get(v2s(1.0 - collision.v(), collision.u()));
 
-		return {px[2] / scalar(255.0), px[1] / scalar(255.0), px[0] / scalar(255.0),
-				px[3] / scalar(255.0)};
+		Color c = {px[2] / scalar(255.0), px[1] / scalar(255.0),
+				   px[0] / scalar(255.0), px[3] / scalar(255.0)};
+		c.applyCurve(gamma(), gain());
+
+		return c;
 	}
 
-	auto r = pow(collision.v() + m_gain, m_gamma) - m_gain;
+	auto r = pow(collision.v() + m_gain, m_gamma);
 	return {r, r, r, r};
 }
 std::string Image::path() const { return m_path; }

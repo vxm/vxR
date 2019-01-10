@@ -47,9 +47,9 @@ int Dome::computeLight(const Ray &ray, Collision &collide) const
 
 	collide.setPosition(ray.origin() + ray.direction() * m_radius);
 
-	environmentColor.applyCurve(gamma(), gain());
-
 	collide.setColor(environmentColor);
+
+	collide.setValid(false);
 
 	return 1;
 }

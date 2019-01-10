@@ -183,7 +183,7 @@ Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 	}
 	else
 	{
-		m_scene->domeThrowRay(ray, col);
+		m_scene->domeComputeLight(ray, col);
 
 		retColor = col.color();
 	}
@@ -238,24 +238,25 @@ Color RenderProcess::computeGI(Collision &col, int deep = 0)
 	const Ray giRay(col.position() + col.normal().small(), r.inverted(),
 					VisionType::kOpaque);
 
-	auto ratio = giRay.direction().dot(col.normal());
+	auto ratio = cos(giRay.direction().angle(col.normal()));
 
 	Collision nextRound;
 
 	Color hitColor;
-
-	if (deep == 0)
+	if (ratio > 0.001)
 	{
-		hitColor = computeLight(giRay, nextRound);
+		if (deep == 0)
+		{
+			hitColor = computeLight(giRay, nextRound);
+		}
+		else
+		{
+			--deep;
+			deep = std::max(0, deep - 1);
+			hitColor += computeEnergyAndColor(giRay, nextRound, deep);
+		}
 	}
-	else
-	{
-		--deep;
-		deep = std::max(0, deep - 1);
-		hitColor += computeEnergyAndColor(giRay, nextRound, deep);
-	}
-
-	Color globalIlm = orColor * hitColor * (1.0 - fabs(ratio));
+	Color globalIlm = orColor * hitColor * ratio;
 
 	return globalIlm;
 }
@@ -281,12 +282,6 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 			// firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
 			firstHitColor += computeReflection(ray, col, bounces);
 		}
-	}
-	else
-	{
-		m_scene->domeThrowRay(ray, col);
-
-		firstHitColor = col.color();
 	}
 
 	firstHitColor.setA(1.0);
@@ -345,8 +340,17 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 		{
 			Collision col;
 			const auto &ray = rCamera->ray(hitCoordinates, sampler);
+			Color localColor;
 
-			firstHitColor += computeEnergyAndColor(ray, col, m_rayDepth);
+			localColor = computeEnergyAndColor(ray, col, m_rayDepth);
+
+			if (!col.isValid())
+			{
+				m_scene->domeThrowRay(ray, col);
+				localColor = col.color();
+			}
+
+			firstHitColor += localColor;
 
 			sampler.next();
 		}
@@ -386,15 +390,22 @@ const unsigned char *RenderProcess::generateImage()
 
 	auto buff = m_imageData.initialise();
 
-	int k = 0;
 	auto pixel = m_imageData.m_pc.get();
+	std::array<unsigned char, 4> tbuff;
 
 	for (auto &&px : m_contactBuffer.m_pxs)
 	{
 		px.m_color.setToGamma(1.0);
-		px.m_color.toRGBA8888(pixel);
-		k++;
-		pixel += 4;
+		px.m_color.toRGBA8888(tbuff);
+
+		*pixel = tbuff[0];
+		pixel++;
+		*pixel = tbuff[1];
+		pixel++;
+		*pixel = tbuff[2];
+		pixel++;
+		*pixel = tbuff[3];
+		pixel++;
 	}
 
 	return buff;
