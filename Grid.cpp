@@ -758,31 +758,13 @@ bool Grid::throwRay(const Ray &ray) const
 
 int Grid::throwRay(const Ray &ray, Collision &col) const
 {
-	auto sp = col.position(); //+ (col.normal().inverted() / 1000.0);
+	auto sp = col.position() + (col.normal() * m_c_boxSize / 2.0).inverted();
 
 	const auto &d = ray.direction();
 	const auto &p = ray.origin();
 
-	// Defines the quadrant.
-	const auto velX = scalar(d.xPositive());
-	const auto velY = scalar(d.yPositive());
-	const auto velZ = scalar(d.zPositive());
-
-	auto xProgress =
-		p + v3s((d.xPositive() ? m_c_midBoxSize / 2.0 : -m_c_midBoxSize / 2.0),
-				0.0, 0.0);
-	auto yProgress =
-		p + v3s(0.0,
-				(d.yPositive() ? m_c_midBoxSize / 2.0 : -m_c_midBoxSize / 2.0),
-				0.0);
-	auto zProgress =
-		p + v3s(0.0, 0.0,
-				(d.zPositive() ? m_c_midBoxSize / 2.0 : -m_c_midBoxSize / 2.0));
-
 	/// geometries for voxels
 	BoundingBox box;
-	// Cylinder cyl;
-	///
 
 	VoxelInfo voxel;
 	voxel.size = m_c_boxSize;
@@ -793,7 +775,6 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 
 	do
 	{
-
 		voxel.index = indexAtPosition(sp);
 
 		if (voxel.index >= m_c_resXresXres)
@@ -844,6 +825,9 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			}
 		}
 
+		const auto velX = scalar(d.xPositive());
+		const auto velY = scalar(d.yPositive());
+		const auto velZ = scalar(d.zPositive());
 		const scalar xVal = m_bb->minX() + (retx + velX) * m_c_boxSize - p.x();
 		const scalar yVal = m_bb->minY() + (rety + velY) * m_c_boxSize - p.y();
 		const scalar zVal = m_bb->minZ() + (retz + velZ) * m_c_boxSize - p.z();
@@ -852,6 +836,9 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		if (fabs(intersectX.y()) <= fabs(yVal) &&
 			fabs(intersectX.z()) <= fabs(zVal))
 		{
+			auto xProgress = p + v3s((d.xPositive() ? m_c_midBoxSize / 2.0
+													: -m_c_midBoxSize / 2.0),
+									 0.0, 0.0);
 			sp = intersectX + xProgress;
 			continue;
 		}
@@ -860,6 +847,10 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		if (fabs(intersectY.x()) <= fabs(xVal) &&
 			fabs(intersectY.z()) <= fabs(zVal))
 		{
+			auto yProgress = p + v3s(0.0,
+									 (d.yPositive() ? m_c_midBoxSize / 2.0
+													: -m_c_midBoxSize / 2.0),
+									 0.0);
 			sp = intersectY + yProgress;
 			continue;
 		}
@@ -868,6 +859,9 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		if (fabs(intersectZ.x()) <= fabs(xVal) &&
 			fabs(intersectZ.y()) <= fabs(yVal))
 		{
+			auto zProgress = p + v3s(0.0, 0.0,
+									 (d.zPositive() ? m_c_midBoxSize / 2.0
+													: -m_c_midBoxSize / 2.0));
 			sp = intersectZ + zProgress;
 			continue;
 		}
