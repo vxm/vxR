@@ -55,7 +55,7 @@ void Camera::setFocalLength(const scalar &focalLength)
 	m_focalLength = focalLength;
 }
 
-Camera::Camera(const std::shared_ptr<const ImageProperties> &prop)
+Camera::Camera(const std::shared_ptr<const ImageProperties> &&prop)
 	: m_properties{prop}
 {
 	srand(time(nullptr));

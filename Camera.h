@@ -4,24 +4,24 @@
 #include <iostream>
 #include <math.h>
 
-#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-#include "Matrix44.h"
-#include "Vector.h"
-#include "Ray.h"
-#include "ImageProperties.h"
 #include "ContactBuffer.h"
+#include "ImageProperties.h"
+#include "Matrix44.h"
+#include "Ray.h"
 #include "Sampler.h"
+#include "Vector.h"
 
-namespace vxCore {
+namespace vxCore
+{
 
 class Camera
 {
 
 private:
-
 	v3s m_position{0.0, 0.0, 0.0};
 	v3s m_orientation{0.0, 0.0, 1.0};
 
@@ -31,9 +31,9 @@ private:
 	scalar m_lensSize = {0.02};
 	scalar m_horizontalAperture = {1.42};
 	scalar m_verticalAperture = {1.42};
-	
-	scalar m_hApTan = tan(-m_horizontalAperture/scalar(2.0));
-	scalar m_vApTan = tan(-m_verticalAperture/scalar(2.0));
+
+	scalar m_hApTan = tan(-m_horizontalAperture / scalar(2.0));
+	scalar m_vApTan = tan(-m_verticalAperture / scalar(2.0));
 	scalar m_pixelRadius{1.0};
 
 	scalar m_rx = 0;
@@ -42,12 +42,13 @@ private:
 	std::shared_ptr<const ImageProperties> m_properties;
 
 	Matrix44 m_transform;
+
 public:
 	///
 	/// \brief vxCamera
 	/// \param prop
 	///
-	Camera(const std::shared_ptr<const ImageProperties> &prop);
+	Camera(const std::shared_ptr<const ImageProperties> &&prop);
 	///
 	/// \brief vxCamera
 	/// \param position
@@ -56,11 +57,8 @@ public:
 	/// \param apertureH
 	/// \param apertureV
 	///
-	Camera(const v3s &position,
-				const v3s &orientation,
-				scalar focusD,
-				scalar apertureH,
-				scalar apertureV);
+	Camera(const v3s &position, const v3s &orientation, scalar focusD,
+		   scalar apertureH, scalar apertureV);
 	///
 	/// \brief set
 	/// \param position
@@ -69,22 +67,19 @@ public:
 	/// \param apertureH
 	/// \param apertureV
 	///
-	void set(const v3s &position, 
-			 const v3s &orientation, 
-			 scalar focusD = 1.0, 
-			 scalar apertureH = 0.0, 
-			 scalar apertureV = 0.0);
+	void set(const v3s &position, const v3s &orientation, scalar focusD = 1.0,
+			 scalar apertureH = 0.0, scalar apertureV = 0.0);
 	///
 	/// \brief ray
 	/// \param coord
 	/// \param sampler
-	/// \return 
+	/// \return
 	///
 	Ray ray(const v2s &coord, Sampler &sampler) const;
 	///
 	/// \brief givemeRandRay
 	/// \param coord
-	/// \return 
+	/// \return
 	///
 	Ray givemeRandRay(const v2s &coord);
 	///
@@ -96,18 +91,18 @@ public:
 	/// \brief givemeNextRay
 	/// \param imagen
 	/// \param ang
-	/// \return 
+	/// \return
 	///
 	Ray givemeNextRay(const ContactBuffer &imagen, scalar ang);
 	///
 	/// \brief givemeRandomRay
 	/// \param coord
-	/// \return 
+	/// \return
 	///
 	Ray givemeRandomRay(const v2s &coord);
 	///
 	/// \brief prop
-	/// \return 
+	/// \return
 	///
 	std::shared_ptr<const ImageProperties> prop() const;
 	///
@@ -117,7 +112,7 @@ public:
 	void setProp(const std::shared_ptr<const ImageProperties> &prop);
 	///
 	/// \brief horizontalAperture
-	/// \return 
+	/// \return
 	///
 	scalar horizontalAperture() const;
 	///
@@ -127,7 +122,7 @@ public:
 	void setHorizontalAperture(scalar horizontalAperture);
 	///
 	/// \brief verticalAperture
-	/// \return 
+	/// \return
 	///
 	scalar verticalAperture() const;
 	///
@@ -137,7 +132,7 @@ public:
 	void setVerticalAperture(scalar verticalAperture);
 	///
 	/// \brief properties
-	/// \return 
+	/// \return
 	///
 	std::shared_ptr<const ImageProperties> properties() const;
 	///
@@ -147,7 +142,7 @@ public:
 	void setProperties(const std::shared_ptr<const ImageProperties> &properties);
 	///
 	/// \brief transform
-	/// \return 
+	/// \return
 	///
 	Matrix44 transform() const;
 	///
@@ -157,8 +152,8 @@ public:
 	void setTransform(const Matrix44 &transform);
 	///
 	/// \brief pixelRadius
-	/// \return 
-	/// 
+	/// \return
+	///
 	scalar pixelRadius() const;
 	///
 	/// \brief setPixelRadius
@@ -171,6 +166,5 @@ public:
 	void setFocalLength(const scalar &focalLength);
 };
 
-}
+} // namespace vxCore
 #endif // VXPXCAMERA
-

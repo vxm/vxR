@@ -240,7 +240,7 @@ void BroadPhase::locateAndRegister(VisibleHandle vis)
 
 const bpSearchResult BroadPhase::getList(const Ray &ray, v3s &sp, v3s &fp) const
 {
-	long retVal{m_c_size};
+    long retVal{static_cast<long>(m_c_size)};
 
 	const auto &d = ray.direction();
 	const auto &p = ray.origin();

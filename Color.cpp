@@ -324,7 +324,7 @@ Color Color::operator+(const Color &other) const
 			other.m_a + m_a};
 }
 
-void Color::toRGBA8888(unsigned char tbuff[4]) const
+void Color::toRGBA8888(std::array<unsigned char, 4> &tbuff) const
 {
 	tbuff[0] = (unsigned char)char(MU::remap(m_r, scalar(255.0)));
 	tbuff[1] = (unsigned char)char(MU::remap(m_g, scalar(255.0)));
@@ -359,4 +359,4 @@ Color Color::yellow(Color::lookup256(234, 231, 94, 255));
 Color Color::yellowishGreen(Color::lookup256(170, 209, 60, 255));
 Color Color::black{mnc, mnc, mnc, 1.0};
 Color Color::grey{(mnc + mxc) / scalar(2.0), (mnc + mxc) / scalar(2.0),
-                  (mnc + mxc) / scalar(2.0), 1.0};
+				  (mnc + mxc) / scalar(2.0), 1.0};

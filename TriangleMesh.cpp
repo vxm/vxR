@@ -130,9 +130,9 @@ TriRef &TriangleMesh::addTriangle(unsigned long a, unsigned long b,
 		std::cerr << "Geometries cannot have 0 uv's" << std::endl;
 	}
 
-	auto &&uvRefA = m_uvs.size() ? m_uvs[a] : defaultUV;
-	auto &&uvRefB = m_uvs.size() ? m_uvs[b] : defaultUV;
-	auto &&uvRefC = m_uvs.size() ? m_uvs[c] : defaultUV;
+	auto &&uvRefA = m_uvs.empty() ? defaultUV : m_uvs[a];
+	auto &&uvRefB = m_uvs.empty() ? defaultUV : m_uvs[b];
+	auto &&uvRefC = m_uvs.empty() ? defaultUV : m_uvs[c];
 
 	// TODO:emplace_back ?
 	m_triangles.emplace_back(m_vertices[a], m_vertices[b], m_vertices[c],
@@ -252,12 +252,8 @@ bool TriangleMesh::hasCollision(const Ray &ray) const
 		{
 			if (m_triangles[id].throwRay(ray, col))
 			{
-				if (ray.length() > 0.0 &&
-					col.position().distance(ray.origin()) > ray.length())
-				{
-					return false;
-				}
-				return true;
+				return !(ray.length() > 0.0 &&
+						 col.position().distance(ray.origin()) > ray.length());
 			}
 		}
 	} while (m_bb->contains(sp));

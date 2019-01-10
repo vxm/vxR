@@ -303,7 +303,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 	const auto &d = ray.direction();
 	if (contains(p))
 	{
-		return 1;
+		return true;
 	}
 
 	scalar x;
@@ -312,7 +312,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 	{
 		if (p.x() > m_maxX)
 		{
-			return 0;
+			return false;
 		}
 		x = m_minX;
 	}
@@ -320,7 +320,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 	{
 		if (p.x() < m_minX)
 		{
-			return 0;
+			return false;
 		}
 		x = m_maxX;
 	}
@@ -331,7 +331,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 	{
 		if (p.y() > m_maxY)
 		{
-			return 0;
+			return false;
 		}
 		y = m_minY;
 	}
@@ -339,7 +339,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 	{
 		if (p.y() < m_minY)
 		{
-			return 0;
+			return false;
 		}
 		y = m_maxY;
 	}
@@ -350,7 +350,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 	{
 		if (p.z() > m_maxZ)
 		{
-			return 0;
+			return false;
 		}
 		z = m_minZ;
 	}
@@ -358,7 +358,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 	{
 		if (p.z() < m_minZ)
 		{
-			return 0;
+			return false;
 		}
 		z = m_maxZ;
 	}
@@ -370,7 +370,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 		if (MU::inRange(v.y(), m_minY, m_maxY) &&
 			MU::inRange(v.z(), m_minZ, m_maxZ))
 		{
-			return 1;
+			return true;
 		}
 	}
 
@@ -381,7 +381,7 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 		if (MU::inRange(v.x(), m_minX, m_maxX) &&
 			MU::inRange(v.z(), m_minZ, m_maxZ))
 		{
-			return 1;
+			return true;
 		}
 	}
 
@@ -392,9 +392,9 @@ bool BoundingBox::hasCollision(const Ray &ray) const
 		if (MU::inRange(v.x(), m_minX, m_maxX) &&
 			MU::inRange(v.y(), m_minY, m_maxY))
 		{
-			return 1;
+			return true;
 		}
 	}
 
-	return 0;
+	return false;
 }

@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <variant>
+#include <cassert>
 
 #include "Matrix44.h"
 #include "Vector.h"

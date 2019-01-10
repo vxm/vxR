@@ -5,7 +5,7 @@ namespace vxCore
 {
 
 Collision::Collision(const v3s &p, const v3s &n, const Color &c, const v2s &uv)
-    : m_position(p), m_normal{n}, m_color{c}, m_uv{uv}
+	: m_position(p), m_normal{n}, m_color{c}, m_uv{uv}
 {
 }
 

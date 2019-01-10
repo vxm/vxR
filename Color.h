@@ -1,9 +1,9 @@
 #ifndef VXCOLOR_H
 #define VXCOLOR_H
-#include <iostream>
-
 #include "Object.h"
 #include "Vector.h"
+#include <array>
+#include <iostream>
 
 namespace vxCore
 {
@@ -287,7 +287,7 @@ public:
 	/// \brief toRGBA8888
 	/// \param tbuff
 	///
-	void toRGBA8888(unsigned char tbuff[]) const;
+	void toRGBA8888(std::array<unsigned char, 4> &tbuff) const;
 	///
 	/// \brief zero
 	///
