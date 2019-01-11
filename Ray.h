@@ -7,6 +7,18 @@
 namespace vxCore
 {
 
+enum class Quadrant
+{
+	k1,
+	k2,
+	k3,
+	k4,
+	k5,
+	k6,
+	k7,
+	k8,
+};
+
 enum class VisionType
 {
 	kOpaque,
@@ -23,6 +35,8 @@ private:
 
 	scalar m_length = -1.0;
 
+	Quadrant m_qd = Quadrant::k1;
+
 public:
 	Ray() = default;
 	Ray(const v3s &direction);
@@ -32,6 +46,8 @@ public:
 	Ray(const Ray &&ray);
 	Ray(const Ray &ray);
 	~Ray() {}
+
+	void placeQuadrant();
 
 	VisionType m_vision = VisionType::kAll;
 	v3s origin() const;
@@ -83,6 +99,8 @@ public:
 	}
 	scalar length() const;
 	void setLength(const scalar &length);
+	Quadrant qd() const;
+	void setQd(const Quadrant &qd);
 };
 } // namespace vxCore
 #endif // VXRAY_H
