@@ -100,7 +100,7 @@ Color Color::indexColor(const unsigned char idx)
 	case 23:
 		return yellowishOrange;
 	case 24:
-		return black;
+		return yellowGreen;
 	default:
 		return red;
 	}
@@ -339,7 +339,7 @@ Color Color::bluishGreen(Color::lookup256(24, 162, 121, 255));
 Color Color::bluegreen(Color::lookup256(95, 164, 190, 255));
 Color Color::bluishPurple(Color::lookup256(92, 102, 177, 255));
 Color Color::greenishYellow(Color::lookup256(235, 233, 0, 255));
-Color Color::green(Color::lookup256(0, 163, 71, 255));
+Color Color::green(Color::lookup256(12, 163, 71, 255));
 Color Color::greenishBlue(Color::lookup256(110, 175, 199, 255));
 Color Color::orangePink(Color::lookup256(240, 204, 162, 255));
 Color Color::orange(Color::lookup256(228, 184, 29, 255));
