@@ -6,7 +6,6 @@ StringUtils::StringUtils() {}
 unsigned int StringUtils::indentation(const std::string &line)
 {
 	auto n = 0u;
-    std::locale loc;
 
 	for (const auto c : line)
 	{
@@ -17,7 +16,7 @@ unsigned int StringUtils::indentation(const std::string &line)
 			notFound = false;
 		}
 
-        if (std::isspace(c, loc))
+		if (std::isspace(c))
 		{
 			n++;
 			notFound = false;
@@ -34,7 +33,7 @@ unsigned int StringUtils::indentation(const std::string &line)
 
 std::vector<std::string> StringUtils::tokenizeSpace(const std::string &str)
 {
-    std::vector<std::string> ret;
+	std::vector<std::string> ret;
 	sregex_token_iterator it(str.begin(), str.end(), spaceDelimiter, -1);
 
 	sregex_token_iterator reg_end;
@@ -43,5 +42,5 @@ std::vector<std::string> StringUtils::tokenizeSpace(const std::string &str)
 		ret.emplace_back(it->str());
 	}
 
-    return ret;
+	return ret;
 }

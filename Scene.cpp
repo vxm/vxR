@@ -167,6 +167,7 @@ void Scene::buildLights()
 
 		std::string &&cast = node->getString("castShadows"s);
 		sun->setComputeShadows(cast == "true"s);
+		sun->setRadiusMultiplier(node->getScalar("radiusMultiplier"));
 
 		const auto transform = node->getMatrix("transform");
 		sun->setTransform(transform);
