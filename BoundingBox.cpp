@@ -158,6 +158,15 @@ v3s BoundingBox::diagonal() const
 	return {m_maxX - m_minX, m_maxY - m_minY, m_maxZ - m_minZ};
 }
 
+v3s BoundingBox::closestPointInside(const v3s &pos, scalar offset = 0.0) const
+{
+	scalar x = std::max(std::min(pos.x(), maxX() - offset), minX() + offset);
+	scalar y = std::max(std::min(pos.y(), maxY() - offset), minY() + offset);
+	scalar z = std::max(std::min(pos.z(), maxZ() - offset), minZ() + offset);
+
+	return {x, y, z};
+}
+
 void BoundingBox::applyTransform(const Matrix44 &m)
 {
 	/// TODO: account rotations.
@@ -177,7 +186,7 @@ bool BoundingBox::throwRay(const Ray &ray) const { return hasCollision(ray); }
 int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 {
 	const auto &p = ray.origin();
-	const auto &d = ray.direction();
+
 	if (contains(p))
 	{
 		col.setPosition(p);
@@ -186,112 +195,124 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 		return 1;
 	}
 
-	scalar x;
+	scalar x, y, z;
 
-	if (d.xPositive())
+	switch (ray.qd())
 	{
-		if (p.x() > m_maxX)
+	case Quadrant::k1:
+		if (p.x() > m_maxX || p.y() > m_maxY || p.z() > m_maxZ)
 		{
 			col.setValid(false);
 			return 0;
 		}
 		x = m_minX;
-	}
-	else
-	{
-		if (p.x() < m_minX)
+		y = m_minY;
+		z = m_minZ;
+		break;
+	case Quadrant::k2:
+		if (p.x() > m_maxX || p.y() > m_maxY || p.z() < m_minZ)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		x = m_minX;
+		y = m_minY;
+		z = m_maxZ;
+		break;
+	case Quadrant::k3:
+		if (p.x() > m_maxX || p.y() < m_minY || p.z() > m_maxZ)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		x = m_minX;
+		y = m_maxY;
+		z = m_minZ;
+		break;
+	case Quadrant::k4:
+		if (p.x() > m_maxX || p.y() < m_minY || p.z() < m_minZ)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		x = m_minX;
+		y = m_maxY;
+		z = m_maxZ;
+		break;
+	case Quadrant::k5:
+		if (p.x() < m_minX || p.y() > m_maxY || p.z() > m_maxZ)
 		{
 			col.setValid(false);
 			return 0;
 		}
 		x = m_maxX;
-	}
-
-	scalar y;
-
-	if (d.yPositive())
-	{
-		if (p.y() > m_maxY)
-		{
-			col.setValid(false);
-			return 0;
-		}
 		y = m_minY;
-	}
-	else
-	{
-		if (p.y() < m_minY)
-		{
-			col.setValid(false);
-			return 0;
-		}
-		y = m_maxY;
-	}
-
-	scalar z;
-
-	if (d.zPositive())
-	{
-		if (p.z() > m_maxZ)
-		{
-			col.setValid(false);
-			return 0;
-		}
 		z = m_minZ;
-	}
-	else
-	{
-		if (p.z() < m_minZ)
+		break;
+	case Quadrant::k6:
+		if (p.x() < m_minX || p.y() > m_maxY || p.z() < m_minZ)
 		{
 			col.setValid(false);
 			return 0;
 		}
+		x = m_maxX;
+		y = m_minY;
 		z = m_maxZ;
+		break;
+	case Quadrant::k7:
+		if (p.x() < m_minX || p.y() < m_minY || p.z() > m_maxZ)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		x = m_maxX;
+		y = m_maxY;
+		z = m_minZ;
+		break;
+	case Quadrant::k8:
+		if (p.x() < m_minX || p.y() < m_minY || p.z() < m_minZ)
+		{
+			col.setValid(false);
+			return 0;
+		}
+		x = m_maxX;
+		y = m_maxY;
+		z = m_maxZ;
+		break;
 	}
 
-	if (d.x() != 0.0)
-	{
-		auto v = MU::rayAndXPlane(ray, x);
+	auto v = MU::rayAndXPlane(ray, x);
 
-		if (MU::inRange(v.y(), m_minY, m_maxY) &&
-			MU::inRange(v.z(), m_minZ, m_maxZ))
-		{
-			col.setPosition(v);
-			col.setNormal(d.xPositive() ? v3s::constMinusX : v3s::constX);
-			col.setValid();
-			col.setUV({0.5, 0.5});
-			return 1;
-		}
+	if (MU::inRange(v.y(), m_minY, m_maxY) && MU::inRange(v.z(), m_minZ, m_maxZ))
+	{
+		col.setPosition(v);
+		col.setNormal(x == m_minX ? v3s::constMinusX : v3s::constX);
+		col.setValid();
+		col.setColor(Color::red);
+		col.setUV({0.5, 0.5});
+		return 1;
 	}
+	v = MU::rayAndYPlane(ray, y);
 
-	if (d.y() != 0.0)
+	if (MU::inRange(v.x(), m_minX, m_maxX) && MU::inRange(v.z(), m_minZ, m_maxZ))
 	{
-		auto v = MU::rayAndYPlane(ray, y);
-
-		if (MU::inRange(v.x(), m_minX, m_maxX) &&
-			MU::inRange(v.z(), m_minZ, m_maxZ))
-		{
-			col.setPosition(v);
-			col.setNormal(d.yPositive() ? v3s::constMinusY : v3s::constY);
-			col.setValid(true);
-			col.setUV({0.5, 0.5});
-			return 1;
-		}
+		col.setPosition(v);
+		col.setNormal(y == m_minY ? v3s::constMinusY : v3s::constY);
+		col.setValid();
+		col.setColor(Color::red);
+		col.setUV({0.5, 0.5});
+		return 1;
 	}
+	v = MU::rayAndZPlane(ray, z);
 
-	if (d.z() != 0.0)
+	if (MU::inRange(v.x(), m_minX, m_maxX) && MU::inRange(v.y(), m_minY, m_maxY))
 	{
-		auto v = MU::rayAndZPlane(ray, z);
-
-		if (MU::inRange(v.x(), m_minX, m_maxX) &&
-			MU::inRange(v.y(), m_minY, m_maxY))
-		{
-			col.setPosition(v);
-			col.setNormal(d.zPositive() ? v3s::constMinusZ : v3s::constZ);
-			col.setValid();
-			col.setUV({0.5, 0.5});
-			return 1;
-		}
+		col.setPosition(v);
+		col.setNormal(z == m_minZ ? v3s::constMinusZ : v3s::constZ);
+		col.setValid();
+		col.setColor(Color::red);
+		col.setUV({0.5, 0.5});
+		return 1;
 	}
 
 	return 0;

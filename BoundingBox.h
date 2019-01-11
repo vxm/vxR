@@ -50,7 +50,7 @@ public:
 	/// \param mxz
 	///
 	void set(scalar mnx, scalar mny, scalar mnz, scalar mxx, scalar mxy,
-	         scalar mxz);
+			 scalar mxz);
 	///
 	/// \brief markAsInitialized
 	///
@@ -192,6 +192,8 @@ public:
 	/// \return
 	///
 	v3s diagonal() const;
+
+	v3s closestPointInside(const v3s &pos, scalar offset) const;
 	///
 	/// \brief applyTransform
 	/// \param m
