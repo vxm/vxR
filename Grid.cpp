@@ -799,7 +799,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		}
 		else if (rety > 0)
 		{
-			auto &&neighbour = neighbourVoxel(voxel, {{0, -1, 0}});
+			auto &&neighbour = neighbourVoxel(voxel, {0, -1, 0});
 
 			if (neighbour.data.active())
 			{
@@ -827,40 +827,37 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		const scalar yVal = m_bb->minY() + (rety + velY) * m_c_boxSize - p.y();
 		const scalar zVal = m_bb->minZ() + (retz + velZ) * m_c_boxSize - p.z();
 
-		v3s &&intersectX = MU::rectAndXPlane(d, xVal);
-		if (fabs(intersectX.y()) <= fabs(yVal) &&
-			fabs(intersectX.z()) <= fabs(zVal))
+		v3s v = MU::rectAndXPlane(d, xVal);
+		if (fabs(v.y()) <= fabs(yVal) && fabs(v.z()) <= fabs(zVal))
 		{
 			auto xProgress = p + v3s((d.xPositive() ? m_c_midBoxSize / 2.0
 													: -m_c_midBoxSize / 2.0),
 									 0.0, 0.0);
-			sp = intersectX + xProgress;
+			sp = v + xProgress;
 			continue;
 		}
 
-		v3s &&intersectY = MU::rectAndYPlane(d, yVal);
-		if (fabs(intersectY.x()) <= fabs(xVal) &&
-			fabs(intersectY.z()) <= fabs(zVal))
+		v = MU::rectAndYPlane(d, yVal);
+		if (fabs(v.x()) <= fabs(xVal) && fabs(v.z()) <= fabs(zVal))
 		{
 			auto yProgress = p + v3s(0.0,
 									 (d.yPositive() ? m_c_midBoxSize / 2.0
 													: -m_c_midBoxSize / 2.0),
 									 0.0);
-			sp = intersectY + yProgress;
+			sp = v + yProgress;
 			continue;
 		}
 
-		v3s &&intersectZ = MU::rectAndZPlane(d, zVal);
-		if (fabs(intersectZ.x()) <= fabs(xVal) &&
-			fabs(intersectZ.y()) <= fabs(yVal))
+		v = MU::rectAndZPlane(d, zVal);
+		if (fabs(v.x()) <= fabs(xVal) && fabs(v.y()) <= fabs(yVal))
 		{
 			auto zProgress = p + v3s(0.0, 0.0,
 									 (d.zPositive() ? m_c_midBoxSize / 2.0
 													: -m_c_midBoxSize / 2.0));
-			sp = intersectZ + zProgress;
+			sp = v + zProgress;
 			continue;
 		}
-	} while (m_bb->contains(sp, -0.001));
+	} while (m_bb->contains(sp));
 
 	col.setValid(false);
 	return 0;
