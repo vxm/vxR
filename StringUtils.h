@@ -26,7 +26,7 @@ public:
 	// int division of SPACES_ARE_A_TAB in spaces or a combination of both.
 	static unsigned int indentation(const std::string &line);
 
-    static std::vector<std::string> tokenizeSpace(const std::string &str);
+	static std::vector<std::string> tokenizeSpace(const std::string &str);
 };
 
 

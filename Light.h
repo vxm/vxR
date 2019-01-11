@@ -125,7 +125,7 @@ public:
 	/// \return
 	///
 	virtual Color acummulationLight(const Ray &,
-	                                const Collision &collision) const = 0;
+									const Collision &collision) const = 0;
 	///
 	/// \brief radius
 	/// \return
@@ -210,7 +210,7 @@ public:
 	/// \param minAngle
 	///
 	SpotLight(const v3s &position, const v3s &orientation, scalar maxAngle,
-	          scalar minAngle);
+			  scalar minAngle);
 	///
 	/// \brief set
 	/// \param position
@@ -219,7 +219,7 @@ public:
 	/// \param minAngle
 	///
 	void set(const v3s &position, const v3s &orientation, scalar maxAngle,
-	         scalar minAngle);
+			 scalar minAngle);
 	///
 	/// \brief setOrientation
 	/// \param orientation
@@ -280,7 +280,7 @@ public:
 	/// \return
 	///
 	Color acummulationLight(const Ray &,
-	                        const Collision &collision) const override;
+							const Collision &collision) const override;
 	///
 	/// \brief set
 	/// \param orientation
@@ -340,7 +340,7 @@ public:
 	/// \return
 	///
 	Color acummulationLight(const Ray &,
-	                        const Collision &collision) const override;
+							const Collision &collision) const override;
 	///
 	/// \brief set
 	/// \param orientation
@@ -388,6 +388,8 @@ protected:
 	///
 	scalar m_distance = 149'600'000'000;
 	/// temperature = 5.777K
+	///
+	scalar m_radiusMultiplier = 1.0;
 
 public:
 	///
@@ -400,7 +402,7 @@ public:
 	/// \return
 	///
 	Color acummulationLight(const Ray &,
-	                        const Collision &collision) const override;
+							const Collision &collision) const override;
 	///
 	/// \brief set
 	/// \param orientation
@@ -424,6 +426,8 @@ public:
 
 	// Visible interface
 	v3s orientation() const;
+	scalar radiusMultiplier() const;
+	void setRadiusMultiplier(const scalar &radiusMultiplier);
 };
 
 class DirectLight final : public Light
@@ -449,7 +453,7 @@ public:
 	/// \return
 	///
 	Color acummulationLight(const Ray &,
-	                        const Collision &collision) const override;
+							const Collision &collision) const override;
 	///
 	/// \brief set
 	/// \param orientation
@@ -460,15 +464,12 @@ public:
 	/// \brief setOrientation
 	/// \param orientation
 	///
-	void setOrientation(const v3s &orientation)
-	{
-		m_orientation.set(orientation);
-	}
+	void setOrientation(const v3s &orientation);
 	///
 	/// \brief setBidirectional
 	/// \param bidirectional
 	///
-	void setBidirectional(bool bidirectional) { m_biDirectional = bidirectional; }
+	void setBidirectional(bool bidirectional);
 
 	// Visible interface
 
@@ -521,7 +522,7 @@ public:
 	/// \return
 	///
 	Color acummulationLight(const Ray &,
-	                        const Collision &collision) const override;
+							const Collision &collision) const override;
 	///
 	/// \brief gain
 	/// \return
@@ -617,7 +618,7 @@ public:
 	/// \return
 	///
 	Color acummulationLight(const Ray &,
-	                        const Collision &collision) const override;
+							const Collision &collision) const override;
 	///
 	/// \brief minX
 	/// \return

@@ -93,6 +93,16 @@ void DirectLight::set(const v3s &orientation, bool bidirectional)
 	m_biDirectional = bidirectional;
 }
 
+void DirectLight::setOrientation(const v3s &orientation)
+{
+	m_orientation.set(orientation);
+}
+
+void DirectLight::setBidirectional(bool bidirectional)
+{
+	m_biDirectional = bidirectional;
+}
+
 SpotLight::SpotLight() : Light() {}
 
 SpotLight::SpotLight(const v3s &position, const v3s &orientation,
@@ -264,6 +274,13 @@ Color SphereLight::acummulationLight(const Ray &,
 
 v3s SunLight::orientation() const { return m_orientation; }
 
+scalar SunLight::radiusMultiplier() const { return m_radiusMultiplier; }
+
+void SunLight::setRadiusMultiplier(const scalar &radiusMultiplier)
+{
+	m_radiusMultiplier = radiusMultiplier;
+}
+
 SunLight::SunLight() : Light() {}
 
 void SunLight::set(const v3s &orientation)
@@ -285,7 +302,7 @@ int SunLight::throwRay(const Ray &, Collision &) const
 
 Color SunLight::acummulationLight(const Ray &, const Collision &collision) const
 {
-	auto sphr = MU::getSolidSphereRand(m_sunRadius);
+	auto sphr = MU::getSolidSphereRand(m_sunRadius * m_radiusMultiplier);
 
 	v3s pointLightPosition = sphr + (m_position + m_transform.origin());
 	Color c = m_color;

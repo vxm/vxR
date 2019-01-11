@@ -15,12 +15,12 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 185
-#define PIXEL_Y 185
+#define PIXEL_X 956
+#define PIXEL_Y 566
 #endif
 
 #ifdef _DEBUG
-#define USE_THREADS 1
+#define USE_THREADS 0
 #else
 #define USE_THREADS 1
 #endif

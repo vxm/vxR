@@ -46,7 +46,7 @@ bool PLYImporter::processPLYFile(const std::string &fileName)
 
 	// element vertex.
 	std::getline(iFile, line);
-    auto vertexAmountTok = StringUtils::tokenizeSpace(line);
+	auto vertexAmountTok = StringUtils::tokenizeSpace(line);
 	if (vertexAmountTok.size() != 3)
 	{
 		std::cerr << "PLY: vertex count is unexpected:: '" << line << "'"
@@ -98,10 +98,10 @@ bool PLYImporter::processPLYFile(const std::string &fileName)
 	std::cout << "Reading vertex data" << std::endl;
 
 	// Reading vertex data.
-    unsigned int k{0};
+	unsigned int k{0};
 	while (std::getline(iFile, line) && k < numVertex)
 	{
-        auto &&vts = StringUtils::tokenizeSpace(line);
+		auto &&vts = StringUtils::tokenizeSpace(line);
 		if (vts.size() != properties.size())
 		{
 			std::cerr << "PLY: Line " << k << " could not be parsed as xyx scalar"
@@ -110,7 +110,7 @@ bool PLYImporter::processPLYFile(const std::string &fileName)
 		}
 		else
 		{
-            scalar x = 0.0, y, z;
+			scalar x, y, z;
 			switch (properties.size())
 			{
 			case 3:

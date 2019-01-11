@@ -25,7 +25,7 @@ void Visible::setColor(const Color &baseColor) { m_color = baseColor; }
 
 int Visible::testBoundingBox(const Ray &ray, Collision &collide) const
 {
-	if (!m_bb->throwRay(ray, collide))
+	if (!m_bb || !m_bb->throwRay(ray, collide))
 	{
 		collide.setValid(false);
 		return 0;
