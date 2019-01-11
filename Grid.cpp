@@ -543,13 +543,8 @@ void Grid::getComponentsOfIndex(const unsigned long long idx, long &retx,
 
 unsigned long Grid::indexAtPosition(v3s pos) const
 {
-
-	//  scalar x = std::max(std::min(pos.x(), m_bb->maxX()), m_bb->minX());
-	//  scalar y = std::max(std::min(pos.x(), m_bb->maxX()), m_bb->minX());
-	//  scalar z = std::max(std::min(pos.x(), m_bb->maxX()), m_bb->minX());
-	//  pos.set(x, y, z);
-
-	auto p = ((pos - m_position + m_c_midSize) / m_c_boxSize).floorVector();
+	auto newPos = m_bb->closestPointInside(pos, m_c_boxSize / 10.0);
+	auto p = ((newPos + m_c_midSize) / m_c_boxSize).floorVector();
 
 	return index((unsigned long)p.x(), (unsigned long)p.y(),
 				 (unsigned long)p.z());
@@ -758,7 +753,7 @@ bool Grid::throwRay(const Ray &ray) const
 
 int Grid::throwRay(const Ray &ray, Collision &col) const
 {
-	auto sp = col.position() + (col.normal() * m_c_boxSize / 2.0).inverted();
+	auto sp = col.position();
 
 	const auto &d = ray.direction();
 	const auto &p = ray.origin();
@@ -790,7 +785,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		{
 			voxel.position = getVoxelPosition(voxel.index);
 
-			box.set(voxel.position, voxel.size / 1.0);
+			box.set(voxel.position, voxel.size);
 
 			Collision c;
 
@@ -908,28 +903,20 @@ bool VoxelData::activeBit(unsigned int bit) const
 	{
 	case 0:
 		return c & 0b0000'0001;
-		break;
 	case 1:
 		return c & 0b0000'0010;
-		break;
 	case 2:
 		return c & 0b0000'0100;
-		break;
 	case 3:
 		return c & 0b0000'1000;
-		break;
 	case 4:
 		return c & 0b0001'0000;
-		break;
 	case 5:
 		return c & 0b0010'0000;
-		break;
 	case 6:
 		return c & 0b0100'0000;
-		break;
 	case 7:
 		return c & 0b1000'0000;
-		break;
 	}
 
 	return c & 0b0000'0000;
