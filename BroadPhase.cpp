@@ -485,15 +485,17 @@ bool BroadPhase::hasCollision(const Ray &ray) const
 	{
 		/// if ray can only see opaque and this is a light we move on.
 		if (ray.m_vision == VisionType::kOpaque &&
-		    visbl->type() == VisibleType::kLight)
+			visbl->type() == VisibleType::kLight)
 		{
 			continue;
 		}
 
+		Collision col;
+
 		// if it's own hit falls outside it's bounding box.
-		if (visbl->boundingBox()->hasCollision(ray))
+		if (visbl->boundingBox()->throwRay(ray, col) == 1)
 		{
-			if (visbl->hasCollision(ray))
+			if (visbl->throwRay(ray, col) == 1)
 			{
 				return true;
 			}
