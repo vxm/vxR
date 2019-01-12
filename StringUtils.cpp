@@ -2,11 +2,12 @@
 using namespace vxCore;
 
 StringUtils::StringUtils() {}
+#include <locale>         // std::locale, std::isspace
 
 unsigned int StringUtils::indentation(const std::string &line)
 {
 	auto n = 0u;
-
+ std::locale loc;
 	for (const auto c : line)
 	{
 		auto notFound{true};
@@ -16,7 +17,7 @@ unsigned int StringUtils::indentation(const std::string &line)
 			notFound = false;
 		}
 
-		if (std::isspace(c))
+        if (std::isspace(c,loc))
 		{
 			n++;
 			notFound = false;
@@ -33,14 +34,12 @@ unsigned int StringUtils::indentation(const std::string &line)
 
 std::vector<std::string> StringUtils::tokenizeSpace(const std::string &str)
 {
-	std::vector<std::string> ret;
-	sregex_token_iterator it(str.begin(), str.end(), spaceDelimiter, -1);
-
-	sregex_token_iterator reg_end;
-	for (; it != reg_end; ++it)
-	{
-		ret.emplace_back(it->str());
-	}
-
-	return ret;
+    std::vector<std::string> ret;
+    std::string token;
+    std::istringstream tokenStream(str);
+    while (std::getline(tokenStream, token, ' '))
+    {
+       ret.emplace_back(token);
+    }
+    return ret;
 }

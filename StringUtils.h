@@ -5,17 +5,13 @@
 #include <iostream>
 
 #define SPACES_ARE_A_TAB 4
-#include <regex>
+#include <sstream>
+#include <vector>
 
 using namespace std::string_literals;
-using std::regex;
-using std::sregex_token_iterator;
 
 namespace vxCore
 {
-
-// Delimiters are spaces (\s) and/or commas
-static std::regex spaceDelimiter("[\\s,]+"s);
 
 class StringUtils
 {
