@@ -51,56 +51,56 @@ Color Color::indexColor(const unsigned char idx)
 {
 	switch (idx % 25)
 	{
-	case 0:
-		return white;
+    case 0:
+        return red;
 	case 1:
-		return red;
+        return green;
 	case 2:
-		return green;
+        return blue;
 	case 3:
-		return blue;
+        return yellow;
 	case 4:
 		return yellow;
 	case 5:
-		return pink;
+        return grey;
 	case 6:
-		return purple;
+        return grey;
 	case 7:
-		return reddishPurple;
-	case 8:
-		return grey;
+        return green;
+    case 8:
+        return red;
 	case 9:
-		return orange;
+        return blue;
 	case 10:
-		return redPurple;
+        return yellow;
 	case 11:
-		return bluegreen;
+        return red;
 	case 12:
-		return reddishOrange;
+        return grey;
 	case 13:
-		return bluishPurple;
+        return red;
 	case 14:
 		return orangePink;
 	case 15:
-		return greenishBlue;
+        return white;
 	case 16:
-		return bluishGreen;
+        return red;
 	case 17:
 		return greenishYellow;
 	case 18:
-		return yellowishGreen;
+        return green;
 	case 19:
-		return purplishBlue;
+        return green;
 	case 20:
-		return purplishPink;
+        return pink;
 	case 21:
-		return purplishRed;
+        return yellow;
 	case 22:
-		return yellowGreen;
+        return red;
 	case 23:
-		return yellowishOrange;
+        return blue;
 	case 24:
-		return yellowGreen;
+        return red;
 	default:
 		return red;
 	}
@@ -334,29 +334,28 @@ void Color::toRGBA8888(std::array<unsigned char, 4> &tbuff) const
 
 Color Color::zero{(scalar)0.0, (scalar)0.0, (scalar)0.0, (scalar)1.0};
 
-Color Color::blue(Color::lookup256(92, 138, 202, 255));
-Color Color::bluishGreen(Color::lookup256(24, 162, 121, 255));
-Color Color::bluegreen(Color::lookup256(95, 164, 190, 255));
-Color Color::bluishPurple(Color::lookup256(92, 102, 177, 255));
+Color Color::blue(Color::lookup256(22, 34, 232, 255));
+Color Color::bluishGreen(Color::lookup256(124, 222, 121, 255));
+Color Color::bluegreen(Color::lookup256(195, 164, 190, 255));
+Color Color::bluishPurple(Color::lookup256(92, 202, 177, 255));
 Color Color::greenishYellow(Color::lookup256(235, 233, 0, 255));
-Color Color::green(Color::lookup256(12, 163, 71, 255));
-Color Color::greenishBlue(Color::lookup256(110, 175, 199, 255));
+Color Color::green(Color::lookup256(33, 223, 38, 255));
+Color Color::greenishBlue(Color::lookup256(110, 275, 199, 255));
 Color Color::orangePink(Color::lookup256(240, 204, 162, 255));
-Color Color::orange(Color::lookup256(228, 184, 29, 255));
-Color Color::pink(Color::lookup256(245, 220, 208, 255));
+Color Color::orange(Color::lookup256(228, 284, 129, 255));
+Color Color::pink(Color::lookup256(245, 33, 108, 255));
 Color Color::reddishOrange(Color::lookup256(216, 119, 51, 255));
-Color Color::red(Color::lookup256(191, 27, 75, 255));
-Color Color::reddishPurple(Color::lookup256(196, 64, 143, 255));
-Color Color::redPurple(Color::lookup256(175, 35, 132, 255));
-Color Color::purple(Color::lookup256(246, 85, 158, 255));
+Color Color::red(Color::lookup256(232, 34, 22, 255));
+Color Color::reddishPurple(Color::lookup256(233, 64, 143, 255));
+Color Color::redPurple(Color::lookup256(244, 35, 132, 255));
+Color Color::purple(Color::lookup256(246, 23, 44, 255));
 Color Color::purplishBlue(Color::lookup256(88, 121, 191, 255));
 Color Color::purplishPink(Color::lookup256(243, 208, 219, 255));
-Color Color::purplishRed(Color::lookup256(209, 65, 136, 255));
-Color Color::white(Color::lookup256(255, 255, 255, 255));
-Color Color::yellowGreen(Color::lookup256(185, 214, 4, 255));
+Color Color::purplishRed(Color::lookup256(209, 165, 136, 255));
+Color Color::white(Color::lookup256(222, 222, 222, 255));
+Color Color::yellowGreen(Color::lookup256(215, 234, 114, 255));
 Color Color::yellowishOrange(Color::lookup256(231, 224, 0, 255));
-Color Color::yellow(Color::lookup256(234, 231, 94, 255));
-Color Color::yellowishGreen(Color::lookup256(170, 209, 60, 255));
+Color Color::yellow(Color::lookup256(222, 222, 44, 255));
+Color Color::yellowishGreen(Color::lookup256(232, 231, 130, 255));
 Color Color::black{mnc, mnc, mnc, 1.0};
-Color Color::grey{(mnc + mxc) / scalar(2.0), (mnc + mxc) / scalar(2.0),
-				  (mnc + mxc) / scalar(2.0), 1.0};
+Color Color::grey(Color::lookup256(33, 33, 33, 255));

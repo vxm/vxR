@@ -268,7 +268,7 @@ v3s MathUtils::getSolidSphereRand(scalar radius)
 
 v3s MathUtils::getHollowHemisphereRand(scalar radius, const v3s &n)
 {
-	auto &&r = getHollowSphereRand(radius);
+    auto r = getHollowSphereRand(radius);
 
 	if (!n.follows(r))
 	{
