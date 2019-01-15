@@ -16,8 +16,7 @@ class GridUnitTest : public UnitTest
 {
 public:
 	GridUnitTest();
-	v3s testNextVoxel(const v3s &org, const v3s &dir);
-	int testFunction_nextVoxel();
+
 	static int testGrid();
 };
 
