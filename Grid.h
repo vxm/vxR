@@ -111,8 +111,8 @@ protected:
   scalar m_c_midSize = {m_size / scalar(2.0)};
 
   /// cache objects
-  scalar m_c_boxSize = {1.0};
-  scalar m_c_midBoxSize = {.5};
+  scalar m_c_voxelSize = {1.0};
+  scalar m_c_midVoxelSize = {.5};
   unsigned long m_c_resXres = {25};
   unsigned long m_c_resXresXres = {125};
   scalar m_xmin = {0.0};
@@ -209,7 +209,7 @@ public:
   /// \param offset
   /// \param colorIndex
   ///
-  void createGround(unsigned long offset = 0, unsigned char colorIndex = 11);
+  void createGround(scalar y_threshold = 0, unsigned char colorIndex = 11);
   ///
   /// \brief createEdges
   /// \param colorIndex
@@ -307,13 +307,6 @@ public:
   ///
   unsigned long index(const unsigned long x, const unsigned long y,
 					  const unsigned long z) const;
-  ///
-  /// \brief nextVoxel
-  /// \param ray
-  /// \param sp
-  /// \return
-  ///
-  VoxelInfo nextVoxel(const Ray &ray, v3s &sp) const;
   ///
   /// \brief neighbourVoxel
   /// \param ray
@@ -531,6 +524,7 @@ public:
 
   // Geometry interface
   virtual void updateBoundingBox() override;
+  unsigned long long legolizeColors();
 };
 
 /*
