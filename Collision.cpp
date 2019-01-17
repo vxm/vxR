@@ -4,6 +4,13 @@
 namespace vxCore
 {
 
+scalar Collision::maxDistance() const { return m_maxDistance; }
+
+void Collision::setMaxDistance(const scalar &maxDistance)
+{
+	m_maxDistance = maxDistance;
+}
+
 Collision::Collision(const v3s &p, const v3s &n, const Color &c, const v2s &uv)
 	: m_position(p), m_normal{n}, m_color{c}, m_uv{uv}
 {

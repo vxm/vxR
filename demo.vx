@@ -7,10 +7,10 @@ node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 607 341
-    pixelSamples = 30
-    rayDepth = 3
+    pixelSamples = 100
+    rayDepth = 5
     giMultiplier = 26.5
     numThreads = -1
 }
@@ -19,9 +19,9 @@ node
 {
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
-    pixelSamples = 150
+    pixelSamples = 100
     rayDepth = 5
     giMultiplier = 1.0
     numThreads = -1
@@ -31,9 +31,9 @@ node
 {
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 1366 768
-    pixelSamples = 100
+    pixelSamples = 50
     rayDepth = 5
     giMultiplier = 1.0
     numThreads = -1
@@ -55,7 +55,7 @@ node
 {
 name = "renderSettings_4"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 2720 1536
     pixelSamples = 220
     rayDepth = 8
@@ -69,8 +69,8 @@ name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
 active = "true"
     resolution = 5464 3072
-    pixelSamples = 500
-    rayDepth = 12
+    pixelSamples = 15
+    rayDepth = 5
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -80,13 +80,13 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -5.1 0.33 -5.3 1]
-    focusDistance = 6.6
-    lensSize = 0.02
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 -0.1 -3.0 1]
+    focusDistance = 4.6
+    lensSize = 0.01
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLength = 4.2
-    pixelRadius = 0.4
+    pixelRadius = 0.7
 }
 
 node
@@ -105,8 +105,8 @@ name = "image_2"
 type = "vxImage"
 active = "true"
     imagePath = "../images/MonValley_DirtRoad/MonValley_G_DirtRoad_8k.jpg"
-    gain = 1.3
-    gamma = 2.1
+    gain = 1.5
+    gamma = 2.0
 }
 
 node
@@ -120,7 +120,7 @@ active = "true"
     giColorMultiplier = 238 216 126
     rayDepth = 1
     reflectionRadius = 1.2
-    reflectionCoefficent = 0.001
+    reflectionCoefficent = 0.00
     reflectionColorMultiplier = 238 216 126
     refractionRadius = 1.0
     refractionSamples = 0
@@ -144,7 +144,7 @@ active = "true"
     giColorMultiplier = 238 216 126
     rayDepth = 0
     reflectionRadius = 1.1
-    reflectionCoefficent = 0.00566
+    reflectionCoefficent = 0.0
     reflectionColorMultiplier = 238 2 126
     refractionRadius = 1.0
     refractionSamples = 0
@@ -881,8 +881,8 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 1.3 0.0 1]
-    resolution = 310
-    size = 4.7
+    resolution = 160
+    size = 1.7
     color = 255 255 255
     shader = "shader_1"
 }
@@ -909,7 +909,7 @@ node
 {
 name = "triceratops_vx"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.6 -0.64 0.6 1]
     filePath = "../geometry/triceratops_1.ply"
 }
@@ -929,7 +929,7 @@ name = "gnome_vx"
 type = "vxGridGeometry"
 active = "true"
     transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.0 -0.65 0.0 1]
-    filePath = "../geometry/gnome_low.ply"
+    filePath = "../geometry/gnome_mid.ply"
 }
 
 node
@@ -946,7 +946,7 @@ node
 {
 name = "male_vx"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.2 -0.64 -1.5 1]
     filePath = "../geometry/male.ply"
 }
@@ -955,7 +955,7 @@ node
 {
 name = "tiger_vx"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [0.9 0 0 0 0 0.9 0 0 0 0 0.9 0 1.6 -0.65 1.3 1]
     filePath = "../geometry/tiger_snake.ply"
 }

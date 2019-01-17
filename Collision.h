@@ -20,6 +20,7 @@ private:
 	v2s m_uv;
 
 	bool m_valid{false};
+	scalar m_maxDistance = 10000000.0;
 
 public:
 	Visible *m_geo{nullptr};
@@ -27,7 +28,7 @@ public:
 	Collision() = default;
 
 	Collision(const v3s &p, const v3s &n = {0, 0, 0},
-	          const Color &c = {0, 0, 0, 1}, const v2s &uv = {.5, .5});
+			  const Color &c = {0, 0, 0, 1}, const v2s &uv = {.5, .5});
 	///
 	/// \brief setAlphaValue
 	/// \param a
@@ -132,9 +133,11 @@ public:
 	friend std::ostream &operator<<(std::ostream &os, const Collision &v)
 	{
 		return os << v.m_position << ", " << v.m_normal << ", " << v.m_color << ", "
-		          << v.m_uv;
+				  << v.m_uv;
 	}
+	scalar maxDistance() const;
+	void setMaxDistance(const scalar &maxDistance);
 };
 
-} // vxCore namespace.
+} // namespace vxCore
 #endif // VXCOLLISION_H

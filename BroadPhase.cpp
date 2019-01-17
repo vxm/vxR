@@ -240,7 +240,7 @@ void BroadPhase::locateAndRegister(VisibleHandle vis)
 
 const bpSearchResult BroadPhase::getList(const Ray &ray, v3s &sp, v3s &fp) const
 {
-    long retVal{static_cast<long>(m_c_size)};
+	long retVal{static_cast<long>(m_c_size)};
 
 	const auto &d = ray.direction();
 	const auto &p = ray.origin();
@@ -325,7 +325,6 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	  return 0;
 	  }
 	*/
-	collide.setValid(false);
 
 	/*	// draw a margin
 	  if(collide.u()<.001
@@ -339,9 +338,8 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 	  return 1;
 	  }
 	*/
-	auto mdis = std::numeric_limits<scalar>::max();
-
 	Collision temp = collide;
+	temp.setMaxDistance(std::numeric_limits<scalar>::max());
 
 	for (const auto &visbl : m_visibles)
 	{ /*
@@ -369,17 +367,11 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 #if !DRAW_OBJECT_BBOX
 		visbl->throwRay(ray, temp);
 #endif
-
-		if (!visbl->boundingBox()->contains(temp.position(), scalar(0.00001)))
-		{
-			continue;
-		}
-
 		auto s = temp.position().distance(ray.origin());
 
-		if (s < mdis && temp.isValid())
+		if (s < temp.maxDistance() && temp.isValid())
 		{
-			mdis = s;
+			temp.setMaxDistance(s);
 			collide = temp;
 			collide.m_geo = visbl.get();
 		}

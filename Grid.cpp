@@ -86,8 +86,8 @@ unsigned long Grid::resolution() const { return m_resolution; }
 
 void Grid::setBoxSize()
 {
-    m_c_voxelSize = m_size / scalar(m_resolution);
-    m_c_midVoxelSize = m_c_voxelSize / scalar(2.0);
+	m_c_voxelSize = m_size / scalar(m_resolution);
+	m_c_midVoxelSize = m_c_voxelSize / scalar(2.0);
 }
 
 void Grid::createDiagonals(unsigned char colorIndex)
@@ -169,27 +169,27 @@ unsigned int Grid::neighboursAlive(unsigned long long idx)
 
 unsigned long long Grid::legolizeColors()
 {
-    std::vector<Color> colors;
+	std::vector<Color> colors;
 
-    int k=0;
-    int i=0;
+	int k = 0;
+	int i = 0;
 
-    int r=24;
+	int r = 24;
 
-    for (auto &d : m_data)
-    {
-        if(d.active())
-        {
-            d.setByte(k%16);
-            if(i%r==0)
-            {
-                k++;
-            }
-            i++;
-        }
-     }
+	for (auto &d : m_data)
+	{
+		if (d.active())
+		{
+			d.setByte(k % 16);
+			if (i % r == 0)
+			{
+				k++;
+			}
+			i++;
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 unsigned long long Grid::playGameOfLife()
@@ -276,18 +276,18 @@ void Grid::createCorners(unsigned char colorIndex)
 	vxAt(0, 0, 0).setByte(colorIndex);
 }
 
-void Grid::createGround( scalar y_threshold, unsigned char colorIndex)
+void Grid::createGround(scalar y_threshold, unsigned char colorIndex)
 {
-    int i = 0;
-    for (auto &it : m_data)
-    {
-        if (getVoxelPosition(i).y() < y_threshold)
-        {
-            it.setByte(colorIndex);
-        }
+	int i = 0;
+	for (auto &it : m_data)
+	{
+		if (getVoxelPosition(i).y() < y_threshold)
+		{
+			it.setByte(colorIndex);
+		}
 
-        i++;
-    }
+		i++;
+	}
 }
 
 void Grid::createRoof(unsigned long offset, unsigned char colorIndex)
@@ -365,8 +365,8 @@ void Grid::createRandom(scalar ratio, scalar y_threshold)
 
 void Grid::addGeometry(const vxTriangleMeshHandle &geo)
 {
-    auto pi = reinterpret_cast<std::uintptr_t>(geo.get());
-    pi%=15;
+	auto pi = reinterpret_cast<std::uintptr_t>(geo.get());
+	pi %= 15;
 	for (auto &&tri : geo->triangles())
 	{
 		{
@@ -374,7 +374,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle &geo)
 			if (isInside(p))
 			{
 				auto &&v = vxAtPosition(p);
-                v.setByte(v.byte() + pi);
+				v.setByte(v.byte() + pi);
 			}
 		}
 		{
@@ -382,7 +382,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle &geo)
 			if (isInside(p))
 			{
 				auto &&v = vxAtPosition(p);
-                v.setByte(v.byte() + pi);
+				v.setByte(v.byte() + pi);
 			}
 		}
 		{
@@ -390,41 +390,41 @@ void Grid::addGeometry(const vxTriangleMeshHandle &geo)
 			if (isInside(p))
 			{
 				auto &&v = vxAtPosition(p);
-                v.setByte(v.byte() + pi);
+				v.setByte(v.byte() + pi);
 			}
 		}
 
 		const unsigned int interp = 4u;
-        for (unsigned int i = 0; i < interp; i++)
+		for (unsigned int i = 0; i < interp; i++)
 		{
 			auto a = MU::lerp(tri.p1, tri.p2, (i + 1) / (scalar)interp);
 			const auto &p = a;
 			if (isInside(p))
 			{
 				auto &&v = vxAtPosition(p);
-                v.setByte(v.byte() + pi);
+				v.setByte(v.byte() + pi);
 			}
 		}
 
-        for (unsigned int i = 0; i < interp; i++)
+		for (unsigned int i = 0; i < interp; i++)
 		{
 			auto a = MU::lerp(tri.p1, tri.p3, (i + 1) / (scalar)interp);
 			const auto &p = a;
 			if (isInside(p))
 			{
 				auto &&v = vxAtPosition(p);
-                v.setByte(v.byte() + pi);
+				v.setByte(v.byte() + pi);
 			}
 		}
 
-        for (unsigned int i = 0; i < interp; i++)
+		for (unsigned int i = 0; i < interp; i++)
 		{
 			auto a = MU::lerp(tri.p2, tri.p3, (i + 1) / (scalar)interp);
 			const auto &p = a;
 			if (isInside(p))
 			{
 				auto &&v = vxAtPosition(p);
-                v.setByte(v.byte() + pi);
+				v.setByte(v.byte() + pi);
 			}
 		}
 	}
@@ -573,8 +573,8 @@ void Grid::getComponentsOfIndex(const unsigned long long idx, long &retx,
 
 unsigned long Grid::indexAtPosition(v3s pos) const
 {
-    auto newPos = m_bb->closestPointInside(pos, m_c_voxelSize / 10.0);
-    auto p = ((newPos + m_c_midSize) / m_c_voxelSize).floorVector();
+	auto newPos = m_bb->closestPointInside(pos, m_c_voxelSize / 10.0);
+	auto p = ((newPos + m_c_midSize) / m_c_voxelSize).floorVector();
 
 	return index((unsigned long)p.x(), (unsigned long)p.y(),
 				 (unsigned long)p.z());
@@ -583,10 +583,10 @@ unsigned long Grid::indexAtPosition(v3s pos) const
 v3s Grid::getVoxelPosition(const unsigned long iX, const unsigned long iY,
 						   const unsigned long iZ) const
 {
-    return v3s(m_bb->minX() + (iX * m_c_voxelSize),
-               m_bb->minY() + (iY * m_c_voxelSize),
-               m_bb->minZ() + (iZ * m_c_voxelSize)) +
-           (m_c_midVoxelSize);
+	return v3s(m_bb->minX() + (iX * m_c_voxelSize),
+			   m_bb->minY() + (iY * m_c_voxelSize),
+			   m_bb->minZ() + (iZ * m_c_voxelSize)) +
+		   (m_c_midVoxelSize);
 }
 
 v3s Grid::getVoxelPosition(unsigned long long idx) const
@@ -706,11 +706,15 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 	BoundingBox box;
 
 	VoxelInfo voxel;
-    voxel.size = m_c_voxelSize;
+	voxel.size = m_c_voxelSize;
 
 	long retx;
 	long rety;
 	long retz;
+
+	const auto velX = scalar(d.xPositive());
+	const auto velY = scalar(d.yPositive());
+	const auto velZ = scalar(d.zPositive());
 
 	do
 	{
@@ -726,16 +730,16 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		getComponentsOfIndex(voxel.index, retx, rety, retz);
 
 		if (voxel.data.active())
-        {
-            voxel.position = getVoxelPosition(voxel.index);
+		{
+			voxel.position = getVoxelPosition(voxel.index);
 
-			box.set(voxel.position, voxel.size);
+			box.set(voxel.position, voxel.size * 0.98);
 			Collision c;
 
 			if (box.throwRay(ray, c))
 			{
-                col = c;
-                col.setColor(Color::indexColor(voxel.data.byte()%12));
+				col = c;
+				col.setColor(Color::indexColor(voxel.data.byte() % 12));
 				col.setValid(true);
 				return 1;
 			}
@@ -748,39 +752,31 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			{
 				neighbour.position = getVoxelPosition(voxel.index);
 
-                box.set(neighbour.position, neighbour.size/2.0);
-                box.setMinY(neighbour.position.y() - m_c_voxelSize/2.0);
-                box.setMaxY(neighbour.position.y()- m_c_voxelSize/4.0);
-               // box.setMinY(neighbour.position.y() - m_c_boxSize/4.0);
-
-
-//				box.set(neighbour.position + v3s(0.0, -m_c_boxSize / 2.0, 0.0),
-//						voxel.size / 2.0);
+				box.set(neighbour.position, neighbour.size / 2.0);
+				box.setMinY(neighbour.position.y() - m_c_voxelSize / 2.0);
+				box.setMaxY(neighbour.position.y() - m_c_voxelSize / 4.0);
 
 				Collision c;
 
 				if (box.throwRay(ray, c))
 				{
 					col = c;
-                    col.setColor(Color::indexColor(neighbour.data.byte()%12));
+					col.setColor(Color::indexColor(neighbour.data.byte() % 12));
 					col.setValid(true);
 					return 1;
 				}
 			}
 		}
 
-		const auto velX = scalar(d.xPositive());
-		const auto velY = scalar(d.yPositive());
-		const auto velZ = scalar(d.zPositive());
-        const scalar xVal = m_bb->minX() + (retx + velX) * m_c_voxelSize - p.x();
-        const scalar yVal = m_bb->minY() + (rety + velY) * m_c_voxelSize - p.y();
-        const scalar zVal = m_bb->minZ() + (retz + velZ) * m_c_voxelSize - p.z();
+		const scalar xVal = m_bb->minX() + (retx + velX) * m_c_voxelSize - p.x();
+		const scalar yVal = m_bb->minY() + (rety + velY) * m_c_voxelSize - p.y();
+		const scalar zVal = m_bb->minZ() + (retz + velZ) * m_c_voxelSize - p.z();
 
 		v3s v = MU::rectAndXPlane(d, xVal);
 		if (fabs(v.y()) <= fabs(yVal) && fabs(v.z()) <= fabs(zVal))
 		{
-            auto xProgress = p + v3s((d.xPositive() ? m_c_midVoxelSize / 2.0
-                                                    : -m_c_midVoxelSize / 2.0),
+			auto xProgress = p + v3s((d.xPositive() ? m_c_midVoxelSize / 2.0
+													: -m_c_midVoxelSize / 2.0),
 									 0.0, 0.0);
 			sp = v + xProgress;
 			continue;
@@ -790,8 +786,8 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		if (fabs(v.x()) <= fabs(xVal) && fabs(v.z()) <= fabs(zVal))
 		{
 			auto yProgress = p + v3s(0.0,
-                                     (d.yPositive() ? m_c_midVoxelSize / 2.0
-                                                    : -m_c_midVoxelSize / 2.0),
+									 (d.yPositive() ? m_c_midVoxelSize / 2.0
+													: -m_c_midVoxelSize / 2.0),
 									 0.0);
 			sp = v + yProgress;
 			continue;
@@ -801,8 +797,8 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		if (fabs(v.x()) <= fabs(xVal) && fabs(v.y()) <= fabs(yVal))
 		{
 			auto zProgress = p + v3s(0.0, 0.0,
-                                     (d.zPositive() ? m_c_midVoxelSize / 2.0
-                                                    : -m_c_midVoxelSize / 2.0));
+									 (d.zPositive() ? m_c_midVoxelSize / 2.0
+													: -m_c_midVoxelSize / 2.0));
 			sp = v + zProgress;
 			continue;
 		}

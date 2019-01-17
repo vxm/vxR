@@ -746,6 +746,8 @@ int Scene::domeComputeLight(const Ray &ray, Collision &collide) const
 
 int Scene::throwRay(const Ray &ray, Collision &collide) const
 {
+	collide.setValid(false);
+
 	if (m_broadPhase->throwRay(ray, collide))
 	{
 		collide.setValid(true);

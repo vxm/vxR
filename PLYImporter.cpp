@@ -185,7 +185,7 @@ bool PLYImporter::processPLYFile(const std::string &fileName)
 
 		if (lineTokens.size() == 5 && lineTokens[0] == "4"s)
 		{
-			std::cerr << "Quads are not allowed right now." << std::endl;
+			std::cout << "Quads are not allowed right now." << std::endl;
 
 			unsigned long a = std::stoul(lineTokens[1]);
 			unsigned long b = std::stoul(lineTokens[2]);
