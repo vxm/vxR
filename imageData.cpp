@@ -4,7 +4,7 @@ using namespace vxCore;
 
 ImageData::ImageData(ImagePropertiesHandle &prop) { m_prop = prop; }
 
-bool ImageData::hasData() const { return m_pc.get() != nullptr; }
+bool ImageData::hasData() const { return m_pc != nullptr; }
 
 void ImageData::setProperties(ImagePropertiesHandle &prop) { m_prop = prop; }
 
