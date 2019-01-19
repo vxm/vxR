@@ -33,7 +33,7 @@ name = "renderSettings_2_full"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 50
+    pixelSamples = 60
     rayDepth = 5
     giMultiplier = 1.0
     numThreads = -1
@@ -80,9 +80,9 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.0 -0.1 -3.0 1]
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -5.0 0.4 -5.0 1]
     focusDistance = 4.6
-    lensSize = 0.01
+    lensSize = 0.00
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLength = 4.2
@@ -105,8 +105,8 @@ name = "image_2"
 type = "vxImage"
 active = "true"
     imagePath = "../images/MonValley_DirtRoad/MonValley_G_DirtRoad_8k.jpg"
-    gain = 1.5
-    gamma = 2.0
+    gain = 1.0
+    gamma = 1.0
 }
 
 node
@@ -119,8 +119,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     rayDepth = 1
-    reflectionRadius = 1.2
-    reflectionCoefficent = 0.00
+    reflectionRadius = 0.2
+    reflectionCoefficent = 0.0
     reflectionColorMultiplier = 238 216 126
     refractionRadius = 1.0
     refractionSamples = 0
@@ -143,8 +143,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     rayDepth = 0
-    reflectionRadius = 1.1
-    reflectionCoefficent = 0.0
+    reflectionRadius = 0.0
+    reflectionCoefficent = 0.8
     reflectionColorMultiplier = 238 2 126
     refractionRadius = 1.0
     refractionSamples = 0
@@ -255,11 +255,11 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "false"
+active = "true"
     transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.6 -0.64 0.6 1]
-    filePath = "../geometry/triceratops.ply"
+    filePath = "../geometry/triceratops_1.ply"
     color = 185 192 186
-    shader = "shader_1"
+    shader = "shader_2"
 }
 
 node
@@ -422,7 +422,7 @@ active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 1.1 -0.65 -0.4 1]
     filePath = "../geometry/vmilo_0.ply"
     color = 212 210 198
-    shader = "shader_2"
+    shader = "shader_1"
 }
 
 node
@@ -501,7 +501,7 @@ active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 0.2 -0.64 -1.5 1]
     filePath = "../geometry/male.ply"
     color = 199 198 195
-    shader = "shader_2"
+    shader = "shader_1"
 }
 
 node
@@ -512,7 +512,7 @@ active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 3.0 -0.7 3.0 1]
     filePath = "../geometry/model_5.ply"
     color = 161 162 152
-    shader = "shader_2"
+    shader = "shader_1"
 }
 
 node
@@ -523,7 +523,7 @@ active = "true"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.4 -0.7 0.0 1]
     filePath = "../geometry/broad_phase_model_4.ply"
     color = 194 193 191
-    shader = "shader_2"
+    shader = "shader_1"
 }
 
 ////////////////////////////////////////////////////////
@@ -763,14 +763,14 @@ node
 {
 name = "sphere_light_1"
 type = "vxSphereLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1000.0 40.0 1100.0 1]
-    intensity = 3.7
-    color = 255 255 245
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -14.0 8.0 11.0 1]
+    intensity = 2.7
+    color = 255 255 250
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 40.2
+    radius = 4.2
 }
 
 
@@ -778,14 +778,14 @@ node
 {
 name = "sphere_light_2"
 type = "vxSphereLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.3 -0.1 4.0 1]
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.3 8.9 -4.0 1]
     intensity = 0.9
-    color = 150 160 255
+    color = 255 255 255
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.4
+    radius = 1.4
 }
 
 
@@ -823,7 +823,7 @@ node
 {
 name = "sun"
 type = "vxSunLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 1 0 1]
     intensity = 1.4
     color = 255 253 252
@@ -837,7 +837,7 @@ node
 {
 name = "sun_aura"
 type = "vxSunLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 1 0 1]
     intensity = 0.4
     color = 255 211 120
@@ -881,7 +881,7 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 1.3 0.0 1]
-    resolution = 160
+    resolution = 16
     size = 1.7
     color = 255 255 255
     shader = "shader_1"

@@ -234,10 +234,7 @@ v3s MathUtils::getRand3d(const scalar range)
 	return rand_v3s[(m_k++) % cached_random] * range;
 }
 
-scalar MathUtils::getBoolRand(const scalar ratio)
-{
-	return getRand(ratio + 1.0) > 1.0;
-}
+bool MathUtils::getBoolRand(const scalar ratio) { return getRand(1.0) < ratio; }
 
 v3s MathUtils::getHollowSphereRand(scalar radius)
 {
@@ -268,7 +265,7 @@ v3s MathUtils::getSolidSphereRand(scalar radius)
 
 v3s MathUtils::getHollowHemisphereRand(scalar radius, const v3s &n)
 {
-    auto r = getHollowSphereRand(radius);
+	auto r = getHollowSphereRand(radius);
 
 	if (!n.follows(r))
 	{

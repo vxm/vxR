@@ -178,8 +178,17 @@ Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 	m_scene->throwRay(ray, col);
 
 	if (col.isValid())
-	{
-		retColor = getShader(col)->getIlluminatedColor(ray, col);
+	{ // Compute reflection
+		// getShader(col)->hasReflection()
+		if (MU::getBoolRand(getShader(col)->getReflectionCoefficent()))
+		{
+			// firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
+			retColor = computeReflection(ray, col, 0);
+		}
+		else
+		{
+			retColor = getShader(col)->getIlluminatedColor(ray, col);
+		}
 	}
 	else
 	{
@@ -224,7 +233,7 @@ Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
 
 	reflection.applyCurve(1.2, 0.0);
 
-	reflection *= sh->getReflectionCoefficent(); // - fabs(ratio);
+	// reflection *= sh->getReflectionCoefficent(); // - fabs(ratio);
 
 	return reflection;
 }
@@ -274,13 +283,6 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 		if (sh->hasGI() && bounces)
 		{
 			firstHitColor += computeGI(col, bounces);
-		}
-
-		// Compute reflection
-		if (sh->hasReflection() && bounces)
-		{
-			// firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
-			firstHitColor += computeReflection(ray, col, bounces);
 		}
 	}
 

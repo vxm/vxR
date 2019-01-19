@@ -267,9 +267,9 @@ void Scene::buildGrids()
 		// grid->createRandom(.3,-0.64);
 		// grid->fill();
 		// grid->createRandom(.03,-0.6);
-        // grid->createRandom(.0003,-0.5);
-        grid->legolizeColors();
-        grid->createGround(-0.62,2);
+		// grid->createRandom(.0003,-0.5);
+		grid->legolizeColors();
+		grid->createGround(-0.62, 2);
 
 		// grid->dumpFileInMemory("/home/mario/Downloads/xyzrgb_statuette_1.ply");
 		// grid->createEdges((unsigned char)12u);
