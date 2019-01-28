@@ -9,8 +9,8 @@ name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "false"
     resolution = 607 341
-    pixelSamples = 100
-    rayDepth = 5
+    pixelSamples = 60
+    rayDepth = 2
     giMultiplier = 26.5
     numThreads = -1
 }
@@ -21,8 +21,8 @@ name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "false"
     resolution = 1366 768
-    pixelSamples = 100
-    rayDepth = 5
+    pixelSamples = 10
+    rayDepth = 1
     giMultiplier = 1.0
     numThreads = -1
 }
@@ -33,7 +33,7 @@ name = "renderSettings_2_full"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 60
+    pixelSamples = 90
     rayDepth = 5
     giMultiplier = 1.0
     numThreads = -1
@@ -67,10 +67,10 @@ node
 {
 name = "renderSettings_5_fullfull"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 5464 3072
-    pixelSamples = 15
-    rayDepth = 5
+    pixelSamples = 290
+    rayDepth = 8
     giMultiplier = 1.5
     numThreads = -1
 }
@@ -80,9 +80,9 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -5.0 0.4 -5.0 1]
-    focusDistance = 4.6
-    lensSize = 0.00
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -5.5 0.0 -5.5 1]
+    focusDistance = 5.6
+    lensSize = 0.000
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLength = 4.2
@@ -143,8 +143,8 @@ active = "true"
     giCoeficent = 1.0
     giColorMultiplier = 238 216 126
     rayDepth = 0
-    reflectionRadius = 0.0
-    reflectionCoefficent = 0.8
+    reflectionRadius = 0.1
+    reflectionCoefficent = 0.6
     reflectionColorMultiplier = 238 2 126
     refractionRadius = 1.0
     refractionSamples = 0
@@ -161,7 +161,7 @@ node
 {
 name = "time"
 type = "vxClock"
-active = "false"
+active = "true"
     start = 1.0
     end = 300.0
     step = 1.0
@@ -255,8 +255,8 @@ node
 {
 name = "triceratops_tris"
 type = "vxGeometry"
-active = "true"
-    transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.6 -0.64 0.6 1]
+active = "false"
+    transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.6 -0.64 0.8 1]
     filePath = "../geometry/triceratops_1.ply"
     color = 185 192 186
     shader = "shader_2"
@@ -704,7 +704,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     lightImageNode = "image_2"
@@ -765,7 +765,7 @@ name = "sphere_light_1"
 type = "vxSphereLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -14.0 8.0 11.0 1]
-    intensity = 2.7
+    intensity = 2.8
     color = 255 255 250
     samples = 1
     castShadows = "true"
@@ -780,7 +780,7 @@ name = "sphere_light_2"
 type = "vxSphereLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.3 8.9 -4.0 1]
-    intensity = 0.9
+    intensity = 1.3
     color = 255 255 255
     samples = 1
     castShadows = "true"
@@ -881,8 +881,8 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 1.3 0.0 1]
-    resolution = 16
-    size = 1.7
+    resolution = 199
+    size = 2.4
     color = 255 255 255
     shader = "shader_1"
 }
@@ -907,7 +907,7 @@ active = "false"
 
 node
 {
-name = "triceratops_vx"
+name = "triceratops_vkx"
 type = "vxGridGeometry"
 active = "false"
     transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.6 -0.64 0.6 1]
@@ -927,7 +927,7 @@ node
 {
 name = "gnome_vx"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.0 -0.65 0.0 1]
     filePath = "../geometry/gnome_mid.ply"
 }
@@ -955,7 +955,7 @@ node
 {
 name = "tiger_vx"
 type = "vxGridGeometry"
-active = "false"
-    transform = [0.9 0 0 0 0 0.9 0 0 0 0 0.9 0 1.6 -0.65 1.3 1]
+active = "true"
+    transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.0 -0.65 0.0 1]
     filePath = "../geometry/tiger_snake.ply"
 }

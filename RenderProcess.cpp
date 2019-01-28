@@ -35,7 +35,7 @@ RenderProcess::RenderProcess(ImagePropertiesHandle &prop, unsigned int samples)
 	: m_properties(prop), m_imageData(prop),
 	  m_contactBuffer(prop->numPixels()), m_samples{samples}
 {
-	setNMaxThreads(100);
+    setNMaxThreads(16);
 }
 
 unsigned int RenderProcess::samples() const { return m_samples; }
@@ -183,7 +183,7 @@ Color RenderProcess::computeLight(const Ray &ray, Collision &col)
 		if (MU::getBoolRand(getShader(col)->getReflectionCoefficent()))
 		{
 			// firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
-			retColor = computeReflection(ray, col, 0);
+            retColor = computeReflection(ray, col, 2);
 		}
 		else
 		{

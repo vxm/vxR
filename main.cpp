@@ -53,13 +53,22 @@ int executeRenderProcess(int argc, char *argv[])
 	sceneParser->procesScene();
 	std::shared_ptr<Scene> m_scene;
 
-	for (auto &&node : sceneParser->getNodesByType("vxRenderSettings"))
-	{
+    int frameStart = 0;
+    int frameEnd = 1;
+    for (const auto &timeOption : sceneParser->getNodesByType("vxClock"))
+    {
+        frameStart = timeOption->getScalar("start");
+        frameEnd = timeOption->getScalar("end");
+    }
+
+    for (const auto &renderSettings : sceneParser->getNodesByType("vxRenderSettings"))
+    {
+        for(int i=frameStart; i<frameEnd;i++)
 		{
-			const auto resolution = node->getVector2d("resolution");
-			const auto samples = node->getInt("pixelSamples");
-			const auto rayDepth = node->getInt("rayDepth");
-			const auto giMultiplier = node->getScalar("giMultiplier");
+            const auto resolution = renderSettings->getVector2d("resolution");
+            const auto samples = renderSettings->getInt("pixelSamples");
+            const auto rayDepth = renderSettings->getInt("rayDepth");
+            const auto giMultiplier = renderSettings->getScalar("giMultiplier");
 
 			//			const auto numThreads = node->getInt("numThreads");
 
@@ -135,8 +144,14 @@ int executeRenderProcess(int argc, char *argv[])
 				          << TimeUtils::decorateTime(start, 2) << std::endl;
 			}
 
-			std::cout << "\tEnded frame " << std::endl;
+            std::cout << "\tEnded frame " << std::endl;
+
+            m_scene->grids().front()->playGameOfLife();
+            auto tr = m_scene->camera()->transform();
+            tr.setOrigin(tr.origin()+v3s(.01,0.0,.01));
+            m_scene->camera()->setTransform(tr);
 		}
+
 	}
 	// return a.exec();
 	std::cout << "done!" << std::endl;

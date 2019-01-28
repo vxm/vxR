@@ -203,14 +203,29 @@ unsigned long long Grid::playGameOfLife()
 
 		if (d.activeBit(7))
 		{
-			if (pop < 5 || pop > 5)
+            if (pop == 1)
 			{
 				markCellAsDead(d);
 			}
+
+            if (pop == 3)
+            {
+                markCellAsDead(d);
+            }
+
+            if (pop == 5)
+            {
+                markCellAsDead(d);
+            }
+
+            if (pop == 7)
+            {
+                markCellAsDead(d);
+            }
 		}
 		else
 		{
-			if (pop > 3 && pop < 5)
+            if (pop == 6)
 			{
 				markCellForGenesis(d);
 				newLife++;
@@ -224,7 +239,7 @@ unsigned long long Grid::playGameOfLife()
 void Grid::markCellAsDead(VoxelData &cell)
 {
 	cell.c = 0b0000'0000;
-	cell.activateBit(4);
+   cell.activateBit(4);
 }
 
 void Grid::markCellForGenesis(VoxelData &cell)
