@@ -7,10 +7,10 @@ node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
-active = "false"
+active = "true"
     resolution = 607 341
     pixelSamples = 60
-    rayDepth = 2
+    rayDepth = 1
     giMultiplier = 26.5
     numThreads = -1
 }
@@ -33,8 +33,8 @@ name = "renderSettings_2_full"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 90
-    rayDepth = 5
+    pixelSamples = 120
+    rayDepth = 4
     giMultiplier = 1.0
     numThreads = -1
 }
@@ -881,8 +881,8 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 1.3 0.0 1]
-    resolution = 199
-    size = 2.4
+    resolution = 312
+    size = 2.0
     color = 255 255 255
     shader = "shader_1"
 }

@@ -35,7 +35,7 @@ RenderProcess::RenderProcess(ImagePropertiesHandle &prop, unsigned int samples)
 	: m_properties(prop), m_imageData(prop),
 	  m_contactBuffer(prop->numPixels()), m_samples{samples}
 {
-    setNMaxThreads(16);
+    setNMaxThreads(8);
 }
 
 unsigned int RenderProcess::samples() const { return m_samples; }

@@ -218,14 +218,14 @@ unsigned long long Grid::playGameOfLife()
                 markCellAsDead(d);
             }
 
-            if (pop == 7)
+            if (pop > 4)
             {
                 markCellAsDead(d);
             }
 		}
 		else
 		{
-            if (pop == 6)
+            if (pop == 4)
 			{
 				markCellForGenesis(d);
 				newLife++;
