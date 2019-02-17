@@ -87,11 +87,11 @@ static_assert(sizeof(VoxelData) == 1,
 class VoxelInfo
 {
 public:
-	unsigned long long index{0ull};
+	long long index{0ull};
 
-	unsigned long x{0ul};
-	unsigned long y{0ul};
-	unsigned long z{0ul};
+	long x{0ul};
+	long y{0ul};
+	long z{0ul};
 
 	VoxelData data;
 	v3s position;
@@ -108,7 +108,7 @@ protected:
 
 	v3s m_position;
 	scalar m_size = {5.0};
-	unsigned long m_resolution = {5u};
+	long m_resolution = {5u};
 
 	scalar m_c_invRes = {1 / (scalar)5.0};
 	scalar m_c_resDivTres = {m_size / (scalar)3.0};
@@ -116,9 +116,9 @@ protected:
 
 	/// cache objects
 	scalar m_c_voxelSize = {1.0};
-	scalar m_c_midVoxelSize = {.5};
-	unsigned long m_c_resXres = {25};
-	unsigned long m_c_resXresXres = {125};
+	scalar m_c_halfVoxelSize = {.5};
+	long m_c_resXres = {25};
+	long m_c_resXresXres = {125};
 	scalar m_xmin = {0.0};
 	scalar m_xmax = {0.0};
 	scalar m_ymin = {0.0};
@@ -153,12 +153,12 @@ public:
 	/// \brief createGridData
 	/// \param resolution
 	///
-	void createGridData(const unsigned long resolution);
+	void createGridData(const long resolution);
 	///
 	/// \brief setResolution
 	/// \param resolution
 	///
-	void setResolution(unsigned long resolution);
+	void setResolution(long resolution);
 	///
 	/// \brief setSize
 	/// \param size
@@ -168,7 +168,7 @@ public:
 	/// \brief size
 	/// \return
 	///
-	unsigned long size() const;
+	long size() const;
 	///
 	/// \brief setPosition
 	/// \param position
@@ -183,7 +183,7 @@ public:
 	/// \brief resolution
 	/// \return
 	///
-	unsigned long resolution() const;
+	long resolution() const;
 	///
 	/// \brief setBoxSize
 	///
@@ -207,7 +207,7 @@ public:
 	/// \param offset
 	/// \param colorIndex
 	///
-	void createRoof(unsigned long offset = 0, unsigned char colorIndex = 11);
+	void createRoof(long offset = 0, unsigned char colorIndex = 11);
 	///
 	/// \brief createGround
 	/// \param offset
@@ -282,7 +282,7 @@ public:
 	/// \param idx
 	/// \return
 	///
-	unsigned int neighboursAlive(unsigned long long idx);
+	unsigned int neighboursAlive(long long idx);
 
 	///
 	/// \brief playGameOfLife
@@ -291,12 +291,12 @@ public:
 	/// lives on to the next generation. 	Any live cell with more than three live
 	/// neighbours dies, as if by over-population. 	Any dead cell with
 	/// exactly three live neighbours becomes a live cell, as if by reproduction.
-	unsigned long long playGameOfLife();
+	long long playGameOfLife();
 	///
 	/// \brief killTheDead
 	/// \return
 	///
-	unsigned long long killTheDead();
+	long long killTheDead();
 
 	//////////////////////////////////////////////////The game of life//////////
 	////////////////////////////////////////////////// END /////////////////////
@@ -309,8 +309,7 @@ public:
 	/// \param z
 	/// \return
 	///
-	unsigned long index(const unsigned long x, const unsigned long y,
-						const unsigned long z) const;
+	long index(const long x, const long y, const long z) const;
 	///
 	/// \brief neighbourVoxel
 	/// \param ray
@@ -328,7 +327,7 @@ public:
 	/// \brief numActiveVoxels
 	/// \return
 	/// returns number of active voxels
-	unsigned long numActiveVoxels();
+	long numActiveVoxels();
 	///
 	/// \brief getNumberOfVoxels
 	/// \return
@@ -346,7 +345,7 @@ public:
 	/// \param idx
 	/// \return
 	///
-	bool active(unsigned long idx) const;
+	bool active(long idx) const;
 	///
 	////// \brief active
 	////// \param x
@@ -354,16 +353,14 @@ public:
 	////// \param z
 	////// \return
 	// returns true if voxel at index is active
-	bool active(const unsigned long x, const unsigned long y,
-				const unsigned long z) const;
+	bool active(const long x, const long y, const long z) const;
 	///
 	/// \brief activate
 	/// \param x
 	/// \param y
 	/// \param z
 	/// sets active voxel at coordinates x y z
-	void activate(const unsigned long x, const unsigned long y,
-				  const unsigned long z);
+	void activate(const long x, const long y, const long z);
 	///
 	/// \brief activate
 	/// \param pos
@@ -383,8 +380,7 @@ public:
 	/// \param y
 	/// \param z
 	/// sets unactive vxl at coordinates x y z
-	void deactivate(const unsigned long x, const unsigned long y,
-					const unsigned long z);
+	void deactivate(const long x, const long y, const long z);
 	///
 	/// \brief getElement
 	/// \param x
@@ -393,8 +389,7 @@ public:
 	/// \return
 	/// returns true if element at local coords
 	/// is true
-	bool getElement(const unsigned long x, const unsigned long y,
-					const unsigned long z) const;
+	bool getElement(const long x, const long y, const long z) const;
 	///
 	/// \brief setElementColorIndex
 	/// \param x
@@ -402,8 +397,8 @@ public:
 	/// \param z
 	/// \param c
 	///
-	void setElementColorIndex(const unsigned long x, const unsigned long y,
-							  const unsigned long z, const unsigned char c);
+	void setElementColorIndex(const long x, const long y, const long z,
+							  const unsigned char c);
 	///
 	/// \brief setElement
 	/// \param x
@@ -412,14 +407,13 @@ public:
 	/// \param value
 	/// changes the value of the element at local
 	/// coords x y z to be same as parameter value
-	void setElement(const unsigned long x, const unsigned long y,
-					const unsigned long z, bool value);
+	void setElement(const long x, const long y, const long z, bool value);
 	///
 	/// \brief setElement
 	/// \param idx
 	/// \param value
 	///
-	void setElement(unsigned long idx, bool value);
+	void setElement(long idx, bool value);
 	///
 	/// \brief getVoxelPosition
 	/// \param iX
@@ -427,32 +421,31 @@ public:
 	/// \param iZ
 	/// \return
 	///
-	v3s getVoxelPosition(const unsigned long iX, const unsigned long iY,
-						 const unsigned long iZ) const;
+	v3s getVoxelPosition(const long iX, const long iY, const long iZ) const;
 	///
 	/// \brief getVoxelPosition
 	/// \param idx
 	/// \return
 	///
-	v3s getVoxelPosition(unsigned long long idx) const;
+	v3s getVoxelPosition(long long idx) const;
 	///
 	/// \brief indexAtPosition
 	/// \param pos
 	/// \return
 	///
-	unsigned long indexAtPosition(v3s pos) const;
+	long indexAtPosition(const v3s &pos) const;
 	///
 	/// \brief vxAt
 	/// \param idx
 	/// \return
 	///
-	VoxelData &vxAt(const unsigned long idx);
+	VoxelData &vxAt(const long idx);
 	///
 	/// \brief vxAt
 	/// \param idx
 	/// \return
 	///
-	VoxelData vxAt(const unsigned long idx) const;
+	VoxelData vxAt(const long idx) const;
 	///
 	/// \brief vxAtPosition
 	/// \param position
@@ -466,8 +459,7 @@ public:
 	/// \param iZ
 	/// \return
 	///
-	VoxelData &vxAt(const unsigned long iX, const unsigned long iY,
-					const unsigned long iZ);
+	VoxelData &vxAt(const long iX, const long iY, const long iZ);
 	///
 	/// \brief vxAtPosition
 	/// \param position
@@ -481,8 +473,7 @@ public:
 	/// \param iZ
 	/// \return
 	///
-	VoxelData vxAt(const unsigned long iX, const unsigned long iY,
-				   const unsigned long iZ) const;
+	VoxelData vxAt(const long iX, const long iY, const long iZ) const;
 	///
 	/// \brief inGrid
 	/// \param pnt
@@ -503,14 +494,14 @@ public:
 	/// \param z
 	/// \return
 	///
-	unsigned char elementColorIndex(const unsigned long x, const unsigned long y,
-									const unsigned long z) const;
+	unsigned char elementColorIndex(const long x, const long y,
+									const long z) const;
 	///
 	/// \brief bitInBufferData
 	/// \param idx
 	/// \return
 	///
-	bool bitInBufferData(const unsigned long idx) const;
+	bool bitInBufferData(const long idx) const;
 	///
 	/// \brief getComponentsOfIndex
 	/// \param idx
@@ -518,8 +509,8 @@ public:
 	/// \param rety
 	/// \param retz
 	///
-	void getComponentsOfIndex(const unsigned long long idx, long &retx,
-							  long &rety, long &retz) const;
+	void getComponentsOfIndex(const long idx, long &retx, long &rety,
+							  long &retz) const;
 
 	// renderable interface
 	virtual bool throwRay(const Ray &ray) const override;
@@ -528,30 +519,31 @@ public:
 
 	// Geometry interface
 	virtual void updateBoundingBox() override;
-	unsigned long long legolizeColors();
+	long long legolizeColors();
+	void createBox(const BoundingBox &bb, unsigned char colorIndex);
 };
 
 /*
  *
-				vxGrid grid(2.5, 2.5, 2.5, 5);
-				grid.setResolution(5);
+  vxGrid grid(2.5, 2.5, 2.5, 5);
+  grid.setResolution(5);
 
-				for(int i=0; i<5; i++)
-				{
-								v3
+  for(int i=0; i<5; i++)
+  {
+  v3
  pos(i+.1,i+.1,i+.1);
 
-								auto idx =
+  auto idx =
  grid.indexAtPosition(pos);
 
-								std::cout <<
+  std::cout <<
  "index at position " << pos
-																  << std::endl;
+  << std::endl;
 
-								std::cout << "
+  std::cout << "
  is " << idx
-																  << std::endl;
-				}
+  << std::endl;
+  }
 */
 
 } // namespace vxCore

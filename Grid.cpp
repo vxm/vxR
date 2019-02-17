@@ -47,7 +47,7 @@ Grid::Grid(scalar x, scalar y, scalar z, scalar size)
 
 void Grid::updateBB() { m_bb->set(m_position, m_size); }
 
-void Grid::createGridData(const unsigned long resolution)
+void Grid::createGridData(const long resolution)
 {
 	m_resolution = resolution;
 	m_c_resXres = resolution * resolution;
@@ -57,7 +57,7 @@ void Grid::createGridData(const unsigned long resolution)
 	setBoxSize();
 }
 
-void Grid::setResolution(unsigned long resolution)
+void Grid::setResolution(long resolution)
 {
 	if (resolution != m_resolution)
 	{
@@ -72,7 +72,7 @@ void Grid::setSize(const scalar size)
 	setBoxSize();
 }
 
-unsigned long Grid::size() const { return m_size; }
+long Grid::size() const { return m_size; }
 
 void Grid::setPosition(const v3s &position)
 {
@@ -82,18 +82,18 @@ void Grid::setPosition(const v3s &position)
 
 v3s Grid::position() const { return m_position; }
 
-unsigned long Grid::resolution() const { return m_resolution; }
+long Grid::resolution() const { return m_resolution; }
 
 void Grid::setBoxSize()
 {
 	m_c_voxelSize = m_size / scalar(m_resolution);
-	m_c_midVoxelSize = m_c_voxelSize / scalar(2.0);
+	m_c_halfVoxelSize = m_c_voxelSize / scalar(2.0);
 }
 
 void Grid::createDiagonals(unsigned char colorIndex)
 {
-	unsigned long rMO = m_resolution - 1;
-	for (unsigned long i = 0; i < m_resolution; i++)
+	long rMO = m_resolution - 1;
+	for (long i = 0; i < m_resolution; i++)
 	{
 		vxAt(i, i, i).setByte(colorIndex);
 		vxAt(rMO - i, rMO - i, i).setByte(colorIndex);
@@ -135,7 +135,7 @@ void Grid::dumpNumericTypeInMemory()
 ///////////////////////////////////
 ///////////////////////////////////
 
-unsigned int Grid::neighboursAlive(unsigned long long idx)
+unsigned int Grid::neighboursAlive(long long idx)
 {
 	long retx;
 	long rety;
@@ -167,20 +167,20 @@ unsigned int Grid::neighboursAlive(unsigned long long idx)
 	return ret;
 }
 
-unsigned long long Grid::legolizeColors()
+long long Grid::legolizeColors()
 {
 	std::vector<Color> colors;
 
 	int k = 0;
 	int i = 0;
 
-	int r = 24;
+	int r = 124;
 
 	for (auto &d : m_data)
 	{
 		if (d.active())
 		{
-			d.setByte(k % 16);
+			d.setByte(k % 19);
 			if (i % r == 0)
 			{
 				k++;
@@ -192,10 +192,10 @@ unsigned long long Grid::legolizeColors()
 	return 0;
 }
 
-unsigned long long Grid::playGameOfLife()
+long long Grid::playGameOfLife()
 {
-	unsigned long long idx{0ull};
-	unsigned long long newLife{0ul};
+	long long idx{0ull};
+	long long newLife{0ul};
 
 	for (auto &d : m_data)
 	{
@@ -203,29 +203,29 @@ unsigned long long Grid::playGameOfLife()
 
 		if (d.activeBit(7))
 		{
-            if (pop == 1)
+			if (pop == 1)
 			{
 				markCellAsDead(d);
 			}
 
-            if (pop == 3)
-            {
-                markCellAsDead(d);
-            }
+			if (pop == 3)
+			{
+				markCellAsDead(d);
+			}
 
-            if (pop == 5)
-            {
-                markCellAsDead(d);
-            }
+			if (pop == 5)
+			{
+				markCellAsDead(d);
+			}
 
-            if (pop > 4)
-            {
-                markCellAsDead(d);
-            }
+			if (pop == 7)
+			{
+				markCellAsDead(d);
+			}
 		}
 		else
 		{
-            if (pop == 4)
+			if (pop == 6)
 			{
 				markCellForGenesis(d);
 				newLife++;
@@ -239,7 +239,7 @@ unsigned long long Grid::playGameOfLife()
 void Grid::markCellAsDead(VoxelData &cell)
 {
 	cell.c = 0b0000'0000;
-   cell.activateBit(4);
+	cell.activateBit(4);
 }
 
 void Grid::markCellForGenesis(VoxelData &cell)
@@ -248,9 +248,9 @@ void Grid::markCellForGenesis(VoxelData &cell)
 	cell.activateBit(6);
 }
 
-unsigned long long Grid::killTheDead()
+long long Grid::killTheDead()
 {
-	unsigned long long deadCells{0ull};
+	long long deadCells{0ull};
 	for (auto &d : m_data)
 	{
 		unsigned char tm = d.c;
@@ -305,16 +305,16 @@ void Grid::createGround(scalar y_threshold, unsigned char colorIndex)
 	}
 }
 
-void Grid::createRoof(unsigned long offset, unsigned char colorIndex)
+void Grid::createRoof(long offset, unsigned char colorIndex)
 {
 	if (offset >= m_resolution)
 	{
 		return;
 	}
 
-	for (unsigned long i = 0; i < m_resolution; i++)
+	for (long i = 0; i < m_resolution; i++)
 	{
-		for (unsigned long j = 0; j < m_resolution; j++)
+		for (long j = 0; j < m_resolution; j++)
 		{
 			vxAt(i, (m_resolution - offset - 1), j).setByte(colorIndex);
 		}
@@ -323,8 +323,8 @@ void Grid::createRoof(unsigned long offset, unsigned char colorIndex)
 
 void Grid::createEdges(unsigned char colorIndex)
 {
-	unsigned long resminusone = m_resolution - 1;
-	for (unsigned long i = 0; i < m_resolution; i++)
+	long resminusone = m_resolution - 1;
+	for (long i = 0; i < m_resolution; i++)
 	{
 		vxAt(i, 0, 0).setByte(colorIndex);
 		vxAt(i, resminusone, resminusone).setByte(colorIndex);
@@ -345,7 +345,7 @@ void Grid::createEdges(unsigned char colorIndex)
 
 void Grid::fill(unsigned char colorIndex)
 {
-	for (unsigned long i = 0; i < m_data.size(); i++)
+	for (long i = 0; i < m_data.size(); i++)
 	{
 		vxAt(i).setByte(colorIndex);
 	}
@@ -445,8 +445,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle &geo)
 	}
 }
 
-unsigned long Grid::index(const unsigned long x, const unsigned long y,
-						  const unsigned long z) const
+long Grid::index(const long x, const long y, const long z) const
 {
 	return (x + (y * m_resolution) + (z * m_c_resXres));
 }
@@ -455,25 +454,25 @@ void Grid::initialize(bool value)
 {
 	if (value)
 	{
-		for (unsigned long i = 0; i < m_data.size(); i++)
+		for (long i = 0; i < m_data.size(); i++)
 		{
 			vxAt(i).activate();
 		}
 	}
 	else
 	{
-		for (unsigned long i = 0; i < m_data.size(); i++)
+		for (long i = 0; i < m_data.size(); i++)
 		{
 			vxAt(i).deactivate();
 		}
 	}
 }
 
-unsigned long Grid::numActiveVoxels()
+long Grid::numActiveVoxels()
 {
-	unsigned long av{0};
+	long av{0};
 
-	for (unsigned long i = 0; i < m_data.size(); i++)
+	for (long i = 0; i < m_data.size(); i++)
 	{
 		if (vxAt(i).active())
 			av++;
@@ -484,8 +483,7 @@ unsigned long Grid::numActiveVoxels()
 
 long Grid::getNumberOfVoxels() const { return m_c_resXresXres; }
 
-bool Grid::active(const unsigned long x, const unsigned long y,
-				  const unsigned long z) const
+bool Grid::active(const long x, const long y, const long z) const
 {
 	return getElement(x, y, z);
 }
@@ -495,9 +493,8 @@ bool Grid::active(const v3s &pos) const
 	if (isInside(pos))
 	{
 		const auto &&fPos = pos - (m_position - m_c_midSize);
-		return getElement((unsigned long)floor(fPos.x()),
-						  (unsigned long)floor(fPos.y()),
-						  (unsigned long)floor(fPos.z()));
+		return getElement((long)floor(fPos.x()), (long)floor(fPos.y()),
+						  (long)floor(fPos.z()));
 	}
 
 	return false;
@@ -506,12 +503,11 @@ bool Grid::active(const v3s &pos) const
 bool Grid::activeInRange(const v3s &pos) const
 {
 	const auto &&fPos = pos - (m_position - m_c_midSize);
-	return getElement((unsigned long)floor(fPos.x()),
-					  (unsigned long)floor(fPos.y()),
-					  (unsigned long)floor(fPos.z()));
+	return getElement((long)floor(fPos.x()), (long)floor(fPos.y()),
+					  (long)floor(fPos.z()));
 }
 
-bool Grid::active(unsigned long idx) const
+bool Grid::active(long idx) const
 {
 	if (idx < m_c_resXresXres)
 	{
@@ -521,8 +517,7 @@ bool Grid::active(unsigned long idx) const
 	return false;
 }
 
-void Grid::activate(const unsigned long x, const unsigned long y,
-					const unsigned long z)
+void Grid::activate(const long x, const long y, const long z)
 {
 	setElement(x, y, z, true);
 }
@@ -535,76 +530,65 @@ bool Grid::activate(const v3s &pos)
 	}
 
 	const auto &&offsetPos = pos - (m_position - m_c_midSize);
-	setElement((unsigned long)floor(offsetPos.x()),
-			   (unsigned long)floor(offsetPos.y()),
-			   (unsigned long)floor(offsetPos.z()), true);
+	setElement((long)floor(offsetPos.x()), (long)floor(offsetPos.y()),
+			   (long)floor(offsetPos.z()), true);
 
 	return true;
 }
 
-void Grid::deactivate(const unsigned long x, const unsigned long y,
-					  const unsigned long z)
+void Grid::deactivate(const long x, const long y, const long z)
 {
 	setElement(x, y, z, false);
 }
 
-bool Grid::getElement(const unsigned long x, const unsigned long y,
-					  const unsigned long z) const
+bool Grid::getElement(const long x, const long y, const long z) const
 {
 	return active(index(x, y, z));
 }
 
-void Grid::setElement(const unsigned long x, const unsigned long y,
-					  const unsigned long z, bool value)
+void Grid::setElement(const long x, const long y, const long z, bool value)
 {
 	vxAt(x, y, z).activate(value);
 }
 
-unsigned char Grid::elementColorIndex(const unsigned long x,
-									  const unsigned long y,
-									  const unsigned long z) const
+unsigned char Grid::elementColorIndex(const long x, const long y,
+									  const long z) const
 {
 	return (index(x, y, z)) % 8;
 }
 
-void Grid::setElementColorIndex(const unsigned long x, const unsigned long y,
-								const unsigned long z, const unsigned char c)
+void Grid::setElementColorIndex(const long x, const long y, const long z,
+								const unsigned char c)
 {
 	vxAt(x, y, z).setByte(c);
 }
 
-void Grid::setElement(unsigned long idx, bool value)
-{
-	vxAt(idx).activate(value);
-}
+void Grid::setElement(long idx, bool value) { vxAt(idx).activate(value); }
 
-void Grid::getComponentsOfIndex(const unsigned long long idx, long &retx,
-								long &rety, long &retz) const
+void Grid::getComponentsOfIndex(const long idx, long &retx, long &rety,
+								long &retz) const
 {
 	retz = idx / m_c_resXres;
 	rety = (idx % m_c_resXres) / m_resolution;
 	retx = idx % m_resolution;
 }
 
-unsigned long Grid::indexAtPosition(v3s pos) const
+long Grid::indexAtPosition(const v3s &pos) const
 {
-	auto newPos = m_bb->closestPointInside(pos, m_c_voxelSize / 10.0);
-	auto p = ((newPos + m_c_midSize) / m_c_voxelSize).floorVector();
+	auto p = ((pos + m_c_midSize) / m_c_voxelSize).floorVector();
 
-	return index((unsigned long)p.x(), (unsigned long)p.y(),
-				 (unsigned long)p.z());
+	return index((long)p.x(), (long)p.y(), (long)p.z());
 }
 
-v3s Grid::getVoxelPosition(const unsigned long iX, const unsigned long iY,
-						   const unsigned long iZ) const
+v3s Grid::getVoxelPosition(const long iX, const long iY, const long iZ) const
 {
 	return v3s(m_bb->minX() + (iX * m_c_voxelSize),
 			   m_bb->minY() + (iY * m_c_voxelSize),
 			   m_bb->minZ() + (iZ * m_c_voxelSize)) +
-		   (m_c_midVoxelSize);
+		   (m_c_halfVoxelSize);
 }
 
-v3s Grid::getVoxelPosition(unsigned long long idx) const
+v3s Grid::getVoxelPosition(long long idx) const
 {
 	long retx;
 	long rety;
@@ -627,23 +611,21 @@ VoxelData Grid::vxAtPosition(const v3s &position) const
 	return vxAt(idx >= m_c_resXresXres ? 0 : idx);
 }
 
-VoxelData &Grid::vxAt(const unsigned long iX, const unsigned long iY,
-					  const unsigned long iZ)
+VoxelData &Grid::vxAt(const long iX, const long iY, const long iZ)
 {
 	return vxAt(index(iX, iY, iZ));
 }
 
-VoxelData Grid::vxAt(const unsigned long iX, const unsigned long iY,
-					 const unsigned long iZ) const
+VoxelData Grid::vxAt(const long iX, const long iY, const long iZ) const
 {
 	return vxAt(index(iX, iY, iZ));
 }
 
-VoxelData &Grid::vxAt(const unsigned long idx) { return m_data[idx]; }
+VoxelData &Grid::vxAt(const long idx) { return m_data[idx]; }
 
-VoxelData Grid::vxAt(const unsigned long idx) const { return m_data[idx]; }
+VoxelData Grid::vxAt(const long idx) const { return m_data[idx]; }
 
-bool Grid::bitInBufferData(const unsigned long idx) const
+bool Grid::bitInBufferData(const long idx) const
 {
 	auto byte = m_data[idx / 8];
 	unsigned char ch = byte.c;
@@ -658,7 +640,7 @@ bool Grid::bitInBufferData(const unsigned long idx) const
 void Grid::createSphere(const v3s &center, const scalar radio,
 						unsigned char colorIndex)
 {
-	unsigned long x, y, z;
+	long x, y, z;
 
 	for (x = 0; x < m_resolution; x++)
 	{
@@ -668,6 +650,27 @@ void Grid::createSphere(const v3s &center, const scalar radio,
 			{
 				auto &voxel = vxAt(x, y, z);
 				if (center.distance(getVoxelPosition(x, y, z)) < radio)
+				{
+					voxel.setByte(colorIndex);
+				}
+			}
+		}
+	}
+}
+
+void Grid::createBox(const BoundingBox &bb, unsigned char colorIndex)
+{
+	long x, y, z;
+
+	for (x = 0; x < m_resolution; x++)
+	{
+		for (y = 0; y < m_resolution; y++)
+		{
+			for (z = 0; z < m_resolution; z++)
+			{
+				auto &voxel = vxAt(x, y, z);
+				auto pos = getVoxelPosition(x, y, z);
+				if (bb.contains(pos))
 				{
 					voxel.setByte(colorIndex);
 				}
@@ -712,56 +715,59 @@ bool Grid::throwRay(const Ray &ray) const
 
 int Grid::throwRay(const Ray &ray, Collision &col) const
 {
-	auto sp = col.position();
+	///////////// THis is const and could be stored per thread and ray ////
 
-	const auto &d = ray.direction();
-	const auto &p = ray.origin();
-
-	/// geometries for voxels
-	BoundingBox box;
-
-	VoxelInfo voxel;
+	thread_local VoxelInfo voxel;
 	voxel.size = m_c_voxelSize;
 
-	long retx;
-	long rety;
-	long retz;
+	thread_local Collision c;
+	thread_local BoundingBox box; // geometries forthread_local VoxelInfo voxel;
+								  // voxels
+	const auto &d = ray.direction();
+	const auto velX = d.xPositive() ? 1 : -1;
+	const auto velY = d.yPositive() ? 1 : -1;
+	const auto velZ = d.zPositive() ? 1 : -1;
+	///////////////////////////////////////////////////////////////////////
 
-	const auto velX = scalar(d.xPositive());
-	const auto velY = scalar(d.yPositive());
-	const auto velZ = scalar(d.zPositive());
+	auto sp = m_bb->closestPointInside(col.position(), m_c_halfVoxelSize / 10.0);
+
+	long xIndex = 0;
+	long yIndex = 0;
+	long zIndex = 0;
+
+	auto idx = indexAtPosition(sp);
+	getComponentsOfIndex(idx, xIndex, yIndex, zIndex);
+
+	scalar xVal =
+		m_bb->minX() + ((xIndex + (d.xPositive() ? 1 : 0)) * m_c_voxelSize);
+	scalar yVal =
+		m_bb->minY() + ((yIndex + (d.yPositive() ? 1 : 0)) * m_c_voxelSize);
+	scalar zVal =
+		m_bb->minZ() + ((zIndex + (d.zPositive() ? 1 : 0)) * m_c_voxelSize);
 
 	do
 	{
-		voxel.index = indexAtPosition(sp);
-
-		if (voxel.index >= m_c_resXresXres)
-		{
-			break;
-		}
-
+		voxel.index = index(xIndex, yIndex, zIndex);
 		voxel.data = vxAt(voxel.index);
-
-		getComponentsOfIndex(voxel.index, retx, rety, retz);
 
 		if (voxel.data.active())
 		{
 			voxel.position = getVoxelPosition(voxel.index);
-
-			box.set(voxel.position, voxel.size * 0.98);
-			Collision c;
+			box.set(voxel.position, voxel.size * .98);
 
 			if (box.throwRay(ray, c))
 			{
 				col = c;
-				col.setColor(Color::indexColor(voxel.data.byte() % 12));
+				auto color = Color::indexColor(voxel.data.byte() % 22);
+				color.saturate(1.3);
+				col.setColor(color);
 				col.setValid(true);
 				return 1;
 			}
 		}
-		else if (rety > 0)
+		else if (yIndex > 0)
 		{
-			auto &&neighbour = neighbourVoxel(voxel, {0, -1, 0});
+			auto neighbour = neighbourVoxel(voxel, {0, -1, 0});
 
 			if (neighbour.data.active())
 			{
@@ -770,54 +776,60 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 				box.set(neighbour.position, neighbour.size / 2.0);
 				box.setMinY(neighbour.position.y() - m_c_voxelSize / 2.0);
 				box.setMaxY(neighbour.position.y() - m_c_voxelSize / 4.0);
-
-				Collision c;
-
 				if (box.throwRay(ray, c))
 				{
 					col = c;
-					col.setColor(Color::indexColor(neighbour.data.byte() % 12));
+					auto color = Color::indexColor(neighbour.data.byte() % 22);
+					color.saturate(1.3);
+					col.setColor(color);
+
 					col.setValid(true);
 					return 1;
 				}
 			}
 		}
 
-		const scalar xVal = m_bb->minX() + (retx + velX) * m_c_voxelSize - p.x();
-		const scalar yVal = m_bb->minY() + (rety + velY) * m_c_voxelSize - p.y();
-		const scalar zVal = m_bb->minZ() + (retz + velZ) * m_c_voxelSize - p.z();
+		long txIndex = 0;
+		long tyIndex = 0;
+		long tzIndex = 0;
 
-		v3s v = MU::rectAndXPlane(d, xVal);
-		if (fabs(v.y()) <= fabs(yVal) && fabs(v.z()) <= fabs(zVal))
+		v3s v = MU::rayAndXPlane(ray, xVal);
+		getComponentsOfIndex(
+			indexAtPosition(v + v3s(velX * m_c_halfVoxelSize / 10.0, 0, 0)),
+			txIndex, tyIndex, tzIndex);
+		//		std::cout << "X traveled to: " << txIndex << " " << tyIndex << "  "
+		//				  << tzIndex << std::endl;
+		if (yIndex == tyIndex && zIndex == tzIndex)
 		{
-			auto xProgress = p + v3s((d.xPositive() ? m_c_midVoxelSize / 2.0
-													: -m_c_midVoxelSize / 2.0),
-									 0.0, 0.0);
-			sp = v + xProgress;
-			continue;
+			xVal += velX * m_c_voxelSize;
+			xIndex += velX;
 		}
+		else
+		{
+			v = MU::rayAndYPlane(ray, yVal);
+			getComponentsOfIndex(
+				indexAtPosition(v + v3s(0, velY * m_c_halfVoxelSize / 10.0, 0)),
+				txIndex, tyIndex, tzIndex);
+			//			std::cout << "Y traveled to: " << txIndex << " " << tyIndex << " "
+			//					  << tzIndex << std::endl;
+			if (xIndex == txIndex && zIndex == tzIndex)
+			{
+				yVal += velY * m_c_voxelSize;
+				yIndex += velY;
+			}
+			else
+			{
+				v = MU::rayAndZPlane(ray, zVal);
 
-		v = MU::rectAndYPlane(d, yVal);
-		if (fabs(v.x()) <= fabs(xVal) && fabs(v.z()) <= fabs(zVal))
-		{
-			auto yProgress = p + v3s(0.0,
-									 (d.yPositive() ? m_c_midVoxelSize / 2.0
-													: -m_c_midVoxelSize / 2.0),
-									 0.0);
-			sp = v + yProgress;
-			continue;
-		}
+                zVal += velZ * m_c_voxelSize;
+                zIndex += velZ;
 
-		v = MU::rectAndZPlane(d, zVal);
-		if (fabs(v.x()) <= fabs(xVal) && fabs(v.y()) <= fabs(yVal))
-		{
-			auto zProgress = p + v3s(0.0, 0.0,
-									 (d.zPositive() ? m_c_midVoxelSize / 2.0
-													: -m_c_midVoxelSize / 2.0));
-			sp = v + zProgress;
-			continue;
+			}
 		}
-	} while (m_bb->contains(sp));
+	} // while (true);
+	while ((xIndex >= 0 && xIndex < m_resolution) &&
+		   (yIndex >= 0 && yIndex < m_resolution) &&
+		   (zIndex >= 0 && zIndex < m_resolution));
 
 	col.setValid(false);
 	return 0;
@@ -829,7 +841,7 @@ bool Grid::hasCollision(const Ray &ray) const
 	return m_bb->hasCollision(ray);
 #else
 	Collision col;
-	return throwRay(ray, col) == 1;
+	return false; // throwRay(ray, col) == 1;
 #endif
 }
 
