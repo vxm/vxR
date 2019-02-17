@@ -482,12 +482,12 @@ bool BroadPhase::hasCollision(const Ray &ray) const
 			continue;
 		}
 
-		Collision col;
+		// Collision col;
 
 		// if it's own hit falls outside it's bounding box.
-		if (visbl->boundingBox()->throwRay(ray, col) == 1)
+		if (visbl->boundingBox()->hasCollision(ray) == 1)
 		{
-			if (visbl->throwRay(ray, col) == 1)
+			if (visbl->hasCollision(ray) == 1)
 			{
 				return true;
 			}
