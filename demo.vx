@@ -1,16 +1,40 @@
 #vxR scene
 #format ascii 1.0
 
-//TODO: add output file template name into rendersettings
+///////////////////////////////////
+///////////////////////////////////
+// quart 342 192
+// half 683 384
+// normal 1366 768
+// 2k 2048 1080
+// double 2732 1536
+// 4k 4096 2160
+// quad 4098 2304
+// five 5464 3072
+// six 6830 3840
+// 8k - 7680 4320
+// Seven 8196 4608
+///////////////////////////////////
+///////////////////////////////////
+
+node
+{
+name = "time"
+type = "vxClock"
+active = "true"
+    start = 0.0
+    end = 1.0
+    step = 1.0
+}
 
 node
 {
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "true"
-    resolution = 607 341
-    pixelSamples = 60
-    rayDepth = 1
+    resolution = 1366 768
+    pixelSamples = 200
+    rayDepth = 6
     giMultiplier = 26.5
     numThreads = -1
 }
@@ -20,9 +44,9 @@ node
 name = "renderSettings_1_low_full_size"
 type = "vxRenderSettings"
 active = "false"
-    resolution = 1366 768
-    pixelSamples = 10
-    rayDepth = 1
+    resolution = 4096 2160
+    pixelSamples = 180
+    rayDepth = 4
     giMultiplier = 1.0
     numThreads = -1
 }
@@ -31,10 +55,10 @@ node
 {
 name = "renderSettings_2_full"
 type = "vxRenderSettings"
-active = "true"
+active = "false"
     resolution = 1366 768
-    pixelSamples = 120
-    rayDepth = 4
+    pixelSamples = 190
+    rayDepth = 5
     giMultiplier = 1.0
     numThreads = -1
 }
@@ -80,12 +104,12 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -5.5 0.0 -5.5 1]
-    focusDistance = 5.6
-    lensSize = 0.000
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.5 -0.16 -1.44 1]
+    focusDistance = 1.9
+    lensSize = 0.007
     horizontalAperture = 1.27
     verticalAperture = 1.7786
-    focalLength = 4.2
+    focalLength = 2.1
     pixelRadius = 0.7
 }
 
@@ -94,7 +118,7 @@ node
 name = "image_1"
 type = "vxImage"
 active = "true"
-    imagePath = "../images/MonValley_DirtRoad/MonValley_G_DirtRoad_8k.jpg"
+    imagePath = "../images/Tropical_Ruins/TropicalRuins_8k.jpg"
     gain = 1.0
     gamma = 1.0
 }
@@ -104,9 +128,9 @@ node
 name = "image_2"
 type = "vxImage"
 active = "true"
-    imagePath = "../images/MonValley_DirtRoad/MonValley_G_DirtRoad_8k.jpg"
-    gain = 1.0
-    gamma = 1.0
+    imagePath = "../images/Tropical_Ruins/TropicalRuins_8k.jpg"
+    gain = 1.1
+    gamma = 2.2
 }
 
 node
@@ -115,12 +139,12 @@ name = "shader_1"
 type = "vxShader"
 active = "true"
     diffuseColor = 255 255 255
-    diffuseCoeficent = 1.0
-    giCoeficent = 1.0
+    diffuseCoeficent = 0.95
+    giCoeficent = 0.99
     giColorMultiplier = 238 216 126
-    rayDepth = 1
-    reflectionRadius = 0.2
-    reflectionCoefficent = 0.0
+    rayDepth = 0
+    reflectionRadius = 0.18
+    reflectionCoefficent = 0.47
     reflectionColorMultiplier = 238 216 126
     refractionRadius = 1.0
     refractionSamples = 0
@@ -139,12 +163,12 @@ name = "shader_2"
 type = "vxShader"
 active = "true"
     diffuseColor = 255 255 255
-    diffuseCoeficent = 1.0
-    giCoeficent = 1.0
+    diffuseCoeficent = 0.9
+    giCoeficent = 0.9
     giColorMultiplier = 238 216 126
     rayDepth = 0
     reflectionRadius = 0.1
-    reflectionCoefficent = 0.6
+    reflectionCoefficent = 0.99
     reflectionColorMultiplier = 238 2 126
     refractionRadius = 1.0
     refractionSamples = 0
@@ -155,16 +179,6 @@ active = "true"
     sscRadius = 1.0
     sscCoefficent = 0.5
     sscColorMultiplier = 238 216 126
-}
-
-node
-{
-name = "time"
-type = "vxClock"
-active = "true"
-    start = 1.0
-    end = 300.0
-    step = 1.0
 }
 
 node
@@ -453,7 +467,7 @@ node
 name = "tiger_snake_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [0.9 0 0 0 0 0.9 0 0 0 0 0.9 0 1.6 -0.65 1.3 1]
+    transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.0 -0.65 0.0 1]
     filePath = "../geometry/tiger_snake.ply"
     color = 163 168 164
     shader = "shader_1"
@@ -519,10 +533,10 @@ node
 {
 name = "model_4"
 type = "vxGeometry"
-active = "true"
+active = "false"
     transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 -0.4 -0.7 0.0 1]
     filePath = "../geometry/broad_phase_model_4.ply"
-    color = 194 193 191
+    color = 76 77 63
     shader = "shader_1"
 }
 
@@ -704,7 +718,7 @@ node
 {
 name = "dome"
 type = "vxDome"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
     lightImageNode = "image_2"
@@ -764,28 +778,27 @@ node
 name = "sphere_light_1"
 type = "vxSphereLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -14.0 8.0 11.0 1]
-    intensity = 2.8
-    color = 255 255 250
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.0 21.0 3.0 1]
+    intensity = 57.2
+    color = 245 245 242
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 4.2
+    radius = 2.1
 }
-
 
 node
 {
 name = "sphere_light_2"
 type = "vxSphereLight"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.3 8.9 -4.0 1]
-    intensity = 1.3
-    color = 255 255 255
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 5.0 9.0 -16.0 1]
+    intensity = 15.3
+    color = 255 255 215
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 1.4
+    radius = 0.9
 }
 
 
@@ -793,15 +806,16 @@ node
 {
 name = "sphere_light_3"
 type = "vxSphereLight"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 3.3 -0.1 -1.0 1]
-    intensity = 0.9
-    color = 255 150 160
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9.0 21.0 13.0 1]
+    intensity = 19.3
+    color = 235 235 255
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.4
+    radius = 1.8
 }
+
 
 node
 {
@@ -825,9 +839,9 @@ name = "sun"
 type = "vxSunLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 1 0 1]
-    intensity = 1.4
+    intensity = 13.0
     color = 255 253 252
-    orientation = 1.77 0.9 -1.456
+    orientation = 1.77 1.4 -1.456
     samples = 1
     castShadows = "true"
     radiusMultiplier = 1.0
@@ -839,12 +853,12 @@ name = "sun_aura"
 type = "vxSunLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 1 0 1]
-    intensity = 0.4
-    color = 255 211 120
+    intensity = 12.4
+    color = 255 191 120
     orientation = 1.77 0.9 -1.456
     samples = 1
     castShadows = "true"
-    radiusMultiplier = 1.4
+    radiusMultiplier = 1.7
 }
 
 node
@@ -880,9 +894,9 @@ node
 name = "grid"
 type = "vxGrid"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 1.3 0.0 1]
-    resolution = 312
-    size = 2.0
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
+    resolution = 520
+    size = 4.2
     color = 255 255 255
     shader = "shader_1"
 }
