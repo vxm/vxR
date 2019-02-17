@@ -563,7 +563,7 @@ void Grid::setElementColorIndex(const long x, const long y, const long z,
 	vxAt(x, y, z).setByte(c);
 }
 
-void Grid::setElement(long idx, bool value) { vxAt(idx).activate(value); }
+void Grid::setElement(long long idx, bool value) { vxAt(idx).activate(value); }
 
 void Grid::getComponentsOfIndex(const long idx, long &retx, long &rety,
 								long &retz) const
@@ -573,7 +573,7 @@ void Grid::getComponentsOfIndex(const long idx, long &retx, long &rety,
 	retx = idx % m_resolution;
 }
 
-long Grid::indexAtPosition(const v3s &pos) const
+long long Grid::indexAtPosition(const v3s &pos) const
 {
 	auto p = ((pos + m_c_midSize) / m_c_voxelSize).floorVector();
 
@@ -621,11 +621,11 @@ VoxelData Grid::vxAt(const long iX, const long iY, const long iZ) const
 	return vxAt(index(iX, iY, iZ));
 }
 
-VoxelData &Grid::vxAt(const long idx) { return m_data[idx]; }
+VoxelData &Grid::vxAt(const long long idx) { return m_data[idx]; }
 
-VoxelData Grid::vxAt(const long idx) const { return m_data[idx]; }
+VoxelData Grid::vxAt(const long long idx) const { return m_data[idx]; }
 
-bool Grid::bitInBufferData(const long idx) const
+bool Grid::bitInBufferData(const long long idx) const
 {
 	auto byte = m_data[idx / 8];
 	unsigned char ch = byte.c;
@@ -797,8 +797,6 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		getComponentsOfIndex(
 			indexAtPosition(v + v3s(velX * m_c_halfVoxelSize / 10.0, 0, 0)),
 			txIndex, tyIndex, tzIndex);
-		//		std::cout << "X traveled to: " << txIndex << " " << tyIndex << "  "
-		//				  << tzIndex << std::endl;
 		if (yIndex == tyIndex && zIndex == tzIndex)
 		{
 			xVal += velX * m_c_voxelSize;
@@ -810,8 +808,6 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			getComponentsOfIndex(
 				indexAtPosition(v + v3s(0, velY * m_c_halfVoxelSize / 10.0, 0)),
 				txIndex, tyIndex, tzIndex);
-			//			std::cout << "Y traveled to: " << txIndex << " " << tyIndex << " "
-			//					  << tzIndex << std::endl;
 			if (xIndex == txIndex && zIndex == tzIndex)
 			{
 				yVal += velY * m_c_voxelSize;
@@ -823,10 +819,9 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 
                 zVal += velZ * m_c_voxelSize;
                 zIndex += velZ;
-
 			}
 		}
-	} // while (true);
+    }
 	while ((xIndex >= 0 && xIndex < m_resolution) &&
 		   (yIndex >= 0 && yIndex < m_resolution) &&
 		   (zIndex >= 0 && zIndex < m_resolution));
@@ -851,16 +846,6 @@ void Grid::updateBoundingBox()
 	m_bb->extend(v3s(m_size / 2.0, m_size / 2.0, m_size / 2.0));
 	m_bb->extend(v3s(-m_size / 2.0, -m_size / 2.0, -m_size / 2.0));
 }
-
-/*
-std::cout << "minX " << m_xmin << std::endl;
-std::cout << "minY " << m_ymin << std::endl;
-std::cout << "minZ " << m_zmin << std::endl;
-
-std::cout << "maxX " << m_xmax << std::endl;
-std::cout << "maxY " << m_ymax << std::endl;
-std::cout << "maxZ " << m_zmax << std::endl;
-*/
 
 void VoxelData::activate(bool active) { active ? activate() : deactivate(); }
 

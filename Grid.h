@@ -413,7 +413,7 @@ public:
 	/// \param idx
 	/// \param value
 	///
-	void setElement(long idx, bool value);
+    void setElement(long long idx, bool value);
 	///
 	/// \brief getVoxelPosition
 	/// \param iX
@@ -433,19 +433,19 @@ public:
 	/// \param pos
 	/// \return
 	///
-	long indexAtPosition(const v3s &pos) const;
+    long long indexAtPosition(const v3s &pos) const;
 	///
 	/// \brief vxAt
 	/// \param idx
 	/// \return
 	///
-	VoxelData &vxAt(const long idx);
+	VoxelData &vxAt(const long long idx);
 	///
 	/// \brief vxAt
 	/// \param idx
 	/// \return
 	///
-	VoxelData vxAt(const long idx) const;
+    VoxelData vxAt(const long long idx) const;
 	///
 	/// \brief vxAtPosition
 	/// \param position
@@ -501,7 +501,7 @@ public:
 	/// \param idx
 	/// \return
 	///
-	bool bitInBufferData(const long idx) const;
+    bool bitInBufferData(const long long idx) const;
 	///
 	/// \brief getComponentsOfIndex
 	/// \param idx
