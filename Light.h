@@ -333,7 +333,7 @@ public:
 	/// \param orientation
 	/// \param bidirectional
 	///
-	SphereLight(const v3s orientation, bool bidirectional);
+	SphereLight(const v3s &orientation, bool bidirectional);
 	///
 	/// \brief acummulationLight
 	/// \param collision

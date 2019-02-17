@@ -36,7 +36,8 @@ void Light::setTransform(const Matrix44 &transform) { m_transform = transform; }
 
 bool Light::reachesLightSource(const Ray &ray) const
 {
-	return !m_scene->hasCollision(ray);
+	Collision col;
+	return m_scene->throwRay(ray, col) != 1;
 }
 
 scalar Light::radius() const { return m_radius; }
@@ -80,7 +81,7 @@ void Light::setPosition(const v3s &position)
 	updateBoundingBox();
 }
 
-DirectLight::DirectLight() : Light() {}
+DirectLight::DirectLight() : Light(), m_biDirectional(false) {}
 
 DirectLight::DirectLight(const v3s &orientation, bool bidirectional)
 	: m_orientation(orientation), m_biDirectional(bidirectional)
@@ -130,7 +131,7 @@ void SpotLight::setOrientation(const v3s &orientation)
 /////////////////////////////////////// Point Light ////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
-PointLight::PointLight() : Light() {}
+PointLight::PointLight() : Light(), m_biDirectional(false) {}
 
 PointLight::PointLight(const v3s &orientation, bool biPointional)
 	: m_orientation(orientation), m_biDirectional(biPointional)
@@ -193,8 +194,8 @@ Color PointLight::acummulationLight(const Ray &,
 
 SphereLight::SphereLight() : Light() {}
 
-SphereLight::SphereLight(const v3s orientation, bool biPointional)
-	: m_orientation(std::move(orientation)), m_biDirectional(biPointional)
+SphereLight::SphereLight(const v3s &orientation, bool biPointional)
+	: m_orientation(orientation), m_biDirectional(biPointional)
 {
 }
 
@@ -300,7 +301,7 @@ int SunLight::throwRay(const Ray &, Collision &) const
 	return 0;
 }
 
-Color SunLight::acummulationLight(const Ray &, const Collision &collision) const
+Color SunLight::acummulationLight(const Ray &, const Collision &col) const
 {
 	auto sphr = MU::getSolidSphereRand(m_sunRadius * m_radiusMultiplier);
 
@@ -308,19 +309,19 @@ Color SunLight::acummulationLight(const Ray &, const Collision &collision) const
 	Color c = m_color;
 	scalar i = m_intensity;
 
-	const auto &cp = collision.position();
+	const auto &cp = col.position();
 	const auto &p = pointLightPosition - cp;
 
-	auto f = collision.nextRay();
+	auto f = col.nextRay();
 
 	// compute all sort of shadows.
 	Color ret{Color::zero};
-	if (collision.normal().follows(p.inverted())) // m_castShadows here?
+	if (col.normal().follows(p.inverted())) // m_castShadows here?
 	{
 		auto ratio = lightRatio(f, p);
 		auto lumm = i * ratio;
 
-		Ray ff(cp + collision.normal().small(), p, VisionType::kOpaque);
+		Ray ff(cp + col.normal().small(), p, VisionType::kOpaque);
 		ff.setLength(p.length());
 
 		if (m_castShadows && reachesLightSource(ff))
