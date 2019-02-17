@@ -3,6 +3,12 @@
 
 using namespace vxCore;
 
+BoundingBox::BoundingBox(scalar mnx, scalar mny, scalar mnz, scalar mxx,
+						 scalar mxy, scalar mxz)
+{
+	set(mnx, mny, mnz, mxx, mxy, mxz);
+}
+
 void BoundingBox::clear()
 {
 	m_maxX = -1.0;
@@ -286,10 +292,10 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 	if (MU::inRange(v.y(), m_minY, m_maxY) && MU::inRange(v.z(), m_minZ, m_maxZ))
 	{
 		col.setPosition(v);
-		col.setNormal(x == m_minX ? v3s::constMinusX : v3s::constX);
+		col.setNormal(ray.direction().xPositive() ? v3s::constMinusY : v3s::constY);
 		col.setValid();
 		col.setColor(Color::red);
-		col.setUV({0.5, 0.5});
+		col.setUV({(v.y() - m_minY) * (m_maxY - m_minY), 0.5});
 		return 1;
 	}
 	v = MU::rayAndYPlane(ray, y);
@@ -297,7 +303,7 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 	if (MU::inRange(v.x(), m_minX, m_maxX) && MU::inRange(v.z(), m_minZ, m_maxZ))
 	{
 		col.setPosition(v);
-		col.setNormal(y == m_minY ? v3s::constMinusY : v3s::constY);
+		col.setNormal(ray.direction().yPositive() ? v3s::constMinusY : v3s::constY);
 		col.setValid();
 		col.setColor(Color::red);
 		col.setUV({0.5, 0.5});
@@ -308,7 +314,7 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 	if (MU::inRange(v.x(), m_minX, m_maxX) && MU::inRange(v.y(), m_minY, m_maxY))
 	{
 		col.setPosition(v);
-		col.setNormal(z == m_minZ ? v3s::constMinusZ : v3s::constZ);
+		col.setNormal(ray.direction().zPositive() ? v3s::constMinusZ : v3s::constZ);
 		col.setValid();
 		col.setColor(Color::red);
 		col.setUV({0.5, 0.5});
@@ -321,101 +327,105 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 bool BoundingBox::hasCollision(const Ray &ray) const
 {
 	const auto &p = ray.origin();
-	const auto &d = ray.direction();
+
 	if (contains(p))
 	{
 		return true;
 	}
 
-	scalar x;
+	scalar x, y, z;
 
-	if (d.xPositive())
+	switch (ray.qd())
 	{
-		if (p.x() > m_maxX)
+	case Quadrant::k1:
+		if (p.x() > m_maxX || p.y() > m_maxY || p.z() > m_maxZ)
 		{
 			return false;
 		}
 		x = m_minX;
-	}
-	else
-	{
-		if (p.x() < m_minX)
+		y = m_minY;
+		z = m_minZ;
+		break;
+	case Quadrant::k2:
+		if (p.x() > m_maxX || p.y() > m_maxY || p.z() < m_minZ)
+		{
+			return false;
+		}
+		x = m_minX;
+		y = m_minY;
+		z = m_maxZ;
+		break;
+	case Quadrant::k3:
+		if (p.x() > m_maxX || p.y() < m_minY || p.z() > m_maxZ)
+		{
+			return false;
+		}
+		x = m_minX;
+		y = m_maxY;
+		z = m_minZ;
+		break;
+	case Quadrant::k4:
+		if (p.x() > m_maxX || p.y() < m_minY || p.z() < m_minZ)
+		{
+			return false;
+		}
+		x = m_minX;
+		y = m_maxY;
+		z = m_maxZ;
+		break;
+	case Quadrant::k5:
+		if (p.x() < m_minX || p.y() > m_maxY || p.z() > m_maxZ)
 		{
 			return false;
 		}
 		x = m_maxX;
-	}
-
-	scalar y;
-
-	if (d.yPositive())
-	{
-		if (p.y() > m_maxY)
-		{
-			return false;
-		}
 		y = m_minY;
-	}
-	else
-	{
-		if (p.y() < m_minY)
-		{
-			return false;
-		}
-		y = m_maxY;
-	}
-
-	scalar z;
-
-	if (d.zPositive())
-	{
-		if (p.z() > m_maxZ)
-		{
-			return false;
-		}
 		z = m_minZ;
-	}
-	else
-	{
-		if (p.z() < m_minZ)
+		break;
+	case Quadrant::k6:
+		if (p.x() < m_minX || p.y() > m_maxY || p.z() < m_minZ)
 		{
 			return false;
 		}
+		x = m_maxX;
+		y = m_minY;
 		z = m_maxZ;
-	}
-
-	if (d.x() != 0.0)
-	{
-		auto v = MU::rayAndXPlane(ray, x);
-
-		if (MU::inRange(v.y(), m_minY, m_maxY) &&
-			MU::inRange(v.z(), m_minZ, m_maxZ))
+		break;
+	case Quadrant::k7:
+		if (p.x() < m_minX || p.y() < m_minY || p.z() > m_maxZ)
 		{
-			return true;
+			return false;
 		}
-	}
-
-	if (d.y() != 0.0)
-	{
-		auto v = MU::rayAndYPlane(ray, y);
-
-		if (MU::inRange(v.x(), m_minX, m_maxX) &&
-			MU::inRange(v.z(), m_minZ, m_maxZ))
+		x = m_maxX;
+		y = m_maxY;
+		z = m_minZ;
+		break;
+	case Quadrant::k8:
+		if (p.x() < m_minX || p.y() < m_minY || p.z() < m_minZ)
 		{
-			return true;
+			return false;
 		}
+		x = m_maxX;
+		y = m_maxY;
+		z = m_maxZ;
+		break;
 	}
 
-	if (d.z() != 0.0)
+	auto v = MU::rayAndXPlane(ray, x);
+
+	if (MU::inRange(v.y(), m_minY, m_maxY) && MU::inRange(v.z(), m_minZ, m_maxZ))
 	{
-		auto v = MU::rayAndZPlane(ray, z);
+		return true;
+	}
+	v = MU::rayAndYPlane(ray, y);
 
-		if (MU::inRange(v.x(), m_minX, m_maxX) &&
-			MU::inRange(v.y(), m_minY, m_maxY))
-		{
-			return true;
-		}
+	if (MU::inRange(v.x(), m_minX, m_maxX) && MU::inRange(v.z(), m_minZ, m_maxZ))
+	{
+		return true;
 	}
 
-	return false;
+	v = MU::rayAndZPlane(ray, z);
+
+	return MU::inRange(v.x(), m_minX, m_maxX) &&
+		   MU::inRange(v.y(), m_minY, m_maxY);
 }

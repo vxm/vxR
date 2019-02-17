@@ -17,7 +17,7 @@ class Matrix44;
 using BoundingBoxHandle = std::shared_ptr<BoundingBox>;
 
 // TODO: this class needs heavy caching on "close" method.
-class BoundingBox : public std::enable_shared_from_this<BoundingBox>
+class BoundingBox
 {
 	scalar m_minX = 1.0;
 	scalar m_minY = 0.0;
@@ -30,6 +30,10 @@ class BoundingBox : public std::enable_shared_from_this<BoundingBox>
 	//	v3 m_scale;
 
 public:
+	BoundingBox() = default;
+	BoundingBox(scalar mnx, scalar mny, scalar mnz, scalar mxx, scalar mxy,
+				scalar mxz);
+
 	///
 	/// \brief clear
 	///
