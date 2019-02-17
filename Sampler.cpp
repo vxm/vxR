@@ -26,6 +26,8 @@ static std::vector<v2s> uniformScatter5{
 	v2s(0.25, 0.75), v2s(0.75, 0.25),
 };
 
+thread_local std::vector<v2s> uniformScatterFree;
+
 void Sampler::populateFreeSamples()
 {
 	if (uniformScatterFree.size())
@@ -33,7 +35,8 @@ void Sampler::populateFreeSamples()
 
 	for (int i = 0; i < 50; i++)
 	{
-		uniformScatterFree.emplace_back(v2s(MU::getRand(1.0), MU::getRand(1.0)));
+		auto t = v2s(MU::getRand(1.0), MU::getRand(1.0));
+		uniformScatterFree.push_back(t);
 	}
 }
 

@@ -25,6 +25,8 @@ void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 
 	buildDefaultShader();
 
+	buildShaders();
+
 	buildClocks();
 
 	buildImages();
@@ -34,8 +36,6 @@ void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 	buildGrids();
 
 	buildPlanes();
-
-	buildShaders();
 
 	buildGeometries();
 
@@ -238,7 +238,7 @@ void Scene::buildGrids()
 		grid->setShader(std::static_pointer_cast<Shader>(shaderNode->node()));
 
 		const auto color = Color::lookup256(node->getColor("color"));
-		const auto resolution = (unsigned long)node->getInt("resolution");
+		const auto resolution = (long)node->getInt("resolution");
 
 		grid->setResolution(resolution);
 		grid->setTransform(transform);
@@ -268,9 +268,13 @@ void Scene::buildGrids()
 		// grid->fill();
 		// grid->createRandom(.03,-0.6);
 		// grid->createRandom(.0003,-0.5);
-		grid->legolizeColors();
-		grid->createGround(-0.62, 2);
 
+		grid->createGround(-0.63, 2);
+		grid->createRandom(.5, -0.62);
+		grid->createRandom(.2, -0.60);
+		grid->createRandom(.1, -0.59);
+		grid->legolizeColors();
+        //grid->createBox(BoundingBox(-0.03, -2.3, -0.03, 0.03, 2.1, 0.03), 4);
 		// grid->dumpFileInMemory("/home/mario/Downloads/xyzrgb_statuette_1.ply");
 		// grid->createEdges((unsigned char)12u);
 
@@ -414,7 +418,7 @@ void Scene::buildGeometries()
 		const auto transform = node->getMatrix("transform");
 
 		auto geo = createGeometry(path, transform);
-		geo->setColor(Color::lookup256(node->getColor("color")));
+		geo->setColor(node->getColor("color"));
 
 		auto &&shaderNodeName = node->getString("shader");
 		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);

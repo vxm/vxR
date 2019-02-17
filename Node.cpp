@@ -54,24 +54,29 @@ void Node::addAttribute(const Attribute &attr)
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-Color Node::getColor(const std::string attrName)
+Color Node::getColor(const std::string &attrName)
 {
 	for (const auto &nodeAttr : m_attributes)
 	{
 		if (nodeAttr.first == attrName)
 		{
-			return Color(nodeAttr.second.asVector3d());
+			auto c = nodeAttr.second.asVector3d();
+			c.setX(c.x() / 256.0);
+			c.setY(c.y() / 256.0);
+			c.setZ(c.z() / 256.0);
+			std::cout << "Color: " << c << std::endl;
+			return Color(c);
 		}
 	}
 
 	std::cerr << "Node: Color attribute '" << attrName << "' not found in node"
-	          << std::endl;
+			  << std::endl;
 	return Color::black;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-v3s Node::getVector3d(const std::string attrName)
+v3s Node::getVector3d(const std::string &attrName)
 {
 	for (const auto &nodeAttr : m_attributes)
 	{
@@ -82,13 +87,13 @@ v3s Node::getVector3d(const std::string attrName)
 	}
 
 	std::cerr << "Node: Vector3d attribute '" << attrName << "' not found in node"
-	          << std::endl;
+			  << std::endl;
 	return v3s::zero;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-v2s Node::getVector2d(const std::string attrName)
+v2s Node::getVector2d(const std::string &attrName)
 {
 	for (const auto &nodeAttr : m_attributes)
 	{
@@ -99,13 +104,13 @@ v2s Node::getVector2d(const std::string attrName)
 	}
 
 	std::cerr << "Node: Vector2d attribute '" << attrName << "' not found in node"
-	          << std::endl;
+			  << std::endl;
 	return v2s::zero;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-scalar Node::getScalar(const std::string attrName)
+scalar Node::getScalar(const std::string &attrName)
 {
 	for (const auto &nodeAttr : m_attributes)
 	{
@@ -116,13 +121,13 @@ scalar Node::getScalar(const std::string attrName)
 	}
 
 	std::cerr << "Node: Float attribute '" << attrName << "' not found in node"
-	          << std::endl;
+			  << std::endl;
 	return scalar(0.0);
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-int Node::getInt(const std::string attrName)
+int Node::getInt(const std::string &attrName)
 {
 	for (const auto &nodeAttr : m_attributes)
 	{
@@ -133,13 +138,13 @@ int Node::getInt(const std::string attrName)
 	}
 
 	std::cerr << "Node: Int attribute '" << attrName << "' not found in node"
-	          << std::endl;
+			  << std::endl;
 	return 0;
 }
 
 // It will retrieve the matching vector3d attribute and will cast
 // it's values to a color to be returned.
-std::string Node::getString(const std::string attrName)
+std::string Node::getString(const std::string &attrName)
 {
 	for (const auto &nodeAttr : m_attributes)
 	{
@@ -150,7 +155,7 @@ std::string Node::getString(const std::string attrName)
 	}
 
 	std::cerr << "Node: String attribute '" << attrName << "' not found in node"
-	          << std::endl;
+			  << std::endl;
 	return ""s;
 }
 
@@ -167,7 +172,7 @@ bool Node::getBool(const std::string attrName)
 	}
 
 	std::cerr << "Node: Bool attribute '" << attrName << "' not found in node"
-	          << std::endl;
+			  << std::endl;
 	return false;
 }
 
@@ -187,7 +192,7 @@ Matrix44 Node::getMatrix(const std::string attrName)
 	}
 
 	std::cerr << "Node: Matrix attribute '" << attrName << "' not found in node"
-	          << std::endl;
+			  << std::endl;
 	return Matrix44::identity44;
 }
 

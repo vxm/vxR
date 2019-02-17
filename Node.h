@@ -1,11 +1,11 @@
 #ifndef VXNODE_H
 #define VXNODE_H
 
-#include <map>
-#include <vector>
-#include "Vector.h"
 #include "Color.h"
 #include "Value.h"
+#include "Vector.h"
+#include <map>
+#include <vector>
 
 namespace vxCore
 {
@@ -37,22 +37,22 @@ public:
 	~Node() { nNodes--; }
 
 	Node(Node &&other)
-	    : m_name{std::move(other.m_name)}, m_type{std::move(other.m_type)},
-	      m_attributes{std::move(other.m_attributes)}
+		: m_name{std::move(other.m_name)}, m_type{std::move(other.m_type)},
+		  m_attributes{std::move(other.m_attributes)}
 	{
 		id = nNodes++;
 	}
 
 	Node(const Node &other)
-	    : m_name{other.m_name}, m_type{other.m_type},
-	      m_attributes{other.m_attributes}
+		: m_name{other.m_name}, m_type{other.m_type}, m_attributes{
+														  other.m_attributes}
 	{
 		id = nNodes++;
 	}
 
 	Node(const Node &&other)
-	    : m_name{std::move(other.m_name)}, m_type{std::move(other.m_type)},
-	      m_attributes{std::move(other.m_attributes)}
+		: m_name{std::move(other.m_name)}, m_type{std::move(other.m_type)},
+		  m_attributes{std::move(other.m_attributes)}
 	{
 		id = nNodes++;
 	}
@@ -73,12 +73,12 @@ public:
 		return os;
 	}
 
-	Color getColor(const std::string attrName);
-	scalar getScalar(const std::string attrName);
-	v3s getVector3d(const std::string attrName);
-	v2s getVector2d(const std::string attrName);
-	int getInt(const std::string attrName);
-	std::string getString(const std::string attrName);
+	Color getColor(const std::string &attrName);
+	scalar getScalar(const std::string &attrName);
+	v3s getVector3d(const std::string &attrName);
+	v2s getVector2d(const std::string &attrName);
+	int getInt(const std::string &attrName);
+	std::string getString(const std::string &attrName);
 	bool getBool(const std::string attrName);
 	Matrix44 getMatrix(const std::string attrName);
 
@@ -95,5 +95,5 @@ public:
 using vxNodeHandle = std::shared_ptr<Node>;
 
 using nodeMap = std::map<std::string, vxNodeHandle>;
-}
+} // namespace vxCore
 #endif // VXNODE_H

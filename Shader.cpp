@@ -170,12 +170,11 @@ void vxCore::Shader::setLights(std::vector<std::shared_ptr<Light>> *lights)
 
 Lambert::Lambert() : Shader() {}
 
-Color Lambert::getIlluminatedColor(const Ray &ray,
-								   const Collision &collide) const
+Color Lambert::getLumminance(const Ray &ray, const Collision &collide) const
 {
 	auto lumm = getLightLoop(ray, collide);
 
-	return getColor(ray, collide) * lumm;
+	return lumm;
 }
 
 Color Lambert::getColor(const Ray &, const Collision &collide) const
@@ -184,11 +183,10 @@ Color Lambert::getColor(const Ray &, const Collision &collide) const
 
 	if (collide.m_geo)
 	{
-		auto &&color =
-			collide.color() *
-			collide.m_geo->color(); // m_diffuse.compute(collide)*m_diffuseColor;
+		auto color = collide.color();
+		// collide.m_geo->color(); // m_diffuse.compute(collide)*m_diffuseColor;
 
-		ret = MU::remap(color, 0.0, 0.85);
+		ret = MU::remap(color, 0.0, 0.98);
 	}
 	else
 	{

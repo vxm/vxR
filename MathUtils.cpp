@@ -7,6 +7,15 @@
 
 #define USE_STORE_RAND 0
 
+#include <iostream>
+#include <random>
+
+thread_local std::random_device rd;  // Will be used to obtain a seed for the
+									 // random number engine
+thread_local std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded
+									 // with rd()
+thread_local std::uniform_real_distribution<> dis(0.0, 1.0);
+
 using namespace vxCore;
 
 //////////////////////////////////////
@@ -61,9 +70,9 @@ v2s MathUtils::normalToCartesian(const v3s &normal)
 
 v3s MathUtils::cartesianToNormal(const v2s &coords)
 {
-	scalar x = (scalar)cos(coords.x()) * cos(coords.y());
-	scalar y = (scalar)cos(coords.x()) * sin(coords.y());
-	scalar z = (scalar)sin(coords.x());
+	auto x = (scalar)cos(coords.x()) * cos(coords.y());
+	auto y = (scalar)cos(coords.x()) * sin(coords.y());
+	auto z = (scalar)sin(coords.x());
 
 	return v3s{x, y, z}.unit();
 }
@@ -220,7 +229,7 @@ scalar MathUtils::getRand(const scalar range)
 #if USE_STORE_RAND
 	return range * rand_scalar[(m_k++) % cached_random];
 #else
-	return (range * (rand() / (scalar)RAND_MAX));
+	return dis(gen) * range;
 #endif
 }
 

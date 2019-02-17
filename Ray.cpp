@@ -8,7 +8,7 @@ Ray::Ray(const v3s &direction) : m_direction(direction.unit())
 }
 
 Ray::Ray(const v3s &origin, const v3s &direction)
-	: Ray(origin, direction, VisionType::kAll)
+	: Ray(origin, direction.unit(), VisionType::kAll)
 {
 	placeQuadrant();
 }
@@ -19,19 +19,20 @@ Ray::Ray(const v3s &origin, const v3s &direction, VisionType vis)
 	placeQuadrant();
 }
 
-Ray::Ray(scalar x, scalar y, scalar z) : m_direction(v3s{x, y, z}.unit())
+Ray::Ray(scalar x, scalar y, scalar z) : m_direction(v3s(x, y, z).unit())
 {
 	placeQuadrant();
 }
 
 Ray::Ray(const Ray &ray)
-	: m_direction{ray.m_direction}, m_origin{ray.m_origin}, m_qd(ray.m_qd)
+	: m_direction{ray.m_direction.unit()}, m_origin{ray.m_origin},
+	  m_qd(ray.m_qd)
 {
 }
 
 Ray::Ray(const Ray &&ray)
-	: m_direction{std::move(ray.m_direction)}, m_origin{std::move(
-												   ray.m_origin)},
+	: m_direction{std::move(ray.m_direction.unit())}, m_origin{std::move(
+														  ray.m_origin)},
 	  m_qd(ray.m_qd)
 {
 }

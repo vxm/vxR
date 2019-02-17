@@ -33,7 +33,7 @@ private:
 	v3s m_direction{1.0, 0.0, 0.0};
 	v3s m_origin{0.0, 0.0, 0.0};
 
-	scalar m_length = -1.0;
+	scalar m_length = 1.0;
 
 	Quadrant m_qd = Quadrant::k1;
 

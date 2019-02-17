@@ -13,7 +13,7 @@ Color LightShader::getColor(const Ray &, const Collision &col) const
 	return col.color();
 }
 
-Color LightShader::getIlluminatedColor(const Ray &, const Collision &col) const
+Color LightShader::getLumminance(const Ray &, const Collision &col) const
 {
 	return col.color();
 }

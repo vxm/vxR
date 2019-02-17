@@ -128,7 +128,7 @@ v3s Matrix33::operator*(const v3s &v) const
 			v3s(&m_matrix[6]).dot(v)};
 }
 
-Matrix33 Matrix33::operator*(const Matrix33 &right) const
+Matrix33 Matrix33::operator*(const Matrix33 &)const
 {
 	// TODO
 	return *this;

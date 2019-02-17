@@ -179,20 +179,13 @@ public:
 	///
 	void setProperties(const std::shared_ptr<const ImageProperties> &properties);
 	///
-	/// \brief computeLight
-	/// \param ray
-	/// \param col
-	/// \return
-	///
-	Color computeLight(const Ray &ray, Collision &col);
-	///
 	/// \brief computeEnergyAndColor
 	/// \param ray
 	/// \param col
 	/// \return
 	///
 	Color computeEnergyAndColor(const Ray &ray, Collision &col,
-	                            unsigned int bounces);
+								unsigned int bounces);
 	///
 	/// \brief computeReflection
 	/// \param iter
@@ -200,7 +193,8 @@ public:
 	/// \param col
 	/// \return
 	///
-	Color computeReflection(const Ray &ray, Collision &col, int deep);
+	Color computeReflection(const Ray &ray, const Collision &col,
+							unsigned int bounces);
 	///
 	/// \brief computeGI
 	/// \param iter
@@ -208,7 +202,7 @@ public:
 	/// \param col
 	/// \return
 	///
-	Color computeGI(Collision &col, int deep);
+	Color computeGI(const Collision &col, unsigned int bounces);
 	///
 	/// \brief getShader
 	/// \param col

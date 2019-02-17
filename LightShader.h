@@ -6,10 +6,10 @@
 #include <memory>
 #include <vector>
 
-#include "Vector.h"
-#include "Shader.h"
-#include "Light.h"
 #include "CirclesMap.h"
+#include "Light.h"
+#include "Shader.h"
+#include "Vector.h"
 
 namespace vxCore
 {
@@ -24,11 +24,9 @@ public:
 
 	// Shader interface
 public:
-	virtual Color getColor(const Ray &ray,
-	                       const Collision &col) const override;
-	virtual Color getIlluminatedColor(const Ray &,
-	                                  const Collision &col) const override;
+	virtual Color getColor(const Ray &ray, const Collision &col) const override;
+	virtual Color getLumminance(const Ray &, const Collision &col) const override;
 	virtual v3s getVector(const Collision &) const override;
 };
-}
+} // namespace vxCore
 #endif // LIGHTSHADER_H

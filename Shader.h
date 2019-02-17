@@ -72,8 +72,8 @@ public:
 	/// \param collide
 	/// \return
 	///
-	virtual Color getIlluminatedColor(const Ray &ray,
-									  const Collision &collide) const = 0;
+	virtual Color getLumminance(const Ray &ray,
+								const Collision &collide) const = 0;
 	///
 	/// \brief getVector
 	/// \param collide
@@ -308,8 +308,8 @@ public:
 	/// \param collide
 	/// \return
 	///
-	virtual Color getIlluminatedColor(const Ray &ray,
-									  const Collision &collide) const override;
+	virtual Color getLumminance(const Ray &ray,
+								const Collision &collide) const override;
 };
 
 using vxShaderHandle = std::shared_ptr<Shader>;

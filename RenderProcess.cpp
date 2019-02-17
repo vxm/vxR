@@ -15,8 +15,8 @@
 
 #define SINGLERAY 0
 #if SINGLERAY
-#define PIXEL_X 303
-#define PIXEL_Y 158
+#define PIXEL_X 929
+#define PIXEL_Y 520
 #endif
 
 #ifdef _DEBUG
@@ -35,7 +35,7 @@ RenderProcess::RenderProcess(ImagePropertiesHandle &prop, unsigned int samples)
 	: m_properties(prop), m_imageData(prop),
 	  m_contactBuffer(prop->numPixels()), m_samples{samples}
 {
-    setNMaxThreads(8);
+    setNMaxThreads(14);
 }
 
 unsigned int RenderProcess::samples() const { return m_samples; }
@@ -96,7 +96,7 @@ Status RenderProcess::setDatabase(std::shared_ptr<SceneParser>)
 
 Status::code RenderProcess::execute()
 {
-	timePoint start = std::chrono::system_clock::now();
+	auto start = std::chrono::system_clock::now();
 	m_finished = false;
 	m_contactBuffer.reserve(m_properties->numPixels());
 
@@ -126,9 +126,14 @@ Status::code RenderProcess::execute()
 
 		std::this_thread::sleep_for(
 			std::chrono::seconds((int)customUpdateInterval));
+		auto remaining = (100.0 - dProgress) * customUpdateInterval;
+		auto remainingMinutes = int(remaining / 60);
+		auto remainingSeconds = int(remaining - (remainingMinutes * 60));
+
 		std::cout << "\t\t(" << customUpdateInterval
 				  << ") progress update: " << std::setprecision(2) << dProgress
-				  << "%" << std::endl;
+				  << "%,   expected: " << remainingMinutes << " minutes "
+				  << remainingSeconds << " seconds " << std::endl;
 
 		prevProgress = dProgress;
 	}
@@ -171,101 +176,56 @@ Shader *RenderProcess::getShader(const Collision &col)
 	return sh;
 }
 
-Color RenderProcess::computeLight(const Ray &ray, Collision &col)
+Color RenderProcess::computeReflection(const Ray &ray, const Collision &col,
+									   unsigned int bounces)
 {
-	Color retColor = Color::zero;
-
-	m_scene->throwRay(ray, col);
-
-	if (col.isValid())
-	{ // Compute reflection
-		// getShader(col)->hasReflection()
-		if (MU::getBoolRand(getShader(col)->getReflectionCoefficent()))
-		{
-			// firstHitColor *= std::max(0.0, 1.0-sh->getReflectionCoefficent());
-            retColor = computeReflection(ray, col, 2);
-		}
-		else
-		{
-			retColor = getShader(col)->getIlluminatedColor(ray, col);
-		}
-	}
-	else
-	{
-		m_scene->domeComputeLight(ray, col);
-
-		retColor = col.color();
-	}
-
-	return retColor;
-}
-
-Color RenderProcess::computeReflection(const Ray &ray, Collision &col,
-									   int deep = 0)
-{
-	Color reflection = Color::zero;
-
 	const auto &n = col.normal();
 
 	// Reflected direction
-	auto invV = ((n * ray.direction().dot(n) * scalar(-2.0)) + ray.direction());
+	auto mirrorRay =
+		((n * ray.direction().dot(n) * scalar(-2.0)) + ray.direction());
 
 	// Noise Sphere
 	auto sh = getShader(col);
 	auto invVRand = MU::getSolidSphereRand3(sh->getReflectionRadius());
-	// auto ratio = invV.dot(invVRand);
-	invV += invVRand;
+	mirrorRay += invVRand;
 
-	auto reflexRay = Ray(col.position() + n.small(), invV, VisionType::kAll);
+	auto reflexRay = Ray(col.position() + n.small(), mirrorRay, VisionType::kAll);
 
 	Collision refxCollision;
 
-	if (deep == 0)
+	Color reflection = Color::zero;
+
+	if (bounces)
 	{
-		reflection = computeLight(reflexRay, refxCollision);
-	}
-	else
-	{
-		--deep;
-		deep = std::max(0, deep - 2);
-		reflection += computeEnergyAndColor(reflexRay, refxCollision, deep);
+		bounces--;
 	}
 
-	reflection.applyCurve(1.2, 0.0);
-
-	// reflection *= sh->getReflectionCoefficent(); // - fabs(ratio);
+	reflection = computeEnergyAndColor(reflexRay, refxCollision, 0);
 
 	return reflection;
 }
 
-Color RenderProcess::computeGI(Collision &col, int deep = 0)
+Color RenderProcess::computeGI(const Collision &col, unsigned int bounces)
 {
-	const auto &orColor = col.color();
+	auto r = MU::getHollowHemisphereRand(1.0, col.normal());
 
-	const auto &&r = MU::getHollowHemisphereRand(1.0, col.normal());
+	auto p = col.position() + col.normal().small();
 
-	const Ray giRay(col.position() + col.normal().small(), r.inverted(),
-					VisionType::kOpaque);
+	const Ray giRay(p, r.inverted(), VisionType::kOpaque);
 
 	auto ratio = cos(giRay.direction().angle(col.normal()));
 
-	Collision nextRound;
+	Collision nextRound = col;
 
-	Color hitColor;
-	if (ratio > 0.001)
+	if (bounces)
 	{
-		if (deep == 0)
-		{
-			hitColor = computeLight(giRay, nextRound);
-		}
-		else
-		{
-			--deep;
-			deep = std::max(0, deep - 1);
-			hitColor += computeEnergyAndColor(giRay, nextRound, deep);
-		}
+		bounces--;
 	}
-	Color globalIlm = orColor * hitColor * ratio;
+
+	Color hitColor = computeEnergyAndColor(giRay, nextRound, bounces);
+
+	Color globalIlm = hitColor * ratio;
 
 	return globalIlm;
 }
@@ -273,29 +233,50 @@ Color RenderProcess::computeGI(Collision &col, int deep = 0)
 Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 										   unsigned int bounces)
 {
-	Color firstHitColor = computeLight(ray, col);
+	m_scene->throwRay(ray, col);
 
-	if (col.isValid())
+	Collision ref = col;
+	Collision ref2 = col;
+
+	auto baseColor = col.color();
+
+	auto sh = getShader(col);
+
+	Color retColor = Color::zero;
+
+    if (MU::getBoolRand(sh->getDiffuseCoeficent()) || bounces==0)
 	{
-		auto sh = getShader(col);
+		retColor += baseColor * sh->getLumminance(ray, ref);
+	}
 
-		// Compute Global Illumination
-		if (sh->hasGI() && bounces)
+	if (bounces > 0)
+	{
+		if (!col.isValid())
 		{
-			firstHitColor += computeGI(col, bounces);
+			m_scene->domeComputeLight(ray, col);
+			retColor += col.color();
+			return retColor;
+		}
+
+		if (MU::getBoolRand(sh->getReflectionCoefficent()))
+		{
+			retColor += baseColor * computeReflection(ray, ref, bounces);
+		}
+
+		if (MU::getBoolRand(sh->getGiCoeficent()))
+		{
+			retColor += baseColor * computeGI(ref2, bounces);
 		}
 	}
 
-	firstHitColor.setA(1.0);
-
-	return firstHitColor;
-}
+	return retColor;
+} // namespace vxCompute
 
 Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 {
 	assert(offset < this->imageProperties()->rx());
-	const auto &&rCamera = scene()->camera();
-	Sampler sampler(m_samples);
+	thread_local const auto &rCamera = scene()->camera();
+	thread_local Sampler sampler(m_samples);
 
 #if SINGLERAY
 	(void)by;
@@ -305,13 +286,17 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 	unsigned int itV = PIXEL_Y;
 
 	// TODO: return this to smart pointer.
-	Collision collision;
+	Collision col;
 	const v2s hitCoordinates(itV / (scalar)m_properties->ry(),
 							 itH / (scalar)m_properties->rx());
 
 	const auto ray = rCamera->ray(hitCoordinates, sampler);
+	//	computeEnergyAndColor(ray, col, 0);
 
-	computeEnergyAndColor(ray, collision, 0);
+	// Ray ray({-10.0, 0.001, 0.001}, {1, 0.001, 0});
+	computeEnergyAndColor(ray, col, 0);
+	// m_scene->throwRay(ray, col);
+	col.color();
 
 	const auto id = itH + (itV * m_properties->rx());
 
@@ -341,10 +326,13 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 		for (auto s = 0u; s < m_samples; s++)
 		{
 			Collision col;
-			const auto &ray = rCamera->ray(hitCoordinates, sampler);
-			Color localColor;
 
-			localColor = computeEnergyAndColor(ray, col, m_rayDepth);
+			const auto &ray = rCamera->ray(hitCoordinates, sampler);
+			Color localColor = computeEnergyAndColor(ray, col, m_rayDepth);
+
+			//			Ray ray({-10, 0.0, 0.0}, {1, 0, 0});
+			//			m_scene->throwRay(ray, col);
+			// Color localColor = col.color();
 
 			if (!col.isValid())
 			{
@@ -353,7 +341,6 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 			}
 
 			firstHitColor += localColor;
-
 			sampler.next();
 		}
 

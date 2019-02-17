@@ -32,7 +32,7 @@ int executeRenderProcess(int argc, char *argv[])
 	std::string scenePath;
 	// Look for a scene argument.
 	bool sceneParam{false};
-	for (int i = 1; i < argc && !scenePath.size(); i++)
+	for (int i = 1; i < argc && scenePath.empty(); i++)
 	{
 		if (sceneParam)
 		{
@@ -53,28 +53,29 @@ int executeRenderProcess(int argc, char *argv[])
 	sceneParser->procesScene();
 	std::shared_ptr<Scene> m_scene;
 
-    int frameStart = 0;
-    int frameEnd = 1;
-    for (const auto &timeOption : sceneParser->getNodesByType("vxClock"))
-    {
-        frameStart = timeOption->getScalar("start");
-        frameEnd = timeOption->getScalar("end");
-    }
+	int frameStart = 0;
+	int frameEnd = 1;
+	for (const auto &timeOption : sceneParser->getNodesByType("vxClock"))
+	{
+		frameStart = timeOption->getScalar("start");
+		frameEnd = timeOption->getScalar("end");
+	}
 
-    for (const auto &renderSettings : sceneParser->getNodesByType("vxRenderSettings"))
-    {
-        for(int i=frameStart; i<frameEnd;i++)
+	for (const auto &renderSettings :
+		 sceneParser->getNodesByType("vxRenderSettings"))
+	{
+		for (int i = frameStart; i < frameEnd; i++)
 		{
-            const auto resolution = renderSettings->getVector2d("resolution");
-            const auto samples = renderSettings->getInt("pixelSamples");
-            const auto rayDepth = renderSettings->getInt("rayDepth");
-            const auto giMultiplier = renderSettings->getScalar("giMultiplier");
+			const auto resolution = renderSettings->getVector2d("resolution");
+			const auto samples = renderSettings->getInt("pixelSamples");
+			const auto rayDepth = renderSettings->getInt("rayDepth");
+			const auto giMultiplier = renderSettings->getScalar("giMultiplier");
 
 			//			const auto numThreads = node->getInt("numThreads");
 
 			// Img properties for render.
 			auto renderProperties =
-			    std::make_shared<ImageProperties>(resolution.x(), resolution.y());
+				std::make_shared<ImageProperties>(resolution.x(), resolution.y());
 			render rp(renderProperties, samples);
 
 			if (m_scene == nullptr)
@@ -88,7 +89,7 @@ int executeRenderProcess(int argc, char *argv[])
 				m_scene->camera()->setProperties(renderProperties);
 
 				std::cout << "\t\tRender process: " << TimeUtils::decorateTime(start, 2)
-				          << std::endl;
+						  << std::endl;
 			}
 
 			// call time callbacks.
@@ -113,7 +114,7 @@ int executeRenderProcess(int argc, char *argv[])
 			}
 
 			std::cout << "\t\tFinished render : " << TimeUtils::decorateTime(start, 2)
-			          << std::endl;
+					  << std::endl;
 
 			// generates an image buffer and fills it
 			// with the render results. Buffer properties
@@ -122,18 +123,18 @@ int executeRenderProcess(int argc, char *argv[])
 			auto bff = rp.generateImage();
 
 			std::cout << "\t\tEnded creation of the image: "
-			          << TimeUtils::decorateTime(start, 2) << std::endl;
+					  << TimeUtils::decorateTime(start, 2) << std::endl;
 
 			// storing an image from the buffer obtained.
 			if (bff != nullptr)
 			{
 				QImage img(bff, renderProperties->rx(), renderProperties->ry(),
-				           QImage::Format_RGBA8888);
+						   QImage::Format_RGBA8888);
 
 				std::string fileName = FileUtils::makeUnique(baseName, 0.0);
 
 				std::cout << "Opening file: "s << fileName << " to write."s
-				          << std::endl;
+						  << std::endl;
 
 				// TODO: investigate other formats and resolution limits
 				img.save(QString(fileName.c_str()), "TIFF", 100);
@@ -141,17 +142,20 @@ int executeRenderProcess(int argc, char *argv[])
 				std::cout << "\t\tFile saved :"s << fileName << std::endl;
 
 				std::cout << "\t\tFinished image generation : "
-				          << TimeUtils::decorateTime(start, 2) << std::endl;
+						  << TimeUtils::decorateTime(start, 2) << std::endl;
 			}
 
-            std::cout << "\tEnded frame " << std::endl;
+			std::cout << "\tEnded frame " << std::endl;
 
-            m_scene->grids().front()->playGameOfLife();
-            auto tr = m_scene->camera()->transform();
-            tr.setOrigin(tr.origin()+v3s(.01,0.0,.01));
-            m_scene->camera()->setTransform(tr);
+			if (!m_scene->grids().empty())
+			{
+				m_scene->grids().front()->playGameOfLife();
+			}
+			auto tr = m_scene->camera()->transform();
+			tr.setOrigin(tr.origin() - v3s(.001, -0.001, .0011));
+
+			m_scene->camera()->setTransform(tr);
 		}
-
 	}
 	// return a.exec();
 	std::cout << "done!" << std::endl;
@@ -163,10 +167,10 @@ int printHelp()
 	//! TODO: this help could be written in external file
 	//! and be read in compilation time.
 	std::cout << "vxR 0.2.0" << std::endl
-	          << std::endl
-	          << "\t Non realtime render for solid voxels" << std::endl
-	          << "\t vxR [-at] | [-allTests] to perform unit tests." << std::endl
-	          << "\t vxR [-help] | [--help] for this help" << std::endl;
+			  << std::endl
+			  << "\t Non realtime render for solid voxels" << std::endl
+			  << "\t vxR [-at] | [-allTests] to perform unit tests." << std::endl
+			  << "\t vxR [-help] | [--help] for this help" << std::endl;
 
 	return 0;
 }
@@ -193,7 +197,7 @@ int main(int argc, char *argv[])
 			}
 
 			if (memcmp(argv[i], "-allTests", 9) == 0 ||
-			    memcmp(argv[i], "-at", 3) == 0)
+				memcmp(argv[i], "-at", 3) == 0)
 			{
 				program = 2;
 			}
