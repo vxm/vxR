@@ -51,56 +51,56 @@ Color Color::indexColor(const unsigned char idx)
 {
 	switch (idx % 25)
 	{
-    case 0:
-        return red;
+	case 0:
+		return red;
 	case 1:
-        return green;
+		return green;
 	case 2:
-        return blue;
+		return blue;
 	case 3:
-        return yellow;
+		return yellow;
 	case 4:
 		return yellow;
 	case 5:
-        return grey;
+		return grey;
 	case 6:
-        return grey;
+		return grey;
 	case 7:
-        return green;
-    case 8:
-        return red;
+		return green;
+	case 8:
+		return red;
 	case 9:
-        return blue;
+		return blue;
 	case 10:
-        return yellow;
+		return yellow;
 	case 11:
-        return red;
+		return red;
 	case 12:
-        return grey;
+		return grey;
 	case 13:
-        return red;
+		return red;
 	case 14:
 		return orangePink;
 	case 15:
-        return white;
+		return white;
 	case 16:
-        return red;
+		return red;
 	case 17:
 		return greenishYellow;
 	case 18:
-        return green;
+		return green;
 	case 19:
-        return green;
+		return green;
 	case 20:
-        return pink;
+		return pink;
 	case 21:
-        return yellow;
+		return yellow;
 	case 22:
-        return red;
+		return red;
 	case 23:
-        return blue;
+		return blue;
 	case 24:
-        return red;
+		return red;
 	default:
 		return red;
 	}
@@ -212,6 +212,15 @@ void Color::gain(scalar gain)
 	m_g += gain;
 	m_b += gain;
 	m_a += gain;
+}
+
+void Color::saturate(scalar sat)
+{
+	auto total = m_r + m_g + m_b;
+	auto med = total / 3.0;
+	m_r = med + (m_r - med) * sat;
+	m_g = med + (m_g - med) * sat;
+	m_b = med + (m_b - med) * sat;
 }
 
 Color Color::dimm(scalar factor) const
@@ -334,28 +343,28 @@ void Color::toRGBA8888(std::array<unsigned char, 4> &tbuff) const
 
 Color Color::zero{(scalar)0.0, (scalar)0.0, (scalar)0.0, (scalar)1.0};
 
-Color Color::blue(Color::lookup256(22, 34, 232, 255));
-Color Color::bluishGreen(Color::lookup256(124, 222, 121, 255));
-Color Color::bluegreen(Color::lookup256(195, 164, 190, 255));
-Color Color::bluishPurple(Color::lookup256(92, 202, 177, 255));
-Color Color::greenishYellow(Color::lookup256(235, 233, 0, 255));
-Color Color::green(Color::lookup256(33, 223, 38, 255));
-Color Color::greenishBlue(Color::lookup256(110, 275, 199, 255));
-Color Color::orangePink(Color::lookup256(240, 204, 162, 255));
-Color Color::orange(Color::lookup256(228, 284, 129, 255));
-Color Color::pink(Color::lookup256(245, 33, 108, 255));
-Color Color::reddishOrange(Color::lookup256(216, 119, 51, 255));
-Color Color::red(Color::lookup256(232, 34, 22, 255));
-Color Color::reddishPurple(Color::lookup256(233, 64, 143, 255));
-Color Color::redPurple(Color::lookup256(244, 35, 132, 255));
-Color Color::purple(Color::lookup256(246, 23, 44, 255));
-Color Color::purplishBlue(Color::lookup256(88, 121, 191, 255));
-Color Color::purplishPink(Color::lookup256(243, 208, 219, 255));
-Color Color::purplishRed(Color::lookup256(209, 165, 136, 255));
-Color Color::white(Color::lookup256(222, 222, 222, 255));
-Color Color::yellowGreen(Color::lookup256(215, 234, 114, 255));
-Color Color::yellowishOrange(Color::lookup256(231, 224, 0, 255));
-Color Color::yellow(Color::lookup256(222, 222, 44, 255));
-Color Color::yellowishGreen(Color::lookup256(232, 231, 130, 255));
-Color Color::black{mnc, mnc, mnc, 1.0};
-Color Color::grey(Color::lookup256(33, 33, 33, 255));
+Color Color::blue(Color(0.55, 0.45, 0.55, 1.0));
+Color Color::bluishGreen(Color(0.45, 0.66, 0.55, 1.0));
+Color Color::bluegreen(Color(0.66, 0.46, 0.66, 1.0));
+Color Color::bluishPurple(Color(0.67, 0.67, 0.67, 1.0));
+Color Color::greenishYellow(Color(0.66, 0.45, 0.55, 1.0));
+Color Color::green(Color(0.66, 0.66, 0.45, 1.0));
+Color Color::greenishBlue(Color(0.45, 0.46, 0.66, 1.0));
+Color Color::orangePink(Color(0.46, 0.66, 0.55, 1.0));
+Color Color::orange(Color(0.45, 0.66, 0.66, 1.0));
+Color Color::pink(Color(0.67, 0.67, 0.67, 1.0));
+Color Color::reddishOrange(Color(0.55, 0.66, 0.65, 1.0));
+Color Color::red(Color(0.66, 0.66, 0.45, 1.0));
+Color Color::reddishPurple(Color(0.55, 0.66, 0.55, 1.0));
+Color Color::redPurple(Color(0.66, 0.45, 0.55, 1.0));
+Color Color::purple(Color(0.55, 0.66, 0.65, 1.0));
+Color Color::purplishBlue(Color(0.55, 0.46, 0.65, 1.0));
+Color Color::purplishPink(Color(0.66, 0.66, 0.55, 1.0));
+Color Color::purplishRed(Color(0.45, 0.66, 0.55, 1.0));
+Color Color::white(Color(0.67, 0.47, 0.47, 1.0));
+Color Color::yellowGreen(Color(0.55, 0.66, 0.55, 1.0));
+Color Color::yellowishOrange(Color(0.45, 0.66, 0.55, 1.0));
+Color Color::yellow(Color(0.66, 0.66, 0.55, 1.0));
+Color Color::yellowishGreen(Color(0.55, 0.66, 0.55, 1.0));
+Color Color::black(Color(0.22, 0.22, 0.22, 1.0));
+Color Color::grey(Color(0.55, 0.55, 0.55, 1.0));

@@ -187,6 +187,7 @@ public:
 	/// \param gain
 	///
 	void gain(scalar gain);
+	void saturate(scalar gain);
 	///
 	/// \brief dimm
 	/// \param factor
