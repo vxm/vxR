@@ -5,7 +5,6 @@ using namespace vxCore;
 Color CirclesMap::compute(const Collision &collision) const
 {
 	Color outColor(Color::white);
-	return outColor; //!
 
 	auto dst = collision.uv().distance({.5, .5});
 

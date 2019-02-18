@@ -126,6 +126,8 @@ protected:
 	scalar m_zmin = {0.0};
 	scalar m_zmax = {0.0};
 
+    Geometry *m_visibleVoxelGeo = nullptr;
+
 public:
 	///
 	/// \brief vxGrid
@@ -521,6 +523,8 @@ public:
 	virtual void updateBoundingBox() override;
 	long long legolizeColors();
 	void createBox(const BoundingBox &bb, unsigned char colorIndex);
+    Geometry *getVisibleVoxelGeo() const;
+    void setVisibleVoxelGeo(Geometry *visibleVoxelGeo);
 };
 
 /*

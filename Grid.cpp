@@ -6,6 +6,8 @@
 #include "Grid.h"
 #include "MathUtils.h"
 
+#include "CirclesMap.h"
+
 std::mutex gridMutex;
 
 using namespace vxCore;
@@ -13,14 +15,23 @@ using namespace vxCore;
 #define DBL_EPSILON 1e-12
 #define DRAWBBOX 0
 
+Geometry *Grid::getVisibleVoxelGeo() const
+{
+    return m_visibleVoxelGeo;
+}
+
+void Grid::setVisibleVoxelGeo(Geometry *visibleVoxelGeo)
+{
+    m_visibleVoxelGeo = visibleVoxelGeo;
+}
+
 Grid::Grid()
 {
-	m_size = 1.0;
+    m_size = 1.0;
 
-	createGridData(5);
-	initialize();
-	updateBB();
-	srand(time(nullptr));
+    createGridData(5);
+    initialize();
+    updateBB();
 }
 
 Grid::Grid(const v3s &position, scalar size) : m_position(position)
@@ -29,8 +40,7 @@ Grid::Grid(const v3s &position, scalar size) : m_position(position)
 	createGridData(5);
 
 	initialize();
-	updateBB();
-	srand(time(nullptr));
+    updateBB();
 }
 
 Grid::Grid(scalar x, scalar y, scalar z, scalar size)
@@ -41,8 +51,7 @@ Grid::Grid(scalar x, scalar y, scalar z, scalar size)
 	createGridData(5);
 
 	initialize();
-	updateBB();
-	srand(time(nullptr));
+    updateBB();
 }
 
 void Grid::updateBB() { m_bb->set(m_position, m_size); }
@@ -728,7 +737,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 	const auto velY = d.yPositive() ? 1 : -1;
 	const auto velZ = d.zPositive() ? 1 : -1;
 	///////////////////////////////////////////////////////////////////////
-
+                CirclesMap cm;
 	auto sp = m_bb->closestPointInside(col.position(), m_c_halfVoxelSize / 10.0);
 
 	long xIndex = 0;
@@ -752,16 +761,20 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 
 		if (voxel.data.active())
 		{
-			voxel.position = getVoxelPosition(voxel.index);
-			box.set(voxel.position, voxel.size * .98);
+            box.set(getVoxelPosition(xIndex, yIndex, zIndex), voxel.size * .98);
 
-			if (box.throwRay(ray, c))
+            if (box.throwRay(ray, c))
 			{
 				col = c;
-				auto color = Color::indexColor(voxel.data.byte() % 22);
-				color.saturate(1.3);
-				col.setColor(color);
-				col.setValid(true);
+                //auto color = Color::indexColor(voxel.data.byte() % 22);
+                //color.saturate(1.3);
+
+
+                col.setColor(cm.compute(c));
+
+
+
+                col.setValid(true);
 				return 1;
 			}
 		}
@@ -780,9 +793,8 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 				{
 					col = c;
 					auto color = Color::indexColor(neighbour.data.byte() % 22);
-					color.saturate(1.3);
+                    //color.saturate(1.3);
 					col.setColor(color);
-
 					col.setValid(true);
 					return 1;
 				}
@@ -796,7 +808,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		v3s v = MU::rayAndXPlane(ray, xVal);
 		getComponentsOfIndex(
 			indexAtPosition(v + v3s(velX * m_c_halfVoxelSize / 10.0, 0, 0)),
-			txIndex, tyIndex, tzIndex);
+            txIndex, tyIndex, tzIndex);
 		if (yIndex == tyIndex && zIndex == tzIndex)
 		{
 			xVal += velX * m_c_voxelSize;
@@ -807,16 +819,14 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			v = MU::rayAndYPlane(ray, yVal);
 			getComponentsOfIndex(
 				indexAtPosition(v + v3s(0, velY * m_c_halfVoxelSize / 10.0, 0)),
-				txIndex, tyIndex, tzIndex);
+                txIndex, tyIndex, tzIndex);
 			if (xIndex == txIndex && zIndex == tzIndex)
 			{
 				yVal += velY * m_c_voxelSize;
 				yIndex += velY;
 			}
 			else
-			{
-				v = MU::rayAndZPlane(ray, zVal);
-
+            {
                 zVal += velZ * m_c_voxelSize;
                 zIndex += velZ;
 			}

@@ -33,11 +33,11 @@ void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 
 	buildCameras();
 
-	buildGrids();
-
 	buildPlanes();
 
 	buildGeometries();
+
+    buildGrids();
 
 	buildCylinders();
 
@@ -273,7 +273,7 @@ void Scene::buildGrids()
 		grid->createRandom(.5, -0.62);
 		grid->createRandom(.2, -0.60);
 		grid->createRandom(.1, -0.59);
-		grid->legolizeColors();
+        grid->legolizeColors();
         //grid->createBox(BoundingBox(-0.03, -2.3, -0.03, 0.03, 2.1, 0.03), 4);
 		// grid->dumpFileInMemory("/home/mario/Downloads/xyzrgb_statuette_1.ply");
 		// grid->createEdges((unsigned char)12u);

@@ -33,7 +33,7 @@ name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "true"
     resolution = 1366 768
-    pixelSamples = 200
+    pixelSamples = 50
     rayDepth = 6
     giMultiplier = 26.5
     numThreads = -1
@@ -104,12 +104,12 @@ node
 name = "persp"
 type = "vxCamera"
 active = "true"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.5 -0.16 -1.44 1]
-    focusDistance = 1.9
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.5 0.0 -3.57 1]
+    focusDistance = 4.9
     lensSize = 0.007
     horizontalAperture = 1.27
     verticalAperture = 1.7786
-    focalLength = 2.1
+    focalLength = 3.8
     pixelRadius = 0.7
 }
 
@@ -779,12 +779,12 @@ name = "sphere_light_1"
 type = "vxSphereLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.0 21.0 3.0 1]
-    intensity = 57.2
-    color = 245 245 242
+    intensity = 37.2
+    color = 215 245 242
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 2.1
+    radius = 4.1
 }
 
 node
@@ -793,12 +793,12 @@ name = "sphere_light_2"
 type = "vxSphereLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 5.0 9.0 -16.0 1]
-    intensity = 15.3
-    color = 255 255 215
+    intensity = 8.3
+    color = 254 255 212
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 0.9
+    radius = 4.9
 }
 
 
@@ -809,12 +809,29 @@ type = "vxSphereLight"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9.0 21.0 13.0 1]
     intensity = 19.3
+    color = 235 235 225
+    samples = 1
+    castShadows = "true"
+    position = 0 0 0
+    radius = 4.8
+}
+
+
+
+node
+{
+name = "sphere_light_4"
+type = "vxSphereLight"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9.0 0.0 0.0 1]
+    intensity = 19.3
     color = 235 235 255
     samples = 1
     castShadows = "true"
     position = 0 0 0
-    radius = 1.8
+    radius = 4.8
 }
+
 
 
 node
@@ -895,8 +912,8 @@ name = "grid"
 type = "vxGrid"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
-    resolution = 520
-    size = 4.2
+    resolution = 248
+    size = 3.2
     color = 255 255 255
     shader = "shader_1"
 }
@@ -942,7 +959,7 @@ node
 name = "gnome_vx"
 type = "vxGridGeometry"
 active = "false"
-    transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.0 -0.65 0.0 1]
+    transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.0 -1110.65 0.0 1]
     filePath = "../geometry/gnome_mid.ply"
 }
 
@@ -969,7 +986,28 @@ node
 {
 name = "tiger_vx"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.0 -0.65 0.0 1]
     filePath = "../geometry/tiger_snake.ply"
 }
+
+
+node
+{
+name = "panther_vx"
+type = "vxGridGeometry"
+active = "false"
+    transform = [1.7 0 0 0 0 1.7 0 0 0 0 1.7 0 1.2 -0.65 1.0 1]
+    filePath = "../geometry/panther.ply"
+}
+
+node
+{
+name = "dogs_vx"
+type = "vxGridGeometry"
+active = "true"
+    transform = [0.47 0 0 0 0 0.47 0 0 0 0 0.47 0 0.0 -0.57 0.0 1]
+    filePath = "../geometry/dogs.ply"
+}
+
+
