@@ -15,23 +15,20 @@ using namespace vxCore;
 #define DBL_EPSILON 1e-12
 #define DRAWBBOX 0
 
-Geometry *Grid::getVisibleVoxelGeo() const
-{
-    return m_visibleVoxelGeo;
-}
+Geometry *Grid::getVisibleVoxelGeo() const { return m_visibleVoxelGeo; }
 
 void Grid::setVisibleVoxelGeo(Geometry *visibleVoxelGeo)
 {
-    m_visibleVoxelGeo = visibleVoxelGeo;
+	m_visibleVoxelGeo = visibleVoxelGeo;
 }
 
 Grid::Grid()
 {
-    m_size = 1.0;
+	m_size = 1.0;
 
-    createGridData(5);
-    initialize();
-    updateBB();
+	createGridData(5);
+	initialize();
+	updateBB();
 }
 
 Grid::Grid(const v3s &position, scalar size) : m_position(position)
@@ -40,7 +37,7 @@ Grid::Grid(const v3s &position, scalar size) : m_position(position)
 	createGridData(5);
 
 	initialize();
-    updateBB();
+	updateBB();
 }
 
 Grid::Grid(scalar x, scalar y, scalar z, scalar size)
@@ -51,7 +48,7 @@ Grid::Grid(scalar x, scalar y, scalar z, scalar size)
 	createGridData(5);
 
 	initialize();
-    updateBB();
+	updateBB();
 }
 
 void Grid::updateBB() { m_bb->set(m_position, m_size); }
@@ -71,6 +68,7 @@ void Grid::setResolution(long resolution)
 	if (resolution != m_resolution)
 	{
 		createGridData(resolution);
+		updateCaches();
 	}
 }
 
@@ -454,7 +452,7 @@ void Grid::addGeometry(const vxTriangleMeshHandle &geo)
 	}
 }
 
-long Grid::index(const long x, const long y, const long z) const
+long long Grid::index(const long x, const long y, const long z) const
 {
 	return (x + (y * m_resolution) + (z * m_c_resXres));
 }
@@ -516,7 +514,7 @@ bool Grid::activeInRange(const v3s &pos) const
 					  (long)floor(fPos.z()));
 }
 
-bool Grid::active(long idx) const
+bool Grid::active(long long idx) const
 {
 	if (idx < m_c_resXresXres)
 	{
@@ -736,8 +734,9 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 	const auto velX = d.xPositive() ? 1 : -1;
 	const auto velY = d.yPositive() ? 1 : -1;
 	const auto velZ = d.zPositive() ? 1 : -1;
+	thread_local CirclesMap cm;
 	///////////////////////////////////////////////////////////////////////
-                CirclesMap cm;
+
 	auto sp = m_bb->closestPointInside(col.position(), m_c_halfVoxelSize / 10.0);
 
 	long xIndex = 0;
@@ -761,20 +760,16 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 
 		if (voxel.data.active())
 		{
-            box.set(getVoxelPosition(xIndex, yIndex, zIndex), voxel.size * .98);
+			box.set(getVoxelPosition(xIndex, yIndex, zIndex), voxel.size);
 
-            if (box.throwRay(ray, c))
+			if (box.throwRay(ray, c))
 			{
 				col = c;
-                //auto color = Color::indexColor(voxel.data.byte() % 22);
-                //color.saturate(1.3);
-
-
-                col.setColor(cm.compute(c));
-
-
-
-                col.setValid(true);
+				auto color1 = Color::indexColor(voxel.data.byte() % 22);
+				auto color2 = Color::indexColor(
+					(voxel.data.byte() + yIndex + xIndex + zIndex) % 22);
+				col.setColor(cm.compute(c, color1, color2));
+				col.setValid(true);
 				return 1;
 			}
 		}
@@ -789,11 +784,11 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 				box.set(neighbour.position, neighbour.size / 2.0);
 				box.setMinY(neighbour.position.y() - m_c_voxelSize / 2.0);
 				box.setMaxY(neighbour.position.y() - m_c_voxelSize / 4.0);
+
 				if (box.throwRay(ray, c))
 				{
 					col = c;
 					auto color = Color::indexColor(neighbour.data.byte() % 22);
-                    //color.saturate(1.3);
 					col.setColor(color);
 					col.setValid(true);
 					return 1;
@@ -808,7 +803,8 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		v3s v = MU::rayAndXPlane(ray, xVal);
 		getComponentsOfIndex(
 			indexAtPosition(v + v3s(velX * m_c_halfVoxelSize / 10.0, 0, 0)),
-            txIndex, tyIndex, tzIndex);
+			txIndex, tyIndex, tzIndex);
+
 		if (yIndex == tyIndex && zIndex == tzIndex)
 		{
 			xVal += velX * m_c_voxelSize;
@@ -819,22 +815,21 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 			v = MU::rayAndYPlane(ray, yVal);
 			getComponentsOfIndex(
 				indexAtPosition(v + v3s(0, velY * m_c_halfVoxelSize / 10.0, 0)),
-                txIndex, tyIndex, tzIndex);
+				txIndex, tyIndex, tzIndex);
 			if (xIndex == txIndex && zIndex == tzIndex)
 			{
 				yVal += velY * m_c_voxelSize;
 				yIndex += velY;
 			}
 			else
-            {
-                zVal += velZ * m_c_voxelSize;
-                zIndex += velZ;
+			{
+				zVal += velZ * m_c_voxelSize;
+				zIndex += velZ;
 			}
 		}
-    }
-	while ((xIndex >= 0 && xIndex < m_resolution) &&
-		   (yIndex >= 0 && yIndex < m_resolution) &&
-		   (zIndex >= 0 && zIndex < m_resolution));
+	} while ((xIndex >= 0 && xIndex < m_resolution) &&
+			 (yIndex >= 0 && yIndex < m_resolution) &&
+			 (zIndex >= 0 && zIndex < m_resolution));
 
 	col.setValid(false);
 	return 0;

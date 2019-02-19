@@ -294,11 +294,11 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 		col.setPosition(v);
 		col.setNormal(ray.direction().xPositive() ? v3s::constMinusY : v3s::constY);
 		col.setValid();
-        col.setColor(Color::red);
-        auto y = (v.y()-m_minY)/(m_maxY-m_minY);
-        auto z = (v.z()-m_minZ)/(m_maxZ-m_minZ);
+		col.setColor(Color::red);
+		auto y = (v.y() - m_minY) / (m_maxY - m_minY);
+		auto z = (v.z() - m_minZ) / (m_maxZ - m_minZ);
 
-        col.setUV({y,z});
+		col.setUV({z, y});
 		return 1;
 	}
 	v = MU::rayAndYPlane(ray, y);
@@ -309,10 +309,10 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 		col.setNormal(ray.direction().yPositive() ? v3s::constMinusY : v3s::constY);
 		col.setValid();
 		col.setColor(Color::red);
-        auto x = (v.x()-m_minX)/(m_maxX-m_minX);
-        auto z = (v.z()-m_minZ)/(m_maxZ-m_minZ);
+		auto x = (v.x() - m_minX) / (m_maxX - m_minX);
+		auto z = (v.z() - m_minZ) / (m_maxZ - m_minZ);
 
-        col.setUV({x,z});
+		col.setUV({x, z});
 		return 1;
 	}
 	v = MU::rayAndZPlane(ray, z);
@@ -323,10 +323,10 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 		col.setNormal(ray.direction().zPositive() ? v3s::constMinusZ : v3s::constZ);
 		col.setValid();
 		col.setColor(Color::red);
-        auto x = (v.x()-m_minX)/(m_maxX-m_minX);
-        auto y = (v.y()-m_minY)/(m_maxY-m_minY);
+		auto x = (v.x() - m_minX) / (m_maxX - m_minX);
+		auto y = (v.y() - m_minY) / (m_maxY - m_minY);
 
-        col.setUV({x,y});
+		col.setUV({x, y});
 		return 1;
 	}
 

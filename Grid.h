@@ -126,7 +126,7 @@ protected:
 	scalar m_zmin = {0.0};
 	scalar m_zmax = {0.0};
 
-    Geometry *m_visibleVoxelGeo = nullptr;
+	Geometry *m_visibleVoxelGeo = nullptr;
 
 public:
 	///
@@ -190,6 +190,34 @@ public:
 	/// \brief setBoxSize
 	///
 	void setBoxSize();
+
+	std::vector<long> m_xpds;
+	std::vector<long> m_ypds;
+	std::vector<long> m_zpds;
+
+	std::vector<long> m_xnds;
+	std::vector<long> m_ynds;
+	std::vector<long> m_znds;
+
+	void updateCaches()
+	{
+		for (long y = 0; y < m_resolution; y++)
+		{
+			for (long x = 0; x < m_resolution; x++)
+			{
+				long z = 0;
+				auto i = 0ll;
+				do
+				{
+					i = index(x, y, z);
+					z++;
+				} while (!active(i) && z < m_resolution);
+
+				m_xpds.push_back(z);
+			}
+		}
+	}
+
 	///
 	/// \brief updateBB
 	///
@@ -311,7 +339,7 @@ public:
 	/// \param z
 	/// \return
 	///
-	long index(const long x, const long y, const long z) const;
+	long long index(const long x, const long y, const long z) const;
 	///
 	/// \brief neighbourVoxel
 	/// \param ray
@@ -347,7 +375,7 @@ public:
 	/// \param idx
 	/// \return
 	///
-	bool active(long idx) const;
+	bool active(long long idx) const;
 	///
 	////// \brief active
 	////// \param x
@@ -415,7 +443,7 @@ public:
 	/// \param idx
 	/// \param value
 	///
-    void setElement(long long idx, bool value);
+	void setElement(long long idx, bool value);
 	///
 	/// \brief getVoxelPosition
 	/// \param iX
@@ -435,7 +463,7 @@ public:
 	/// \param pos
 	/// \return
 	///
-    long long indexAtPosition(const v3s &pos) const;
+	long long indexAtPosition(const v3s &pos) const;
 	///
 	/// \brief vxAt
 	/// \param idx
@@ -447,7 +475,7 @@ public:
 	/// \param idx
 	/// \return
 	///
-    VoxelData vxAt(const long long idx) const;
+	VoxelData vxAt(const long long idx) const;
 	///
 	/// \brief vxAtPosition
 	/// \param position
@@ -503,7 +531,7 @@ public:
 	/// \param idx
 	/// \return
 	///
-    bool bitInBufferData(const long long idx) const;
+	bool bitInBufferData(const long long idx) const;
 	///
 	/// \brief getComponentsOfIndex
 	/// \param idx
@@ -523,9 +551,9 @@ public:
 	virtual void updateBoundingBox() override;
 	long long legolizeColors();
 	void createBox(const BoundingBox &bb, unsigned char colorIndex);
-    Geometry *getVisibleVoxelGeo() const;
-    void setVisibleVoxelGeo(Geometry *visibleVoxelGeo);
-};
+	Geometry *getVisibleVoxelGeo() const;
+	void setVisibleVoxelGeo(Geometry *visibleVoxelGeo);
+}; // namespace vxCore
 
 /*
  *

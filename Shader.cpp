@@ -198,8 +198,4 @@ Color Lambert::getColor(const Ray &, const Collision &collide) const
 	return ret;
 }
 
-v3s Lambert::getVector(const Collision &collide) const
-{
-	const auto &c = m_diffuse.compute(collide);
-	return v3s(c.r(), c.g(), c.b());
-}
+v3s Lambert::getVector(const Collision &) const { return v3s(0.0, 0.0, 0.0); }

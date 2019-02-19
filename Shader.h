@@ -55,10 +55,6 @@ protected:
 
 	bool m_hasGI = true;
 	bool m_hasReflection = true;
-	///
-	/// \brief m_diffuse
-	///
-	CirclesMap m_diffuse;
 
 public:
 	///
@@ -301,7 +297,7 @@ public:
 	/// \param collide
 	/// \return
 	///
-	virtual v3s getVector(const Collision &collide) const override;
+	virtual v3s getVector(const Collision &) const override;
 	///
 	/// \brief getIlluminatedColor
 	/// \param ray

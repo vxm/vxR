@@ -2,44 +2,24 @@
 
 using namespace vxCore;
 
-Color CirclesMap::compute(const Collision &collision) const
+Color CirclesMap::compute(const Collision &collision, const Color &innerColor,
+						  const Color &outerColor) const
 {
-	Color outColor(Color::white);
+	Color outColor(outerColor);
 
-	auto dst = collision.uv().distance({.5, .5});
+	const auto &uv = collision.uv();
+	auto dst = sqrtf(powf(0.5 - uv.x(), 2.0) +
+					 powf(0.5 - uv.y(), 2.0)); // collision.uv().distance(v2s(0.5,
+											   // 0.5));
 
-	if (m_circle1)
+	if (dst < .35)
 	{
-		if (dst > m_radii[0] && dst < m_radii[1])
-		{
-			outColor.set(collision.color());
-		}
-	}
-
-	if (m_circle2)
-	{
-		if (dst > m_radii[1] && dst < m_radii[2])
-		{
-			outColor.set(Color::orange);
-		}
-	}
-
-	if (m_circle3)
-	{
-		if (dst > m_radii[2] && dst < m_radii[3])
-		{
-			outColor.set(collision.color());
-		}
-	}
-
-	if (m_margin)
-	{
-		if (((collision.u() < m_margn || collision.u() > (1. - m_margn)) ||
-			 (collision.v() < m_margn || collision.v() > (1. - m_margn))))
-		{
-			outColor.set(Color::black);
-		}
+		outColor = innerColor;
 	}
 
 	return outColor;
+}
+
+Color vxCore::CirclesMap::compute(const Collision &collision) const {
+    return Color::white;
 }

@@ -37,7 +37,7 @@ void Scene::build(std::shared_ptr<SceneParser> nodeDB)
 
 	buildGeometries();
 
-    buildGrids();
+	buildGrids();
 
 	buildCylinders();
 
@@ -270,11 +270,12 @@ void Scene::buildGrids()
 		// grid->createRandom(.0003,-0.5);
 
 		grid->createGround(-0.63, 2);
-		grid->createRandom(.5, -0.62);
-		grid->createRandom(.2, -0.60);
-		grid->createRandom(.1, -0.59);
-        grid->legolizeColors();
-        //grid->createBox(BoundingBox(-0.03, -2.3, -0.03, 0.03, 2.1, 0.03), 4);
+		grid->createRandom(.1, -0.62);
+		grid->createRandom(.09, -0.60);
+		grid->createRandom(.03, -0.59);
+		grid->createRandom(.01, -0.57);
+		grid->legolizeColors();
+		// grid->createBox(BoundingBox(-0.03, -2.3, -0.03, 0.03, 2.1, 0.03), 4);
 		// grid->dumpFileInMemory("/home/mario/Downloads/xyzrgb_statuette_1.ply");
 		// grid->createEdges((unsigned char)12u);
 
@@ -489,7 +490,10 @@ void Scene::updateCache()
 
 	m_broadPhase->updateCache();
 
-	// std::cout << " -- End cache computation -- " << std::endl;
+	std::for_each(m_grids.begin(), m_grids.end(),
+				  [](std::shared_ptr<Grid> g) { g->updateCaches(); });
+
+	std::cout << " -- end of scene processing -- " << std::endl;
 }
 
 vxShaderHandle Scene::createShader()

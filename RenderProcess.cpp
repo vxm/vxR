@@ -35,7 +35,7 @@ RenderProcess::RenderProcess(ImagePropertiesHandle &prop, unsigned int samples)
 	: m_properties(prop), m_imageData(prop),
 	  m_contactBuffer(prop->numPixels()), m_samples{samples}
 {
-    setNMaxThreads(14);
+	setNMaxThreads(6);
 }
 
 unsigned int RenderProcess::samples() const { return m_samples; }
@@ -201,7 +201,7 @@ Color RenderProcess::computeReflection(const Ray &ray, const Collision &col,
 		bounces--;
 	}
 
-	reflection = computeEnergyAndColor(reflexRay, refxCollision, 0);
+	reflection = computeEnergyAndColor(reflexRay, refxCollision, bounces);
 
 	return reflection;
 }
@@ -244,7 +244,7 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 
 	Color retColor = Color::zero;
 
-    if (MU::getBoolRand(sh->getDiffuseCoeficent()) || bounces==0)
+	if (MU::getBoolRand(sh->getDiffuseCoeficent()) || bounces == 0)
 	{
 		retColor += baseColor * sh->getLumminance(ray, ref);
 	}
