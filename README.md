@@ -21,8 +21,6 @@ Present:
   Better renders, better program interface.
  
 Future:
-
- std::threads
  
  Further opitmizations.
  
