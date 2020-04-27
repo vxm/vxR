@@ -1,6 +1,10 @@
 # vxR
 vxR is a non real time render engine based on grid acceleration structure.
 
+Check this sample image featuring the Depth of Field: 
+
+  https://drive.google.com/file/d/1jfJt2YT7y5JY8lYSBpWuf-h_S-4QZdX-/view?usp=sharing
+
 History:
 
  A little bit of history is needed to understand the scope of this project. It all started in 2002, I was tasked to investigate and develop subsurface scattering in a shader network which didn't gave me enough access to render data, so I was unable to calculate it. It was this frustrated project that pushed me, or invited me, to create my own render engine.
