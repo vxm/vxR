@@ -36,6 +36,9 @@ class FileUtils : public vxManager
 
 	static std::string removeLastFileOnRoute(std::string &str);
 
+	/// Absolute paths are returned unchanged. Relative paths are joined to path.
+	static std::string resolve(const std::string &filePath);
+
 	static std::string path;
 };
 

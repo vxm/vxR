@@ -79,6 +79,7 @@ set(VXR_SOURCES
 	source/Sphere.cpp
 	source/ConvexGeometry.cpp
 	source/stb_image_impl.cpp
+	source/tinyexr_impl.cpp
 )
 
 add_executable(vxR ${VXR_SOURCES})
@@ -87,9 +88,10 @@ target_include_directories(vxR PRIVATE
 	${CMAKE_SOURCE_DIR}/headers
 	${CMAKE_SOURCE_DIR}/source
 	${CMAKE_SOURCE_DIR}/third_party/stb
+	${CMAKE_SOURCE_DIR}/third_party/tinyexr
 )
 
-target_link_libraries(vxR PRIVATE Threads::Threads)
+target_link_libraries(vxR PRIVATE Threads::Threads z)
 
 target_compile_definitions(vxR PRIVATE
 	$<$<CONFIG:Debug>:_DEBUG>

@@ -365,7 +365,13 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		}
 
 #if !DRAW_OBJECT_BBOX
-		visbl->throwRay(ray, temp);
+		// throwRay returns 0 for a miss. Lights do that without clearing
+		// the valid flag the bounding-box test just set, so a light's
+		// 2-unit box was accepted as a surface and shaded as noise.
+		if (!visbl->throwRay(ray, temp))
+		{
+			continue;
+		}
 #endif
 		auto s = temp.position().distance(ray.origin());
 

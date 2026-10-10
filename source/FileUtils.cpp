@@ -56,6 +56,16 @@ std::string FileUtils::makeUnique(const std::string &fileName, scalar suffix)
 	return unique;
 }
 
+std::string FileUtils::resolve(const std::string &filePath)
+{
+	if (!filePath.empty() && filePath.front() == '/')
+	{
+		return filePath;
+	}
+
+	return path + filePath;
+}
+
 std::string FileUtils::removeLastFileOnRoute(std::string &str)
 {
 	std::string k("/");

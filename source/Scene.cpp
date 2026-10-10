@@ -69,7 +69,7 @@ void Scene::buildImages()
 		auto &&gain = node->getScalar("gain");
 		auto &&gamma = node->getScalar("gamma");
 
-		auto img = createImage(FileUtils::path + node->getString("imagePath"), gain,
+		auto img = createImage(FileUtils::resolve(node->getString("imagePath")), gain,
 							   gamma);
 
 		img->load();
@@ -84,7 +84,9 @@ void Scene::buildLights()
 	{
 		auto direct = createDirectLight();
 		direct->setIntensity(node->getScalar("intensity"));
-		direct->setColor(Color::lookup256(node->getColor("color"s)));
+		// getColor() already scales 0..255 down to 0..1. lookup256()
+		// would divide by 255 again and leave the sun nearly black.
+		direct->setColor(node->getColor("color"s));
 		direct->setSamples(node->getInt("samples"s));
 
 		direct->setOrientation(node->getVector3d("orientation"s));
@@ -97,7 +99,7 @@ void Scene::buildLights()
 
 	for (const auto &node : m_nodeDB->getNodesByType("vxIBLight"))
 	{
-		auto env = createIBLight(FileUtils::path + node->getString("filePath"));
+		auto env = createIBLight(FileUtils::resolve(node->getString("filePath")));
 		env->setIntensity(node->getScalar("intensity"));
 		env->setColor(Color::lookup256(node->getColor("color")));
 
@@ -250,7 +252,7 @@ void Scene::buildGrids()
 
 		for (const auto &nodeGeo : m_nodeDB->getNodesByType("vxGridGeometry"))
 		{
-			const auto path = FileUtils::path + nodeGeo->getString("filePath");
+			const auto path = FileUtils::resolve(nodeGeo->getString("filePath"));
 			const auto transform = nodeGeo->getMatrix("transform");
 
 			auto grid_geo = std::make_shared<TriangleMesh>();
@@ -414,7 +416,7 @@ void Scene::buildGeometries()
 {
 	for (const auto &node : m_nodeDB->getNodesByType("vxGeometry"))
 	{
-		const auto path = FileUtils::path + node->getString("filePath");
+		const auto path = FileUtils::resolve(node->getString("filePath"));
 
 		const auto transform = node->getMatrix("transform");
 
@@ -629,7 +631,7 @@ ImageHandle Scene::getImage(const vxNodeHandle &node)
 		std::cerr << "Node " << node->name() << " is not an image" << std::endl;
 	}
 
-	auto path = FileUtils::path + node->getString("imagePath");
+	auto path = FileUtils::resolve(node->getString("imagePath"));
 	auto gain = node->getScalar("gain");
 	auto gamma = node->getScalar("gamma");
 
