@@ -202,7 +202,7 @@ public:
 	/// \param col
 	/// \return
 	///
-	Color computeGI(const Collision &col, unsigned int bounces);
+	Color computeGI(const Ray &ray, const Collision &col, unsigned int bounces);
 	///
 	/// \brief getShader
 	/// \param col

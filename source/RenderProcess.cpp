@@ -206,15 +206,30 @@ Color RenderProcess::computeReflection(const Ray &ray, const Collision &col,
 	return reflection;
 }
 
-Color RenderProcess::computeGI(const Collision &col, unsigned int bounces)
+Color RenderProcess::computeGI(const Ray &ray, const Collision &col,
+							   unsigned int bounces)
 {
-	auto r = MU::getHollowHemisphereRand(1.0, col.normal());
+	// Use the normal on the side the incoming ray arrives from, so a mesh
+	// with inconsistent winding still gathers light from outside.
+	auto n = col.normal().unit();
+	if (n.dot(ray.direction()) > 0.0)
+	{
+		n = n.inverted();
+	}
 
-	auto p = col.position() + col.normal().small();
+	// Cosine weighted direction in the hemisphere around n: a point on the
+	// unit sphere tangent to the surface, offset by the normal. The cosine
+	// term and the 1/pi of a diffuse surface cancel with the pdf, so the
+	// sampled radiance is the irradiance estimate as is.
+	auto dir = n + MU::getHollowSphereRand(1.0);
+	if (dir.length() < scalar(1e-4))
+	{
+		dir = n;
+	}
 
-	const Ray giRay(p, r.inverted(), VisionType::kOpaque);
+	const auto p = col.position() + n.small();
 
-	auto ratio = cos(giRay.direction().angle(col.normal()));
+	const Ray giRay(p, dir.unit(), VisionType::kOpaque);
 
 	Collision nextRound = col;
 
@@ -223,17 +238,28 @@ Color RenderProcess::computeGI(const Collision &col, unsigned int bounces)
 		bounces--;
 	}
 
-	Color hitColor = computeEnergyAndColor(giRay, nextRound, bounces);
-
-	Color globalIlm = hitColor * ratio;
-
-	return globalIlm;
+	return computeEnergyAndColor(giRay, nextRound, bounces);
 }
 
 Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 										   unsigned int bounces)
 {
 	m_scene->throwRay(ray, col);
+
+	// A ray that misses every surface takes its light from the dome (light
+	// image, with the dome intensity and sample clamp applied). Shading
+	// first would use whatever hit data the collision still holds. The
+	// camera loop replaces primary misses with the visible environment
+	// afterwards; secondary rays keep this light sample.
+	if (!col.isValid())
+	{
+		if (m_scene->domeComputeLight(ray, col))
+		{
+			return col.color();
+		}
+
+		return Color::zero;
+	}
 
 	Collision ref = col;
 	Collision ref2 = col;
@@ -251,13 +277,6 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 
 	if (bounces > 0)
 	{
-		if (!col.isValid())
-		{
-			m_scene->domeComputeLight(ray, col);
-			retColor += col.color();
-			return retColor;
-		}
-
 		if (MU::getBoolRand(sh->getReflectionCoefficent()))
 		{
 			retColor += baseColor * computeReflection(ray, ref, bounces);
@@ -265,7 +284,7 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 
 		if (MU::getBoolRand(sh->getGiCoeficent()))
 		{
-			retColor += baseColor * computeGI(ref2, bounces);
+			retColor += baseColor * computeGI(ray, ref2, bounces);
 		}
 	}
 

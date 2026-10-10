@@ -298,6 +298,19 @@ void Scene::buildDomes()
 
 		auto dome = createDome(imageNodeName, imageLightNode);
 		dome->setRadius(node->getScalar("radius"));
+
+		// Optional attributes, they keep the neutral default when missing.
+		for (const auto &attr : node->attributes())
+		{
+			if (attr.first == "intensity")
+			{
+				dome->setIntensity(node->getScalar("intensity"));
+			}
+			else if (attr.first == "lightClamp")
+			{
+				dome->setLightClamp(node->getScalar("lightClamp"));
+			}
+		}
 		node->bind(dome);
 	}
 }
@@ -326,8 +339,8 @@ void Scene::buildPlanes()
 		}
 		auto plane = createPlane(planeType);
 
-		// geometry color.
-		plane->setColor(Color::lookup256(node->getColor("color")));
+		// getColor() is already 0..1; lookup256() would crush the ground to black.
+		plane->setColor(node->getColor("color"));
 
 		plane->setPointA(node->getVector3d("pointA"));
 		plane->setPointB(node->getVector3d("pointB"));
@@ -761,18 +774,44 @@ int Scene::throwRay(const Ray &ray, Collision &collide) const
 	if (m_broadPhase->throwRay(ray, collide))
 	{
 		collide.setValid(true);
-
-		return 1;
 	}
 
-	collide.setValid(false);
+	for (const auto &plane : m_planes)
+	{
+		Collision planeHit;
+		if (!plane->throwRay(ray, planeHit))
+		{
+			continue;
+		}
 
-	return 0;
+		const auto planeDist = planeHit.position().distance(ray.origin());
+		if (!collide.isValid() ||
+			planeDist < collide.position().distance(ray.origin()))
+		{
+			collide = planeHit;
+			collide.setValid(true);
+		}
+	}
+
+	return collide.isValid() ? 1 : 0;
 }
 
 bool Scene::hasCollision(const Ray &ray) const
 {
-	return m_broadPhase->hasCollision(ray);
+	if (m_broadPhase->hasCollision(ray))
+	{
+		return true;
+	}
+
+	for (const auto &plane : m_planes)
+	{
+		if (plane->hasCollision(ray))
+		{
+			return true;
+		}
+	}
+
+	return false;
 	/*Collision collide;
 	if (m_broadPhase->throwRay(ray, collide))
 	{
