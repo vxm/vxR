@@ -1,5 +1,5 @@
 #include "Image.h"
-#include <QImage>
+#include "stb_image.h"
 
 using namespace vxCore;
 
@@ -20,7 +20,6 @@ bool Image::operator==(const Image &other) const
 Image::Image(const std::string &path) : m_path(path)
 {
 	// TODO:Constructor very populated.
-	// TODO:stolen QImage object, replace with non QT functions. Please soon.
 	load();
 }
 
@@ -32,9 +31,12 @@ bool Image::load()
 		return false;
 	}
 
-	QImage img;
-	bool envSuccess = img.load(m_path.c_str());
-	if (!envSuccess)
+	int width = 0;
+	int height = 0;
+	int channels = 0;
+	unsigned char *pixels =
+		stbi_load(m_path.c_str(), &width, &height, &channels, 4);
+	if (pixels == nullptr)
 	{
 		std::cout << "Could not load image '" << m_path << "' for environment"
 				  << std::endl;
@@ -43,12 +45,13 @@ bool Image::load()
 
 	std::cout << "Loaded image '" << m_path << "' for environment" << std::endl;
 
-	m_prop = std::make_shared<ImageProperties>(img.width(), img.height());
+	m_prop = std::make_shared<ImageProperties>(width, height);
 
 	m_prop->setFormat(ImageProperties::ImgFormat::k8);
 	m_data.setProperties(m_prop);
 	m_data.initialise();
-	m_data.copyData(img.bits());
+	m_data.copyData(pixels);
+	stbi_image_free(pixels);
 	return true;
 }
 
@@ -58,8 +61,8 @@ Color Image::compute(const Collision &collision) const
 	{
 		auto px = m_data.get(v2s(1.0 - collision.v(), collision.u()));
 
-		Color c = {px[2] / scalar(255.0), px[1] / scalar(255.0),
-				   px[0] / scalar(255.0), px[3] / scalar(255.0)};
+		Color c = {px[0] / scalar(255.0), px[1] / scalar(255.0),
+				   px[2] / scalar(255.0), px[3] / scalar(255.0)};
 		c.applyCurve(gamma(), gain());
 
 		return c;
