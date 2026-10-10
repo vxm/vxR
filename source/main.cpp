@@ -1,5 +1,3 @@
-#include <QApplication>
-#include <QImage>
 #include <chrono>
 #include <sstream>
 
@@ -11,14 +9,14 @@
 #include "MathUtils.h"
 #include "MathUtilsUnitTest.h"
 #include "NonSequentalPool.h"
-#include "RenderMain.h"
 #include "RenderProcess.h"
 #include "SceneParser.h"
 #include "TimeUtils.h"
 #include "Vector.h"
 #include "renderPresset.h"
+#include "stb_image_write.h"
 
-static const std::string baseName("image.0000001.tif");
+static const std::string baseName("image.0000001.jpg");
 using namespace std::string_literals;
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 using render = vxCompute::RenderProcess;
@@ -128,16 +126,20 @@ int executeRenderProcess(int argc, char *argv[])
 			// storing an image from the buffer obtained.
 			if (bff != nullptr)
 			{
-				QImage img(bff, renderProperties->rx(), renderProperties->ry(),
-						   QImage::Format_RGBA8888);
-
 				std::string fileName = FileUtils::makeUnique(baseName, 0.0);
 
 				std::cout << "Opening file: "s << fileName << " to write."s
 						  << std::endl;
 
 				// TODO: investigate other formats and resolution limits
-				img.save(QString(fileName.c_str()), "TIFF", 100);
+				const int written =
+					stbi_write_jpg(fileName.c_str(), renderProperties->rx(),
+								   renderProperties->ry(), 4, bff, 100);
+				if (written == 0)
+				{
+					std::cout << "Could not write file: "s << fileName << std::endl;
+					return 1;
+				}
 
 				std::cout << "\t\tFile saved :"s << fileName << std::endl;
 
