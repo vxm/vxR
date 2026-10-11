@@ -1,10 +1,15 @@
+#include <atomic>
 #include <cassert>
+#include <cstdlib>
+#include <cstring>
 #include <fstream>
+#include <limits>
 #include <mutex>
 
 #include "Cylinder.h"
 #include "Grid.h"
 #include "MathUtils.h"
+#include "PerfStats.h"
 
 #include "CirclesMap.h"
 
@@ -14,6 +19,41 @@ using namespace vxCore;
 
 #define DBL_EPSILON 1e-12
 #define DRAWBBOX 0
+
+namespace
+{
+// Scratch objects of the voxel traversal, one per thread. Both traversals use
+// the same ones: the legacy box test leaves uv and color behind when the ray
+// starts inside a voxel, and the color of that hit depends on them.
+thread_local VoxelInfo tl_voxel;
+thread_local Collision tl_c;
+thread_local BoundingBox tl_box;
+thread_local CirclesMap tl_cm;
+
+// -1 means "not decided yet, ask the environment".
+std::atomic<int> g_traversal{-1};
+
+Grid::Traversal currentTraversal()
+{
+	int mode = g_traversal.load(std::memory_order_relaxed);
+	if (mode < 0)
+	{
+		const char *env = std::getenv("VXR_GRID");
+		mode = (env && std::strcmp(env, "ref") == 0)
+				   ? static_cast<int>(Grid::Traversal::kReference)
+				   : static_cast<int>(Grid::Traversal::kAuto);
+		g_traversal.store(mode, std::memory_order_relaxed);
+	}
+	return static_cast<Grid::Traversal>(mode);
+}
+} // namespace
+
+void Grid::setTraversal(Traversal mode)
+{
+	g_traversal.store(static_cast<int>(mode), std::memory_order_relaxed);
+}
+
+Grid::Traversal Grid::traversal() { return currentTraversal(); }
 
 Geometry *Grid::getVisibleVoxelGeo() const { return m_visibleVoxelGeo; }
 
@@ -55,6 +95,7 @@ void Grid::updateBB() { m_bb->set(m_position, m_size); }
 
 void Grid::createGridData(const long resolution)
 {
+	m_occValid = false;
 	m_resolution = resolution;
 	m_c_resXres = resolution * resolution;
 	m_c_resXresXres = m_c_resXres * resolution;
@@ -111,6 +152,7 @@ void Grid::createDiagonals(unsigned char colorIndex)
 
 void Grid::dumpFileInMemory(const std::string &fileName)
 {
+	m_occValid = false;
 	std::ifstream file(fileName, std::ios::binary);
 	file.seekg(0, std::ios::end);
 	std::streamsize size = file.tellg();
@@ -134,6 +176,7 @@ void Grid::dumpFileInMemory(const std::string &fileName)
 
 void Grid::dumpNumericTypeInMemory()
 {
+	m_occValid = false;
 	using numType = int;
 	auto p = (void *)&m_data[0];
 	new (p) numType(std::numeric_limits<numType>::max());
@@ -176,6 +219,7 @@ unsigned int Grid::neighboursAlive(long long idx)
 
 long long Grid::legolizeColors()
 {
+	m_occValid = false;
 	std::vector<Color> colors;
 
 	int k = 0;
@@ -201,6 +245,7 @@ long long Grid::legolizeColors()
 
 long long Grid::playGameOfLife()
 {
+	m_occValid = false;
 	long long idx{0ull};
 	long long newLife{0ul};
 
@@ -257,6 +302,7 @@ void Grid::markCellForGenesis(VoxelData &cell)
 
 long long Grid::killTheDead()
 {
+	m_occValid = false;
 	long long deadCells{0ull};
 	for (auto &d : m_data)
 	{
@@ -300,6 +346,7 @@ void Grid::createCorners(unsigned char colorIndex)
 
 void Grid::createGround(scalar y_threshold, unsigned char colorIndex)
 {
+	m_occValid = false;
 	int i = 0;
 	for (auto &it : m_data)
 	{
@@ -352,6 +399,7 @@ void Grid::createEdges(unsigned char colorIndex)
 
 void Grid::fill(unsigned char colorIndex)
 {
+	m_occValid = false;
 	for (long i = 0; i < m_data.size(); i++)
 	{
 		vxAt(i).setByte(colorIndex);
@@ -372,6 +420,7 @@ bool Grid::getRandomBoolean(scalar ratio)
 
 void Grid::createRandom(scalar ratio, scalar y_threshold)
 {
+	m_occValid = false;
 	int i = 0;
 	for (auto &it : m_data)
 	{
@@ -387,6 +436,7 @@ void Grid::createRandom(scalar ratio, scalar y_threshold)
 
 void Grid::addGeometry(const vxTriangleMeshHandle &geo)
 {
+	m_occValid = false;
 	auto pi = reinterpret_cast<std::uintptr_t>(geo.get());
 	pi %= 15;
 	for (auto &&tri : geo->triangles())
@@ -459,6 +509,7 @@ long long Grid::index(const long x, const long y, const long z) const
 
 void Grid::initialize(bool value)
 {
+	m_occValid = false;
 	if (value)
 	{
 		for (long i = 0; i < m_data.size(); i++)
@@ -479,9 +530,10 @@ long Grid::numActiveVoxels()
 {
 	long av{0};
 
-	for (long i = 0; i < m_data.size(); i++)
+	// Reads m_data directly: the non const vxAt() drops the occupancy grids.
+	for (const auto &d : m_data)
 	{
-		if (vxAt(i).active())
+		if (d.active())
 			av++;
 	}
 
@@ -628,7 +680,12 @@ VoxelData Grid::vxAt(const long iX, const long iY, const long iZ) const
 	return vxAt(index(iX, iY, iZ));
 }
 
-VoxelData &Grid::vxAt(const long long idx) { return m_data[idx]; }
+VoxelData &Grid::vxAt(const long long idx)
+{
+	// The caller may write through the reference.
+	m_occValid = false;
+	return m_data[idx];
+}
 
 VoxelData Grid::vxAt(const long long idx) const { return m_data[idx]; }
 
@@ -720,21 +777,21 @@ bool Grid::throwRay(const Ray &ray) const
 #endif
 }
 
-int Grid::throwRay(const Ray &ray, Collision &col) const
+int Grid::throwRayReference(const Ray &ray, Collision &col) const
 {
 	///////////// THis is const and could be stored per thread and ray ////
 
-	thread_local VoxelInfo voxel;
+	PERF_COUNT(kGridCast);
+	auto &voxel = tl_voxel;
 	voxel.size = m_c_voxelSize;
 
-	thread_local Collision c;
-	thread_local BoundingBox box; // geometries forthread_local VoxelInfo voxel;
-								  // voxels
+	auto &c = tl_c;
+	auto &box = tl_box; // geometries for voxels
 	const auto &d = ray.direction();
 	const auto velX = d.xPositive() ? 1 : -1;
 	const auto velY = d.yPositive() ? 1 : -1;
 	const auto velZ = d.zPositive() ? 1 : -1;
-	thread_local CirclesMap cm;
+	auto &cm = tl_cm;
 	///////////////////////////////////////////////////////////////////////
 
 	auto sp = m_bb->closestPointInside(col.position(), m_c_halfVoxelSize / 10.0);
@@ -755,6 +812,7 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 
 	do
 	{
+		PERF_COUNT(kGridVoxelStep);
 		voxel.index = index(xIndex, yIndex, zIndex);
 		voxel.data = vxAt(voxel.index);
 
@@ -762,9 +820,12 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 		{
 			box.set(getVoxelPosition(xIndex, yIndex, zIndex), voxel.size);
 
+			PERF_COUNT(kGridVoxelBoxTest);
 			if (box.throwRay(ray, c))
 			{
+				const auto maxDistance = col.maxDistance();
 				col = c;
+				col.setMaxDistance(maxDistance);
 				auto color1 = Color::indexColor(voxel.data.byte() % 22);
 				auto color2 = Color::indexColor(
 					(voxel.data.byte() + yIndex + xIndex + zIndex) % 22);
@@ -785,9 +846,12 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 				box.setMinY(neighbour.position.y() - m_c_voxelSize / 2.0);
 				box.setMaxY(neighbour.position.y() - m_c_voxelSize / 4.0);
 
+				PERF_COUNT(kGridVoxelBoxTest);
 				if (box.throwRay(ray, c))
 				{
+					const auto maxDistance = col.maxDistance();
 					col = c;
+					col.setMaxDistance(maxDistance);
 					auto color = Color::indexColor(neighbour.data.byte() % 22);
 					col.setColor(color);
 					col.setValid(true);
@@ -830,6 +894,275 @@ int Grid::throwRay(const Ray &ray, Collision &col) const
 	} while ((xIndex >= 0 && xIndex < m_resolution) &&
 			 (yIndex >= 0 && yIndex < m_resolution) &&
 			 (zIndex >= 0 && zIndex < m_resolution));
+
+	col.setValid(false);
+	return 0;
+}
+
+void Grid::updateCaches() { rebuildOccupancy(); }
+
+void Grid::rebuildOccupancy()
+{
+	const long r = m_resolution;
+	const long c1 = (r + 7) / 8;
+	// The second level only pays from 128 voxels per side on.
+	const long c2 = r >= 128 ? (c1 + 7) / 8 : 0;
+
+	m_occCells1 = c1;
+	m_occCells2 = c2;
+	m_occ1.assign(static_cast<std::size_t>(c1) * c1 * c1, 0);
+	m_occ2.assign(static_cast<std::size_t>(c2) * c2 * c2, 0);
+
+	const VoxelData *data = m_data.data();
+	for (long z = 0; z < r; z++)
+	{
+		for (long y = 0; y < r; y++)
+		{
+			const VoxelData *row = data + (z * r + y) * r;
+			unsigned char *cellRow = &m_occ1[((z >> 3) * c1 + (y >> 3)) * c1];
+			// The row of cells one layer up, when this is the last voxel layer
+			// of its cell and there is one more layer: an empty voxel on top
+			// of an active one can be hit, so those cells are not empty.
+			unsigned char *upRow = nullptr;
+			if ((y & 7) == 7 && y + 1 < r)
+			{
+				upRow = &m_occ1[((z >> 3) * c1 + ((y + 1) >> 3)) * c1];
+			}
+
+			for (long xc = 0; xc < c1; xc++)
+			{
+				const long x0 = xc * 8;
+				const long x1 = std::min(x0 + 8, r);
+				unsigned char any = 0;
+				for (long x = x0; x < x1; x++)
+				{
+					any |= row[x].c;
+				}
+				if (any)
+				{
+					cellRow[xc] = 1;
+					if (upRow)
+					{
+						upRow[xc] = 1;
+					}
+				}
+			}
+		}
+	}
+
+	if (c2)
+	{
+		for (long cz = 0; cz < c1; cz++)
+		{
+			for (long cy = 0; cy < c1; cy++)
+			{
+				for (long cx = 0; cx < c1; cx++)
+				{
+					if (m_occ1[(cz * c1 + cy) * c1 + cx])
+					{
+						m_occ2[(((cz >> 3) * c2) + (cy >> 3)) * c2 + (cx >> 3)] = 1;
+					}
+				}
+			}
+		}
+	}
+
+	m_occValid = true;
+}
+
+int Grid::throwRay(const Ray &ray, Collision &col) const
+{
+	if (!m_occValid || currentTraversal() == Traversal::kReference)
+	{
+		return throwRayReference(ray, col);
+	}
+
+	// Entry and exit of the ray in the grid box. It does not use what the box
+	// test left in col. A ray the legacy box test accepted but this one does
+	// not (it only touches an edge) is left to the reference.
+	const RayInv ri(ray);
+	scalar tEnter, tExit;
+	if (!m_bb->intersect(ri, tEnter, tExit))
+	{
+		return throwRayReference(ray, col);
+	}
+
+	PERF_COUNT(kGridCast);
+
+	auto &c = tl_c;
+	auto &box = tl_box;
+	auto &cm = tl_cm;
+
+	const long res = m_resolution;
+	const scalar vs = m_c_voxelSize;
+	const scalar invVs = scalar(1.0) / vs;
+	const scalar mn[3] = {m_bb->minX(), m_bb->minY(), m_bb->minZ()};
+	const scalar o[3] = {ri.ox, ri.oy, ri.oz};
+	const scalar inv[3] = {ri.ix, ri.iy, ri.iz};
+	const int neg[3] = {ri.sx, ri.sy, ri.sz};
+	const v3s dir = ray.direction();
+	const scalar d[3] = {dir.x(), dir.y(), dir.z()};
+
+	// Amanatides and Woo, in the units of the ray direction. idx is the voxel,
+	// tMax the parameter at which the ray leaves it along each axis.
+	long idx[3];
+	scalar tMax[3];
+	scalar tDelta[3];
+	long step[3];
+
+	const auto voxelOf = [&](scalar p, int a) {
+		const long i = static_cast<long>(std::floor((p - mn[a]) * invVs));
+		return i < 0 ? 0 : (i >= res ? res - 1 : i);
+	};
+	const auto reseed = [&](int a) {
+		tMax[a] = (mn[a] + (idx[a] + (neg[a] ? 0 : 1)) * vs - o[a]) * inv[a];
+	};
+
+	for (int a = 0; a < 3; a++)
+	{
+		idx[a] = voxelOf(o[a] + d[a] * tEnter, a);
+		step[a] = neg[a] ? -1 : 1;
+		tDelta[a] = vs * (inv[a] < 0.0 ? -inv[a] : inv[a]);
+		reseed(a);
+	}
+
+	// Leaves the cell of side 2^shift voxels that holds idx, at the point where
+	// the ray crosses its boundary. False when that is outside of the grid.
+	const auto skipCell = [&](int shift) {
+		const long side = 1L << shift;
+		long cs[3];
+		scalar tOut = std::numeric_limits<scalar>::max();
+		int ax = 0;
+		for (int a = 0; a < 3; a++)
+		{
+			cs[a] = (idx[a] >> shift) << shift;
+			const long bound = neg[a] ? cs[a] : cs[a] + side;
+			const scalar t = (mn[a] + bound * vs - o[a]) * inv[a];
+			if (t < tOut)
+			{
+				tOut = t;
+				ax = a;
+			}
+		}
+
+		const long next = neg[ax] ? cs[ax] - 1 : cs[ax] + side;
+		if (next < 0 || next >= res)
+		{
+			return false;
+		}
+		for (int a = 0; a < 3; a++)
+		{
+			if (a == ax)
+			{
+				idx[a] = next;
+				continue;
+			}
+			// the other two stay inside the cell they were in
+			long i = voxelOf(o[a] + d[a] * tOut, a);
+			i = i < cs[a] ? cs[a] : (i > cs[a] + side - 1 ? cs[a] + side - 1 : i);
+			idx[a] = i < res ? i : res - 1;
+		}
+		for (int a = 0; a < 3; a++)
+		{
+			reseed(a);
+		}
+		return true;
+	};
+
+	for (;;)
+	{
+		if (m_occCells2)
+		{
+			const long cell =
+				((idx[2] >> 6) * m_occCells2 + (idx[1] >> 6)) * m_occCells2 +
+				(idx[0] >> 6);
+			if (!m_occ2[cell])
+			{
+				PERF_COUNT(kGridSkipL2);
+				if (!skipCell(6))
+				{
+					break;
+				}
+				continue;
+			}
+		}
+
+		const long cell1 =
+			((idx[2] >> 3) * m_occCells1 + (idx[1] >> 3)) * m_occCells1 +
+			(idx[0] >> 3);
+		if (!m_occ1[cell1])
+		{
+			PERF_COUNT(kGridSkipL1);
+			if (!skipCell(3))
+			{
+				break;
+			}
+			continue;
+		}
+
+		PERF_COUNT(kGridVoxelStep);
+		const long xIndex = idx[0];
+		const long yIndex = idx[1];
+		const long zIndex = idx[2];
+		const long long vi = index(xIndex, yIndex, zIndex);
+		const VoxelData data = m_data[vi];
+
+		if (data.active())
+		{
+			box.set(getVoxelPosition(xIndex, yIndex, zIndex), vs);
+
+			PERF_COUNT(kGridVoxelBoxTest);
+			if (box.throwRay(ray, c))
+			{
+				const auto maxDistance = col.maxDistance();
+				col = c;
+				col.setMaxDistance(maxDistance);
+				auto color1 = Color::indexColor(data.byte() % 22);
+				auto color2 = Color::indexColor(
+					(data.byte() + yIndex + xIndex + zIndex) % 22);
+				col.setColor(cm.compute(c, color1, color2));
+				col.setValid(true);
+				return 1;
+			}
+		}
+		else if (yIndex > 0)
+		{
+			// Empty voxel on top of an active one: a thin slab in the bottom of
+			// it is hit. The occupancy grids already count these voxels.
+			const VoxelData below = m_data[vi - res];
+			if (below.active())
+			{
+				const v3s position = getVoxelPosition(xIndex, yIndex, zIndex);
+
+				box.set(position, vs / 2.0);
+				box.setMinY(position.y() - vs / 2.0);
+				box.setMaxY(position.y() - vs / 4.0);
+
+				PERF_COUNT(kGridVoxelBoxTest);
+				if (box.throwRay(ray, c))
+				{
+					const auto maxDistance = col.maxDistance();
+					col = c;
+					col.setMaxDistance(maxDistance);
+					auto color = Color::indexColor(below.byte() % 22);
+					col.setColor(color);
+					col.setValid(true);
+					return 1;
+				}
+			}
+		}
+
+		// next voxel along the ray
+		const int ax = (tMax[0] < tMax[1])
+						   ? (tMax[0] < tMax[2] ? 0 : 2)
+						   : (tMax[1] < tMax[2] ? 1 : 2);
+		idx[ax] += step[ax];
+		if (idx[ax] < 0 || idx[ax] >= res)
+		{
+			break;
+		}
+		tMax[ax] += tDelta[ax];
+	}
 
 	col.setValid(false);
 	return 0;

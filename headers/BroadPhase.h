@@ -1,5 +1,6 @@
 #ifndef VXBROADPHASE_H
 #define VXBROADPHASE_H
+#include "AccelStructure.h"
 #include "Ray.h"
 #include "Collision.h"
 #include "Vector.h"
@@ -19,7 +20,7 @@ struct bpSearchResult
 	VisibleHandleArrayRef geoRefs;
 };
 
-class BroadPhase
+class BroadPhase : public AccelStructure
 {
 	std::vector<VisibleHandle> m_visibles;
 	BoundingBoxHandle m_bb;
@@ -37,7 +38,13 @@ public:
 	/// \brief addVisible
 	/// \param geo
 	///adds a Visible handle to be viewed by broadphase
-	void addVisible(VisibleHandle vis);
+	void addVisible(VisibleHandle vis) override;
+
+	const char *name() const override { return "broadphase"; }
+	const std::vector<VisibleHandle> &visibles() const override
+	{
+		return m_visibles;
+	}
 	
 	BoundingBoxHandle closestBox(const v3s &p) const;
 	
@@ -46,8 +53,8 @@ public:
 	
 	//renderable interface
 	bool throwRay(const Ray &ray) const;
-	int throwRay(const Ray &ray, Collision &collide) const;
-	bool hasCollision(const Ray &ray) const;
+	int throwRay(const Ray &ray, Collision &collide) const override;
+	bool hasCollision(const Ray &ray) const override;
 	
 	
 public:
@@ -69,7 +76,7 @@ public:
 
 	std::vector<bpSearchResult> m_members;
 
-	void updateCache();
+	void updateCache() override;
 	unsigned long index(unsigned int a,
 						unsigned int b,
 						unsigned int c) const;

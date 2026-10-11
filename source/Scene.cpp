@@ -3,10 +3,13 @@
 
 #include <cassert>
 #include <future>
+#include <limits>
+#include <stdexcept>
 #include <thread>
 
 #include "BroadPhase.h"
 #include "Light.h"
+#include "PerfStats.h"
 #include "Scene.h"
 
 namespace vxCore
@@ -14,9 +17,14 @@ namespace vxCore
 
 class Scene;
 
-Scene::Scene(ImagePropertiesHandle prop) : m_properties(std::move(prop))
+Scene::Scene(ImagePropertiesHandle prop, const std::string &accelName)
+	: m_properties(std::move(prop))
 {
-	m_broadPhase = std::make_unique<BroadPhase>();
+	m_accel = AccelStructure::create(accelName);
+	if (!m_accel)
+	{
+		throw std::invalid_argument("unknown acceleration structure: " + accelName);
+	}
 }
 
 void Scene::build(std::shared_ptr<SceneParser> nodeDB)
@@ -69,7 +77,7 @@ void Scene::buildImages()
 		auto &&gain = node->getScalar("gain");
 		auto &&gamma = node->getScalar("gamma");
 
-		auto img = createImage(FileUtils::path + node->getString("imagePath"), gain,
+		auto img = createImage(FileUtils::resolve(node->getString("imagePath")), gain,
 							   gamma);
 
 		img->load();
@@ -84,7 +92,9 @@ void Scene::buildLights()
 	{
 		auto direct = createDirectLight();
 		direct->setIntensity(node->getScalar("intensity"));
-		direct->setColor(Color::lookup256(node->getColor("color"s)));
+		// getColor() already scales 0..255 down to 0..1. lookup256()
+		// would divide by 255 again and leave the sun nearly black.
+		direct->setColor(node->getColor("color"s));
 		direct->setSamples(node->getInt("samples"s));
 
 		direct->setOrientation(node->getVector3d("orientation"s));
@@ -97,7 +107,7 @@ void Scene::buildLights()
 
 	for (const auto &node : m_nodeDB->getNodesByType("vxIBLight"))
 	{
-		auto env = createIBLight(FileUtils::path + node->getString("filePath"));
+		auto env = createIBLight(FileUtils::resolve(node->getString("filePath")));
 		env->setIntensity(node->getScalar("intensity"));
 		env->setColor(Color::lookup256(node->getColor("color")));
 
@@ -246,11 +256,11 @@ void Scene::buildGrids()
 		grid->setColor(color);
 		m_grids.emplace_back(grid);
 		m_geometries.emplace_back(grid);
-		m_broadPhase->addVisible(grid);
+		m_accel->addVisible(grid);
 
 		for (const auto &nodeGeo : m_nodeDB->getNodesByType("vxGridGeometry"))
 		{
-			const auto path = FileUtils::path + nodeGeo->getString("filePath");
+			const auto path = FileUtils::resolve(nodeGeo->getString("filePath"));
 			const auto transform = nodeGeo->getMatrix("transform");
 
 			auto grid_geo = std::make_shared<TriangleMesh>();
@@ -296,6 +306,19 @@ void Scene::buildDomes()
 
 		auto dome = createDome(imageNodeName, imageLightNode);
 		dome->setRadius(node->getScalar("radius"));
+
+		// Optional attributes, they keep the neutral default when missing.
+		for (const auto &attr : node->attributes())
+		{
+			if (attr.first == "intensity")
+			{
+				dome->setIntensity(node->getScalar("intensity"));
+			}
+			else if (attr.first == "lightClamp")
+			{
+				dome->setLightClamp(node->getScalar("lightClamp"));
+			}
+		}
 		node->bind(dome);
 	}
 }
@@ -324,8 +347,8 @@ void Scene::buildPlanes()
 		}
 		auto plane = createPlane(planeType);
 
-		// geometry color.
-		plane->setColor(Color::lookup256(node->getColor("color")));
+		// getColor() is already 0..1; lookup256() would crush the ground to black.
+		plane->setColor(node->getColor("color"));
 
 		plane->setPointA(node->getVector3d("pointA"));
 		plane->setPointB(node->getVector3d("pointB"));
@@ -370,7 +393,7 @@ void Scene::buildCylinders()
 
 		cylinderGeo->boundingBox()->applyTransform(transform);
 		m_geometries.emplace_back(cylinderGeo);
-		m_broadPhase->addVisible(cylinderGeo);
+		m_accel->addVisible(cylinderGeo);
 
 		node->bind(cylinderGeo);
 	}
@@ -404,7 +427,7 @@ void Scene::buildSpheres()
 		sphereGeo->setRadius(radius);
 
 		m_geometries.emplace_back(sphereGeo);
-		m_broadPhase->addVisible(sphereGeo);
+		m_accel->addVisible(sphereGeo);
 
 		node->bind(sphereGeo);
 	}
@@ -414,7 +437,7 @@ void Scene::buildGeometries()
 {
 	for (const auto &node : m_nodeDB->getNodesByType("vxGeometry"))
 	{
-		const auto path = FileUtils::path + node->getString("filePath");
+		const auto path = FileUtils::resolve(node->getString("filePath"));
 
 		const auto transform = node->getMatrix("transform");
 
@@ -488,7 +511,10 @@ void Scene::updateCache()
 {
 	// std::cout << " -- Start caching -- " << std::endl;
 
-	m_broadPhase->updateCache();
+	{
+		ScopedPhase accelBuild(Phase::kAccelBuild);
+		m_accel->updateCache();
+	}
 
 	std::for_each(m_grids.begin(), m_grids.end(),
 				  [](std::shared_ptr<Grid> g) { g->updateCaches(); });
@@ -522,7 +548,7 @@ void Scene::addLight(LightHandle lh)
 {
 	m_lights.emplace_back(lh);
 	lh->setScene(this);
-	m_broadPhase->addVisible(lh);
+	m_accel->addVisible(lh);
 }
 
 AreaLightHandle Scene::createAreaLight()
@@ -629,7 +655,7 @@ ImageHandle Scene::getImage(const vxNodeHandle &node)
 		std::cerr << "Node " << node->name() << " is not an image" << std::endl;
 	}
 
-	auto path = FileUtils::path + node->getString("imagePath");
+	auto path = FileUtils::resolve(node->getString("imagePath"));
 	auto gain = node->getScalar("gain");
 	auto gamma = node->getScalar("gamma");
 
@@ -681,7 +707,7 @@ vxTriangleMeshHandle Scene::createGeometry(const std::string &path,
 	auto geo = std::make_shared<TriangleMesh>();
 	geo->setTransform(transform);
 	geo->setConstructionPath(path);
-	m_broadPhase->addVisible(geo);
+	m_accel->addVisible(geo);
 
 	m_geometries.emplace_back(geo);
 
@@ -734,6 +760,7 @@ int Scene::domeThrowRay(const Ray &ray, Collision &collide) const
 {
 	if (!m_domes.empty())
 	{
+		PERF_COUNT(kDomeLookup);
 		m_domes[0]->throwRay(ray, collide);
 		return 1;
 	}
@@ -745,6 +772,7 @@ int Scene::domeComputeLight(const Ray &ray, Collision &collide) const
 {
 	if (!m_domes.empty())
 	{
+		PERF_COUNT(kDomeLookup);
 		m_domes[0]->computeLight(ray, collide);
 		return 1;
 	}
@@ -756,21 +784,73 @@ int Scene::throwRay(const Ray &ray, Collision &collide) const
 {
 	collide.setValid(false);
 
-	if (m_broadPhase->throwRay(ray, collide))
+	PERF_COUNT(kAccelCast);
+
+	// Planes first: the closest plane hit is an upper bound for the search in
+	// the acceleration structure. The result is the closest of (visible,
+	// plane 1, plane 2...), and when two are at the same distance the one that
+	// comes first in that list wins, like when the planes were tested last.
+	Collision planeBest;
+	scalar planeDist = std::numeric_limits<scalar>::max();
+	bool planeFound = false;
+	for (const auto &plane : m_planes)
+	{
+		Collision planeHit;
+		if (!plane->throwRay(ray, planeHit))
+		{
+			continue;
+		}
+
+		const auto d = planeHit.position().distance(ray.origin());
+		if (!planeFound || d < planeDist)
+		{
+			planeBest = planeHit;
+			planeDist = d;
+			planeFound = true;
+		}
+	}
+
+	bool visibleFound = false;
+	if (planeFound ? m_accel->throwRayBounded(ray, collide, planeDist)
+				   : m_accel->throwRay(ray, collide))
 	{
 		collide.setValid(true);
+		visibleFound = true;
+	}
 
+	if (planeFound &&
+		(!visibleFound || planeDist < collide.position().distance(ray.origin())))
+	{
+		collide = planeBest;
+		collide.setValid(true);
+	}
+
+	if (collide.isValid())
+	{
+		PERF_COUNT(kCastHit);
 		return 1;
 	}
 
-	collide.setValid(false);
-
+	PERF_COUNT(kCastMiss);
 	return 0;
 }
 
 bool Scene::hasCollision(const Ray &ray) const
 {
-	return m_broadPhase->hasCollision(ray);
+	if (m_accel->hasCollision(ray))
+	{
+		return true;
+	}
+
+	for (const auto &plane : m_planes)
+	{
+		if (plane->hasCollision(ray))
+		{
+			return true;
+		}
+	}
+
+	return false;
 	/*Collision collide;
 	if (m_broadPhase->throwRay(ray, collide))
 	{
@@ -778,6 +858,26 @@ bool Scene::hasCollision(const Ray &ray) const
 	}
 
 	return false;*/
+}
+
+bool Scene::switchAccel(const std::string &name)
+{
+	auto next = AccelStructure::create(name);
+	if (!next)
+	{
+		return false;
+	}
+
+	for (const auto &visible : m_accel->visibles())
+	{
+		next->addVisible(visible);
+	}
+	{
+		ScopedPhase accelBuild(Phase::kAccelBuild);
+		next->updateCache();
+	}
+	m_accel = std::move(next);
+	return true;
 }
 
 vxShaderHandle Scene::defaultShader() const { return m_shader; }

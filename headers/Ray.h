@@ -102,5 +102,55 @@ public:
 	Quadrant qd() const;
 	void setQd(const Quadrant &qd);
 };
+
+///
+/// A ray prepared for slab tests against many boxes: origin and the inverse of
+/// each direction component, computed once per ray.
+///
+/// Components of the direction smaller than 1e-12 are given a finite inverse of
+/// +-1e12 (the sign of the component, + for zero) instead of +-infinity, so the
+/// slab arithmetic never produces inf or NaN. That matters because the
+/// renderer builds with -ffast-math, where tests on inf/NaN are unreliable.
+///
+/// Copy only the numbers it needs. It does not hold a reference to the Ray.
+struct RayInv
+{
+	static constexpr scalar kMaxInverse = scalar(1e12);
+
+	scalar ox{0.0}, oy{0.0}, oz{0.0};
+	scalar ix{kMaxInverse}, iy{kMaxInverse}, iz{kMaxInverse};
+	/// Length of the direction, converts the slab parameter into a distance.
+	scalar dirLen{1.0};
+	/// 1 when the inverse of that axis is negative.
+	int sx{0}, sy{0}, sz{0};
+
+	RayInv() = default;
+	explicit RayInv(const Ray &ray)
+	{
+		const v3s o = ray.origin();
+		const v3s d = ray.direction();
+		ox = o.x();
+		oy = o.y();
+		oz = o.z();
+		ix = invert(d.x());
+		iy = invert(d.y());
+		iz = invert(d.z());
+		sx = ix < 0.0 ? 1 : 0;
+		sy = iy < 0.0 ? 1 : 0;
+		sz = iz < 0.0 ? 1 : 0;
+		dirLen = d.length();
+	}
+
+	/// 1/d with |result| <= kMaxInverse and no infinities.
+	static scalar invert(scalar d)
+	{
+		const scalar a = d < 0.0 ? -d : d;
+		if (a < scalar(1.0) / kMaxInverse)
+		{
+			return d < 0.0 ? -kMaxInverse : kMaxInverse;
+		}
+		return scalar(1.0) / d;
+	}
+};
 } // namespace vxCore
 #endif // VXRAY_H

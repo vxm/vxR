@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Geometry.h"
+#include "MeshBvh.h"
 
 namespace vxCore {
 
@@ -22,6 +23,11 @@ class TriangleMesh final : public Geometry
 	/// \brief m_grid
 	///
 	GeoGrid m_grid;
+	///
+	/// \brief m_bvh
+	/// Per-mesh triangle BVH, built only when VXR_MESH=bvh.
+	///
+	MeshBvh m_bvh;
 	///
 	/// \brief m_vertices
 	///
@@ -178,6 +184,18 @@ public:
 	virtual bool throwRay(const Ray &ray) const override;
 	virtual int throwRay(const Ray &ray, Collision &collide) const override;
 	virtual bool hasCollision(const Ray &ray) const override;
+
+	/// Reference GeoGrid walk (VXR_MESH=ref). Kept so A/B can match old images.
+	const GeoGrid &grid() const { return m_grid; }
+	const MeshBvh &meshBvh() const { return m_bvh; }
+
+private:
+	int throwRayRef(const Ray &ray, Collision &col) const;
+	int throwRayCsr(const Ray &ray, Collision &col) const;
+	int throwRayBvh(const Ray &ray, Collision &col) const;
+	bool hasCollisionRef(const Ray &ray) const;
+	bool hasCollisionCsr(const Ray &ray) const;
+	bool hasCollisionBvh(const Ray &ray) const;
 };
 
 using vxTriangleMeshHandle = std::shared_ptr<TriangleMesh>;

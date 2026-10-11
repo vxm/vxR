@@ -292,7 +292,8 @@ int BoundingBox::throwRay(const Ray &ray, Collision &col) const
 	if (MU::inRange(v.y(), m_minY, m_maxY) && MU::inRange(v.z(), m_minZ, m_maxZ))
 	{
 		col.setPosition(v);
-		col.setNormal(ray.direction().xPositive() ? v3s::constMinusY : v3s::constY);
+		// The entry face is perpendicular to X. This used to say +-Y.
+		col.setNormal(ray.direction().xPositive() ? v3s::constMinusX : v3s::constX);
 		col.setValid();
 		col.setColor(Color::red);
 		auto y = (v.y() - m_minY) / (m_maxY - m_minY);

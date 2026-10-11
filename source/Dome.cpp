@@ -1,6 +1,8 @@
 #include "Dome.h"
 #include "MathUtils.h"
 
+#include <algorithm>
+
 using namespace vxCore;
 
 ImageHandle Dome::lightImage() const { return m_lightImage; }
@@ -11,6 +13,14 @@ void Dome::setLightImage(const ImageHandle &lightImage)
 }
 
 Dome::Dome(ImageHandle env) : m_image(std::move(env)) {}
+
+scalar Dome::intensity() const { return m_intensity; }
+
+void Dome::setIntensity(const scalar &intensity) { m_intensity = intensity; }
+
+scalar Dome::lightClamp() const { return m_lightClamp; }
+
+void Dome::setLightClamp(const scalar &lightClamp) { m_lightClamp = lightClamp; }
 
 scalar Dome::radius() const { return m_radius; }
 
@@ -43,7 +53,22 @@ int Dome::computeLight(const Ray &ray, Collision &collide) const
 {
 	collide.setUV(MU::normalToCartesian(ray.direction()));
 
-	auto environmentColor = m_lightImage->compute(collide);
+	auto environmentColor = m_lightImage->compute(collide) * m_intensity;
+
+	if (m_lightClamp > 0.0)
+	{
+		const auto peak =
+			std::max(environmentColor.r(),
+					 std::max(environmentColor.g(), environmentColor.b()));
+		if (peak > m_lightClamp)
+		{
+			// scale so the hue of the sky stays the same.
+			const auto k = m_lightClamp / peak;
+			environmentColor = Color(environmentColor.r() * k,
+									 environmentColor.g() * k,
+									 environmentColor.b() * k, environmentColor.alpha());
+		}
+	}
 
 	collide.setPosition(ray.origin() + ray.direction() * m_radius);
 

@@ -29,7 +29,11 @@ set(VXR_SOURCES
 	source/BoundingBox.cpp
 	source/Box.cpp
 	source/BoxCreator.cpp
+	source/AccelStructure.cpp
 	source/BroadPhase.cpp
+	source/Bvh.cpp
+	source/MeshBvh.cpp
+	source/AccelUnitTest.cpp
 	source/BucketList.cpp
 	source/Camera.cpp
 	source/CirclesMap.cpp
@@ -51,6 +55,7 @@ set(VXR_SOURCES
 	source/Map2d.cpp
 	source/Node.cpp
 	source/NonSequentalPool.cpp
+	source/PerfStats.cpp
 	source/Pixel.cpp
 	source/Object.cpp
 	source/Plane.cpp
@@ -79,6 +84,7 @@ set(VXR_SOURCES
 	source/Sphere.cpp
 	source/ConvexGeometry.cpp
 	source/stb_image_impl.cpp
+	source/tinyexr_impl.cpp
 )
 
 add_executable(vxR ${VXR_SOURCES})
@@ -87,13 +93,22 @@ target_include_directories(vxR PRIVATE
 	${CMAKE_SOURCE_DIR}/headers
 	${CMAKE_SOURCE_DIR}/source
 	${CMAKE_SOURCE_DIR}/third_party/stb
+	${CMAKE_SOURCE_DIR}/third_party/tinyexr
 )
 
-target_link_libraries(vxR PRIVATE Threads::Threads)
+target_link_libraries(vxR PRIVATE Threads::Threads z)
+
+# Counters and phase timers behind --stats. OFF compiles every call site away.
+option(VXR_PERF_STATS "Compile the PerfStats counters" ON)
 
 target_compile_definitions(vxR PRIVATE
 	$<$<CONFIG:Debug>:_DEBUG>
+	VXR_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+	VXR_BUILD_TYPE="$<CONFIG>"
 )
+if(NOT VXR_PERF_STATS)
+	target_compile_definitions(vxR PRIVATE VXR_NO_PERF_STATS)
+endif()
 
 # x86 SIMD flags from the old qmake release config. Apple Silicon rejects them.
 set(VXR_ARCH_FLAGS)
@@ -111,8 +126,17 @@ target_compile_options(vxR PRIVATE
 	"$<$<CONFIG:RelWithDebInfo>:${VXR_RELEASE_FLAGS}>"
 )
 
+# The differential tests look for NaN positions and compare hits, which -ffast-math
+# turns into undefined behaviour. The engine code they test is still built with it.
+set_source_files_properties(source/AccelUnitTest.cpp PROPERTIES
+	COMPILE_OPTIONS "$<$<CONFIG:Release>:-fno-fast-math>;$<$<CONFIG:RelWithDebInfo>:-fno-fast-math>")
+
 include(CheckIPOSupported)
 check_ipo_supported(RESULT vxr_ipo_supported OUTPUT vxr_ipo_error)
 if(vxr_ipo_supported)
 	set_property(TARGET vxR PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
 endif()
+
+# Compares two images for the A/B benchmarks, see tools/ab_bench.py.
+add_executable(vxr_imgdiff tools/vxr_imgdiff.cpp)
+target_include_directories(vxr_imgdiff PRIVATE ${CMAKE_SOURCE_DIR}/third_party/stb)

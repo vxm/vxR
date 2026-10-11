@@ -96,6 +96,23 @@ public:
 	virtual int throwRay(const Ray &ray, Collision &collide) const = 0;
 	virtual bool hasCollision(const Ray &ray) const = 0;
 
+	///
+	/// \brief isHittable
+	/// \return
+	/// False when throwRay(ray, collision) can never return a hit, so an
+	/// acceleration structure may leave it out. Lights say so, apart from
+	/// SphereLight.
+	virtual bool isHittable() const { return true; }
+	///
+	/// \brief hitsInsideBounds
+	/// \return
+	/// True when every hit throwRay reports lies inside boundingBox() (up to
+	/// rounding). An acceleration structure may then skip this visible once it
+	/// has a closer hit than the distance at which the ray enters the box.
+	/// Cylinder says no: its body test is an infinite cylinder, it is not
+	/// clipped to its height.
+	virtual bool hitsInsideBounds() const { return true; }
+
 	std::shared_ptr<Shader> shader() const;
 	void setShader(const std::shared_ptr<Shader> &shader);
 	VisibleType type() const;

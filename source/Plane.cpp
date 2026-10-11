@@ -1,5 +1,6 @@
 #include "Plane.h"
 #include "MathUtils.h"
+#include "PerfStats.h"
 
 using namespace vxCore;
 
@@ -45,16 +46,22 @@ bool Plane::throwRay(const Ray &ray) const
 
 int Plane::throwRay(const Ray &ray, Collision &collide) const
 {
+	PERF_COUNT(kPlaneTest);
 	if (m_type == Plane::type::kY)
 	{
+		if (std::abs(ray.direction().y()) < scalar(1e-12))
+		{
+			return 0;
+		}
 		const auto &p = MU::rectAndYPlane(ray.direction(), m_y - ray.origin().y());
-		if ((ray.origin() - p).follows(ray.direction()))
+		if (p.dot(ray.direction()) > 0.0)
 		{
 			collide.setNormal(v3s::constY);
 			collide.setPosition(p + ray.origin());
 			collide.setU((scalar)0.5);
 			collide.setV((scalar)0.5);
 			collide.setColor(m_color);
+			collide.setValid(true);
 			return 1;
 		}
 	}

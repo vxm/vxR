@@ -128,6 +128,13 @@ protected:
 
 	Geometry *m_visibleVoxelGeo = nullptr;
 
+	/// Occupancy hierarchy, see rebuildOccupancy.
+	std::vector<unsigned char> m_occ1;
+	std::vector<unsigned char> m_occ2;
+	long m_occCells1 = 0;
+	long m_occCells2 = 0;
+	bool m_occValid = false;
+
 public:
 	///
 	/// \brief vxGrid
@@ -191,32 +198,39 @@ public:
 	///
 	void setBoxSize();
 
-	std::vector<long> m_xpds;
-	std::vector<long> m_ypds;
-	std::vector<long> m_zpds;
-
-	std::vector<long> m_xnds;
-	std::vector<long> m_ynds;
-	std::vector<long> m_znds;
-
-	void updateCaches()
+	///
+	/// \brief updateCaches
+	/// Called once the voxels are final (and after every change to them). It
+	/// rebuilds the occupancy hierarchy used to skip empty space.
+	void updateCaches();
+	///
+	/// \brief rebuildOccupancy
+	/// One pass over the voxels. Builds the level 1 grid (one byte per 8x8x8
+	/// voxels) and, from 128 voxels per side, the level 2 grid (8x8x8 level 1
+	/// cells). A cell is also set when a voxel of the layer below it, along Y, is
+	/// active, because an empty voxel on top of an active one is still hit
+	/// (a thin slab in it), see throwRayReference. Until it is called, and after
+	/// any change to the voxels, the ray traversal uses throwRayReference.
+	void rebuildOccupancy();
+	/// True when the occupancy grids match the voxels.
+	bool occupancyValid() const { return m_occValid; }
+	/// Cells per side of the level 1 and level 2 grids (0 when there is none).
+	long occupancyCells1() const { return m_occCells1; }
+	long occupancyCells2() const { return m_occCells2; }
+	///
+	/// \brief throwRayReference
+	/// The original traversal, kept to compare the hierarchical one against.
+	int throwRayReference(const Ray &ray, Collision &col) const;
+	/// Which traversal throwRay uses. kAuto takes the occupancy grids when they
+	/// are valid. The environment variable VXR_GRID=ref selects kReference at
+	/// start up, setTraversal overrides it afterwards.
+	enum class Traversal
 	{
-		for (long y = 0; y < m_resolution; y++)
-		{
-			for (long x = 0; x < m_resolution; x++)
-			{
-				long z = 0;
-				auto i = 0ll;
-				do
-				{
-					i = index(x, y, z);
-					z++;
-				} while (!active(i) && z < m_resolution);
-
-				m_xpds.push_back(z);
-			}
-		}
-	}
+		kAuto,
+		kReference
+	};
+	static void setTraversal(Traversal mode);
+	static Traversal traversal();
 
 	///
 	/// \brief updateBB

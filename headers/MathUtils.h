@@ -3,6 +3,7 @@
 
 #include "Plane.h"
 #include <cmath>
+#include <cstdint>
 #include <vector>
 
 namespace vxCore
@@ -73,6 +74,12 @@ public:
 
 	// Random
 	static void fillRand();
+	///
+	/// \brief seedRand
+	/// Makes the random numbers of the calling thread a function of (seed,
+	/// stream) only. The renderer seeds each pixel with its own stream, so
+	/// the image does not depend on how pixels are split between threads.
+	static void seedRand(std::uint64_t seed, std::uint64_t stream);
 	static unsigned long m_k;
 	static scalar getRand(const scalar range = 1.0);
 	static v2s getRand2d(const scalar range);

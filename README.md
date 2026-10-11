@@ -7,16 +7,17 @@ An example render with depth of field: [sample image](https://drive.google.com/f
 ## What it renders
 
 - **Voxel grid.** A uniform grid of active voxels is the main acceleration structure and a geometry type of its own. Resolution and size come from the scene.
-- **Primitives.** Spheres, cylinders, planes, and an image-mapped environment dome.
+- **Primitives.** Spheres, cylinders, and planes.
+- **Environment dome.** An image mapped on a sphere. `imageNode` is the visible background. `lightImageNode` is what missed rays and global-illumination samples read. `intensity` scales that light image only. `lightClamp` caps the brightest channel of one light sample so an HDR sun disk does not burn a few random hits; `0` leaves the sample unclamped.
 - **Meshes.** ASCII PLY files, either as triangle meshes or voxelized into a grid (`vxGridGeometry`).
 - **Camera.** A perspective camera with focal length, film apertures, focus distance, and lens size for thin-lens depth of field.
-- **Lights.** Area, point, sphere, sun, directional, ambient, and image-based lights, with shadow rays.
-- **Shading.** Diffuse response, glossy reflection, and hemisphere global illumination. Ray depth and samples per pixel are set in the scene. Shading is evaluated across a thread per column stride.
+- **Lights.** Area, point, sphere, sun, directional, ambient, and image-based lights, with shadow rays. A dome can light the scene on its own.
+- **Shading.** Diffuse response, glossy reflection, and cosine-weighted hemisphere global illumination. Ray depth and samples per pixel are set in the scene. Shading is evaluated across a thread per column stride.
 - **Output.** 8-bit JPEG (`image.0000001.jpg` in the working directory).
 
 ## Build
 
-Requires CMake 3.16 or newer and a C++17 compiler.
+Requires CMake 3.16 or newer, a C++17 compiler, and zlib (OpenEXR is read with TinyEXR).
 
 ```
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
@@ -37,7 +38,7 @@ Release builds compile with `-O3`, `-ffast-math`, and `-march=native`. On x86_64
 | `-at`, `-allTests` | Run the grid and math unit tests. |
 | `-help`, `--help` | Print the short help text. |
 
-`scenes/demo.vx` is the fuller example. `scenes/single.vx` is a smaller one. Paths inside a scene, including PLY and image files, are resolved relative to the scene file.
+`scenes/demo.vx` is the fuller example. `scenes/single.vx` is a smaller one. `scenes/juan_kloofendal.vx` lights a mesh from an OpenEXR sky, with `intensity` and `lightClamp` on the dome. `scenes/bg_kloofendal.vx`, `scenes/bg_dof.vx`, `scenes/bg_panther.vx`, and `scenes/bg_statue.vx` are smaller setups of the same kind. The Kloofendal scenes point at a local `.exr` outside this repository; change `imagePath` before rendering them. Other paths inside a scene, including PLY and image files, are resolved relative to the scene file.
 
 ## Scene file
 
@@ -55,9 +56,9 @@ Common types:
 | `vxGridGeometry` | PLY file voxelized into the grid. |
 | `vxGeometry` | PLY triangle mesh. |
 | `vxSphere`, `vxCylinder`, `vxPlane` | Analytic primitives. |
-| `vxDome` | Environment image. |
+| `vxDome` | Environment. `imageNode` is the background, `lightImageNode` is the light. Optional `intensity` and `lightClamp`. |
 | `vxAreaLight`, `vxPointLight`, `vxSphereLight`, `vxSunLight`, `vxDirectLight`, `vxAmbientLight`, `vxIBLight` | Lights. |
-| `vxImage` | Bitmap used by domes and image-based lights. |
+| `vxImage` | Image for a dome or an image-based light. `.exr` is read as linear HDR. JPEG, PNG, and the other formats stb_image supports are read as 8-bit. `gamma` and `gain` are applied when the image is sampled; use `gamma = 1.0` for an EXR sky. |
 
 ## Background
 
