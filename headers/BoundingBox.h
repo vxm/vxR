@@ -208,6 +208,50 @@ public:
 	bool throwRay(const Ray &ray) const;
 	int throwRay(const Ray &ray, Collision &col) const;
 	bool hasCollision(const Ray &ray) const;
+
+	///
+	/// \brief intersect
+	/// Slab test with a prepared ray. On return [t0, t1] is the part of the ray
+	/// inside the box in units of the ray direction, with t0 >= 0 (a ray that
+	/// starts inside has t0 = 0). Returns false when there is no such part.
+	/// It does not fill a Collision, it is for traversal code. The legacy
+	/// throwRay(ray, collision) remains the one that produces surface hits.
+	/// Meant for a non empty box, it never divides and cannot give inf or NaN.
+	bool intersect(const RayInv &r, scalar &t0, scalar &t1) const
+	{
+		const scalar txa = (m_minX - r.ox) * r.ix;
+		const scalar txb = (m_maxX - r.ox) * r.ix;
+		const scalar tya = (m_minY - r.oy) * r.iy;
+		const scalar tyb = (m_maxY - r.oy) * r.iy;
+		const scalar tza = (m_minZ - r.oz) * r.iz;
+		const scalar tzb = (m_maxZ - r.oz) * r.iz;
+
+		const scalar nx = r.sx ? txb : txa;
+		const scalar fx = r.sx ? txa : txb;
+		const scalar ny = r.sy ? tyb : tya;
+		const scalar fy = r.sy ? tya : tyb;
+		const scalar nz = r.sz ? tzb : tza;
+		const scalar fz = r.sz ? tza : tzb;
+
+		scalar lo = nx > ny ? nx : ny;
+		lo = lo > nz ? lo : nz;
+		lo = lo > scalar(0.0) ? lo : scalar(0.0);
+		scalar hi = fx < fy ? fx : fy;
+		hi = hi < fz ? hi : fz;
+
+		t0 = lo;
+		t1 = hi;
+		return lo <= hi;
+	}
+
+	/// Area of the six faces, 0 for an empty box.
+	scalar surfaceArea() const
+	{
+		const scalar dx = m_maxX > m_minX ? m_maxX - m_minX : scalar(0.0);
+		const scalar dy = m_maxY > m_minY ? m_maxY - m_minY : scalar(0.0);
+		const scalar dz = m_maxZ > m_minZ ? m_maxZ - m_minZ : scalar(0.0);
+		return scalar(2.0) * (dx * dy + dy * dz + dz * dx);
+	}
 };
 
 } // namespace vxCore

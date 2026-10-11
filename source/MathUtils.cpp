@@ -18,6 +18,20 @@ thread_local std::uniform_real_distribution<> dis(0.0, 1.0);
 
 using namespace vxCore;
 
+static std::uint64_t splitMix64(std::uint64_t x)
+{
+	x += 0x9e3779b97f4a7c15ull;
+	x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ull;
+	x = (x ^ (x >> 27)) * 0x94d049bb133111ebull;
+	return x ^ (x >> 31);
+}
+
+void MathUtils::seedRand(std::uint64_t seed, std::uint64_t stream)
+{
+	const auto h = splitMix64(seed ^ splitMix64(stream));
+	gen.seed(static_cast<std::uint32_t>(h ^ (h >> 32)));
+}
+
 //////////////////////////////////////
 ///////////////  RANDOM CACHES ///////
 unsigned long MathUtils::m_k = 0u;

@@ -1,5 +1,6 @@
 #include "TriRef.h"
 #include "MathUtils.h"
+#include "PerfStats.h"
 
 using namespace vxCore;
 
@@ -36,8 +37,10 @@ bool TriRef::throwRay(const Ray &ray) const { return hasCollision(ray) == 1; }
 
 int TriRef::throwRay(const Ray &ray, Collision &collide) const
 {
+	PERF_COUNT(kTriTest);
 	if (!n1.follows(ray.direction()))
 	{
+		PERF_COUNT(kTriBackfaceReject);
 		return 0;
 	}
 

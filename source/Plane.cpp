@@ -1,5 +1,6 @@
 #include "Plane.h"
 #include "MathUtils.h"
+#include "PerfStats.h"
 
 using namespace vxCore;
 
@@ -45,6 +46,7 @@ bool Plane::throwRay(const Ray &ray) const
 
 int Plane::throwRay(const Ray &ray, Collision &collide) const
 {
+	PERF_COUNT(kPlaneTest);
 	if (m_type == Plane::type::kY)
 	{
 		if (std::abs(ray.direction().y()) < scalar(1e-12))

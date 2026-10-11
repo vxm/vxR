@@ -187,6 +187,9 @@ public:
 		m_bb->extend(m_transform.origin() + m_position + v3s(1, 1, 1));
 		m_bb->extend(m_transform.origin() + m_position + v3s(-1, -1, -1));
 	}
+
+	// Only SphereLight can be hit by a ray, the others return 0 always.
+	virtual bool isHittable() const override { return false; }
 };
 
 class SpotLight final : public Light
@@ -369,6 +372,8 @@ public:
 	virtual bool hasCollision(const Ray &ray) const override;
 
 	// Visible interface
+	// The one light a ray can hit.
+	virtual bool isHittable() const override { return true; }
 };
 
 ///

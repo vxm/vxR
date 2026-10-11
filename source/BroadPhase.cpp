@@ -1,4 +1,5 @@
 #include "BroadPhase.h"
+#include "PerfStats.h"
 #include <algorithm>
 #include <limits>
 
@@ -351,16 +352,21 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		   continue;
 		 }*/
 
+		PERF_COUNT(kAccelNodeVisit);
+
 		/// if ray can only see opaque and this is a light we move on.
 		if (ray.m_vision == VisionType::kOpaque &&
 			visbl->type() == VisibleType::kLight)
 		{
+			PERF_COUNT(kAccelLightSkip);
 			continue;
 		}
 
 		// if it's own hit falls outside it's bounding box.
+		PERF_COUNT(kAccelBoxTest);
 		if (!visbl->testBoundingBox(ray, temp))
 		{
+			PERF_COUNT(kAccelBoxReject);
 			continue;
 		}
 
@@ -368,10 +374,12 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 		// throwRay returns 0 for a miss. Lights do that without clearing
 		// the valid flag the bounding-box test just set, so a light's
 		// 2-unit box was accepted as a surface and shaded as noise.
+		PERF_COUNT(kAccelPrimTest);
 		if (!visbl->throwRay(ray, temp))
 		{
 			continue;
 		}
+		PERF_COUNT(kAccelPrimHit);
 #endif
 		auto s = temp.position().distance(ray.origin());
 
@@ -479,6 +487,7 @@ int BroadPhase::throwRay(const Ray &ray, Collision &collide) const
 
 bool BroadPhase::hasCollision(const Ray &ray) const
 {
+	PERF_COUNT(kAccelHasCollision);
 	for (auto &visbl : m_visibles)
 	{
 		/// if ray can only see opaque and this is a light we move on.

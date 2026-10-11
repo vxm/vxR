@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Grid.h"
 #include "ImageProperties.h"
+#include "PerfStats.h"
 #include "Pixel.h"
 #include "RenderProcess.h"
 #include "Sampler.h"
@@ -64,7 +65,28 @@ unsigned int RenderProcess::nMaxThreads() const { return m_nThreads; }
 
 void RenderProcess::setNMaxThreads(unsigned int nMaxThreads)
 {
-	m_nThreads = std::min(std::thread::hardware_concurrency(), nMaxThreads);
+	m_nThreads = std::max(1u, std::min(std::thread::hardware_concurrency(),
+									   nMaxThreads));
+}
+
+void RenderProcess::setSeed(std::uint64_t seed)
+{
+	m_seeded = true;
+	m_seed = seed;
+}
+
+unsigned RenderProcess::activeThreads() const
+{
+#if USE_THREADS
+	return m_nThreads;
+#else
+	return 1u;
+#endif
+}
+
+double RenderProcess::renderSeconds() const
+{
+	return double(m_renderEndNs.load()) * 1e-9;
 }
 
 unsigned int RenderProcess::visSamples() const { return m_samples; }
@@ -97,6 +119,9 @@ Status RenderProcess::setDatabase(std::shared_ptr<SceneParser>)
 Status::code RenderProcess::execute()
 {
 	auto start = std::chrono::system_clock::now();
+	ScopedPhase executePhase(Phase::kRenderExecute);
+	m_renderBegin = std::chrono::steady_clock::now();
+	m_renderEndNs = 0;
 	m_finished = false;
 	m_contactBuffer.reserve(m_properties->numPixels());
 
@@ -201,6 +226,7 @@ Color RenderProcess::computeReflection(const Ray &ray, const Collision &col,
 		bounces--;
 	}
 
+	PERF_COUNT(kRayReflection);
 	reflection = computeEnergyAndColor(reflexRay, refxCollision, bounces);
 
 	return reflection;
@@ -238,6 +264,7 @@ Color RenderProcess::computeGI(const Ray &ray, const Collision &col,
 		bounces--;
 	}
 
+	PERF_COUNT(kRayGI);
 	return computeEnergyAndColor(giRay, nextRound, bounces);
 }
 
@@ -341,12 +368,19 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 		Color firstHitColor(Color::zero);
 		const v2s hitCoordinates(itV / (scalar)m_properties->ry(),
 								 itH / (scalar)m_properties->rx());
+		const auto id = itH + (itV * m_properties->rx());
+
+		if (m_seeded)
+		{
+			MU::seedRand(m_seed, id);
+		}
 
 		for (auto s = 0u; s < m_samples; s++)
 		{
 			Collision col;
 
 			const auto &ray = rCamera->ray(hitCoordinates, sampler);
+			PERF_COUNT(kRayPrimary);
 			Color localColor = computeEnergyAndColor(ray, col, m_rayDepth);
 
 			//			Ray ray({-10, 0.0, 0.0}, {1, 0, 0});
@@ -366,7 +400,6 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 		sampler.resetIterator();
 		firstHitColor *= m_c_invSamples;
 
-		const auto id = itH + (itV * m_properties->rx());
 		m_contactBuffer.pixel(id) = firstHitColor;
 
 		itH += by;
@@ -381,9 +414,24 @@ Status::code RenderProcess::render(unsigned int by, unsigned int offset)
 	}
 #endif
 
+	// The render ends when its last thread does, execute() sleeps in between.
+	const auto endNs = std::chrono::duration_cast<std::chrono::nanoseconds>(
+						   std::chrono::steady_clock::now() - m_renderBegin)
+						   .count();
+	auto prevEnd = m_renderEndNs.load();
+	while (prevEnd < endNs && !m_renderEndNs.compare_exchange_weak(prevEnd, endNs))
+	{
+	}
+
 	auto thInfo = ThreadPool::threadInfo(std::this_thread::get_id());
 
 	std::cout << "Finished task on thread ::" << thInfo.id << "::" << std::endl;
+
+	// Each thread merges its counters once, before it goes away.
+	if (PerfStats::enabled())
+	{
+		PerfStats::flushThread();
+	}
 
 	m_finished = true;
 

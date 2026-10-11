@@ -1,4 +1,6 @@
 #include "TriangleMesh.h"
+#include "CellMarcher.h"
+#include "PerfStats.h"
 #define DRAWBBOX 0
 
 using namespace vxCore;
@@ -48,19 +50,30 @@ void TriangleMesh::close()
 
 	updateAccelerationStuctures();
 
+	if (GeoGrid::backend() == MeshBackend::kBvh)
+	{
+		m_bvh.build(m_triangles);
+		m_openForEdition = false;
+		return;
+	}
+
 	for (auto &tref : m_triangles)
 	{
 		m_grid.locateAndRegister(tref, triangleID);
 		triangleID++;
 	}
 
+	m_grid.finalize();
 	m_openForEdition = false;
 }
 
 void TriangleMesh::updateAccelerationStuctures()
 {
-	m_grid.setBb(m_bb);
 	m_bb->close();
+	if (GeoGrid::backend() != MeshBackend::kBvh)
+	{
+		m_grid.setBb(m_bb);
+	}
 }
 
 std::string TriangleMesh::constructionPath() const
@@ -165,6 +178,21 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 
 	return 1;
 #else
+	PERF_COUNT(kMeshCast);
+	if (GeoGrid::backend() == MeshBackend::kRef)
+	{
+		return throwRayRef(ray, col);
+	}
+	if (GeoGrid::backend() == MeshBackend::kBvh)
+	{
+		return throwRayBvh(ray, col);
+	}
+	return throwRayCsr(ray, col);
+#endif
+}
+
+int TriangleMesh::throwRayRef(const Ray &ray, Collision &col) const
+{
 	auto &&p = ray.origin();
 
 	std::vector<Collision> cols;
@@ -215,12 +243,93 @@ int TriangleMesh::throwRay(const Ray &ray, Collision &col) const
 		return 1;
 	}
 
-#endif
+	col.setValid(false);
+	return 0;
+}
+
+int TriangleMesh::throwRayCsr(const Ray &ray, Collision &col) const
+{
+	auto &&p = ray.origin();
+	const RayInv ri(ray);
+	CellMarcher march;
+	if (!m_bb || !march.init(*m_bb, m_grid.rx(), m_grid.ry(), m_grid.rz(), ri, ray))
+	{
+		col.setValid(false);
+		return 0;
+	}
+
+	do
+	{
+		PERF_COUNT(kMeshBucketLookup);
+		unsigned count = 0;
+		const auto idx = march.linearIndex(m_grid.rx(), m_grid.ry());
+		const auto *ids = m_grid.cellIds(idx, count);
+		if (!count)
+		{
+			continue;
+		}
+
+		std::vector<Collision> cols;
+		for (unsigned i = 0; i < count; i++)
+		{
+			if (m_triangles[ids[i]].throwRay(ray, col))
+			{
+				if (!ray.direction().follows((col.position() - ray.origin()).unit()))
+				{
+					cols.emplace_back(col);
+				}
+			}
+		}
+
+		if (!cols.empty())
+		{
+			auto mind = (cols[0].position() - p).length();
+			col = cols[0];
+			for (auto &&c : cols)
+			{
+				auto ds = (c.position() - p).length();
+				if (ds < mind)
+				{
+					col = c;
+				}
+			}
+
+			col.setColor(m_color);
+			col.setValid(true);
+			return 1;
+		}
+	} while (march.advance());
+
+	col.setValid(false);
+	return 0;
+}
+
+int TriangleMesh::throwRayBvh(const Ray &ray, Collision &col) const
+{
+	if (m_bvh.throwRay(m_triangles, ray, col))
+	{
+		col.setColor(m_color);
+		col.setValid(true);
+		return 1;
+	}
 	col.setValid(false);
 	return 0;
 }
 
 bool TriangleMesh::hasCollision(const Ray &ray) const
+{
+	if (GeoGrid::backend() == MeshBackend::kRef)
+	{
+		return hasCollisionRef(ray);
+	}
+	if (GeoGrid::backend() == MeshBackend::kBvh)
+	{
+		return hasCollisionBvh(ray);
+	}
+	return hasCollisionCsr(ray);
+}
+
+bool TriangleMesh::hasCollisionRef(const Ray &ray) const
 {
 	Collision col;
 
@@ -259,6 +368,48 @@ bool TriangleMesh::hasCollision(const Ray &ray) const
 	} while (m_bb->contains(sp));
 
 	return false;
+}
+
+bool TriangleMesh::hasCollisionCsr(const Ray &ray) const
+{
+	Collision col;
+
+	m_bb->throwRay(ray, col);
+
+	if (col.position().distance(ray.origin()) > ray.length())
+	{
+		return false;
+	}
+
+	const RayInv ri(ray);
+	CellMarcher march;
+	if (!m_bb || !march.init(*m_bb, m_grid.rx(), m_grid.ry(), m_grid.rz(), ri, ray))
+	{
+		return false;
+	}
+
+	do
+	{
+		PERF_COUNT(kMeshBucketLookup);
+		unsigned count = 0;
+		const auto idx = march.linearIndex(m_grid.rx(), m_grid.ry());
+		const auto *ids = m_grid.cellIds(idx, count);
+		for (unsigned i = 0; i < count; i++)
+		{
+			if (m_triangles[ids[i]].throwRay(ray, col))
+			{
+				return !(ray.length() > 0.0 &&
+						 col.position().distance(ray.origin()) > ray.length());
+			}
+		}
+	} while (march.advance());
+
+	return false;
+}
+
+bool TriangleMesh::hasCollisionBvh(const Ray &ray) const
+{
+	return m_bvh.hasCollision(m_triangles, ray);
 }
 
 void TriangleMesh::updateBoundingBox()

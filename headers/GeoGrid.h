@@ -2,11 +2,15 @@
 #define VXGEOGRID_H
 
 #include "BoundingBox.h"
+#include <cstdint>
 #include <set>
+#include <utility>
 #include <vector>
 
 namespace vxCore
 {
+
+class TriRef;
 
 using TriangleIds = std::vector<unsigned long>;
 using TriangleIdsRef = std::shared_ptr<TriangleIds>;
@@ -20,6 +24,17 @@ struct SearchResult
 	}
 	unsigned long index;
 	TriangleIdsRef listRef;
+};
+
+/// Per-mesh accelerator. VXR_MESH=ref keeps the original unique_ptr
+/// store and plane-offset walk (including the single-cell index=0 bug).
+/// Unset / csr is the CSR store + Amanatides–Woo marcher.
+/// VXR_MESH=bvh is a per-mesh triangle BVH (closest-hit) on TriangleMesh.
+enum class MeshBackend
+{
+	kRef,
+	kCsr,
+	kBvh
 };
 
 ///
@@ -179,6 +194,25 @@ public:
 	/// \return
 	///
 	bool hasTriangles(const long idx) const;
+
+	/// VXR_MESH=ref|csr|bvh. Unset is csr. setBackend overrides it.
+	static void setBackend(MeshBackend mode);
+	static MeshBackend backend();
+	static const char *backendName();
+
+	/// Flatten pending CSR inserts. No-op on the reference store.
+	void finalize();
+
+	/// CSR cell contents. count is 0 when the cell is empty.
+	const std::uint32_t *cellIds(unsigned long idx, unsigned &count) const;
+
+private:
+	void locateAndRegisterRef(const TriRef &tri, unsigned long triangleID);
+	void locateAndRegisterCsr(const TriRef &tri, unsigned long triangleID);
+
+	std::vector<std::pair<std::uint32_t, std::uint32_t>> m_pending;
+	std::vector<std::uint32_t> m_offsets;
+	std::vector<std::uint32_t> m_ids;
 };
 }
 #endif // VXGEOGRID_H

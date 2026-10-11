@@ -1,4 +1,5 @@
 #include "Cylinder.h"
+#include "PerfStats.h"
 
 using namespace vxCore;
 
@@ -17,6 +18,7 @@ bool Cylinder::throwRay(const Ray &ray) const
 
 int Cylinder::throwRay(const Ray &ray, Collision &col) const
 {
+	PERF_COUNT(kCylinderTest);
 	col.setValid(false);
 
 	//// CAPS

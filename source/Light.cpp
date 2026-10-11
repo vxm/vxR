@@ -1,5 +1,6 @@
 #include "Light.h"
 #include "LightShader.h"
+#include "PerfStats.h"
 #include "Scene.h"
 
 using namespace vxCore;
@@ -37,6 +38,7 @@ void Light::setTransform(const Matrix44 &transform) { m_transform = transform; }
 bool Light::reachesLightSource(const Ray &ray) const
 {
 	Collision col;
+	PERF_COUNT(kRayShadow);
 	return m_scene->throwRay(ray, col) != 1;
 }
 
@@ -411,13 +413,17 @@ Color DirectLight::acummulationLight(const Ray &,
 		const Ray ff(cPnt + littleNormal, m_orientation.inverted());
 
 		Collision col;
-		if (!m_castShadows || !(m_scene->throwRay(ff, col) == 1))
+		if (!m_castShadows ||
+			(PERF_COUNT(kRayShadow), !(m_scene->throwRay(ff, col) == 1)))
 		{
 			ret = color().gained(lumm);
 		}
 	}
 
-	std::cout << "direct light acummul: " << ret << std::endl;
+	if (!PerfStats::quiet())
+	{
+		std::cout << "direct light acummul: " << ret << std::endl;
+	}
 
 	return ret;
 }
@@ -443,6 +449,7 @@ Color IBLight::acummulationLight(const Ray &, const Collision &collision) const
 		if (luma > m_lowThreshold && lumm > 0.0001)
 		{
 			Collision col;
+			PERF_COUNT(kRayEnvLight);
 			m_scene->throwRay(f, col);
 			if (col.isValid())
 			{
@@ -511,6 +518,7 @@ Color AreaLight::acummulationLight(const Ray &,
 		{
 			const Ray ff(cPnt + littleNormal, orientation);
 			Collision col;
+			PERF_COUNT(kRayShadow);
 			if (!(m_scene->throwRay(ff, col) == 1))
 			{
 				auto ratio = lightRatio(f, orientation);

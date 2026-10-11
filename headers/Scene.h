@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-#include "BroadPhase.h"
+#include "AccelStructure.h"
 #include "Camera.h"
 #include "Clock.h"
 #include "Cylinder.h"
@@ -70,7 +70,7 @@ protected:
   std::vector<Camera> m_cameras;
   ImagePropertiesHandle m_properties = {nullptr};
 
-  vxBroadPhaseHandle m_broadPhase;
+  AccelStructureHandle m_accel;
   // TODO: private and getter setter.
   long long dRays{0};
 
@@ -79,7 +79,8 @@ public:
   /// \brief vxScene
   /// \param imageProperties
   ///
-  Scene(ImagePropertiesHandle imageProperties);
+  Scene(ImagePropertiesHandle imageProperties,
+		const std::string &accelName = AccelStructure::defaultName());
   ~Scene() = default;
 
   ///
@@ -311,6 +312,15 @@ public:
 
   SphereHandle createSphere();
   void buildSpheres();
+
+  /// Name of the acceleration structure backend in use.
+  const char *accelName() const { return m_accel->name(); }
+  /// The acceleration structure in use.
+  const AccelStructure &accel() const { return *m_accel; }
+  /// Replaces the acceleration structure with another backend that gets the
+  /// same visibles (used by tests that compare backends on one built scene).
+  /// Returns false, and changes nothing, when the name is not registered.
+  bool switchAccel(const std::string &name);
 
   // renderable interface
   bool throwRay(const Ray &ray) const;

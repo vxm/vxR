@@ -1,4 +1,5 @@
 #include "Sphere.h"
+#include "PerfStats.h"
 
 using namespace vxCore;
 
@@ -19,6 +20,7 @@ bool Sphere::throwRay(const Ray &ray) const { return Geometry::throwRay(ray); }
 
 int Sphere::throwRay(const Ray &ray, Collision &col) const
 {
+	PERF_COUNT(kSphereTest);
 	auto d = ray.direction();
 	auto f = ray.origin() - m_bb->center();
 

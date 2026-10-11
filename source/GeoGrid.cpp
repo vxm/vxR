@@ -1,8 +1,64 @@
 #include "GeoGrid.h"
+#include "PerfStats.h"
+#include "TriRef.h"
+
 #include <algorithm>
+#include <atomic>
 #include <climits>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
 
 using namespace vxCore;
+
+namespace
+{
+// -1 means "not decided yet, ask the environment".
+std::atomic<int> g_meshBackend{-1};
+
+MeshBackend currentBackend()
+{
+	int mode = g_meshBackend.load(std::memory_order_relaxed);
+	if (mode < 0)
+	{
+		const char *env = std::getenv("VXR_MESH");
+		if (env && std::strcmp(env, "ref") == 0)
+		{
+			mode = static_cast<int>(MeshBackend::kRef);
+		}
+		else if (env && std::strcmp(env, "bvh") == 0)
+		{
+			mode = static_cast<int>(MeshBackend::kBvh);
+		}
+		else
+		{
+			mode = static_cast<int>(MeshBackend::kCsr);
+		}
+		g_meshBackend.store(mode, std::memory_order_relaxed);
+	}
+	return static_cast<MeshBackend>(mode);
+}
+} // namespace
+
+void GeoGrid::setBackend(MeshBackend mode)
+{
+	g_meshBackend.store(static_cast<int>(mode), std::memory_order_relaxed);
+}
+
+MeshBackend GeoGrid::backend() { return currentBackend(); }
+
+const char *GeoGrid::backendName()
+{
+	switch (currentBackend())
+	{
+	case MeshBackend::kRef:
+		return "ref";
+	case MeshBackend::kBvh:
+		return "bvh";
+	default:
+		return "csr";
+	}
+}
 
 GeoGrid::GeoGrid() {}
 
@@ -10,7 +66,22 @@ std::shared_ptr<BoundingBox> GeoGrid::bb() const { return m_bb; }
 
 void GeoGrid::updateCache()
 {
-	m_members.resize(m_rx * m_ry * m_rz);
+	const auto n = m_rx * m_ry * m_rz;
+	if (currentBackend() == MeshBackend::kRef)
+	{
+		m_members.clear();
+		m_members.resize(n);
+		m_pending.clear();
+		m_offsets.clear();
+		m_ids.clear();
+	}
+	else
+	{
+		m_members.clear();
+		m_pending.clear();
+		m_offsets.clear();
+		m_ids.clear();
+	}
 	m_xvalues.resize(m_rx + 1);
 
 	// Recording xlices to the grid.
@@ -146,6 +217,20 @@ unsigned long GeoGrid::linearLookupVoxel(const v3s &v, int &a, int &b,
 
 void GeoGrid::locateAndRegister(const TriRef &tri, unsigned long triangleID)
 {
+	if (currentBackend() == MeshBackend::kRef)
+	{
+		locateAndRegisterRef(tri, triangleID);
+		return;
+	}
+	if (currentBackend() == MeshBackend::kBvh)
+	{
+		return;
+	}
+	locateAndRegisterCsr(tri, triangleID);
+}
+
+void GeoGrid::locateAndRegisterRef(const TriRef &tri, unsigned long triangleID)
+{
 	int a1, b1, c1;
 	auto idx1 = linearLookupVoxel(tri.p1, a1, b1, c1);
 
@@ -212,8 +297,132 @@ void GeoGrid::locateAndRegister(const TriRef &tri, unsigned long triangleID)
 			}
 }
 
+void GeoGrid::locateAndRegisterCsr(const TriRef &tri, unsigned long triangleID)
+{
+	int a1, b1, c1;
+	auto idx1 = linearLookupVoxel(tri.p1, a1, b1, c1);
+
+	int a2, b2, c2;
+	auto idx2 = linearLookupVoxel(tri.p2, a2, b2, c2);
+
+	int a3, b3, c3;
+	auto idx3 = linearLookupVoxel(tri.p3, a3, b3, c3);
+
+	const auto push = [&](unsigned long idx) {
+		if (indexIsValid(static_cast<long>(idx)))
+		{
+			m_pending.emplace_back(static_cast<std::uint32_t>(idx),
+			                       static_cast<std::uint32_t>(triangleID));
+		}
+	};
+
+	if (idx1 == idx2 && idx2 == idx3)
+	{
+		push(idx1);
+		return;
+	}
+
+	auto aMin = std::min(a3, std::min(a1, a2));
+	auto bMin = std::min(b3, std::min(b1, b2));
+	auto cMin = std::min(c3, std::min(c1, c2));
+
+	auto aMax = std::max(a3, std::max(a1, a2));
+	auto bMax = std::max(b3, std::max(b1, b2));
+	auto cMax = std::max(c3, std::max(c1, c2));
+
+	for (auto x = aMin; x <= aMax; x++)
+		for (auto y = bMin; y <= bMax; y++)
+			for (auto z = cMin; z <= cMax; z++)
+			{
+				push(index(x, y, z));
+			}
+}
+
+void GeoGrid::finalize()
+{
+	if (currentBackend() == MeshBackend::kRef ||
+	    currentBackend() == MeshBackend::kBvh)
+	{
+		return;
+	}
+
+	const auto n = size();
+	m_offsets.assign(n + 1, 0);
+	if (m_pending.empty())
+	{
+		m_ids.clear();
+		return;
+	}
+
+	std::stable_sort(m_pending.begin(), m_pending.end(),
+	                 [](const auto &a, const auto &b) { return a.first < b.first; });
+
+	m_ids.resize(m_pending.size());
+	std::uint32_t cursor = 0;
+	std::uint32_t cell = 0;
+	for (std::size_t i = 0; i < m_pending.size();)
+	{
+		const auto c = m_pending[i].first;
+		while (cell < c && cell < n)
+		{
+			m_offsets[cell + 1] = cursor;
+			cell++;
+		}
+		while (i < m_pending.size() && m_pending[i].first == c)
+		{
+			m_ids[cursor++] = m_pending[i].second;
+			i++;
+		}
+		if (c < n)
+		{
+			m_offsets[c + 1] = cursor;
+			cell = c + 1;
+		}
+	}
+	while (cell < n)
+	{
+		m_offsets[cell + 1] = cursor;
+		cell++;
+	}
+
+	unsigned long occupied = 0;
+	for (unsigned long i = 0; i < n; i++)
+	{
+		if (m_offsets[i + 1] > m_offsets[i])
+		{
+			occupied++;
+		}
+	}
+
+	std::cout << " -- mesh: csr GeoGrid " << m_rx << "x" << m_ry << "x" << m_rz
+	          << ", " << occupied << " occupied, " << m_ids.size() << " ids --"
+	          << std::endl;
+
+	m_pending.clear();
+	m_pending.shrink_to_fit();
+}
+
+const std::uint32_t *GeoGrid::cellIds(unsigned long idx, unsigned &count) const
+{
+	if (m_offsets.size() < 2 || idx + 1 >= m_offsets.size())
+	{
+		count = 0;
+		return nullptr;
+	}
+	const auto a = m_offsets[idx];
+	const auto b = m_offsets[idx + 1];
+	count = static_cast<unsigned>(b - a);
+	return count ? m_ids.data() + a : nullptr;
+}
+
 bool GeoGrid::hasTriangles(const long idx) const
 {
+	if (currentBackend() != MeshBackend::kRef)
+	{
+		unsigned count = 0;
+		cellIds(static_cast<unsigned long>(idx), count);
+		return count != 0;
+	}
 	return !(m_members[idx] == nullptr);
 }
 
@@ -243,6 +452,7 @@ const SearchResult *GeoGrid::getList(const Ray &ray, v3s &sp) const
 		//		std::cout << "sp: " << sp << std::endl;
 
 		retVal = linearLookupVoxel(sp, idX, idY, idZ);
+		PERF_COUNT(kMeshBucketLookup);
 
 		//		std::cout << "\tidx: " << idX << "idx: " << idY << "idx: " << idZ
 		//		          << std::endl;

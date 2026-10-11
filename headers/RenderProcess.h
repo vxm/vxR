@@ -2,6 +2,8 @@
 #define VXRENDERPROCESS_H
 
 #include <atomic>
+#include <chrono>
+#include <cstdint>
 #include <memory>
 
 #include "ImageProperties.h"
@@ -67,6 +69,19 @@ private:
 	/// \brief m_rayDepth
 	///
 	unsigned int m_rayDepth = 0u;
+	///
+	/// \brief m_seeded
+	/// When set every pixel draws its random numbers from a generator seeded
+	/// with (m_seed, pixel id), so the render is reproducible and does not
+	/// depend on the number of threads.
+	bool m_seeded = false;
+	std::uint64_t m_seed = 0u;
+	///
+	/// \brief m_renderBegin
+	/// Wall clock of the render and the moment (ns since m_renderBegin)
+	/// the last thread finished.
+	std::chrono::steady_clock::time_point m_renderBegin;
+	std::atomic<std::int64_t> m_renderEndNs{0};
 
 public:
 	// constructor with imageproperties propagation
@@ -118,6 +133,20 @@ public:
 	/// \param nMaxThreads
 	///
 	void setNMaxThreads(unsigned int nMaxThreads);
+	///
+	/// \brief setSeed
+	/// Makes the render reproducible.
+	void setSeed(std::uint64_t seed);
+	///
+	/// \brief renderSeconds
+	/// Seconds from the start of execute() to the end of the last render
+	/// thread. Unlike execute() it does not include the progress polling sleep.
+	double renderSeconds() const;
+	///
+	/// \brief activeThreads
+	/// Threads execute() really starts: nMaxThreads(), or 1 in the Debug
+	/// build where the render runs on the calling thread.
+	unsigned activeThreads() const;
 	///
 	/// \brief nMaxThreads
 	/// \return

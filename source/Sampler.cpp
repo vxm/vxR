@@ -64,22 +64,28 @@ scalar Sampler::y() const { return MU::getRand(1.0); }
 
 v2s Sampler::xy(const scalar jitter)
 {
-	m_k >= m_nSamples ? m_k = 0 : m_k++;
+	// m_k used to step to m_nSamples before wrapping, reading one element past
+	// the end of the table on every other call.
+	if (m_k >= m_nSamples)
+	{
+		m_k = 0;
+	}
+	const auto k = m_k++;
 
 	v2s ret;
 	switch (m_nSamples)
 	{
 	case 1:
-		ret = uniformScatter1[m_k] + MU::getRand(jitter);
+		ret = uniformScatter1[k] + MU::getRand(jitter);
 		break;
 	case 2:
-		ret = uniformScatter2[m_k] + MU::getRand(jitter);
+		ret = uniformScatter2[k] + MU::getRand(jitter);
 		break;
 	case 3:
-		ret = uniformScatter3[m_k] + MU::getRand(jitter);
+		ret = uniformScatter3[k] + MU::getRand(jitter);
 		break;
 	case 4:
-		ret = uniformScatter4[m_k] + MU::getRand(jitter);
+		ret = uniformScatter4[k] + MU::getRand(jitter);
 		break;
 	default:
 		ret.set(MU::getRand(1.0 + jitter), MU::getRand(1.0 + jitter));
@@ -108,7 +114,11 @@ void Sampler::setSamples(unsigned int samples)
 	resetIterator();
 }
 
-void Sampler::resetIterator() { m_iter = 0; }
+void Sampler::resetIterator()
+{
+	m_iter = 0;
+	m_k = 0;
+}
 
 bool Sampler::random() const { return m_random; }
 
