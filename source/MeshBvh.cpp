@@ -2,6 +2,9 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
+#include <cstring>
+#include <fstream>
 #include <iostream>
 #include <limits>
 
@@ -137,6 +140,216 @@ void MeshBvh::build(const std::vector<TriRef> &tris)
 			  << " nodes, " << m_info.leaves << " leaves, depth "
 			  << m_info.maxDepth + 1 << ", max leaf " << m_info.maxLeafPrims
 			  << " --" << std::endl;
+}
+
+namespace
+{
+
+constexpr char kCacheMagic[8] = {'v', 'x', 'R', 'm', 'b', 'v', 'h', '1'};
+constexpr std::uint32_t kCacheVersion = 1;
+// Bump when the tree shape can change for the same triangles.
+constexpr std::uint32_t kCacheBuilder = 1;
+
+template <typename T>
+bool writePod(std::ostream &out, const T &value)
+{
+	out.write(reinterpret_cast<const char *>(&value), sizeof(T));
+	return static_cast<bool>(out);
+}
+
+template <typename T>
+bool readPod(std::istream &in, T &value)
+{
+	in.read(reinterpret_cast<char *>(&value), sizeof(T));
+	return static_cast<bool>(in);
+}
+
+} // namespace
+
+bool MeshBvh::readCache(const std::string &path, std::size_t triangleCount,
+						const CacheStamp &stamp)
+{
+	m_nodes.clear();
+	m_prims.clear();
+	m_info = BuildInfo{};
+
+	std::ifstream in(path, std::ios::binary);
+	if (!in)
+	{
+		return false;
+	}
+
+	char magic[8] = {};
+	std::uint32_t version = 0;
+	std::uint32_t builder = 0;
+	std::uint32_t leaf = 0;
+	std::uint32_t bins = 0;
+	std::uint64_t triCount = 0;
+	std::uint64_t nodeCount = 0;
+	std::uint64_t primCount = 0;
+	std::uint64_t sourceBytes = 0;
+	std::int64_t sourceMtime = 0;
+	scalar transform[16] = {};
+	std::uint64_t leaves = 0;
+	std::uint64_t maxDepth = 0;
+	std::uint64_t maxLeafPrims = 0;
+
+	if (!in.read(magic, 8) || std::memcmp(magic, kCacheMagic, 8) != 0 ||
+		!readPod(in, version) || version != kCacheVersion ||
+		!readPod(in, builder) || builder != kCacheBuilder ||
+		!readPod(in, leaf) || leaf != kMaxLeafPrims || !readPod(in, bins) ||
+		bins != kBins || !readPod(in, triCount) ||
+		triCount != triangleCount || !readPod(in, nodeCount) ||
+		!readPod(in, primCount) || primCount != triCount ||
+		!readPod(in, sourceBytes) || sourceBytes != stamp.sourceBytes ||
+		!readPod(in, sourceMtime) || sourceMtime != stamp.sourceMtime ||
+		!in.read(reinterpret_cast<char *>(transform), sizeof(transform)) ||
+		std::memcmp(transform, stamp.transform, sizeof(transform)) != 0 ||
+		!readPod(in, leaves) || !readPod(in, maxDepth) ||
+		!readPod(in, maxLeafPrims))
+	{
+		return false;
+	}
+
+	if (triCount == 0 || nodeCount == 0 || nodeCount > triCount * 2 ||
+		maxDepth + 1 >= kStackSize)
+	{
+		return false;
+	}
+
+	m_nodes.resize(static_cast<std::size_t>(nodeCount));
+	for (auto &node : m_nodes)
+	{
+		std::uint32_t count = 0;
+		if (!in.read(reinterpret_cast<char *>(node.bmin), sizeof(node.bmin)) ||
+			!in.read(reinterpret_cast<char *>(node.bmax), sizeof(node.bmax)) ||
+			!readPod(in, node.offset) || !readPod(in, count) || count > 65535u)
+		{
+			m_nodes.clear();
+			return false;
+		}
+		node.count = static_cast<std::uint16_t>(count);
+		node.pad = 0;
+	}
+
+	m_prims.resize(static_cast<std::size_t>(primCount));
+	if (!in.read(reinterpret_cast<char *>(m_prims.data()),
+				 static_cast<std::streamsize>(m_prims.size() * sizeof(std::uint32_t))))
+	{
+		m_nodes.clear();
+		m_prims.clear();
+		return false;
+	}
+
+	for (const auto id : m_prims)
+	{
+		if (id >= triCount)
+		{
+			m_nodes.clear();
+			m_prims.clear();
+			return false;
+		}
+	}
+	for (const auto &node : m_nodes)
+	{
+		if (node.count == 0)
+		{
+			if (static_cast<std::uint64_t>(node.offset) + 1 >= nodeCount)
+			{
+				m_nodes.clear();
+				m_prims.clear();
+				return false;
+			}
+		}
+		else if (static_cast<std::uint64_t>(node.offset) + node.count > primCount)
+		{
+			m_nodes.clear();
+			m_prims.clear();
+			return false;
+		}
+	}
+
+	m_info.triangles = static_cast<std::size_t>(triCount);
+	m_info.nodes = static_cast<std::size_t>(nodeCount);
+	m_info.leaves = static_cast<std::size_t>(leaves);
+	m_info.maxDepth = static_cast<std::size_t>(maxDepth);
+	m_info.maxLeafPrims = static_cast<std::size_t>(maxLeafPrims);
+	return true;
+}
+
+bool MeshBvh::writeCache(const std::string &path, const CacheStamp &stamp) const
+{
+	if (m_nodes.empty() || m_prims.size() != m_info.triangles)
+	{
+		return false;
+	}
+
+	const auto temp = path + ".tmp";
+	{
+		std::ofstream out(temp, std::ios::binary | std::ios::trunc);
+		if (!out)
+		{
+			return false;
+		}
+
+		const std::uint32_t version = kCacheVersion;
+		const std::uint32_t builder = kCacheBuilder;
+		const std::uint32_t leaf = kMaxLeafPrims;
+		const std::uint32_t bins = kBins;
+		const std::uint64_t triCount = m_info.triangles;
+		const std::uint64_t nodeCount = m_nodes.size();
+		const std::uint64_t primCount = m_prims.size();
+		const std::uint64_t leaves = m_info.leaves;
+		const std::uint64_t maxDepth = m_info.maxDepth;
+		const std::uint64_t maxLeafPrims = m_info.maxLeafPrims;
+
+		out.write(kCacheMagic, 8);
+		if (!writePod(out, version) || !writePod(out, builder) ||
+			!writePod(out, leaf) || !writePod(out, bins) ||
+			!writePod(out, triCount) || !writePod(out, nodeCount) ||
+			!writePod(out, primCount) || !writePod(out, stamp.sourceBytes) ||
+			!writePod(out, stamp.sourceMtime) ||
+			!out.write(reinterpret_cast<const char *>(stamp.transform),
+					   sizeof(stamp.transform)) ||
+			!writePod(out, leaves) || !writePod(out, maxDepth) ||
+			!writePod(out, maxLeafPrims))
+		{
+			out.close();
+			std::remove(temp.c_str());
+			return false;
+		}
+
+		for (const auto &node : m_nodes)
+		{
+			const std::uint32_t count = node.count;
+			if (!out.write(reinterpret_cast<const char *>(node.bmin),
+						   sizeof(node.bmin)) ||
+				!out.write(reinterpret_cast<const char *>(node.bmax),
+						   sizeof(node.bmax)) ||
+				!writePod(out, node.offset) || !writePod(out, count))
+			{
+				out.close();
+				std::remove(temp.c_str());
+				return false;
+			}
+		}
+
+		if (!out.write(reinterpret_cast<const char *>(m_prims.data()),
+					   static_cast<std::streamsize>(m_prims.size() *
+													sizeof(std::uint32_t))))
+		{
+			out.close();
+			std::remove(temp.c_str());
+			return false;
+		}
+	}
+
+	if (std::rename(temp.c_str(), path.c_str()) != 0)
+	{
+		std::remove(temp.c_str());
+		return false;
+	}
+	return true;
 }
 
 void MeshBvh::buildNode(std::uint32_t ni, std::vector<BuildItem> &items,

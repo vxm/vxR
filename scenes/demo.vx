@@ -32,11 +32,11 @@ node
 name = "renderSettings_0_low"
 type = "vxRenderSettings"
 active = "true"
-    resolution = 2732 1536
-    pixelSamples = 2
-    rayDepth = 6
-    giMultiplier = 26.5
-    numThreads = -1
+    resolution = 1280 720
+    pixelSamples = 332
+    rayDepth = 9
+    giMultiplier = 1.0
+    numThreads = 12
 }
 
 node
@@ -106,7 +106,7 @@ type = "vxCamera"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -3.5 0.0 -3.57 1]
     focusDistance = 4.9
-    lensSize = 0.007
+    lensSize = 0.08
     horizontalAperture = 1.27
     verticalAperture = 1.7786
     focalLength = 4.8
@@ -118,20 +118,11 @@ node
 name = "image_1"
 type = "vxImage"
 active = "true"
-    imagePath = "../images/Tropical_Ruins/TropicalRuins_8k.jpg"
-    gain = 1.0
+    imagePath = "/Users/mblanc/Documents/r-export/kloofendal_48d_partly_cloudy_puresky_16k.exr"
+    gain = 0.0
     gamma = 1.0
 }
 
-node
-{
-name = "image_2"
-type = "vxImage"
-active = "true"
-    imagePath = "../images/Tropical_Ruins/TropicalRuins_8k.jpg"
-    gain = 1.1
-    gamma = 2.2
-}
 
 node
 {
@@ -139,22 +130,21 @@ name = "shader_1"
 type = "vxShader"
 active = "true"
     diffuseColor = 255 255 255
-    diffuseCoeficent = 0.6
-    giCoeficent = 0.99
-    giColorMultiplier = 238 216 126
+    diffuseCoeficent = 1.0
+    giCoeficent = 1.0
+    giColorMultiplier = 255 255 255
     rayDepth = 0
-    reflectionRadius = 0.02
-    reflectionCoefficent = 0.4
+    reflectionRadius = 0.0
+    reflectionCoefficent = 0.0
     reflectionColorMultiplier = 238 216 126
-    refractionRadius = 1.0
+    refractionRadius = 0.0
     refractionSamples = 0
-    refractionRadius = 0.001
-    refractionCoefficent = 0.05
-    refractionColorMultiplier = 238 216 126
+    refractionCoefficent = 0.0
+    refractionColorMultiplier = 255 255 255
     sscSamples = 0
-    sscRadius = 1.0
-    sscCoefficent = 0.5
-    sscColorMultiplier = 238 216 126
+    sscRadius = 0.0
+    sscCoefficent = 0.0
+    sscColorMultiplier = 255 255 255
 }
 
 node
@@ -163,67 +153,158 @@ name = "shader_2"
 type = "vxShader"
 active = "true"
     diffuseColor = 255 255 255
-    diffuseCoeficent = 0.9
-    giCoeficent = 0.9
-    giColorMultiplier = 238 216 126
+    diffuseCoeficent = 0.45
+    giCoeficent = 0.2
+    giColorMultiplier = 255 255 255
     rayDepth = 0
-    reflectionRadius = 0.5
-    reflectionCoefficent = 0.99
-    reflectionColorMultiplier = 238 2 126
-    refractionRadius = 1.0
+    reflectionRadius = 0.04
+    reflectionCoefficent = 0.55
+    reflectionColorMultiplier = 255 248 235
+    refractionRadius = 0.0
     refractionSamples = 0
-    refrationRadius = 1.0
-    refractionCoefficent = 0.5
-    refractionColorMultiplier = 238 216 126
+    refractionCoefficent = 0.0
+    refractionColorMultiplier = 255 255 255
     sscSamples = 0
-    sscRadius = 1.0
-    sscCoefficent = 0.5
-    sscColorMultiplier = 238 216 126
+    sscRadius = 0.0
+    sscCoefficent = 0.0
+    sscColorMultiplier = 255 255 255
+}
+
+node
+{
+name = "shader_mirror"
+type = "vxShader"
+active = "true"
+    diffuseColor = 255 255 255
+    diffuseCoeficent = 0.06
+    giCoeficent = 0.04
+    giColorMultiplier = 255 255 255
+    rayDepth = 0
+    reflectionRadius = 0.0
+    reflectionCoefficent = 0.94
+    reflectionColorMultiplier = 255 255 255
+    refractionRadius = 0.0
+    refractionSamples = 0
+    refractionCoefficent = 0.0
+    refractionColorMultiplier = 255 255 255
+    sscSamples = 0
+    sscRadius = 0.0
+    sscCoefficent = 0.0
+    sscColorMultiplier = 255 255 255
+}
+
+node
+{
+name = "shader_glass"
+type = "vxShader"
+active = "true"
+    diffuseColor = 255 255 255
+    diffuseCoeficent = 0.04
+    giCoeficent = 0.02
+    giColorMultiplier = 255 255 255
+    rayDepth = 0
+    reflectionRadius = 0.0
+    reflectionCoefficent = 0.18
+    reflectionColorMultiplier = 230 240 245
+    refractionRadius = 0.0
+    refractionSamples = 1
+    refractionCoefficent = 0.75
+    refractionColorMultiplier = 190 220 230
+    sscSamples = 0
+    sscRadius = 0.0
+    sscCoefficent = 0.0
+    sscColorMultiplier = 255 255 255
+}
+
+node
+{
+name = "shader_sss"
+type = "vxShader"
+active = "true"
+    diffuseColor = 255 255 255
+    diffuseCoeficent = 0.4
+    giCoeficent = 0.25
+    giColorMultiplier = 255 220 200
+    rayDepth = 0
+    reflectionRadius = 0.0
+    reflectionCoefficent = 0.04
+    reflectionColorMultiplier = 255 255 255
+    refractionRadius = 0.0
+    refractionSamples = 0
+    refractionCoefficent = 0.0
+    refractionColorMultiplier = 255 255 255
+    sscSamples = 1
+    sscRadius = 0.04
+    sscCoefficent = 0.7
+    sscColorMultiplier = 255 150 120
+}
+
+node
+{
+name = "shader_voxel"
+type = "vxShader"
+active = "true"
+    diffuseColor = 255 255 255
+    diffuseCoeficent = 0.9
+    giCoeficent = 0.45
+    giColorMultiplier = 255 255 255
+    rayDepth = 0
+    reflectionRadius = 0.0
+    reflectionCoefficent = 0.0
+    reflectionColorMultiplier = 255 255 255
+    refractionRadius = 0.0
+    refractionSamples = 0
+    refractionCoefficent = 0.0
+    refractionColorMultiplier = 255 255 255
+    sscSamples = 0
+    sscRadius = 0.0
+    sscCoefficent = 0.0
+    sscColorMultiplier = 255 255 255
 }
 
 node
 {
 name = "cylinder_1"
 type = "vxCylinder"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
-    shader = "shader_1"
-    color = 255 255 255
-    radius = 0.5
-    height = 1.0
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.980 -0.36 -2.050 1]
+    shader = "shader_2"
+    color = 196 154 72
+    radius = 0.055
+    height = 0.24
 }
 
 node
 {
 name = "sphere_1"
 type = "vxSphere"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -0.6 0.0 0.0 1]
-    shader = "shader_1"
-    color = 255 255 255
-    radius = 0.4
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.640 -0.415 -1.823 1]
+    shader = "shader_mirror"
+    color = 220 222 226
+    radius = 0.065
 }
 
 node
 {
 name = "sphere_2"
 type = "vxSphere"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 1.5 0.0 -0.7 1]
-    shader = "shader_1"
-    color = 255 255 255
-    radius = 0.6
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.753 -0.415 -1.710 1]
+    shader = "shader_glass"
+    color = 200 225 230
+    radius = 0.065
 }
 
 node
 {
 name = "sphere_3"
 type = "vxSphere"
-active = "false"
-    transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
-    shader = "shader_1"
-    color = 255 171 122
-    radius = 0.7
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.867 -0.400 -1.597 1]
+    shader = "shader_sss"
+    color = 196 78 62
+    radius = 0.08
 }
 
 
@@ -292,10 +373,10 @@ node
 {
 name = "tennyson_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1.8 0 0 0 0 1.8 0 0 0 0 1.8 0 1.5 -0.69 -2.0 1]
-    filePath = "../geometry/tennyson.ply"
-    color = 138 158 144
+active = "true"
+    transform = [0.9413 0 0 0 0 0.9413 0 0 0 0 0.9413 0 0.676 -0.520 -0.265 1]
+    filePath = "../geometry/tennyson_1.ply"
+    color = 186 178 166
     shader = "shader_1"
 }
 
@@ -327,10 +408,10 @@ node
 {
 name = "juan"
 type = "vxGeometry"
-active = "false"
-    transform = [4 0 0 0 0 4 0 0 0 0 4 0 0.0 0.20 0.0 1]
-    filePath = "juan_0.ply"
-    color = 249 249 249
+active = "true"
+    transform = [1.7103 0 0 0 0 1.7103 0 0 0 0 1.7103 0 0.571 -0.059 -2.011 1]
+    filePath = "../geometry/juan_0.ply"
+    color = 168 166 172
     shader = "shader_1"
 }
 
@@ -339,10 +420,10 @@ node
 {
 name = "faun_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [2.9 0 0 0 0 2.9 0 0 0 0 2.9 0 0.0 0.501 0.0 1]
+active = "true"
+    transform = [1.0291 0 0 0 0 1.0291 0 0 0 0 1.0291 0 -0.729 -0.480 -0.741 1]
     filePath = "../geometry/dancing_faun_low.ply"
-    color = 249 249 249
+    color = 180 168 154
     shader = "shader_1"
 }
 
@@ -363,10 +444,10 @@ node
 {
 name = "pieta_1"
 type = "vxGeometry"
-active = "false"
-    transform = [1.5 0 0 0 0 1.5 0 0 0 0 1.5 0 -1. -0.65 0.2 1]
+active = "true"
+    transform = [0.6805 0 0 0 0 0.6805 0 0 0 0 0.6805 0 -1.150 -0.498 -0.306 1]
     filePath = "../geometry/pieta.ply"
-    color = 210 210 215
+    color = 164 172 176
     shader = "shader_1"
 }
 
@@ -433,9 +514,9 @@ node
 name = "milo_tris"
 type = "vxGeometry"
 active = "false"
-    transform = [1.0 0 0 0 0 1.0 0 0 0 0 1.0 0 1.1 -0.65 -0.4 1]
-    filePath = "../geometry/vmilo_0.ply"
-    color = 212 210 198
+    transform = [0.0934 0 0 0 0 0.0934 0 0 0 0 0.0934 0 -0.707 -0.225 0.409 1]
+    filePath = "../geometry/vmilo_1.ply"
+    color = 172 168 160
     shader = "shader_1"
 }
 
@@ -443,10 +524,10 @@ node
 {
 name = "mercury_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [2.5 0 0 0 0 2.5 0 0 0 0 2.5 0 1.2 -0.65 0.2 1]
-    filePath = "../geometry/mercury.ply"
-    color = 210 219 214
+active = "true"
+    transform = [0.9714 0 0 0 0 0.9714 0 0 0 0 0.9714 0 0.018 -0.505 0.230 1]
+    filePath = "../geometry/mercury_1.ply"
+    color = 174 164 156
     shader = "shader_1"
 }
 
@@ -454,10 +535,10 @@ node
 {
 name = "dogs_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [0.2 0 0 0 0 0.2 0 0 0 0 0 0.2 1.3 -0.65 -0.2 1]
+active = "true"
+    transform = [0.2456 0 0 0 0 0.2456 0 0 0 0 0.2456 0 2.535 -0.478 1.607 1]
     filePath = "../geometry/dogs.ply"
-    color = 159 178 164
+    color = 188 184 174
     shader = "shader_1"
 }
 
@@ -466,10 +547,10 @@ node
 {
 name = "tiger_snake_tris"
 type = "vxGeometry"
-active = "false"
-    transform = [1.1 0 0 0 0 1.1 0 0 0 0 1.1 0 0.0 -0.65 0.0 1]
+active = "true"
+    transform = [0.3810 0 0 0 0 0.3810 0 0 0 0 0.3810 0 2.046 -0.475 2.018 1]
     filePath = "../geometry/tiger_snake.ply"
-    color = 163 168 164
+    color = 160 158 150
     shader = "shader_1"
 }
 
@@ -713,6 +794,82 @@ active = "false"
 //../images/Subway_Lights/20_Subway_s_8k.jpg
 //../images/GrandCanyon_C_YumaPoint/GCanyon_C_YumaPoint_8k.jpg
 
+node
+{
+name = "bunny"
+type = "vxGeometry"
+active = "true"
+    transform = [5.4839 0 0 0 0 5.4839 0 0 0 0 5.4839 0 3.315 -0.661 2.727 1]
+    filePath = "../geometry/bunny.ply"
+    color = 178 186 172
+    shader = "shader_1"
+}
+
+node
+{
+name = "bun_zipper"
+type = "vxGeometry"
+active = "true"
+    transform = [5.4487 0 0 0 0 5.4487 0 0 0 0 5.4487 0 2.879 -0.660 3.163 1]
+    filePath = "../geometry/bun_zipper.ply"
+    color = 170 162 168
+    shader = "shader_1"
+}
+
+node
+{
+name = "lucy"
+type = "vxGeometry"
+active = "true"
+    transform = [0.7692 0 0 0 0 0.7692 0 0 0 0 0.7692 0 -0.223 -0.482 0.529 1]
+    filePath = "../geometry/lucyTop_2.ply"
+    color = 182 174 160
+    shader = "shader_1"
+}
+
+node
+{
+name = "naranjo"
+type = "vxGeometry"
+active = "true"
+    transform = [1.0379 0 0 0 0 1.0379 0 0 0 0 1.0379 0 1.648 -0.490 2.453 1]
+    filePath = "../geometry/naranjoBulnes.ply"
+    color = 162 170 164
+    shader = "shader_1"
+}
+
+node
+{
+name = "ninph"
+type = "vxGeometry"
+active = "true"
+    transform = [0.3238 0 0 0 0 0.3238 0 0 0 0 0.3238 0 1.835 -0.508 0.606 1]
+    filePath = "../geometry/ninph_2.ply"
+    color = 190 180 168
+    shader = "shader_1"
+}
+
+node
+{
+name = "raven_skull"
+type = "vxGeometry"
+active = "true"
+    transform = [0.6538 0 0 0 0 0.6538 0 0 0 0 0.6538 0 1.181 -0.495 1.126 1]
+    filePath = "../geometry/raven_skull.ply"
+    color = 166 160 156
+    shader = "shader_1"
+}
+
+node
+{
+name = "statue_and_dog"
+type = "vxGeometry"
+active = "true"
+    transform = [0.9444 0 0 0 0 0.9444 0 0 0 0 0.9444 0 0.721 -0.500 1.515 1]
+    filePath = "../geometry/statue_and_dog_1.ply"
+    color = 176 180 168
+    shader = "shader_1"
+}
 
 node
 {
@@ -721,8 +878,10 @@ type = "vxDome"
 active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     imageNode = "image_1"
-    lightImageNode = "image_2"
+    lightImageNode = "image_1"
     radius = 1000.0
+    intensity = 3.0
+    lightClamp = 9.0
 }
 
 
@@ -777,7 +936,7 @@ node
 {
 name = "sphere_light_1"
 type = "vxSphereLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -4.0 21.0 3.0 1]
     intensity = 22.2
     color = 215 245 242
@@ -791,7 +950,7 @@ node
 {
 name = "sphere_light_2"
 type = "vxSphereLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 5.0 9.0 -16.0 1]
     intensity = 6.3
     color = 254 255 212
@@ -806,7 +965,7 @@ node
 {
 name = "sphere_light_3"
 type = "vxSphereLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9.0 21.0 13.0 1]
     intensity = 7.3
     color = 235 235 225
@@ -822,7 +981,7 @@ node
 {
 name = "sphere_light_4"
 type = "vxSphereLight"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 -9.0 0.0 0.0 1]
     intensity = 17.3
     color = 235 235 255
@@ -856,9 +1015,9 @@ name = "sun"
 type = "vxSunLight"
 active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 1 0 1]
-    intensity = 13.0
+    intensity = 1.15
     color = 255 253 252
-    orientation = 1.77 1.4 -1.456
+    orientation = -1.15 1.9 -1.15
     samples = 1
     castShadows = "true"
     radiusMultiplier = 1.0
@@ -894,7 +1053,7 @@ node
 {
 name = "floor"
 type = "vxPlane"
-active = "false"
+active = "true"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
     planeType = "Y"
     x = 0.0
@@ -903,19 +1062,32 @@ active = "false"
     pointA = 440.0 -57.0 440.0
     pointB = 450.0 -56.0 440.0
     pointC = 440.0 -56.0 450.0
-    color = 60 50 80
+    color = 24 28 34
 }
 
 node
 {
 name = "grid"
 type = "vxGrid"
-active = "true"
+active = "false"
     transform = [1 0 0 0 0 1 0 0 0 0 1 0 0.0 0.0 0.0 1]
     resolution = 474
     size = 3.2
     color = 255 255 255
     shader = "shader_1"
+}
+
+node
+{
+name = "voxel_ball"
+type = "vxGrid"
+active = "true"
+    transform = [1 0 0 0 0 1 0 0 0 0 1 0 -1.527 -0.37 -1.937 1]
+    resolution = 14
+    size = 0.26
+    color = 255 255 255
+    shader = "shader_voxel"
+    fill = "sphere"
 }
 
 node
@@ -1005,7 +1177,7 @@ node
 {
 name = "dogs_vx"
 type = "vxGridGeometry"
-active = "true"
+active = "false"
     transform = [0.47 0 0 0 0 0.47 0 0 0 0 0.47 0 0.0 -0.57 0.0 1]
     filePath = "../geometry/dogs.ply"
 }

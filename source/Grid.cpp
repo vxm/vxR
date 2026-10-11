@@ -1180,9 +1180,11 @@ bool Grid::hasCollision(const Ray &ray) const
 
 void Grid::updateBoundingBox()
 {
+	const auto &c = m_position;
+	const auto h = m_size / scalar(2.0);
 	m_bb->clear();
-	m_bb->extend(v3s(m_size / 2.0, m_size / 2.0, m_size / 2.0));
-	m_bb->extend(v3s(-m_size / 2.0, -m_size / 2.0, -m_size / 2.0));
+	m_bb->extend(v3s(c.x() + h, c.y() + h, c.z() + h));
+	m_bb->extend(v3s(c.x() - h, c.y() - h, c.z() - h));
 }
 
 void VoxelData::activate(bool active) { active ? activate() : deactivate(); }

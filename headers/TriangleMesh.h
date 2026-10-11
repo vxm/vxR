@@ -2,6 +2,7 @@
 #define VXTRIANGLEMESH_H
 
 #include <array>
+#include <deque>
 #include <vector>
 
 #include "Geometry.h"
@@ -36,6 +37,12 @@ class TriangleMesh final : public Geometry
 	/// \brief m_vertexNormals
 	///
 	std::vector<v3s> m_vertexNormals;
+	///
+	/// Face normals for meshes that have no vertex normals. TriRef stores
+	/// normals by reference, so these have to outlive the triangles. A deque
+	/// keeps existing elements put when a new face is added.
+	///
+	std::deque<v3s> m_faceNormals;
 	///
 	/// \brief m_uvs
 	///

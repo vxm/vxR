@@ -233,6 +233,20 @@ public:
 	///
 	Color computeGI(const Ray &ray, const Collision &col, unsigned int bounces);
 	///
+	/// \brief computeRefraction
+	/// One refracted ray. Index of refraction is 1.5. A total internal
+	/// reflection falls back to a mirror ray.
+	///
+	Color computeRefraction(const Ray &ray, const Collision &col,
+							unsigned int bounces);
+	///
+	/// \brief computeSubsurface
+	/// One ray started inside the surface, at sscRadius along the inward
+	/// normal, so it leaves through some other point of the same object.
+	///
+	Color computeSubsurface(const Ray &ray, const Collision &col,
+							unsigned int bounces);
+	///
 	/// \brief getShader
 	/// \param col
 	/// \return

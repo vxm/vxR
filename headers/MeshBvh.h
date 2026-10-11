@@ -2,6 +2,7 @@
 #define VXMESHBVH_H
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "BoundingBox.h"
@@ -39,7 +40,20 @@ public:
 	static constexpr unsigned kMaxLeafPrims = 4;
 	static constexpr unsigned kBins = 16;
 
+	/// What a cache file is checked against. The tree is in world space, so a
+	/// different placement of the same file is a different cache.
+	struct CacheStamp
+	{
+		std::uint64_t sourceBytes{0};
+		std::int64_t sourceMtime{0};
+		scalar transform[16]{};
+	};
+
 	void build(const std::vector<TriRef> &tris);
+	/// Read a tree written by writeCache. False leaves this object empty.
+	bool readCache(const std::string &path, std::size_t triangleCount,
+				   const CacheStamp &stamp);
+	bool writeCache(const std::string &path, const CacheStamp &stamp) const;
 	int throwRay(const std::vector<TriRef> &tris, const Ray &ray,
 				 Collision &col) const;
 	bool hasCollision(const std::vector<TriRef> &tris, const Ray &ray) const;

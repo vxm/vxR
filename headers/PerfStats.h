@@ -71,6 +71,8 @@ enum class Stat : unsigned
 	kMeshBucketLookup,
 	kMeshBvhNodeVisit,
 	kDomeLookup,
+	kRayRefraction,
+	kRaySss,
 	kCount
 };
 

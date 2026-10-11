@@ -120,6 +120,14 @@ bool PLYImporter::processPLYFile(const std::string &fileName)
 				m_geo->addVertexTransformed({x, y, z});
 				m_geo->addUV({.5, .5});
 				break;
+			case 5:
+				// xyz plus unused channels, such as confidence and intensity.
+				x = std::stod(vts[0]);
+				y = std::stod(vts[1]);
+				z = std::stod(vts[2]);
+				m_geo->addVertexTransformed({x, y, z});
+				m_geo->addUV({.5, .5});
+				break;
 			case 6:
 				x = std::stod(vts[0]);
 				y = std::stod(vts[1]);

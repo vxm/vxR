@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -15,6 +16,7 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "AccelStructure.h"
@@ -462,8 +464,8 @@ SyntheticScene makeSynthetic(Rng &rng)
 		addSphere({1.5, 0.25, -1.0}, 0.3 + 0.0 * i);
 	}
 
-	// Cylinders: their boxes all end up at the origin, that is the engine's
-	// behaviour, and they have hits outside the box.
+	// Cylinders with no transform sit at the origin. Hits are clipped to
+	// the finite height.
 	for (int i = 0; i < 3; i++)
 	{
 		auto cyl = std::make_shared<Cylinder>();
@@ -1650,6 +1652,78 @@ int testMeshBvh()
 		std::cout << "  csr vs bvh: " << casts << " casts, " << hits
 				  << " csr hits, expected closest-vs-cell diffs " << expectedDiff
 				  << ", bad misses " << badMiss << ", farther " << farther << "\n";
+	}
+
+	// Same file stamp and placement must reuse the tree. A rewrite would
+	// move the cache file's timestamp.
+	{
+		GeoGrid::setBackend(MeshBackend::kBvh);
+		const auto dir = std::filesystem::temp_directory_path();
+		const auto ply = dir / "vxr-bvh-cache-test.ply";
+		{
+			std::ofstream touch(ply, std::ios::binary | std::ios::trunc);
+			touch << "cache-stamp";
+		}
+
+		auto makeOne = [&]() {
+			auto mesh = std::make_unique<TriangleMesh>();
+			mesh->setTransform(Matrix44::identity44);
+			mesh->setConstructionPath(ply.string());
+			mesh->open();
+			for (int i = 0; i < 3; i++)
+			{
+				mesh->addUV(uv);
+				mesh->addVertexNormalTransformed(n);
+			}
+			mesh->addVertexTransformed(v3s(6.01, 0.478, 0.478));
+			mesh->addVertexTransformed(v3s(6.01, 0.568, 0.490));
+			mesh->addVertexTransformed(v3s(6.01, 0.500, 0.568));
+			mesh->addTriangle(0, 1, 2).computeArea();
+			mesh->close();
+			return mesh;
+		};
+
+		auto first = makeOne();
+		const Ray probe(v3s(-1.0, 0.50, 0.50), v3s(1, 0, 0));
+		Collision hit;
+		if (!first->throwRay(probe, hit))
+		{
+			fail("cache source mesh missed its triangle");
+		}
+
+		std::filesystem::path cache;
+		std::error_code ec;
+		for (const auto &entry : std::filesystem::directory_iterator(dir, ec))
+		{
+			const auto name = entry.path().filename().string();
+			if (name.rfind("vxr-bvh-cache-test.ply.", 0) == 0 &&
+				entry.path().extension() == ".mbvh")
+			{
+				cache = entry.path();
+			}
+		}
+		if (cache.empty())
+		{
+			fail("bvh cache was not written");
+		}
+		else
+		{
+			const auto written = std::filesystem::last_write_time(cache, ec);
+			std::this_thread::sleep_for(std::chrono::milliseconds(20));
+			auto second = makeOne();
+			Collision again;
+			if (!second->throwRay(probe, again))
+			{
+				fail("mesh loaded from bvh cache missed");
+			}
+			const auto after = std::filesystem::last_write_time(cache, ec);
+			if (after != written)
+			{
+				fail("bvh cache was rebuilt instead of read");
+			}
+			std::filesystem::remove(cache, ec);
+		}
+		std::filesystem::remove(ply, ec);
 	}
 
 	GeoGrid::setBackend(saved);
