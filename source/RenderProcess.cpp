@@ -1,5 +1,6 @@
 #include <cassert>
 #include <climits>
+#include <cmath>
 #include <future>
 #include <iostream>
 #include <thread>
@@ -229,7 +230,7 @@ Color RenderProcess::computeReflection(const Ray &ray, const Collision &col,
 	PERF_COUNT(kRayReflection);
 	reflection = computeEnergyAndColor(reflexRay, refxCollision, bounces);
 
-	return reflection;
+	return reflection * sh->getReflectionColorMultiplier();
 }
 
 Color RenderProcess::computeGI(const Ray &ray, const Collision &col,
@@ -265,7 +266,100 @@ Color RenderProcess::computeGI(const Ray &ray, const Collision &col,
 	}
 
 	PERF_COUNT(kRayGI);
-	return computeEnergyAndColor(giRay, nextRound, bounces);
+	auto sh = getShader(col);
+	return computeEnergyAndColor(giRay, nextRound, bounces) *
+		   sh->getGiColorMultiplier();
+}
+
+Color RenderProcess::computeRefraction(const Ray &ray, const Collision &col,
+									   unsigned int bounces)
+{
+	// Glass against air. There is no per-shader index; 1.5 is the one this
+	// path uses.
+	const scalar ior = 1.5;
+	auto n = col.normal().unit();
+	const auto incoming = ray.direction().unit();
+	auto cosi = n.dot(incoming);
+	scalar eta;
+	if (cosi < 0.0)
+	{
+		eta = scalar(1.0) / ior;
+		cosi = -cosi;
+	}
+	else
+	{
+		n = n.inverted();
+		eta = ior;
+	}
+
+	const auto k = scalar(1.0) - eta * eta * (scalar(1.0) - cosi * cosi);
+	v3s dir;
+	if (k < 0.0)
+	{
+		dir = (n * incoming.dot(n) * scalar(-2.0)) + incoming;
+	}
+	else
+	{
+		dir = incoming * eta + n * (eta * cosi - sqrt(k));
+	}
+
+	auto sh = getShader(col);
+	dir += MU::getSolidSphereRand3(sh->getRefractionRadius());
+	if (dir.length() < scalar(1e-8))
+	{
+		dir = incoming;
+	}
+	dir.setUnit();
+
+	const Ray next(col.position() + dir.small(), dir, VisionType::kAll);
+	Collision hit;
+
+	if (bounces)
+	{
+		bounces--;
+	}
+
+	PERF_COUNT(kRayRefraction);
+	return computeEnergyAndColor(next, hit, bounces) *
+		   sh->getRefractionColorMultiplier();
+}
+
+Color RenderProcess::computeSubsurface(const Ray &ray, const Collision &col,
+									   unsigned int bounces)
+{
+	auto sh = getShader(col);
+	auto n = col.normal().unit();
+	if (n.dot(ray.direction()) > 0.0)
+	{
+		n = n.inverted();
+	}
+
+	auto radius = sh->getSscRadius();
+	if (radius < scalar(1e-4))
+	{
+		radius = scalar(1e-3);
+	}
+
+	// Start inside the surface and fire in a random direction, so the next
+	// hit is some other point on this object rather than the entry point.
+	const auto origin = col.position() - n * radius;
+	auto dir = MU::getHollowSphereRand(1.0);
+	if (dir.length() < scalar(1e-4))
+	{
+		dir = n.inverted();
+	}
+
+	const Ray inside(origin, dir.unit(), VisionType::kOpaque);
+	Collision hit;
+
+	if (bounces)
+	{
+		bounces--;
+	}
+
+	PERF_COUNT(kRaySss);
+	return computeEnergyAndColor(inside, hit, bounces) *
+		   sh->getSscColorMultiplier();
 }
 
 Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
@@ -307,6 +401,16 @@ Color RenderProcess::computeEnergyAndColor(const Ray &ray, Collision &col,
 		if (MU::getBoolRand(sh->getReflectionCoefficent()))
 		{
 			retColor += baseColor * computeReflection(ray, ref, bounces);
+		}
+
+		if (MU::getBoolRand(sh->getRefractionCoefficent()))
+		{
+			retColor += baseColor * computeRefraction(ray, ref, bounces);
+		}
+
+		if (MU::getBoolRand(sh->getSscCoefficent()))
+		{
+			retColor += baseColor * computeSubsurface(ray, ref2, bounces);
 		}
 
 		if (MU::getBoolRand(sh->getGiCoeficent()))

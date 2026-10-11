@@ -326,7 +326,10 @@ Color SunLight::acummulationLight(const Ray &, const Collision &col) const
 		Ray ff(cp + col.normal().small(), p, VisionType::kOpaque);
 		ff.setLength(p.length());
 
-		if (m_castShadows && reachesLightSource(ff))
+		// Same rule as DirectLight: a light that does not cast shadows
+		// always arrives, and a shadow ray only blocks it when something
+		// sits between the surface and the sun.
+		if (!m_castShadows || reachesLightSource(ff))
 		{
 			ret = c.gained(lumm);
 		}

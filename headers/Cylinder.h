@@ -26,8 +26,7 @@ public:
 	virtual int throwRay(const Ray &ray, Collision &collide) const override;
 	virtual bool hasCollision(const Ray &ray) const override;
 
-	// The body is an infinite cylinder, its hits are not clipped to the box.
-	virtual bool hitsInsideBounds() const override { return false; }
+	// The body hit is clipped to the finite height, so the box contains it.
 };
 
 using CylinderHandle = std::shared_ptr<Cylinder>;

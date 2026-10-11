@@ -172,7 +172,8 @@ void Scene::buildLights()
 		auto sun = createSunLight();
 		sun->setIntensity(node->getScalar("intensity"));
 		sun->setOrientation(node->getVector3d("orientation"));
-		sun->setColor(Color::lookup256(node->getColor("color")));
+		// getColor() is already 0..1. lookup256() would divide by 255 again.
+		sun->setColor(node->getColor("color"));
 		sun->setSamples(node->getInt("samples"));
 
 		std::string &&cast = node->getString("castShadows"s);
@@ -247,7 +248,8 @@ void Scene::buildGrids()
 
 		grid->setShader(std::static_pointer_cast<Shader>(shaderNode->node()));
 
-		const auto color = Color::lookup256(node->getColor("color"));
+		// getColor() is already 0..1; lookup256() would divide by 255 again.
+		const auto color = node->getColor("color");
 		const auto resolution = (long)node->getInt("resolution");
 
 		grid->setResolution(resolution);
@@ -279,12 +281,30 @@ void Scene::buildGrids()
 		// grid->createRandom(.03,-0.6);
 		// grid->createRandom(.0003,-0.5);
 
-		grid->createGround(-0.63, 2);
-		grid->createRandom(.1, -0.62);
-		grid->createRandom(.09, -0.60);
-		grid->createRandom(.03, -0.59);
-		grid->createRandom(.01, -0.57);
-		grid->legolizeColors();
+		std::string fill;
+		for (const auto &attr : node->attributes())
+		{
+			if (attr.first == "fill")
+			{
+				fill = attr.second.asString();
+			}
+		}
+
+		// The ground fill lives below y=-0.57, under the demo floor. A grid
+		// that asks for a sphere gets a ball of voxels around its own center.
+		if (fill == "sphere")
+		{
+			grid->createSphere(transform.origin(), size * scalar(0.42), 14);
+		}
+		else
+		{
+			grid->createGround(-0.63, 2);
+			grid->createRandom(.1, -0.62);
+			grid->createRandom(.09, -0.60);
+			grid->createRandom(.03, -0.59);
+			grid->createRandom(.01, -0.57);
+			grid->legolizeColors();
+		}
 		// grid->createBox(BoundingBox(-0.03, -2.3, -0.03, 0.03, 2.1, 0.03), 4);
 		// grid->dumpFileInMemory("/home/mario/Downloads/xyzrgb_statuette_1.ply");
 		// grid->createEdges((unsigned char)12u);
@@ -369,7 +389,8 @@ void Scene::buildCylinders()
 
 		auto cylinderGeo = createCylinder();
 
-		cylinderGeo->setColor(Color::lookup256(node->getColor("color")));
+		// getColor() is already 0..1; lookup256() would divide by 255 again.
+		cylinderGeo->setColor(node->getColor("color"));
 
 		auto &&shaderNodeName = node->getString("shader");
 		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
@@ -407,7 +428,8 @@ void Scene::buildSpheres()
 
 		auto sphereGeo = createSphere();
 
-		sphereGeo->setColor(Color::lookup256(node->getColor("color")));
+		// getColor() is already 0..1; lookup256() would divide by 255 again.
+		sphereGeo->setColor(node->getColor("color"));
 
 		auto &&shaderNodeName = node->getString("shader");
 		auto shaderNode = m_nodeDB->getNodeByName(shaderNodeName);
@@ -481,27 +503,26 @@ void Scene::buildShaders()
 	{
 		auto shader = createShader();
 
-		shader->setDiffuseColor(Color::lookup256(node->getColor("diffuseColor")));
+		// getColor() is already 0..1; lookup256() would crush these tints.
+		shader->setDiffuseColor(node->getColor("diffuseColor"));
 		shader->setDiffuseCoeficent(node->getScalar("diffuseCoeficent"));
 		shader->setGiCoeficent(node->getScalar("giCoeficent"));
-		shader->setGiColorMultiplier(
-			Color::lookup256(node->getColor("giColorMultiplier")));
+		shader->setGiColorMultiplier(node->getColor("giColorMultiplier"));
 		shader->setRayDepth((unsigned int)node->getInt("rayDepth"));
 		shader->setReflectionRadius(node->getScalar("reflectionRadius"));
 		shader->setReflectionCoefficent(node->getScalar("reflectionCoefficent"));
 		shader->setReflectionColorMultiplier(
-			Color::lookup256(node->getColor("reflectionColorMultiplier")));
+			node->getColor("reflectionColorMultiplier"));
 		shader->setRefractionSamples(
 			(unsigned int)node->getInt("refractionSamples"));
 		shader->setRefractionRadius(node->getScalar("refractionRadius"));
 		shader->setRefractionCoefficent(node->getScalar("refractionCoefficent"));
 		shader->setRefractionColorMultiplier(
-			Color::lookup256(node->getColor("refractionColorMultiplier")));
+			node->getColor("refractionColorMultiplier"));
 		shader->setSscSamples((unsigned int)node->getInt("sscSamples"));
 		shader->setSscRadius(node->getScalar("sscRadius"));
 		shader->setSscCoefficent(node->getScalar("sscCoefficent"));
-		shader->setSscColorMultiplier(
-			Color::lookup256(node->getColor("sscColorMultiplier")));
+		shader->setSscColorMultiplier(node->getColor("sscColorMultiplier"));
 
 		node->bind(shader);
 	}

@@ -80,6 +80,12 @@ int Cylinder::throwRay(const Ray &ray, Collision &col) const
 				MU::rectAndZPlane(ray.direction(), twoPos.z() - ray.origin().z());
 			finalPos += ray.origin();
 
+			if (finalPos.y() < m_bb->minY() || finalPos.y() > m_bb->maxY())
+			{
+				col.setValid(false);
+				return 0;
+			}
+
 			col.setColor(color());
 			col.setPosition(finalPos);
 			col.setValid(true);
@@ -114,7 +120,10 @@ bool Cylinder::hasCollision(const Ray &ray) const
 
 void Cylinder::updateBoundingBox()
 {
+	const auto &t = m_transform.origin();
 	m_bb->clear();
-	m_bb->extend(v3s(m_radius, m_height / 2.0, m_radius));
-	m_bb->extend(v3s(-m_radius, -m_height / 2.0, -m_radius));
+	m_bb->extend(v3s(m_radius + t.x(), m_height / scalar(2.0) + t.y(),
+					 m_radius + t.z()));
+	m_bb->extend(v3s(-m_radius + t.x(), -m_height / scalar(2.0) + t.y(),
+					 -m_radius + t.z()));
 }

@@ -39,7 +39,8 @@ const char *const kStatNames[kNumStats] = {
 	"cylinder_tests",      "plane_tests",         "grid_casts",
 	"grid_voxel_steps",    "grid_voxel_box_tests", "grid_skips_l1",
 	"grid_skips_l2",       	"mesh_casts",
-	"mesh_bucket_lookups", "mesh_bvh_node_visits", "dome_lookups"};
+	"mesh_bucket_lookups", "mesh_bvh_node_visits", "dome_lookups",
+	"ray_refraction",      "ray_sss"};
 
 const char *const kPhaseNames[kNumPhases] = {
 	"scene_parse",    "scene_build",  "accel_build", "render_wall",
@@ -81,6 +82,7 @@ Derived derive()
 	Derived d{};
 	d.rays = at(t, Stat::kAccelCast);
 	d.secondaryRays = at(t, Stat::kRayReflection) + at(t, Stat::kRayGI) +
+					  at(t, Stat::kRayRefraction) + at(t, Stat::kRaySss) +
 					  at(t, Stat::kRayShadow) + at(t, Stat::kRayEnvLight);
 	const auto prims = at(t, Stat::kTriTest) + at(t, Stat::kSphereTest) +
 					   at(t, Stat::kCylinderTest) + at(t, Stat::kPlaneTest);
@@ -437,7 +439,8 @@ std::vector<std::string> PerfStats::validate(const PerfRunInfo &info)
 	}
 
 	const auto kinds = at(t, Stat::kRayPrimary) + at(t, Stat::kRayReflection) +
-					   at(t, Stat::kRayGI) + at(t, Stat::kRayShadow) +
+					   at(t, Stat::kRayGI) + at(t, Stat::kRayRefraction) +
+					   at(t, Stat::kRaySss) + at(t, Stat::kRayShadow) +
 					   at(t, Stat::kRayEnvLight);
 	if (kinds != at(t, Stat::kAccelCast))
 	{
@@ -527,6 +530,8 @@ void PerfStats::printSummary(std::ostream &os, const PerfRunInfo &info)
 	line("  primary", count(Stat::kRayPrimary));
 	line("  reflection", count(Stat::kRayReflection));
 	line("  gi", count(Stat::kRayGI));
+	line("  refraction", count(Stat::kRayRefraction));
+	line("  subsurface", count(Stat::kRaySss));
 	line("  shadow", count(Stat::kRayShadow));
 	line("  env light", count(Stat::kRayEnvLight));
 	line("  total casts", count(Stat::kAccelCast) + "  (hit " +

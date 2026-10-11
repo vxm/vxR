@@ -1,6 +1,13 @@
 #include "TriangleMesh.h"
 #include "CellMarcher.h"
 #include "PerfStats.h"
+
+#include <cstdint>
+#include <filesystem>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+
 #define DRAWBBOX 0
 
 using namespace vxCore;
@@ -39,10 +46,61 @@ void TriangleMesh::clear()
 {
 	m_bb->clear();
 	m_vertices.clear();
+	m_vertexNormals.clear();
+	m_faceNormals.clear();
+	m_uvs.clear();
 	m_triangles.clear();
 }
 
 void TriangleMesh::open() { m_openForEdition = true; }
+
+namespace
+{
+
+std::string bvhCachePath(const std::string &ply, const scalar transform[16])
+{
+	std::uint64_t hash = 14695981039346656037ull;
+	const auto *bytes = reinterpret_cast<const unsigned char *>(transform);
+	for (std::size_t i = 0; i < sizeof(scalar) * 16; ++i)
+	{
+		hash ^= bytes[i];
+		hash *= 1099511628211ull;
+	}
+
+	std::ostringstream name;
+	name << ply << '.' << std::hex << std::setfill('0') << std::setw(16) << hash
+		 << ".mbvh";
+	return name.str();
+}
+
+bool bvhCacheStamp(const std::string &ply, const Matrix44 &transform,
+				   MeshBvh::CacheStamp &stamp)
+{
+	if (ply.empty())
+	{
+		return false;
+	}
+
+	std::error_code error;
+	const auto bytes = std::filesystem::file_size(ply, error);
+	if (error)
+	{
+		return false;
+	}
+	const auto mtime = std::filesystem::last_write_time(ply, error);
+	if (error)
+	{
+		return false;
+	}
+
+	stamp.sourceBytes = static_cast<std::uint64_t>(bytes);
+	stamp.sourceMtime =
+		static_cast<std::int64_t>(mtime.time_since_epoch().count());
+	transform.get(stamp.transform);
+	return true;
+}
+
+} // namespace
 
 void TriangleMesh::close()
 {
@@ -52,7 +110,26 @@ void TriangleMesh::close()
 
 	if (GeoGrid::backend() == MeshBackend::kBvh)
 	{
-		m_bvh.build(m_triangles);
+		MeshBvh::CacheStamp stamp;
+		const auto stamped = bvhCacheStamp(m_constructionPath, m_transform, stamp);
+		const auto cachePath =
+			stamped ? bvhCachePath(m_constructionPath, stamp.transform) : std::string{};
+
+		if (stamped && m_bvh.readCache(cachePath, m_triangles.size(), stamp))
+		{
+			std::cout << " -- mesh: bvh cache " << m_bvh.buildInfo().triangles
+					  << " tris, " << m_bvh.buildInfo().nodes << " nodes --"
+					  << std::endl;
+		}
+		else
+		{
+			m_bvh.build(m_triangles);
+			if (stamped && m_bvh.writeCache(cachePath, stamp))
+			{
+				std::cout << " -- mesh: bvh cache written " << cachePath << " --"
+						  << std::endl;
+			}
+		}
 		m_openForEdition = false;
 		return;
 	}
@@ -138,19 +215,29 @@ TriRef &TriangleMesh::addTriangle(unsigned long a, unsigned long b,
 				  << std::endl;
 	}
 
-	if (m_uvs.empty())
-	{
-		std::cerr << "Geometries cannot have 0 uv's" << std::endl;
-	}
-
 	auto &&uvRefA = m_uvs.empty() ? defaultUV : m_uvs[a];
 	auto &&uvRefB = m_uvs.empty() ? defaultUV : m_uvs[b];
 	auto &&uvRefC = m_uvs.empty() ? defaultUV : m_uvs[c];
 
-	// TODO:emplace_back ?
-	m_triangles.emplace_back(m_vertices[a], m_vertices[b], m_vertices[c],
-							 m_vertexNormals[a], m_vertexNormals[b],
-							 m_vertexNormals[c], uvRefA, uvRefB, uvRefC);
+	const auto &va = m_vertices[a];
+	const auto &vb = m_vertices[b];
+	const auto &vc = m_vertices[c];
+	// TriRef keeps the normals by reference. The referent has to be a member
+	// that outlives the triangle, not a local copy.
+	if (a < m_vertexNormals.size() && b < m_vertexNormals.size() &&
+		c < m_vertexNormals.size())
+	{
+		m_triangles.emplace_back(va, vb, vc, m_vertexNormals[a],
+								 m_vertexNormals[b], m_vertexNormals[c], uvRefA,
+								 uvRefB, uvRefC);
+	}
+	else
+	{
+		m_faceNormals.push_back((vb - va).cross(vc - va).unit());
+		const auto &n = m_faceNormals.back();
+		m_triangles.emplace_back(va, vb, vc, n, n, n, uvRefA, uvRefB, uvRefC);
+	}
+
 	return m_triangles.back();
 }
 
